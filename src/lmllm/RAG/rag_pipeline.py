@@ -582,7 +582,7 @@ class RAGPipeline:
             _error_type = reviewer_output.get("error_type", "writing")
             print(f"  -> 置信度: {_confidence}, 错误类型: {_error_type}, 问题数: {len(_issues)}")
 
-            if _confidence == "high":
+            if _confidence in ("high", "medium"):
                 _final = reviewer_output.get("revised_answer", _draft)
                 break
 

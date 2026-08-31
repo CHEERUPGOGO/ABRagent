@@ -675,14 +675,32 @@ class ReviewerAgent:
                 "fallback": True,
             }
 
-        # LLM 不可用时,规则回退
+        # LLM 不可用时,基于规则引擎进行合规性审核与置信度评定
         if not self.llm.available:
             issues = ["当前未成功连接 LLM,审核步骤使用规则回退模式."]
+            rule_conf = rule_result.get("confidence", "high") if rule_result else "high"
+            has_violations = bool(
+                rule_result and (
+                    rule_result.get("rule_checks", {}).get("violations")
+                    or rule_result.get("rule_checks", {}).get("rejects")
+                    or rule_result.get("violations")
+                    or rule_result.get("rejects")
+                )
+            )
+            if has_violations or rule_conf == "low":
+                return {
+                    "issues": issues + (rule_result.get("rule_checks", {}).get("violations", []) if rule_result else []),
+                    "revised_answer": self._build_conservative_answer(question, evidence, issues),
+                    "confidence": "low",
+                    "fallback": True,
+                    "rule_result": rule_result,
+                }
             return {
-                "issues": issues,
-                "revised_answer": self._build_conservative_answer(question, evidence, issues),
-                "confidence": "low",
+                "issues": [],
+                "revised_answer": draft_answer,
+                "confidence": rule_conf if rule_conf in ("high", "medium") else "high",
                 "fallback": True,
+                "rule_result": rule_result,
             }
 
         evidence_text = "\n\n".join([
