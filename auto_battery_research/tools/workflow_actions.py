@@ -465,6 +465,104 @@ def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, targe
         }
 
 
+def _generate_dynamic_recipe_roadmap(
+    target_query: str,
+    scheme_text: str,
+    scheme_data: Dict[str, Any],
+    mgr: Any,
+) -> str:
+    """由大模型根据具体电池设计方案动态生成【实验配方与落地建议】，遵循统一的格式模板规范."""
+    # 1. 尝试大模型动态生成
+    llm_cfg = mgr.config.get("llm") if mgr else {}
+    openai_cfg = mgr.config.get("openai") if mgr else {}
+
+    api_key = (
+        (openai_cfg.get("openai_api_key") if openai_cfg else None)
+        or (llm_cfg.get("api_key") if llm_cfg else None)
+        or os.getenv("OPENAI_API_KEY")
+    )
+    api_base = (
+        (openai_cfg.get("openai_api_base") if openai_cfg else None)
+        or (llm_cfg.get("base_url") if llm_cfg else None)
+        or os.getenv("OPENAI_API_BASE")
+    )
+    model_name = (
+        (llm_cfg.get("writer_model") if llm_cfg else None)
+        or (llm_cfg.get("model") if llm_cfg else None)
+        or (openai_cfg.get("model_name") if openai_cfg else None)
+        or os.getenv("OPENAI_MODEL", "MiniMax-M2.7-highspeed")
+    )
+
+    is_valid_key = (
+        api_key
+        and str(api_key).strip()
+        and str(api_key).strip() not in ("dummy_key", "none", "None", "")
+        and not str(api_key).startswith("$(")
+    )
+
+    if is_valid_key:
+        try:
+            from src.lmllm.RAG.llm_client import LLMClient
+            llm = LLMClient(
+                model_name=model_name,
+                api_key=api_key,
+                api_base=api_base,
+                temperature=0.2,
+            )
+            if llm.available:
+                sys_prompt = (
+                    "你是一位化学电池工程与实验落地专家。\n"
+                    "请根据给定的电池设计目标与推荐方案，按照指定的四段式模板格式，"
+                    "输出专门针对该材料体系的【实验配方与落地建议】。\n\n"
+                    "【必须遵循的输出格式模板】：\n"
+                    "### 5.1 原材料前驱体与采购规格 (Raw Materials & Specifications)\n"
+                    "- 列出针对该体系的正极、负极、电解液溶剂/锂盐、功能添加剂的具体规格要求（纯度、粒径、水分限制、形貌等）。\n\n"
+                    "### 5.2 极片制备与界面改性工艺 (Electrode Processing & Surface Modification)\n"
+                    "- 详细说明混料浆料配比、溶剂、涂布面载量控制、辊压压实密度以及表面包覆/改性操作要点。\n\n"
+                    "### 5.3 电芯组装与化成激活制度 (Cell Assembly & Formation Protocol)\n"
+                    "- 详细说明装配气氛（露点要求）、电解液注液量系数 (E/C ratio)、预充/阶梯化成电流与脱气封装工艺。\n\n"
+                    "### 5.4 电化学性能与安全性验证路线 (Testing & Validation Matrix)\n"
+                    "- 列出 0.1C 首效/容量测试、0.5C/1C 循环衰减监测、高低温工作窗口评估及 ARC 热失控安全测试方案。"
+                )
+                scheme_summary = scheme_text[:1500] if scheme_text else f"材料方案: {scheme_data}"
+                user_prompt = (
+                    f"课题目标: {target_query}\n\n"
+                    f"设计方案摘要与材料配方:\n{scheme_summary}\n\n"
+                    "请输出针对该体系的完整落地建议章节内容："
+                )
+                resp = llm.chat(sys_prompt, user_prompt, temperature=0.2)
+                if resp and len(resp.strip()) > 150:
+                    return resp.strip()
+        except Exception as e:
+            log_error(f"大模型动态生成落地建议受阻: {e}，切入规则定制模板。")
+
+    # 2. 规则定制化回退（根据材料实体动态定制）
+    s_obj = scheme_data.get("scheme", {}) if isinstance(scheme_data, dict) else {}
+    cathode = s_obj.get("cathode") or "高镍三元正极"
+    anode = s_obj.get("anode") or "锂金属/硅碳负极"
+    electrolyte = s_obj.get("electrolyte") or "高电压/局域高浓度电解液"
+
+    return f"""### 5.1 原材料前驱体与采购规格 (Raw Materials & Specifications)
+- **正极材料**: 选用 {cathode} 单晶/颗粒，要求 D50 粒径控制在 3-5 μm，残碱含量 (LiOH + Li₂CO₃) < 0.3 wt%，水分敏感度严格控制 (< 10 ppm)。
+- **负极材料**: 采用 {anode}，纯度 ≥ 99.9%，厚度或面容量需与正极实现 N/P 比严格匹配 (1.05~1.15)。
+- **电解液体系**: 采用 {electrolyte} 体系，要求水分 < 10 ppm，游离酸 (HF) < 20 ppm。
+
+### 5.2 极片制备与界面改性工艺 (Electrode Processing & Surface Modification)
+- **浆料制备**: 采用行星式高速分散机混料，正极配比推荐 主材:导电炭黑(Super P/CNT):粘结剂(PVDF) = 96:2:2，固含量控制在 65-70%。
+- **涂布与辊压**: 双面涂布面载量控制在 18-22 mg/cm²，热风分段干燥 (80°C/100°C/120°C)，冷轧压实密度目标 3.3-3.5 g/cm³。
+- **表面包覆/钝化**: 建议对极片或材料表面引入纳米级保护层以抑制高脱锂态下的过渡金属溶出。
+
+### 5.3 电芯组装与化成激活制度 (Cell Assembly & Formation Protocol)
+- **环境控制**: 手套箱露点温度控制在 ≤ -50°C (Ar 气氛，O₂ < 0.1 ppm, H₂O < 0.1 ppm)。
+- **注液系数**: 按照 E/C 比 2.0-2.5 g/Ah 进行真空浸润与注液，并在 45°C 下静置 24 小时以确保电解液充分润湿。
+- **化成制度**: 0.05C 恒流预充至 3.2V，随后以 0.1C 恒流恒压充电至 4.35V/4.4V，完成首次钝化膜 (SEI/CEI) 诱导生成，并在封口前进行真空抽气脱气。
+
+### 5.4 电化学性能与安全性验证路线 (Testing & Validation Matrix)
+- **扣电/半电芯评估**: 在 0.1C 倍率下测试首次库仑效率 (ICE ≥ 88%) 及理论比容量发挥。
+- **全电池工况测试**: 开展 0.5C/1.0C 长循环寿命评估 (目标 500 周保持率 > 80%)，并监测 3C 高倍率放电极化。
+- **安全边界考核**: 实施加速绝热量热 (ARC) 热失控起始温度 (T₁) 标定与满充状态针刺、过充安全性验证。"""
+
+
 def run_synthesis_report(target_query: str = "设计400Wh/kg高比能液态锂金属电池方案", stage_manager: Optional[Any] = None, **kwargs) -> Dict[str, Any]:
     """执行 Stage 6: 汇总全生命周期综合研发报告 (读取 StageJournal 进行全链路审计与一致性前置核验)."""
     from auto_battery_research.tools.stage_tools import get_stage_manager_for_goal
@@ -490,10 +588,12 @@ def run_synthesis_report(target_query: str = "设计400Wh/kg高比能液态锂�
             scheme_text = f.read()
 
     evidence_count = 0
+    scheme_data = {}
     if scheme_json_file.exists():
         try:
             with open(scheme_json_file, "r", encoding="utf-8") as f:
                 s_data = json.load(f)
+                scheme_data = s_data if isinstance(s_data, dict) else {}
                 evidence_count = len(s_data.get("evidence", []))
         except Exception:
             pass
@@ -552,6 +652,13 @@ def run_synthesis_report(target_query: str = "设计400Wh/kg高比能液态锂�
     ).rstrip("/")
     backend_desc = f"{backend_model} ({backend_base}, OpenAI-compatible)" if backend_base else backend_model
 
+    recipe_roadmap_text = _generate_dynamic_recipe_roadmap(
+        target_query=target_query,
+        scheme_text=scheme_text,
+        scheme_data=scheme_data,
+        mgr=mgr,
+    )
+
     report_content = f"""# 化学电池全生命周期研发与设计综合研报
 
 - 课题目标: {target_query}
@@ -602,9 +709,8 @@ def run_synthesis_report(target_query: str = "设计400Wh/kg高比能液态锂�
 ---
 
 ## 5. 实验配方与落地建议 (Recipe Roadmap & Next Steps)
-1. 优先试制: 依据方案推荐材料清单采购正极单晶材料与高功能电解液体系；
-2. 纽扣半电芯验证: 在 0.1 C 下测试首次库仑效率与放电比容量；
-3. 全电池评估: 评估 0.5 C 充放电循环寿命与高低温工作窗口。
+
+{recipe_roadmap_text}
 """
     # 4. 原子安全写入课题专属文件 (覆盖课题目录内所有规范命名；不写全局镜像目录，
     #    避免 output/auto_battery_research/ 中不同课题的研报互相覆盖)
