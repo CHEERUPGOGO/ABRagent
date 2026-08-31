@@ -20,6 +20,7 @@ class MessagesPanel(VerticalScroll, can_focus=True):
         self.manager = manager
         self.border_title = "Messages"
         self._last_stage_id: Optional[int] = None
+        self._showing_custom_text: bool = False
 
     def compose(self) -> ComposeResult:
         yield Markdown(id="guide-markdown")
@@ -32,8 +33,14 @@ class MessagesPanel(VerticalScroll, can_focus=True):
     def update_content(self, force: bool = False) -> None:
         """刷新指南与交付物列表."""
         curr = self.manager.get_current_stage()
+        # 如果正在展示研报/自定义内容，且非强制刷新且阶段未发生变化，则保持展示
+        if self._showing_custom_text and not force and curr.id == self._last_stage_id:
+            return
+
         if force or curr.id != self._last_stage_id:
+            self._showing_custom_text = False
             self._last_stage_id = curr.id
+            self.border_title = "Messages"
             tips_md = curr.get_tips()
             
             # 顶部表格与状态摘要
@@ -53,8 +60,9 @@ class MessagesPanel(VerticalScroll, can_focus=True):
                 pass
 
     def show_text(self, title: str, content: str) -> None:
-        """展示自定义 Markdown 内容."""
+        """展示自定义 Markdown 内容 (如最新综合研报或方案)."""
         try:
+            self._showing_custom_text = True
             self.border_title = f"Messages ── {title}"
             self.query_one("#guide-markdown", Markdown).update(content)
         except Exception:

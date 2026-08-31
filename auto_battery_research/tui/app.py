@@ -147,9 +147,14 @@ class BatteryAgentTUI(App[None]):
                 console_widget.write_log(f"{now_str()} 当前研发目标: '{self.manager.target_goal}' (用法: goal <新研究目标>)", style="cyan")
             else:
                 new_goal = " ".join(args)
-                self.manager.target_goal = new_goal
+                switch_fn = getattr(self.manager, "switch_goal", None)
+                if callable(switch_fn):
+                    switch_fn(new_goal)
+                else:
+                    self.manager.target_goal = new_goal
                 status_bar.set_goal(new_goal)
                 task_panel.update_content()
+                messages_panel.update_content(force=True)
                 console_widget.write_log(f"{now_str()} Research target updated: '{new_goal}'", style="bold green")
 
         elif action in ("status", "st"):
@@ -277,16 +282,26 @@ class BatteryAgentTUI(App[None]):
                     self.call_from_thread(task_panel.update_content)
                     self.call_from_thread(messages_panel.update_content, True)
 
-                    task_dir = self.manager.get_task_output_dir()
-                    cand_reports = [
-                        task_dir / "final_research_report.md",
-                        Path("output/auto_battery_research/final_research_report.md"),
-                    ]
-                    found_report = next((p for p in cand_reports if p.exists()), None)
-                    if found_report:
-                        with open(found_report, "r", encoding="utf-8") as f:
+                    task_dir = self.manager.get_task_output_dir(goal)
+                    report_file = task_dir / "final_research_report.md"
+                    scheme_file = task_dir / "design_scheme.md"
+                    
+                    # 优先确保当前课题的最新综合研报已生成
+                    if not report_file.exists():
+                        try:
+                            from auto_battery_research.tools.workflow_actions import run_synthesis_report
+                            run_synthesis_report(target_query=goal, stage_manager=self.manager)
+                        except Exception:
+                            pass
+                    
+                    if report_file.exists():
+                        with open(report_file, "r", encoding="utf-8") as f:
                             rep_content = f.read()
                         self.call_from_thread(messages_panel.show_text, "Synthesis Research Report", rep_content)
+                    elif scheme_file.exists():
+                        with open(scheme_file, "r", encoding="utf-8") as f:
+                            rep_content = f.read()
+                        self.call_from_thread(messages_panel.show_text, "Design Scheme (Stage 4)", rep_content)
 
                     success_msg = f"{now_str()} ABRAgent Loop finished! All stages completed: success={all_done} (time: {elapsed:.1f}s)"
                     self.call_from_thread(console_widget.write_log, success_msg, "bold green")
@@ -329,23 +344,30 @@ class BatteryAgentTUI(App[None]):
             console_widget.write_log(f"{now_str()} Stage journals loaded into Messages panel.", style="green")
 
         elif action in ("report", "rep"):
-            task_dir = self.manager.get_task_output_dir()
-            cand_reports = [
-                task_dir / "final_research_report.md",
-                task_dir / "final_report.md",
-                task_dir / "battery_research_synthesis_report.md",
-                Path("output/auto_battery_research/final_research_report.md"),
-                Path("output/auto_battery_research/final_report.md"),
-                Path("output/auto_battery_research/battery_research_synthesis_report.md"),
-            ]
-            found_report = next((p for p in cand_reports if p.exists()), None)
-            if found_report:
-                with open(found_report, "r", encoding="utf-8") as f:
+            current_goal = self.manager.target_goal
+            task_dir = self.manager.get_task_output_dir(current_goal)
+            report_file = task_dir / "final_research_report.md"
+            scheme_file = task_dir / "design_scheme.md"
+            
+            if not report_file.exists():
+                try:
+                    from auto_battery_research.tools.workflow_actions import run_synthesis_report
+                    run_synthesis_report(target_query=current_goal, stage_manager=self.manager)
+                except Exception:
+                    pass
+
+            if report_file.exists():
+                with open(report_file, "r", encoding="utf-8") as f:
                     rep_text = f.read()
                 messages_panel.show_text("Synthesis Research Report", rep_text)
-                console_widget.write_log(f"{now_str()} Synthesis report rendered into Messages panel.", style="green")
+                console_widget.write_log(f"{now_str()} Synthesis report for '{current_goal}' rendered into Messages panel.", style="green")
+            elif scheme_file.exists():
+                with open(scheme_file, "r", encoding="utf-8") as f:
+                    scheme_text = f.read()
+                messages_panel.show_text("Design Scheme (Stage 4)", scheme_text)
+                console_widget.write_log(f"{now_str()} Design scheme for '{current_goal}' rendered into Messages panel.", style="green")
             else:
-                console_widget.write_log(f"{now_str()} Report not generated yet. Type 'run' to execute workflow.", style="yellow")
+                console_widget.write_log(f"{now_str()} Report not generated yet for '{current_goal}'. Type 'run' to execute workflow.", style="yellow")
 
 
         elif action in ("web", "ui"):
