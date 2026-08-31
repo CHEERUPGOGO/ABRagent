@@ -1,0 +1,670 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s11771-022-4901-4.md",
+  "component": "anode",
+  "paper_id": "10.1007/s11771-022-4901-4",
+  "doi": "10.1007/s11771-022-4901-4",
+  "material_id": "10.1007_s11771-022-4901-4",
+  "meta": {
+    "meta_title": "Multifunctional interfacial and structural anode for dendrite-free lithium metal",
+    "meta_authors": "SHEN Chao(沈超) 1 , LI Nan(李楠) 1 *, GU Jin-lei(顾金镭) 1 , PENG Zu-ling(彭祖铃) 2 , XIE Ke-yu(谢科予) 1 *",
+    "meta_year": "2022"
+  },
+  "materials": [
+    {
+      "name": "E1-treated Li anode",
+      "short_name": "E1-Li",
+      "formula": "Li/Ag",
+      "role": "comparison",
+      "description": "Li foil treated with 0.17 M AgNO3 in DOL solution, resulting in spherical Ag particle morphology.",
+      "material_id": "10.1007_s11771-022-4901-4_M001"
+    },
+    {
+      "name": "E2-treated Li anode",
+      "short_name": "E2-Li",
+      "formula": "Li/Ag",
+      "role": "comparison",
+      "description": "Li foil treated with 0.17 M AgNO3 in DME solution, resulting in spherical Ag particle morphology.",
+      "material_id": "10.1007_s11771-022-4901-4_M002"
+    },
+    {
+      "name": "E3-treated Li anode",
+      "short_name": "E3-Li",
+      "formula": "Li/Ag",
+      "role": "comparison",
+      "description": "Li foil treated with 0.17 M AgNO3 in DOL/DME (1:1) solution, resulting in mixed plate-like and spherical structures.",
+      "material_id": "10.1007_s11771-022-4901-4_M003"
+    },
+    {
+      "name": "E4-treated Li anode",
+      "short_name": "E4-Li",
+      "formula": "Li/Ag",
+      "role": "comparison",
+      "description": "Li foil treated with 0.17 M AgNO3 in DOL solution with 1 M LiTFSI, resulting in 3D microrod structure.",
+      "material_id": "10.1007_s11771-022-4901-4_M004"
+    },
+    {
+      "name": "E5-treated Li anode",
+      "short_name": "E5-Li",
+      "formula": "Li/Ag",
+      "role": "comparison",
+      "description": "Li foil treated with 0.17 M AgNO3 in DME solution with 1 M LiTFSI, resulting in 3D microrod structure.",
+      "material_id": "10.1007_s11771-022-4901-4_M005"
+    },
+    {
+      "name": "ME-Li anode",
+      "short_name": "ME-Li",
+      "formula": "Li/Ag",
+      "role": "novel",
+      "description": "Primary material: Li foil treated with 0.17 M AgNO3 in DOL/DME (1:1) with 1 M LiTFSI (ME solution), forming an in-situ 3D Ag/Li-Ag microrod layer enabling dendrite-free cycling.",
+      "material_id": "10.1007_s11771-022-4901-4_M006"
+    }
+  ],
+  "n_materials": 6,
+  "table_items": [],
+  "n_items": 15,
+  "items": [
+    {
+      "paragraph": "Scanning electron microscopy SEM images were obtaimed with FEI JSM-5612LV. X-ray diffraction XRD patterns were obtained with an X’Pert PRO MPD mathrm mathrm K a radiation, 0.15406 mathrm at room tempe",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "XRD"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The charge/discharge curve and the corresponding morphology evolution of ME-Li anode at the current density of 1 mathrm / mathrm 2 are revealed. Figures 7a−h correspond to stages a−h in Figure 6. The ",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 0.25,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "deposition capacity of 0.25 mathrm cdot mathrm h / mathrm 2"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "When the deposition capacity reaches 1 mathrm cdot mathrm h / mathrm 2"
+          },
+          {
+            "value": 0.25,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "stripping capacity of 0.25 mathrm cdot mathrm h / mathrm 2"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The structure of ME-Li foil was further illustrated through XPS spectra. There exists only one peak at 399.21 mathrm in the N 1s core-level, representing mathrm 3 mathrm N Figures 3b and c. However, i",
+      "property_types": [
+        "Elemental_Composition",
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "N",
+              "Ag",
+              "O"
+            ],
+            "method": "XPS",
+            "source_text": "The structure of ME-Li foil was further illustrated through XPS spectra. There exists only one peak at 399.21 mathrm in the N 1s core-level, representing mathrm 3 mathrm N Figures 3b and c. However, in addition to the typical peak at 399.21 mathrm , there is another signal at 397.77 mathrm in the N 1s core-level, which corresponds to mathrm x mathrm O y Figure 3e. Furthermore, there are two peaks at 373.72 eV Ag 3 mathrm d 3 / 2 , and 367.68 mathrm 3 mathrm d 5 / 2 in the mathrm 3 mathrm d core-level Figure 3f, which indicate the presence of mathrm and Li-Ag alloy mathrm x mathrm y on the surface of ME-Li foil."
+          }
+        ],
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "Li3N (N 1s peak at 399.21 eV)",
+              "LixNOy (N 1s peak at 397.77 eV)",
+              "Ag (Ag 3d3/2 peak at 373.72 eV, Ag 3d5/2 peak at 367.68 eV)",
+              "Li-Ag alloy (LixAgy)"
+            ],
+            "state": "surface of ME-Li foil",
+            "source_text": "The structure of ME-Li foil was further illustrated through XPS spectra. There exists only one peak at 399.21 mathrm in the N 1s core-level, representing mathrm 3 mathrm N Figures 3b and c. However, in addition to the typical peak at 399.21 mathrm , there is another signal at 397.77 mathrm in the N 1s core-level, which corresponds to mathrm x mathrm O y Figure 3e. Furthermore, there are two peaks at 373.72 eV Ag 3 mathrm d 3 / 2 , and 367.68 mathrm 3 mathrm d 5 / 2 in the mathrm 3 mathrm d core-level Figure 3f, which indicate the presence of mathrm and Li-Ag alloy mathrm x mathrm y on the surface of ME-Li foil."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The rod-like micron structures with the diameter of about 1 mu mathrm m and the length exceeding 10 mu mathrm m can be obtained after dripping 1 mathrm / L LiTFSI in a mixed solvent of DOL and DME 1:1",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "electrolyte": "1 M LiTFSI in DOL/DME (1:1 v/v) with 0.17 M AgNO3"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Ag",
+              "O"
+            ],
+            "unit": "at%",
+            "method": "EDS",
+            "source_text": "EDS reveals that the entire surface of the ME-Li foil is mainly composed of Ag and oxygen Li cannot be detected, and the proportion of Ag exceeds 40 % of the total content of all elements Figure 1c"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Electrochemical impedance spectroscopy EIS was used to assess kinetic features of ME-Li electrodes. R mathrm L and R mathrm i represent the solution resistance and interface charge-transfer resistance",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "test_method": "EIS",
+          "cycle_number": 0
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "Ag"
+            ],
+            "method": "XRD, EDS, XPS",
+            "source_text": "after dropping ME on the surface of the Li foil, the generated 3D micro-rod structure is composed of Ag metal and a small amount of Li-Ag alloy phase"
+          }
+        ]
+      },
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 3,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "the R mathrm i of ME-Li before cycles is about 3 Omega"
+          },
+          {
+            "value": 60,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "that of commercial Li about 60 Omega"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "CR2016 coin cells were employed for assembling symmetrical LiLi cells and Li-S full cells. The electrolyte was 1 mathrm / L LiTFSI in a mixed solvent of DOL and DME 1: 1 in volume. For the symmetrical",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "electrolyte": "1 M LiTFSI in DOL/DME (1:1, v/v)",
+          "electrode_config": "symmetric Li||Li cell",
+          "voltage_range": {
+            "max": 1.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "deposition_capacity": {
+            "value": 1.0,
+            "unit": "mAh/cm2"
+          },
+          "test_method": "galvanostatic cycling, electrochemical impedance spectroscopy (EIS)",
+          "frequency_range": "100 kHz to 10 mHz",
+          "assembly": "argon-filled glove box, H2O/O2 < 0.1 ppm"
+        },
+        {
+          "condition_id": "C006",
+          "electrolyte": "1 M LiTFSI in DOL/DME (1:1, v/v)",
+          "electrode_config": "full_cell",
+          "cathode_composition": "S:PVDF:carbon black = 8:1:1 (wt%), NMP solvent",
+          "electrolyte_volume": {
+            "value": 100,
+            "unit": "uL"
+          },
+          "test_method": "galvanostatic cycling, electrochemical impedance spectroscopy (EIS)",
+          "frequency_range": "100 kHz to 10 mHz",
+          "assembly": "argon-filled glove box, H2O/O2 < 0.1 ppm"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In Figure 3, two main peaks at 36.30 circ and 65.10 circ can be observed from the XRD pattern of commercial Li foil Figure 3a, corresponding to the 110 and 211 crystal planes of body-center cubic BCC ",
+      "property_types": [
+        "Crystal_System",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Crystal_System": [
+          {
+            "value": "cubic",
+            "source_text": "body-center cubic BCC crystal structure"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Li",
+            "state": "commercial Li foil",
+            "source_text": "two main peaks at 36.30 circ and 65.10 circ can be observed from the XRD pattern of commercial Li foil Figure 3a, corresponding to the 110 and 211 crystal planes of body-center cubic BCC crystal structure according to the JCPDS card No. 89-3940."
+          },
+          {
+            "value": "Li",
+            "state": "ME-Li foil",
+            "source_text": "peaks at 32.61 circ, 36.30 circ, 38.29 circ, 44.31 circ, 47.56 circ, 48.60 circ, 52.50 circ, 56.21 circ, 57.53 circ, 65.10 circ and 77.69 circ ... correspond to Li 110 plane or ..., Li 100 plane, ..., Li 211 plane or Ag 110 plane"
+          },
+          {
+            "value": "Li3N",
+            "state": "ME-Li foil",
+            "source_text": "which correspond to mathrm 3 mathrm N 100 plane or LiOH 101 plane, ... mathrm 3 mathrm N 101 plane, ... mathrm 3 mathrm N 111 plane ... indicating the existence of mathrm 3 mathrm N"
+          },
+          {
+            "value": "LiOH",
+            "state": "ME-Li foil",
+            "source_text": "which correspond to mathrm 3 mathrm N 100 plane or LiOH 101 plane, ... LiOH 102 plane, ... LiOH 201 plane or mathrm x mathrm y 100 plane ... indicating the existence of ... LiOH"
+          },
+          {
+            "value": "Ag",
+            "state": "ME-Li foil",
+            "source_text": "which correspond to ... Ag 111 plane or mathrm x mathrm y 411 plane, Ag 100 plane, ... Li 211 plane or Ag 110 plane, and Ag 311 plane ... indicating the existence of ... Ag"
+          },
+          {
+            "value": "Ag_x_Li_y",
+            "state": "ME-Li foil",
+            "source_text": "A small amount of mathrm x mathrm y phase will be formed due to the partial atomic diffusion of Li and Ag. ... which correspond to ... mathrm x mathrm y 411 plane, mathrm x mathrm y 511 plane, ... mathrm x mathrm y 100 plane"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To further investigate the influence of the 3D structure on the electrochemical deposition of Li metal, morphologies of electrodes after 100 cycles were detected. The thickness of electrodeposition la",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "cycle_number": 100,
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "EIS was further conducted to assess kinetic features of ME-Li electrodes during the cycling process. As can be seen, after the initial cycle, the impedance of commercial Li is reduced from about 60 Om",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "temperature": {},
+          "c_rate_or_current": {},
+          "voltage_range": {},
+          "cycle_number": 1,
+          "mass_loading": {},
+          "electrode_config": "symmetric cell (Li||Li)",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C009",
+          "temperature": {},
+          "c_rate_or_current": {},
+          "voltage_range": {},
+          "mass_loading": {},
+          "electrode_config": "symmetric cell (Li||Li)",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 8,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "after the initial cycle, the impedance of commercial Li is reduced from about 60 Omega to about 8 Omega"
+          },
+          {
+            "value": 20,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "After several cycles, the impedance of the cell with commercial Li increases to about 20 Omega"
+          },
+          {
+            "value": [
+              3,
+              9
+            ],
+            "unit": "Ω",
+            "source_text": "the R mathrm i of ME-Li exhibits negligible change under different cycles left 3 - 9 Omega right"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To evaluate long-term cycling stability of cells incorporating the planar Li, the symmetrical cells were assembled Figure 11. As can be seen, the voltage−time curve exhibits irregular fluctuations at ",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 3.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 10.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 380,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "irregular fluctuations at 380 h of symmetrical LiLi cells under the current density of 1 mA/cm^2"
+          },
+          {
+            "value": 800,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "voltage − time curve shows quite stable even after 800 h with no sign of a short circuit in the symmetrical ME-LiME-Li cell"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In XRD pattem in Figure 8a, the typical peaks of Li, mathrm 3 mathrm N . , LiOH, Ag and mathrm x mathrm y can still be observed even after 100 cycles, demonstrating the stability of the obtained elect",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula",
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Li, Li3N, LiOH, Ag, LixNy",
+            "state": "after 100 cycles",
+            "source_text": "In XRD pattem in Figure 8a, the typical peaks of Li, mathrm 3 mathrm N . , LiOH, Ag and mathrm x mathrm y"
+          }
+        ],
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "Li3N",
+              "LiNxOy",
+              "Ag"
+            ],
+            "state": "after 100 cycles",
+            "source_text": "Two characteristic peaks at 399.21 eV mathrm 3 mathrm N and 397.77 mathrm LiN O ... typical peaks at 373.72 mathrm left mathrm 3 mathrm d 3 / 2 right and 367.68 Ag 3 mathrm d 5 / 2"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The polarization voltage curves of symmetric cells at different current densities 1, 3 and 10 mathrm / mathrm 2 are also detected. As can be seen, the polarization curve remains relatively stable at l",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 3.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 10.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 160,
+            "unit": "mV",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 10,
+            "source_text": "the polarization voltage can still be maintained at a low over potential of about 160 mathrm , much lower than that of commercial Li anode about 350 mathrm"
+          },
+          {
+            "value": 350,
+            "unit": "mV",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 10,
+            "source_text": "commercial Li anode about 350 mathrm"
+          }
+        ]
+      },
+      "condition_id": "C003"
+    },
+    {
+      "paragraph": "To further evaluate the practical application of ME-Li, Li-sulfur Li-S full cells were assembled. Due to the severe “shuttle effect”, excessive growth of Li dendrites and accumulated “dead” Li, the di",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "cycle_number": 300,
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 787.9,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Li-S cell with ME-Li anode exhibits a higher initial discharge capacity of 787.9 mathrm . h / g"
+          },
+          {
+            "value": 632,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the discharge capacity of Li-S cell with commercial Li foil decreases from 632 to 350 mathrm cdot mathrm h / mathrm g after 300 cycles with a low capacity retention of 55.4 %"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 69.3,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 300,
+            "source_text": "remains a higher capacity retention of 69.3 % even after 300 cycles"
+          },
+          {
+            "value": 55.4,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 300,
+            "source_text": "low capacity retention of 55.4 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Coulombic efficiency CE was also investigated to further evaluate the long-term cycling stability of ME-Li. As can be seen from Figure 12, the initial CEs of ME-Li at various current densities of 1 an",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "mA/cm2"
+          }
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 5,
+            "unit": "mA/cm2"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Initial_Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 98,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the initial CEs of ME-Li at various current densities of 1 and 5 mathrm / mathrm 2 are both sim 98 %"
+          },
+          {
+            "value": 98,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "the initial CEs of ME-Li at various current densities of 1 and 5 mathrm / mathrm 2 are both sim 98 %"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "An in-situ interfacial film, with 3D rod-like micron-structure to homogenize the distribution of current density and achieve uniform nucleation and growth of electrodeposited Li, Li-Ag alloy to inhibi",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 10,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Li-Ag",
+            "source_text": "Li-Ag alloy"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "Ag"
+            ],
+            "source_text": "Li-Ag alloy"
+          }
+        ]
+      },
+      "performance_types": [
+        "Plateau_Overpotential",
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 160,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 10,
+            "source_text": "low over potential of about 160 mathrm in symmetrical cells"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 300,
+            "unit": "h",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 10,
+            "source_text": "outstanding cycling stability at a high current density of 10 mathrm / mathrm 2 for 300 h"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

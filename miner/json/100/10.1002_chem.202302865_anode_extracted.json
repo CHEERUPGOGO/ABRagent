@@ -1,0 +1,1241 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1002_chem.202302865.md",
+  "component": "anode",
+  "paper_id": "10.1002/chem.202302865",
+  "doi": "10.1002/chem.202302865",
+  "material_id": "10.1002_chem.202302865",
+  "meta": {
+    "meta_title": "Niobium-Based Oxide for Anode Materials for Lithium-Ion Batteries",
+    "meta_authors": "Yun Sheng $^{+}$ ,[a] Yishan Wang $^{+}$ ,*[a] Shujuan Yin,[a] Lianyu Zhao,[a] Xueqian Zhang, $^{*[a]}$ Dongdong Liu, $^{*[b]}$ and Guangwu Wen $^{[a]}$",
+    "meta_year": "2024"
+  },
+  "materials": [
+    {
+      "name": "anode material",
+      "short_name": "10.1002_chem.202302865",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1002_chem.202302865"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 25,
+  "items": [
+    {
+      "paragraph": "mathrmTT - Nb2O5 is a sub-stable structure of mathrmT - Nb2O5 with a P6/ mm space group. The structure is shown in Figure 2b,12 where each Nb atom is located at the center of four, five or six oxygen ",
+      "property_types": [
+        "Space_Group"
+      ],
+      "extracted_info": {
+        "Space_Group": [
+          {
+            "value": "P6/mmm",
+            "source_text": "P6/ mm space group"
+          },
+          {
+            "value": "P2/m",
+            "source_text": "P2 / m"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "mathrmT - Nb2O5 has a pbam space group, and its structure diagram is shown in Figure 2a.16 One Nb ion and six O ions or seven O ions form mathrmNbO6 and mathrmNbO7 polyhedra, which share edges or corn",
+      "property_types": [
+        "Space_Group",
+        "Interlayer_Spacing",
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Space_Group": [
+          {
+            "value": "pbam",
+            "source_text": "mathrmT - Nb2O5 has a pbam space group"
+          }
+        ],
+        "Interlayer_Spacing": [
+          {
+            "value": 3.9,
+            "unit": "Å",
+            "state": "T-Nb2O5",
+            "source_text": "layer spacing of 0.39mathrmnm"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Nb2O5",
+            "state": "T-phase",
+            "source_text": "mathrmT - Nb2O5"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Nb",
+              "O"
+            ],
+            "source_text": "mathrmT - Nb2O5"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In the study of mathrmNb2mathrmO5 anode materials for lithium-ion batteries, due to the different heating conditions during preparation, mathrmNb2mathrmO5 will appear in many configurations, which are",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": "600 - 800",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C002",
+          "temperature": {
+            "value": "900 - 1100",
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [
+        "Crystal_System",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Crystal_System": [
+          {
+            "value": "pseudohexagonal",
+            "source_text": "TT-Nb2O5 pseudohexagonal crystal system"
+          },
+          {
+            "value": "orthogonal",
+            "source_text": "T-Nb2O5 orthogonal crystal system"
+          },
+          {
+            "value": "monoclinic",
+            "source_text": "H-Nb2O5 monoclinic crystal system"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Nb2O5",
+            "source_text": "Nb2O5"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Kumagi et al. prepared mathrmTT - Nb2O5 , mathrmO - Nb2O5 and mathrmH - Nb2O5 three crystal forms of mathrmNb2O5 by calcination at different temperatures, in the first discharge process, when x takes ",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Nb2O5",
+            "state": "pristine",
+            "source_text": "mathrmTT - Nb2O5 , mathrmO - Nb2O5 and mathrmH - Nb2O5 three crystal forms of mathrmNb2O5"
+          }
+        ]
+      },
+      "performance_types": [
+        "Average_Operating_Voltage_vs_Li_Li"
+      ],
+      "performance_info": {
+        "Average_Operating_Voltage_vs_Li_Li": [
+          {
+            "value": 1.6,
+            "unit": "V",
+            "source_text": "mathrmH - Nb2O5 has a distinct voltage plateau around 1.6mathrmV ."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Guangwu Wen is a professor at Shandong University of Science and Technology, College of Materials Science and Engineering, Director of the Academic Committee of the University and Director of the Inst",
+      "property_types": [
+        "Li_Ion_Migration_Barrier"
+      ],
+      "extracted_info": {
+        "Li_Ion_Migration_Barrier": [
+          {
+            "unit": "eV",
+            "path": "interlayer",
+            "source_text": "compact 4mathrmh layer is approximately 2.6 times higher than that of the loose 4mathrmg layer, which enables the 4mathrmg layer to provide a wide channel for mathrmLi diffusion."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The sol-gel method is to use compounds containing highly chemically active components as precursors, to mix these raw materials uniformly under the liquid phase and to carry out hydrolysis and condens",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "value": 460,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 500,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [
+        "Crystallite_Size",
+        "Crystal_System",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Crystallite_Size": [
+          {
+            "value": {
+              "min": 60,
+              "max": 80
+            },
+            "unit": "nm",
+            "method": "TEM",
+            "source_text": "observed to be homogeneous spherical particles in the size range of 60 - 80\\mathrm{nm} based on TEM images Figure 3a."
+          },
+          {
+            "value": 20,
+            "unit": "nm",
+            "method": "SEM",
+            "source_text": "many needle-like nanorods with a diameter of about 20\\mathrm{nm} are evenly distributed on the surface of the microspheres."
+          },
+          {
+            "value": 130,
+            "unit": "nm",
+            "method": "SEM",
+            "source_text": "the diameter of the nanofibers after heating at 500^\\circ\\mathrm{C} was 130\\mathrm{nm} with uniform fiber distribution as seen in the SEM image Figure 3d."
+          },
+          {
+            "value": 3000,
+            "unit": "nm",
+            "method": "SEM",
+            "source_text": "The SEM image Figure 3b shows that the diameter of the microspheres is about 3\\mu \\mathrm{m}."
+          }
+        ],
+        "Crystal_System": [
+          {
+            "value": "pseudo-hexagonal",
+            "source_text": "gradually transformed into a pseudo-hexagonal phase."
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Nb2O5",
+            "source_text": "mathrm{Nb}_2\\mathrm{O}_5"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Niobium-titanium oxides are generally prepared by various methods for different contents of niobium oxide and titanium oxide. The niobium and titanium atoms have similar radii and chemical properties,",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "TiNb2O7",
+            "source_text": "mathrmTiNb2mathrmO7"
+          },
+          {
+            "value": "Ti2Nb2O9",
+            "source_text": "mathrmTi2mathrmNb2mathrmO9"
+          },
+          {
+            "value": "Ti2Nb10O29",
+            "source_text": "mathrmTi2mathrmNb10mathrmO29"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "mathrmNb2mathrmO5 is a typical semiconductor metal oxide material, with a typical trimmed edge mathrmReO3 structure, its shear surface is composed of a large number of mathrmNbO6mathrmntimes mathrmm o",
+      "property_types": [
+        "Elemental_Composition",
+        "Chemical_Formula",
+        "Crystal_System",
+        "Lattice_Parameters",
+        "Interlayer_Spacing",
+        "Unit_Cell_Volume_Change"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Nb",
+              "O"
+            ],
+            "source_text": "mathrmNb2mathrmO5"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Nb2O5",
+            "state": "pristine",
+            "source_text": "mathrm N b 2 mathrm O 5"
+          },
+          {
+            "value": "Li_xNb2O5",
+            "state": "lithiated",
+            "source_text": "mathrm L i mathrm x mathrm N b 2 mathrm O 5"
+          }
+        ],
+        "Crystal_System": [
+          {
+            "value": "tetragonal",
+            "source_text": "mathrmO - Nb2O5 tetragonal crystal system"
+          }
+        ],
+        "Lattice_Parameters": [
+          {
+            "value": {
+              "c": 4.02
+            },
+            "unit": "Å",
+            "state": "lithiated (x=1.8)",
+            "source_text": "when mathrmLi is embedded in x 1.8 in mathrmLixNb2O5 , the lattice parameter of the c axis increases to 4.02AA"
+          }
+        ],
+        "Interlayer_Spacing": [
+          {
+            "value": 4.02,
+            "unit": "Å",
+            "plane": "(001)",
+            "state": "lithiated (x=1.8)",
+            "source_text": "the lattice parameter of the c axis increases to 4.02AA ... crystal plane spacing increases"
+          }
+        ],
+        "Unit_Cell_Volume_Change": [
+          {
+            "value": 1.0,
+            "unit": "%",
+            "from_state": "delithiated",
+            "to_state": "lithiated",
+            "source_text": "the volume expansion of unit cells did not exceed 1%"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Three-dimensional nanostructured materials are considered to be one of the ideal structures for building high-performance materials and have attracted a lot of attention.39 In the field of electrochem",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          },
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "A/g"
+          },
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "T-Nb2O5",
+            "state": "T-phase",
+            "source_text": "T-Nb 2 O 5"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "One-dimensional nanostructured materials such as nanoribbons and nanotubes play a huge role in the construction of nano electronic and optical components.32 T-Nb 2 O 5 nanorods with abundant oxygen va",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "A/g"
+          }
+        },
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "cycle_number": 4000
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula",
+        "Interlayer_Spacing",
+        "Crystallite_Size"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Nb2O5",
+            "source_text": "Nb2O5 nanorod anode materials"
+          }
+        ],
+        "Interlayer_Spacing": [
+          {
+            "value": 0.392,
+            "unit": "nm",
+            "plane": "001",
+            "source_text": "lattice spacing of 0.392 nm, corresponding to the 001 crystal plane of Nb2O5"
+          }
+        ],
+        "Crystallite_Size": [
+          {
+            "value": 5,
+            "unit": "nm",
+            "method": "SEM",
+            "source_text": "material consists of disordered nanorods with a diameter of about 4 - 6 nm"
+          }
+        ]
+      },
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 147,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "capacity of 147 mAh g-1 at 2.0 A g-1"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 95,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 4000,
+            "source_text": "95% capacity retention at 0.5 A g-1 4000 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Two-dimensional nanomaterials have a unique nanosheet structure with large surface area and excellent physicochemical properties.30 Krishnan et al. prepared nano-coils and nanosheets of mathrmNb2mathr",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "cycle_number": 5000,
+          "test_method": "cycling stability test"
+        },
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 5,
+            "unit": "C"
+          },
+          "cycle_number": 400,
+          "test_method": "cycling test"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Nb2O5",
+            "source_text": "mathrmNb2mathrmO5"
+          }
+        ]
+      },
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle",
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 85,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 5000,
+            "source_text": "maintained 85% capacity after 5000 cycles"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 174,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "maintained at 174 mAh g-1 after 400 cycles at a current density of 5c"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "mathrmTiNb2O7 belongs to a monoclinic crystal system with space group C2 / m 42 Its structure can be described as a mathrmReO3 configuration with mathrmTiO6 octahedra and mathrmNbO6 octahedra sharing ",
+      "property_types": [
+        "Chemical_Formula",
+        "Crystal_System",
+        "Space_Group",
+        "Theoretical_Specific_Capacity"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "TiNb2O7",
+            "state": "pristine",
+            "source_text": "mathrmTiNb2O7 belongs to a monoclinic crystal system with space group C2 / m 42"
+          }
+        ],
+        "Crystal_System": [
+          {
+            "value": "monoclinic",
+            "source_text": "mathrmTiNb2O7 belongs to a monoclinic crystal system"
+          }
+        ],
+        "Space_Group": [
+          {
+            "value": "C2/m",
+            "source_text": "space group C2 / m 42"
+          }
+        ],
+        "Theoretical_Specific_Capacity": [
+          {
+            "value": 387.6,
+            "unit": "mAh/g",
+            "n_electrons": 5,
+            "redox_reaction": "Ti4+/Ti3+, Nb5+/Nb4+, Nb4+/Nb3+",
+            "source_text": "a 5-electron transfer can occur, corresponding to a redox reaction of 5 electric pairs mathrmTi4 / mathrmTi3 ,mathrmNb5 / mathrmNb4 ,mathrmNb4 / mathrmNb3 ,with a theoretical capacity of 387.6mathrmmAhg-1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Zero-dimensional nanomaterials are particles of relatively small particle size, commonly known as nanoparticles, ultrafine particles, atomic clusters, etc., with a high specific surface area.30 Kong e",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 20,
+            "unit": "A/g"
+          }
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "cycle_number": 300
+        },
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 5,
+            "unit": "A/g"
+          },
+          "cycle_number": 1000
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "T-Nb2O5",
+            "source_text": "Kong et al. synthesized mathrmT - Nb2O5 by an evaporation-induced self-assembly process using mathrmNbCl5 feedstock"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Nb",
+              "O"
+            ],
+            "source_text": "T-Nb2O5"
+          }
+        ]
+      },
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 69.44,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Nb-2 can still maintain a capacity of 250 C g-1 at 20 A g-1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Tao et al. prepared porous mathrmTiNb2O7 materials by sol-gel method using ionic liquids as nano porous templates.47 The ionic liquid template method enables more direct insertion of mathrmLi , while ",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "test_method": "galvanostatic discharge"
+        }
+      ],
+      "property_types": [
+        "Unit_Cell_Volume_Change",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Unit_Cell_Volume_Change": [
+          {
+            "value": 7.22,
+            "unit": "%",
+            "from_state": "pristine",
+            "to_state": "lithiated",
+            "method": "X-ray in situ diffraction",
+            "source_text": "with a cell volume change of 7.22% after mathrmLi insertion."
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "TiNb2O7",
+            "source_text": "mathrmTiNb2O7"
+          }
+        ]
+      },
+      "performance_types": [
+        "First_Lithiation_Capacity"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 231,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial discharge capacity of 231mathrmmAhg-1 at 0.1mathrmA g-1.48"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In recent years, more and more researchers have begun to pay attention to the application of mathrmTi2mathrmNb10mathrmO29 , a new type of anode material for lithium-ion batteries with excellent electr",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 3,
+            "unit": "A/g"
+          },
+          "cycle_number": 1000
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 134.5,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the capacity is maintained at 134.5 mAh g^-1 after 1000 cycles at 3 A g^-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Zhou et al. prepared mathrmTi2mathrmNb2mathrmO9 particles and mathrmTi2mathrmNb2mathrmO9 nanoparticles by the solid-state and sol-gel methods, respectively.56 Electrochemical tests demonstrated that t",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Ti2Nb2O9",
+            "source_text": "mathrmTi2mathrmNb2mathrmO9"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Graphene is a honeycomb-like layered carbon material that can be used as a template or base to provide a conductive network for the material. Meng et al. used pre-insertion of mathrmLi to introduce mo",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "LixNb2O5/G",
+            "source_text": "prepared mathrmLixmathrmNb2mathrmO5 / mathrmG materials"
+          }
+        ]
+      },
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 90,
+            "unit": "%",
+            "cycle_number": 130000,
+            "source_text": "maintaining 90% capacitance after 130,000 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "A deeper study of mathrmNb2mathrmO5 /graphene composites in terms of structural design and preparation can lead to higher possibilities for the electrochemical performance of LIBs. Wang et al. used an",
+      "property_types": [
+        "Crystallite_Size",
+        "Elemental_Composition",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Crystallite_Size": [
+          {
+            "value": 32.5,
+            "unit": "nm",
+            "method": "in situ wet chemical synthesis",
+            "source_text": "mathrmNb2mathrmO5 nanosheets with diameters of 25 - 40mathrmnm were grown uniformly on graphene."
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Nb",
+              "O",
+              "C"
+            ],
+            "source_text": "mathrmNb2mathrmO5 /graphene composites"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Nb2O5",
+            "state": "T- phase",
+            "source_text": "mathrmT - Nb2O5 by chemical vapor deposition"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Similar to mathrmNb2mathrmO5 , mathrmTiNb2mathrmO7 is a broadband compound 2.9 eV,45 which is commonly used in photocatalysis.42 In 2011, the electrochemical properties of mathrmTiNb2mathrmO7 were fir",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 1.4,
+            "max": 2.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "cycle_number": 30
+        },
+        {
+          "condition_id": "C018",
+          "electrode_config": "full_cell",
+          "cycle_number": 50
+        }
+      ],
+      "property_types": [
+        "Band_Gap",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Band_Gap": [
+          {
+            "value": 2.9,
+            "unit": "eV",
+            "source_text": "broadband compound 2.9 eV"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "TiNb2O7",
+            "source_text": "mathrmTiNb2mathrmO7"
+          },
+          {
+            "value": "TiNb2O7/C",
+            "state": "carbon-coated",
+            "source_text": "carbon-coated mathrmTiNb2mathrmO7 mathrmTiNb2mathrmO7/mathrmC"
+          },
+          {
+            "value": "Ti1.1Nb1.9O7",
+            "state": "Ti 10% doped",
+            "source_text": "Ti 10% doped mathrmTiNb2mathrmO7 mathrmTi1.1mathrmNb1.9mathrmO7"
+          }
+        ]
+      },
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 285,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The first reversible capacity of mathrmTiNb2mathrmO7/mathrmC at a multiplicity of 0.1 C was 285 mAh g -1"
+          },
+          {
+            "value": 150,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "voltage_range": "1.4–2.5 V",
+            "source_text": "when the multiplicity was increased to 2 C and the charge/discharge interval was 1.4–2.5 V, the reversible capacity of the material was 150 mAh/g"
+          },
+          {
+            "value": 170,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "a charge capacity of ~170 mAh g -1 for 3 min"
+          },
+          {
+            "value": 115,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "~115 mAh g -1 for 20 s"
+          },
+          {
+            "value": 90,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "~90 mAh g -1 for 10 s"
+          },
+          {
+            "value": 75,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "~75 mAh g -1 for 5 s"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 100,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 30,
+            "source_text": "the capacity did not decay after 30 cycles"
+          },
+          {
+            "value": 100,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 50,
+            "source_text": "the capacity basically did not change in 50 cycles"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "In order to improve the conductivity of the mathrmNb2mathrmO5 material itself, the most direct way is to add highly conductive materials. Zeng et al. mechanically mixed niobium chloride and oleic acid",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Nb2O5/C",
+            "source_text": "obtained Nb2O5/C material after calcination"
+          },
+          {
+            "value": "Nb2O5-CNT",
+            "source_text": "prepared Nb2O5-CNT materials by mechanical mixing as well as Nb2O5-CNT negative electrode materials by hydrothermal method"
+          }
+        ]
+      },
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 878,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial discharge capacity of Nb2O5/C anode material was 878 mAh g-1"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 17.1,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "capacity was maintained at 150 mAh g-1 after 100 cycles at 0.5 A g-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "mathrmKNbO3 and mathrmKNb5mathrmO13 are the two more common structural forms of potassium-niobium oxides, mathrmKNbO3 is mainly used for research in nonlinear optics and piezoelectricity, while mathrm",
+      "conditions": [
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 12.5,
+            "unit": "A/g"
+          },
+          "cycle_number": 200
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula",
+        "Crystal_System",
+        "Unit_Cell_Volume_Change"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "KNbO3",
+            "source_text": "\\mathrm{KNbO3}"
+          },
+          {
+            "value": "KNb5O13",
+            "source_text": "\\mathrm{KNb5O13}"
+          },
+          {
+            "value": "Cu2Nb34O87",
+            "source_text": "\\mathrm{Cu2Nb34O87}"
+          },
+          {
+            "value": "W3Nb14O44",
+            "source_text": "\\mathrm{W3Nb14O44}"
+          },
+          {
+            "value": "Nb16W5O55",
+            "source_text": "\\mathrm{Nb16W5O55}"
+          },
+          {
+            "value": "Nb18W16O93",
+            "source_text": "\\mathrm{Nb18W16O93}"
+          },
+          {
+            "value": "CeNb3O9",
+            "source_text": "\\mathrm{CeNb3O9}"
+          }
+        ],
+        "Crystal_System": [
+          {
+            "value": "tetragonal",
+            "source_text": "tetragonal tungsten-bronze structure of \\mathrm{Nb18W16O93}"
+          }
+        ],
+        "Unit_Cell_Volume_Change": [
+          {
+            "value": 5.9,
+            "unit": "%",
+            "source_text": "volume change of 5.9% during charge and discharge"
+          }
+        ]
+      },
+      "performance_types": [
+        "Chemical_Diffusion_Coefficient_of_Li_GITT",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "value": 3.5e-13,
+            "unit": "cm2/s",
+            "source_text": "large lithium ion diffusion coefficient \\sim 3.5\\times 10^{-13}\\mathrm{cm^2\\,s^{-1}}"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 96.6,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "capacity retention rate of 96.6%"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The carbon coating formed in situ can effectively improve the electrical conductivity of mathrmNb2mathrmO5 electrodes. However, when calcination is required during the experiment, some of the mathrmNb",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Nb",
+              "O",
+              "C"
+            ],
+            "source_text": "The carbon coating formed in situ can effectively improve the electrical conductivity of mathrmNb2mathrmO5 electrodes. However, when calcination is required during the experiment, some of the mathrmNb2mathrmO5 may be reduced to mathrmNbO2 , which will have some effect on the capacity as well as the performance of the material."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Carbon coating, which is the deposition of carbon compounds or graphite on the surface of mathrmNb2mathrmO5 , is an extremely effective way to improve the electrical conductivity of mathrmNb2mathrmO5 ",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          }
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "T-Nb2O5/C",
+            "state": "composite",
+            "source_text": "carbon-coated mathrmNb2mathrmO5 microspheres T- mathrmNb2mathrmO5 / mathrmC"
+          }
+        ]
+      },
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 193,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "capacity of 193mathrmmAhg-1 at 0.1mathrmA g-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Based on the crystal structure of a, researchers have continued to prepare a variety of ternary niobium-based oxides. Zhu et al. used a simple one-step solid-phase method to prepare the intercalated m",
+      "conditions": [
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": "10",
+            "unit": "C"
+          },
+          "cycle_number": 1000
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 0.401,
+            "unit": "mA/cm2"
+          }
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "MoNb12O33",
+            "source_text": "MoNb12O33 material"
+          },
+          {
+            "value": "Cu2Nb34O87",
+            "source_text": "Cu2Nb34O87 by a conventional solid-phase reaction"
+          },
+          {
+            "value": "Cr0.5Nb24.5O62",
+            "source_text": "Cr0.5Nb24.5O62"
+          },
+          {
+            "value": "AlNb11O29",
+            "source_text": "AlNb11O29"
+          },
+          {
+            "value": "TiNb2O7",
+            "source_text": "TiNb2O7"
+          },
+          {
+            "value": "Ti2Nb2O9",
+            "source_text": "Ti2Nb2O9"
+          },
+          {
+            "value": "Ti2Nb10O29",
+            "source_text": "Ti2Nb10O29"
+          },
+          {
+            "value": "LixTiNbO5",
+            "source_text": "Li, H xTiNbO5"
+          }
+        ]
+      },
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle",
+        "Chemical_Diffusion_Coefficient_of_Li_GITT"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 95.7,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 1000,
+            "source_text": "95.7% capacity retention after 1000 cycles at 10C"
+          }
+        ],
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "value": 3.5e-13,
+            "unit": "cm2/s",
+            "source_text": "Li diffusion coefficient ca. 3.5×10-13 cm2 s-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The Li-M-O system is a relatively common system in LIBs battery materials, and lithium niobium oxide is also used in negative electrode materials.57 Sanad et al. prepared mathrmLiNbO3 by calcination u",
+      "conditions": [
+        {
+          "condition_id": "C024",
+          "test_method": "calcination and activation"
+        },
+        {
+          "condition_id": "C025",
+          "test_method": "solid-phase reaction"
+        },
+        {
+          "condition_id": "C026",
+          "c_rate_or_current": {
+            "value": 25.0,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C027",
+          "c_rate_or_current": {
+            "value": 250.0,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C028",
+          "c_rate_or_current": {
+            "value": "10",
+            "unit": "C"
+          },
+          "cycle_number": 2000
+        },
+        {
+          "condition_id": "C029",
+          "test_method": "small current cycling"
+        }
+      ],
+      "property_types": [
+        "Lattice_Parameters",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Lattice_Parameters": [
+          {
+            "value": {},
+            "unit": "Å / °",
+            "state": "activated LiNbO3",
+            "source_text": "The activated mathrmLiNbO3 has increased lattice parameters and volume"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "LiNbO3",
+            "source_text": "Sanad et al. prepared mathrmLiNbO3 by calcination using tartaric acid salt as raw material, and then activated the material using mathrmHClO4"
+          },
+          {
+            "value": "Li0.1La0.3NbO3",
+            "source_text": "Xiong et al. synthesized mathrmLi0.1La0.3NbO3 anode materials with abundant ionic vacancy structures using solid-phase reactions"
+          }
+        ]
+      },
+      "performance_types": [
+        "Rate_Recovery_Percent",
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Recovery_Percent": [
+          {
+            "value": 88.5,
+            "unit": "%",
+            "condition_id": "C006",
+            "source_text": "maintaining 88.5% of the original capacity after returning to small current cycles"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 220.0,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "The material has a high reversible capacity of 220 mAh g-1 at 0.1C 1C 250 mA g-1"
+          },
+          {
+            "value": 220.0,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "The material has a high reversible capacity of 220 mAh g-1 at 0.1C 1C 250 mA g-1"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 64.5,
+            "unit": "%",
+            "condition_id": "C005",
+            "cycle_number": 2000,
+            "source_text": "capacity retention rate of 64.5% after 2000 cycles at 10C"
+          }
+        ]
+      }
+    }
+  ]
+}

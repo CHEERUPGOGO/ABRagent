@@ -1,0 +1,1243 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.cej.2026.176534.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.cej.2026.176534",
+  "doi": "10.1016/j.cej.2026.176534",
+  "material_id": "10.1016_j.cej.2026.176534",
+  "meta": {
+    "meta_title": "Insights into high-valent chloride additives induced interphase-regulating chemi",
+    "meta_authors": "Tong Yu , Zehao An , Jiahui Ye , Jiaqi Xi , Fulu Chu \\* , Linrui Hou \\* , Changzhou Yuan",
+    "meta_year": null
+  },
+  "materials": [
+    {
+      "name": "anode material",
+      "short_name": "10.1016_j.cej.2026.176534",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.cej.2026.176534"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 22,
+  "items": [
+    {
+      "paragraph": "The formation mechanism of Mo NCs, as inferred from the CV profile, was further validated by differential capacitance measurements Fig. 1d. The results show a prominent peak at approximately 0.25 math",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "CV, differential capacitance",
+          "cycle_number": 3
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Effective electrolyte additives require excellent solubility, and MoCl5 dissolves well in ether-based solvents. Freshly prepared MC5E appears in pale-yellow color Fig. S1a, which turns nearly colorles",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrolyte": "MC5E (MoCl5 dissolved in ether-based solvents)",
+          "test_method": "CV",
+          "electrode_config": "LiCu cell (Li||Cu half-cell)",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The chemical composition of the SEI formed in MC5E was characterized using multiple techniques. X-ray diffraction XRD phase analysis of the cycled LMAs identified crystalline mathbf 3 as a primary rea",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "electrolyte": "MC5E"
+        }
+      ],
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "LiCl",
+              "Li3N",
+              "Li2O",
+              "LiF",
+              "MoO_x",
+              "Mo NCs"
+            ],
+            "state": "formed in MC5E",
+            "source_text": "These findings demonstrate that the in-situ formed SEI is a composite structure, consisting of inorganic components LiCl, Li3N, Li2O, and LiF, electrochemically derived MoO , and Mo NCs, which play a pivotal role in interface modification Fig. S2."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Morphologies and microstructures were investigated by transmission electron microscopy TEM, scanning TEM, and high-resolution TEM HRTEM JEOL JEM-2100, operating at 200 KV coupled with energy dispersiv",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "test_method": "electroplating"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "test_method": "electroplating"
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "test_method": "electroplating"
+        },
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 30,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Li-5DME-DOL -569.34kJmol-1 Li-TFSI-4DME-DOL -595.16kJmol1 Li-NO-5DME -623.72kJmol-1 Li-TFSI-NO-3DME-DOL -681.69kJmol-1 Li-2TFSI-3DME-DOL -657.45kJmol-1 Li-2NO-4DME -642.08kJmol-1 Li-NO-CI-4DME -665.84",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "electrolyte": "MC5E electrolyte"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To shed light upon the mechanism underlying lithium deposition, the electrochemical kinetics and interfacial properties of the MC5E were systematically investigated. EIS measurements during cycling re",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "test_method": "EIS",
+          "electrolyte": "MC5E and BE"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Lithium bis trifluoromethanesulphonyl imide LiTFSI, polyvinylidene fluoride PVDF, N-methyl-2-pyrrolidone NMP, lithium nitrate LiNO3, dimethoxyethane DME, molybdenum pentachloride MoCl , tungsten hexac",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "electrode_config": "Li||Cu half-cell in CR2025 coin cell",
+          "electrolyte": "40 μL of various electrolytes",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C011",
+          "electrode_config": "Li||Li symmetric cell in CR2032 coin cell",
+          "electrolyte": "40 μL of various electrolytes",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C012",
+          "temperature": {
+            "value": 110,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "electrolyte": "40 μL of various electrolytes",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C013",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "electrolyte": "40 μL of various electrolytes",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The rate capability of LiLi cells were assessed by gradually increasing the current density from 0.25 to 5 mA cm− 2 Fig. 3f. Under this protocol, the cell with MC5E manifests an increase in polarizati",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "electrolyte": "MC5E",
+          "c_rate_or_current": {
+            "unit": "mA/cm2",
+            "range": "0.25 to 5"
+          },
+          "electrode_config": "symmetric cell (Li||Li)",
+          "test_method": "rate capability test, galvanostatic increasing current density"
+        },
+        {
+          "condition_id": "C015",
+          "electrolyte": "BE",
+          "c_rate_or_current": {
+            "unit": "mA/cm2",
+            "range": "0.25 to 5"
+          },
+          "electrode_config": "symmetric cell (Li||Li)",
+          "test_method": "rate capability test, galvanostatic increasing current density"
+        },
+        {
+          "condition_id": "C016",
+          "electrolyte": "MC5E",
+          "electrode_config": "symmetric cell (Li||Li)",
+          "test_method": "initial lithium deposition process (nucleation overpotential measurement)"
+        },
+        {
+          "condition_id": "C017",
+          "electrolyte": "BE",
+          "electrode_config": "symmetric cell (Li||Li)",
+          "test_method": "initial lithium deposition process (nucleation overpotential measurement)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential",
+        "Li_Nucleation_Overpotential"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 73,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 0.25,
+            "source_text": "the cell with MC5E manifests an increase in polarization voltage from 73 to 98 mV"
+          },
+          {
+            "value": 98,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 5.0,
+            "source_text": "increase in polarization voltage from 73 to 98 mV"
+          },
+          {
+            "value": 81,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 0.25,
+            "source_text": "the BE cells polarization rose from 81 to 123 mV"
+          },
+          {
+            "value": 123,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "source_text": "BE cells polarization rose from 81 to 123 mV"
+          }
+        ],
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 105.6,
+            "unit": "mV",
+            "condition_id": "C003",
+            "source_text": "reveals a nucleation overpotential of 105.6 mV for MC5E"
+          },
+          {
+            "value": 115.6,
+            "unit": "mV",
+            "condition_id": "C004",
+            "source_text": "lower than that observed for the BE 115.6 mV"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To conduct the galvanostatic cycling measurements, various electrolytes were prepared. MC5E was formulated by adding 0.5 M LiTFSI and 0.5 M mathrm 3 salts to a solvent mixture of DOL and DME 1: 1 by v",
+      "conditions": [
+        {
+          "condition_id": "C018",
+          "electrolyte": "MC5E was formulated by adding 0.5 M LiTFSI and 0.5 M mathrm 3 salts to a solvent mixture of DOL and DME 1: 1 by volume, followed by the addition of mathbf 55 mM",
+          "electrode_config": "Li||Li symmetric cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C019",
+          "electrolyte": "MC5E was formulated by adding 0.5 M LiTFSI and 0.5 M mathrm 3 salts to a solvent mixture of DOL and DME 1: 1 by volume, followed by the addition of mathbf 55 mM",
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling",
+          "voltage_range": {
+            "max": 0.6,
+            "unit": "V",
+            "reference": "Li/Li+"
+          }
+        },
+        {
+          "condition_id": "C020",
+          "electrolyte": "MC5E was formulated by adding 0.5 M LiTFSI and 0.5 M mathrm 3 salts to a solvent mixture of DOL and DME 1: 1 by volume, followed by the addition of mathbf 55 mM",
+          "electrode_config": "half_cell",
+          "test_method": "improved Aurbach method",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "max": 1.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          }
+        },
+        {
+          "condition_id": "C021",
+          "electrolyte": "MC5E was formulated by adding 0.5 M LiTFSI and 0.5 M mathrm 3 salts to a solvent mixture of DOL and DME 1: 1 by volume, followed by the addition of mathbf 55 mM",
+          "electrode_config": "full_cell",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.0,
+            "max": 3.8,
+            "unit": "V",
+            "reference": "Li/Li+"
+          }
+        },
+        {
+          "condition_id": "C022",
+          "electrolyte": "MC5E was formulated by adding 0.5 M LiTFSI and 0.5 M mathrm 3 salts to a solvent mixture of DOL and DME 1: 1 by volume, followed by the addition of mathbf 55 mM",
+          "electrode_config": "full_cell",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.0,
+            "max": 3.8,
+            "unit": "V",
+            "reference": "Li/Li+"
+          }
+        },
+        {
+          "condition_id": "C023",
+          "electrolyte": "MC5E was formulated by adding 0.5 M LiTFSI and 0.5 M mathrm 3 salts to a solvent mixture of DOL and DME 1: 1 by volume, followed by the addition of mathbf 55 mM",
+          "test_method": "EIS",
+          "electrode_config": "not specified"
+        },
+        {
+          "condition_id": "C024",
+          "electrolyte": "MC5E was formulated by adding 0.5 M LiTFSI and 0.5 M mathrm 3 salts to a solvent mixture of DOL and DME 1: 1 by volume, followed by the addition of mathbf 55 mM",
+          "test_method": "Chronoamperometry",
+          "electrode_config": "not specified"
+        },
+        {
+          "condition_id": "C025",
+          "electrolyte": "MC5E was formulated by adding 0.5 M LiTFSI and 0.5 M mathrm 3 salts to a solvent mixture of DOL and DME 1: 1 by volume, followed by the addition of mathbf 55 mM",
+          "test_method": "Current-time (I-t)",
+          "electrode_config": "not specified"
+        },
+        {
+          "condition_id": "C026",
+          "electrolyte": "MC5E was formulated by adding 0.5 M LiTFSI and 0.5 M mathrm 3 salts to a solvent mixture of DOL and DME 1: 1 by volume, followed by the addition of mathbf 55 mM",
+          "electrode_config": "Li||Li symmetric cell",
+          "test_method": "Tafel plot",
+          "voltage_range": {
+            "min": -0.2,
+            "max": 0.2,
+            "unit": "V",
+            "reference": "Li/Li+"
+          }
+        },
+        {
+          "condition_id": "C027",
+          "electrolyte": "MC5E was formulated by adding 0.5 M LiTFSI and 0.5 M mathrm 3 salts to a solvent mixture of DOL and DME 1: 1 by volume, followed by the addition of mathbf 55 mM",
+          "electrode_config": "Li||stainless steel cell",
+          "test_method": "Linear sweep voltammetry",
+          "voltage_range": {
+            "max": 5.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          }
+        },
+        {
+          "condition_id": "C028",
+          "electrolyte": "MC5E was formulated by adding 0.5 M LiTFSI and 0.5 M mathrm 3 salts to a solvent mixture of DOL and DME 1: 1 by volume, followed by the addition of mathbf 55 mM",
+          "test_method": "Cyclic voltammetry",
+          "electrode_config": "not specified"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To investigate the underlying reasons for boosted electrochemical performance LiLFP cells, the formation and composition of the CEI in LFP cathodes were systematically characterized. TEM was performed",
+      "conditions": [
+        {
+          "condition_id": "C029",
+          "electrolyte": "BE"
+        },
+        {
+          "condition_id": "C003",
+          "electrolyte": "MC5E"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Cl",
+              "Mo",
+              "F",
+              "N"
+            ],
+            "method": "TEM elemental mappings",
+            "source_text": "TEM elemental mappings of the cycled LFP cathode confirm co-enrichment of Cl, Mo, F, and N within the interfacial layer Fig. S27."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The remarkable function of MC5E was validated in LiLi cells as well, demonstrating exceptional cycling stability and low overpotentials. At 0.5 mA mathrm - 2 and 1 mAh mathrm - 2 , , the cells with MC",
+      "conditions": [
+        {
+          "condition_id": "C030",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "electrolyte": "MC5E",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C031",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "electrolyte": "BE",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C032",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "electrolyte": "MC5E",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C033",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "electrolyte": "BE",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C034",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "electrolyte": "MC5E",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C035",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "electrolyte": "BE",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability",
+        "Plateau_Overpotential"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 4000,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "operate stably for over 4000 h"
+          },
+          {
+            "value": 950,
+            "unit": "h",
+            "condition_id": "C002",
+            "source_text": "display a sharp voltage drop after 950 h"
+          },
+          {
+            "value": 2700,
+            "unit": "h",
+            "condition_id": "C003",
+            "source_text": "obtain a cycle life of exceeding 2700 h"
+          },
+          {
+            "value": 800,
+            "unit": "h",
+            "condition_id": "C004",
+            "source_text": "BE case of 800 h"
+          },
+          {
+            "value": 1000,
+            "unit": "h",
+            "condition_id": "C005",
+            "source_text": "cycle stably for 1000 h"
+          }
+        ],
+        "Plateau_Overpotential": [
+          {
+            "value": 78,
+            "unit": "mV",
+            "condition_id": "C005",
+            "current_density_mA_cm2": 2.0,
+            "source_text": "with a low overpotential of 78 mV"
+          },
+          {
+            "value": 240,
+            "unit": "mV",
+            "condition_id": "C006",
+            "current_density_mA_cm2": 2.0,
+            "source_text": "whereas BE shows a large polarization of 240 mV"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "More particularly, under harsh test conditions of 100 μm-thick Li foil, 7 mg cm− 2 areal cathode loading, and 20 μL of lean electrolyte, the cells with MC5E are still endowed with a capacity retention",
+      "conditions": [
+        {
+          "condition_id": "C036",
+          "mass_loading": {
+            "value": 7.0,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "20 μL lean electrolyte",
+          "electrode_config": "Li foil anode (100 μm thick) with cathode areal loading 7 mg cm−2"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 95.8,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "the cells with MC5E are still endowed with a capacity retention of 95.8% after 200 consecutive cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Further kinetic analysis shows consistently enhanced performance for MC5E. The mathrm transference number reached 0.59, markedly higher than the measured for BE 0.31 Fig. 4b, c. Tafel polarization mea",
+      "conditions": [
+        {
+          "condition_id": "C037",
+          "electrolyte": "BE",
+          "test_method": "Tafel polarization, LiCu cell, chronoamperometry, activation energy measurement, ionic conductivity measurement, LSV"
+        },
+        {
+          "condition_id": "C038",
+          "electrolyte": "MC5E",
+          "test_method": "Tafel polarization, LiCu cell, chronoamperometry, activation energy measurement, ionic conductivity measurement, LSV"
+        }
+      ],
+      "property_types": [
+        "Exchange_Current_Density"
+      ],
+      "extracted_info": {
+        "Exchange_Current_Density": [
+          {
+            "value": 1.26,
+            "unit": "mA/cm2",
+            "method": "Tafel polarization",
+            "source_text": "Tafel polarization measurements reveal a two-fold increase in exchange current density for MC5E 2.6 mA mathrm - 2 versus BE 1.26 mA mathrm - 2"
+          },
+          {
+            "value": 2.6,
+            "unit": "mA/cm2",
+            "method": "Tafel polarization",
+            "source_text": "Tafel polarization measurements reveal a two-fold increase in exchange current density for MC5E 2.6 mA mathrm - 2 versus BE 1.26 mA mathrm - 2"
+          }
+        ]
+      },
+      "performance_types": [
+        "Activation_Energy_for_Li_Desolvation",
+        "Ionic_Conductivity_of_SEI"
+      ],
+      "performance_info": {
+        "Activation_Energy_for_Li_Desolvation": [
+          {
+            "value": 29.3,
+            "unit": "kJ/mol",
+            "condition_id": "C001",
+            "source_text": "The activation energy for mathrm de-solvation decreases from 29.3 kJ mol - 1 in BE to 26.5 kJ mol - 1 in MC5E"
+          },
+          {
+            "value": 26.5,
+            "unit": "kJ/mol",
+            "condition_id": "C002",
+            "source_text": "The activation energy for mathrm de-solvation decreases from 29.3 kJ mol - 1 in BE to 26.5 kJ mol - 1 in MC5E"
+          }
+        ],
+        "Ionic_Conductivity_of_SEI": [
+          {
+            "value": 0.00795,
+            "unit": "S/cm",
+            "condition_id": "C001",
+            "source_text": "the ionic conductivity of MC5E is 8.35 mS mathrm - 11, higher than the BE 7.95 mS cm− - 1"
+          },
+          {
+            "value": 0.00835,
+            "unit": "S/cm",
+            "condition_id": "C002",
+            "source_text": "the ionic conductivity of MC5E is 8.35 mS mathrm - 11, higher than the BE 7.95 mS cm− - 1"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "SEI as a composite interfacial layer with solid electrolyte feature, is recognized to enhance ionic conductivity via rational interfacial design. Given the low bulk ionic conductivity of inorganic SEI",
+      "property_types": [
+        "Li_Ion_Migration_Barrier"
+      ],
+      "extracted_info": {
+        "Li_Ion_Migration_Barrier": [
+          {
+            "value": 0.626,
+            "unit": "eV",
+            "source_text": "As shown in Fig. 7a – c, the migration barriers of LiF, LiCl, and Li N are estimated as 0.626, 0.492, and 0.015 eV, respectively"
+          },
+          {
+            "value": 0.492,
+            "unit": "eV",
+            "source_text": "As shown in Fig. 7a – c, the migration barriers of LiF, LiCl, and Li N are estimated as 0.626, 0.492, and 0.015 eV, respectively"
+          },
+          {
+            "value": 0.015,
+            "unit": "eV",
+            "source_text": "As shown in Fig. 7a – c, the migration barriers of LiF, LiCl, and Li N are estimated as 0.626, 0.492, and 0.015 eV, respectively"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Given that the interfacial XPS reveals the co-existence of multiple inorganic species within the SEI, representative LiCl-based heterointerface models, including LiF100/LiCl001, Li2O111/LiCl001, and L",
+      "property_types": [
+        "Li_Ion_Migration_Barrier"
+      ],
+      "extracted_info": {
+        "Li_Ion_Migration_Barrier": [
+          {
+            "value": 0.422,
+            "unit": "eV",
+            "path": "LiF100/LiCl001",
+            "method": "DFT",
+            "source_text": "As shown in Fig. 7d – f, the corresponding mathrm migration barriers are 0.422, 0.304, and 0.272 mathbf , respectively."
+          },
+          {
+            "value": 0.304,
+            "unit": "eV",
+            "path": "Li2O111/LiCl001",
+            "method": "DFT",
+            "source_text": "As shown in Fig. 7d – f, the corresponding mathrm migration barriers are 0.422, 0.304, and 0.272 mathbf , respectively."
+          },
+          {
+            "value": 0.272,
+            "unit": "eV",
+            "path": "Li3N001/LiCl001",
+            "method": "DFT",
+            "source_text": "As shown in Fig. 7d – f, the corresponding mathrm migration barriers are 0.422, 0.304, and 0.272 mathbf , respectively."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "XPS depth profiling offers the direct evidence of the distinct chemical composition of the SEI formed by MC5E, revealing a composite interface composed of mathrm 0 , , LiCl, Li3N, LiF, Li2O, and MoO3 ",
+      "conditions": [
+        {
+          "condition_id": "C039",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 1,
+          "electrolyte": "BE",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "lithium deposition"
+        },
+        {
+          "condition_id": "C040",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 1,
+          "electrolyte": "MC5E",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "lithium deposition"
+        },
+        {
+          "condition_id": "C041",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 30,
+          "electrolyte": "BE",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C042",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 30,
+          "electrolyte": "MC5E",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C043",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 30,
+          "electrolyte": "BE",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C044",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 30,
+          "electrolyte": "MC5E",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C045",
+          "c_rate_or_current": {
+            "value": 5.56,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "BE",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "Li plating"
+        },
+        {
+          "condition_id": "C046",
+          "c_rate_or_current": {
+            "value": 5.56,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "MC5E",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "Li plating"
+        }
+      ],
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "LiCl",
+              "Li3N",
+              "LiF",
+              "Li2O",
+              "MoO3"
+            ],
+            "source_text": "revealing a composite interface composed of LiCl, Li3N, LiF, Li2O, and MoO3"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The compatibility and cycling stability of the high-valent additive of MoCl5 with the LMAs were assessed in LiCu and LiLi cells. The LiCu cells with MC5E exhibit a remarkably extended cycling life of ",
+      "conditions": [
+        {
+          "condition_id": "C047",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "MC5E (MoCl5 additive in base electrolyte)",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C048",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "MC5E",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C049",
+          "cycle_number": 100,
+          "electrolyte": "MC5E",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C050",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "MC5E",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C051",
+          "electrolyte": "MC5E",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "improved Aurbach method"
+        },
+        {
+          "condition_id": "C052",
+          "electrolyte": "MC5E",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "statistical analysis of average CE across various areal capacities"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Cycle_Life_80_Percent_Capacity_Retention",
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Plateau_Overpotential"
+      ],
+      "performance_info": {
+        "Cycle_Life_80_Percent_Capacity_Retention": [
+          {
+            "value": 580,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "The LiCu cells with MC5E exhibit a remarkably extended cycling life of over 580 cycles at a current density of 0.5 mA cm^-2 and an areal capacity of 0.5 mAh cm^-2, greatly outperforming cells with BE, which only lasted 350 cycles with a CE of 80% (Fig. 3a)."
+          },
+          {
+            "value": 280,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "source_text": "under more challenging conditions 1 mA cm^-2, 1 mAh cm^-2, where the MC5E cells achieve 280 stable cycles, while the BE cells become unstable just after 110 cycles (Fig. S10)."
+          },
+          {
+            "value": 53,
+            "unit": "cycles",
+            "condition_id": "C004",
+            "source_text": "with the current and areal capacity increasing to 5 mA cm^-2 and 5 mAh cm^-2, the BE cells fail rapidly, unlike the MC5E cell, which achieves 53 stable cycles (Fig. 3b)."
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.57,
+            "unit": "%",
+            "condition_id": "C005",
+            "source_text": "The MC5E gains a superior CE of 99.57%, outperforming that of the BE 99.35%. ... average CE of MC5E reaches 99.57% at Aurbach method (Table S2)."
+          },
+          {
+            "value": 98,
+            "unit": "%",
+            "condition_id": "C006",
+            "source_text": "sustaining a high CE of over 98%."
+          }
+        ],
+        "Plateau_Overpotential": [
+          {
+            "value": 33.2,
+            "unit": "mV",
+            "condition_id": "C003",
+            "source_text": "maintained an overpotential of 33.2 mV after 100 cycles, while BE illustrates 39.9 mV (Fig. S11)."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Therefore, the enhanced interfacial kinetics of MC5E originate from the synergistic effect of the multicomponent inorganic SEI rather than from a single SEI component alone. In particular, the co-exis",
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "LiF",
+              "LiCl",
+              "Li2O",
+              "Li3N"
+            ],
+            "state": "formed during cycling",
+            "source_text": "The inorganic-rich SEI formed during cycling, composed of LiF, LiCl, Li2O, and mathrm 3 mathrm N"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "10 As a promising electrolyte for LMBs, MC5E significantly boosts cycling stability of LiS cells, starting with a capacity of 1086 mAh mathbf g - 1 at 2C and retaining 923 mAh mathbf g - 1 after 200 c",
+      "conditions": [
+        {
+          "condition_id": "C053",
+          "c_rate_or_current": {
+            "value": "2C",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 1.8,
+            "max": 2.7,
+            "unit": "V",
+            "reference": "cell voltage"
+          },
+          "electrolyte": "MC5E",
+          "cycle_number": 200,
+          "electrode_config": "full-cell (Li||S)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C054",
+          "c_rate_or_current": {
+            "value": "1C",
+            "unit": "C"
+          },
+          "electrolyte": "MC5E",
+          "cycle_number": 400,
+          "electrode_config": "full-cell (Li||LFP)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C055",
+          "c_rate_or_current": {
+            "value": "2C",
+            "unit": "C"
+          },
+          "electrolyte": "MC5E",
+          "cycle_number": 700,
+          "electrode_config": "full-cell (Li||LFP)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C056",
+          "c_rate_or_current": {
+            "value": "2C",
+            "unit": "C"
+          },
+          "electrolyte": "MC5E",
+          "electrode_config": "full-cell (Li||S)",
+          "test_method": "rate capability test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 1086,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "1.8–2.7 V",
+            "source_text": "starting with a capacity of 1086 mAh g-1 at 2C"
+          },
+          {
+            "value": 849,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "MC5E achieving 849 mAh g-1 at 2C"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 85.0,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "starting with a capacity of 1086 mAh g-1 at 2C and retaining 923 mAh g-1 after 200 cycles"
+          },
+          {
+            "value": 89.8,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 400,
+            "source_text": "LiLFP cells with MC5E retains 89.8% of capacity after 400 cycles at 1C"
+          },
+          {
+            "value": 96.8,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 700,
+            "source_text": "MC5E cells maintaining a capacity retention of 96.8% after 700 cycles at 2C"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "EIS results demonstrate that WC6E significantly enhance the interfacial stability. LiLi cells with WC6E show much lower charge-transfer resistance compared to BE cells after 50 and 100 cycles Fig. 6c,",
+      "conditions": [
+        {
+          "condition_id": "C057",
+          "electrolyte": "WC6E",
+          "cycle_number": 50,
+          "electrode_config": "symmetric_cell",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C058",
+          "electrolyte": "WC6E",
+          "cycle_number": 100,
+          "electrode_config": "symmetric_cell",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C059",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "electrolyte": "WC6E",
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C060",
+          "electrolyte": "WC6E",
+          "cycle_number": 240,
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 110,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "In LiLFP cells, WC6E sustains a capacity of 110 mAh g - 1 at 5C, far surpassing BE which experiences severe capacity decay Fig. 6e."
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 89.3,
+            "unit": "%",
+            "condition_id": "C004",
+            "cycle_number": 240,
+            "source_text": "Under the same stringent conditions as MC5E, WC6E illustrates excellent cycling stability retaining 89.3% of its capacity over 240 cycles, whereas BE fails to maintain stable operation Fig. 6f."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To evaluate the generalizability of high-valent metal chlorides as electrolyte additives, tungsten hexachloride WCl6 was selected as a representative 6-valence candidate for LMBs. The mathrm 6 - conta",
+      "conditions": [
+        {
+          "condition_id": "C061",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "WC6E (5 mM WCl6 in BE)",
+          "electrode_config": "symmetric cell (Li||Li)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C062",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "WC6E (5 mM WCl6 in BE)",
+          "electrode_config": "half-cell (Li||Cu)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C063",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "BE",
+          "electrode_config": "half-cell (Li||Cu)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability",
+        "Cycle_Life_80_Percent_Capacity_Retention"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 2700,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "cycle life of WC6E-based cell exceeded 2700 h"
+          }
+        ],
+        "Cycle_Life_80_Percent_Capacity_Retention": [
+          {
+            "value": 300,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "source_text": "WC6E achieves cycling stability over 300 cycles"
+          },
+          {
+            "value": 120,
+            "unit": "cycles",
+            "condition_id": "C003",
+            "source_text": "BE cells fail rapidly after only 120 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In conclusion, this work systematically elucidated the unique synergistic regulatory mechanism and multifunctional value of high-valent metal chlorides as electrolyte additives for LMBs, with MoCl as ",
+      "conditions": [
+        {
+          "condition_id": "C064",
+          "electrode_config": "symmetric_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C065",
+          "electrode_config": "half_cell",
+          "test_method": "cycling",
+          "cycle_number": 600
+        },
+        {
+          "condition_id": "C066",
+          "electrode_config": "full_cell",
+          "c_rate_or_current": "2C",
+          "test_method": "cycling",
+          "cycle_number": 700
+        },
+        {
+          "condition_id": "C067",
+          "electrode_config": "full_cell",
+          "test_method": "cycling",
+          "cycle_number": 200
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 4000,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "the LiLi and LiCu cells demonstrated long cycle lives of over 4000 h and 600 cycles."
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 96.8,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 700,
+            "source_text": "the LiLFP cells exhibited stable cycling performance over 700 cycles at 2C and 200 cycles under lean-electrolyte and limited‑lithium conditions, with capacity retentions of 96.8% and 95.8% of their initial capacity, respectively."
+          },
+          {
+            "value": 95.8,
+            "unit": "%",
+            "condition_id": "C004",
+            "cycle_number": 200,
+            "source_text": "the LiLFP cells exhibited stable cycling performance over 700 cycles at 2C and 200 cycles under lean-electrolyte and limited‑lithium conditions, with capacity retentions of 96.8% and 95.8% of their initial capacity, respectively."
+          }
+        ]
+      }
+    }
+  ]
+}

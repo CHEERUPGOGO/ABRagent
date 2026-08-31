@@ -1,0 +1,780 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.electacta.2024.144396.md",
+  "component": "cathode",
+  "paper_id": "10.1016/j.electacta.2024.144396",
+  "doi": "10.1016/j.electacta.2024.144396",
+  "material_id": "10.1016_j.electacta.2024.144396",
+  "meta": {
+    "meta_title": "Understanding the limitations of thick electrodes on the rate capability of high",
+    "meta_authors": "Wenlong Xie a,b,\\* , Zhengjie Zhang c , Xinlei Gao d",
+    "meta_year": "2024"
+  },
+  "materials": [
+    {
+      "name": "cathode material",
+      "short_name": "10.1016_j.electacta.2024.144396",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.electacta.2024.144396"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: Nomenclature; L; Thickness of the electrode, μm\nRows:\nRow 1: A; cross-sectional area of the cell, m2\nRow 2: as; specific interfacial area, m-1; F; Faraday constant, 96,487 C mol-1\nRow 3: ce; lithium concentration in the electrolyte phase, mol m-3; ; \nRow 4: Nomenclature = ce,0; L = initial lithium concentration in the electrolyte phase, mol m-3; Thickness of the electrode, μm = Greek symbols\nRow 5: cs; lithium concentration in the solid phase, mol m-3; αa,n; anodic charge transfer coefficients\nRow 6: cs,0; initial lithium concentration in the solid phase, mol m-3; αc,n; cathodic charge transfer coefficients\nRow 7: cs,surf; surface lithium concentration in the solid phase, mol m-3; εs; active material volume fraction\nRow 8: Ds; solid phase diffusion coefficient, m2 s-1; εe; electrolyte volume fraction\nRow 9: De; electrolyte phase diffusion coefficient, m2 s-1; σeffe; effective diffusional conductivity, S m-1\nRow 10: Deff; Effective electrolyte phase diffusion coefficient, m2 s-1; κeff; effective electrolyte phase conductivity, S m-1\nRow 11: t0+; lithium ion transfer number; φe; potential in electrolyte phase, V\nRow 12: i0,n; exchange current density of intercalation, A m-2; φs; potential in solid phase, V\nRow 13: kn; kinetic rate constant; ηn; overpotential of electrode reaction, V\nRow 14: Nomenclature = jn; L = reaction rate of intercalation, A m-2; Thickness of the electrode, μm = Subscribe\nRow 15: Cp; specific heat capacity, J kg-1 K-1; 0; initial or equilibrated value\nRow 16: R; universal gas constant, 8.314 J mol-1 K-1; n/a; negative electrode, Anode\nRow 17: hconv; convective heat transfer coefficient, W m-2 K-1; sep; separator\nRow 18: T; battery temperature, K; p/c; positive electrode, Cathode\nRow 19: T∞; ambient temperature, K; s; solid phase\nRow 20: Ueq; equilibrium potential of the electrode, V; e; electrolyte phase\nRow 21: x; coordinate over the thickness of the electrode, m; int; intercalation\nRow 22: r; coordinate along the radius of electrode particle, μm; eq; equilibrium\nRow 23: t; time, s; ref; reference value\nRow 24: m; mass, kg; max; maximum\nRow 25: ; ; eff; effective value\nColumn data:\n  Nomenclature: A; as; ce; ce,0; cs; cs,0; cs,surf; Ds; De; Deff; t0+; i0,n; kn; jn; Cp; R; hconv; T; T∞; Ueq; x; r; t; m; \n  L: cross-sectional area of the cell, m2; specific interfacial area, m-1; lithium concentration in the electrolyte phase, mol m-3; initial lithium concentration in the electrolyte phase, mol m-3; lithium concentration in the solid phase, mol m-3; initial lithium concentration in the solid phase, mol m-3; surface lithium concentration in the solid phase, mol m-3; solid phase diffusion coefficient, m2 s-1; electrolyte phase diffusion coefficient, m2 s-1; Effective electrolyte phase diffusion coefficient, m2 s-1; lithium ion transfer number; exchange current density of intercalation, A m-2; kinetic rate constant; reaction rate of intercalation, A m-2; specific heat capacity, J kg-1 K-1; universal gas constant, 8.314 J mol-1 K-1; convective heat transfer coefficient, W m-2 K-1; battery temperature, K; ambient temperature, K; equilibrium potential of the electrode, V; coordinate over the thickness of the electrode, m; coordinate along the radius of electrode particle, μm; time, s; mass, kg; \n  Thickness of the electrode, μm: F; ; Greek symbols; αa,n; αc,n; εs; εe; σeffe; κeff; φe; φs; ηn; Subscribe; 0; n/a; sep; p/c; s; e; int; eq; ref; max; eff",
+    "TABLE DATA BLOCK\nHeaders: Electrochemical process; Equation description; Boundary condition\nRows:\nRow 1: Electrochemical process = Solid phase potential; Equation description = $-\\sigma^{\\text{eff}} \\frac{\\partial}{\\partial x} \\varphi_s(x,t) = i_s(x,t)$; Boundary condition = $\\varphi_s(x,t)|_{x=0} = 0; -$  $\\sigma^{\\text{eff}} \\frac{\\partial}{\\partial x} \\varphi_s(x,t)|_{x=L} = -$  $i_{\\text{app}}$  $\\frac{\\partial}{\\partial x} \\varphi_s(x,t)|_{x=L_{\\text{neg}}} = \\frac{\\partial}{\\partial x} \\varphi_s(x, t)|_{x=L_{\\text{neg}}+L_{\\text{sep}}} = 0$\nRow 2: Electrochemical process = Electrolyte phase potential; Equation description = $\\frac{\\partial \\varphi_e(x,t)}{\\partial x} = \\frac{-i_e(x,t)}{\\kappa^{\\text{eff}}} -$  $\\frac{\\kappa_D^{\\text{eff}}}{\\kappa^{\\text{eff}}} \\frac{\\partial \\ln c_e(x,t)}{\\partial x}$; Boundary condition = $\\frac{\\partial}{\\partial x} \\varphi_e(x,t)|_{x=0} = \\frac{\\partial}{\\partial x} \\varphi_e(x, t)|_{x=L} = 0$\nRow 3: Electrochemical process = Ion concentration in solid phase; Equation description = $\\frac{\\partial c_s(r,x,t)}{\\partial t} =$  $\\frac{D_{s,\\text{eff}}}{r^2} \\frac{\\partial}{\\partial r} \\left( r^2 \\frac{\\partial c_s(r,x,t)}{\\partial r} \\right)$; Boundary condition = $\\frac{\\partial}{\\partial x} c_s(r,x,t)|_{r=0} = 0; -$  $D_{s,\\text{eff}} \\frac{\\partial}{\\partial x} c_s(r,x,t)|_{r=R_s} =$  $\\frac{j_{\\text{loc}}}{F}$\nRow 4: Electrochemical process = Ion concentration in liquid phase; Equation description = $\\frac{\\partial c_e(x,t)}{\\partial t} -$  $\\frac{\\partial}{\\partial x} \\left( \\frac{D_e^{\\text{eff}}}{\\varepsilon_e} \\frac{\\partial c_e(x,t)}{\\partial x} \\right) =$  $\\frac{(1-t_0^+)}{F\\varepsilon_e} \\frac{\\partial i_e(x,t)}{\\partial x}$; Boundary condition = $\\frac{\\partial c_e(x,t)}{\\partial x}|_{x=0} =$  $\\frac{\\partial c_e(x,t)}{\\partial x}|_{x=L} = 0$\nRow 5: Electrochemical process = Electrochemical B-V kinetics; Equation description = $j_{\\text{loc}}(x,t) = a_n i_{0,n} \\left[ \\exp \\left( \\frac{\\alpha_{a,n} F}{R_g T} \\eta_n(x,t) \\right) - \\exp \\left( -\\frac{\\alpha_{c,n} F}{R_g T} \\eta_n(x, t) \\right) \\right]$  $i_{0,n} = k_n (c_{s,n})^{a_{c,n}} (c_e)^{a_{a,n}} (c_{s,n}^{\\max} - c_{s,n})^{a_{a,n}}$; Boundary condition = \nRow 6: Electrochemical process = Lithium plating; Equation description = $j_{\\text{LP}} = \\min \\left\\{ 0, a_{s,\\text{LP}} i_{0,\\text{LP}} \\left[ \\exp \\left( \\frac{\\alpha_{a,\\text{LP}} F}{RT} \\eta_{\\text{LP}} \\right) - \\exp \\left( -\\frac{\\alpha_{c,\\text{LP}} F}{RT} \\eta_{\\text{LP}} \\right) \\right] \\right\\}$; Boundary condition = \nRow 7: Electrochemical process = Energy conversation; Equation description = $\\rho C_p \\frac{\\partial T}{\\partial t} = \\frac{\\partial}{\\partial R} \\left( \\lambda_R \\frac{\\partial T}{\\partial R} \\right) + \\frac{\\partial}{\\partial Z} \\left( \\lambda_Z \\frac{\\partial T}{\\partial Z} \\right) + q_{\\text{tot}}$  $q_{\\text{tot}} = q_{\\text{rev}} + q_{\\text{irr}} = S_a j_{\\text{loc}} T \\frac{\\partial U}{\\partial T} + S_a j_{\\text{loc}} (\\varphi_s - \\varphi_e - U)$; Boundary condition = \nRow 8: Electrochemical process = Arrhenius equation; Equation description = $\\Phi_s = \\Phi_{s0} * \\exp \\left( \\frac{E_a}{R} \\left( \\frac{1}{T_{\\text{ref}}} - \\frac{1}{T} \\right) \\right)$; Boundary condition = \nColumn data:\n  Electrochemical process: Solid phase potential; Electrolyte phase potential; Ion concentration in solid phase; Ion concentration in liquid phase; Electrochemical B-V kinetics; Lithium plating; Energy conversation; Arrhenius equation\n  Equation description: $-\\sigma^{\\text{eff}} \\frac{\\partial}{\\partial x} \\varphi_s(x,t) = i_s(x,t)$; $\\frac{\\partial \\varphi_e(x,t)}{\\partial x} = \\frac{-i_e(x,t)}{\\kappa^{\\text{eff}}} -$  $\\frac{\\kappa_D^{\\text{eff}}}{\\kappa^{\\text{eff}}} \\frac{\\partial \\ln c_e(x,t)}{\\partial x}$; $\\frac{\\partial c_s(r,x,t)}{\\partial t} =$  $\\frac{D_{s,\\text{eff}}}{r^2} \\frac{\\partial}{\\partial r} \\left( r^2 \\frac{\\partial c_s(r,x,t)}{\\partial r} \\right)$; $\\frac{\\partial c_e(x,t)}{\\partial t} -$  $\\frac{\\partial}{\\partial x} \\left( \\frac{D_e^{\\text{eff}}}{\\varepsilon_e} \\frac{\\partial c_e(x,t)}{\\partial x} \\right) =$  $\\frac{(1-t_0^+)}{F\\varepsilon_e} \\frac{\\partial i_e(x,t)}{\\partial x}$; $j_{\\text{loc}}(x,t) = a_n i_{0,n} \\left[ \\exp \\left( \\frac{\\alpha_{a,n} F}{R_g T} \\eta_n(x,t) \\right) - \\exp \\left( -\\frac{\\alpha_{c,n} F}{R_g T} \\eta_n(x, t) \\right) \\right]$  $i_{0,n} = k_n (c_{s,n})^{a_{c,n}} (c_e)^{a_{a,n}} (c_{s,n}^{\\max} - c_{s,n})^{a_{a,n}}$; $j_{\\text{LP}} = \\min \\left\\{ 0, a_{s,\\text{LP}} i_{0,\\text{LP}} \\left[ \\exp \\left( \\frac{\\alpha_{a,\\text{LP}} F}{RT} \\eta_{\\text{LP}} \\right) - \\exp \\left( -\\frac{\\alpha_{c,\\text{LP}} F}{RT} \\eta_{\\text{LP}} \\right) \\right] \\right\\}$; $\\rho C_p \\frac{\\partial T}{\\partial t} = \\frac{\\partial}{\\partial R} \\left( \\lambda_R \\frac{\\partial T}{\\partial R} \\right) + \\frac{\\partial}{\\partial Z} \\left( \\lambda_Z \\frac{\\partial T}{\\partial Z} \\right) + q_{\\text{tot}}$  $q_{\\text{tot}} = q_{\\text{rev}} + q_{\\text{irr}} = S_a j_{\\text{loc}} T \\frac{\\partial U}{\\partial T} + S_a j_{\\text{loc}} (\\varphi_s - \\varphi_e - U)$; $\\Phi_s = \\Phi_{s0} * \\exp \\left( \\frac{E_a}{R} \\left( \\frac{1}{T_{\\text{ref}}} - \\frac{1}{T} \\right) \\right)$\n  Boundary condition: $\\varphi_s(x,t)|_{x=0} = 0; -$  $\\sigma^{\\text{eff}} \\frac{\\partial}{\\partial x} \\varphi_s(x,t)|_{x=L} = -$  $i_{\\text{app}}$  $\\frac{\\partial}{\\partial x} \\varphi_s(x,t)|_{x=L_{\\text{neg}}} = \\frac{\\partial}{\\partial x} \\varphi_s(x, t)|_{x=L_{\\text{neg}}+L_{\\text{sep}}} = 0$; $\\frac{\\partial}{\\partial x} \\varphi_e(x,t)|_{x=0} = \\frac{\\partial}{\\partial x} \\varphi_e(x, t)|_{x=L} = 0$; $\\frac{\\partial}{\\partial x} c_s(r,x,t)|_{r=0} = 0; -$  $D_{s,\\text{eff}} \\frac{\\partial}{\\partial x} c_s(r,x,t)|_{r=R_s} =$  $\\frac{j_{\\text{loc}}}{F}$; $\\frac{\\partial c_e(x,t)}{\\partial x}|_{x=0} =$  $\\frac{\\partial c_e(x,t)}{\\partial x}|_{x=L} = 0$; ; ; ; ",
+    "TABLE DATA BLOCK\nHeaders: Symbol; Parameter; Unit; Negative electrode; Separator; Positive electrode; Source\nRows:\nRow 1: Symbol = L; Parameter = Length; Unit = μm; Negative electrode = 100; Separator = 30; Positive electrode = 20–120; Source = c\nRow 2: Symbol = Rs; Parameter = Particle radius; Unit = μm; Negative electrode = 7.5; Separator = ; Positive electrode = 5; Source = b\nRow 3: Symbol = εs; Parameter = Active material volume fraction; Unit = 1; Negative electrode = 0.56; Separator = ; Positive electrode = 0.6; Source = a\nRow 4: Symbol = εe; Parameter = Electrolyte volume fraction; Unit = 1; Negative electrode = 0.4; Separator = 0.5; Positive electrode = 0.35; Source = a\nRow 5: Symbol = as; Parameter = Specific surface area; Unit = m-1; Negative electrode = 0.22; Separator = ; Positive electrode = 0.36; Source = 3εs/Rs\nRow 6: Symbol = Asec; Parameter = Cell cross-sectional area; Unit = m2; Negative electrode = 6.4823 × 10-2; Separator = ; Positive electrode = ; Source = c\nRow 7: Symbol = αa,c; Parameter = Charge transfers coefficient; Unit = 1; Negative electrode = 0.5 [27]; Separator = ; Positive electrode = 0.5 [27]; Source = d\nRow 8: Symbol = σs; Parameter = Electrical conductivity in solid; Unit = S m-1; Negative electrode = 100 [28]; Separator = ; Positive electrode = 0.17 [28]; Source = d\nRow 9: Symbol = Ds; Parameter = Solid phase diffusion coefficient; Unit = m2 s-1; Negative electrode = 3.9 × 10-13; Separator = ; Positive electrode = 1.3 × 10-13; Source = c\nRow 10: Symbol = De,ref; Parameter = Electrolyte phase diffusion coefficient at Tref; Unit = m2 s-1; Negative electrode = 10-8.43-54/59.15-0.005ce-2.2 × 10-4ce2[29]; Separator = ; Positive electrode = ; Source = d\nRow 11: Symbol = Deff; Parameter = Effective electrolyte phase diffusion coefficient; Unit = m2 s-1; Negative electrode = εe1.5De; Separator = ; Positive electrode = ; Source = c\nRow 12: Symbol = κ; Parameter = Reaction rate coefficient negative electrode; Unit = m s-1; Negative electrode = 2.43 × 10-11[30]; Separator = ; Positive electrode = 1.02 × 10-11[30]; Source = d\nRow 13: Symbol = t+; Parameter = Lithium ion transfer number; Unit = 1; Negative electrode = 0.38 [29]; Separator = ; Positive electrode = ; Source = d\nRow 14: Symbol = Ueq; Parameter = Equilibrium potential; Unit = V; Negative electrode = Fig. S1(a); Separator = ; Positive electrode = Fig. S1(b); Source = c\nRow 15: Symbol = Ueq,LP; Parameter = Equilibrium potential of lithium plating; Unit = V; Negative electrode = 0; Separator = ; Positive electrode = ; Source = \nRow 16: Symbol = αa,c,LP; Parameter = Charge transfers coefficient of lithium plating; Unit = V; Negative electrode = 0.3; Separator = ; Positive electrode = 0.7; Source = d\nRow 17: Symbol = κLP; Parameter = Reaction rate coefficient of lithium plating; Unit = m s-1; Negative electrode = 2.5 × 10-7[31]; Separator = ; Positive electrode = ; Source = d\nRow 18: Symbol = Ea; Parameter = Activation energy; Unit = J mol-1; Negative electrode = 4.5 × 104; Separator = ; Positive electrode = 4.5 × 104; Source = d\nRow 19: Symbol = Stoi0; Parameter = Stoichiometry at 0 %; Unit = 1; Negative electrode = 0.829; Separator = ; Positive electrode = 0.202; Source = c\nRow 20: Symbol = Stoi100; Parameter = Stoichiometry at 100 %; Unit = 1; Negative electrode = 0.026; Separator = ; Positive electrode = 0.945; Source = c\nRow 21: Symbol = cs,0; Parameter = Initial solid phase lithium concentration; Unit = mol m-3; Negative electrode = 760; Separator = ; Positive electrode = 46,600; Source = b\nRow 22: Symbol = cs,max; Parameter = Maximum solid phase lithium concentration; Unit = mol m-3; Negative electrode = 31,500; Separator = ; Positive electrode = 51,600; Source = c\nRow 23: Symbol = ce,0; Parameter = Initial electrolyte concentration; Unit = mol m-3; Negative electrode = 1000 [27]; Separator = ; Positive electrode = ; Source = d\nRow 24: Symbol = c0EC; Parameter = Initial EC concentration; Unit = mol m-3; Negative electrode = 4541 [27]; Separator = ; Positive electrode = ; Source = d\nRow 25: Symbol = Cp; Parameter = Specific heat capacity; Unit = J kg-1K-1; Negative electrode = 1000 [31]; Separator = ; Positive electrode = ; Source = d\nRow 26: Symbol = hconv; Parameter = Convection coefficient; Unit = W m-2K-1; Negative electrode = 25 [31]; Separator = ; Positive electrode = ; Source = d\nRow 27: Symbol = ρbat; Parameter = Density of the battery; Unit = Kg m-3; Negative electrode = 1500; Separator = ; Positive electrode = ; Source = c\nRow 28: Symbol = F; Parameter = Faraday constant; Unit = C mol-1; Negative electrode = 96,485 [27]; Separator = ; Positive electrode = ; Source = \nRow 29: Symbol = R; Parameter = Universal gas constant; Unit = J mol-1K-1; Negative electrode = 8.314 [27]; Separator = ; Positive electrode = ; Source = \nRow 30: Symbol = Tref; Parameter = Reference temperature; Unit = K; Negative electrode = 298.15; Separator = ; Positive electrode = ; Source = \nColumn data:\n  Symbol: L; Rs; εs; εe; as; Asec; αa,c; σs; Ds; De,ref; Deff; κ; t+; Ueq; Ueq,LP; αa,c,LP; κLP; Ea; Stoi0; Stoi100; cs,0; cs,max; ce,0; c0EC; Cp; hconv; ρbat; F; R; Tref\n  Parameter: Length; Particle radius; Active material volume fraction; Electrolyte volume fraction; Specific surface area; Cell cross-sectional area; Charge transfers coefficient; Electrical conductivity in solid; Solid phase diffusion coefficient; Electrolyte phase diffusion coefficient at Tref; Effective electrolyte phase diffusion coefficient; Reaction rate coefficient negative electrode; Lithium ion transfer number; Equilibrium potential; Equilibrium potential of lithium plating; Charge transfers coefficient of lithium plating; Reaction rate coefficient of lithium plating; Activation energy; Stoichiometry at 0 %; Stoichiometry at 100 %; Initial solid phase lithium concentration; Maximum solid phase lithium concentration; Initial electrolyte concentration; Initial EC concentration; Specific heat capacity; Convection coefficient; Density of the battery; Faraday constant; Universal gas constant; Reference temperature\n  Unit: μm; μm; 1; 1; m-1; m2; 1; S m-1; m2 s-1; m2 s-1; m2 s-1; m s-1; 1; V; V; V; m s-1; J mol-1; 1; 1; mol m-3; mol m-3; mol m-3; mol m-3; J kg-1K-1; W m-2K-1; Kg m-3; C mol-1; J mol-1K-1; K\n  Negative electrode: 100; 7.5; 0.56; 0.4; 0.22; 6.4823 × 10-2; 0.5 [27]; 100 [28]; 3.9 × 10-13; 10-8.43-54/59.15-0.005ce-2.2 × 10-4ce2[29]; εe1.5De; 2.43 × 10-11[30]; 0.38 [29]; Fig. S1(a); 0; 0.3; 2.5 × 10-7[31]; 4.5 × 104; 0.829; 0.026; 760; 31,500; 1000 [27]; 4541 [27]; 1000 [31]; 25 [31]; 1500; 96,485 [27]; 8.314 [27]; 298.15\n  Separator: 30; ; ; 0.5; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; \n  Positive electrode: 20–120; 5; 0.6; 0.35; 0.36; ; 0.5 [27]; 0.17 [28]; 1.3 × 10-13; ; ; 1.02 × 10-11[30]; ; Fig. S1(b); ; 0.7; ; 4.5 × 104; 0.202; 0.945; 46,600; 51,600; ; ; ; ; ; ; ; \n  Source: c; b; a; a; 3εs/Rs; c; d; d; c; d; c; d; d; c; ; d; d; d; c; c; b; c; d; d; d; d; c; ; ; ",
+    "TABLE DATA BLOCK\nHeaders: Item; Specification\nRows:\nRow 1: Nominal capacity; 2500 mAh; 0.2C\nRow 2: Upper cut-off voltage; 4.2 V; \nRow 3: Lower cut-off voltage; 2.5 V; \nRow 4: Nominal voltage; 3.6 V; \nRow 5: Standard charge current; 0.2C (500 mA); 25 °C\nRow 6: Maximum charge current; 4.0C (10,000 mA); 25 °C\nColumn data:\n  Item: Nominal capacity; Upper cut-off voltage; Lower cut-off voltage; Nominal voltage; Standard charge current; Maximum charge current\n  Specification: 2500 mAh; 4.2 V; 2.5 V; 3.6 V; 0.2C (500 mA); 4.0C (10,000 mA)"
+  ],
+  "n_items": 12,
+  "items": [
+    {
+      "paragraph": "To further elucidate the underlying mechanism leading to the deterioration of rate performance in thick electrodes, a comparative analysis and discussion of the electrochemical behaviors of electrodes",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": "1/10",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C002",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 120,
+            "unit": "μm"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The distribution of solid-phase Li-ion concentration across the thickness at the end of charging for positive electrodes with different thicknesses is plotted in mathrm . 7 . . During charging, Li-ion",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": "1/10",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": "3",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To illustrate the impact of electrode thickness on attainable energy and power density, Ragone plots are depicted based on test results. Fig. 13a shows the relationship between gravimetric energy dens",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "electrode_thickness": {
+            "value": 20,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C007",
+          "electrode_thickness": {
+            "value": 120,
+            "unit": "μm"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Gravimetric_Energy_Density"
+      ],
+      "performance_info": {
+        "Gravimetric_Energy_Density": [
+          {
+            "value": 172,
+            "unit": "Wh/kg",
+            "condition_id": "C001",
+            "basis": "active material",
+            "source_text": "As the thickness increases from 20 μm to 120 μm, there is a corresponding rise in energy density from approximately 172 Wh/kg to 260 Wh/kg."
+          },
+          {
+            "value": 260,
+            "unit": "Wh/kg",
+            "condition_id": "C002",
+            "basis": "active material",
+            "source_text": "As the thickness increases from 20 μm to 120 μm, there is a corresponding rise in energy density from approximately 172 Wh/kg to 260 Wh/kg."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In addition to directly affecting the diffusion pathway of Li-ions and electrode reactions, the polarization effect induced by thick electrodes also influences the battery performance. Fig. 8 compares",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": "3C",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": "1C",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To evaluate the variation of electrode utilization with thickness during charging, the charging performance at different rates is compared for various positive electrode thicknesses. Electrode utiliza",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": "1/10C to 9C",
+            "unit": "C"
+          },
+          "test_method": "rate capability test (galvanostatic charging)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Performance",
+        "Rate_Capability_Profile"
+      ],
+      "performance_info": {
+        "Rate_Performance": [
+          {
+            "value": 0.836,
+            "unit": "ratio",
+            "condition_id": "C001",
+            "high_rate": "9C",
+            "low_rate": "1/2C",
+            "electrode_thickness_um": 20,
+            "source_text": "Compared to 1/2C charging, the capacities of electrodes with thickness of 20 μm ... at 9C charging are reduced by approximately 16.4 %"
+          },
+          {
+            "value": 0.696,
+            "unit": "ratio",
+            "condition_id": "C001",
+            "high_rate": "9C",
+            "low_rate": "1/2C",
+            "electrode_thickness_um": 40,
+            "source_text": "Compared to 1/2C charging, the capacities of electrodes with thickness of ... 40 μm ... at 9C charging are reduced by approximately ... 30.4 %"
+          },
+          {
+            "value": 0.52,
+            "unit": "ratio",
+            "condition_id": "C001",
+            "high_rate": "9C",
+            "low_rate": "1/2C",
+            "electrode_thickness_um": 60,
+            "source_text": "Compared to 1/2C charging, the capacities of electrodes with thickness of ... 60 μm ... at 9C charging are reduced by approximately ... 48 %"
+          },
+          {
+            "value": 0.233,
+            "unit": "ratio",
+            "condition_id": "C001",
+            "high_rate": "9C",
+            "low_rate": "1/2C",
+            "electrode_thickness_um": 80,
+            "source_text": "Compared to 1/2C charging, the capacities of electrodes with thickness of ... 80 μm ... at 9C charging are reduced by approximately ... 76.7 %"
+          },
+          {
+            "value": 0.05,
+            "unit": "ratio",
+            "condition_id": "C001",
+            "high_rate": "9C",
+            "low_rate": "1/2C",
+            "electrode_thickness_um": 100,
+            "source_text": "Compared to 1/2C charging, the capacities of electrodes with thickness of ... 100 μm ... at 9C charging are reduced by approximately ... 95 %"
+          },
+          {
+            "value": 0.025,
+            "unit": "ratio",
+            "condition_id": "C001",
+            "high_rate": "9C",
+            "low_rate": "1/2C",
+            "electrode_thickness_um": 120,
+            "source_text": "Compared to 1/2C charging, the capacities of electrodes with thickness of ... 120 μm at 9C charging are reduced by approximately ... 97.5 %"
+          }
+        ],
+        "Rate_Capability_Profile": [
+          {
+            "value": [
+              {
+                "thickness_um": 20,
+                "inflection_point_rate": "7C"
+              },
+              {
+                "thickness_um": 40,
+                "inflection_point_rate": "3C"
+              },
+              {
+                "thickness_um": 60,
+                "inflection_point_rate": "1C"
+              },
+              {
+                "thickness_um": 80,
+                "inflection_point_rate": "1/2C"
+              },
+              {
+                "thickness_um": 100,
+                "inflection_point_rate": "1/5C"
+              },
+              {
+                "thickness_um": 120,
+                "inflection_point_rate": "1/10C"
+              }
+            ],
+            "unit": "C-rate inflection point",
+            "condition_id": "C001",
+            "source_text": "Electrodes with thickness of 20–120 μm exhibit inflection points at rates of approximately 7C, 3C, 1C, 1/2C, 1/5C, and 1/10C, with the rate capability deteriorating as thickness increases."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In this study, a commercial 18,650-type cylindrical battery with a rated capacity of 2.5 Ah is utilized for both testing and mathematical modeling. The operating voltage window is 2.5–4.2 V, with laye",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "vs. Li/Li+ (implied)"
+          },
+          "electrode_config": "full-cell (commercial 18650 NCM811/graphite)",
+          "test_method": "galvanostatic charging (charge rate varied, discharge fixed at 1C)"
+        },
+        {
+          "condition_id": "C012",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "vs. Li/Li+ (implied)"
+          },
+          "electrode_config": "full-cell (commercial 18650 NCM811/graphite)",
+          "test_method": "galvanostatic charging (charge rate varied, discharge fixed at 1C)"
+        },
+        {
+          "condition_id": "C013",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 3,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "vs. Li/Li+ (implied)"
+          },
+          "electrode_config": "full-cell (commercial 18650 NCM811/graphite)",
+          "test_method": "galvanostatic charging (charge rate varied, discharge fixed at 1C)"
+        },
+        {
+          "condition_id": "C014",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 4,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "vs. Li/Li+ (implied)"
+          },
+          "electrode_config": "full-cell (commercial 18650 NCM811/graphite)",
+          "test_method": "galvanostatic charging (charge rate varied, discharge fixed at 1C)"
+        },
+        {
+          "condition_id": "C015",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 6,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "vs. Li/Li+ (implied)"
+          },
+          "electrode_config": "full-cell (commercial 18650 NCM811/graphite)",
+          "test_method": "galvanostatic charging (charge rate varied, discharge fixed at 1C)"
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 0.02,
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li metal",
+          "test_method": "microcurrent galvanostatic test (1/50C) for equilibrium potential"
+        }
+      ],
+      "property_types": [
+        "Chemical_Composition_Mole_Fractions"
+      ],
+      "extracted_info": {
+        "Chemical_Composition_Mole_Fractions": [
+          {
+            "value": {
+              "Ni": 0.8,
+              "Co": 0.1,
+              "Mn": 0.1
+            },
+            "unit": "mole fraction",
+            "method": "from NCM811 cathode description",
+            "source_text": "layered metal oxide mathrm 0.80.10.1 O 2 NCM811 as cathode"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The evolution of local current density will impact battery performance, with different electrode thicknesses inducing this phenomenon. According to the principle of charge conservation, the amount of ",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 3,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "CC charging"
+        },
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 3,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "CC charging"
+        },
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 3,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "CC charging"
+        },
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 3,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "CC charging"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "E frac 1M int 0 t I V frac I tM int 0 t V tag 1 P frac 1M t int 0 t I V frac IM t int 0 t V tag 2 Since only the thickness of the positive electrode is considered as a variable, the volume or density ",
+      "conditions": [
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 120,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 100,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 80,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": "3",
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 60,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": "4",
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 60,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 50,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": "6",
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 40,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": "7",
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 30,
+            "unit": "μm"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The impact of high-energy-density batteries with thick electrodes on lithium plating during fast charging deserves attention, as it is crucial for the adaptability design, safety and lifespan of the b",
+      "conditions": [
+        {
+          "condition_id": "C026",
+          "c_rate_or_current": {
+            "value": 3,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C027",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 90,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C028",
+          "c_rate_or_current": {
+            "value": 3,
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 70,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C029",
+          "c_rate_or_current": {
+            "value": 5,
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 50,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C030",
+          "c_rate_or_current": {
+            "value": 7,
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 40,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C031",
+          "c_rate_or_current": {
+            "value": 9,
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 30,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C032",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 120,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C033",
+          "c_rate_or_current": {
+            "value": 3,
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 120,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C034",
+          "c_rate_or_current": {
+            "value": 5,
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 120,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C035",
+          "c_rate_or_current": {
+            "value": 7,
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 120,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 9,
+            "unit": "C"
+          },
+          "electrode_thickness": {
+            "value": 120,
+            "unit": "μm"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The product of energy/power density is referred to as the energypower density product E × P, representing the overall performance of the battery in storing or releasing electrical energy. A larger pro",
+      "conditions": [
+        {
+          "condition_id": "C037",
+          "electrode_thickness": {
+            "value": "20-120",
+            "unit": "μm"
+          },
+          "c_rate_or_current": {
+            "value": "1/10C-9C",
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Item; Specification\nRows:\nRow 1: Nominal capacity; 2500 mAh; 0.2C\nRow 2: Upper cut-off voltage; 4.2 V; \nRow 3: Lower cut-off voltage; 2.5 V; \nRow 4: Nominal voltage; 3.6 V; \n",
+      "conditions": [
+        {
+          "condition_id": "C038",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V"
+          },
+          "test_method": "Standard charge"
+        },
+        {
+          "condition_id": "C039",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "4.0",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V"
+          },
+          "test_method": "Maximum charge current"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Nominal_Discharge_Voltage"
+      ],
+      "performance_info": {
+        "Nominal_Discharge_Voltage": [
+          {
+            "value": 3.6,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "Nominal voltage; 3.6 V;"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Symbol; Parameter; Unit; Negative electrode; Separator; Positive electrode; Source\nRows:\nRow 1: Symbol = L; Parameter = Length; Unit = μm; Negative electrode = 100; Separator",
+      "conditions": [
+        {
+          "condition_id": "C040",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [
+        "Secondary_Particle_Size_Distribution",
+        "Lithium_Ion_Diffusion_Activation_Energy"
+      ],
+      "extracted_info": {
+        "Secondary_Particle_Size_Distribution": [
+          {
+            "value": {
+              "D50": 5
+            },
+            "unit": "μm",
+            "source_text": "Rs = 5 μm for positive electrode"
+          }
+        ],
+        "Lithium_Ion_Diffusion_Activation_Energy": [
+          {
+            "value": 0.466,
+            "unit": "eV",
+            "source_text": "Ea = 4.5 × 10^4 J mol-1 for positive electrode"
+          }
+        ]
+      },
+      "performance_types": [
+        "Ion_Diffusion_Coefficient"
+      ],
+      "performance_info": {
+        "Ion_Diffusion_Coefficient": [
+          {
+            "value": 1.3e-13,
+            "unit": "m2/s",
+            "condition_id": "C001",
+            "source_text": "Ds = 1.3 × 10^-13 m2 s-1 for positive electrode"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

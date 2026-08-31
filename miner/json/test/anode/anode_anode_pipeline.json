@@ -1,0 +1,739 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/anode/anode.md",
+  "doi": "anode",
+  "title": "High-entropy oxides as advanced anode materials for long-life lithium-ion Batteries",
+  "agent_mode": "anode-pipeline",
+  "materials": [
+    {
+      "name": "(FeCoNiCrMn)3O4 HEO",
+      "short_name": "(FeCoNiCrMn)3O4 HEO",
+      "formula": "(FeCoNiCrMn)3O4",
+      "role": "novel",
+      "description": "Prepared by oxidation of FeCoNiCrMn high-entropy alloy powder at 1000°C in oxygen atmosphere.",
+      "material_id": "anode_M001"
+    },
+    {
+      "name": "(FeCoNiCrMn)3O4 BM",
+      "short_name": "(FeCoNiCrMn)3O4 BM",
+      "formula": "(FeCoNiCrMn)3O4",
+      "role": "comparison",
+      "description": "Prepared by ball milling of oxide precursors (Fe2O3, NiO, Cr2O3, MnO2, Co3O4) followed by same heat treatment as HEO.",
+      "material_id": "anode_M002"
+    }
+  ],
+  "systems": [
+    {
+      "material_id": "anode_M001",
+      "material_name": "(FeCoNiCrMn)3O4 HEO",
+      "material_context": "novel: (FeCoNiCrMn)3O4 HEO",
+      "n_cond_paras": 6,
+      "n_perf_paras": 6,
+      "condition_id_used": "C001",
+      "all_conditions": [
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "current_density_mA_g": 2000,
+            "test_method": "galvanostatic",
+            "cycle_number": 1200,
+            "source_text": "achieved a high reversible capacity of 596.5 mA h g^-1 and a good capacity retention of 86.2% after 1200 cycles at 2.0 A g^-1"
+          }
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "temperature_C": 25.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "Electrochemical performances were carried out on the LAND CT2001A multi-channel battery test system (0.01–3 V) at 25°C."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (1:1 by volume)",
+            "current_collector": "copper foil",
+            "assembly_environment": "argon glove box",
+            "li_counter_reference": "Li metal",
+            "source_text": "Polyvinylidene fluoride, acetylene black and HEO were mixed at the weight ratio of 1:1:8, a certain amount of NMP was added, and then applied to the copper foil current collector to form the working electrode. After the coated copper foil dried in a vacuum drying oven (120°C) for 8 h, it was cut into a disc with a diameter of 14 mm and used as electrode for cell assembling in an argon glove box. The electrolyte was 1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)."
+          }
+        },
+        {
+          "condition_id": "C003",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "temperature_C": 25.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "CV",
+            "source_text": "Cyclic voltammetry (CV) tests ranging from 0.01 to 3.0 V were tested on Gamry interface 1010 at 25°C."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (1:1 by volume)",
+            "current_collector": "copper foil",
+            "assembly_environment": "argon glove box",
+            "li_counter_reference": "Li metal",
+            "source_text": "Polyvinylidene fluoride, acetylene black and HEO were mixed at the weight ratio of 1:1:8, a certain amount of NMP was added, and then applied to the copper foil current collector to form the working electrode. After the coated copper foil dried in a vacuum drying oven (120°C) for 8 h, it was cut into a disc with a diameter of 14 mm and used as electrode for cell assembling in an argon glove box. The electrolyte was 1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)."
+          }
+        },
+        {
+          "condition_id": "C004",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "reference_electrode": "Li/Li+",
+            "test_method": "EIS",
+            "source_text": "The electrochemical impedance spectroscopy (EIS) was also tested via Gamry interface 1010, with frequencies ranging from 0.1 to 100,000 Hz."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (1:1 by volume)",
+            "current_collector": "copper foil",
+            "assembly_environment": "argon glove box",
+            "li_counter_reference": "Li metal",
+            "source_text": "Polyvinylidene fluoride, acetylene black and HEO were mixed at the weight ratio of 1:1:8, a certain amount of NMP was added, and then applied to the copper foil current collector to form the working electrode. After the coated copper foil dried in a vacuum drying oven (120°C) for 8 h, it was cut into a disc with a diameter of 14 mm and used as electrode for cell assembling in an argon glove box. The electrolyte was 1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)."
+          }
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "reference_electrode": "Li/Li+",
+            "test_method": "GITT",
+            "source_text": "The galvanostatic intermittent titration technique (GITT) was applied to test the lithium ion diffusion performance during charge and discharge."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (1:1 by volume)",
+            "current_collector": "copper foil",
+            "assembly_environment": "argon glove box",
+            "li_counter_reference": "Li metal",
+            "source_text": "Polyvinylidene fluoride, acetylene black and HEO were mixed at the weight ratio of 1:1:8, a certain amount of NMP was added, and then applied to the copper foil current collector to form the working electrode. After the coated copper foil dried in a vacuum drying oven (120°C) for 8 h, it was cut into a disc with a diameter of 14 mm and used as electrode for cell assembling in an argon glove box. The electrolyte was 1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)."
+          }
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 100.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 200.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 500.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 1000.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 2000.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 3000.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C006",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 500.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "cycle_number": 260,
+            "source_text": "Fig. 4c shows the cycling performance of (FeCoNiCrMn)3O4 HEO and (FeCoNiCrMn)3O4 BM at 0.5 A g-1. ... even after 260 cycles its reversible capacity still reached up to 692.8 mA h g-1."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C007",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 2000.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "cycle_number": 1200,
+            "source_text": "For further testing the stability of (FeCoNiCrMn)3O4 HEO during charge/discharge, long cycles were tested at 2 A g-1. Even after 1200 cycles, ... still deliver a capacity of 596.5 mA h g-1."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C008",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "reference_electrode": "Li/Li+",
+            "test_method": "EIS",
+            "source_text": "EIS from 0.1 Hz to 100 kHz were tested"
+          }
+        },
+        {
+          "condition_id": "C009",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "CV",
+            "scan_rate_mV_s": 0.5,
+            "source_text": "In Fig. 5b and S8a-d, the capacitive contribution increases from 40.76% to 82.02% as the scan rate increases from 0.5 to 2.0 mV s⁻¹ (Fig. 5d)."
+          }
+        },
+        {
+          "condition_id": "C010",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "CV",
+            "scan_rate_mV_s": 2.0,
+            "source_text": "In Fig. 5b and S8a-d, the capacitive contribution increases from 40.76% to 82.02% as the scan rate increases from 0.5 to 2.0 mV s⁻¹ (Fig. 5d)."
+          }
+        }
+      ]
+    },
+    {
+      "material_id": "anode_M002",
+      "material_name": "(FeCoNiCrMn)3O4 BM",
+      "material_context": "comparison: (FeCoNiCrMn)3O4 BM",
+      "n_cond_paras": 6,
+      "n_perf_paras": 5,
+      "condition_id_used": "C001",
+      "all_conditions": [
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "current_density_mA_g": 2000,
+            "test_method": "galvanostatic",
+            "cycle_number": 1200,
+            "source_text": "achieved a high reversible capacity of 596.5 mA h g^-1 and a good capacity retention of 86.2% after 1200 cycles at 2.0 A g^-1"
+          }
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "temperature_C": 25.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "Electrochemical performances were carried out on the LAND CT2001A multi-channel battery test system (0.01–3 V) at 25°C."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (1:1 by volume)",
+            "current_collector": "copper foil",
+            "assembly_environment": "argon glove box",
+            "li_counter_reference": "Li metal",
+            "source_text": "Polyvinylidene fluoride, acetylene black and HEO were mixed at the weight ratio of 1:1:8, a certain amount of NMP was added, and then applied to the copper foil current collector to form the working electrode. After the coated copper foil dried in a vacuum drying oven (120°C) for 8 h, it was cut into a disc with a diameter of 14 mm and used as electrode for cell assembling in an argon glove box. The electrolyte was 1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)."
+          }
+        },
+        {
+          "condition_id": "C003",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "temperature_C": 25.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "CV",
+            "source_text": "Cyclic voltammetry (CV) tests ranging from 0.01 to 3.0 V were tested on Gamry interface 1010 at 25°C."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (1:1 by volume)",
+            "current_collector": "copper foil",
+            "assembly_environment": "argon glove box",
+            "li_counter_reference": "Li metal",
+            "source_text": "Polyvinylidene fluoride, acetylene black and HEO were mixed at the weight ratio of 1:1:8, a certain amount of NMP was added, and then applied to the copper foil current collector to form the working electrode. After the coated copper foil dried in a vacuum drying oven (120°C) for 8 h, it was cut into a disc with a diameter of 14 mm and used as electrode for cell assembling in an argon glove box. The electrolyte was 1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)."
+          }
+        },
+        {
+          "condition_id": "C004",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "reference_electrode": "Li/Li+",
+            "test_method": "EIS",
+            "source_text": "The electrochemical impedance spectroscopy (EIS) was also tested via Gamry interface 1010, with frequencies ranging from 0.1 to 100,000 Hz."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (1:1 by volume)",
+            "current_collector": "copper foil",
+            "assembly_environment": "argon glove box",
+            "li_counter_reference": "Li metal",
+            "source_text": "Polyvinylidene fluoride, acetylene black and HEO were mixed at the weight ratio of 1:1:8, a certain amount of NMP was added, and then applied to the copper foil current collector to form the working electrode. After the coated copper foil dried in a vacuum drying oven (120°C) for 8 h, it was cut into a disc with a diameter of 14 mm and used as electrode for cell assembling in an argon glove box. The electrolyte was 1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)."
+          }
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "reference_electrode": "Li/Li+",
+            "test_method": "GITT",
+            "source_text": "The galvanostatic intermittent titration technique (GITT) was applied to test the lithium ion diffusion performance during charge and discharge."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (1:1 by volume)",
+            "current_collector": "copper foil",
+            "assembly_environment": "argon glove box",
+            "li_counter_reference": "Li metal",
+            "source_text": "Polyvinylidene fluoride, acetylene black and HEO were mixed at the weight ratio of 1:1:8, a certain amount of NMP was added, and then applied to the copper foil current collector to form the working electrode. After the coated copper foil dried in a vacuum drying oven (120°C) for 8 h, it was cut into a disc with a diameter of 14 mm and used as electrode for cell assembling in an argon glove box. The electrolyte was 1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)."
+          }
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 100.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 200.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 500.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 1000.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 2000.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 3000.0,
+            "voltage_min_V": 0.01,
+            "voltage_max_V": 3.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C006",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 500.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "cycle_number": 260,
+            "source_text": "Fig. 4c shows the cycling performance of (FeCoNiCrMn)3O4 HEO and (FeCoNiCrMn)3O4 BM at 0.5 A g-1. ... even after 260 cycles its reversible capacity still reached up to 692.8 mA h g-1."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C007",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "current_density_mA_g": 2000.0,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "cycle_number": 1200,
+            "source_text": "For further testing the stability of (FeCoNiCrMn)3O4 HEO during charge/discharge, long cycles were tested at 2 A g-1. Even after 1200 cycles, ... still deliver a capacity of 596.5 mA h g-1."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C008",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "reference_electrode": "Li/Li+",
+            "test_method": "EIS",
+            "source_text": "EIS from 0.1 Hz to 100 kHz were tested"
+          }
+        },
+        {
+          "condition_id": "C009",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "CV",
+            "scan_rate_mV_s": 0.5,
+            "source_text": "In Fig. 5b and S8a-d, the capacitive contribution increases from 40.76% to 82.02% as the scan rate increases from 0.5 to 2.0 mV s⁻¹ (Fig. 5d)."
+          }
+        },
+        {
+          "condition_id": "C010",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "CV",
+            "scan_rate_mV_s": 2.0,
+            "source_text": "In Fig. 5b and S8a-d, the capacitive contribution increases from 40.76% to 82.02% as the scan rate increases from 0.5 to 2.0 mV s⁻¹ (Fig. 5d)."
+          }
+        }
+      ]
+    }
+  ],
+  "global_conditions": [
+    {
+      "condition_id": "C001",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "current_density_mA_g": 2000,
+        "test_method": "galvanostatic",
+        "cycle_number": 1200,
+        "source_text": "achieved a high reversible capacity of 596.5 mA h g^-1 and a good capacity retention of 86.2% after 1200 cycles at 2.0 A g^-1"
+      }
+    },
+    {
+      "condition_id": "C002",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "cell_config": "half-cell",
+        "temperature_C": 25.0,
+        "voltage_min_V": 0.01,
+        "voltage_max_V": 3.0,
+        "reference_electrode": "Li/Li+",
+        "test_method": "galvanostatic",
+        "source_text": "Electrochemical performances were carried out on the LAND CT2001A multi-channel battery test system (0.01–3 V) at 25°C."
+      },
+      "cell_assembly_conditions": {
+        "electrolyte_composition": "1 M LiPF6 in EC/DMC (1:1 by volume)",
+        "current_collector": "copper foil",
+        "assembly_environment": "argon glove box",
+        "li_counter_reference": "Li metal",
+        "source_text": "Polyvinylidene fluoride, acetylene black and HEO were mixed at the weight ratio of 1:1:8, a certain amount of NMP was added, and then applied to the copper foil current collector to form the working electrode. After the coated copper foil dried in a vacuum drying oven (120°C) for 8 h, it was cut into a disc with a diameter of 14 mm and used as electrode for cell assembling in an argon glove box. The electrolyte was 1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)."
+      }
+    },
+    {
+      "condition_id": "C003",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "cell_config": "half-cell",
+        "temperature_C": 25.0,
+        "voltage_min_V": 0.01,
+        "voltage_max_V": 3.0,
+        "reference_electrode": "Li/Li+",
+        "test_method": "CV",
+        "source_text": "Cyclic voltammetry (CV) tests ranging from 0.01 to 3.0 V were tested on Gamry interface 1010 at 25°C."
+      },
+      "cell_assembly_conditions": {
+        "electrolyte_composition": "1 M LiPF6 in EC/DMC (1:1 by volume)",
+        "current_collector": "copper foil",
+        "assembly_environment": "argon glove box",
+        "li_counter_reference": "Li metal",
+        "source_text": "Polyvinylidene fluoride, acetylene black and HEO were mixed at the weight ratio of 1:1:8, a certain amount of NMP was added, and then applied to the copper foil current collector to form the working electrode. After the coated copper foil dried in a vacuum drying oven (120°C) for 8 h, it was cut into a disc with a diameter of 14 mm and used as electrode for cell assembling in an argon glove box. The electrolyte was 1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)."
+      }
+    },
+    {
+      "condition_id": "C004",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "cell_config": "half-cell",
+        "reference_electrode": "Li/Li+",
+        "test_method": "EIS",
+        "source_text": "The electrochemical impedance spectroscopy (EIS) was also tested via Gamry interface 1010, with frequencies ranging from 0.1 to 100,000 Hz."
+      },
+      "cell_assembly_conditions": {
+        "electrolyte_composition": "1 M LiPF6 in EC/DMC (1:1 by volume)",
+        "current_collector": "copper foil",
+        "assembly_environment": "argon glove box",
+        "li_counter_reference": "Li metal",
+        "source_text": "Polyvinylidene fluoride, acetylene black and HEO were mixed at the weight ratio of 1:1:8, a certain amount of NMP was added, and then applied to the copper foil current collector to form the working electrode. After the coated copper foil dried in a vacuum drying oven (120°C) for 8 h, it was cut into a disc with a diameter of 14 mm and used as electrode for cell assembling in an argon glove box. The electrolyte was 1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)."
+      }
+    },
+    {
+      "condition_id": "C005",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "cell_config": "half-cell",
+        "reference_electrode": "Li/Li+",
+        "test_method": "GITT",
+        "source_text": "The galvanostatic intermittent titration technique (GITT) was applied to test the lithium ion diffusion performance during charge and discharge."
+      },
+      "cell_assembly_conditions": {
+        "electrolyte_composition": "1 M LiPF6 in EC/DMC (1:1 by volume)",
+        "current_collector": "copper foil",
+        "assembly_environment": "argon glove box",
+        "li_counter_reference": "Li metal",
+        "source_text": "Polyvinylidene fluoride, acetylene black and HEO were mixed at the weight ratio of 1:1:8, a certain amount of NMP was added, and then applied to the copper foil current collector to form the working electrode. After the coated copper foil dried in a vacuum drying oven (120°C) for 8 h, it was cut into a disc with a diameter of 14 mm and used as electrode for cell assembling in an argon glove box. The electrolyte was 1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)."
+      }
+    },
+    {
+      "condition_id": "C002",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "cell_config": "half-cell",
+        "current_density_mA_g": 100.0,
+        "voltage_min_V": 0.01,
+        "voltage_max_V": 3.0,
+        "reference_electrode": "Li/Li+",
+        "test_method": "galvanostatic",
+        "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+      },
+      "cell_assembly_conditions": {},
+      "electrode_fabrication_params": {}
+    },
+    {
+      "condition_id": "C002",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "cell_config": "half-cell",
+        "current_density_mA_g": 200.0,
+        "voltage_min_V": 0.01,
+        "voltage_max_V": 3.0,
+        "reference_electrode": "Li/Li+",
+        "test_method": "galvanostatic",
+        "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+      },
+      "cell_assembly_conditions": {},
+      "electrode_fabrication_params": {}
+    },
+    {
+      "condition_id": "C002",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "cell_config": "half-cell",
+        "current_density_mA_g": 500.0,
+        "voltage_min_V": 0.01,
+        "voltage_max_V": 3.0,
+        "reference_electrode": "Li/Li+",
+        "test_method": "galvanostatic",
+        "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+      },
+      "cell_assembly_conditions": {},
+      "electrode_fabrication_params": {}
+    },
+    {
+      "condition_id": "C002",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "cell_config": "half-cell",
+        "current_density_mA_g": 1000.0,
+        "voltage_min_V": 0.01,
+        "voltage_max_V": 3.0,
+        "reference_electrode": "Li/Li+",
+        "test_method": "galvanostatic",
+        "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+      },
+      "cell_assembly_conditions": {},
+      "electrode_fabrication_params": {}
+    },
+    {
+      "condition_id": "C002",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "cell_config": "half-cell",
+        "current_density_mA_g": 2000.0,
+        "voltage_min_V": 0.01,
+        "voltage_max_V": 3.0,
+        "reference_electrode": "Li/Li+",
+        "test_method": "galvanostatic",
+        "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+      },
+      "cell_assembly_conditions": {},
+      "electrode_fabrication_params": {}
+    },
+    {
+      "condition_id": "C002",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "cell_config": "half-cell",
+        "current_density_mA_g": 3000.0,
+        "voltage_min_V": 0.01,
+        "voltage_max_V": 3.0,
+        "reference_electrode": "Li/Li+",
+        "test_method": "galvanostatic",
+        "source_text": "Fig. 4a shows the charge-discharge curves of (FeCoNiCrMn)3O4 HEO at 0.01–3.00 V at various rates (0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g-1)."
+      },
+      "cell_assembly_conditions": {},
+      "electrode_fabrication_params": {}
+    },
+    {
+      "condition_id": "C006",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "cell_config": "half-cell",
+        "current_density_mA_g": 500.0,
+        "reference_electrode": "Li/Li+",
+        "test_method": "galvanostatic",
+        "cycle_number": 260,
+        "source_text": "Fig. 4c shows the cycling performance of (FeCoNiCrMn)3O4 HEO and (FeCoNiCrMn)3O4 BM at 0.5 A g-1. ... even after 260 cycles its reversible capacity still reached up to 692.8 mA h g-1."
+      },
+      "cell_assembly_conditions": {},
+      "electrode_fabrication_params": {}
+    },
+    {
+      "condition_id": "C007",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "cell_config": "half-cell",
+        "current_density_mA_g": 2000.0,
+        "reference_electrode": "Li/Li+",
+        "test_method": "galvanostatic",
+        "cycle_number": 1200,
+        "source_text": "For further testing the stability of (FeCoNiCrMn)3O4 HEO during charge/discharge, long cycles were tested at 2 A g-1. Even after 1200 cycles, ... still deliver a capacity of 596.5 mA h g-1."
+      },
+      "cell_assembly_conditions": {},
+      "electrode_fabrication_params": {}
+    },
+    {
+      "condition_id": "C008",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "cell_config": "half-cell",
+        "reference_electrode": "Li/Li+",
+        "test_method": "EIS",
+        "source_text": "EIS from 0.1 Hz to 100 kHz were tested"
+      }
+    },
+    {
+      "condition_id": "C009",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "test_method": "CV",
+        "scan_rate_mV_s": 0.5,
+        "source_text": "In Fig. 5b and S8a-d, the capacitive contribution increases from 40.76% to 82.02% as the scan rate increases from 0.5 to 2.0 mV s⁻¹ (Fig. 5d)."
+      }
+    },
+    {
+      "condition_id": "C010",
+      "material_id": "global",
+      "electrochemical_test_conditions": {
+        "test_method": "CV",
+        "scan_rate_mV_s": 2.0,
+        "source_text": "In Fig. 5b and S8a-d, the capacitive contribution increases from 40.76% to 82.02% as the scan rate increases from 0.5 to 2.0 mV s⁻¹ (Fig. 5d)."
+      }
+    }
+  ],
+  "global_condition_id": "C001"
+}

@@ -1,0 +1,493 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.ensm.2026.104885.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/j.ensm.2026.104885",
+  "doi": "10.1016/j.ensm.2026.104885",
+  "material_id": "10.1016_j.ensm.2026.104885",
+  "meta": {
+    "meta_title": "Nonflammable F-rich high-entropy electrolytes with manipulated solvent coordinat",
+    "meta_authors": "Zhiwei Ni a , Yuan Li a , Zhengran Wang a , Suyun Liu a , Junjie Liu a , Chen Yang a , Huizi Zhang a , Juan Geng a , Chenghui Zhang b , Shenglin Xiong c , Baojuan Xi c , Jinkui Feng a,",
+    "meta_year": "2026"
+  },
+  "materials": [
+    {
+      "name": "1M LiPF6 in FEC:DFEA:FEMC:MTFA:PFPN (2:3:3:3:1 v/v)",
+      "short_name": "F-HE",
+      "formula": "1M LiPF6 FEC:DFEA:FEMC:MTFA:PFPN (2:3:3:3:1)",
+      "role": "novel",
+      "description": "Non-flammable high-entropy fluorinated electrolyte; primary formulation studied in the work.",
+      "material_id": "10.1016_j.ensm.2026.104885_M001"
+    },
+    {
+      "name": "1M LiPF6 in FEC:DFEA:MTFA (2:6:4 v/v)",
+      "short_name": "DFEA-base",
+      "formula": "1M LiPF6 FEC:DFEA:MTFA (2:6:4)",
+      "role": "comparison",
+      "description": "Fluorinated electrolyte using DFEA as the only fluorinated linear carbonate, without FEMC.",
+      "material_id": "10.1016_j.ensm.2026.104885_M002"
+    },
+    {
+      "name": "1M LiPF6 in FEC:FEMC:MTFA (2:6:4 v/v)",
+      "short_name": "FEMC-base",
+      "formula": "1M LiPF6 FEC:FEMC:MTFA (2:6:4)",
+      "role": "comparison",
+      "description": "Fluorinated electrolyte using FEMC as the only fluorinated linear carbonate, without DFEA.",
+      "material_id": "10.1016_j.ensm.2026.104885_M003"
+    },
+    {
+      "name": "1M LiPF6 in EC:EA:EMC:MTFA:PFPN (2:3:3:3:1 v/v)",
+      "short_name": "N-HE",
+      "formula": "1M LiPF6 EC:EA:EMC:MTFA:PFPN (2:3:3:3:1)",
+      "role": "comparison",
+      "description": "Non-fluorinated high-entropy electrolyte with conventional carbonate solvents (EC, EA, EMC).",
+      "material_id": "10.1016_j.ensm.2026.104885_M004"
+    },
+    {
+      "name": "1M LiPF6 in EC:DEC (1:1 v/v)",
+      "short_name": "EC/DEC",
+      "formula": "1M LiPF6 EC:DEC (1:1)",
+      "role": "baseline",
+      "description": "Conventional carbonate electrolyte baseline, 1M LiPF6 in EC/DEC 1:1 v/v.",
+      "material_id": "10.1016_j.ensm.2026.104885_M005"
+    }
+  ],
+  "n_materials": 5,
+  "table_items": [],
+  "n_items": 10,
+  "items": [
+    {
+      "paragraph": "For an in-depth exploration of the reason behind the remarkably high-voltage stability conferred by the application of F-HE, a series of characterizations, including in-situ and ex-situ characterizati",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "CEI_Thickness"
+      ],
+      "performance_info": {
+        "CEI_Thickness": [
+          {
+            "value": "1.5-3.6",
+            "unit": "nm",
+            "cycle_number": 0,
+            "method": "TEM",
+            "source_text": "about 1.53.6 nm"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "After an in-depth analysis of the solvation environment, the induced interfacial components were also studied by X-ray photoelectron spectroscopy XPS. Based on the results analyzed above, for one thin",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "LiF_Content_in_SEI_CEI",
+        "Li2O_Content_in_SEI",
+        "Inorganic_Organic_Ratio_SEI_CEI"
+      ],
+      "performance_info": {
+        "LiF_Content_in_SEI_CEI": [
+          {
+            "unit": "at%",
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "source_text": "LiF and mathrm mathrm x mathrm F mathrm y , favorable SEI components with high ionic conductivity and good durability 24 appeared in F 1s spectra after cycling in four different electrolytes. The difference is the content of LiF and mathrm mathrm x mathrm F mathrm y , , SEI derived from F-HE possesses the most mathrm mathrm x mathrm F mathrm y , while the SEI derived from N-HE is the least Fig. 5b, e, h, and k."
+          }
+        ],
+        "Li2O_Content_in_SEI": [
+          {
+            "unit": "at%",
+            "cycle_number": 0,
+            "source_text": "all interfaces have mathrm 2 mathrm O except the N-HE derived, thereinto, there are most mathrm 2 mathrm O in the SEI derived by the F-HE."
+          }
+        ],
+        "Inorganic_Organic_Ratio_SEI_CEI": [
+          {
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "source_text": "SEI derived from the DFEA-base and N-HE contain more organic components compared to the F-HE and FEMC-base, indicating that there are more weighted solvation structures in the F-HE and FEMC-base."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "A large-scale MD simulation was carried out to demonstrate the advantages of high-entropy fluorinated electrolytes at the micro/mesoscopic scale. Fig. 4a-c. Firstly, the sizes of the solvation cluster",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "voltage_range": {
+            "max": 5.0,
+            "unit": "V",
+            "reference": "vs. Li/Li⁺"
+          }
+        },
+        {
+          "condition_id": "C002",
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C003",
+          "electrode_config": "Li symmetric cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Furthermore, the Fourier transform spectrum reveals that, despite cycling under ultrahigh-voltage, NCM 811 particles manage to retain an intact layered structure, which is ascribed to a powerful CEI e",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "electrolyte": "F-HE",
+          "electrode_config": "half-cell (Li||NCM811)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "cycling",
+          "voltage_range": {
+            "unit": "V",
+            "reference": "ultrahigh-voltage"
+          }
+        },
+        {
+          "condition_id": "C005",
+          "electrolyte": "N-HE",
+          "electrode_config": "half-cell (Li||NCM811)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "cycling",
+          "voltage_range": {
+            "unit": "V",
+            "reference": "ultrahigh-voltage"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "CEI_Thickness"
+      ],
+      "performance_info": {
+        "CEI_Thickness": [
+          {
+            "value": "5.2–27.2",
+            "unit": "nm",
+            "condition_id": "C002",
+            "source_text": "a thick and uneven CEI 5.227.2 nm was detected in NCM 811 cycled in N-HE"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "To obtain a more lucid representation of the phase transition process during voltage alterations, the in-situ X-ray diffraction in-situ XRD technique was employed for analysis the detailed description",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "electrolyte": "1M LiPF6 in FEC:DFEA:FEMC:MTFA:PFPN (2:3:3:3:1 v/v)"
+        },
+        {
+          "condition_id": "C007",
+          "electrolyte": "1M LiPF6 in EC:EA:EMC:MTFA:PFPN (2:3:3:3:1 v/v)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In summary, we propose a strategy of an intrinsically nonflammable high-entropy fluorinated electrolyte F-HE, which systematically integrates the characteristics of fluorination and high-entropy, mini",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.0,
+            "max": 4.8,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 300,
+          "electrolyte": "1M LiPF6 in FEC:DFEA:FEMC:MTFA:PFPN (2:3:3:3:1 v/v)",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency",
+        "Capacity_Retention",
+        "Voltage_Hysteresis"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 98.2,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C001",
+            "source_text": "high coulombic efficiency 98.2 % and low overpotential 85 mV can be achieved at high current densities"
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 80.0,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C001",
+            "source_text": "stable cycling with about 80 % CR after 300 cycles under ultrahigh-voltage 4.8V"
+          }
+        ],
+        "Voltage_Hysteresis": [
+          {
+            "value": 85.0,
+            "unit": "mV",
+            "condition_id": "C001",
+            "source_text": "low overpotential 85 mV can be achieved at high current densities"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "With the exception of compatibility with the Li anode, the emphasis on judging electrolytes should also be on compatibility with the positive electrode, specifically under ultrahigh-voltage conditions",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "voltage_range": {
+            "max": 4.8,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "1M LiPF6 in FEC:DFEA:FEMC:MTFA:PFPN (2:3:3:3:1 v/v)",
+          "cycle_number": 300,
+          "electrode_config": "NCM 811 || Li (high-loading cathode, limited negative electrode)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C010",
+          "temperature": {
+            "value": -20,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "max": 4.8,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "1M LiPF6 in FEC:DFEA:FEMC:MTFA:PFPN (2:3:3:3:1 v/v)",
+          "cycle_number": 100,
+          "electrode_config": "NCM 811 || Li (assumed same cell type)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C011",
+          "voltage_range": {
+            "max": 4.8,
+            "unit": "V"
+          },
+          "electrolyte": "1M LiPF6 in FEC:DFEA:FEMC:MTFA:PFPN (2:3:3:3:1 v/v)",
+          "electrode_config": "Ah-level pouch cell",
+          "test_method": "galvanostatic test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Energy_Density"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 80,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C001",
+            "source_text": "capacity retention about 80 % after a 300- week cycle"
+          },
+          {
+            "value": 87.4,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C002",
+            "source_text": "retaining about 87.4 % of initial capacity after 100 cycles under -20◦C"
+          }
+        ],
+        "Energy_Density": [
+          {
+            "value": {
+              "gravimetric": 355
+            },
+            "unit": "Wh/kg",
+            "basis": "gravimetric",
+            "condition_id": "C003",
+            "source_text": "with an energy density as high as 355 Wh mathbf - 1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To investigate the stability of the designed electrolyte toward the Li anode, the reversible plating/stripping behavior of Li was first evaluated through LiLi cells under a constant current density of",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "Li||Li symmetric cell"
+        },
+        {
+          "condition_id": "C013",
+          "temperature": {
+            "value": -20,
+            "unit": "°C"
+          },
+          "electrode_config": "Li||Li symmetric cell",
+          "test_method": "DRT analysis/EIS"
+        },
+        {
+          "condition_id": "C014",
+          "electrode_config": "half_cell",
+          "test_method": "Aurbach method"
+        },
+        {
+          "condition_id": "C015",
+          "electrode_config": "half_cell",
+          "cycle_number": 100,
+          "test_method": "plating/stripping CE test"
+        },
+        {
+          "condition_id": "C016",
+          "electrode_config": "Li||Li symmetric cell",
+          "test_method": "EIS/DRT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Voltage_Hysteresis",
+        "Coulombic_Efficiency",
+        "Li_Desolvation_Activation_Energy"
+      ],
+      "performance_info": {
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.04,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "F-HE exhibited highly reversible plating/stripping behavior, manifesting as the lowest overpotential 40 mV"
+          },
+          {
+            "value": 0.8,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "a dramatic increase of the overpotential even to 800 mV is found in the subsequent cycle using N-HE"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 96.9,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C004",
+            "source_text": "Cells using F-HE exhibited the highest platting/stripping CE within 100 cycles 96.9 %"
+          }
+        ],
+        "Li_Desolvation_Activation_Energy": [
+          {
+            "value": 0.4668,
+            "unit": "eV",
+            "condition_id": "C005",
+            "method": "EIS/DRT",
+            "electrode": "Li symmetric cell",
+            "source_text": "activation energy for Li symmetric cells with the F-HE is estimated to be 45.03 kJ mol− 1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The differential capacity versus voltage of cells cycled in different electrolytes was analyzed to gain a more comprehensive understanding of the phase transformation process during ultrahigh-voltage ",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "electrolyte": "1M LiPF6 in FEC:DFEA:FEMC:MTFA:PFPN (2:3:3:3:1 v/v)",
+          "test_method": "ultrahigh-voltage cycling, differential capacity analysis"
+        },
+        {
+          "condition_id": "C018",
+          "electrolyte": "1M LiPF6 in EC:EA:EMC:MTFA:PFPN (2:3:3:3:1 v/v)",
+          "test_method": "ultrahigh-voltage cycling, differential capacity analysis"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Inorganic_Organic_Ratio_SEI_CEI",
+        "CEI_Thickness"
+      ],
+      "performance_info": {
+        "Inorganic_Organic_Ratio_SEI_CEI": [
+          {
+            "interphase": "CEI",
+            "cycle_number": 0,
+            "condition_id": "C001",
+            "source_text": "CEI derived from F-HE contains minimal organic components"
+          },
+          {
+            "interphase": "CEI",
+            "cycle_number": 0,
+            "condition_id": "C002",
+            "source_text": "CEI composition contains a substantial quantity of organic components"
+          }
+        ],
+        "CEI_Thickness": [
+          {
+            "unit": "nm",
+            "cycle_number": 0,
+            "method": "TEM",
+            "condition_id": "C001",
+            "source_text": "CEI derived from F-HE contains minimal organic components and is of thin thickness"
+          },
+          {
+            "unit": "nm",
+            "cycle_number": 0,
+            "method": "TEM",
+            "condition_id": "C002",
+            "source_text": "CEI composition contains a substantial quantity of organic components and features a relatively thick layer"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "mathrmD mathrmaexp leftfrac b S e xk Bright tag 1 Constructing HEE with fluorinated solvents can stabilize the Li anode while ensuring ionic conductivity. A series of non-fluorinated carbonates, inclu",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "electrolyte": "1M LiPF6 in FEC:DFEA:FEMC:MTFA:PFPN (2:3:3:3:1 v/v) (F-HE)",
+          "electrode_config": "LiSS cells",
+          "reference_electrode": "Li/Li+",
+          "test_method": "linear sweep voltammetry (LSV) at 5 mV/s"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Anodic_Stability_Onset_Potential"
+      ],
+      "performance_info": {
+        "Anodic_Stability_Onset_Potential": [
+          {
+            "value": 5.2,
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C001",
+            "source_text": "F-HE displays a significantly higher oxidation stability 5.2 V than EC/DEC and N-HE"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

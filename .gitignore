@@ -1,0 +1,63 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Pytest and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Agent runtime state and cache
+.abr_agent/
+.deepseek/
+
+# Runtime outputs: task-scoped artifacts, workflow state, RAG results (generated per goal)
+output/
+
+# Runtime logs directory
+log/
+
+# Local scratch / debug scripts
+scratch/
+
+# Environment and sensitive keys
+.env
+*.env
+*.key
+*.pem
+
+# Vector DB & Heavy Mining outputs
+miner/chroma/
+miner/json/metadata/
+src/miner/
+src/lmllm/RAG/output/logs/
+src/lmllm/RAG/multi_turn/data/
+src/lmllm/RAG/data/raw/
+
+# Temporary / Benchmarks
+_bench_*
+*.log
+*.tmp
+paragraph_metadata_test.json
+doi.py
+
+# IDE & OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

@@ -1,0 +1,680 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.electacta.2024.144444.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.electacta.2024.144444",
+  "doi": "10.1016/j.electacta.2024.144444",
+  "material_id": "10.1016_j.electacta.2024.144444",
+  "meta": {
+    "meta_title": "High-performance lithium metal anode enhanced by multifunctional film of PAN@AgN",
+    "meta_authors": "Fangya Li a , Shuai Liu a,\\* , Qingsong Meng a , Xinbin Li a , Kaiwen Ma a , Hao Xu a , Zhiang Li a , Fan Ding a , Tong Xiao a , Guanbin Peng a , Xinshun Yuan a , Jie Liu e , Ting Wang f , Weimin Wang c , Kaikai Song d , Ting Liu b,\\* , Lina Hu c,",
+    "meta_year": "2024"
+  },
+  "materials": [
+    {
+      "name": "Lithium-polyacrylonitrile/polyaniline-silver nanowire composite anode",
+      "short_name": "Li-PANAgNWs",
+      "formula": "Li@PAN/PANI-AgNWs",
+      "role": "novel",
+      "description": "Lithium electrodeposited onto an electrospun PAN/PANI membrane with filtered Ag nanowires, forming the lithiophilic composite anode.",
+      "material_id": "10.1016_j.electacta.2024.144444_M001"
+    },
+    {
+      "name": "Lithium-polyacrylonitrile/polyaniline composite anode",
+      "short_name": "Li-PAN",
+      "formula": "Li@PAN/PANI",
+      "role": "comparison",
+      "description": "Lithium electrodeposited onto an electrospun PAN/PANI membrane without Ag nanowires, used as a control to demonstrate the benefit of Ag addition.",
+      "material_id": "10.1016_j.electacta.2024.144444_M002"
+    }
+  ],
+  "n_materials": 2,
+  "table_items": [],
+  "n_items": 10,
+  "items": [
+    {
+      "paragraph": "X-ray photoelectron spectroscopy XPS was used to examine the PANAgNWs composites’ elemental composition and chemical valence state, as illustrated in Fig. j and k. The high-resolution XPS spectra of A",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Ag",
+              "C",
+              "N",
+              "O",
+              "H"
+            ],
+            "method": "XPS, FTIR",
+            "source_text": "X-ray photoelectron spectroscopy XPS was used to examine the PANAgNWs composites’ elemental composition and chemical valence state... The high-resolution XPS spectra of Ag for PANAgNWs are shown in Fig. 2j, and they can be divided into Ag 3d3/2 and Ag 3d5/2... The N1s spin orbitals can be broken down into four peaks... -C=N 399.75 eV... N-396.7 eV, -NH- 397.9 eV, and N 399.5... Moreover, the primary characteristics of the vibrational PAN was visible in the FTIR spectra of PAN and PANAgNWs Fig. 2l... 1460 cm-1, the C–H bending vibration of CH2... 1104 cm-1... 803 cm-1 a band corresponding to the out-of-plane bending vibration of the C-H bond... the peak at 1660 cm-1 could be attributable to the CC carbonyl stretching..."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To further investigate the inhibition mechanism of the Li-PANAgNWs structure on the growth of Li dendrites, the symmetric cell composed of pure Li and the Li-PANAgNWs was firstly charged and discharge",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 100,
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To investigate the electrochemical performance of PANAgNWs composite anode batteries, all batteries were assembled in an Ar-filled glove box using ordinary R2032-type coin cells. The working electrode",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrolyte": "1 M LiTFSI in DME:DOL (1:1 v/v) with 1 wt% LiNO3",
+          "electrode_config": "symmetric_cell",
+          "test_method": "CV, EIS, galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C003",
+          "electrolyte": "1.0 M LiPF6 in EC:EMC (3:7 v/v) with 10% FEC",
+          "mass_loading": {
+            "value": 2.7,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "CV, EIS, galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Electrochemical impedance measurements are utilized to evaluate the interfacial stability of cells with and without PANAgNWs composite current collector. Nyquist plots of symmetric cells are used to c",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 50,
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 180,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 120,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct",
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 2.0,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "The Li-PANAgNWs symmetric cells has a lower interfacial resistance of 2 Ω."
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 96.2,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "The coulomb efficiency CE of the Li-PANAgNWs collector remained above 96.2% after 180 cycles at 0.5 mA cm−2 current density"
+          },
+          {
+            "value": 98.0,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "The CE of the Li-PANAgNWs current collector could be stabilized at 98% for 120 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To investigate the cycle stability of the Li-PANAgNWs composite anode, the bare lithium and Li-PANAgNWs composite anode were first constructed into a symmetrical battery with a current density of 1 mA",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell"
+        },
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential",
+        "Li_Nucleation_Overpotential",
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 16.7,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "the overpotential of Li-PANAgNWs symmetrical battery remains a low voltage platform about 16.7 mV over 4500 h"
+          }
+        ],
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 23.4,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 2.0,
+            "source_text": "low nucleation overpotential of 23.4 mV when the current density is increased to 2 mA cm 2 Fig. 3b."
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 4500.0,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "over 4500 h"
+          },
+          {
+            "value": 800.0,
+            "unit": "h",
+            "condition_id": "C002",
+            "source_text": "The Li-PANAgNWs electrode still demonstrate excellent cycle performance 800 h"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Simple electrospinning is used to prepare the Polyacrylonitrile mixtures spinning substrate. In order to create an electrospinning precursor solution, the polymer solution employs N,N-dimethylformamid",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "test_method": "electrospinning and vacuum drying",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "value": 20,
+            "unit": "kV"
+          },
+          "distance": {
+            "value": 20,
+            "unit": "cm"
+          },
+          "injection_speed": {
+            "value": 0.1,
+            "unit": "mL/h"
+          },
+          "drying_time": {
+            "value": 12,
+            "unit": "h"
+          }
+        },
+        {
+          "condition_id": "C010",
+          "test_method": "galvanostatic lithium plating",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "mass_loading": {
+            "value": 3.89,
+            "unit": "mg/cm2"
+          }
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Li@PAN/PANI-AgNWs",
+            "state": "composite",
+            "source_text": "Lithium-polyacrylonitrile/polyaniline-silver nanowire composite anode (Li@PAN/PANI-AgNWs)"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The SEM image in Fig. S4 confirms the critical role of the lithiophilic unit of the PANAgNWs composite anode in lithium deposition, and it is compared to pure lithium. After depositing 15 mAh cm− 2 of",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "test_method": "galvanostatic electrodeposition",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C011",
+          "test_method": "galvanostatic electrodeposition",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C011",
+          "test_method": "galvanostatic electrodeposition",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C011",
+          "test_method": "galvanostatic electrodeposition",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 15,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "After depositing 15 mAh cm−2 of lithium on the bare lithium electrode"
+          },
+          {
+            "value": 5,
+            "unit": "mAh/cm2",
+            "condition_id": "C002",
+            "source_text": "when 5 mAh cm−2 of lithium is deposited on the PANAgNWs current collector"
+          },
+          {
+            "value": 10,
+            "unit": "mAh/cm2",
+            "condition_id": "C003",
+            "source_text": "When the amount of lithium deposition increases 10 mAh cm−2"
+          },
+          {
+            "value": 15,
+            "unit": "mAh/cm2",
+            "condition_id": "C004",
+            "source_text": "electroplating 15 mAh cm−2 lithium is deposited along the linear structure of the PANAgNWs"
+          }
+        ]
+      },
+      "condition_id": "C004"
+    },
+    {
+      "paragraph": "As shown in Fig. 3c, the symmetric battery consisting of Li-PANAgNWs composite film with lithium is able to cycle stably for a longer period of time and with a lower overpotential compared to previous",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic lithium plating"
+        },
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [
+        "Exchange_Current_Density"
+      ],
+      "extracted_info": {
+        "Exchange_Current_Density": [
+          {
+            "value": 5.42,
+            "unit": "mA/cm2",
+            "method": "Tafel plot",
+            "source_text": "calculations based on Tafel plots indicate that the Li-PANAgNWs electrode has a greater exchange current density 5.42 mA cm−2"
+          },
+          {
+            "value": 0.16,
+            "unit": "mA/cm2",
+            "method": "Tafel plot",
+            "source_text": "than the bare Li electrode 0.16 mA cm−2"
+          }
+        ]
+      },
+      "performance_types": [
+        "Li_Nucleation_Overpotential",
+        "Plateau_Overpotential"
+      ],
+      "performance_info": {
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 12.1,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 0.5,
+            "source_text": "The Li nucleation overpotential of Cu foil is 54.6 mV, which is 4.51 times higher than the nucleation overpotential of the Li-PANAgNWs current collector 12.1 mV."
+          },
+          {
+            "value": 54.6,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 0.5,
+            "source_text": "The Li nucleation overpotential of Cu foil is 54.6 mV"
+          }
+        ],
+        "Plateau_Overpotential": [
+          {
+            "value": 10,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 0.5,
+            "source_text": "lower polarization voltages of 10 mV at 0.5 mA cm−2 for Li-PANAgNWs symmetric cells"
+          },
+          {
+            "value": 15,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "lower polarization voltages of 15 mV at 1 mA cm−2"
+          },
+          {
+            "value": 26,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 2.0,
+            "source_text": "lower polarization voltages of 26 mV at 2 mA cm−2"
+          },
+          {
+            "value": 35,
+            "unit": "mV",
+            "condition_id": "C002",
+            "source_text": "lower polarization voltages of 35 mV at a current density not explicitly given (sequence before 5 mA cm−2)"
+          },
+          {
+            "value": 54,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "source_text": "lower polarization voltages of 54 mV at 5 mA cm−2"
+          },
+          {
+            "value": 72,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "source_text": "The overpotential of bare Li symmetric cells, in comparison, is greater, especially at high current densities 72 mV"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To further validate the performance of the proposed PANAgNWs framework, the Li-PANAgNWs and bare lithium electrodes are assembled with a LiFePO4 LFP cathode for the entire cell Fig. 5. The Li-PANAgNWs",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "vs Li/Li+"
+          },
+          "cycle_number": 500,
+          "electrode_config": "full_cell",
+          "reference_electrode": "vs Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "vs Li/Li+"
+          },
+          "cycle_number": 500,
+          "electrode_config": "full_cell",
+          "reference_electrode": "vs Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": "0.2, 0.3, 0.5, 1, 2, 5, 0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "vs Li/Li+"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "vs Li/Li+",
+          "test_method": "rate capability test, galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C017",
+          "electrode_config": "full_cell",
+          "reference_electrode": "vs Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C018",
+          "electrode_config": "full_cell",
+          "reference_electrode": "vs Li/Li+",
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle",
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 104.6,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 500,
+            "source_text": "The whole-cell Li-PANAgNWs LFP has a high reversible capacity of 144.18 mAh g - 1 and a capacity retention rate of 104.6 %."
+          },
+          {
+            "value": 74.3,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 500,
+            "source_text": "after 500 cycles, the capacity retention rate of LiLFP full cell is only 74.3 %"
+          },
+          {
+            "value": 68.5,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 320,
+            "source_text": "After 320 cycles, the capacity retention rate is only 68.5 %, which confirms the importance of adding silver to the battery performance"
+          },
+          {
+            "value": 95.2,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 500,
+            "source_text": "The capacity retention of the Li-PANAgNWsLFP full cell is still as high as 95.2 % after 500 cycles when the full cell rate increases to 2 C"
+          },
+          {
+            "value": 65.4,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 500,
+            "source_text": "The capacity retention after 500 cycles is only 65.4 %, which may be due to repeated growth of Li dendrites causes the formation of dead Li"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 156.35,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "voltage_range": "2.8-4.2 V",
+            "source_text": "deliver reversible capacities of 156.35 mAh g - 1 at 0.2 C"
+          },
+          {
+            "value": 155.63,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "voltage_range": "2.8-4.2 V",
+            "source_text": "deliver reversible capacities of 155.63 mAh g - 1 at 0.3 C"
+          },
+          {
+            "value": 153.05,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "voltage_range": "2.8-4.2 V",
+            "source_text": "deliver reversible capacities of 153.05 mAh g - 1 at 0.5 C"
+          },
+          {
+            "value": 146.36,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "voltage_range": "2.8-4.2 V",
+            "source_text": "deliver reversible capacities of 146.36 mAh g - 1 at 1 C"
+          },
+          {
+            "value": 134.93,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "voltage_range": "2.8-4.2 V",
+            "source_text": "deliver reversible capacities of 134.93 mAh g - 1 at 2 C"
+          },
+          {
+            "value": 100.83,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "voltage_range": "2.8-4.2 V",
+            "source_text": "deliver reversible capacities of 100.83 mAh g - 1 at 5 C"
+          },
+          {
+            "value": 157.34,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "voltage_range": "2.8-4.2 V",
+            "source_text": "deliver reversible capacities of 157.34 mAh g - 1 at 0.2 C (return)"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In summary, a unique multifunctional membrane of electrostatically spun Polyacrylonitrile Silver nanowires PANAgNWs was prepared by a simple and controlled filtration extraction method. The nucleation",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "cycle_number": 500,
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential",
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 16.7,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "low voltage hysteresis 16.7 mV for 4500 h"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 144.18,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "after 500 cycles at 1 C, the entire cell built with Li-PANAgNWs and lithium iron phosphate LFP still retains an ultrahigh capacity of 144.18 mAh g - 1"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 104.6,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 500,
+            "source_text": "after 500 cycles at 1 C ... with a capacity retention of 104.6 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

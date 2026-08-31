@@ -1,0 +1,1938 @@
+[
+  {
+    "title": "Nanostructured $\\mathsf { L i } _ { 2 } \\mathsf { M n S i O } _ { 4 } / \\mathsf { C }$ Cathodes with Hierarchical Macro-/Mesoporosity for Lithium-Ion Batteries",
+    "authors": "Guang He and Arumugam Manthiram \\*",
+    "publication_date": "2014",
+    "doi": "10.1002/adfm.201400610",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adfm.201400610.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Interlayer Chemistry of Layered Electrode Materials in Energy Storage Devices",
+    "authors": "Yufei Zhang, Edison Huixiang Ang, Yang Yang, Minghui Ye, Wencheng Du, and Cheng Chao Li\\*",
+    "publication_date": "2020",
+    "doi": "10.1002/adfm.202007358",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adfm.202007358.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "The Synergistic Effect of Anion: Design of Stable Ether Electrolytes for Li Metal Batteries Beyond 4.6 V",
+    "authors": "Si Shen, Dandan Chai, Xiang Li,\\* and Yongzhu Fu\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/adfm.202424072",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adfm.202424072.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Bifunctional Current Collectors for Lean-Lithium Metal Batteries",
+    "authors": "Rajesh Rajasekharan, Renjith Nadarajan, Sweta Das, Hemant Kumar, and Manikoth M. Shaijumon\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/adfm.202502473",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adfm.202502473.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "High Fire-Safety, Thinning Lithium Metal Anode for High-Energy-Density Lithium Metal Batteries",
+    "authors": "Longfei Han, Mengdan Zhang, Yukun Cao, Xinru Zhang, Can Liao, Liying Cheng, Qiang Gu, Yongchun Kan,\\* Jixin Zhu, and Yuan Hu\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/adfm.202504427",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adfm.202504427.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Carbon Nanofibers Surface-Exposed with Highly Active Ag Nanoparticles for Enhanced Interfacial Dynamics of Lithium Metal Anodes",
+    "authors": "Aoming Huang, Hongjiao Huang, Shuo Li, Xiansong Pan, Shichao Sun, Xueming Su, Hongbo Geng,\\* Linlin Li,\\* Maxim Maximov, Jianwei Ren, and Shengjie Peng\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/adfm.202506258",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adfm.202506258.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Electrostatic Catalysis-Driven Asymmetric SEI for Dendrite-Free Lithium Metal Anodes",
+    "authors": "Chenhuan Zhou, Yue Liu, Pan Mei, Yuan Zhang, Bing Ai, Luxi Hong, Tao Cheng,\\* and Wei Zhang\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/adfm.202508326",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adfm.202508326.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Entropy Regulation Quantified via Solvation Chemistry of Nonaqueous Electrolyte for Robust Lithium-Metal Batteries",
+    "authors": "He Liu, Ke-Feng Ren, Yun-Fei Du, Jia-Xin Guo, Zhong-Yu Li, Zhen-Hui Luo, Xin Sun, Cong Guo, Weizhai Bao, Feng Yu, Xin Shen, Xin-Bing Cheng,\\* and Jingfa Li\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/adfm.202510844",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adfm.202510844.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "A Robust Li+-Rich Protective Layer for High-Performance Dendrite-Free Li Metal Batteries",
+    "authors": "Mingli Lu,\\* Jie Sheng, Limiao Lin, Rongfu Zhou, Wucheng Xie, Junjun Shi, Xueyi Lu,\\* and Xia Lu\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/adfm.202512040",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adfm.202512040.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Biomimetic Bamboo-Node-Inspired Composite Electrolyte with Hierarchical Ion Pathways for Safe and High-Performance Solid-State Lithium Metal Batteries",
+    "authors": "Dehua Li, Jianhong Xu, Junjie Huang, Xinrui Zheng, Yingyuan Ma, Di Zhang, Xiao Yang, Panpan Shen, Xun Wang, Fan Wang, Tucongying Qian, Zhen Shen, and Yi Hu\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/adfm.202514738",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adfm.202514738.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Ultrathin Direct Atomic Layer Deposition on Composite Electrodes for Highly Durable and Safe Li-Ion Batteries",
+    "authors": "By Yoon Seok Jung, Andrew S. Cavanagh, Leah A. Riley, Sun-Ho Kang, Anne C. Dillon, Markus D. Groner, Steven M. George, and Se-Hee Lee\\*",
+    "publication_date": "2010",
+    "doi": "10.1002/adma.200903951",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.200903951.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Effects of Particle Size, Electronic Connectivity, and Incoherent Nanoscale Domains on the Sequence of Lithiation in LiFe ${ \\mathsf { P O } } _ { 4 }$ Porous Electrodes",
+    "authors": "Yiyang Li , Sophie Meyer , Jongwoo Lim , Sang Chul Lee , William E. Gent , Stefano Marchesini , Harinarayan Krishnan , Tolek Tyliszczak , David Shapiro , Arthur L. David Kilcoyne , and William C. Chueh \\*",
+    "publication_date": "2015",
+    "doi": "10.1002/adma.201502276",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.201502276.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Persistent State-of-Charge Heterogeneity in Relaxed, Partially Charged $\\mathsf { L i } _ { 1 - x } \\mathsf { N i } _ { 1 / 3 } \\mathsf { C o } _ { 1 / 3 } \\mathsf { M n } _ { 1 / 3 } \\mathsf { O } _ { 2 }$ Secondary Particles",
+    "authors": "William E. Gent, Yiyang Li, Sungjin Ahn, Jongwoo Lim, Yijin Liu, Anna M. Wise, Chirranjeevi Balaji Gopal, David N. Mueller, Ryan Davis, Johanna Nelson Weker, Jin-Hwan Park, Seok-Kwang Doo, and William C. Chueh\\*",
+    "publication_date": "2016",
+    "doi": "10.1002/adma.201601273",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.201601273.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "A Novel and Generalized Lithium-Ion-Battery Configuration utilizing Al Foil as Both Anode and Current Collector for Enhanced Energy Density",
+    "authors": "Bifa Ji, Fan Zhang, Maohua Sheng, Xuefeng Tong, and Yongbing Tang\\*",
+    "publication_date": "2016",
+    "doi": "10.1002/adma.201604219",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.201604219.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Electrochemical Methods for Lithium Recovery: A Comprehensive and Critical Review",
+    "authors": "Alberto Battistel, Maria Sofia Palagonia, Doriano Brogioli, Fabio La Mantia,\\* and Rafael Trócoli\\*",
+    "publication_date": "2019",
+    "doi": "10.1002/adma.201905440",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.201905440.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "High-Nickel NMA: A Cobalt-Free Alternative to NMC and NCA Cathodes for Lithium-Ion Batteries",
+    "authors": "Wangda Li, Steven Lee, and Arumugam Manthiram\\*",
+    "publication_date": "2020",
+    "doi": "10.1002/adma.202002718",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.202002718.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Mesoporous Nanoarchitectures for Electrochemical Energy Conversion and Storage",
+    "authors": "Yuxing Yan, Guangrui Chen, Peihong She, Guiyuan Zhong, Wenfu Yan, Bu Yuan Guan,\\* and Yusuke Yamauchi\\*",
+    "publication_date": "2020",
+    "doi": "10.1002/adma.202004654",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.202004654.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "A Dendrite-Free Lithium/Carbon Nanotube Hybrid for Lithium-Metal Batteries",
+    "authors": "Zhi Yong Wang, Zhong Xu Lu, Wei Guo, Qin Luo, Yan Hong Yin,\\* Xian Bin Liu, Ye Sheng Li, Bao Yu Xia,\\* and Zi Ping Wu\\*",
+    "publication_date": "2020",
+    "doi": "10.1002/adma.202006702",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.202006702.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Multiscale Understanding of Surface Structural Effects on High-Temperature Operational Resiliency of Layered Oxide Cathodes",
+    "authors": "Xiang Liu, Xinwei Zhou, Qiang Liu, Jiecheng Diao, Chen Zhao, Luxi Li,\\* Yuzi Liu,\\* Wenqian Xu, Amine Daali, Ross Harder, Ian K. Robinson, Mouad Dahbi, Jones Alami, Guohua Chen, Gui-Liang Xu,\\* and Khalil Amine\\*",
+    "publication_date": "2022",
+    "doi": "10.1002/adma.202107326",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.202107326.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "WILEY-VCH",
+    "authors": "The hard-templating method as an alternative uses materials with rigid nanopores as mold, which provides higher flexibility with respect to the carbon precursors. Therefore, many different organic molecules can be used as precursors.[5] This method particularly also allows the synthesis of",
+    "publication_date": "2023",
+    "doi": "10.1002/adma.202305050",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.202305050.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Multitarget Generate Electrolyte Additive for Lithium Metal Batteries",
+    "authors": "Xiangyang Liu, Jianchun Chu, Sa Xue, Daquan Wang, Zhuoyang Lu, Meng Zhang, Yongqi Liu, Xin Xu, Yilin Zhang, Jiangang Long, Lingjie Meng, Jiayin Yuan,\\* and Maogang He\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/adma.202502086",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.202502086.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Oxygen Vacancy- $\\phantom { } \\mathsf { L i } _ { 2 } \\mathsf { Z r O } _ { 3 }$ : A New Choice for Boosting Homogenous Distribution and Transport of Lithium Ion in Composite Solid-State Electrolytes",
+    "authors": "Yanru Wang, Timing Fang, Chao Wang, Siyu Wang, Ke Yang, Jie Biao, Daohao $L i , \\ast$ Dongjiang Yang,\\* Yan-Bing He,\\* and Yanzhi Xia\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/adma.202505209",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.202505209.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Hydrogen-Deficient Chain-Like Molecular Structure Confined Hydride Electrolyte for High-Voltage All-Solid-State Lithium Metal Batteries",
+    "authors": "Panyu Gao, Shunlong Ju, Tian Xu, Wubin Du, Yong Gao, Yaxiong Yang, Zhenglong Li, Hongyu Zhang, Yuqin Huang, Guanglin Xia,\\* Fei Wang,\\* and Xuebin Yu\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/adma.202508008",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.202508008.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Regulating Solvation Chemistries via Electric-Field-Induced Locally Concentrated Suspension Electrolytes for Lithium Metal Batteries",
+    "authors": "Zhengyu Ju, Tianrui Zheng, Amy C. Marschilok, Esther S. Takeuchi, Kenneth J. Takeuchi, and Guihua Yu\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/adma.202508743",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.202508743.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Review of Thin Lithium Metal Battery Anode Fabrication – Microstructure – Electrochemistry Relations",
+    "authors": "Yuhang Hu, Zidong Chen, Yixian Wang, Haorui Hou, Bingcheng Chen, David Mitlin,\\* and Wei Liu\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/adma.202511817",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_adma.202511817.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Understanding the Rate Capability of High-Energy-Density Li-Rich Layered $\\mathsf { L i } _ { 1 , 2 } \\mathsf { N i } _ { 0 , 7 5 } \\mathsf { C o } _ { 0 , 7 } \\mathsf { M n } _ { 0 , 5 5 } \\mathsf { O } _ { 2 }$ Cathode Materials",
+    "authors": "Xiqian Yu , Yingchun Lyu , Lin Gu , Huiming Wu , Seong-Min Bak , Yongning Zhou , Khalil Amine , Steven N. Ehrlich , Hong Li ,\\* Kyung-Wan Nam ,\\* and Xiao-Qing Yang \\*",
+    "publication_date": "2014",
+    "doi": "10.1002/aenm.201300950",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_aenm.201300950.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Structural Changes in $\\mathsf { L i } _ { 2 } \\mathsf { M n O } _ { 3 }$ Cathode Material for Li-Ion Batteries",
+    "authors": "Jatinkumar Rana ,\\* Marian Stan , Richard Kloepsch , Jie Li , Gerhard Schumacher , Edmund Welter , Ivo Zizak , John Banhart ,\\* and Martin Winter",
+    "publication_date": "2013",
+    "doi": "10.1002/aenm.201300998",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_aenm.201300998.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Novel Proton Conductors in the Layered Oxide Material $\\mathbf { L i } _ { \\mathbf { x } } | \\mathbf { A l } _ { 0 . 5 } \\mathbf { C o } _ { 0 . 5 } \\mathbf { O } _ { 2 }$",
+    "authors": "Rong Lan and Shanwen ${ \\bar { I } } { \\bar { a } } o ^ { * }$",
+    "publication_date": "2014",
+    "doi": "10.1002/aenm.201301683",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_aenm.201301683.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Optimized Temperature Effect of Li-Ion Diffusion with Layer Distance in Li $( \\mathsf { N i } _ { x } \\mathsf { M n } _ { y } \\mathsf { C o } _ { z } ) \\mathsf { O } _ { 2 }$ Cathode Materials for High Performance Li-Ion Battery",
+    "authors": "Suihan Cui , Yi Wei , Tongchao Liu , Wenjun Deng , Zongxiang Hu , Yantao Su , Hao Li , Maofan Li , Hua Guo , Yandong Duan , Weidong Wang , Mumin Rao , Jiaxin Zheng ,\\* Xinwei Wang ,\\* and Feng Pan\\*",
+    "publication_date": "2016",
+    "doi": "10.1002/aenm.201501309",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_aenm.201501309.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Fast Charging of Lithium-Ion Batteries: A Review of Materials Aspects",
+    "authors": "Manuel Weiss, Raffael Ruess, Johannes Kasnatscheew, Yehonatan Levartovsky, Natasha Ronith Levy, Philip Minnmann, Lukas Stolz, Thomas Waldmann, Margret Wohlfahrt-Mehrens, Doron Aurbach, Martin Winter, Yair Ein-Eli,\\* and Jürgen Janek\\*",
+    "publication_date": "2021",
+    "doi": "10.1002/aenm.202101126",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_aenm.202101126.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Tuning Anion Chemistry to Enhance Bulk and Interfacial Stability in Low-Temperature Lithium Metal Batteries",
+    "authors": "Jingjing Ma, Yuhao Zhu, Huanchun Wang, Yue Zhang, Qian Wu, ZuoYu Qin, Jiahui Zhang, Bo Liu, Dan Huang, Yaoyu Ren,\\* Ce-Wen Nan, and Xuanjun Wang\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/aenm.202500631",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_aenm.202500631.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "$\\mathsf { L i N O } _ { 3 }$ -Based Electrolyte with Fast Kinetics for Lithium Metal Batteries Under Practical Conditions",
+    "authors": "Pengcheng Li, Ziwei Zhao, Yue Fei, Hao Zhang, and Ge Li\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/aenm.202500882",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_aenm.202500882.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Evaluation and Characterization of SEI Composition in Lithium Metal and Anode-Free Lithium Batteries",
+    "authors": "Karthik Vishweswariah, Ningaraju Gejjiganahalli Ningappa, Mohamed Djihad Bouguern, Anil Kumar M R, Michel. B Armand, and Karim Zaghib\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/aenm.202501883",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_aenm.202501883.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Ultra-Fast Charging High-voltage Spinel $\\mathsf { L i N i } _ { 0 . 5 } \\mathsf { M n } _ { 1 . 5 } \\mathsf { O } _ { 4 }$ Batteries Enabled by Mn─O Bond Regulating Strategy to Defeat Jahn─Teller Distortion",
+    "authors": "Mengting Guo, Changping Wang, Yize Niu, Mingyue Ruan,\\* Dong Yang, Fei Wang, Haonan Wang, Nankai Wang, Ying Jiang, Tianyi Li, Yan He,\\* and Qiang Li\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/aenm.202502226",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_aenm.202502226.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Electron Reconstruction at Heterointerface Enables Stable-Fermi-Level Lithium Metal Anodes",
+    "authors": "Tangchao Xie, Jianlian Huang, Jiarong Chen, Bohan Cai, Jingliang He, Hong Xiao, Pan Xu, Yijuan Li,\\* Shiyun Xiong,\\* and Shaoming Huang\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/aenm.202502425",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_aenm.202502425.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Lithium Metal Batteries for High Temperature Environments",
+    "authors": "Dong Guo, Zixiong Shi, Jehad K. El-Demellawi, Wandi Wahyudi, Muhammad Arsalan, Huabin Zhang, and Husam N. Alshareef\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/aenm.202502943",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_aenm.202502943.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Stable Catholyte Interface Enables Practical Operation of Sulfide-Based All-Solid-State Li Metal Batteries",
+    "authors": "Hyeongseok Lee, Sumin Ko, Soojin Park,\\* and Sang-Min Lee\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/aenm.202503019",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_aenm.202503019.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "$\\mathbf { L i } _ { 2 } \\mathbf { C } _ { 2 } ,$ a High-Capacity Cathode Material for Lithium Ion Batteries",
+    "authors": "Na Tian, Yurui Gao, Yurong Li, Zhaoxiang Wang,\\* Xiaoyan Song, and Liquan Chen",
+    "publication_date": "2016",
+    "doi": "10.1002/anie.201509083",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_anie.201509083.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Lithium-Ion-Transfer Kinetics of Single $\\mathbf { L i M n _ { 2 } O _ { 4 } }$ Particles",
+    "authors": "Giorgia Zampardi, Christopher Batchelor-McAuley, Enno K-telhçn, and Richard G. Compton\\*",
+    "publication_date": "&& &&, &&&&",
+    "doi": "10.1002/anie.201610485",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_anie.201610485.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "A Journal of the Gesellschaft Deutscher Chemiker Angewandte GDCh International Edition Chemie",
+    "authors": "Title: Lithium-Metal Anode Instability of the Superionic Halide Solid Electrolytes and the Implications for Solid-State Batteries",
+    "publication_date": "2020",
+    "doi": "10.1002/anie.202015238",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_anie.202015238.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "AngewandteA Journal of the Gesellschaft Deutscher Chemiker GDCh Chemie International Edition",
+    "authors": "Authors: Rong Fang, Siyuan Ma, Lian Ding, Yu Gu, Xin Dong, Duan-Hui Si, Jing-Hua Tian, Xiu-Mei Lin, Bing-Wei Mao, and Jian-Feng Li",
+    "publication_date": "2025",
+    "doi": "10.1002/anie.202502048",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_anie.202502048.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "A Journal of the Gesellschaft Deutscher Chemiker Angewandte GDCh International Edition Chemie",
+    "authors": "Authors: Shuang Li, Hongliang Xie, Pushpendra Kumar, Yinghua Chen, Jia Wang, Akang Huang, Wandi Wahyudi, Hui Zhu, Jiao Yin, Qian Li, Zheng Ma, and Jun Ming",
+    "publication_date": "2025",
+    "doi": "10.1002/anie.202504490",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_anie.202504490.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Molecular Design of Asymmetric Difluorinated Ether Electrolytes for Stable Operation of High-Voltage Lithium Metal Batteries",
+    "authors": "Guangzhao Zhang+, Tong Zhang+, Yuqi Liu, Qingrong Wang, Ruilin He, Pengxian Li, Yanming Cui, Zhongbo Liu, Chaoyang Wang, Yonghong Deng,\\* Jian Chang,\\* and Jun Lu\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/anie.202506056",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_anie.202506056.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "AngewandteA Journal of the Gesellschaft Deutscher Chemiker GDCh Chemie International Edition",
+    "authors": "Authors: Chuan Wang, Kai Wan, Pengfei Liu, Chenrui Zeng, Shuhan Wang, Yan Huang, Yang Zhang, Haoruo Xiao, Zhenxing Liang, and Chaozhu Shu",
+    "publication_date": "2025",
+    "doi": "10.1002/anie.202506083",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_anie.202506083.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "AngewandteA Journal of the Gesellschaft Deutscher Chemiker GDCh Chemie International Edition",
+    "authors": "Authors: Zeyuan Liu, Shuoqing Zhang, Haikuo Zhang, Baochen Ma, Haotian Zhu, Tao Zhou, Long Li, Xuezhang Xiao, Ruhong Li, Lixin Chen, Tao Deng, and Xiulin Fan",
+    "publication_date": "2025",
+    "doi": "10.1002/anie.202506395",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_anie.202506395.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "A Tertiary Amine-Based Electrolyte with Methylation-Mediated Steric and Electronic Synergy for High-Performance Lithium Metal Batteries",
+    "authors": "Mingming Fang+, Xubing Dong+, Andy Qi, Simin Liu, Jieqiu Wang,\\* Kang Yuan, Minfeng Li, Yongteng Dong, Zhangqin Shi, Xinran Zhang, Yuanmao Chen, Xinyang Yue,\\* and Zheng Liang\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/anie.202511222",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_anie.202511222.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Strong Dipole Moments and Increased Charge Transfer in Polymer-Based Solid Electrolyte Enable Wide-Temperature Solid-State Lithium Metal Batteries",
+    "authors": "Weizhong Liang+, Yuxuan Liu+, Lin Dai+, Shen Li, Zhaoyu Sun, Kun Zhao, Biao Zhang,\\* Zengsheng Ma,\\* Min Zhu, and Jun Liu\\*",
+    "publication_date": "2025",
+    "doi": "10.1002/anie.202513604",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_anie.202513604.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Regulating Dynamic Evolution of Interfacial Electrolyte Configuration via Inert Cation Induced Anion Anchoring to Stabilize Lithium-Metal Anode",
+    "authors": "Junhao Wang, Yaopeng Li, Wenbin Tu, Haitang Zhang, Xiaoyu Yu, Yuran Yang, Haiyan Luo, Qingao Zhao, Yaxin Ru, Ming Chen, Yuhao Hong, Jinyu Ye, Jian-Feng Li, Na Liu, Chuying Ouyang, Hansen Wang,\\* Yeguo Zou,\\* Guang Feng,\\* Yu Qiao,\\* and Shi-Gang Sun",
+    "publication_date": "2025",
+    "doi": "10.1016/j.esci.2025.100399",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_anie.202513839.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "BATTERIES & SUPERCAPS",
+    "authors": "Title: Solid-Electrolyte Interphase at the Positive Electrodes in High Energy Li-ion Batteries: Current Understanding and Analytical Tools",
+    "publication_date": "2020",
+    "doi": "10.1002/batt.201900177",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_batt.201900177.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Batteries & Supercaps",
+    "authors": "Title: Optimisation Of Formation And Cell Ageing Protocols For Lithium Ion EV Batteries",
+    "publication_date": "2020",
+    "doi": "10.1002/batt.202000048",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_batt.202000048.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Batteries & Supercaps",
+    "authors": "Authors: Lorenzo Airoldi, Umberto Anselmi Tamburini, Barbara Vigani, Silvia Rossi, Piercarlo Mustarelli, and Eliana Quartarone",
+    "publication_date": "2020",
+    "doi": "10.1002/batt.202000058",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_batt.202000058.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Batteries & Supercaps",
+    "authors": "Title: A mapping of the physical and electrochemical properties of composite Lithium-ion batteries anodes made from graphite, Sn and Si",
+    "publication_date": "2020",
+    "doi": "10.1002/batt.202000096",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_batt.202000096.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Batteries & Supercaps",
+    "authors": "Authors: Dominik Petz, Martin J Mühlbauer, Alexander Schökel, Klaus Achterhold, Franz Pfeiffer, Thilo Pirling, Michael Hofmann, and Anatoliy Senyshyn",
+    "publication_date": "2020",
+    "doi": "10.1002/batt.202000178",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_batt.202000178.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Recent Insights into Rate Performance Limitations of Li-ion Batteries",
+    "authors": "Christian Heubner,\\*[a] Kristian Nikolowski,[a] Sebastian Reuber,[a] Michael Schneider,[a] Mareike Wolter,[a] and Alexander Michaelis[a, b]",
+    "publication_date": "2020",
+    "doi": "10.1002/batt.202000227",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_batt.202000227.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Importance of Mass Transport in High Energy Density",
+    "authors": "Shanglin Li,[a] Shota Ishikawa,[c] Jiali Liu,[b] Kazuhide Ueno,[a, b] Kaoru Dokko,[a, b] Gen Inoue,\\*[c] and Masayoshi Watanabe\\*[b]",
+    "publication_date": "2022",
+    "doi": "10.1002/batt.202100409",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_batt.202100409.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Batteries & Supercaps",
+    "authors": "Title: Interplay Between Lithium Intercalation and Plating During Fast-Charging of Lithium-Ion Batteries Investigated by Operando NMR Spectroscopy",
+    "publication_date": "2025",
+    "doi": "10.1002/batt.202500208",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_batt.202500208.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Lithium-Ion Conducting Electrolyte Salts for Lithium Batteries",
+    "authors": "# Vanchiappan Aravindan,\\*[a] Joe Gnanaraj,\\*[b] Srinivasan Madhavi,\\*[a, c] and Hua-Kun Liu\\*[d]",
+    "publication_date": "2011",
+    "doi": "10.1002/chem.201101486",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_chem.201101486.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "& Nanoparticles",
+    "authors": "Sung Hoon Ha and Yun Jung Lee\\*[a]",
+    "publication_date": "2015",
+    "doi": "10.1002/chem.201404952",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_chem.201404952.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Chemistry A European Journal",
+    "authors": "Title: Newly designed durable electrolyte for high voltage lithium ion batteries and mechanism analysis",
+    "publication_date": "2020",
+    "doi": "10.1002/chem.202001038",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_chem.202001038.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Particle-Size Effects on the Entropy Behavior of a $\\mathsf { L i } _ { x } \\mathsf { F e P O } _ { 4 }$ Electrode",
+    "authors": "Kazuhiko Kai,[a] Yo Kobayashi,[b] Hajime Miyashiro,[b] Gosuke Oyama,[a] Shin-ichi Nishimura,[a] Masashi Okubo,[a] and Atsuo Yamada\\*[a]",
+    "publication_date": "2014",
+    "doi": "10.1002/cphc.201301219",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_cphc.201301219.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Polar Surface Energies of Iono-Covalent Materials: Implications of a Charge-Transfer Model Tested on Li2FeSiO4 Surfaces",
+    "authors": "Nicolas G. Hçrmann[a, b] and Axel Groß\\*[a, b]",
+    "publication_date": "2014",
+    "doi": "10.1002/cphc.201400012",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_cphc.201400012.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Challenges and Approaches for High-Voltage Spinel Lithium-Ion Batteries",
+    "authors": "Jung-Hyun Kim,\\*[a] Nicholas P. W. Pieczonka,[b] and Li Yang[a]",
+    "publication_date": "2014",
+    "doi": "10.1002/cphc.201400052",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1002_cphc.201400052.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Review",
+    "authors": "a , b S. Flandrois , B. Simon \\*",
+    "publication_date": null,
+    "doi": "10.1016/S0008-6223(98)00290-5",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_S0008-6223(98)00290-5.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Lithium insertion into host materials: the key to success for Li ion batteries",
+    "authors": "M. Broussely a,\\*, P. Biensan b , B. Simon b",
+    "publication_date": null,
+    "doi": "10.1016/S0013-4686(99)00189-9",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_S0013-4686(99)00189-9.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Redox reactions of cobalt, aluminum and titanium substituted lithium manganese spinel compounds in lithium cells",
+    "authors": "Yang Shao-Horn , Richard L. Middaugh \\*",
+    "publication_date": "2001",
+    "doi": "10.1016/S0167-2738(00)00817-1",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_S0167-2738(00)00817-1.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Review of selected electrode–solution interactions which determine the performance of Li and Li ion batteries",
+    "authors": "The cathodes can be different red-ox couples, including positively doped, electronically conducting polymers 1w x and polysulfides 2 . However, so far the best choice for w x cathodic reactions for Li batteries are Li intercalation reactions into transition metal oxides and sulfides 3 . w x",
+    "publication_date": "2000",
+    "doi": "10.1016/S0378-7753(00)00431-6",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_S0378-7753(00)00431-6.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Analysis of surface films on lithium in various organic electrolytes",
+    "authors": "A. Kominato \\*, E. Yasukawa, N. Sato, T. Ijuuin, H. Asahina, S. Mori",
+    "publication_date": null,
+    "doi": "10.1016/S0378-7753(97)02592-5",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_S0378-7753(97)02592-5.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "New insights into the interactions between electrode materials and electrolyte solutions for advanced nonaqueous batteries",
+    "authors": "D. Aurbach ), B. Markovsky, M.D. Levi, E. Levi, A. Schechter, M. Moshkovich, Y. Cohen",
+    "publication_date": null,
+    "doi": "10.1016/S0378-7753(99)00187-1",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_S0378-7753(99)00187-1.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Influence of the lithium salt nature over the surface film formation on a graphite electrode in Li-ion batteries: An XPS study",
+    "authors": "S. Leroy a , H. Martinez a, \\*, R. Dedryve\\`re a , D. Lemordant b , D. Gonbeau a",
+    "publication_date": "2007",
+    "doi": "10.1016/j.apsusc.2006.10.071",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.apsusc.2006.10.071.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Cu/LiF-rich dual-layered solid electrolyte interphase enabling high ionic flux and uniform electric field for dendrite-free lithium metal anodes",
+    "authors": "Ben Su a , Lei Chai a , Sida Huo a , Yue Wang b,\\* , Xingyu Wang c , Meng Li b , Jingyi Qiu b , Qiang Huang b , Shuang Li d , Wendong Xue a,",
+    "publication_date": "2025",
+    "doi": "10.1016/j.cej.2025.162742",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.cej.2025.162742.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Coupled design of surface chemistry and spatial topology enabling lithiophilic host for stable Li metal batteries",
+    "authors": "Nan Zheng a,b , Chao Yang c,\\* , Qingyu Dong a , Shoulei Hu a , Qiulong Tang a , Jianxin Ou a , Huihui Wang a , Jingshu Wang a , Haiyang Zhang a , Jun Ge a,\\* , Hui Shao a,\\* , Yanbin Shen a,\\* Liwei Chen",
+    "publication_date": "2025",
+    "doi": "10.1016/j.cej.2025.165412",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.cej.2025.165412.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Perspective",
+    "authors": "Minkwan Kim,1,3 Lea Pompizii,2,3 Jihwan Byun,1 Ali Coskun,2,\\* and Jang Wook Choi1,\\*",
+    "publication_date": "2025",
+    "doi": "10.1016/j.chempr.2025.102661",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.chempr.2025.102661.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Journal Pre-proofs",
+    "authors": "Zhiqiang Chen, Dmitri L. Danilov, Rüdiger-A. Eichel, Peter H.L. Notten",
+    "publication_date": "2020",
+    "doi": "10.1016/j.elecom.2020.106865",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.elecom.2020.106865.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Mechanically reinforced solid-state polymer electrolyte using illite filler for flexible all-solid-state Li-metal batteries",
+    "authors": "Jaesub Lee a,1 , Jeong-Jin Yang b,1 , Beomgi Kim a , Sunkyung You a , Jae-Kwang Kim a , Young-Ran Lee c , Seongki Ahn d,\\* , Jeha Kim a,\\* , Hong-Il Kim a,\\*",
+    "publication_date": "2025",
+    "doi": "10.1016/j.elecom.2025.108046",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.elecom.2025.108046.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Determination of lithium diffusion coefficient in $\\mathrm { L i F e P O _ { 4 } }$ electrode by galvanostatic and potentiostatic intermittent titration techniques",
+    "authors": "A.V. Churikova,∗, A.V. Ivanishcheva, I.A. Ivanishchevaa, V.O. Sychevaa, N.R. Khasanovab, E.V. Antipovb",
+    "publication_date": "2010",
+    "doi": "10.1021/cm902118m",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2009.12.079.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Effects of Diffusive Charge Transfer and Salt Concentration Gradient in Electrolyte on Li-ion Battery Energy and Power Densities",
+    "authors": "Hadis Zarrina, Siamak Farhadb, Feridun Hamdullahpur c, Victor Chabot a, Aiping Yua, Michael Fowler a, Zhongwei Chena,∗",
+    "publication_date": "2014",
+    "doi": "10.1016/j.electacta.2014.01.022",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2014.01.022.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Architecture Dependence on the Dynamics of Nano-LiFePO4 Electrodes",
+    "authors": "Bernardo Orvananos a, Rahul Malik b, Hui-Chia Yua, Aziz Abdellahi b, Clare P. Grey c,d, Gerbrand Ceder b, Katsuyo Thornton a,∗",
+    "publication_date": "2014",
+    "doi": "10.1038/nmat3623",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2014.06.029.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Optimization of Inactive Material Content in Lithium Iron Phosphate Electrodes for High Power Applications",
+    "authors": "Seonbaek Haa, \\*, Vijay K. Ramania , Wenquan Lub, \\*\\*, Jai Prakasha ,",
+    "publication_date": "2016",
+    "doi": "10.1016/j.electacta.2016.01.049",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2016.01.049.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Robust synthesis of hierarchical mesoporous hybrid NiO–MnCo2O4 microspheres and their application in Lithium-ion batteries",
+    "authors": "Tao Li, Xinhai $\\mathrm { L i ^ { * } }$ , Zhixing Wang, Huajun Guo, Qiyang Hu, Wenjie Peng",
+    "publication_date": "2016",
+    "doi": "10.1016/j.electacta.2016",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2016.01.113.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Investigation on the effect of Na doping on structure and Li-ion kinetics of layered $\\mathrm { L i N i _ { 0 . 6 } C o _ { 0 . 2 } M n _ { 0 . 2 } O _ { 2 } }$ cathode material",
+    "authors": "Zhenjun Huanga , Zhixing Wanga, \\*, Qun Jingb , Huajun Guoa , Xinhai Lia , Zhihua Yangc, \\*\\*",
+    "publication_date": "2016",
+    "doi": "10.1016/j",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2016.01.139.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Al@C/Expanded Graphite Composite as Anode Material for Lithium Ion Batteries",
+    "authors": "Youguo Huanga , Xile Lina , Qichang Pana , Qingyu Lic, \\*, Xiaohui Zhanga , Zhixiong Yana , Xianming Wub , Zeqiang Heb , Hongqiang Wanga a,\\*\\*",
+    "publication_date": "2016",
+    "doi": "10.1016/j.electacta.2016.01.207",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2016.01.207.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Ionic Conducting and Surface Active Binder of Poly (ethylene oxide)- block-poly(acrylonitrile) for High Power Lithium-ion Battery",
+    "authors": "Chih-Hao Tsao, Chun-Han Hsu, Ping-Lin Kuo\\*",
+    "publication_date": "2016",
+    "doi": "10.1016/j",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2016.02.154.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Effect of Reynolds number and lithium cation insertion on titanium anodization",
+    "authors": "J. Borràs-Ferrís, R. Sánchez-Tovar, E. Blasco-Tamarit, R.M. Fernández-Domene, J. García-Antón\\*",
+    "publication_date": "2016",
+    "doi": "10.1016/j.electacta.2016.02.160",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2016.02.160.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Accepted Manuscript",
+    "authors": "Satyajit Phadke, Mérièm Anouti\\*",
+    "publication_date": "2016",
+    "doi": "10.1016/j.electacta.2016.12.010",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2016.12.010.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Accepted Manuscript",
+    "authors": "Title: Electrochemical Impedance Spectroscopy response study of a commercial graphite-based negative electrode for Li-ion batteries as function of the cell state of charge and ageing",
+    "publication_date": "2016",
+    "doi": "10.1016/j.electacta.2016.12.013",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2016.12.013.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Journal Pre-proof",
+    "authors": "Hualong Wu, Xinhai Li, Zhixing Wang, Huajun Guo, Wenjie Peng, Qiyang Hu, Guohcun Yan, Jiexi Wang",
+    "publication_date": "2020",
+    "doi": "10.1016/j.electacta.2020.136279",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2020.136279.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Journal Pre-proof",
+    "authors": "Satyanarayana Maddukuri , David Malka , Munseok S. Chae , Yuval Elias , Shalom Luski , Doron Aurbach",
+    "publication_date": "2020",
+    "doi": "10.1016/j.electacta.2020.136771",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2020.136771.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Journal Pre-proof",
+    "authors": "Impact of Particle Size of Lithium Manganese Oxide on Charge Transfer Resistance and Contact Resistance Evaluated by Electrochemical Impedance Analysis",
+    "publication_date": "2020",
+    "doi": "10.1016/j.electacta.2020.137292",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2020.137292.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Journal Pre-proof",
+    "authors": "The Effects of Ambient Storage Conditions on the Structural and Electrochemical Properties of NMC-811 Cathodes for Li-ion batteries",
+    "publication_date": "2020",
+    "doi": "10.1016/j.electacta.2020.137358",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2020.137358.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Journal Pre-proof",
+    "authors": "Xuzhe Wang , Yongqi Wu , Xiaohong Chen , Qijie Zhang , Xuezhen Zhai , Haiyang Dai , Jing Chen , Tao Li , Dewei Liu",
+    "publication_date": "2023",
+    "doi": "10.1016/j.electacta.2023.142546",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2023.142546.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Journal Pre-proof",
+    "authors": "Williams Agyei Appiah , Dohwan Kim , Yong Min Lee , Juan Maria Garcia-Lastra , Ivano E. Castelli",
+    "publication_date": "2024",
+    "doi": "10.1016/j.electacta.2024.144470",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2024.144470.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Journal Pre-proof",
+    "authors": "Cation-Anion Synergy: CsF Additive for Dendrite Suppression and Interface Reinforcement in Lithium Metal Batteries",
+    "publication_date": "2025",
+    "doi": "10.1016/j.electacta.2025.146312",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2025.146312.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Journal Pre-proof",
+    "authors": "David Munoz-Torrero , Enrique Garc ˜ ´ıa-Quismondo , Edgar Ventosa , Milan Prodanovic , Jesus Palma ´",
+    "publication_date": "2025",
+    "doi": "10.1016/j.electacta.2025.146326",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2025.146326.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Journal Pre-proof",
+    "authors": "Muxi Jiang , Hongqin Chen , Yiru Chen , Dian Zhao , Xuehui Gao",
+    "publication_date": "2025",
+    "doi": "10.1016/j.electacta.2025.146688",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2025.146688.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Modulation of lithium plating/stripping behavior through Ge/ MXene lithiophilic scaffolds",
+    "authors": "Ting Chen a , Yifan Lin b , Nanlin He c , Tingting Zhao d , Dong Wang e , Zhenguo Wu b,\\* , Xiaodong Guo a,b",
+    "publication_date": "2025",
+    "doi": "10.1016/j.electacta.2025.146835",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.electacta.2025.146835.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Influence of neutral transport on ion chemistry uncertainties in Titan ionosphere",
+    "authors": "N. Carrasco a,b , E. Hébrard c , M. Banaszkiewicz d , M. Dobrijevic e , P. Pernot a,b,∗",
+    "publication_date": "2007",
+    "doi": "10.1016/j.icarus.2007.08.016",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.icarus.2007.08.016.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Study of the charging process of a LiCoO2-based Li-ion battery",
+    "authors": "S.S. Zhang ∗, K. Xu, T.R. Jow",
+    "publication_date": "2006",
+    "doi": "10.1016/j.jpowsour.2006.02.087",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2006.02.087.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Surface structural disordering in graphite upon lithium intercalation/deintercalation",
+    "authors": "Vijay A. Sethuraman1, Laurence J. Hardwick1,2, Venkat Srinivasan, Robert Kostecki∗,1",
+    "publication_date": "2010",
+    "doi": "10.3929/ethz-a-005386882",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2009.12.034.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Investigation of the thermal properties of a Li-ion pouch-cell by electrothermal impedance spectroscopy",
+    "authors": "Jan Philipp Schmidt ∗, Daniel Manka, Dino Klotz, Ellen Ivers-Tiffée",
+    "publication_date": "2011",
+    "doi": "10.1016/j.jpowsour.2011.05.047",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2011.05.047.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Three-dimensional morphological measurements of $\\mathrm { L i C o O } _ { 2 }$ and $\\mathrm { L i C o O } _ { 2 } / \\mathrm { L i }$ $( \\mathsf { N i } _ { 1 / 3 } \\mathsf { M n } _ { 1 / 3 } \\mathsf { C o } _ { 1 / 3 } ) \\mathsf { O } _ { 2 }$ lithium-ion battery cathodes",
+    "authors": "Zhao Liu a,\\*, J. Scott Cronin a , Yu-chen K. Chen-Wiegart b , James R. Wilson a , Kyle J. Yakal-Kremski a , Jun Wang b , Katherine T. Faber a , Scott A. Barnett a",
+    "publication_date": "2013",
+    "doi": "10.1016/j.jpowsour.2012.11.043",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2012.11.043.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Hierarchical functional layers on high-capacity lithium-excess cathodes for superior lithium ion batteries",
+    "authors": "Jianqing Zhao, Saad Aziz, Ying Wang",
+    "publication_date": "2014",
+    "doi": "10.1016/j.jpowsour.2013.08.071",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2013.08.071.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Electrochemical performance studies of Li-rich cathode materials with different primary particle sizes",
+    "authors": "Jianhong Liu a,b , Hongyu Chen b , Jiaona Xie b , Zhaoqin Sun b , Ningning Wu b , Borong Wu a,\\*",
+    "publication_date": "2014",
+    "doi": "10.1016/j.jpowsour.2013.11.055",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2013.11.055.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Accepted Manuscript",
+    "authors": "Non-uniform temperature distribution in Li-ion batteries during discharge - a combined thermal imaging, X-ray micro-tomography and electrochemical impedance approach",
+    "publication_date": "2014",
+    "doi": "10.1016/j.jpowsour.2013.11.059",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2013.11.059.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Determination of lithium-ion battery state-of-health based on constant-voltage charge phase",
+    "authors": "Akram Eddahech\\*, Olivier Briat, Jean-Michel Vinassa",
+    "publication_date": "2014",
+    "doi": "10.1016/j.jpowsour.2014.02.020",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2014.02.020.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Study of the deterioration mechanism of LiCoO2/graphite cells in charge/discharge cycles using the discharge curve analysis",
+    "authors": "Kohei Honkura a,\\*, Tatsuo Horiba b",
+    "publication_date": "2014",
+    "doi": "10.1016/j.jpowsour.2014.04.036",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2014.04.036.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "High-rate charge/discharge properties of Li-ion battery using carboncoated composites of graphites, vapor grown carbon fibers, and carbon nanohorns",
+    "authors": "Ryota Yuge\\* , Noriyuki Tamura, Takashi Manako, Kaichiro Nakano, Kentaro Nakahara",
+    "publication_date": "2014",
+    "doi": "10.1016/j.jpowsour.2014.05.068",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2014.05.068.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Analysis of electric and thermal behaviour of lithium-ion cells in realistic driving cycles",
+    "authors": "Abbas Tourani a, \\* , Peter White a , Paul Ivey b",
+    "publication_date": "2014",
+    "doi": "10.1016/j.jpowsour.2014.06.010",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2014.06.010.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Lithium and lithium ion batteries for applications in microelectronic devices: A review",
+    "authors": "Yuxing Wang a, 1 , Bo Liu a, 1 , Qiuyan Li a , Samuel Cartmell a , Seth Ferrara a Zhiqun Daniel Deng b, \\* , Jie Xiao a, \\*",
+    "publication_date": "2015",
+    "doi": "10.1016/j.jpowsour.2015.03.164",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2015.03.164.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "In situ methods for Li-ion battery research: A review of recent developments",
+    "authors": "P.P.R.M.L. Harks a, \\* , F.M. Mulder a , P.H.L. Notten b, c",
+    "publication_date": "2015",
+    "doi": "10.1039/C4EE02730B",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2015.04.084.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Factors determining the packing-limitation of active materials in the composite electrode of lithium-ion batteries",
+    "authors": "Koji Kitada a, \\* , Haruno Murayama a , Katsutoshi Fukuda a , Hajime Arai a , Yoshiharu Uchimoto b , Zempachi Ogumi a , Eiichiro Matsubara c",
+    "publication_date": "2016",
+    "doi": "10.1016/j.jpowsour.2015.09.105",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2015.09.105.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Electrochemical properties of large-sized pouch-type lithium ion batteries with bio-inspired organic cathode materials",
+    "authors": "Jae-Seong Yeo, Eun-Ji Yoo, Sang-Hyeon Ha, Dong-Ik Cheong, Sung-Baek Cho",
+    "publication_date": "2016",
+    "doi": "10.1016/j.jpowsour.2016.02.065",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2016.02.065.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Effect of cycling conditions on the electrochemical performance of high capacity Li and Mn-rich cathodes for Li-ion batteries",
+    "authors": "Prasant Kumar Nayak, Judith Grinblat, Elena Levi, Boris Markovsky, Doron Aurbach\\*",
+    "publication_date": "2016",
+    "doi": "10.1016/j.jpowsour.2016.03.107",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2016.03.107.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "A physically meaningful equivalent circuit network model of a lithium-ion battery accounting for local electrochemical and thermal behaviour, variable double layer capacitance and degradation",
+    "authors": "Marie-Therese von Srbik a, \\* , Monica Marinescu b , Ricardo F. Martinez-Botas a , Gregory J. Offer a",
+    "publication_date": "2016",
+    "doi": "10.1016/j.jpowsour.2016.05.051",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2016.05.051.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "The interaction of consecutive process steps in the manufacturing of lithium-ion battery electrodes with regard to structural and electrochemical properties",
+    "authors": "Henrike Bockholt a, b, \\*, 1 , Maira Indrikova c, 1 , Andreas Netz c , Frederik Golks d , Arno Kwade a, b",
+    "publication_date": "2016",
+    "doi": "10.1016/j.jpowsour.2016.05.127",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2016.05.127.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "High-capacity thick cathode with a porous aluminum current collector for lithium secondary batteries",
+    "authors": "Hidetoshi Abe a, b , Masaaki Kubota b , Miyu Nemoto b , Yosuke Masuda b , Yuichi Tanaka c , Hirokazu Munakata a , Kiyoshi Kanamura a, \\*",
+    "publication_date": "2016",
+    "doi": "10.1016/j.jpowsour.2016.10.016",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2016.10.016.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Lithium rich cathode/graphite anode combination for lithium ion cells with high tolerance to near zero volt storage",
+    "authors": "K.R. Crompton a, b , J.W. Staub b, c , M.P. Hladky b, c , B.J. Landi b, c, \\*",
+    "publication_date": "2017",
+    "doi": "10.1016/j.jpowsour.2017.01.008",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2017.01.008.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Effect of isotropic and anisotropic porous microstructure on electrochemical performance of Li ion battery cathodes: An experimental and computational study",
+    "authors": "Milad Azami-Ghadkolai a , Mehrdad Yousefi a , Srikanth Allu c , Stephen Creager a, b , Rajendra Bordia a,",
+    "publication_date": "2020",
+    "doi": "10.1016/j.jpowsour.2020.228490",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2020.228490.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Effect of Young’s modulus of active materials on ion transport through solid electrolyte in all-solid-state lithium-ion battery",
+    "authors": "A. Ohashi , M. Kodama \\* , N. Horikawa , S. Hirai",
+    "publication_date": "2021",
+    "doi": "10.1016/j.jpowsour.2020.229212",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2020.229212.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Design and validation of an online partial and total pressure measurement system for Li-ion cells",
+    "authors": "Robin Lundstrom, ¨ Erik J. Berg \\*",
+    "publication_date": "2021",
+    "doi": "10.1016/B978-0-08-043848-1.00003-1",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2020.229347.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Li-ion battery technology for grid application",
+    "authors": "Daiwon Choi \\* , Nimat Shamim, Alasdair Crawford, Qian Huang, Charlie K. Vartanian, Vilayanur V. Viswanathan, Matthew D. Paiss, Md Jan E. Alam, David M. Reed, Vince L. Sprenkle",
+    "publication_date": "2021",
+    "doi": "10.1016/j.jpowsour.2021.230419",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2021.230419.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Unraveling SEI formation and cycling behavior of commercial Ni-rich NMC Li-ion pouch cells through operando optical characterization",
+    "authors": "C. Gervilli´e-Mouravieff a,b , L. Albero Blanquer a,b,c , C. Alphen a,b,c , Jiaqiang Huang a,b,d , ， J.-M. Tarascon a,b,c,\\*",
+    "publication_date": "2023",
+    "doi": "10.1016/j.jpowsour.2023.233268",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2023.233268.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Towards an enhanced understanding of Li mechanics in Li metal anodes",
+    "authors": "Zhiqiang Zheng a , Zhanghua Fu a , Tian Qiu a , Chuang Chen a , Cheng Hu a,b,\\* iD",
+    "publication_date": "2025",
+    "doi": "10.1039/c3ee40795k",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2025.237094.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Development of a lithophilic $\\mathrm { N i C o _ { 2 } O _ { 4 } }$ nanoneedle-modified carbon cotton napkin interlayer for high-energy-density lithium metal anodes",
+    "authors": "Jiaojuan Lin a,1 , Yonghui Xie a,1 , Tengjun Yang a,1 , Wenrui Zheng a , Zewei Huang a , Hong Zhang a , Xinghui Wang a,b,\\*",
+    "publication_date": "2025",
+    "doi": "10.1016/j.jpowsour.2025.237236",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2025.237236.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Fast Li-ion transport and nonflammable double-layered polymer electrolyte for high-performance Li-metal batteries",
+    "authors": "Heesoo Lim a,1 , Munseok S. Chae b,1 , Hasan Jamal a,1 , Firoz Khan c , Injun Jeon a , Jongmin Kim a , Jae Hyun Kim a,\\*",
+    "publication_date": "2025",
+    "doi": "10.1016/j.jpowsour.2025.237270",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2025.237270.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Sensitivity of electrochemical impedance parameters for detecting changes in lithium-ion batteries due to acceleration shocks and local mechanical deformations",
+    "authors": "Christoph Drießen \\* , Emanuele Michelini , Jorg ¨ Moser , Patrick Hoschele ¨",
+    "publication_date": "2025",
+    "doi": "10.1016/j.etran.2020.100093",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2025.237308.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Multi-scale modeling and performance study of carbon fiber heterogeneous electrode batteries based on electrochemical-mechanical coupling",
+    "authors": "Chunzhi Du a , Xingjie Zhang a,\\* , Rui Zhou a , Zhiwei Sang a , Yunteng Jiang b",
+    "publication_date": "2025",
+    "doi": "10.1016/j.jpowsour.2025.237404",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2025.237404.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Comparing the thermal runaway characteristics in sodium-ion batteries and Li-ion batteries with layered oxide cathode materials: Influence of state of charge level",
+    "authors": "Kofi Owusu Ansah Amano \\* , Elena Gimadieva , Ulrich Krause",
+    "publication_date": "2025",
+    "doi": "10.1016/j.jpowsour.2025.237414",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2025.237414.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Insights into the stress-induced acceleration mechanism on calendar aging of lithium-ion battery",
+    "authors": "Yunfan Li , Xinyi Qu , Jundi Huang , Gaoming Fu , Xiang Chen , Ke Li , Weijia Shen , Yixin Lin D",
+    "publication_date": "2025",
+    "doi": "10.1016/j.jpowsour.2025.237415",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2025.237415.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Decoding the liquid-solid interplay for the mechanical behaviors of the battery materials",
+    "authors": "Xijun Tan a,b , Shuguo Sun a,b , Jun Xu a,b,\\* iD",
+    "publication_date": "2025",
+    "doi": "10.1016/j.jpowsour.2025.237566",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2025.237566.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Unravelling the effect of interlayer metal materials on Li deposition in zero-excess Lithium batteries",
+    "authors": "Neubi F. Xavier Jr. ∗, Qiong Cai iD ∗",
+    "publication_date": "2025",
+    "doi": "10.1016/j.jpowsour.2025.237567",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.jpowsour.2025.237567.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Li-ion battery materials: present and future",
+    "authors": "Naoki Nitta1,3 , Feixiang Wu1,2,3 , Jung Tae Lee1,3 and Gleb Yushin1 , \\*",
+    "publication_date": "2015",
+    "doi": "10.1016/j.mattod.2014.10.040",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1016_j.mattod.2014.10.040.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Titanium Niobium Oxide: From Discovery to Application in Fast-Charging Lithium-Ion Batteries",
+    "authors": "Kent J. Griffith,\\* Yasuhiro Harada, Shun Egusa, Rogerio M. Ribas, Robson S. Monteiro, ́ Robert B. Von Dreele, Anthony K. Cheetham, Robert J. Cava, Clare P. Grey, and John B. Goodenough",
+    "publication_date": "2020",
+    "doi": "10.1021/acs.chemmater.0c02955",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.chemmater.0c02955.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Investigating the Reversibility of Structural Modifications of $\\mathsf { L i } _ { x } \\mathsf { N i } _ { y } \\mathsf { M n } _ { z } \\mathsf { C o } _ { 1 - y - z } \\mathsf { O } _ { 2 }$ Cathode Materials during Initial Charge/ Discharge, at Multiple Length Scales",
+    "authors": "Sooyeon Hwang,† Seung Min Kim,‡ Seong-Min Bak,§ Kyung Yoon Chung,† and Wonyoung Chang ,†",
+    "publication_date": "August 11, 2015",
+    "doi": "10.1021/acs.chemmater.5b02457",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.chemmater.5b02457.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Exploration of a Metastable Normal Spinel Phase Diagram for the Quaternary Li−Ni−Mn−Co−O System",
+    "authors": "Wang Hay Kan,† Ashfia Huq,‡ and Arumugam Manthiram\\*,†",
+    "publication_date": "2016",
+    "doi": "10.1021/acs.chemmater.5b04994",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.chemmater.5b04994.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Ion Size Effects on the Thermodynamic, Kinetic, and Mechanical Properties during Ion Exchange in Solid-State Electrolytes",
+    "authors": "Harsh D. Jagad, Stephen J. Harris, Brian W. Sheldon, and Yue Qi\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.chemmater.5c01147",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.chemmater.5c01147.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Effective Li-Ion Transport Quantification in Composite Cathodes for All-Solid-State Batteries via Multiscale Modeling and Experiments",
+    "authors": "Archie Mingze Yao,○ Seong-Jun Kim,○ Vijay D. Veeraraghavan, Ziqi Wang, Sergey Gasilov, Alan Kastengren, Yet-Ming Chiang, Paul Fenter, and Venkatasubramanian Viswanathan\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.chemmater.5c02212",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.chemmater.5c02212.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Superlithiation of Organic Electrode Materials: The Case of Dilithium Benzenedipropiolate",
+    "authors": "Steven Renault, ́ \\*,† Viorica Alina Oltean,† C. Moyses Araujo,‡ Anton Grigoriev,‡ Kristina Edström,† and Daniel Brandell†",
+    "publication_date": "2016",
+    "doi": "10.1021/acs.chemmater.6b00267",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.chemmater.6b00267.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Promises and Challenges of Next-Generation “Beyond Li-ion” Batteries for Electric Vehicles and Grid Decarbonization",
+    "authors": "Yaosen Tian, Guobo Zeng, Ann Rutt, Tan Shi, Haegyeom Kim, Jingyang Wang, Julius Koettgen, Yingzhi Sun, Bin Ouyang, Tina Chen, Zhengyan Lun, Ziqin Rong, Kristin Persson,\\* and Gerbrand Ceder\\*",
+    "publication_date": "2020",
+    "doi": "10.1021/acs.chemrev.0c00767",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.chemrev.0c00767.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Extremely Fast-Charging Batteries: Principle, Strategies, Detection, and Prediction",
+    "authors": "Hao Liu,# Liyuan Zhao,# Yusheng Ye,\\* Xintao Yang, Yongxin Zhang, Qianya Li, Ruixing Li, Han Liu, Biao Huang, Feng Wu, Renjie Chen,\\* and Li Li\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.chemrev.5c00203",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.chemrev.5c00203.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Single-Crystalline Anode Materials: Growth, Applications, Fabrication, and Recycling",
+    "authors": "Dong Ju Lee, Qingyang Yin,\\* Dapeng Xu, and Zheng Chen\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.chemrev.5c00306",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.chemrev.5c00306.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Mechanistic Understanding of Thermal Stability and Safety in Lithium Metal Batteries",
+    "authors": "Kausthubharam, Bairav S. Vishnugopi, Anuththara S. J. Alujjage, Vinay Premnath, Wan Si Tang, Judith A. Jeevarajan,\\* and Partha P. Mukherjee\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.chemrev.5c00621",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.chemrev.5c00621.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "The Lithium Metal Electrochemical-Mechanical Evolution Mechanism of Void Defects for Interface Mechanical Failure in Solid-State Lithium Metal Batteries",
+    "authors": "Xinyi Zou, Zhipeng Yin, Tong Xu, Hao Feng, Zhongming Li,\\* Jiangqi Zhou,\\* and Chengwei Ma\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.iecr.5c01817",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.iecr.5c01817.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Improving Electrochemical Performance and Structural Stability of Cobalt-Free Nickel-Rich Cathode Materials through Entropy-Assisted Doping",
+    "authors": "Kunquan Duan,§ Songyuchen $\\mathbf { M } \\mathbf { a } , ^ { \\ S }$ Wenjing Shi, Jiaqi Cao, and Jie Liu\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.iecr.5c02450",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.iecr.5c02450.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Atomistic Insights into the Decomposition of Solid Polymer Electrolyte Molecules on Lithium Metal Anode: A Combined DFT and AIMD Study",
+    "authors": "Gaëlle Bouder,\\* Hamza Bouhani, Hervé Martinez, and Philippe Carbonniere",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.jpcc.5c00460",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.jpcc.5c00460.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Controlled Synthesis of Sn Nanoparticle Embedded Nanoporous Carbon Composites for Lithium-Ion Battery Anodes",
+    "authors": "Hiroo Notohara,\\* Hitoshi Mitarai, Koki Urita, and Isamu Moriguchi",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.jpcc.5c03146",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.jpcc.5c03146.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "ZnO-Doped $\\mathsf { L i } _ { 1 0 } \\mathsf { S n P } _ { 2 } \\mathsf { S } _ { 1 2 }$ with High Lithium Ionic Conductivity and Air Stability",
+    "authors": "Qian Liu, Peng Zhang, Pengfei Du, Qingtao Wang,\\* and Yanxia $\\mathrm { W u ^ { * } }$",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.jpcc.5c03493",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.jpcc.5c03493.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Lithium-Ion Model Behavior in an Ethylene Carbonate Electrolyte Using Molecular Dynamics",
+    "authors": "Narendra Kumar† and Jorge M. Seminario\\*,†,‡,§",
+    "publication_date": "2016",
+    "doi": "10.1021/acs.jpcc.6b03709",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.jpcc.6b03709.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Regulation of Oxygen Redox in Disordered Rock-Salt ${ \\dot { \\bf L i } } { \\bf X } { \\bf O } _ { 2 }$ Li-Ion Cathodes by Cation Effects: A First-Principles Study",
+    "authors": "Yanzhao Niu, Shisheng Wang, Ruishan Zhang, Zengzhu Li, Feng Pan, Wei Deng, and Bingkai Zhang\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.jpclett.5c01558",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.jpclett.5c01558.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "In Situ NMR Investigations of Impacts of Electrolyte Additives on Lithium Metal Cycling in Anode-Free Lithium Metal Batteries",
+    "authors": "Shiyu Liu,∥ Xing Lin,∥ Yao Yu,\\* Lin Liu, and Yunhui Huang\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.jpclett.5c02686",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.jpclett.5c02686.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Incorporating Solvation Effects in Oxidative Stability Predictions of Battery Electrolytes",
+    "authors": "John Holoubek,\\* Nicholas Solan, Zheng Chen, Ping Liu, and Tod A. Pascal\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.jpclett.5c02984",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.jpclett.5c02984.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "A Bifunctional Bis(trimethylsilyl) Sulfate Additive Improved the Inorganic-Rich Solid Electrolyte Interphase for Lithium Metal Batteries",
+    "authors": "Cai Chen, Minghui Li, Xiaochao Ren, Mingji Zhou, Qingshuai Xu,\\* and Keyou Yan\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.nanolett.4c06628",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.nanolett.4c06628.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "In Situ Formation of a Lithiophilic Li−Zn Alloy Using Dual-Salt Electrolyte Additives for Lithium Metal Batteries",
+    "authors": "Yun-Joo Jo,# Hyeon-Ji Shin,# Hyerim Kim, Shivam Kansara, Jang-Yeon Hwang, Jongsoon Kim, Junyoung Mun, Won-Jin Kwak,\\* and Hun-Gi Jung\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.nanolett.5c01307",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.nanolett.5c01307.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Stable Lithium Anodes Enabled by the Hardening and High ${ \\mathbf { L } } { \\mathbf { i } } ^ { + }$ Flux Interlayer",
+    "authors": "Shaozhen Huang, Kun Li, An Wang, Siru He, Zhangdi Xie, Huimiao Li, Zhibin Wu, Yuejiao Chen,\\* and Libao Chen\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.nanolett.5c01606",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.nanolett.5c01606.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Stress-Driven Whisker Formation in Lithium Metal Batteries",
+    "authors": "Martin Werres, Dariusz Niedziela, Arnulf Latz, and Birger Horstmann\\* \\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.nanolett.5c01910",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.nanolett.5c01910.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Elucidating the Effects of LiF on Lithium Metal Anodes",
+    "authors": "Mun Sek Kim,⬒ Jingyang Wang,⬒ Wenbo Zhang,⬒ Philaphon Sayavong, Zewen Zhang, Solomon T. Oyakhire, Sanzeeda Baig Shuchi, Sang Cheol Kim, Yi Cui, Yuelang Chen, Zhiao Yu, Huaxin Gong, Rong Xu, Junyoung Lee, Il Rok Choi, Jun Ho Lee, Kristin A. Persson, Jian Qin, Zhenan Bao,\\* and Yi Cui\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acs.nanolett.5c03437",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acs.nanolett.5c03437.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Interfacial Manipulation via In Situ Constructed Fast Ion Transport Channels toward an Ultrahigh Rate and Practical Li Metal Anode",
+    "authors": "Shuixin Xia,† Fengguang Li,† Xun Zhang, Lingli Luo, Yue Zhang, Tao Yuan, Yuepeng Pang, Junhe Yang, Wei Liu,\\* Zaiping Guo,\\* and Shiyou Zheng",
+    "publication_date": "2023",
+    "doi": "10.1021/acsnano.3c08864",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acsnano.3c08864.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Tin−Carbon Dual Buffer Layer to Suppress Lithium Dendrite Growth in All-Solid-State Batteries",
+    "authors": "Venkata Sai Avvaru, Tofunmi Ogunfunmi, Seonghun Jeong, Mouhamad Said Diallo, John Watt, Mary C. Scott, and Haegyeom Kim\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acsnano.4c16271",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acsnano.4c16271.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Confinement-Regulated Lamellar Interphase with Enhanced Dielectric Environments for Lithium Metal Batteries",
+    "authors": "Ruixin Lv, Chong Luo,\\* Ke Wang, Wangming Tang, Bingran Liu, Yi Liu, Yang Li, Li Li, Feng Wu, and Renjie Chen\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acsnano.5c04491",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acsnano.5c04491.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Electrode Flexibility Enhances Electrolyte Dynamics during Supercapacitor Charging",
+    "authors": "Zacharie Waysenson, Arthur France-Lanord, Alessandra Serva, Patrice Simon, Mathieu Salanne, and A. Marco Saitta\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acsnano.5c07490",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acsnano.5c07490.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Operando Micro- and Nano-Computed Tomography Reveals Silicon−Electrolyte Interface Dynamics and Anisotropic Contact Loss in All-Solid-State Batteries",
+    "authors": "Mao Matsumoto, Yuya Sakka, Chengchao Zhong, Keiji Shimoda, Ken-ichi Okazaki, Hisao Yamashige, Takashi Ozeki, Toshiaki Matsui, Akihisa Takeuchi, Masayuki Uesugi, Kentaro Uesugi, and Yuki Orikasa\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/acsnano.5c11403",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_acsnano.5c11403.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "New Anode Framework for Rechargeable Lithium Batteries",
+    "authors": "Jian-Tao Han,†,§ Yun-Hui Huang,‡ and John B. Goodenough†, \\*",
+    "publication_date": "March 29, 2011",
+    "doi": "10.1021/cm200441h",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_cm200441h.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Understanding Phase Transformation in Crystalline Ge Anodes for Li-Ion Batteries",
+    "authors": "Linda Y. Lim,†,‡ Nian Liu,§ Yi Cui,† and Michael F. Toney\\*,‡",
+    "publication_date": "2014",
+    "doi": "10.1021/cm501233k",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_cm501233k.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Space−Charge Layer Effect at Interface between Oxide Cathode and Sulfide Electrolyte in All-Solid-State Lithium-Ion Battery",
+    "authors": "Jun Haruyama,†,‡ Keitaro Sodeyama,†,§ Liyuan Han,∥,⊥ Kazunori Takada,†,‡ and Yoshitaka Tateyama\\*,†,§,⊥",
+    "publication_date": "2014",
+    "doi": "10.1021/cm5016959",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_cm5016959.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Precisely Engineered Colloidal Nanoparticles and Nanocrystals for Li-Ion and Na-Ion Batteries: Model Systems or Practical Solutions?†",
+    "authors": "Marek F. Oszajca, Maryna I. Bodnarchuk, and Maksym V. Kovalenko\\*",
+    "publication_date": "2014",
+    "doi": "10.1021/cm5024508",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_cm5024508.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Challenges for Rechargeable Li Batteries†",
+    "authors": "John B. Goodenough\\* and Youngsik Kim",
+    "publication_date": "2010",
+    "doi": "10.1021/cm901452z",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_cm901452z.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Nonaqueous Liquid Electrolytes for Lithium-Based Rechargeable Batteries",
+    "authors": "ElectrochemistryBranch，SensorandElectronDvicesDrectorate,US.ArmyesearchaboratoryAdelphi,aryland78-1197",
+    "publication_date": "2004",
+    "doi": "10.1021/cr030203g",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_cr030203g.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Electrochemical Stability and Reduction Mechanism of LLZO Interfaces in Li Batteries from First Principles",
+    "authors": "Junsoo Park,\\* Stephen R. Xie, Zhigang Wu, and John W. Lawson",
+    "publication_date": "2025",
+    "doi": "10.1021/jacs.5c05770",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_jacs.5c05770.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Developing Dynamic Ion Transport Channels in Polymer Solid Electrolytes for High-Performance Lithium Metal Batteries",
+    "authors": "Qiang Lv, Li-an Li, Xi Zhang, Runqi Wang, Ning Wen, Lijuan Xue, Haimei Wang,\\* Lei Shen, Dairong Chen, Francesco Ciucci, and John Wang",
+    "publication_date": "2025",
+    "doi": "10.1021/jacs.5c05911",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_jacs.5c05911.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Metallicity, Atomic Disorder, and Li-Ion Storage in Fast-Charging Anodes",
+    "authors": "Kira E. Wyckoff,∇ Arava Zohar,∇ Tianyu Li, Yucheng Zhou, Linus Kautzsch, Welton Wang, Ananya Kepper, Ashlea R. Patterson, H. Cein Mandujano, Krishna Prasad Koirala, Anna Kallistova, Wenqian Xu, Jue Liu, Laurent Pilon, Anthony K. Cheetham, and Ram Seshadri\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/jacs.5c06578",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_jacs.5c06578.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Precise Chemical Lithiation: A Pathway to Superior Li-Enriched Li1+xNCM523 Cathodes for Long Life Anode-Free Li Metal Batteries",
+    "authors": "Tingcan ${ \\mathrm { L i } } , ^ { \\# }$ Ruimin Gao,# Xuanze Wang,# Mingyu Zhang, Mingyuan Jiang, Juzheng Zhang, Ran Tan, Jike Wang, Xinping Ai, Pei Xiong,\\* Liumin Suo,\\* and Jiangfeng Qian\\*",
+    "publication_date": "2025",
+    "doi": "10.1021/jacs.5c06681",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_jacs.5c06681.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Regulating Lithium Intercalation/Plating Competition To Enhance Low-Temperature Performance of Li-Ion Batteries",
+    "authors": "Maozeng Cheng, Aoyuan Chen, Zhenjie Zhang, Chuanchao Sheng, Haoshen ${ \\mathrm { Z h o u , } } ^ { * }$ and Ping $\\mathrm { H e ^ { * } }$",
+    "publication_date": "2025",
+    "doi": "10.1021/jacs.5c13810",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_jacs.5c13810.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Origins of Large Voltage Hysteresis in High-Energy-Density Metal Fluoride Lithium-Ion Battery Conversion Electrodes",
+    "authors": "Linsen Li,†,∥ Ryan Jacobs,‡ Peng Gao,§,⊥ Liyang Gan,† Feng Wang,§ Dane Morgan,\\*,‡ and Song Jin\\* ,†",
+    "publication_date": "2016",
+    "doi": "10.1021/jacs.6b00061",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_jacs.6b00061.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Potentiostatic Intermittent Titration Technique for Electrodes Governed by Diffusion and Interfacial Reaction",
+    "authors": "Juchuan Li,\\*,† Xingcheng Xiao,‡ Fuqian Yang,† Mark W. Verbrugge,‡ and Yang-Tse Cheng\\*,†",
+    "publication_date": "November 14, 2011",
+    "doi": "10.1021/jp207919q",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_jp207919q.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Chemistry, Impedance, and Morphology Evolution in Solid Electrolyte Interphase Films during Formation in Lithium Ion Batteries",
+    "authors": "Peng Lu,\\*,† Chen Li,‡ Eric W. Schneider,† and Stephen J. Harris§",
+    "publication_date": "2014",
+    "doi": "10.1021/jp4111019",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_jp4111019.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Flexible High-Energy Li-Ion Batteries with Fast-Charging Capability",
+    "authors": "Mi-Hee Park,† Mijung Noh,† Sanghan Lee, Minseong Ko, Sujong Chae, Soojin Sim, Sinho Choi, Hyejung Kim, Haisol Nam, Soojin Park,\\* and Jaephil Cho\\*",
+    "publication_date": "2014",
+    "doi": "10.1021/nl501597s",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1021_nl501597s.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Issues and challenges facing rechargeable lithium batteries",
+    "authors": "Before reviewing the present status of research and future challenges for Li-battery technologies, we present a brief historical account of developments over the past 30 years, as personally perceived.",
+    "publication_date": "2001",
+    "doi": "10.1038/35104644",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_35104644.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "A new active Li–Mn–O compound for high energy density Li-ion batteries",
+    "authors": "M. Freire1,2, N. V. Kosova3 , C. Jordy2 , D. Chateigner1 , O. I. Lebedev1 , A. Maignan1 and V. Pralong1 \\*",
+    "publication_date": "2015",
+    "doi": "10.1038/NMAT4479",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_NMAT4479.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Nanoscale mapping of ion diffusion in a lithium-ion battery cathode",
+    "authors": "N. Balke1 \\*, S. Jesse1 , A. N. Morozovska2, E. Eliseev3, D. W. Chung4, Y. Kim5, L. Adamczyk5, R. E. Garcı´a4, N. Dudney5 and S. V. Kalinin1,5\\*",
+    "publication_date": "2010",
+    "doi": "10.1038/NNANO.2010.174",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_NNANO.2010.174.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "High thermal conductivity of chain-oriented amorphous polythiophene",
+    "authors": "Virendra Singh1†, Thomas L. Bougher1†, Annie Weathers2, Ye Cai3, Kedong Bi2,4, Michael T. Pettes2, Sally A. McMenamin2, Wei Lv1 , Daniel P. Resler5, Todd R. Gattuso5, David H. Altman5, Kenneth H. Sandhage3, Li Shi2, Asegun Henry1,3 and Baratunde A. Cola1,3\\*",
+    "publication_date": "2014",
+    "doi": "10.1615/AnnualRevHeatTransfer.2013006949",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_NNANO.2014.44.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Promise and reality of post-lithium-ion batteries with high energy densities",
+    "authors": "Jang Wook Choi1 and Doron Aurbach2",
+    "publication_date": "2016",
+    "doi": "10.1038/natrevmats.2016.13",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_natrevmats.2016.13.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Charge distribution guided by grain crystallographic orientations in polycrystalline battery materials",
+    "authors": "Zhengrui Xu1,8, Zhisen Jiang2,8, Chunguang Kuai1,3, Rong Xu 4, Changdong Qin5, Yan Zhang2,3, Muhammad Mominur Rahman1 , Chenxi Wei2, Dennis Nordlund 2, Cheng-Jun Sun6, Xianghui Xiao Xi-Wen Du 3, Kejie Zhao 4, Pengfei Yan 5, Yijin Liu 2\\* & Feng Lin 1 \\*",
+    "publication_date": "2020",
+    "doi": "10.1038/s41467-019-13884-x",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41467-019-13884-x.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Benchmarking the performance of all-solid-state lithium batteries",
+    "authors": "Simon Randau1 , Dominik A. Weber1,4, Olaf Kötz1 , Raimund Koerver1,5, Philipp Braun2 , André Weber  2 , Ellen Ivers-Tiffée2 , Torben Adermann3 , Jörn Kulisch3 , Wolfgang G. Zeier  1 , Felix H. Richter  1 ✉ and Jürgen Janek  1 ✉",
+    "publication_date": "xx xx xxxx",
+    "doi": "10.1038/s41560-020-0565-1",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41560-020-0565-1.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Ultrahigh power and energy density in partially ordered lithium-ion cathode materials",
+    "authors": "Crystal structure diagram of a 0-TM channel with labeled atomic sites and temperature parameters",
+    "publication_date": "xx xx xxxx",
+    "doi": "10.1038/s41560-020-0573-1",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41560-020-0573-1.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "High-energy long-cycling all-solid-state lithium metal batteries enabled by silver–carbon composite anodes",
+    "authors": "Yong-Gun Lee  1 ✉, Satoshi Fujiki  2 , Changhoon Jung1 , Naoki Suzuki2 , Nobuyoshi Yashiro2 , Ryo Omoda2 , Dong-Su Ko1 , Tomoyuki Shiratsuchi2 , Toshinori Sugimoto1 , Saebom Ryu  1 , Jun Hwan Ku1 , Taku Watanabe  2 , Youngsin Park1 , Yuichi Aihara  2 ✉, Dongmin Im  1 ✉ and In Taek Han1",
+    "publication_date": "xx xx xxxx",
+    "doi": "10.1038/s41560-020-0575-z",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41560-020-0575-z.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "In situ formed partially disordered phases as earth-abundant Mn-rich cathode materials",
+    "authors": "The challenge with Mn-based intercalation cathodes is the relative mobility of both the Mn2+ and Mn3+ ion (through disproportionation)",
+    "publication_date": "2023",
+    "doi": "10.1038/s41560-023-01375-9",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41560-023-01375-9.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Porous current collector for fast-charging lithium-ion batteries",
+    "authors": "These findings suggest PCCs have advantages over TCCs that could enrich battery configurations and increase the fast-charging capabilities of next-generation energy-storage devices.",
+    "publication_date": "2024",
+    "doi": "10.1038/s41560-024-01473-2",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41560-024-01473-2.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Stabilizing lithium-metal electrodes with polymer coatings",
+    "authors": "Zhuojun Huang  1,2, Hao Lyu  2 , Louisa C. Greenburg1 , Yi Cui  1,3 & Zhenan Bao  2",
+    "publication_date": "2025",
+    "doi": "10.1038/s41560-025-01767-z",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41560-025-01767-z.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Na and Ti share roles",
+    "authors": null,
+    "publication_date": "2025",
+    "doi": "10.1038/s41560-025-01788-8",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41560-025-01788-8.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Passivation by design",
+    "authors": "1. Hobold, G. M. et al. Nat. Energy 6, 951–960 (2021).",
+    "publication_date": "2025",
+    "doi": "10.1038/s41560-025-01803-y",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41560-025-01826-5.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Covariance of interphasic properties and fast chargeability of energy-dense lithium metal batteries",
+    "authors": "Hyeokjin Kwon  1 , Seongyeong Kim  1 , Jonghyun Hyun  1 , Ha Eun Lee2 , Seong Su Kim  2 , Yesom Kim1 , Il Ju Kim1 , Kyungjae Shin1 , Sejin Kim1 , Changhoon Park1 , Hongsin Kim3 , Dongseok Shin3 & Hee-Tak Kim  1,4",
+    "publication_date": "2025",
+    "doi": "10.1038/s41560-025-01838-1",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41560-025-01838-1.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Unified affinity paradigm for the rational design of high-efficiency lithium metal electrolytes",
+    "authors": "In the format provided by the authors and unedited",
+    "publication_date": null,
+    "doi": "10.1038/s41560-024-01565-z",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41560-025-01842-5.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "High plating currents without dendrites at the interface between a lithium anode and solid electrolyte",
+    "authors": "Microscopic view of crystalline structures with 1 μm scale bar and 83% label (no text beyond labels)",
+    "publication_date": "2025",
+    "doi": "10.5281/zenodo.10523607",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41560-025-01847-0.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Electrochemically induced imperfections",
+    "authors": "1. Kim, U.-H. et al. Nat. Energy 5, 860–869 (2020).",
+    "publication_date": "2025",
+    "doi": "10.1038/s41560-025-01910-w",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41560-025-01890-x.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Perspectives for electrochemical capacitors and related devices",
+    "authors": "Patrice Simon  1,2,3 ✉ and Yury Gogotsi  4,5 ✉",
+    "publication_date": "xx xx xxxx",
+    "doi": "10.1038/s41563-020-0747-z",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41563-020-0747-z.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Decoupling the roles of Ni and Co in anionic redox activity of Li-rich NMC cathodes",
+    "authors": "Biao Li  1,2,7, Zengqing Zhuo  3 , Leiting Zhang  4 , Antonella Iadecola2 , Xu Gao1,2, Jinghua Guo  3 , Wanli Yang  3 , Anatolii V. Morozov  5 , Artem M. Abakumov  5 & Jean-Marie Tarascon  1,2,6",
+    "publication_date": "2023",
+    "doi": "10.1038/s41563-023-01679-x",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41563-023-01679-x.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Nanoscale engineering of catalytic materials for sustainable technologies",
+    "authors": "Sharon Mitchell1 , Ruixuan Qin  2 , Nanfeng Zheng  2,3 ✉ and Javier Pérez-Ramírez 1 ✉",
+    "publication_date": "xx xx xxxx",
+    "doi": "10.1038/s41565-020-00799-8",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41565-020-00799-8.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Application-driven design of non-aqueous electrolyte solutions through quantification of interfacial reactions in lithium metal batteries",
+    "authors": "In the format provided by the authors and unedited",
+    "publication_date": null,
+    "doi": "10.1038/s41565-025-01935-y",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1038_s41565-025-01935-y.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Energy & Environmental Science",
+    "authors": "Yuekon Liu, Zhiqun Lin et al.",
+    "publication_date": "2025",
+    "doi": "10.1039/D5EE01338K",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1039_D5EE01338K.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Energy & Environmental Science",
+    "authors": "Yuekon Liu, Zhiqun Lin et al.",
+    "publication_date": "2025",
+    "doi": "10.1039/D5EE01956G",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1039_D5EE01956G.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Energy & Environmental Science",
+    "authors": "Yuekon Liu, Zhiqun Lin et al.",
+    "publication_date": "2025",
+    "doi": "10.1039/D5EE02503F",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1039_D5EE02503F.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Energy & Environmental Science",
+    "authors": "Yuekon Liu, Zhiqun Lin et al.",
+    "publication_date": "2025",
+    "doi": "10.1039/D5EE03522H",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1039_D5EE03522H.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Layered lithium transition metal oxide cathodes towards high energy lithium-ion batteries",
+    "authors": "Ping He, Haijun Yu, De Li and Haoshen Zhou\\*",
+    "publication_date": "2012",
+    "doi": "10.1039/c2jm14305d",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1039_c2jm14305d.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "In situ synthesis of $\\mathsf { L i V } _ { 3 } \\mathsf { O } _ { 8 }$ nanorods on graphene as high rate-performance cathode materials for rechargeable lithium batteries†",
+    "authors": "Runwei Mo,a Ying Du,ab Neiqing Zhang,ab David Rooneyc and Kening Sun\\*ab",
+    "publication_date": "2013",
+    "doi": "10.1039/c3cc43975e",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1039_c3cc43975e.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Nonflammable perfluoropolyether-based electrolytes for lithium batteries",
+    "authors": "Dominica H. C. Wonga,1, Jacob L. Thelenb,1, Yanbao Fuc , Didier Devauxc , Ashish A. Pandyaa , Vincent S. Battagliac , Nitash P. Balsarab,c,d,2, and Joseph M. DeSimonea,e,2",
+    "publication_date": "2014",
+    "doi": "10.1073/pnas.1314615111",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1073_pnas.1314615111.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Eliminating intercrystalline side effects for stable lithium metal batteries",
+    "authors": "Xingwei Suna,1 , Yang Fenga,1, Jiangtao Yua , Yong Lua , Shuo Xua , Ying Jianga , Haixia Lia , Zhenhua Yana , Kai Zhanga,2 , and Jun Chena,2",
+    "publication_date": "2025",
+    "doi": "10.1073/pnas",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1073_pnas.2507789122.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Effects of microstructure on fracture strength and conductivity of sintered NMC333",
+    "authors": "2 NASA Glenn Research Center, Cleveland, OH, USA",
+    "publication_date": "2020",
+    "doi": "10.1111/jace.16829",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1111_jace.16829.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "E L E C T R O C H E M I S T R Y",
+    "authors": "Lianqiang Peng1,2 , Xiaotian Wang1 , Xu Liu1 , Zihang Xi1 , Yawen Li1 , Jie Zhang1 , Yujie Ning1 , Qing Zhao1,2,3 \\*",
+    "publication_date": "2026",
+    "doi": "10.1126/sciadv.adt2630",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1126_sciadv.adt2630.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "References and Notes",
+    "authors": "1. B. A. Smith et al., Science 233, 43 (1986).",
+    "publication_date": "2006",
+    "doi": "10.1126/science.1122882",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1126_science.1122882.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Solid State Electrodes for High Energy Batteries",
+    "authors": "D. W. Murphy and P. A. Christian",
+    "publication_date": null,
+    "doi": "10.1126/science.205.4407.651",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1126_science.205.4407.651.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Electrode Materials for Lithium-Ion Batteries of New Generation",
+    "authors": "T. L. Kulovaz and A. M. Skundin",
+    "publication_date": "2012",
+    "doi": "10.1134/S1023193512020085",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1134_S1023193512020085.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Breathing of Graphite Particles in a Lithium-Ion Battery",
+    "authors": "Keiji Takata, Mitsuhiro Okuda, Nobuki Yura, and Ryota Tamura",
+    "publication_date": "2012",
+    "doi": "10.1143/APEX.5.047101",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1143_APEX.5.047101.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Enhanced Structural Stability and Cyclability of Al-Doped $\\mathbf { L i M n } _ { 2 } \\mathbf { O } _ { 4 }$ Spinel Synthesized by the Emulsion Drying Method",
+    "authors": "Seung-Taek Myung, Shinichi Komaba,\\* and Naoaki Kumagai\\*, z",
+    "publication_date": "2001",
+    "doi": "10.1149/1.1365140",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_1.1365140.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Electrochemical Kinetic Studies of Li-Ion in O2-Structured $\\mathbf { L i } _ { 2 / 3 } ( \\mathbf { N i } _ { 1 / 3 } \\mathbf { M n } _ { 2 / 3 } ) \\mathbf { O } _ { 2 }$ and $\\mathbf { L i } _ { ( 2 / 3 ) + x } ( \\mathbf { N i } _ { 1 / 3 } \\mathbf { M m } _ { 2 / 3 } ) \\mathbf { O } _ { 2 }$ by EIS and GITT",
+    "authors": "K. M. Shaju, G. V. Subba Rao, and B. V. R. Chowdariz",
+    "publication_date": "2003",
+    "doi": "10.1149/1.1521754",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_1.1521754.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Analysis of Electrochemical and Thermal Behavior of Li-Ion Cells",
+    "authors": "Venkat Srinivasan\\* and C. Y. Wang\\*\\*,z",
+    "publication_date": "2003",
+    "doi": "10.1149/1.1526512",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_1.1526512.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "In Situ Observation of Strains during Lithiation of a Graphite Electrode",
+    "authors": "Yue Qi\\*,z and Stephen J. Harris\\*",
+    "publication_date": "2010",
+    "doi": "10.1149/1.3377130",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_1.3377130.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Development of Experimental Techniques for Parameterization of Multi-scale Lithium-ion Battery Models",
+    "authors": "6 authors, including:",
+    "publication_date": "2020",
+    "doi": "10.1149/1945-7111/ab9050",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_1945-7111_ab9050.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Intercalate Diffusion in Multiphase Electrode Materials and Application to Lithiated Graphite",
+    "authors": "Daniel R. Bakera,\\*,z and Mark W. Verbruggeb,\\*",
+    "publication_date": "2012",
+    "doi": "10.1149/2.002208jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.002208jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Electrochemical Charge/Discharge Behavior and Phase Transitions during Cell Cycling of Li(Mg) Alloy Anodes for High Capacity Li Ion Batteries",
+    "authors": "M. Jagannathanz and K. S. Ravi Chandran",
+    "publication_date": "2013",
+    "doi": "10.1149/2.006311jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.006311jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Investigation of the Oxidative Stability of Li-Ion Battery Electrolytes Using Cathode Materials",
+    "authors": "Andreas Hofmann,a,z Felix Werth,a Andres Howeling, ¨ b and Thomas Hanemanna,c",
+    "publication_date": "2015",
+    "doi": "10.1149/2.0071512eel",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.0071512eel.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Minimally Invasive Insertion of Reference Electrodes into Commercial Lithium-Ion Pouch Cells",
+    "authors": "E. McTurk,a,∗ C. R. Birkl,b,∗ M. R. Roberts,a,∗∗ D. A. Howey,b,∗∗ and P. G. Brucea,∗∗,z",
+    "publication_date": "2015",
+    "doi": "10.1149/2.0081512eel",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.0081512eel.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "An Apparatus for the Study of In Situ Gas Evolution in Li-Ion Pouch Cells",
+    "authors": "C. P. Aiken,a J. Xia,b David Yaohui Wang,c D. A. Stevens,c S. Trussler,a and J. R. Dahna,c,∗,z",
+    "publication_date": "2014",
+    "doi": "10.1149/2.0151410jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.0151410jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Design of Bi-Tortuous, Anisotropic Graphite Anodes for Fast Ion-Transport in Li-Ion Batteries",
+    "authors": "V. Pavan Nemani,a Stephen J. Harris,b,∗ and Kyle C. Smitha,c,∗,z",
+    "publication_date": "2015",
+    "doi": "10.1149/2.0151508jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.0151508jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Investigations on the C-Rate and Temperature Dependence of Manganese Dissolution/Deposition in $\\bf \\tilde { L } i M m _ { 2 } O _ { 4 } / L i _ { 4 } ^ { 2 } T i _ { 5 } O _ { 1 2 }$ Lithium Ion Batteries",
+    "authors": "M. Borner, ¨ a S. Klamor,a B. Hoffmann,a M. Schroeder,a S. Nowak,a,∗ A. Wursig, ¨ b M. Winter,a,c,∗∗ and F. M. Schappachera,z",
+    "publication_date": "2016",
+    "doi": "10.1149/2.0191606jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.0191606jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "FOCUS ISSUE OF SELECTED PAPERS FROM IMLB 2016 WITH INVITED PAPERS CELEBRATING 25 YEARS OF LITHIUM ION BATTERIES",
+    "authors": "# Results and Discussion",
+    "publication_date": "2017",
+    "doi": "10.1149/2.0191701jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.0191701jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Structural Changes in a Li-Rich 0.5Li2MnO3∗0.5LiMn0.4Ni0.4Co0.2O2 Cathode Material for Li-Ion Batteries: A Local Perspective",
+    "authors": "Jatinkumar Rana,a,∗,z Richard Kloepsch,b Jie Li,b Marian Stan,b Gerhard Schumacher,a Martin Winter,b,∗∗ and John Banharta,c",
+    "publication_date": "2016",
+    "doi": "10.1149/2.0211606jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.0211606jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "JES FOCUS ISSUE ON MATHEMATICAL MODELING OF ELECTROCHEMICAL SYSTEMS AT MULTIPLE SCALES",
+    "authors": "Zhixiao Liu∗ and Partha P. Mukherjee∗∗,z",
+    "publication_date": "2014",
+    "doi": "10.1149/2.026408jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.026408jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "FOCUS ISSUE OF SELECTED PAPERS FROM IMLB 2016 WITH INVITED PAPERS CELEBRATING 25 YEARS OF LITHIUM ION BATTERIES",
+    "authors": "# Review—Recent Advances and Remaining Challenges for Lithium Ion Battery Cathodes",
+    "publication_date": "2017",
+    "doi": "10.1149/2.0351701jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.0351701jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Thermal Behavior of Solid Electrolyte Interphase Films Deposited on Graphite Electrodes with Different States-of-Charge",
+    "authors": "Hosang Park,a Taeho Yoon,a Youngjin Kim,a Jae Gil Lee,a Jongjung Kim,a Hyun-seung Kim,a Ji Heon Ryu,b Jae Jeong Kim,a,∗ and Seung M. Oha,∗,z",
+    "publication_date": "2015",
+    "doi": "10.1149/2.0431506jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.0431506jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Life Simulation of a Graphite/LiFePO4 Cell under Cycling and Storage",
+    "authors": "C. Delacourta,b,∗,z and M. Safaria,c",
+    "publication_date": "2012",
+    "doi": "10.1149/2.049208jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.049208jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "A Systematic Study of the Concentration of Lithium Hexafluorophosphate (LiPF6) as a Salt for LiCoO2/Graphite Pouch Cells",
+    "authors": "David Yaohui Wang,a J. C. Burns,b,∗ and J. R. Dahna,b,∗∗,z",
+    "publication_date": "2014",
+    "doi": "10.1149/2.0611409jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.0611409jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Direct Measurements of Effective Ionic Transport in Porous Li-Ion Electrodes",
+    "authors": "Nathan A. Zacharias, Douglas R. Nevers, Cole Skelton, Karey Knackstedt, David E. Stephenson, and Dean R. Wheeler∗,z",
+    "publication_date": "2013",
+    "doi": "10.1149/2.062302jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.062302jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Electrochemical Characterization and Temperature Dependency of Mass-Transport Properties of $\\mathbf { L i P F _ { 6 } }$ in EC:DEC",
+    "authors": "Henrik Lundgren,z Marten Behm, ˚ ∗ and Goran Lindbergh ¨",
+    "publication_date": "2015",
+    "doi": "10.1149/2.0641503jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.0641503jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Unexpected Voltage Fade in LMR-NMC Oxides Cycled below the “Activation” Plateau",
+    "authors": "Yan Li,a,b,∗ Javier Bareno, ˜ a Martin Bettge,a,∗∗ and Daniel P. Abrahama,∗∗,z",
+    "publication_date": "2014",
+    "doi": "10.1149/2.0741501jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.0741501jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "$\\mathbf { L i } ^ { + }$ Transference Numbers in Liquid Electrolytes Obtained by Very-Low-Frequency Impedance Spectroscopy at Variable Electrode Distances",
+    "authors": "F. Wohde,z M. Balabajew, and B. Roling",
+    "publication_date": "2016",
+    "doi": "10.1149/2.0811605jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.0811605jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Communication—Technique for Visualization and Quantification of Lithium-Ion Battery Separator Microstructure",
+    "authors": "Marie Francine Lagadec,∗ Martin Ebner,∗ Raphael Zahn, and Vanessa Woodz",
+    "publication_date": "2016",
+    "doi": "10.1149/2.0811606jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.0811606jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Effects of Carbonate Solvents and Lithium Salts on Morphology and Coulombic Efficiency of Lithium Electrode",
+    "authors": "Fei Ding,a,b Wu Xu,a,∗,z Xilin Chen,a,∗∗ Jian Zhang,a Mark H. Engelhard,c Yaohui Zhang,a,d Bradley R. Johnson,a Jarrod V. Crum,a Thomas A. Blake,e Xingjiang Liu,b and Ji-Guang Zhanga,z",
+    "publication_date": "2013",
+    "doi": "10.1149/2.100310jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.100310jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Review—Post-Mortem Analysis of Aged Lithium-Ion Batteries: Disassembly Methodology and Physico-Chemical Analysis Techniques",
+    "authors": "Thomas Waldmann,a,z Amaia Iturrondobeitia,b Michael Kasper,a Niloofar Ghanbari,a Fred´ eric Aguesse,´ b Emilie Bekaert,b Lise Daniel,c,d Sylvie Genies,c,d Isabel Jimenez Gordon,´ c,d Matthias W. Loble, ¨ e Eric De Vito,c,d and Margret Wohlfahrt-Mehrensa",
+    "publication_date": "2016",
+    "doi": "10.1149/2.1211609jes",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.1149_2.1211609jes.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Perspectives on the Redox Chemistry of Organic Electrode Materials in Lithium Batteries",
+    "authors": "Yong Lu, Qiu Zhang & Jun Chen\\*",
+    "publication_date": "2023",
+    "doi": "10.31635/ccschem.023.202302740",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/242/10.31635_ccschem.023.202302740.md",
+    "subfolder": "242"
+  },
+  {
+    "title": "Three-Dimensional Fiber Network Structure-Reinforced Composite Solid-like Electrolyte for Lithium-Metal Batteries",
+    "authors": "Wanqing Fan, Ying Huang,\\* Meirong Gu, Xu Lu, Kaihang She, and Zheng Zhang",
+    "publication_date": "October 10, 2023",
+    "doi": "10.1021/acs.energyfuels.3c02989",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/papers/merged/example/10.1021_acs.energyfuels.3c02989.md",
+    "subfolder": "example"
+  },
+  {
+    "title": "High-entropy oxides as advanced anode materials for long-life lithium-ion Batteries",
+    "authors": "Bin Xiao, Gang Wu, Tongde Wang, Zhengang Wei, Yanwei Sui, Baolong Shen, Jiqiu Qi, Fuxiang Wei, Junchao Zheng",
+    "publication_date": null,
+    "doi": "10.1016/j.nanoen.2022.106962",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/anode/anode.md",
+    "subfolder": ""
+  },
+  {
+    "title": "Mg2+/Al3+ Co-doped Li-Rich Manganese-Based Oxides for Boosting Rate Performance and Stability of Lithium-Ion Batteries",
+    "authors": "Junxia Meng, Wenzhuan Hu, Quanxin Ma, Zhenzhen Wu, Lishuang Xu, Jie Huang, Chen Xiao, Junru Wang, Lina Zhang, Feng Liu, Xing Zhi, and Shanqing Zhang",
+    "publication_date": "2025",
+    "doi": "10.1002/adfm.202501762",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/cathode/cathode.md",
+    "subfolder": ""
+  },
+  {
+    "title": "Superwettable Electrolyte Engineering for Fast Charging Li-Ion Batteries",
+    "authors": "Chao Li, Zhenye Liang, Lina Wang, Daofan Cao, Yun-Chao Yin, Daxian Zuo, Jian Chang, Jun Wang, Ke Liu, Xing Li, Guangfu Luo, Yonghong Deng, and Jiayu Wan",
+    "publication_date": "February 29, 2024",
+    "doi": "10.1021/acsenergylett.3c02572",
+    "file_path": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/electrolyte/electrolyte.md",
+    "subfolder": ""
+  }
+]

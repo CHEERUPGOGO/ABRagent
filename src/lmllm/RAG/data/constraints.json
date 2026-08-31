@@ -1,0 +1,71 @@
+{
+  "version": "0.1-seed",
+  "updated": "2026-08-18",
+  "note": "核心 8 条硬规则手工精校。trigger.field 支持点路径（cathode.voltage_limit）与方案字段（target_energy）。op: gt/gte/lt/lte/eq/in。action: exclude/include/reject。后续用 NERRE compatibility schema 从 papers/ebook 抽取扩充。",
+  "rules": [
+    {
+      "id": "C1",
+      "trigger": {"field": "cathode.voltage_limit", "op": "gt", "value": 4.3},
+      "action": "exclude",
+      "target": "electrolyte:carbonate_ec",
+      "reason": "正极充电截止电压超过常规碳酸酯氧化窗口(~4.3V)，电解液氧化分解",
+      "source": "教科书共识（electrolyte oxidation window）"
+    },
+    {
+      "id": "C2",
+      "trigger": {"field": "cathode.voltage_limit", "op": "gt", "value": 4.6},
+      "action": "exclude",
+      "target": "electrolyte:[carbonate_ec, fluorinated]",
+      "reason": ">4.6V 需氧化窗口 >5V 的电解液（高浓/LHCE/砜类）",
+      "source": "教科书共识（high-voltage electrolyte）"
+    },
+    {
+      "id": "C3",
+      "trigger": {"field": "anode", "op": "eq", "value": "li_metal"},
+      "action": "exclude",
+      "target": "electrolyte:carbonate_ec",
+      "reason": "锂金属负极 + 常规低浓碳酸酯 → 枝晶生长、库仑效率低",
+      "source": "教科书共识（Li metal dendrite）"
+    },
+    {
+      "id": "C4",
+      "trigger": {"field": "anode", "op": "eq", "value": "li_metal"},
+      "action": "include",
+      "target": "electrolyte:[high_concentration, lhce]",
+      "reason": "液态体系下锂金属负极唯一可行路线：高浓或局部高浓电解液",
+      "source": "教科书共识（high-concentration electrolyte for Li metal）"
+    },
+    {
+      "id": "C5",
+      "trigger": {"field": "anode", "op": "eq", "value": "si_base"},
+      "action": "include",
+      "target": "additive:FEC",
+      "reason": "硅基负极体积膨胀需 FEC 类添加剂形成稳定 SEI",
+      "source": "教科书共识（Si anode SEI）"
+    },
+    {
+      "id": "C6",
+      "trigger": {"field": "cathode", "op": "in", "value": ["LNMO", "LRMO"]},
+      "action": "exclude",
+      "target": "electrolyte:carbonate_ec",
+      "reason": "高压正极导致常规碳酸酯分解，且 Mn 溶解加剧",
+      "source": "教科书共识（high-voltage cathode）"
+    },
+    {
+      "id": "C7",
+      "trigger": {"field": "target_energy", "op": "gte", "value": 400},
+      "action": "exclude",
+      "target": "anode:[graphite, si_base]",
+      "reason": "石墨体系电芯级能量密度上限约 350 Wh/kg，≥400 Wh/kg 必须锂金属负极",
+      "source": "电芯级能量密度工程共识"
+    },
+    {
+      "id": "C8",
+      "trigger": {"field": "target_energy", "op": "gte", "value": 500},
+      "action": "reject",
+      "target": null,
+      "reason": "液态体系电芯级 500 Wh/kg 不可行，需固态或新体系；标记数据缺口",
+      "source": "各国电池路线图（液态上限共识）"
+    }
+  ]
+}

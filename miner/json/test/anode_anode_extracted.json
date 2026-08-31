@@ -1,0 +1,825 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/anode/anode.md",
+  "component": "anode",
+  "paper_id": "anode",
+  "doi": "anode",
+  "material_id": "anode",
+  "meta": {
+    "meta_title": "",
+    "meta_authors": "",
+    "meta_year": ""
+  },
+  "table_items": [
+    "TABLE DATA BLOCK\nNearby text: arrangement\n</details>\n\n（b）  \n![](anodeimages/e71cc9d25ff5b9d0bd1a03bdace5f4505d96b823a9519f4f3757444923f9b3c8.jpg)\n\n<details>\n<summary>chemical</summary>\n\nCrystal structure diagram of a manganate material showing nickel, oxygen, and manganese atoms in a lattice\n</details>\n\n![](anodeimages/0d8072341\nHeaders: Value\nRows:\nRow 1: Value = 0.5\nColumn data:\n  Value: 0.5",
+    "TABLE DATA BLOCK\nHeaders: Sample; BM; HEO Fresh; 25th cycles; 50th cycles; 100th cycles\nRows:\nRow 1: Sample = $R_s$  (Ω); BM = -; HEO Fresh = -; 25th cycles = 1.902; 50th cycles = 1.943; 100th cycles = 1.715\nRow 2: Sample = $R_{ct}$  (Ω); BM = 144; HEO Fresh = 95.77; 25th cycles = 64.25; 50th cycles = 51.22; 100th cycles = 38.67\nRow 3: Sample = Slope value; BM = 245.87; HEO Fresh = 217.11; 25th cycles = 530.28; 50th cycles = 481.5; 100th cycles = 377.92\nRow 4: Sample = $D_{Li}^{+}$  ( cm2 s−1, ×10−15); BM = 36.49; HEO Fresh = 46.8; 25th cycles = 7.85; 50th cycles = 9.53; 100th cycles = 15.5\nColumn data:\n  Sample: $R_s$  (Ω); $R_{ct}$  (Ω); Slope value; $D_{Li}^{+}$  ( cm2 s−1, ×10−15)\n  BM: -; 144; 245.87; 36.49\n  HEO Fresh: -; 95.77; 217.11; 46.8\n  25th cycles: 1.902; 64.25; 530.28; 7.85\n  50th cycles: 1.943; 51.22; 481.5; 9.53\n  100th cycles: 1.715; 38.67; 377.92; 15.5"
+  ],
+  "n_items": 13,
+  "items": [
+    {
+      "paragraph": "The obtained mathrm 3 O 4 HEO were used as active materials for coin cells, and then electrochemical test was carried out. Polyvinylidene fluoride, acetylene black and HEO were mixed at the weight rat",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "test_method": "galvanostatic charge-discharge (LAND CT2001A), CV (Gamry interface 1010, 0.01–3.0 V), EIS (Gamry interface 1010, 0.1–100,000 Hz), GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To study the crystal structure of mathrm 3 O 4 HEO and FeCo-NiCrMn mathrm , XRD were performed. In Fig. 2a, FeCoNiCrMn HEA powder exhibited a cubic structure Fm-3 m 225 JCPDS No. 71–0852. After heat t",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "temperature": {
+            "value": 1000,
+            "unit": "C"
+          },
+          "test_method": "heat treatment in air, oxidation"
+        }
+      ],
+      "property_types": [
+        "Lattice_Parameters",
+        "Space_Group",
+        "Crystal_System",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Lattice_Parameters": [
+          {
+            "value": {
+              "a": 8.33673,
+              "b": 8.33673,
+              "c": 8.33673,
+              "alpha": 90.0,
+              "beta": 90.0,
+              "gamma": 90.0
+            },
+            "unit": "Å / °",
+            "crystal_system": "cubic",
+            "state": "after heat treatment, spinel phase",
+            "method": "XRD",
+            "source_text": "mathbf a 8 . 3 3 6 7 3 mathring mathrm A , b 8.33673 mathring mathrm A , mathrm c 8 . 3 3 6 7 3 mathring A"
+          }
+        ],
+        "Space_Group": [
+          {
+            "value": "Fd-3m",
+            "source_text": "cubic spinel structure Fd-3 m 227"
+          }
+        ],
+        "Crystal_System": [
+          {
+            "value": "cubic",
+            "source_text": "cubic spinel structure"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "3 O 4 HEO",
+            "state": "high-entropy oxide",
+            "source_text": "mathrm 3 O 4 HEO"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The morphology of FeCoNiCrMn HEA powder and mathrm 3 O 4 HEO were identified by SEM. The FeCoNiCrMn HEA powder was a spherical aggregate with a diameter of approximately 50 µm mathrm . mathrm S 4 a , ",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "temperature": {
+            "value": 1000,
+            "unit": "C"
+          },
+          "test_method": "heat treatment in air, oxidation"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Fe",
+              "Co",
+              "Ni",
+              "Cr",
+              "Mn",
+              "O"
+            ],
+            "method": "EDS mapping",
+            "source_text": "Fe, Co, Ni, Cr, Mn and O elements are uniformly distributed in mathrm 3 O 4"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To reveal the chemical states of HEOs, XPS was tested. The spectra Fig. S5 of mathrm 3 O 4 HEO showed mathrm , mathrm , mathrm , mathrm , , Mn and O elements, agreeing with the SEM-EDS mapping results",
+      "property_types": [
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "FeCoNiCrMn3O4",
+            "source_text": "FeCoNiCrMn3O4 HEO"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Fe",
+              "Co",
+              "Ni",
+              "Cr",
+              "Mn",
+              "O"
+            ],
+            "method": "XPS and SEM-EDS",
+            "source_text": "The spectra Fig. S5 of mathrm 3 O 4 HEO showed mathrm , mathrm , mathrm , mathrm , , Mn and O elements, agreeing with the SEM-EDS mapping results."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The electrochemical performances of mathrm 3 O 4 HEO and mathrm 3 O 4 BM as LIB anodes were tested. Fig. 4a shows the charge-discharge curves of mathrm 3 O 4 HEO at 0.01–3.00 V at various rates 0.1, 0",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "test_method": "galvanostatic charge-discharge",
+          "electrode_config": "half-cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          },
+          "test_method": "galvanostatic charge-discharge",
+          "electrode_config": "half-cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C005",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "test_method": "galvanostatic charge-discharge",
+          "electrode_config": "half-cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C006",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          },
+          "test_method": "galvanostatic charge-discharge",
+          "electrode_config": "half-cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C007",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "A/g"
+          },
+          "test_method": "galvanostatic charge-discharge",
+          "electrode_config": "half-cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C008",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 3.0,
+            "unit": "A/g"
+          },
+          "test_method": "galvanostatic charge-discharge",
+          "electrode_config": "half-cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C009",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "cycle_number": 260,
+          "test_method": "galvanostatic charge-discharge",
+          "electrode_config": "half-cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C010",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "A/g"
+          },
+          "cycle_number": 1200,
+          "test_method": "galvanostatic charge-discharge",
+          "electrode_config": "half-cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "FeCoNiCrMn3O4",
+            "state": "pristine",
+            "source_text": "FeCoNiCrMn3O4 HEO"
+          }
+        ]
+      },
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Initial_Coulombic_Efficiency",
+        "Rate_Capability_at_Given_C_rate",
+        "Rate_Recovery_Percent",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 1645.3,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "FeCoNiCrMn3O4 HEO could delivered a high discharge capacity 1645.3 mA h bf g - 1 and a discharge efficiency of 63.76% at 0.1 mathbf A Sigma g - 1"
+          },
+          {
+            "value": 1067.1,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "FeCoNiCrMn3O4 BM achieved a discharge capacity of 1067.1 mA h mathbf g - 1 Fig. S6a"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 63.76,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "discharge efficiency of 63.76% at 0.1 mathbf A Sigma g - 1"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 967.3,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "967.3 mA h g -1 at 0.1 A g -1"
+          },
+          {
+            "value": 828.2,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "828.2 mA h g -1 at 0.2 A g -1"
+          },
+          {
+            "value": 740.0,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "740 mA h g -1 at 0.5 A g -1"
+          },
+          {
+            "value": 625.0,
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "625 mA h g -1 at 1.0 A g -1"
+          },
+          {
+            "value": 531.9,
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "531.9 mA h g -1 at 2.0 A g -1"
+          },
+          {
+            "value": 482.5,
+            "unit": "mAh/g",
+            "condition_id": "C008",
+            "source_text": "482.5 mA h g -1 at 3.0 A g -1"
+          }
+        ],
+        "Rate_Recovery_Percent": [
+          {
+            "value": 101.0,
+            "unit": "%",
+            "condition_id": "C004",
+            "source_text": "When it returns to 0.2 A g -1, FeCo... HEO still can deliver a good capacity 836.8 mA h g -1 and good capacity retention 101.0%"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 97.5,
+            "unit": "%",
+            "condition_id": "C009",
+            "cycle_number": 260,
+            "source_text": "after 260 cycles its reversible capacity still reached up to 692.8 mA h g -1 with a high capacity retention 97.5%"
+          },
+          {
+            "value": 86.2,
+            "unit": "%",
+            "condition_id": "C010",
+            "cycle_number": 1200,
+            "source_text": "after 1200 cycles, ... can still deliver a capacity of 596.5 mA h cdot mathbf g - 1 and a high capacity retention 86.2%"
+          }
+        ]
+      },
+      "condition_id": "C003"
+    },
+    {
+      "paragraph": "To reveal the mechanism of enhanced electrochemical performances, EIS from 0.1 Hz to 100 kHz were tested, as shown in Fig. 4i and Fig. S6c. Nyquist plots were simulated through the equivalent circuit ",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "test_method": "EIS (0.1 Hz to 100 kHz)",
+          "cycle_number": 0
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 95.77,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "The R of FeCoNiCrMn3O4 HEO in fresh cell shows the value of 95.77 Ω, which is smaller than that of 3O4 BM 144 Ω in Table 1."
+          },
+          {
+            "value": 144,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "The R of 3O4 BM ... 144 Ω in Table 1."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "D L i frac R 2 T 22 A 2 n 4 F 4 C 2 sigma omega 2 tag 1 Z prime R e R c t sigma omega omega - 0. 5 tag 2 where R represents the gas constant, T represents the absolute temperature, F represents the Fa",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "test_method": "EIS (0.1 Hz to 100 kHz)",
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C011",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "test_method": "EIS (low frequency region)"
+        },
+        {
+          "condition_id": "C012",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "test_method": "EIS (low frequency region)",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "FeCoNiCrMn3O4",
+            "state": "HEO",
+            "source_text": "FeCoNiCrMn3O4 HEO"
+          },
+          {
+            "value": "FeCo3O4",
+            "state": "BM",
+            "source_text": "FeCo3O4 BM"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Fe",
+              "Co",
+              "Ni",
+              "Cr",
+              "Mn",
+              "O"
+            ],
+            "method": "from chemical formula",
+            "source_text": "FeCoNiCrMn3O4 HEO"
+          },
+          {
+            "value": [
+              "Fe",
+              "Co",
+              "O"
+            ],
+            "method": "from chemical formula",
+            "source_text": "FeCo3O4 BM"
+          }
+        ]
+      },
+      "performance_types": [
+        "Chemical_Diffusion_Coefficient_of_Li_GITT"
+      ],
+      "performance_info": {
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "value": 4.68e-15,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "source_text": "The D of FeCoNiCrMn3O4 HEO in fresh cell was 46.8×10^-15 cm2 s^-1"
+          },
+          {
+            "value": 3.649e-15,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "source_text": "the D of FeCo3O4 BM was 36.49×10^-15 cm2 s^-1"
+          },
+          {
+            "value": 7.85e-15,
+            "unit": "cm2/s",
+            "condition_id": "C011",
+            "source_text": "After electrochemical activation, the D of FeCoNiCrMn3O4 HEO decreased sharply to 7.85×10^-15 cm2 s^-1"
+          },
+          {
+            "value": 1.55e-14,
+            "unit": "cm2/s",
+            "condition_id": "C012",
+            "source_text": "reaching 15.5×10^-15 cm2 s^-1 at 100 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To further investigate the enhanced rate and cycle capability of mathrm 3 O 4 HEO, the pseudocapacitive contribution was studied via CV analyses at various scan rates. The CV curves of FeCo-mathrm 3 c",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "test_method": "CV analyses at various scan rates"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "i b tag 3 where the b value was calculated from the slope of the logi versus log plots. The diffusion-controlled lithium-storage behavior was represented through the b value of 0.5, and the pseudocapa",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "test_method": "CV analyses at various scan rates"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "i k 1 v k 2 v 1 / 2 tag 4 Where k1v represents pseudocapacitive, and k 2 nu 1 / 2 represents diffusioncontrolled portions. In Fig. 5b and mathrm . . S8a-d, the capacitive contribution increases from 4",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "test_method": "CV analyses at various scan rates"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Pseudocapacitive_Contribution_Ratio"
+      ],
+      "performance_info": {
+        "Pseudocapacitive_Contribution_Ratio": [
+          {
+            "value": 40.76,
+            "unit": "%",
+            "condition_id": "C013",
+            "scan_rate_mV_s": 0.5,
+            "source_text": "the capacitive contribution increases from 40.76% to 82.02% as the scan rate increases from 0.5 to 2.0 mV prime s - 1"
+          },
+          {
+            "value": 82.02,
+            "unit": "%",
+            "condition_id": "C013",
+            "scan_rate_mV_s": 2.0,
+            "source_text": "the capacitive contribution increases from 40.76% to 82.02% as the scan rate increases from 0.5 to 2.0 mV prime s - 1"
+          }
+        ]
+      },
+      "condition_id": "C013"
+    },
+    {
+      "paragraph": "To further study the lithium storage mechanism of mathrm 3 O 4 HEO, in situ XRD was conducted during the first cycle in Fig. 5e. At the initial state of open-circuit voltage, the mathrm 3 O 4 HEO elec",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "cycle_number": 1,
+          "test_method": "in situ XRD"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "(FeCoNiCrMn)3O4",
+            "state": "pristine",
+            "source_text": "M 2 O 3 2 4 rightarrow 3 2 2 O tag 5 2 rightarrow M 2 O tag 6 MFe, Co, Ni, Cr and Mn"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Fe",
+              "Co",
+              "Ni",
+              "Cr",
+              "Mn",
+              "O"
+            ],
+            "method": "XPS, in-situ XRD, CV",
+            "source_text": "MFe, Co, Ni, Cr and Mn"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "（b） f） In this work, HEA powder was used to synthesize HEOs by a simple oxidation process When used as anode material for LIBs, the as-prepared mathrm 3 O 4 HEO showed much enhanced rate performance a",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "test_method": "simple oxidation process"
+        },
+        {
+          "condition_id": "C016",
+          "test_method": "EIS, CV, in situ XRD, DFT calculations"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Sample; BM; HEO Fresh; 25th cycles; 50th cycles; 100th cycles\nRows:\nRow 1: Sample = $R_s$  (Ω); BM = -; HEO Fresh = -; 25th cycles = 1.902; 50th cycles = 1.943; 100th cycles ",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "test_method": "EIS (0.1–100,000 Hz)",
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C017",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "test_method": "EIS (low frequency region)",
+          "cycle_number": 25
+        },
+        {
+          "condition_id": "C018",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "test_method": "EIS (low frequency region)",
+          "cycle_number": 50
+        },
+        {
+          "condition_id": "C012",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+          "test_method": "EIS (low frequency region)",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct",
+        "Chemical_Diffusion_Coefficient_of_Li_GITT"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 144,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "Sample = $R_{ct}$  (Ω); BM = 144"
+          },
+          {
+            "value": 95.77,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "Sample = $R_{ct}$  (Ω); HEO Fresh = 95.77"
+          },
+          {
+            "value": 64.25,
+            "unit": "Ω",
+            "condition_id": "C017",
+            "source_text": "Sample = $R_{ct}$  (Ω); 25th cycles = 64.25"
+          },
+          {
+            "value": 51.22,
+            "unit": "Ω",
+            "condition_id": "C018",
+            "source_text": "Sample = $R_{ct}$  (Ω); 50th cycles = 51.22"
+          },
+          {
+            "value": 38.67,
+            "unit": "Ω",
+            "condition_id": "C012",
+            "source_text": "Sample = $R_{ct}$  (Ω); 100th cycles = 38.67"
+          }
+        ],
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "value": 3.649e-14,
+            "unit": "cm^2/s",
+            "condition_id": "C001",
+            "source_text": "Sample = $D_{Li}^{+}$  ( cm2 s−1, ×10−15); BM = 36.49"
+          },
+          {
+            "value": 4.68e-14,
+            "unit": "cm^2/s",
+            "condition_id": "C001",
+            "source_text": "Sample = $D_{Li}^{+}$  ( cm2 s−1, ×10−15); HEO Fresh = 46.8"
+          },
+          {
+            "value": 7.85e-15,
+            "unit": "cm^2/s",
+            "condition_id": "C017",
+            "source_text": "Sample = $D_{Li}^{+}$  ( cm2 s−1, ×10−15); 25th cycles = 7.85"
+          },
+          {
+            "value": 9.53e-15,
+            "unit": "cm^2/s",
+            "condition_id": "C018",
+            "source_text": "Sample = $D_{Li}^{+}$  ( cm2 s−1, ×10−15); 50th cycles = 9.53"
+          },
+          {
+            "value": 1.55e-14,
+            "unit": "cm^2/s",
+            "condition_id": "C012",
+            "source_text": "Sample = $D_{Li}^{+}$  ( cm2 s−1, ×10−15); 100th cycles = 15.5"
+          }
+        ]
+      }
+    }
+  ]
+}

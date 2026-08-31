@@ -1,0 +1,440 @@
+{
+  "version": "0.3-llm-registered",
+  "updated": "2026-08-28",
+  "note": "实体归一化表（entity normalization）。key 为规范 id（与 candidates.json 一致），value 为别名。种子来自手工整理 + 公开库 name-formula 对；后续从文献共现与 NERRE 抽取结果扩充。 | 0.2 扩充：LCO/LFP/NCA/LMO/hard_carbon/soft_carbon/LTO/ether_ec/LiNO3/PS/DTD 别名 + si_base/graphite 真实文献高频写法。",
+  "NCM811": [
+    "LiNi0.8Co0.1Mn0.1O2",
+    "LiNi0.8Mn0.1Co0.1O2",
+    "高镍811",
+    "NCM 811",
+    "高镍",
+    "高镍正极",
+    "单晶高镍",
+    "NCM",
+    "Ni90",
+    "SC-NCM90",
+    "NCM90"
+  ],
+
+  "LRMO": [
+    "Li-rich layered oxide",
+    "富锂锰基",
+    "Li1.2Ni0.2Mn0.6O2",
+    "Li-rich Mn-based",
+    "LRLO"
+  ],
+  "LNMO": [
+    "LiNi0.5Mn1.5O4",
+    "高压尖晶石",
+    "high-voltage spinel",
+    "LiNi0.5Mn1.5O4"
+  ],
+  "graphite": [
+    "石墨",
+    "C",
+    "天然石墨",
+    "人造石墨",
+    "graphite",
+    "graphite anode",
+    "石墨负极"
+  ],
+  "si_base": [
+    "硅基负极",
+    "SiOx",
+    "纳米硅",
+    "硅碳复合负极",
+    "SiO",
+    "Si anode",
+    "silicon anode",
+    "Si-C",
+    "Si/C",
+    "硅碳",
+    "Si-Gr",
+    "Si/石墨",
+    "硅石墨",
+    "SiGr",
+    "silicon-graphite"
+  ],
+  "li_metal": [
+    "金属锂",
+    "锂金属",
+    "Li metal",
+    "金属锂负极",
+    "lithium metal",
+    "Li箔",
+    "锂箔"
+  ],
+  "carbonate_ec": [
+    "碳酸酯",
+    "常规碳酸酯",
+    "EC/DMC",
+    "EC/EMC",
+    "carbonate electrolyte",
+    "LiPF6"
+  ],
+  "fluorinated": [
+    "含氟溶剂",
+    "FEC基电解液",
+    "氟代碳酸酯",
+    "fluorinated electrolyte",
+    "FEMC",
+    "All-fluorinated electrolyte (FEC/TFEC 1:1 vol)"
+  ],
+  "high_concentration": [
+    "高浓电解液",
+    "高浓度电解液",
+    "concentrated electrolyte",
+    "LiFSI"
+  ],
+  "lhce": [
+    "局部高浓",
+    "LHCE",
+    "localized high-concentration",
+    "局部高浓电解液",
+    "局部高浓度",
+    "局部高浓度电解液",
+    "LiFSI in DME/TTE",
+    "DME/TTE",
+    "1.5M LiFSI",
+    "1.5 M LiFSI"
+  ],
+
+  "FEC": [
+    "氟代碳酸乙烯酯",
+    "fluoroethylene carbonate"
+  ],
+  "VC": [
+    "碳酸亚乙烯酯",
+    "vinylene carbonate"
+  ],
+  "LiPO2F2": [
+    "二氟磷酸锂",
+    "lithium difluorophosphate"
+  ],
+  "dilute_aqueous": [
+    "稀水系电解液",
+    "常规水系",
+    "dilute aqueous electrolyte",
+    "稀水溶液",
+    "水系电解液"
+  ],
+  "water_in_salt": [
+    "高浓水系电解液",
+    "水系高浓",
+    "water-in-salt",
+    "WiS",
+    "water in salt",
+    "高浓度水系"
+  ],
+  "LCO": [
+    "LiCoO2",
+    "钴酸锂",
+    "lithium cobalt oxide",
+    "LCO",
+    "LiCoO2 cathode"
+  ],
+  "LFP": [
+    "LiFePO4",
+    "磷酸铁锂",
+    "lithium iron phosphate",
+    "LFP"
+  ],
+  "NCA": [
+    "LiNi0.8Co0.15Al0.05O2",
+    "镍钴铝酸锂",
+    "lithium nickel cobalt aluminum oxide",
+    "NCA"
+  ],
+  "LMO": [
+    "LiMn2O4",
+    "锰酸锂",
+    "lithium manganese oxide",
+    "LMO"
+  ],
+  "hard_carbon": [
+    "硬碳",
+    "hard carbon",
+    "HC"
+  ],
+  "soft_carbon": [
+    "软碳",
+    "soft carbon"
+  ],
+  "LTO": [
+    "Li4Ti5O12",
+    "钛酸锂",
+    "lithium titanate",
+    "LTO"
+  ],
+  "ether_ec": [
+    "醚类电解液",
+    "醚类",
+    "ether electrolyte",
+    "DME/DOL",
+    "DOL/DME",
+    "1M LiTFSI in DME/DOL"
+  ],
+  "LiNO3": [
+    "硝酸锂",
+    "lithium nitrate",
+    "LiNO3"
+  ],
+  "PS": [
+    "1,3-丙烷磺酸内酯",
+    "1,3-propanesultone",
+    "PS"
+  ],
+  "DTD": [
+    "硫酸乙烯酯",
+    "vinylene sulfate",
+    "DTD"
+  ],
+  "LIPF6_DEC-EC": [
+    "1M LiPF6 in EC/DEC (1:1 v/v)",
+    "Conventional electrolyte",
+    "LP40 (1.0 M LiPF6 in EC/DEC)",
+    "{\"salt\": [{\"concentration\": \"1.0 M\", \"name\": \"LiPF6\"}], \"solvents\": [{\"name\": \"EC\", \"role\": \"main\"}, {\"name\": \"DEC\", \"role\": \"main\"}]}"
+  ],
+  "LIPF6_FEC": [
+    "1M LiPF6 in FEC/DMC 1:4 (reference)",
+    "{\"ratio\": \"1:4\", \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"FEC\", \"role\": \"main\"}, {\"name\": \"DMC\", \"role\": \"main\"}]}"
+  ],
+  "LIPF6_CF3-EC-DMC": [
+    "1M LiPF6 in CF3-EC/DMC 1:4",
+    "{\"ratio\": \"1:4\", \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"CF3-EC\", \"role\": \"main\"}, {\"name\": \"DMC\", \"role\": \"main\"}]}"
+  ],
+  "LIPF6_DI-(CF3)-EC-DMC": [
+    "1M LiPF6 in Di-(CF3)-EC/DMC 1:4",
+    "{\"ratio\": \"1:4\", \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"Di-(CF3)-EC\", \"role\": \"main\"}, {\"name\": \"DMC\", \"role\": \"main\"}]}"
+  ],
+  "LIPF6_DMC-FEC_CF3-EC": [
+    "1M LiPF6 in FEC/DMC 1:4 + 2% CF3-EC",
+    "{\"additives\": [{\"name\": \"CF3-EC\", \"ratio\": \"2%\"}], \"ratio\": \"1:4\", \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"FEC\", \"role\": \"main\"}, {\"name\": \"DMC\", \"role\": \"main\"}]}"
+  ],
+  "LIPF6_DMC-FEC_DI-(CF3)-EC": [
+    "1M LiPF6 in FEC/DMC 1:4 + 2% Di-(CF3)-EC",
+    "{\"additives\": [{\"name\": \"Di-(CF3)-EC\", \"ratio\": \"2%\"}], \"ratio\": \"1:4\", \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"FEC\", \"role\": \"main\"}, {\"name\": \"DMC\", \"role\": \"main\"}]}"
+  ],
+  "LIPF6_DMC-EC": [
+    "1M LiPF6 in EC/DMC (1:1 vol)",
+    "1M LiPF6 in EC/DMC (v/v=1/1)",
+    "1M LiPF6 in EC/DMC 1:4",
+    "BE electrolyte",
+    "{\"additives\": [], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EC\", \"role\": \"main\"}, {\"name\": \"DMC\", \"role\": \"main\"}]}",
+    "{\"ratio\": \"1:4\", \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EC\", \"role\": \"main\"}, {\"name\": \"DMC\", \"role\": \"main\"}]}"
+  ],
+  "LIBOB-LISAC_TEP_VC": [
+    "Dual salt electrolyte (1.5 M LiSac + 0.2 M LiBOB in TEP + 2% VC)",
+    "{\"additives\": [{\"name\": \"VC\", \"ratio\": \"2%\"}], \"salt\": [{\"concentration\": \"1.5 M\", \"name\": \"LiSac\"}, {\"concentration\": \"0.2 M\", \"name\": \"LiBOB\"}], \"solvents\": [{\"name\": \"TEP\", \"role\": \"main\"}]}"
+  ],
+  "1.5M_LISAC_TEP_VC": [
+    "Single salt electrolyte (1.5 M LiSac in TEP + 2% VC)",
+    "{\"additives\": [{\"name\": \"VC\", \"ratio\": \"2%\"}], \"salt\": [{\"concentration\": \"1.5 M\", \"name\": \"LiSac\"}], \"solvents\": [{\"name\": \"TEP\", \"role\": \"main\"}]}"
+  ],
+  "LIBOB_TEP_VC": [
+    "Single salt electrolyte (1.0 M LiBOB in TEP + 2% VC)",
+    "{\"additives\": [{\"name\": \"VC\", \"ratio\": \"2%\"}], \"salt\": [{\"concentration\": \"1.0 M\", \"name\": \"LiBOB\"}], \"solvents\": [{\"name\": \"TEP\", \"role\": \"main\"}]}"
+  ],
+  "LIDFOB-LIPF6_EMC-FEC": [
+    "1M LiPF6 + 0.2M LiDFOB in FEC/EMC (v/v=1/3)",
+    "BEE electrolyte"
+  ],
+  "LIDFOB-LIPF6_EMC-FEC_FS": [
+    "1M LiPF6 + 0.2M LiDFOB in FEC/EMC (v/v=1/3) + 0.1M FS",
+    "FSE electrolyte"
+  ],
+  "LIPF6_DEC-EC_NFSA": [
+    "1M LiPF6 in EC/DEC + 0.5% NFSA"
+  ],
+  "LIPF6_DMDOHD": [
+    "1M LiPF6 in DMDOHD"
+  ],
+  "LIPF6_DEC-EC_PFPN": [
+    "1M LiPF6 in EC/DEC (v/v=1/1) + 10% PFPN"
+  ],
+  "1.2M_LIPF6_DMC-EC_MPS": [
+    "1.2M LiPF6 in EC/DMC (v/v=3/7) + 0.1wt% MPS"
+  ],
+  "LIPF6_DEC-EC_PFPDPP": [
+    "1M LiPF6 in EC/DEC (v/v=1/1) + 0.2wt% PFPDPP"
+  ],
+  "LIPF6_DMC-EC-EMC_DPE": [
+    "1M LiPF6 in EC/DMC/EMC (v/v/v=1/1/1) + 0.1wt% DPE"
+  ],
+  "1.15M_LIPF6_DEC-EC_DMAC-TEMEP-TFSI": [
+    "1.15M LiPF6 EC/DEC (v/v=1/1) + 1 wt% DMAc + 10 wt.% TEMEP-TFSI"
+  ],
+  "LIPF6_DEC-EC-EMC_MPL": [
+    "1M LiPF6 in EC/EMC/DEC (v/v/v=3/5/2) + 0.3% MPL"
+  ],
+  "LIPF6_DEC-EC-EMC_SE": [
+    "1M LiPF6 in EC/EMC/DEC (v/v/v=3/5/2) + 0.25% SE"
+  ],
+  "LIPF6_DMC-EC_FEC-HDI": [
+    "1M LiPF6 in EC/DMC (v/v=1/3) + 1M FEC + 25mM HDI"
+  ],
+  "LIPF6_EC-EMC_FEC": [
+    "Base electrolyte (1M LiPF6 in EC/EMC (3:7 v/v) + 5 wt% FEC)",
+    "{\"additives\": [{\"name\": \"FEC\", \"ratio\": \"5 wt%\"}], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EC\", \"role\": \"main\"}, {\"name\": \"EMC\", \"role\": \"main\"}]}"
+  ],
+  "LIPF6_EMC": [
+    "1M LiPF6 in EMC",
+    "{\"additives\": [], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}"
+  ],
+  "LIPF6_EC-EMC": [
+    "1M LiPF6 in EC/EMC (3/7 wt)",
+    "{\"additives\": [], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EC\", \"role\": \"co-solvent\"}, {\"name\": \"EMC\", \"role\": \"co-solvent\"}]}"
+  ],
+  "LIPF6_EMC_VC": [
+    "1M LiPF6 in EMC + 1% VC",
+    "1M LiPF6 in EMC + 2% VC",
+    "1M LiPF6 in EMC + 3% VC",
+    "1M LiPF6 in EMC + 4% VC",
+    "1M LiPF6 in EMC + 5% VC",
+    "{\"additives\": [{\"name\": \"VC\", \"ratio\": \"1%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}",
+    "{\"additives\": [{\"name\": \"VC\", \"ratio\": \"2%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}",
+    "{\"additives\": [{\"name\": \"VC\", \"ratio\": \"3%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}",
+    "{\"additives\": [{\"name\": \"VC\", \"ratio\": \"4%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}",
+    "{\"additives\": [{\"name\": \"VC\", \"ratio\": \"5%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}"
+  ],
+  "LIPF6_EMC_MEC": [
+    "1M LiPF6 in EMC + 1% MEC",
+    "1M LiPF6 in EMC + 2% MEC",
+    "1M LiPF6 in EMC + 3% MEC",
+    "1M LiPF6 in EMC + 5% MEC",
+    "{\"additives\": [{\"name\": \"MEC\", \"ratio\": \"1%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}",
+    "{\"additives\": [{\"name\": \"MEC\", \"ratio\": \"2%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}",
+    "{\"additives\": [{\"name\": \"MEC\", \"ratio\": \"3%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}",
+    "{\"additives\": [{\"name\": \"MEC\", \"ratio\": \"5%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}"
+  ],
+  "LIPF6_EMC_FEC": [
+    "1M LiPF6 in EMC + 1% FEC",
+    "1M LiPF6 in EMC + 2% FEC",
+    "1M LiPF6 in EMC + 3% FEC",
+    "1M LiPF6 in EMC + 4% FEC",
+    "1M LiPF6 in EMC + 5% FEC",
+    "{\"additives\": [{\"name\": \"FEC\", \"ratio\": \"1%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}",
+    "{\"additives\": [{\"name\": \"FEC\", \"ratio\": \"2%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}",
+    "{\"additives\": [{\"name\": \"FEC\", \"ratio\": \"3%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}",
+    "{\"additives\": [{\"name\": \"FEC\", \"ratio\": \"4%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}",
+    "{\"additives\": [{\"name\": \"FEC\", \"ratio\": \"5%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}"
+  ],
+  "LIPF6_EMC_DIFEC": [
+    "1M LiPF6 in EMC + 1% DiFEC",
+    "1M LiPF6 in EMC + 2% DiFEC",
+    "1M LiPF6 in EMC + 3% DiFEC",
+    "1M LiPF6 in EMC + 5% DiFEC",
+    "{\"additives\": [{\"name\": \"DiFEC\", \"ratio\": \"1%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}",
+    "{\"additives\": [{\"name\": \"DiFEC\", \"ratio\": \"2%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}",
+    "{\"additives\": [{\"name\": \"DiFEC\", \"ratio\": \"3%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}",
+    "{\"additives\": [{\"name\": \"DiFEC\", \"ratio\": \"5%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\": \"main\"}]}"
+  ],
+  "LIPF6_EC-EMC_VC": [
+    "1M LiPF6 in EC/EMC (3/7 wt) + 2% VC",
+    "{\"additives\": [{\"name\": \"VC\", \"ratio\": \"2%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EC\", \"role\": \"co-solvent\"}, {\"name\": \"EMC\", \"role\": \"co-solvent\"}]}"
+  ],
+  "CILE": [
+    "0.6 LiFSI : 1 EMIFSI",
+    "CILE"
+  ],
+  "D-CILE": [
+    "0.4 LiFSI : 0.2 LiTFSI : 1 EMIFSI",
+    "D-CILE"
+  ],
+  "LCILE": [
+    "0.6 LiFSI : 1 EMIFSI : 1 BTFE",
+    "LCILE"
+  ],
+  "D-LCILE": [
+    "0.4 LiFSI : 0.2 LiTFSI : 1 EMIFSI : 1 BTFE",
+    "D-LCILE"
+  ],
+  "MDFSA": [
+    "MDFSA electrolyte",
+    "{\"salt\": [{\"concentration\": \"1 M\", \"name\": \"LiFSI\"}, {\"concentration\": \"0.2 M\", \"name\": \"LiNO3\"}], \"solvents\": [{\"name\": \"EC\", \"role\": \"co-solvent\"}, {\"name\": \"TEGDME\", \"role\": \"co-solvent\"}, {\"name\": \"MDFSA\", \"role\": \"co-solvent\"}]}"
+  ],
+  "MA": [
+    "MA electrolyte",
+    "{\"salt\": [{\"concentration\": \"1 M\", \"name\": \"LiFSI\"}, {\"concentration\": \"0.2 M\", \"name\": \"LiNO3\"}], \"solvents\": [{\"name\": \"EC\", \"role\": \"co-solvent\"}, {\"name\": \"TEGDME\", \"role\": \"co-solvent\"}, {\"name\": \"MA\", \"role\": \"co-solvent\"}]}"
+  ],
+  "MTFA": [
+    "MTFA electrolyte",
+    "{\"salt\": [{\"concentration\": \"1 M\", \"name\": \"LiFSI\"}, {\"concentration\": \"0.2 M\", \"name\": \"LiNO3\"}], \"solvents\": [{\"name\": \"EC\", \"role\": \"co-solvent\"}, {\"name\": \"TEGDME\", \"role\": \"co-solvent\"}, {\"name\": \"MTFA\", \"role\": \"co-solvent\"}]}"
+  ],
+  "MDFA": [
+    "MDFA electrolyte",
+    "{\"salt\": [{\"concentration\": \"1 M\", \"name\": \"LiFSI\"}, {\"concentration\": \"0.2 M\", \"name\": \"LiNO3\"}], \"solvents\": [{\"name\": \"EC\", \"role\": \"co-solvent\"}, {\"name\": \"TEGDME\", \"role\": \"co-solvent\"}, {\"name\": \"MDFA\", \"role\": \"co-solvent\"}]}"
+  ],
+  "FS": [
+    "C3H6F2O2S",
+    "FS"
+  ],
+  "trifluoroethyl_methyl_sulfone": [
+    "C3H5F3O2S",
+    "trifluoroethyl methyl sulfone"
+  ],
+  "NCM955": [
+    "LiNi0.9Co0.05Mn0.05O2",
+    "NCM955"
+  ],
+  "TPP_additive": [
+    "TPP-containing electrolyte (Base + 10 wt% TPP)",
+    "{\"additives\": [{\"name\": \"FEC\", \"ratio\": \"5 wt%\"}, {\"name\": \"TPP\", \"ratio\": \"10 wt%\"}], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EC\", \"role\": \"main\"}, {\"name\": \"EMC\", \"role\": \"main\"}]}"
+  ],
+  "P2PFS_additive": [
+    "P2PFS-containing electrolyte (Base + 10 wt% P2PFS)",
+    "{\"additives\": [{\"name\": \"FEC\", \"ratio\": \"5 wt%\"}, {\"name\": \"P2PFS\", \"ratio\": \"10 wt%\"}], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EC\", \"role\": \"main\"}, {\"name\": \"EMC\", \"role\": \"main\"}]}"
+  ],
+  "NCM442": [
+    "LiNi0.42Mn0.42Co0.16O2",
+    "NMC442"
+  ],
+  "CF3-EC": [
+    "CF3-EC"
+  ],
+  "DI-(CF3)-EC": [
+    "DI-(CF3)-EC"
+  ],
+  "DIFEC": [
+    "DIFEC"
+  ],
+  "DMAC": [
+    "DMAC"
+  ],
+  "DPE": [
+    "DPE"
+  ],
+  "HDI": [
+    "HDI"
+  ],
+  "LIBOB": [
+    "LIBOB"
+  ],
+  "LIDFOB": [
+    "LIDFOB"
+  ],
+  "MEC": [
+    "MEC"
+  ],
+  "MPL": [
+    "MPL"
+  ],
+  "MPS": [
+    "MPS"
+  ],
+  "NFSA": [
+    "NFSA"
+  ],
+  "PFPDPP": [
+    "PFPDPP"
+  ],
+  "PFPN": [
+    "PFPN"
+  ],
+  "SE": [
+    "SE"
+  ],
+  "TEMEP-TFSI": [
+    "TEMEP-TFSI"
+  ]
+}

@@ -1,0 +1,467 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.cej.2024.158073.md",
+  "component": "cathode",
+  "paper_id": "10.1016/j.cej.2024.158073",
+  "doi": "10.1016/j.cej.2024.158073",
+  "material_id": "10.1016_j.cej.2024.158073",
+  "meta": {
+    "meta_title": "Cyanoethyl cellulose-enabled cathodes with interpenetrating electron transport a",
+    "meta_authors": "Chenchen Li , Xiaogang Luo \\*",
+    "meta_year": "2024"
+  },
+  "materials": [
+    {
+      "name": "cathode material",
+      "short_name": "10.1016_j.cej.2024.158073",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.cej.2024.158073"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 8,
+  "items": [
+    {
+      "paragraph": "CEC-LFP and Con-LFP were utilized as positive electrodes in CR 2032 cells for the assessment of their electrochemical performance. Lithium foil and Celgard 2500 served as the negative electrodes and s",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in EC/DEC (50/50 by volume)",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling, cyclic voltammetry (CV), electrochemical impedance spectroscopy (EIS)"
+        },
+        {
+          "condition_id": "C002",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "cyclic voltammetry (CV)"
+        },
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "electrochemical impedance spectroscopy (EIS)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The galvanostatic intermittent titration technique GITT was utilized to calculate the Li-ion diffusion coefficient in the cathode material, as per the given equation: D frac 4Pi Delta tau leftfrac m B",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In summary, the cyanoethyl cellulose-based cathodes with interpenetrating electron transport and ion transport paths was successfully prepared through the cyanoethyl cellulose-based binder. The grafti",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "mass_loading": {
+            "value": 16.6,
+            "unit": "mg/cm2"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ion_Diffusion_Coefficient",
+        "Gravimetric_Energy_Density"
+      ],
+      "performance_info": {
+        "Ion_Diffusion_Coefficient": [
+          {
+            "value": 3.74e-10,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "source_text": "3.74 × 10 - 10 mathrm 2 cdot s - 10 cm2 ⋅s − 1"
+          }
+        ],
+        "Gravimetric_Energy_Density": [
+          {
+            "value": 419.8,
+            "unit": "Wh/kg",
+            "condition_id": "C001",
+            "basis": "cathode mass",
+            "source_text": "419.8 Wh⋅kgcathode− 1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The cycle life of LMBs assembled from CEC-LFP and Con-LFP was studied at a current density of 1C Fig. 3f. The initial discharge capacity of CEC-LFP was recorded at 141.29 mathrm . mathbf g - 1 , which",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "cycle_number": 400,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 141.29,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The initial discharge capacity of CEC-LFP was recorded at 141.29 mathrm . mathbf g - 1 , which surpassed that of Con-LFP, which was only 127.47 mAh⋅g− 1 ."
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 92.9,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 400,
+            "source_text": "After 400 charge and discharge cycles, a discharge capacity of 131.38 mathrm cdot cdot mathrm g - 1 and a capacity retention rate of 92.9 % were maintained by CEC-LFP."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "A cathode slurry based on LFP was prepared by mixing 0.8 g of LFP with 0.1 g of Carbon in a solution of NMP. This mixture was then enhanced with the addition of 0.1 g of either CEC or PVDF. For the sl",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "temperature": {
+            "value": 80,
+            "unit": "C"
+          },
+          "active_material_mass_fraction": {
+            "value": 80,
+            "unit": "%",
+            "source_text": "A cathode slurry based on LFP was prepared by mixing 0.8 g of LFP with 0.1 g of Carbon in a solution of NMP. This mixture was then enhanced with the addition of 0.1 g of either CEC or PVDF."
+          },
+          "conductive_additive_binder_ratio": {
+            "value": {
+              "conductive_additive_mass_percent": 10,
+              "binder_mass_percent": 10
+            },
+            "unit": "%",
+            "source_text": "A cathode slurry based on LFP was prepared by mixing 0.8 g of LFP with 0.1 g of Carbon in a solution of NMP. This mixture was then enhanced with the addition of 0.1 g of either CEC or PVDF."
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The kinetic tests further analyzed the behavior of Li-ion transport in the cathode. The GITT curves of the LMBs, which were constructed with CEC-LFP and Con-LFP, were depicted in Fig. 5a and Fig. 5b. ",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ion_Diffusion_Coefficient"
+      ],
+      "performance_info": {
+        "Ion_Diffusion_Coefficient": [
+          {
+            "value": 4.38e-10,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "voltage_V": 3.43,
+            "source_text": "During the charging process, a Li-ion diffusion coefficient of 4.38 × 10^{-10} cm2 s^{-1} was observed for CEC-LFP"
+          },
+          {
+            "value": 1.82e-10,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "voltage_V": 3.43,
+            "source_text": "which was higher than that of 1.82 × 10^{-10} cm2 s^{-1} (Con-LFP charging)"
+          },
+          {
+            "value": 3.1e-10,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "voltage_V": 3.43,
+            "source_text": "during the discharge process, the Li-ion diffusion coefficient of CEC-LFP, which was 3.10 × 10^{-10} cm2 s^{-1}"
+          },
+          {
+            "value": 2.07e-11,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "voltage_V": 3.43,
+            "source_text": "exceeded that of Con-LFP 2.07 × 10^{-11} cm2 s^{-1} (discharge)"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The rate performance of the LMBs, assembled with either CEC-LFP or Con-LFP, was tested at various current rates from 0.2 to 20C Fig. 3a. At 0.2, 0.5, 1, 2, 3, 4, 5, 6, 8, 10, 12, 15, and 20C, notably ",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": "0.2-20",
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "vs. Li/Li+",
+          "test_method": "galvanostatic charge-discharge (rate capability test)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_Profile",
+        "Capacity_Retention_Ratio",
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Rate_Capability_Profile": [
+          {
+            "value": [
+              161.08,
+              161.06,
+              152.01,
+              143.37,
+              131.43,
+              122.2,
+              114.84,
+              108.63,
+              103.24,
+              94.47,
+              87.06,
+              80.73,
+              72.65
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "At 0.2, 0.5, 1, 2, 3, 4, 5, 6, 8, 10, 12, 15, and 20C, notably high discharge capacities were reached by CEC-LFP, specifically 161.08, 161.06, 152.01, 143.37, 131.43, 122.20, 114.84, 108.63, 103.24, 94.47, 87.06, 80.73, 72.65, and 61.56 mAh⋅g− 1 , respectively."
+          },
+          {
+            "value": [
+              148.66,
+              137.52,
+              125.2,
+              108.25,
+              96.21,
+              86.58,
+              78.48,
+              71.54,
+              59.65,
+              49.87,
+              41.25,
+              28.68,
+              1.13
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Initially, at current densities of 0.2, 0.5, 1, 2, 3, 4, 5, 6, 8, 10, 12, 15, and 20C, the discharge-specific capacity of Con-LFP was 148.66, 137.52, 125.20, 108.25, 96.21, 86.58, 78.48, 71.54, 59.65, 49.87, 41.25, 28.68, and 1.13 mAh⋅g− 1 , respectively"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 38.22,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "As the current was escalated from 0.2C to 20C, the capacity retention rate of CEC-LFP was gradually diminished from 100.00 % to 38.22 % Fig. 3b."
+          },
+          {
+            "value": 0.76,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "In contrast, the capacity retention rate of Con-LFP plummeted to 0.76 % at a more rapid pace."
+          },
+          {
+            "value": 96.16,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "Remarkably, nearly 96.16 % of its original capacity of 154.89 mathrm . mathbf g - 1 was recovered by CEC-LFP when the current was returned to 0.2C."
+          }
+        ],
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 154.89,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "original capacity of 154.89 mathrm . mathbf g - 1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The energy density of the LMBs based on the total mass of the cathode, assembled with either CEC-LFP or Con-LFP, was tested at various current rates from 0.2 to 2C Fig. 4. CEC-LFP exhibited a high ene",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 9.13,
+            "unit": "mg/cm^2"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "active_material_mass_fraction": {
+            "value": 80,
+            "unit": "%"
+          }
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 9.13,
+            "unit": "mg/cm^2"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "active_material_mass_fraction": {
+            "value": 80,
+            "unit": "%"
+          }
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 8.36,
+            "unit": "mg/cm^2"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 8.36,
+            "unit": "mg/cm^2"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 15,
+            "unit": "mg/cm^2"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "active_material_mass_fraction": {
+            "value": 80,
+            "unit": "%"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Gravimetric_Energy_Density"
+      ],
+      "performance_info": {
+        "Gravimetric_Energy_Density": [
+          {
+            "value": 425.35,
+            "unit": "Wh/kg",
+            "condition_id": "C001",
+            "basis": "cathode mass",
+            "source_text": "CEC-LFP exhibited a high energy density of 425.35 Wh⋅kgcathode− 1 at a higher area loading e.g. 9.13 mathrm cdot mathrm - 2 ."
+          },
+          {
+            "value": 271.04,
+            "unit": "Wh/kg",
+            "condition_id": "C002",
+            "basis": "cathode mass",
+            "source_text": "It also maintained an energy density of 271.04 Wh⋅kgcathode− 1 even at 2C."
+          },
+          {
+            "value": 288.49,
+            "unit": "Wh/kg",
+            "condition_id": "C003",
+            "basis": "cathode mass",
+            "source_text": "Con-LFP only exhibited an energy density of 288.49 Wh⋅kg− 1 at a high area mass loading e.g. 8.36 mg⋅cm - 2"
+          },
+          {
+            "value": 163.85,
+            "unit": "Wh/kg",
+            "condition_id": "C004",
+            "basis": "cathode mass",
+            "source_text": "and merely 163.85 mathbf cdot mathrm - 1 at 2C."
+          },
+          {
+            "value": 419.82,
+            "unit": "Wh/kg",
+            "condition_id": "C005",
+            "basis": "cathode mass",
+            "source_text": "When the area mass loading was further increased to above 15 mg⋅cm− 2 , CEC-LFP still displayed an energy density of 419.82 Wh⋅kgcathode− 1 at 0.2C."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

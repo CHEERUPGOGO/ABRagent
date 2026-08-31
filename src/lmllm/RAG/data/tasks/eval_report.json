@@ -1,0 +1,35 @@
+{
+  "mode": "pipeline",
+  "n": 3,
+  "hit": 3,
+  "hit_rate": 1.0,
+  "items": [
+    {
+      "task_type": "constraint_check",
+      "question": "方案：正极 LRMO + 负极 graphite + 电解液 carbonate_ec，不使用任何界面添加剂或表面改性。该组合可行吗？为什么？",
+      "answer_head": "# 方案可行性评估:LRMO 正极 + 石墨负极 + 碳酸酯 EC 电解液(无添加剂、无表面改性)\n\n## 1. 目标\n\n本方案旨在组合高容量富锂锰基正极(LRMO,xLi₂MnO₃·(1−x)LiTMO₂)与石墨负极,以传统碳酸乙烯酯(EC)基电解液构建锂离子电池体系,**且不使用任何界面添加剂或表面改性**。评估的核心目标是判断该组合能否在 LRMO 所需的高电压窗口(2.0–4.8 V vs. Li/Li⁺)下稳定运行。约束条件为:正极 LRMO、负极 graphite、电解液 carbonate_ec,禁止添加剂和表面改性 [4a098a6e2012] [ee532e2a0490]。\n",
+      "expected_feasible": false,
+      "answer_infeasible": true,
+      "hit": true,
+      "duration_s": 707.3
+    },
+    {
+      "task_type": "constraint_check",
+      "question": "方案：正极 LNMO + 负极 graphite + 电解液 carbonate_ec，不使用任何界面添加剂或表面改性。该组合可行吗？为什么？",
+      "answer_head": "## 1. 目标\n\n判定“正极 LNMO + 负极 graphite + 电解液 carbonate-EC，且不使用任何界面添加剂或表面改性”这一组合的可行性。评估口径为同类 graphite||LNMO 全电池在文献中的测试条件，例如电压窗口 2.8–4.85 V、25 °C 或 45 °C [d2975a65fdc0]，但该条件并非本方案已测试数据，而是用于说明高电压 LNMO 体系通常需要在宽窗口下运行。\n\n**结论：该方案不可行。** 筛选约束已明确排除 carbonate_ec 电解液，依据包括：  \n- 正极充电截止电压超过常规碳酸酯氧化窗口（约 4.3 V），电解液氧化分解；  ",
+      "expected_feasible": false,
+      "answer_infeasible": true,
+      "hit": true,
+      "duration_s": 597.6
+    },
+    {
+      "task_type": "constraint_check",
+      "question": "方案：正极 NCM811 + 负极 li_metal + 电解液 carbonate_ec，不使用任何界面添加剂或表面改性。该组合可行吗？为什么？",
+      "answer_head": "# 方案可行性评估:正极 NCM811 + 锂金属负极 + 碳酸酯 EC 电解液(无添加剂/无表面改性)\n\n## 1. 目标\n\n评估该组合作为高能量密度锂金属电池(LMB)体系的可行性。具体而言:正极为高镍层状氧化物 NCM811(LiNi₀.₈Co₀.₁Mn₀.₁O₂,理论容量可支撑高能量密度,但表面化学不稳定、循环稳定性差)[557113bf5f46];负极为锂金属(理论比容量 3860 mAh·g⁻¹,标准电极电位 −3.04 V vs. SHE)[0e9ac8abc098];电解液为碳酸酯 EC 体系,且**不添加任何界面添加剂,也不对正负极进行表面改性**。需要判断该\"裸\"组合的电化",
+      "expected_feasible": false,
+      "answer_infeasible": true,
+      "hit": true,
+      "duration_s": 991.4
+    }
+  ]
+}

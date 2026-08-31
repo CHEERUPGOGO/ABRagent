@@ -1,0 +1,127 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.ensm.2022.10.023.md",
+  "component": "cathode",
+  "paper_id": "10.1016/j.ensm.2022.10.023",
+  "doi": "10.1016/j.ensm.2022.10.023",
+  "material_id": "10.1016_j.ensm.2022.10.023",
+  "meta": {
+    "meta_title": "High energy density flexible and ecofriendly lithium-ion smart battery",
+    "meta_authors": "Oleg A. Kuznetsov a , Shaswat Mohanty b , Elena Pigos c , Gugang Chen a , Wei Cai b , Avetik R. Harutyunyan a,\\*",
+    "meta_year": "2022"
+  },
+  "materials": [
+    {
+      "name": "cathode material",
+      "short_name": "10.1016_j.ensm.2022.10.023",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.ensm.2022.10.023"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 5,
+  "items": [
+    {
+      "paragraph": "A damaged, dried-up, non-working battery with flexible freestanding electrodes, produced 20 months prior, cycled over 300 cycles, and subjected to several mechanical deformation sessions during its us",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "electrode_config": "half_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "BET measurements of the electrode material were performed using Autosorb iQ-CMP-3MP-EPDM automated gas sorption analyzer by Quantachrome. 3 to 5 g of the material was used for each measurement. Electr",
+      "property_types": [
+        "Electrode_Pore_Size_Distribution"
+      ],
+      "extracted_info": {
+        "Electrode_Pore_Size_Distribution": [
+          {
+            "value": {},
+            "unit": "vol%",
+            "method": "QSDFT",
+            "source_text": "QSDFT Quenched Solid Density Functional Theory model was used for the calculation of the pore size distribution."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The design of apparatus for fabricating self-standing electrodes via homogenous dispersion of carbon nanotubes within active material powder comprises a reactor for synthesis of SWNTs, a chamber for g",
+      "property_types": [
+        "Chemical_Composition_Mole_Fractions"
+      ],
+      "extracted_info": {
+        "Chemical_Composition_Mole_Fractions": [
+          {
+            "value": {
+              "Li": 1.0,
+              "Ni": 0.5,
+              "Mn": 0.3,
+              "Co": 0.2
+            },
+            "unit": "mole fraction",
+            "source_text": "mathrm 0.50.30.2 O 2 LiNMC 5:3:2, MTI Corporation was used as the active material for cathode"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Two 4 mm wide mesh strips 15 µm thick aluminum for cathodes, 10 µm thick copper for anodes were imbedded into the material 42 parallel to each other 4.5 cm apart. The material was cut into ca. 5.5 cm ",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrode_config": "pouch cell (full cell)",
+          "test_method": "galvanostatic charge/discharge with cathode potential monitoring via two-channel Parstat MC potentiostat"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Free-standing cathodes were matched to free-standing anodes based on the amounts of the active materials and their theoretical capacities mathrm N / mathrm P 1.08 . Tabs were attached to the self-stan",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.2C (main cycling); formation at 0.04C; rate steps: 0.4, 0.7, 1, 2, 3, 5, 10C",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1M LiPF6 in EC/DEC/DMC (1:1:1 by volume), LP71",
+          "cycle_number": 10,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling, electrochemical impedance spectroscopy (EIS)"
+        },
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.2C charge/discharge",
+            "unit": "C"
+          },
+          "cycle_number": 10,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling with mechanical bending (over 8 mm diameter rod, 10 bends each direction, repeated after cycling)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    }
+  ]
+}

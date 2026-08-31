@@ -1,0 +1,230 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1007_s40843-025-3350-4.md",
+  "component": "electrolyte",
+  "paper_id": "10.1007/s40843-025-3350-4",
+  "doi": "10.1007/s40843-025-3350-4",
+  "material_id": "10.1007_s40843-025-3350-4",
+  "meta": {
+    "meta_title": "Building a safe and stable rechargeable lithium-metal battery by applying a flam",
+    "meta_authors": "Wei Xia1†, Yu Zhang2†, Ranran Zheng1 , Rufen Chen1 , Yang Yan3 , Na Wu1* and Sen Xin2*",
+    "meta_year": null
+  },
+  "materials": [
+    {
+      "name": "Flame-retardant double-network quasi-solid polymer electrolyte (DN-FRQSPE)",
+      "short_name": "DN-FRQSPE",
+      "formula": "poly(BHAAPE)-PMMA with Li salt",
+      "role": "novel",
+      "description": "In situ UV-cured double-network quasi-solid polymer electrolyte composed of flame-retardant BHAAPE network and highly cross-linked PMMA network, with unspecified lithium salt.",
+      "material_id": "10.1007_s40843-025-3350-4_M001"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 7,
+  "items": [
+    {
+      "paragraph": "The DN-FRQSPE with a double-network structure 20,21 was synthesized via in situ UV curing poly-merization, as illustrated in Fig. 1a. The BHAAPE can be cross-linked and polymerized under the action of",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "in situ UV curing polymerization",
+          "electrolyte": "DN-FRQSPE (poly(BHAAPE)-PMMA with Li salt, photoinitiator)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To further evaluate the electrochemical performance of the DN-FRQSPE, the solid full batteries with Li metal and mathrm 4 LFP, Fig. 4 and Fig. S13 were assembled. The LiDN-FRQSPE LFP full cell deliver",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "electrode_config": "Li metal | DN-FRQSPE | LFP",
+          "electrolyte": "DN-FRQSPE"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [
+              41.8
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "delivers a lithium storage capacity of mathrm i 41.8 h g - 1 at 0.2C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The DN-FRQSPE has a smooth surface Fig. 2b with the thickness of 35 mu mathrm m Fig. 2a in the battery, which will ensure lower charge transfer resistance 23. The highly cross-linked structural PMMA, ",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Electrochemical_Stability_Window"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 0.00014,
+            "unit": "S m^{-1}",
+            "source_text": "1.4 times 10 - 4 mathrm S mathrm - 1"
+          }
+        ],
+        "Electrochemical_Stability_Window": [
+          {
+            "value": {
+              "max_V": 5.0
+            },
+            "unit": "V vs. Li/Li⁺",
+            "source_text": "a broad electrochemical window over 5 V"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The symmetric LiLi batteries with different electrolytes liquid electrolytes LEs and DN-FRQSPEs were assembled and cycled at various current densities Fig. 3a and Fig. S10. Remarkably, the system show",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric Li||Li",
+          "test_method": "galvanostatic cycling",
+          "electrolyte": "DN-FRQSPE"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "retardant quasi-solid system, the Li metal anode exhibits a milder and more standardized electrochemical behavior with dendrite-free morphology as demonstrated by a stable cycle more than 2000 mathrm ",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "electrode_config": "Li/Li symmetric cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C005",
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 200
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 93.0,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C002",
+            "source_text": "a small capacity decay of 0.035 % per cycle over 200 cycles"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "the charge and discharge plateaus for the full battery is only 0.13 mathrm V after 100 cycles at 0.2 mathrm C , revealing there is the excellent compatibility and stability between the DN-FRQSPE and t",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "C"
+          },
+          "electrode_config": "full cell (Li|DN-FRQSPE|LFP)",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Voltage_Hysteresis",
+        "Capacity_Retention",
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.13,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "the charge and discharge plateaus for the full battery is only 0.13 V after 100 cycles at 0.2 C"
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 93,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C001",
+            "source_text": "After 200 cycles, the LiDN-FRQSPELFP cells can maintain a capacity retention rate of 93 %"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C001",
+            "source_text": "with a high Coulombic efficiency close to 100 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "摘要 聚合物电解质基固态锂金属电池的发展是实现下一代电化学储能的关键. 本工作通过在高度交联的聚甲基丙烯酸甲酯PMMA聚合物网络体系中原位聚合P-N双效阻燃的丙烯酸酯单体BHAAPE, 制备出具有互穿交联双网络结构、高效阻燃的复合聚酯基准固态聚合物电解质DN-FRQSPE, 并展示了该类电解质可以有效地提高金属锂电池的安全性和稳定性. 该类电解质不仅具有良好的电化学性能, 更兼具优越的柔韧性及高效",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "electrode_config": "Li/Li symmetric cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C005",
+          "electrode_config": "full_cell",
+          "cycle_number": 200,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 93.0,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C002",
+            "source_text": "每圈容量衰减率仅为 0.035 %"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    }
+  ]
+}

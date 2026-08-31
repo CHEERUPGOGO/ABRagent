@@ -1,0 +1,1020 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.ensm.2025.104782.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/j.ensm.2025.104782",
+  "doi": "10.1016/j.ensm.2025.104782",
+  "material_id": "10.1016_j.ensm.2025.104782",
+  "meta": {
+    "meta_title": "Cyanide-driven double-layer regulation enables long-lifespan cycling of high-vol",
+    "meta_authors": "Zixuan Wang , Jialong Fu , Zhiyong Li , Lu Wei , Xin Guo",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "Liquid electrolyte LE: 1M LiDFOB in DMS/FEC (1:1 v/v)",
+      "short_name": "LE",
+      "formula": "1M LiDFOB DMS/FEC (1:1 v/v)",
+      "role": "baseline",
+      "description": "Reference liquid electrolyte without cyanoacrylate additive, used to establish baseline performance and interfacial behavior.",
+      "material_id": "10.1016_j.ensm.2025.104782_M001"
+    },
+    {
+      "name": "Quasi-solid-state electrolyte PCA: LE + CA in situ polymerized",
+      "short_name": "PCA",
+      "formula": "1M LiDFOB DMS/FEC (1:1 v/v) + CA (polymerized)",
+      "role": "novel",
+      "description": "Primary studied quasi-solid-state electrolyte formed by adding cyanoacrylate monomer to LE and in situ polymerization, designed to regulate IHP and CEI formation.",
+      "material_id": "10.1016_j.ensm.2025.104782_M002"
+    },
+    {
+      "name": "Conventional LiPF6-based carbonate electrolyte",
+      "short_name": "LiPF6-Carbonate",
+      "formula": "1M LiPF6 (carbonate solvents)",
+      "role": "baseline",
+      "description": "Standard LiPF6-based carbonate electrolyte used as a safety reference in ARC and nail penetration tests.",
+      "material_id": "10.1016_j.ensm.2025.104782_M003"
+    }
+  ],
+  "n_materials": 3,
+  "table_items": [
+    "TABLE DATA BLOCK\nNearby text: j.ensm.2025.104782images/d036edf50b82b627dbec464ad5491e168beabba2378b08dd0e9b05e45d1b1829.jpg)\n\n<details>\n<summary>natural_image</summary>\n\n3D surface topography image with 5 μm scale markers (no text or symbols beyond scale indicators)\n</details>\n\nMax\n\n![](10.1016_j.ensm.2025.104782images/d79e94c04\nHeaders: Value Range (GPa)\nRows:\nRow 1: Value Range (GPa) = 0 - 10\nRow 2: Value Range (GPa) = 0 - 10\nColumn data:\n  Value Range (GPa): 0 - 10; 0 - 10"
+  ],
+  "n_items": 22,
+  "items": [
+    {
+      "paragraph": "Subsequently, the coordination interaction between the cyano groups of CA and cobalt atoms in LCO was further confirmed by FTIR and Raman spectroscopy. As shown in Fig. 1d and S9, after three cycles i",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Anodic_Stability_Onset_Potential",
+        "Electrochemical_Stability_Window"
+      ],
+      "performance_info": {
+        "Anodic_Stability_Onset_Potential": [
+          {
+            "value": 4.5,
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C002",
+            "source_text": "the oxidation potential from 4.5 V in LE"
+          },
+          {
+            "value": 5.0,
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C003",
+            "source_text": "increasing the oxidation potential ... to 5.0 V in PCA"
+          }
+        ],
+        "Electrochemical_Stability_Window": [
+          {
+            "value": {},
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C002",
+            "source_text": "the introduction of CA shifts the potential of zero charge from 1.75 V to 1.70 V"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To further investigate the distribution behavior of electrolyte components at the charged cathode interface, molecular dynamics MD simulations were conducted Fig. S10a and S10b. As shown in Fig. 2a, i",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "electrolyte": "1M LiDFOB DMS/FEC (1:1 v/v)",
+          "electrode_config": "half-cell (simulated LCO cathode vs Li metal)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "molecular dynamics simulation"
+        },
+        {
+          "condition_id": "C002",
+          "electrolyte": "1M LiDFOB DMS/FEC (1:1 v/v) + CA (in situ polymerized)",
+          "electrode_config": "half-cell (simulated LCO cathode vs Li metal)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "molecular dynamics simulation"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The highest occupied molecular orbitals HOMO and lowest unoccupied molecular orbitals LUMO of the lithium salt, solvents, and polymer matrix were calculated using density functional theory DFT, as the",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "electrolyte": "1M LiDFOB in DMS/FEC (1:1 v/v)"
+        },
+        {
+          "condition_id": "C004",
+          "electrolyte": "1M LiDFOB in DMS/FEC (1:1 v/v) + CA (in situ polymerized)"
+        }
+      ],
+      "property_types": [
+        "HOMO_LUMO_Energy",
+        "Dielectric_Constant",
+        "Viscosity"
+      ],
+      "extracted_info": {
+        "HOMO_LUMO_Energy": [
+          {
+            "value": {},
+            "unit": "eV",
+            "molecule": "CA",
+            "method": "DFT",
+            "source_text": "CA containing strong electron-withdrawing cyano groups exhibits excellent oxidative stability due to its low HOMO energy level."
+          },
+          {
+            "value": {},
+            "unit": "eV",
+            "molecule": "LiDFOB",
+            "method": "DFT",
+            "source_text": "lithium difluorooxalatoborate LiDFOB, which possesses a lower LUMO energy level, was introduced as the lithium salt to undergo preferential reduction and form a boron-rich SEI protective layer."
+          },
+          {
+            "value": {},
+            "unit": "eV",
+            "molecule": "FEC",
+            "method": "DFT",
+            "source_text": "Fluoroethylene carbonate FEC was used as a co-solvent its high LUMO and low HOMO energy levels act synergistically with CA to enhance the overall redox stability of the electrolyte."
+          }
+        ],
+        "Dielectric_Constant": [
+          {
+            "source_text": "Dimethyl sulfite DMS, a solvent with a high dielectric constant and low viscosity, was employed to enhance the ionic conductivity of the electrolyte and facilitate lithium-ion transport 35,36."
+          }
+        ],
+        "Viscosity": [
+          {
+            "unit": "mPa·s",
+            "source_text": "Dimethyl sulfite DMS, a solvent with a high dielectric constant and low viscosity, was employed to enhance the ionic conductivity of the electrolyte and facilitate lithium-ion transport 35,36."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To evaluate the superiority of the PCA electrolyte, operatorname mathbf batteries were assembled and subjected to electrochemical performance testing. As shown in Fig. 3a, under a cut-off charging vol",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "voltage_range": {
+            "max": 4.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "electrolyte": "1M LiDFOB DMS/FEC (1:1 v/v) + CA (polymerized)",
+          "cycle_number": 500,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C006",
+          "voltage_range": {
+            "max": 4.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "electrolyte": "1M LiDFOB in DMS/FEC (1:1 v/v)",
+          "cycle_number": 320,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 98.4,
+            "unit": "%",
+            "cycle_number": 500,
+            "condition_id": "C001",
+            "source_text": "the LiPCALCO battery maintained stable cycling for 500 cycles with a capacity retention of 98.4 %, corresponding to a remaining capacity of 178.9 mAh g^{-1}"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              {
+                "rate": "0.5C",
+                "capacity": 178.9
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "remaining capacity of 178.9 mAh g^{-1}"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To experimentally investigate the interfacial evolution of species within the EDL, in situ electrochemical surface-enhanced Raman spectroscopy EC-SERS was employed to monitor the vibrational changes o",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "electrolyte": "1M LiDFOB in DMS/FEC (1:1 v/v) without CA",
+          "test_method": "in situ electrochemical surface-enhanced Raman spectroscopy (EC-SERS)"
+        },
+        {
+          "condition_id": "C008",
+          "electrolyte": "1M LiDFOB in DMS/FEC (1:1 v/v) with CA (in situ polymerized)",
+          "test_method": "in situ electrochemical surface-enhanced Raman spectroscopy (EC-SERS)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Subsequently, the composition of the CEI on the cycled LCO surface was analyzed using depth-profiling X-ray photoelectron spectroscopy XPS. As shown in Fig. 4e and Fig. S26a, the LCO cycled in the LE ",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Inorganic_Organic_Ratio_SEI_CEI"
+      ],
+      "performance_info": {
+        "Inorganic_Organic_Ratio_SEI_CEI": [
+          {
+            "interphase": "CEI",
+            "cycle_number": 0,
+            "source_text": "the LCO cycled in the LE exhibited abundant organic byproducts from solvent DMS and FEC decomposition... In contrast... the LCO cycled in the PCA electrolyte exhibited a markedly weakened mathbf x signal after 20 nm of etching, with a tendency toward reduction into lower-valence sulfur species... An enhanced signal corresponding to inorganic B–F species was also observed... the CEI formed in the PCA electrolyte contained higher levels of carbon and nitrogen, but significantly reduced amounts of fluorine and sulfur"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "As shown in Fig. 3b and Fig. S14, when the cut-off charging voltage was increased to 4.6 V and the current density raised to 1 C, the battery with PCA electrolyte maintained 84 % capacity retention af",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "max": 4.6,
+            "unit": "V"
+          },
+          "electrolyte": "PCA electrolyte: 1M LiDFOB DMS/FEC (1:1 v/v) + CA (polymerized)",
+          "cycle_number": 600,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "max": 4.6,
+            "unit": "V"
+          },
+          "electrolyte": "LE electrolyte: 1M LiDFOB in DMS/FEC (1:1 v/v)",
+          "cycle_number": 200,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 84,
+            "unit": "%",
+            "cycle_number": 600,
+            "condition_id": "C001",
+            "source_text": "the battery with PCA electrolyte maintained 84 % capacity retention after 600 cycles"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              168.9
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "delivering a discharge capacity of 168.9 mAh g - 1 after 600 cycles at 1C"
+          },
+          {
+            "value": [
+              152.7
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "the battery with LE electrolyte exhibited a capacity drop to 152.7 mAh g - 1 after only 200 cycles at 1C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Subsequently, we compared the charge/discharge behavior of the two electrolytes. As shown in Fig. 3d and 3e, the differential capacity dQ/dV versus potential curves for the first 100 cycles within the",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.6,
+            "unit": "V"
+          },
+          "cycle_number": 100,
+          "test_method": "differential capacity dQ/dV analysis",
+          "electrolyte": "LE and PCA"
+        },
+        {
+          "condition_id": "C012",
+          "test_method": "rate capability test",
+          "c_rate_or_current": {
+            "source_text": "across all current densities"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Voltage_Hysteresis",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.0203,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "the voltage shift for the O3′/H1–3 phase transition in the LE system reaches 20.3 mV"
+          },
+          {
+            "value": 0.0101,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "the voltage shift for the O3′/H1–3 phase transition in the PCA system is significantly smaller, only about 10.1 mV"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [],
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "rate performance tests show that the PCA-based battery consistently delivers higher discharge capacities than the LE-based battery across all current densities Fig. S17"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "LiPCALCO full cells were assembled to evaluate the practical applicability of the synthesized electrolyte. The LCO cathode had a mass loading of 12 mg mathrm - 2 , , corresponding to an areal capacity",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "electrode_config": "full_cell",
+          "mass_loading": {
+            "value": 12.0,
+            "unit": "mg/cm2"
+          },
+          "voltage_range": {
+            "max": 4.5,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "cycle_number": 120,
+          "electrolyte": "1M LiDFOB DMS/FEC (1:1 v/v) + CA in situ polymerized",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C014",
+          "electrode_config": "full_cell",
+          "mass_loading": {
+            "value": 12.0,
+            "unit": "mg/cm2"
+          },
+          "voltage_range": {
+            "max": 4.6,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrolyte": "1M LiDFOB DMS/FEC (1:1 v/v) + CA in situ polymerized",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 99.3,
+            "unit": "%",
+            "cycle_number": 120,
+            "condition_id": "C001",
+            "source_text": "retained 99.3 % of its capacity after 120 cycles"
+          },
+          {
+            "value": 98.0,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C002",
+            "source_text": "sustained 100 cycles with a high capacity retention of 98 %"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In addition, a 1 Ah pouch cell was assembled using a high-loading cathode of 22.4 mg mathrm - 2 . After 100 cycles at 0.2 C and a cut-off voltage of 4.5 V, the cell maintained a capacity retention of ",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "max": 4.5,
+            "unit": "V"
+          },
+          "electrolyte": "Quasi-solid-state electrolyte PCA: LE + CA in situ polymerized (1M LiDFOB DMS/FEC (1:1 v/v) + CA (polymerized))",
+          "cycle_number": 100,
+          "mass_loading": {
+            "value": 22.4,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "pouch cell (full-cell)",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 87.8,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C001",
+            "source_text": "After 100 cycles at 0.2 C and a cut-off voltage of 4.5 V, the cell maintained a capacity retention of 87.8 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To evaluate the kinetic evolution of interfacial processes at the LCO electrode, in situ electrochemical impedance spectroscopy EIS measurements were conducted using a three-electrode configuration to",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "electrolyte": "1M LiDFOB in DMS/FEC (1:1 v/v)",
+          "electrode_config": "three_electrode",
+          "test_method": "EIS, DRT"
+        },
+        {
+          "condition_id": "C017",
+          "electrolyte": "1M LiDFOB DMS/FEC (1:1 v/v) + CA (polymerized)",
+          "electrode_config": "three_electrode",
+          "test_method": "EIS, DRT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To evaluate the potential of increasing the cut-off charging voltage for enhancing energy density, a 2.5 Ah pouch cell was assembled using an LCO cathode with an areal capacity of 4.64 mAh mathrm - 2 ",
+      "conditions": [
+        {
+          "condition_id": "C018",
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.6,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "LCO cathode || Li metal anode pouch cell",
+          "test_method": "galvanostatic charge/discharge",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Energy_Density"
+      ],
+      "performance_info": {
+        "Energy_Density": [
+          {
+            "value": {
+              "gravimetric": 433.6
+            },
+            "unit": "Wh/kg",
+            "condition_id": "C001",
+            "basis": "initial discharge",
+            "source_text": "delivering an initial capacity of 2.35 Ah and an impressive initial energy density of 433.6 Wh kg^-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The symmetric LiLi cells with PCA and LE electrolytes exhibited comparable cycling stability Fig. S24, and SEM observations revealed similarly Li surfaces after cycling Fig. S25, suggesting that both ",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "electrolyte": "1M LiDFOB in DMS/FEC (1:1 v/v)",
+          "cycle_number": 100,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C020",
+          "electrolyte": "1M LiDFOB DMS/FEC (1:1 v/v) + CA in situ polymerized",
+          "cycle_number": 100,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "CEI_Thickness"
+      ],
+      "performance_info": {
+        "CEI_Thickness": [
+          {
+            "value": 6,
+            "unit": "nm",
+            "cycle_number": 100,
+            "method": "HR-TEM",
+            "source_text": "developed a uniform and compact CEI layer approximately 6 nm thick"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "When the cut-off charging voltage was further increased to 4.7 V, the LiPCALCO battery still delivered a capacity of 168.6 mAh mathsf g - 1 after 100 cycles Fig. S15a, b, further confirming the except",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "max": 4.6,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "max": 4.7,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C024",
+          "voltage_range": {
+            "max": 4.7,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "cycle_number": 100,
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [
+              184.6
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "discharge capacities were 184.6 mAh g-1 at cut-off 4.5 V"
+          },
+          {
+            "value": [
+              213.4
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "discharge capacities were 213.4 mAh g-1 at cut-off 4.6 V"
+          },
+          {
+            "value": [
+              232.9
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "discharge capacities were 232.9 mAh g-1 at cut-off 4.7 V"
+          },
+          {
+            "value": [
+              168.6
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "delivered a capacity of 168.6 mAh g-1 after 100 cycles"
+          }
+        ]
+      },
+      "condition_id": "C004"
+    },
+    {
+      "paragraph": "The PCA quasi-solid-state electrolyte developed in this work is not only compatible with high-voltage LCO cathodes but also well-suited for high-voltage mathrm 0.80.10.1 O 2 NCM811, demonstrating both",
+      "conditions": [
+        {
+          "condition_id": "C025",
+          "temperature": {},
+          "c_rate_or_current": {},
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "PCA quasi-solid-state electrolyte (1M LiDFOB DMS/FEC (1:1 v/v) + CA polymerized); LE: 1M LiDFOB in DMS/FEC (1:1 v/v)",
+          "cycle_number": 250,
+          "mass_loading": {},
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 92,
+            "unit": "%",
+            "cycle_number": 250,
+            "condition_id": "C001",
+            "electrolyte": "PCA quasi-solid-state electrolyte",
+            "source_text": "under a current rate of 0.5 C, the PCA-based battery retained 92 % of its capacity after 250 cycles"
+          },
+          {
+            "value": 62.7,
+            "unit": "%",
+            "cycle_number": 250,
+            "condition_id": "C001",
+            "electrolyte": "LE (1M LiDFOB DMS/FEC (1:1 v/v))",
+            "source_text": "the capacity retention of the LE-based battery dropped to 62.7 % at a similar cycle number"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To further validate the safety of the PCA-based quasi-solid-state pouch cells under realistic abuse conditions, nail penetration tests were conducted. As shown in Fig. 6c and Fig. S32a, the pouch cell",
+      "conditions": [
+        {
+          "condition_id": "C026",
+          "electrolyte": "carbonate electrolyte",
+          "electrode_config": "full_cell",
+          "test_method": "nail penetration test"
+        },
+        {
+          "condition_id": "C027",
+          "electrolyte": "PCA quasi-solid-state electrolyte",
+          "electrode_config": "full_cell",
+          "test_method": "nail penetration test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To evaluate the safety of the quasi-solid-state electrolyte relative to conventional carbonate-based electrolytes denoted as mathrm widetilde tau 6 mathrm widetilde tau , , accelerated rate calorimetr",
+      "conditions": [
+        {
+          "condition_id": "C028",
+          "electrolyte": "PCA quasi-solid-state electrolyte (1M LiDFOB DMS/FEC (1:1 v/v) + CA polymerized)",
+          "electrode_config": "2 Ah lithium metal pouch cell",
+          "test_method": "accelerated rate calorimetry (ARC)"
+        },
+        {
+          "condition_id": "C029",
+          "electrolyte": "LiPF6-based carbonate electrolyte",
+          "electrode_config": "2 Ah lithium metal pouch cell",
+          "test_method": "accelerated rate calorimetry (ARC)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Self_Heating_Onset_Temperature",
+        "Maximum_Thermal_Runaway_Temperature"
+      ],
+      "performance_info": {
+        "Self_Heating_Onset_Temperature": [
+          {
+            "value": 72.5,
+            "unit": "°C",
+            "soc_percent": 100,
+            "condition_id": "C001",
+            "source_text": "T1 = 72.5 °C for the PCA electrolyte"
+          },
+          {
+            "value": 66.3,
+            "unit": "°C",
+            "soc_percent": 100,
+            "condition_id": "C002",
+            "source_text": "T1 = 66.3 °C for the LiPF6-based electrolyte"
+          }
+        ],
+        "Maximum_Thermal_Runaway_Temperature": [
+          {
+            "value": 419.0,
+            "unit": "°C",
+            "soc_percent": 100,
+            "condition_id": "C001",
+            "source_text": "reduced the peak temperature Tmax = 419.0 °C"
+          },
+          {
+            "value": 513.5,
+            "unit": "°C",
+            "soc_percent": 100,
+            "condition_id": "C002",
+            "source_text": "Tmax = 513.5 °C for the LiPF6-based electrolyte"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Differences in CEI composition significantly affect the mechanical properties of the interface, thereby influencing the electrochemical behavior of the battery. Therefore, atomic force microscopy AFM ",
+      "conditions": [
+        {
+          "condition_id": "C030",
+          "electrolyte": "LE",
+          "cycle_number": 5,
+          "test_method": "AFM"
+        },
+        {
+          "condition_id": "C031",
+          "electrolyte": "PCA",
+          "cycle_number": 5,
+          "test_method": "AFM"
+        },
+        {
+          "condition_id": "C032",
+          "electrolyte": "LE",
+          "cycle_number": 1,
+          "voltage_range": {
+            "max": 4.6,
+            "unit": "V"
+          },
+          "test_method": "in situ Raman spectroscopy"
+        },
+        {
+          "condition_id": "C033",
+          "electrolyte": "PCA",
+          "cycle_number": 1,
+          "voltage_range": {
+            "max": 4.6,
+            "unit": "V"
+          },
+          "test_method": "in situ Raman spectroscopy"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interface_Roughness"
+      ],
+      "performance_info": {
+        "Interface_Roughness": [
+          {
+            "value": 210,
+            "unit": "nm",
+            "condition": "LE after 5 cycles",
+            "source_text": "the LCO surface cycled in the LE system exhibited a higher roughness 210 nm"
+          },
+          {
+            "value": 147,
+            "unit": "nm",
+            "condition": "PCA after 5 cycles",
+            "source_text": "in the PCA system displayed a significantly reduced roughness of 147 nm"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To further verify the structural protection afforded by the PCA electrolyte, X-ray diffraction XRD characterization was conducted on LCO after 200 cycles at a cut-off voltage of 4.6 V. As shown in Fig",
+      "conditions": [
+        {
+          "condition_id": "C034",
+          "voltage_range": {
+            "max": 4.6,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 200,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "XRD after cycling",
+          "electrolyte": "LE: 1M LiDFOB in DMS/FEC (1:1 v/v); PCA: 1M LiDFOB DMS/FEC (1:1 v/v) + CA polymerized"
+        },
+        {
+          "condition_id": "C035",
+          "cycle_number": 100,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "ICP-MS after cycling",
+          "electrolyte": "LE: 1M LiDFOB in DMS/FEC (1:1 v/v); PCA: 1M LiDFOB DMS/FEC (1:1 v/v) + CA polymerized"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "When the cut-off voltage was increased to 4.7 V, the LiPCANCM811 battery retained a discharge capacity of 153.2 mAh mathbf g - 1 after 200 cycles at 1 C Fig. S35. Additionally, the first-cycle dischar",
+      "conditions": [
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "max": 4.7,
+            "unit": "V"
+          },
+          "electrolyte": "PCA (1M LiDFOB DMS/FEC + CA)",
+          "cycle_number": 200,
+          "electrode_config": "Li||NCM811",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [
+              153.2
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "retained a discharge capacity of 153.2 mAh g^-1 after 200 cycles at 1 C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Furthermore, the specific capacity–voltage profiles Fig. S33b, c provide additional evidence for the excellent stability of PCA in the highvoltage NCM811 system. At a current density of 1 mathrm C , t",
+      "conditions": [
+        {
+          "condition_id": "C037",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "cycle_number": 400,
+          "electrolyte": "1M LiDFOB DMS/FEC (1:1 v/v) + CA in situ polymerized",
+          "electrode_config": "full-cell (Li||NCM811)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C038",
+          "voltage_range": {
+            "max": 4.6,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 300,
+          "electrolyte": "1M LiDFOB DMS/FEC (1:1 v/v) + CA in situ polymerized",
+          "electrode_config": "full-cell (Li||NCM811)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 90.1,
+            "unit": "%",
+            "cycle_number": 400,
+            "condition_id": "C001",
+            "source_text": "At a current density of 1 C , the LiPCA NCM811 battery maintained stable cycling for 400 cycles with a capacity retention of 90.1 % Fig. S33d."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In summary, this work precisely regulates the EDL and IHP using a cyano-containing quasi-solid-state electrolyte, successfully constructing a robust CEI that enables long cycle life in high-voltage so",
+      "conditions": [
+        {
+          "condition_id": "C039",
+          "electrolyte": "PCA (1M LiDFOB DMS/FEC (1:1 v/v) + CA polymerized)",
+          "voltage_range": {
+            "max": 4.6,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 600,
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C040",
+          "electrolyte": "PCA",
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Energy_Density"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 84,
+            "unit": "%",
+            "cycle_number": 600,
+            "condition_id": "C001",
+            "source_text": "Benefiting from this, the PCA electrolyte retains 84 % capacity after 600 cycles at a high cut-off voltage of 4.6 V."
+          }
+        ],
+        "Energy_Density": [
+          {
+            "value": {
+              "gravimetric": 433.6
+            },
+            "unit": "Wh/kg / Wh/L",
+            "condition_id": "C002",
+            "source_text": "Increasing the cut-off voltage further enables the pouch cell to achieve an energy density of 433.6 Wh mathbf k mathbf g - 1 ."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

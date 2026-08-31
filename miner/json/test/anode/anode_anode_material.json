@@ -1,0 +1,517 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/anode/anode.md",
+  "doi": "anode",
+  "title": "High-entropy oxides as advanced anode materials for long-life lithium-ion Batteries",
+  "agent_mode": "anode-material",
+  "materials": [
+    {
+      "name": "(FeCoNiCrMn)3O4 HEO",
+      "short_name": "(FeCoNiCrMn)3O4 HEO",
+      "formula": "(FeCoNiCrMn)3O4",
+      "role": "novel",
+      "description": "Prepared by oxidation of FeCoNiCrMn high-entropy alloy powder at 1000°C in oxygen atmosphere.",
+      "material_id": "anode_M001"
+    },
+    {
+      "name": "(FeCoNiCrMn)3O4 BM",
+      "short_name": "(FeCoNiCrMn)3O4 BM",
+      "formula": "(FeCoNiCrMn)3O4",
+      "role": "comparison",
+      "description": "Prepared by ball milling of oxide precursors (Fe2O3, NiO, Cr2O3, MnO2, Co3O4) followed by same heat treatment as HEO.",
+      "material_id": "anode_M002"
+    }
+  ],
+  "results": [
+    {
+      "material_id": "anode_M001",
+      "material_name": "(FeCoNiCrMn)3O4 HEO",
+      "material_context": "novel: (FeCoNiCrMn)3O4 HEO ((FeCoNiCrMn)3O4)",
+      "material_items": [
+        {
+          "paragraph": "# High-entropy oxides as advanced anode materials for long-life lithium-ion Batteries  Bin Xiao a , Gang Wu a , Tongde Wang a , Zhengang Wei a , Yanwei Sui a,\\* , Baolong Shen a , Jiqiu Qi a , Fuxiang",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 2.1. Material synthesis  The FeCoNiCrMn HEA powder $( > 9 9 \\% ;$ average crystal size, 50 µm) were acquired from Beijing Gaoke new material technology $\\mathrm { . , }$ , Ltd. $\\mathrm { } _ { 2 } ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 2.2. Characterization  X-ray diffraction (XRD, Ultima IV, Cu Kα radiation) of HEOs was tested in the region of 2θ= 10–80◦. Thermogravimetric (TG) were tested by a thermogravimetric analyzer (STA 449",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 2.3. Electrochemical measurements  The obtained $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO were used as active materials for coin cells, and then electrochemical test was carried out. Polyvinylidene fl",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 2.4. Computational methods  All calculations were conducted within density functional theory (DFT) through Vienna Ab-initio Simulation Package (VASP, version 5.4.4) [26] employing the projector-augm",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 3. Result and discussion  The synthesis of $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO was a very simple process that a certain amount of powder was oxidized at high temperature, as shown in Fig. 1. In ",
+          "include_result": {
+            "property_types": [
+              "Crystal_System",
+              "Lattice_Parameters",
+              "Space_Group"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Crystal_System": [
+                {
+                  "value": "cubic",
+                  "unit": "",
+                  "source_text": "cubic spinel structure"
+                }
+              ],
+              "Lattice_Parameters": [
+                {
+                  "value": {
+                    "a": 8.33673,
+                    "b": 8.33673,
+                    "c": 8.33673,
+                    "alpha": 90.0,
+                    "beta": 90.0,
+                    "gamma": 90.0
+                  },
+                  "unit": "Å / °",
+                  "crystal_system": "cubic",
+                  "state": "pristine",
+                  "method": "XRD",
+                  "source_text": "a = 8.33673 Å, b = 8.33673 Å, c = 8.33673 Å"
+                }
+              ],
+              "Space_Group": [
+                {
+                  "value": "Fd-3m",
+                  "unit": "",
+                  "source_text": "Fd-3 m (227)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "<details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>l",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "To reveal the mechanism of enhanced electrochemical performances, EIS from 0.1 Hz to 100 kHz were tested, as shown in Fig. 4i and Fig. S6c. Nyquist plots were simulated through the equivalent circuit ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "$$ D _ {L i ^ {+}} = \\frac {R ^ {2} T ^ {2}}{2 A ^ {2} n ^ {4} F ^ {4} C ^ {2} \\sigma_ {\\omega} {} ^ {2}} \\tag {1} $$ $$ Z ^ {\\prime} = R _ {e} + R _ {c t} + \\sigma_ {\\omega} \\omega^ {- 0. 5} \\tag {2}",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "To further investigate the enhanced rate and cycle capability of $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO, the pseudocapacitive contribution was studied via CV analyses at various scan rates. The CV cu",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "$$ i = ^ {b} \\tag {3} $$ where the b value was calculated from the slope of the log(i) versus log plots. The diffusion-controlled lithium-storage behavior was represented through the b value of 0.5, a",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "$$ i = k _ {1} v + k _ {2} v ^ {1 / 2} \\tag {4} $$ Where k1v represents pseudocapacitive, and $k _ { 2 } \\nu ^ { 1 / 2 }$ represents diffusioncontrolled portions. In Fig. 5b and ${ \\mathrm { } } .$ . ",
+          "include_result": {
+            "property_types": [
+              "Lattice_Parameters",
+              "Space_Group"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Lattice_Parameters": [],
+              "Space_Group": []
+            }
+          }
+        },
+        {
+          "paragraph": "To further study the lithium storage mechanism of $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO, in situ XRD was conducted during the first cycle in Fig. 5e. At the initial state of open-circuit voltage, th",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "To study structures and electronic properties of $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO, the DFT calculations were performed. Based on XRD results, the Fd-3 m space group was used to construct possib",
+          "include_result": {
+            "property_types": [
+              "Lattice_Parameters",
+              "Space_Group"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Lattice_Parameters": [
+                {
+                  "value": {
+                    "a": 5.938,
+                    "b": 5.945,
+                    "c": 5.938,
+                    "alpha": 0.0,
+                    "beta": 0.0,
+                    "gamma": 0.0
+                  },
+                  "unit": "Å / °",
+                  "crystal_system": "cubic",
+                  "state": "pristine",
+                  "method": "DFT calculations",
+                  "source_text": "The obtained lattice constants a, b, and c are 5.938 Å, 5.945 Å, and 5.938 Å, respectively."
+                }
+              ],
+              "Space_Group": [
+                {
+                  "value": "Fd-3m",
+                  "unit": "",
+                  "source_text": "the Fd-3 m space group was used"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "<details> <summary>chemical</summary> Crystal structure diagram of a cobalt-iron alloy showing cobalt, chromium, and iron atoms in a lattice arrangement </details> （b） <details> <summary>chemical</sum",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.",
+          "include_result": {
+            "property_types": [
+              "Lattice_Parameters",
+              "Space_Group"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Lattice_Parameters": [],
+              "Space_Group": []
+            }
+          }
+        },
+        {
+          "paragraph": "# Appendix A. Supporting information  Supplementary data associated with this article can be found in the online version at doi:10.1016/j.nanoen.2022.106962.",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        }
+      ]
+    },
+    {
+      "material_id": "anode_M002",
+      "material_name": "(FeCoNiCrMn)3O4 BM",
+      "material_context": "comparison: (FeCoNiCrMn)3O4 BM ((FeCoNiCrMn)3O4)",
+      "material_items": [
+        {
+          "paragraph": "# High-entropy oxides as advanced anode materials for long-life lithium-ion Batteries  Bin Xiao a , Gang Wu a , Tongde Wang a , Zhengang Wei a , Yanwei Sui a,\\* , Baolong Shen a , Jiqiu Qi a , Fuxiang",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 2.1. Material synthesis  The FeCoNiCrMn HEA powder $( > 9 9 \\% ;$ average crystal size, 50 µm) were acquired from Beijing Gaoke new material technology $\\mathrm { . , }$ , Ltd. $\\mathrm { } _ { 2 } ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 2.2. Characterization  X-ray diffraction (XRD, Ultima IV, Cu Kα radiation) of HEOs was tested in the region of 2θ= 10–80◦. Thermogravimetric (TG) were tested by a thermogravimetric analyzer (STA 449",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 2.3. Electrochemical measurements  The obtained $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO were used as active materials for coin cells, and then electrochemical test was carried out. Polyvinylidene fl",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 2.4. Computational methods  All calculations were conducted within density functional theory (DFT) through Vienna Ab-initio Simulation Package (VASP, version 5.4.4) [26] employing the projector-augm",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 3. Result and discussion  The synthesis of $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO was a very simple process that a certain amount of powder was oxidized at high temperature, as shown in Fig. 1. In ",
+          "include_result": {
+            "property_types": [
+              "Space_Group",
+              "Crystal_System",
+              "Elemental_Composition",
+              "Lattice_Parameters",
+              "Chemical_Formula"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Space_Group": [
+                {
+                  "value": "Fd-3m",
+                  "unit": "",
+                  "source_text": "cubic spinel structure (Fd-3 m (227)"
+                }
+              ],
+              "Crystal_System": [
+                {
+                  "value": "cubic",
+                  "unit": "",
+                  "source_text": "indexed into a cubic spinel structure (Fd-3 m (227)"
+                }
+              ],
+              "Elemental_Composition": [
+                {
+                  "value": [
+                    "Co",
+                    "Cr",
+                    "Fe",
+                    "Mn",
+                    "Ni",
+                    "O"
+                  ],
+                  "unit": "",
+                  "method": "EDS",
+                  "source_text": "Fig. 2g shows that Fe, Co, Ni, Cr, Mn and O elements are uniformly distributed in $\\mathrm { ( ) _ { 3 } O _ { 4 } }$"
+                }
+              ],
+              "Lattice_Parameters": [
+                {
+                  "value": {
+                    "a": 8.33673,
+                    "b": 8.33673,
+                    "c": 8.33673,
+                    "alpha": 90.0,
+                    "beta": 90.0,
+                    "gamma": 90.0
+                  },
+                  "unit": "Å / °",
+                  "crystal_system": "cubic",
+                  "state": "pristine",
+                  "method": "XRD",
+                  "source_text": "a = 8.33673 Å, b = 8.33673 Å, c = 8.33673 Å"
+                }
+              ],
+              "Chemical_Formula": [
+                {
+                  "value": "(FeCoNiCrMn)3O4",
+                  "unit": "",
+                  "state": "pristine",
+                  "source_text": "The synthesis of $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO was a very simple process"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "<details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>l",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "To reveal the mechanism of enhanced electrochemical performances, EIS from 0.1 Hz to 100 kHz were tested, as shown in Fig. 4i and Fig. S6c. Nyquist plots were simulated through the equivalent circuit ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "$$ D _ {L i ^ {+}} = \\frac {R ^ {2} T ^ {2}}{2 A ^ {2} n ^ {4} F ^ {4} C ^ {2} \\sigma_ {\\omega} {} ^ {2}} \\tag {1} $$ $$ Z ^ {\\prime} = R _ {e} + R _ {c t} + \\sigma_ {\\omega} \\omega^ {- 0. 5} \\tag {2}",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "To further investigate the enhanced rate and cycle capability of $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO, the pseudocapacitive contribution was studied via CV analyses at various scan rates. The CV cu",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "$$ i = ^ {b} \\tag {3} $$ where the b value was calculated from the slope of the log(i) versus log plots. The diffusion-controlled lithium-storage behavior was represented through the b value of 0.5, a",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "$$ i = k _ {1} v + k _ {2} v ^ {1 / 2} \\tag {4} $$ Where k1v represents pseudocapacitive, and $k _ { 2 } \\nu ^ { 1 / 2 }$ represents diffusioncontrolled portions. In Fig. 5b and ${ \\mathrm { } } .$ . ",
+          "include_result": {
+            "property_types": [
+              "Lattice_Parameters",
+              "Space_Group"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Lattice_Parameters": [],
+              "Space_Group": []
+            }
+          }
+        },
+        {
+          "paragraph": "To further study the lithium storage mechanism of $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO, in situ XRD was conducted during the first cycle in Fig. 5e. At the initial state of open-circuit voltage, th",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "To study structures and electronic properties of $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO, the DFT calculations were performed. Based on XRD results, the Fd-3 m space group was used to construct possib",
+          "include_result": {
+            "property_types": [
+              "Lattice_Parameters",
+              "Space_Group"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Lattice_Parameters": [
+                {
+                  "value": {
+                    "a": 5.938,
+                    "b": 5.945,
+                    "c": 5.938,
+                    "alpha": 0.0,
+                    "beta": 0.0,
+                    "gamma": 0.0
+                  },
+                  "unit": "Å / °",
+                  "crystal_system": "cubic",
+                  "state": "pristine",
+                  "method": "DFT",
+                  "source_text": "The obtained lattice constants a, $\\mathbf { b } ,$ and c are 5.938 $\\mathring { \\mathsf { A } } ,$ 5.945 $\\mathring { \\mathsf { A } } ,$ and 5.938 $\\mathring { \\mathsf { A } } ,$ respectively."
+                }
+              ],
+              "Space_Group": [
+                {
+                  "value": "Fd-3m",
+                  "unit": "",
+                  "source_text": "Based on XRD results, the Fd-3 m space group was used to construct possible crystal structures (Fig. 6a and b) for high-entropy materials."
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "<details> <summary>chemical</summary> Crystal structure diagram of a cobalt-iron alloy showing cobalt, chromium, and iron atoms in a lattice arrangement </details> （b） <details> <summary>chemical</sum",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# Appendix A. Supporting information  Supplementary data associated with this article can be found in the online version at doi:10.1016/j.nanoen.2022.106962.",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        }
+      ]
+    }
+  ]
+}

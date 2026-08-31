@@ -1,0 +1,686 @@
+{
+  "version": "0.1",
+  "updated": "2026-08-18",
+  "note": "30 条种子标注：doping/compatibility/performance 各 10。句子来自 miner 提取结果（真实文献，doi 见 source_text 关联）或教科书共识（source: textbook-consensus）。对齐 NERRE 方法论：parsability 优先，关系对象成组输出。",
+  "doping": [
+    {
+      "text": "The prolonged cycling performance at 0.1C shows that after 200 cycles, Mg/Al-LRMO retains 93.3% of its capacity, significantly better than LRMO (68.3%), Mg-LRMO (82.2%), and Al-LRMO (85.0%).",
+      "relations": [
+        {
+          "type": "doping",
+          "host": "LRMO",
+          "dopants": [
+            "Mg",
+            "Al"
+          ],
+          "result": "Mg/Al-LRMO",
+          "modifiers": [
+            "共掺杂"
+          ],
+          "condition": {
+            "c_rate": "0.1C",
+            "cycles": 200
+          },
+          "value": {
+            "property": "capacity_retention",
+            "value": 93.3,
+            "unit": "%"
+          },
+          "source_text": "Mg/Al-LRMO retains 93.3% of its capacity, significantly better than LRMO (68.3%)"
+        }
+      ]
+    },
+    {
+      "text": "The initial Coulombic efficiency is notably higher for Mg/Al-LRMO (85.7%) compared to Al-LRMO (82.9%), Mg-LRMO (76.0%) and LRMO (72.2%).",
+      "relations": [
+        {
+          "type": "doping",
+          "host": "LRMO",
+          "dopants": [
+            "Mg",
+            "Al"
+          ],
+          "result": "Mg/Al-LRMO",
+          "modifiers": [],
+          "condition": {},
+          "value": {
+            "property": "ice",
+            "value": 85.7,
+            "unit": "%"
+          },
+          "source_text": "The initial Coulombic efficiency is notably higher for Mg/Al-LRMO (85.7%)"
+        }
+      ]
+    },
+    {
+      "text": "Notably, Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh/g even at a high rate of 5.0C, outperforming LRMO (99.0 mAh/g).",
+      "relations": [
+        {
+          "type": "doping",
+          "host": "LRMO",
+          "dopants": [
+            "Mg",
+            "Al"
+          ],
+          "result": "Mg/Al-LRMO",
+          "modifiers": [],
+          "condition": {
+            "c_rate": "5.0C"
+          },
+          "value": {
+            "property": "discharge_capacity",
+            "value": 160.7,
+            "unit": "mAh/g"
+          },
+          "source_text": "Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh/g even at a high rate of 5.0C"
+        }
+      ]
+    },
+    {
+      "text": "The capacities in the plateau region decrease with the Mg2+ and Al3+ doping: 209.1 mAh/g for Mg-LRMO, 200.5 mAh/g for Al-LRMO and 194.9 mAh/g for Mg/Al-LRMO.",
+      "relations": [
+        {
+          "type": "doping",
+          "host": "LRMO",
+          "dopants": [
+            "Mg",
+            "Al"
+          ],
+          "result": "Mg/Al-LRMO",
+          "modifiers": [
+            "共掺杂"
+          ],
+          "condition": {},
+          "value": {
+            "property": "plateau_capacity",
+            "value": 194.9,
+            "unit": "mAh/g"
+          },
+          "source_text": "194.9 mAh/g for Mg/Al-LRMO"
+        }
+      ]
+    },
+    {
+      "text": "This result clearly demonstrates that co-doping with Mg and Al enhances structural stability and facilitates the rapid insertion and extraction of Li+ during charge-discharge cycles.",
+      "relations": [
+        {
+          "type": "doping",
+          "host": "LRMO",
+          "dopants": [
+            "Mg",
+            "Al"
+          ],
+          "result": "Mg/Al-LRMO",
+          "modifiers": [
+            "共掺杂"
+          ],
+          "condition": {},
+          "value": null,
+          "source_text": "co-doping with Mg and Al enhances structural stability and facilitates the rapid insertion and extraction of Li+"
+        }
+      ]
+    },
+    {
+      "text": "The Mg/Al-LRMO displayed a much more controlled increase of voltage decay, from 10.86% (1st cycle) to 25.68% (200th cycle), suggesting that the co-doping of Mg and Al effectively inhibited the voltage decay.",
+      "relations": [
+        {
+          "type": "doping",
+          "host": "LRMO",
+          "dopants": [
+            "Mg",
+            "Al"
+          ],
+          "result": "Mg/Al-LRMO",
+          "modifiers": [],
+          "condition": {
+            "cycles": 200
+          },
+          "value": {
+            "property": "voltage_decay",
+            "value": 25.68,
+            "unit": "%"
+          },
+          "source_text": "the co-doping of Mg and Al effectively inhibited the voltage decay"
+        }
+      ]
+    },
+    {
+      "text": "These results indicate that Mg/Al co-doping can reduce the polarization and accelerate the Li+ diffusion, thereby improving the reaction kinetics of the cathode material.",
+      "relations": [
+        {
+          "type": "doping",
+          "host": "LRMO",
+          "dopants": [
+            "Mg",
+            "Al"
+          ],
+          "result": "Mg/Al-LRMO",
+          "modifiers": [],
+          "condition": {},
+          "value": null,
+          "source_text": "Mg/Al co-doping can reduce the polarization and accelerate the Li+ diffusion"
+        }
+      ]
+    },
+    {
+      "text": "This indicates that the Mg and Al co-doping has effectively limited the extent of the phase transition.",
+      "relations": [
+        {
+          "type": "doping",
+          "host": "LRMO",
+          "dopants": [
+            "Mg",
+            "Al"
+          ],
+          "result": "Mg/Al-LRMO",
+          "modifiers": [],
+          "condition": {},
+          "value": null,
+          "source_text": "the Mg and Al co-doping has effectively limited the extent of the phase transition"
+        }
+      ]
+    },
+    {
+      "text": "In summary, we successfully synthesized the Mg2+/Al3+ codoped LRMO cathode material using a combined approach of co-precipitation and calcination.",
+      "relations": [
+        {
+          "type": "doping",
+          "host": "LRMO",
+          "dopants": [
+            "Mg",
+            "Al"
+          ],
+          "result": "Mg/Al-LRMO",
+          "modifiers": [
+            "共沉淀+煅烧合成"
+          ],
+          "condition": {},
+          "value": null,
+          "source_text": "successfully synthesized the Mg2+/Al3+ codoped LRMO cathode material"
+        }
+      ]
+    },
+    {
+      "text": "Compared to pristine LRMO and single-element doped counterparts (Mg-LRMO and Al-LRMO), the co-doped Mg/Al-LRMO showcased significantly enhanced electrochemical performance, including excellent cycling stability (90.0% capacity retention after 200 cycles at 1.0C) and high rate performance (160.7 mAh/g at 5.0C).",
+      "relations": [
+        {
+          "type": "doping",
+          "host": "LRMO",
+          "dopants": [
+            "Mg",
+            "Al"
+          ],
+          "result": "Mg/Al-LRMO",
+          "modifiers": [
+            "共掺杂"
+          ],
+          "condition": {
+            "c_rate": "1.0C",
+            "cycles": 200
+          },
+          "value": {
+            "property": "capacity_retention",
+            "value": 90.0,
+            "unit": "%"
+          },
+          "source_text": "the co-doped Mg/Al-LRMO showcased significantly enhanced electrochemical performance, including excellent cycling stability (90.0% capacity retention after 200 cycles at 1.0C)"
+        }
+      ]
+    }
+  ],
+  "compatibility": [
+    {
+      "text": "常规碳酸酯电解液在正极充电截止电压超过4.3V时氧化分解，不适用于高压正极材料。",
+      "relations": [
+        {
+          "type": "compatibility",
+          "subject": {
+            "material": "carbonate_ec",
+            "role": "electrolyte"
+          },
+          "object": {
+            "material": "NCM811",
+            "role": "cathode"
+          },
+          "relation": "incompatible",
+          "condition": {
+            "voltage": ">4.3V"
+          },
+          "reason": "电解液氧化分解",
+          "source_text": "常规碳酸酯电解液在正极充电截止电压超过4.3V时氧化分解"
+        }
+      ]
+    },
+    {
+      "text": "Lithium metal anode with conventional low-concentration carbonate electrolyte suffers from dendrite growth and low coulombic efficiency; high-concentration or localized high-concentration electrolytes are required.",
+      "relations": [
+        {
+          "type": "compatibility",
+          "subject": {
+            "material": "li_metal",
+            "role": "anode"
+          },
+          "object": {
+            "material": "carbonate_ec",
+            "role": "electrolyte"
+          },
+          "relation": "incompatible",
+          "condition": {},
+          "reason": "枝晶生长、库仑效率低",
+          "source_text": "Lithium metal anode with conventional low-concentration carbonate electrolyte suffers from dendrite growth"
+        },
+        {
+          "type": "compatibility",
+          "subject": {
+            "material": "li_metal",
+            "role": "anode"
+          },
+          "object": {
+            "material": "high_concentration",
+            "role": "electrolyte"
+          },
+          "relation": "compatible",
+          "condition": {},
+          "reason": "高浓电解液抑制枝晶",
+          "source_text": "high-concentration or localized high-concentration electrolytes are required"
+        }
+      ]
+    },
+    {
+      "text": "硅基负极体积膨胀约300%，需要FEC类添加剂形成稳定SEI膜。",
+      "relations": [
+        {
+          "type": "compatibility",
+          "subject": {
+            "material": "si_base",
+            "role": "anode"
+          },
+          "object": {
+            "material": "FEC",
+            "role": "additive"
+          },
+          "relation": "compatible",
+          "condition": {},
+          "reason": "FEC 形成稳定 SEI，抑制膨胀失效",
+          "source_text": "硅基负极体积膨胀约300%，需要FEC类添加剂形成稳定SEI膜"
+        }
+      ]
+    },
+    {
+      "text": "高压尖晶石LNMO与富锂锰基正极在常规碳酸酯电解液中存在严重的Mn溶解问题，需要耐高压电解液体系。",
+      "relations": [
+        {
+          "type": "compatibility",
+          "subject": {
+            "material": "LNMO",
+            "role": "cathode"
+          },
+          "object": {
+            "material": "carbonate_ec",
+            "role": "electrolyte"
+          },
+          "relation": "incompatible",
+          "condition": {},
+          "reason": "Mn 溶解加剧",
+          "source_text": "高压尖晶石LNMO与富锂锰基正极在常规碳酸酯电解液中存在严重的Mn溶解问题"
+        }
+      ]
+    },
+    {
+      "text": "常规稀水系电解液的电化学稳定窗口约1.23V，无法匹配LNMO的4.7V高压平台；高浓水系电解液（water-in-salt，>20m LiTFSI）降低水活度可扩展窗口至约3V，但LNMO仍处窗口极限，仅条件兼容。",
+      "relations": [
+        {
+          "type": "compatibility",
+          "subject": {
+            "material": "dilute_aqueous",
+            "role": "electrolyte"
+          },
+          "object": {
+            "material": "LNMO",
+            "role": "cathode"
+          },
+          "relation": "incompatible",
+          "condition": {},
+          "reason": "窗口约1.23V远低于LNMO 4.7V平台",
+          "source_text": "常规稀水系电解液的电化学稳定窗口约1.23V，无法匹配LNMO的4.7V高压平台"
+        },
+        {
+          "type": "compatibility",
+          "subject": {
+            "material": "water_in_salt",
+            "role": "electrolyte"
+          },
+          "object": {
+            "material": "LNMO",
+            "role": "cathode"
+          },
+          "relation": "conditionally_compatible",
+          "condition": {
+            "salt_concentration": ">20m LiTFSI",
+            "note": "需SEI工程，窗口仍受限"
+          },
+          "reason": "WiS扩窗至约3V，但LNMO 4.7V仍处极限",
+          "source_text": "高浓水系电解液（water-in-salt，>20m LiTFSI）降低水活度可扩展窗口至约3V，但LNMO仍处窗口极限，仅条件兼容"
+        }
+      ]
+    },
+    {
+      "text": "石墨负极与EC基碳酸酯电解液（EC/DMC/EMC混合溶剂体系）在低电位下形成稳定SEI，二者兼容性良好。",
+      "relations": [
+        {
+          "type": "compatibility",
+          "subject": {
+            "material": "graphite",
+            "role": "anode"
+          },
+          "object": {
+            "material": "carbonate_ec",
+            "role": "electrolyte"
+          },
+          "relation": "compatible",
+          "condition": {},
+          "reason": "石墨表面形成稳定 SEI",
+          "source_text": "石墨负极与EC基碳酸酯电解液（EC/DMC/EMC混合溶剂体系）在低电位下形成稳定SEI，二者兼容性良好"
+        }
+      ]
+    },
+    {
+      "text": "LiFePO4正极工作电压约3.4V，在常规碳酸酯电解液稳定窗口内，二者兼容。",
+      "relations": [
+        {
+          "type": "compatibility",
+          "subject": {
+            "material": "LFP",
+            "role": "cathode"
+          },
+          "object": {
+            "material": "carbonate_ec",
+            "role": "electrolyte"
+          },
+          "relation": "compatible",
+          "condition": {},
+          "reason": "LFP 平台电压 3.4V 在碳酸酯窗口内",
+          "source_text": "LiFePO4正极工作电压约3.4V，在常规碳酸酯电解液稳定窗口内，二者兼容"
+        }
+      ]
+    },
+    {
+      "text": "富锂锰基正极充电至4.6V以上时，常规碳酸酯电解液会氧化分解并在正极表面形成CEI，导致阻抗增长。",
+      "relations": [
+        {
+          "type": "compatibility",
+          "subject": {
+            "material": "LRMO",
+            "role": "cathode"
+          },
+          "object": {
+            "material": "carbonate_ec",
+            "role": "electrolyte"
+          },
+          "relation": "incompatible",
+          "condition": {
+            "voltage": ">4.6V"
+          },
+          "reason": "电解液氧化分解、CEI 增厚",
+          "source_text": "富锂锰基正极充电至4.6V以上时，常规碳酸酯电解液会氧化分解"
+        }
+      ]
+    },
+    {
+      "text": "锂金属负极在氟化溶剂体系（FEC基）中可改善SEI和库仑效率，但液态下充分稳定运行需要高浓或局部高浓电解液。",
+      "relations": [
+        {
+          "type": "compatibility",
+          "subject": {
+            "material": "li_metal",
+            "role": "anode"
+          },
+          "object": {
+            "material": "fluorinated",
+            "role": "electrolyte"
+          },
+          "relation": "improved_by",
+          "condition": {},
+          "reason": "FEC 基溶剂改善 SEI 与库仑效率，但不构成充分条件",
+          "source_text": "锂金属负极在氟化溶剂体系（FEC基）中可改善SEI和库仑效率"
+        },
+        {
+          "type": "compatibility",
+          "subject": {
+            "material": "li_metal",
+            "role": "anode"
+          },
+          "object": {
+            "material": "high_concentration",
+            "role": "electrolyte"
+          },
+          "relation": "compatible",
+          "condition": {},
+          "reason": "高浓/局部高浓是锂金属液态运行的充分条件",
+          "source_text": "液态下充分稳定运行需要高浓或局部高浓电解液"
+        }
+      ]
+    },
+    {
+      "text": "高镍正极NCM811在常温下与常规碳酸酯电解液兼容，但在高温（60°C）下副反应显著加剧，需添加剂或改性电解液。",
+      "relations": [
+        {
+          "type": "compatibility",
+          "subject": {
+            "material": "NCM811",
+            "role": "cathode"
+          },
+          "object": {
+            "material": "carbonate_ec",
+            "role": "electrolyte"
+          },
+          "relation": "compatible",
+          "condition": {
+            "temperature": "常温"
+          },
+          "reason": "常温下在碳酸酯电解液稳定窗口内工作",
+          "source_text": "高镍正极NCM811在常温下与常规碳酸酯电解液兼容"
+        },
+        {
+          "type": "compatibility",
+          "subject": {
+            "material": "NCM811",
+            "role": "cathode"
+          },
+          "object": {
+            "material": "carbonate_ec",
+            "role": "electrolyte"
+          },
+          "relation": "incompatible",
+          "condition": {
+            "temperature": "60°C"
+          },
+          "reason": "高温下副反应显著加剧，需添加剂或改性电解液",
+          "source_text": "在高温（60°C）下副反应显著加剧，需添加剂或改性电解液"
+        }
+      ]
+    }
+  ],
+  "performance": [
+    {
+      "text": "Mg/Al-LRMO pouch cell achieves an energy density of 314.2 Wh/kg with a retention of 96.2% after 100 cycles.",
+      "relations": [
+        {
+          "type": "performance",
+          "material": "Mg/Al-LRMO",
+          "condition": {
+            "cycles": 100
+          },
+          "property": "energy_density",
+          "value": 314.2,
+          "unit": "Wh/kg",
+          "source_text": "Mg/Al-LRMO pouch cell achieves an energy density of 314.2 Wh/kg with a retention of 96.2% after 100 cycles"
+        }
+      ]
+    },
+    {
+      "text": "In terms of discharge capacity, Mg/Al-LRMO outperforms the others with 269.9 mAh/g, while Al-LRMO, Mg-LRMO and LRMO deliver 263.1, 245.1, 237.7 mAh/g, respectively.",
+      "relations": [
+        {
+          "type": "performance",
+          "material": "Mg/Al-LRMO",
+          "condition": {},
+          "property": "discharge_capacity",
+          "value": 269.9,
+          "unit": "mAh/g",
+          "source_text": "Mg/Al-LRMO outperforms the others with 269.9 mAh/g"
+        },
+        {
+          "type": "performance",
+          "material": "LRMO",
+          "condition": {},
+          "property": "discharge_capacity",
+          "value": 237.7,
+          "unit": "mAh/g",
+          "source_text": "237.7 mAh/g"
+        }
+      ]
+    },
+    {
+      "text": "After 200 cycles, Mg/Al-LRMO retains 90.0% of its initial capacity with a discharge capacity of 188.1 mAh/g at 1.0C.",
+      "relations": [
+        {
+          "type": "performance",
+          "material": "Mg/Al-LRMO",
+          "condition": {
+            "c_rate": "1.0C",
+            "cycles": 200
+          },
+          "property": "capacity_retention",
+          "value": 90.0,
+          "unit": "%",
+          "source_text": "After 200 cycles, Mg/Al-LRMO retains 90.0% of its initial capacity"
+        }
+      ]
+    },
+    {
+      "text": "Notably, Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh/g even at a high rate of 5.0C.",
+      "relations": [
+        {
+          "type": "performance",
+          "material": "Mg/Al-LRMO",
+          "condition": {
+            "c_rate": "5.0C"
+          },
+          "property": "discharge_capacity",
+          "value": 160.7,
+          "unit": "mAh/g",
+          "source_text": "Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh/g even at a high rate of 5.0C"
+        }
+      ]
+    },
+    {
+      "text": "In contrast, LRMO only delivers an energy density of 270.0 Wh/kg, with the retention dropping to 89.8% after 100 cycles.",
+      "relations": [
+        {
+          "type": "performance",
+          "material": "LRMO",
+          "condition": {
+            "cycles": 100
+          },
+          "property": "energy_density",
+          "value": 270.0,
+          "unit": "Wh/kg",
+          "source_text": "LRMO only delivers an energy density of 270.0 Wh/kg, with the retention dropping to 89.8% after 100 cycles"
+        }
+      ]
+    },
+    {
+      "text": "After cycling at 2.0C for 600 cycles, the Mg/Al-LRMO pouch full cell maintains a specific capacity retention of 86.2%, while the pristine LRMO pouch cell only displays 54.1%.",
+      "relations": [
+        {
+          "type": "performance",
+          "material": "Mg/Al-LRMO",
+          "condition": {
+            "c_rate": "2.0C",
+            "cycles": 600
+          },
+          "property": "capacity_retention",
+          "value": 86.2,
+          "unit": "%",
+          "source_text": "After cycling at 2.0C for 600 cycles, the Mg/Al-LRMO pouch full cell maintains a specific capacity retention of 86.2%"
+        },
+        {
+          "type": "performance",
+          "material": "LRMO",
+          "condition": {
+            "c_rate": "2.0C",
+            "cycles": 600
+          },
+          "property": "capacity_retention",
+          "value": 54.1,
+          "unit": "%",
+          "source_text": "the pristine LRMO pouch cell only displays 54.1%"
+        }
+      ]
+    },
+    {
+      "text": "The as-prepared (FeCoNiCrMn)3O4 HEO achieved a high reversible capacity of 596.5 mAh/g and a good capacity retention of 86.2% after 1200 cycles at 2.0C.",
+      "relations": [
+        {
+          "type": "performance",
+          "material": "(FeCoNiCrMn)3O4",
+          "condition": {
+            "c_rate": "2.0C",
+            "cycles": 1200
+          },
+          "property": "discharge_capacity",
+          "value": 596.5,
+          "unit": "mAh/g",
+          "source_text": "The as-prepared (FeCoNiCrMn)3O4 HEO achieved a high reversible capacity of 596.5 mAh/g"
+        }
+      ]
+    },
+    {
+      "text": "For rate performance, (FeCoNiCrMn)3O4 HEO delivered a high reversible capacity of 967.3 mAh/g at 0.1C.",
+      "relations": [
+        {
+          "type": "performance",
+          "material": "(FeCoNiCrMn)3O4",
+          "condition": {
+            "c_rate": "0.1C"
+          },
+          "property": "discharge_capacity",
+          "value": 967.3,
+          "unit": "mAh/g",
+          "source_text": "(FeCoNiCrMn)3O4 HEO delivered a high reversible capacity of 967.3 mAh/g at 0.1C"
+        }
+      ]
+    },
+    {
+      "text": "Even after 260 cycles, (FeCoNiCrMn)3O4 HEO still reached up to 692.8 mAh/g with a high capacity retention of 97.5%.",
+      "relations": [
+        {
+          "type": "performance",
+          "material": "(FeCoNiCrMn)3O4",
+          "condition": {
+            "cycles": 260
+          },
+          "property": "capacity_retention",
+          "value": 97.5,
+          "unit": "%",
+          "source_text": "Even after 260 cycles, (FeCoNiCrMn)3O4 HEO still reached up to 692.8 mAh/g with a high capacity retention of 97.5%"
+        }
+      ]
+    },
+    {
+      "text": "These values are higher than those of the pristine LRMO, which has a charge/discharge capacity of 1.389/1.107 Ah and an ICE of 79.8%.",
+      "relations": [
+        {
+          "type": "performance",
+          "material": "LRMO",
+          "condition": {},
+          "property": "charge_capacity",
+          "value": 1.389,
+          "unit": "Ah",
+          "source_text": "the pristine LRMO, which has a charge/discharge capacity of 1.389/1.107 Ah and an ICE of 79.8%"
+        }
+      ]
+    }
+  ]
+}

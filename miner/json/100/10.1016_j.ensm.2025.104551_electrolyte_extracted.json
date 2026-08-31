@@ -1,0 +1,1064 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.ensm.2025.104551.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/j.ensm.2025.104551",
+  "doi": "10.1016/j.ensm.2025.104551",
+  "material_id": "10.1016_j.ensm.2025.104551",
+  "meta": {
+    "meta_title": "In-situ radiation-synthesized UiO-66/poly(ionic liquid) gel electrolyte with hig",
+    "meta_authors": "Mingshu Xie a,d,1 , Zeyu Zhang b,1 , Yicheng Wang a , Fan Jiang a , Hao Tang a , Jiuqiang Li a , Shuhong Jiao c , Jingyi Qiu b,\\* , Jing Peng a,\\* , Xibang Chen b,\\* , Maolin Zhai a,\\*",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "1M LiPF6 in EC/DEC (1:1 v/v)",
+      "short_name": "LE",
+      "formula": "1M LiPF6 EC/DEC",
+      "role": "baseline",
+      "description": "Commercial liquid electrolyte, baseline",
+      "material_id": "10.1016_j.ensm.2025.104551_M001"
+    },
+    {
+      "name": "PPV-Li gel electrolyte with 95% LE, 2.5% VEImPF6, 2.5% PET4A",
+      "short_name": "PPV-Li",
+      "formula": "95% LE, 2.5% VEImPF6, 2.5% PET4A",
+      "role": "comparison",
+      "description": "Gel polymer electrolyte without UiO-66, radiation-polymerized",
+      "material_id": "10.1016_j.ensm.2025.104551_M002"
+    },
+    {
+      "name": "UiO/PPV-Li gel electrolyte with 95% LE, 2.5% VEImPF6, 2.5% PET4A, 0.5% UiO-66",
+      "short_name": "UiO/PPV-Li",
+      "formula": "95% LE, 2.5% VEImPF6, 2.5% PET4A, 0.5% UiO-66",
+      "role": "novel",
+      "description": "Gel composite electrolyte with UiO-66 MOF filler, radiation-polymerized",
+      "material_id": "10.1016_j.ensm.2025.104551_M003"
+    }
+  ],
+  "n_materials": 3,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: $Electrolytes^a$; Ionic conductivity (mS·cm-1)b; Electrochemical stability (V); 1C Capacity (mAh·g-1)c; Ref.\nRows:\nRow 1: $Electrolytes^a$ = LATP-PVDF CSE; Ionic conductivity (mS·cm-1)b = 0.03; Electrochemical stability (V) = 4.76; 1C Capacity (mAh·g-1)c = 93; Ref. = [46]\nRow 2: $Electrolytes^a$ = 6FPSF-FPES; Ionic conductivity (mS·cm-1)b = 0.69 (40 °C); Electrochemical stability (V) = 4.65; 1C Capacity (mAh·g-1)c = 140; Ref. = [47]\nRow 3: $Electrolytes^a$ = SI; Ionic conductivity (mS·cm-1)b = ~1.00; Electrochemical stability (V) = /; 1C Capacity (mAh·g-1)c = 86; Ref. = [48]\nRow 4: $Electrolytes^a$ = c-GPE-2; Ionic conductivity (mS·cm-1)b = 0.38; Electrochemical stability (V) = 4.54; 1C Capacity (mAh·g-1)c = 144; Ref. = [49]\nRow 5: $Electrolytes^a$ = PEEC-TEGDA; Ionic conductivity (mS·cm-1)b = 0.02; Electrochemical stability (V) = 4.90; 1C Capacity (mAh·g-1)c = <40; Ref. = [50]\nRow 6: $Electrolytes^a$ = PEGDA-LiTFSI-LiBOB-SN; Ionic conductivity (mS·cm-1)b = 1.76; Electrochemical stability (V) = 5.00; 1C Capacity (mAh·g-1)c = 77 (NCA); Ref. = [51]\nRow 7: $Electrolytes^a$ = 30PEC-70LiMNT-80LiFSI-15FEC-3PTFE; Ionic conductivity (mS·cm-1)b = 3.50; Electrochemical stability (V) = 4.60; 1C Capacity (mAh·g-1)c = 105; Ref. = [52]\nRow 8: $Electrolytes^a$ = PEGDME-LiTFSI-LIFSI; Ionic conductivity (mS·cm-1)b = 0.15; Electrochemical stability (V) = 4.30; 1C Capacity (mAh·g-1)c = 82; Ref. = [53]\nRow 9: $Electrolytes^a$ = PMA-LiTFSI; Ionic conductivity (mS·cm-1)b = 0.20; Electrochemical stability (V) = 4.75; 1C Capacity (mAh·g-1)c = 101 (LCO); Ref. = [54]\nRow 10: $Electrolytes^a$ = 50[PEO8-LiTFSI]-40Li6.75La3Zr1.75Ta0.25O12-10PVDF+9 % oxalate; Ionic conductivity (mS·cm-1)b = 0.20 (50 °C); Electrochemical stability (V) = 4.80; 1C Capacity (mAh·g-1)c = 104; Ref. = [55]\nRow 11: $Electrolytes^a$ = UiO/PPV-Li; Ionic conductivity (mS·cm-1)b = 9.12; Electrochemical stability (V) = 5.31; 1C Capacity (mAh·g-1)c = 185.8; Ref. = This work\nColumn data:\n  $Electrolytes^a$: LATP-PVDF CSE; 6FPSF-FPES; SI; c-GPE-2; PEEC-TEGDA; PEGDA-LiTFSI-LiBOB-SN; 30PEC-70LiMNT-80LiFSI-15FEC-3PTFE; PEGDME-LiTFSI-LIFSI; PMA-LiTFSI; 50[PEO8-LiTFSI]-40Li6.75La3Zr1.75Ta0.25O12-10PVDF+9 % oxalate; UiO/PPV-Li\n  Ionic conductivity (mS·cm-1)b: 0.03; 0.69 (40 °C); ~1.00; 0.38; 0.02; 1.76; 3.50; 0.15; 0.20; 0.20 (50 °C); 9.12\n  Electrochemical stability (V): 4.76; 4.65; /; 4.54; 4.90; 5.00; 4.60; 4.30; 4.75; 4.80; 5.31\n  1C Capacity (mAh·g-1)c: 93; 140; 86; 144; <40; 77 (NCA); 105; 82; 101 (LCO); 104; 185.8\n  Ref.: [46]; [47]; [48]; [49]; [50]; [51]; [52]; [53]; [54]; [55]; This work"
+  ],
+  "n_items": 24,
+  "items": [
+    {
+      "paragraph": "Under test conditions with temperatures range 30 mathrm - 60 circ mathrm C , , the rela tionship between conductivity σ and temperature can be represented by the Arrhenius equation formula 2. A is the",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "min": 30,
+            "max": 60,
+            "unit": "°C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The cyclic test of the lithium symmetric batteries was carried out under the conditions of current density of 0.5 mA⋅cm–2 .",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "cyclic test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The ionic conductivity σ of the electrolyte was evaluated in symmetric stainless-steel batteries. Specifically, the thickness of the sample was measured with a thickness gauge and denoted as H. The el",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "electrode_config": "symmetric stainless-steel batteries",
+          "test_method": "electrochemical impedance spectroscopy (EIS)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The precursor solution was obtained by dispersing mathrm mathrm 6 , PET4A and UiO-66 in LE. The precursor solution was irradiated with γ-ray at a dose rate of 50 mathrm cdot mathrm - 1 , with the abso",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "dose_rate": {
+            "value": 50,
+            "unit": "Gy/min"
+          },
+          "absorbed_dose": {
+            "min": 1.0,
+            "max": 3.0,
+            "unit": "kGy"
+          },
+          "mass_fraction": {
+            "LE": "95 wt%",
+            "VEImPF6": "2.5 wt%",
+            "PET4A": "2.5 wt%",
+            "UiO-66": "0.5 wt%"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "sigma A exp left- frac E aR Tright tag 2 Linear sweep voltammetry LSV tests were performed in the range of 3.5 - 6.0 : mathrm V vs Li/Li on an electrochemical workstation at a scan rate of 5 mathrm cd",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "voltage_range": {
+            "min": 3.5,
+            "max": 6.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "test_method": "Linear sweep voltammetry (LSV) at scan rate 5 mV/s",
+          "reference_electrode": "vs. Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The mathrm transference number was measured by electrochemical workstation in symmetric batteries according to the following formula: t frac I SI 0 times frac Delta V - I 0 R 0Delta V - I S R S tag 3 ",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "electrode_config": "symmetric_cell",
+          "test_method": "electrochemical impedance/transference number measurement"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Theoretical calculations were conducted by Shenzhen Huasuan Technology Co., Ltd. The methodology was referred to the work of Sheng et al. 22 The desolvation energy mathrm E mathrm mathrm of mathrm . –",
+      "property_types": [
+        "Dielectric_Constant"
+      ],
+      "extracted_info": {
+        "Dielectric_Constant": [
+          {
+            "value": 20.7,
+            "source_text": "An implicit solvent model with a dielectric constant ε of 20.7 was implemented via the DFT-COSMO method DMol3 module to simulate the electrolyte environment."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The electrochemical performances of lithium metal batteries and lithium symmetric batteries were evaluated by assembling CR2025 coin batteries. A Slurry containing 90 wt % of mathrm 1.00.80.10.1 O 2 N",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "mass_loading": {
+            "value": 4.54,
+            "unit": "mg/piece"
+          },
+          "electrode_config": "CR2025 coin cell; cathode: NCM811 (90 wt%), super P (5 wt%), PVDF (5 wt%) on Al foil, diameter 12 mm; anode: Li metal (for lithium metal batteries) or Li foil for symmetric cells; 70 μL precursor electrolyte"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The UiO/PPV-Li precursor solution was prepared following section 2.3. Cotton fibers sim 0.1 g impregnated with sim 4.0 g of precursor electrolyte were irradiated at a dose rate of 50 mathrm cdot mathr",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "electrolyte": "UiO/PPV-Li precursor solution",
+          "test_method": "combustion kinetics"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The successful preparation of UiO-66 with highly crystalline characteristics was confirmed by PXRD patterns, which was consistent with the fitting results 30. Moreover, UiO-66 demonstrated good stabil",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "test_method": "radiation synthesis"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In UiO/PPV-Li, the binding energy between LiEC and carbonyl oxygen atoms of the PPV-Li was calculated to be − 0.93 eV Fig. 4d. The exothermic process confirmed the spontaneous coordination tendency be",
+      "property_types": [
+        "Li_Solvent_Binding_Energy"
+      ],
+      "extracted_info": {
+        "Li_Solvent_Binding_Energy": [
+          {
+            "value": -0.93,
+            "unit": "eV",
+            "solvent": "LiEC to carbonyl oxygen of PPV-Li",
+            "source_text": "In UiO/PPV-Li, the binding energy between LiEC and carbonyl oxygen atoms of the PPV-Li was calculated to be − 0.93 eV Fig. 4d."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The energy density and power density of lithium metal batteries were found to be critically dependent on operational voltage, which was governed by the electrochemical stability window of the electrol",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "electrolyte": "LE"
+        },
+        {
+          "condition_id": "C011",
+          "electrolyte": "PPV-Li"
+        },
+        {
+          "condition_id": "C012",
+          "electrolyte": "UiO/PPV-Li"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Electrochemical_Stability_Window"
+      ],
+      "performance_info": {
+        "Electrochemical_Stability_Window": [
+          {
+            "value": {
+              "max_V": 4.57
+            },
+            "unit": "V vs. Li/Li⁺",
+            "source_text": "LE exhibited a limited electrochemical stability window of 4.57 V",
+            "condition_id": "C001"
+          },
+          {
+            "value": {
+              "max_V": 5.23
+            },
+            "unit": "V vs. Li/Li⁺",
+            "source_text": "The parameter was elevated to 5.23 V following in situ formation of the PPV-Li",
+            "condition_id": "C002"
+          },
+          {
+            "value": {
+              "max_V": 5.31
+            },
+            "unit": "V vs. Li/Li⁺",
+            "source_text": "UiO/PPV-Li further enhanced the electrochemical stability window to 5.31 V",
+            "condition_id": "C003"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The influence of VEImPF /PET4A mass ratios on ionic conductivity was systematically investigated. It was observed that gelation was progressively weakened as the mathrm mathrm 6 content was increased,",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 8.49,
+            "unit": "mS/cm",
+            "temperature_C": 25,
+            "source_text": "The maximum ionic conductivity of 8.49 mathrm m s cdot mathrm - 1 at 25 circ mathrm C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "DFT calculations were performed to systematically evaluate the energies of EC, solvated Li⁺, and UiO-66 Table S2. The lithium dendrite formation was observed in the LE during battery cycle. In contras",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "test_method": "DFT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Li_Desolvation_Activation_Energy"
+      ],
+      "performance_info": {
+        "Li_Desolvation_Activation_Energy": [
+          {
+            "value": 50.2,
+            "unit": "kJ/mol",
+            "method": "DFT",
+            "source_text": "The desolvation energy of 50.2 kJ⋅mol-1 was calculated for the LiEC4 → Li EC3 transition in the absence of UiO-66"
+          },
+          {
+            "value": 17.1,
+            "unit": "kJ/mol",
+            "method": "DFT",
+            "source_text": "The transition energy barrier was significantly reduced to 17.1 kJ⋅mol-1 in pores of UiO-66"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Cu ‖ Li batteries were assembled with different electrolytes and cycled at 0.5 C to establish SEI layers on Cu electrodes, followed by XPS characterization Figure S15. In the Li 1s spectra, the increa",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EC/DEC (1:1 v/v) (LE); PPV-Li gel electrolyte (95% LE, 2.5% VEImPF6, 2.5% PET4A); UiO/PPV-Li gel electrolyte (95% LE, 2.5% VEImPF6, 2.5% PET4A, 0.5% UiO-66)",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling at 0.5 C for SEI formation, then XPS characterization"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "As shown in Table 1, comparing the different types of composite electrolytes and solid polymer electrolytes reported in recent years, UiO/PPV-Li showed significant advantages in ionic conductivity, el",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrolyte": "UiO/PPV-Li gel electrolyte"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Electrochemical_Stability_Window",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "unit": "mS/cm",
+            "source_text": "the superior ionic conductivity of UiO/PPV-Li exceeded most reported systems and commercial liquid electrolytes"
+          }
+        ],
+        "Electrochemical_Stability_Window": [
+          {
+            "value": {},
+            "unit": "V vs. Li/Li⁺",
+            "source_text": "UiO/PPV-Li showed significant advantages in ionic conductivity, electrochemical stability window and discharge specific capacity at 1C"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "discharge specific capacity at 1C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In the long-term cycling test Fig. 6b, UiO/PPV-Li demonstrated a higher discharge specific capacity than PPV-Li at the 1C rate. The LE exhibited a similar initial discharge specific capacity to UiO/PP",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrolyte": "UiO/PPV-Li gel electrolyte with 95% LE, 2.5% VEImPF6, 2.5% PET4A, 0.5% UiO-66",
+          "electrode_config": "full_cell",
+          "test_method": "long-term cycling test"
+        },
+        {
+          "condition_id": "C018",
+          "electrolyte": "UiO/PPV-Li gel electrolyte with 95% LE, 2.5% VEImPF6, 2.5% PET4A, 0.5% UiO-66",
+          "electrode_config": "full_cell",
+          "test_method": "EIS",
+          "cycle_number": 50
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The ionic conductivity of 9.12 mS cdot mathrm - 1 at ambient temperature was achieved by UiO/PPV-Li Figure S13, which was superior to that of LE 7.33 mathrm cdot mathrm - 1 . The Arrhenius plots of Ui",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "UiO/PPV-Li gel electrolyte with 95% LE, 2.5% VEImPF6, 2.5% PET4A, 0.5% UiO-66"
+        },
+        {
+          "condition_id": "C020",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EC/DEC (1:1 v/v)"
+        },
+        {
+          "condition_id": "C021",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "electrolyte": "UiO/PPV-Li gel electrolyte with 95% LE, 2.5% VEImPF6, 2.5% PET4A, 0.5% UiO-66"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 9.12,
+            "unit": "mS/cm",
+            "temperature_C": 25,
+            "source_text": "The ionic conductivity of 9.12 mS cdot mathrm - 1 at ambient temperature was achieved by UiO/PPV-Li Figure S13",
+            "condition_id": "C001"
+          },
+          {
+            "value": 7.33,
+            "unit": "mS/cm",
+            "temperature_C": 25,
+            "source_text": "which was superior to that of LE 7.33 mathrm cdot mathrm - 1",
+            "condition_id": "C002"
+          },
+          {
+            "value": 13.0,
+            "unit": "mS/cm",
+            "temperature_C": 60,
+            "source_text": "UiO/PPV-Li achieved the highest ionic conductivity of 13.0 mS⋅cm− 1 at 60 ◦C",
+            "condition_id": "C003"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In the rate performance test Fig. 6a, the rate capability of PPV-Li is slightly inferior to that of the LE. However, after the introduction of UiO-66, the rate performance of UiO/PPV-Li is significant",
+      "conditions": [
+        {
+          "condition_id": "C022",
+          "test_method": "rate performance test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Galvanostatic cycling was performed on Li ‖ Li symmetric batteries at 0.5 mA⋅cm− 2 to evaluate electrolyte stability Fig. 5a. Progressive polarization increased and short-circuit at 220 h due to lithi",
+      "conditions": [
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1M LiPF6 in EC/DEC (1:1 v/v)",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "PPV-Li gel electrolyte with 95% LE, 2.5% VEImPF6, 2.5% PET4A",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "UiO/PPV-Li gel electrolyte with 95% LE, 2.5% VEImPF6, 2.5% PET4A, 0.5% UiO-66",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Voltage_Hysteresis"
+      ],
+      "performance_info": {
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.05,
+            "unit": "V",
+            "condition_id": "C003",
+            "source_text": "ultralow polarization 50 mV was maintained in the Li ‖ UiO/PPV-Li ‖ Li for over 450 h"
+          }
+        ]
+      },
+      "condition_id": "C003"
+    },
+    {
+      "paragraph": "The safety performance of graphite ‖ UiO/PPV-Li parallel mathrm 2 was evaluated through mechanical abuse testing. During calendering test with 13 kN stainless steel rod, no thermal runaway, combustion",
+      "conditions": [
+        {
+          "condition_id": "C026",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "UiO/PPV-Li gel electrolyte",
+          "electrode_config": "graphite || NCM",
+          "test_method": "calendering test"
+        },
+        {
+          "condition_id": "C027",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "UiO/PPV-Li gel electrolyte",
+          "electrode_config": "graphite || NCM",
+          "test_method": "nail penetration test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In summary, UiO/PPV-Li was successfully synthesized via γ-ray radiation-induced polymerization and crosslinking. Theoretical calculations revealed that UiO-66 facilitates Li desolvation by lowering th",
+      "conditions": [
+        {
+          "condition_id": "C028",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "UiO/PPV-Li",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C029",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C030",
+          "voltage_range": {
+            "max": 5.31,
+            "unit": "V",
+            "reference": "Li+/Li"
+          },
+          "test_method": "LSV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Electrochemical_Stability_Window",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 9.12,
+            "unit": "mS/cm",
+            "temperature_C": 25,
+            "source_text": "room-temperature ionic conductivity of 9.12 mS⋅cm− 1"
+          }
+        ],
+        "Electrochemical_Stability_Window": [
+          {
+            "value": {
+              "max_V": 5.31
+            },
+            "unit": "V vs. Li/Li⁺",
+            "source_text": "electrochemical stability window 5.31 V vs. Li⁺/ Li"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              154
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "Li ‖ UiO/PPV-Li ‖ NCM 154 mAh⋅g− 1 at 1 C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Graphite ‖ LiCoO2 pouch batteries 3 Ah capacity were assembled and tested. The rate performance was shown in Fig. 6c. 0.332 Ah of discharge capacity was delivered by the graphite ‖ LE ‖ LiCoO2 with ca",
+      "conditions": [
+        {
+          "condition_id": "C031",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "graphite || LiCoO2 pouch cell",
+          "electrolyte": "LE (1M LiPF6 in EC/DEC 1:1 v/v)",
+          "test_method": "rate performance"
+        },
+        {
+          "condition_id": "C032",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "graphite || LiCoO2 pouch cell",
+          "electrolyte": "UiO/PPV-Li gel electrolyte (95% LE, 2.5% VEImPF6, 2.5% PET4A, 0.5% UiO-66)",
+          "test_method": "rate performance"
+        },
+        {
+          "condition_id": "C033",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "electrode_config": "graphite || LiCoO2 pouch cell",
+          "electrolyte": "LE (1M LiPF6 in EC/DEC 1:1 v/v)",
+          "test_method": "long-term cycling"
+        },
+        {
+          "condition_id": "C034",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "electrode_config": "graphite || LiCoO2 pouch cell",
+          "electrolyte": "UiO/PPV-Li gel electrolyte (95% LE, 2.5% VEImPF6, 2.5% PET4A, 0.5% UiO-66)",
+          "test_method": "long-term cycling"
+        },
+        {
+          "condition_id": "C035",
+          "temperature": {
+            "value": 50,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrode_config": "graphite || LiCoO2 pouch cell",
+          "electrolyte": "UiO/PPV-Li gel electrolyte (95% LE, 2.5% VEImPF6, 2.5% PET4A, 0.5% UiO-66)",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability",
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [
+              {
+                "C_rate": "1C",
+                "capacity_Ah": 0.332
+              }
+            ],
+            "unit": "Ah",
+            "condition_id": "C001",
+            "source_text": "0.332 Ah of discharge capacity was delivered by the graphite || LE || LiCoO2 with capacity retention of 12.2 % at 1 C."
+          },
+          {
+            "value": [
+              {
+                "C_rate": "1C",
+                "capacity_Ah": 1.897
+              }
+            ],
+            "unit": "Ah",
+            "condition_id": "C002",
+            "source_text": "1.897 Ah of discharge capacity was delivered by the graphite || UiO/PPV-Li || mathrm 2 , with capacity retention of 62.7 % at 1 C."
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 12.2,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "0.332 Ah of discharge capacity was delivered by the graphite || LE || LiCoO2 with capacity retention of 12.2 % at 1 C."
+          },
+          {
+            "value": 62.7,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "1.897 Ah of discharge capacity was delivered by the graphite || UiO/PPV-Li || mathrm 2 , with capacity retention of 62.7 % at 1 C."
+          },
+          {
+            "value": 81.6,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "Long-term cycling at 0.1 C Fig. 6d revealed a comparable capacity retention between graphite || UiO/PPV-Li || LiCoO2 81.9 % and graphite || LE || LiCoO2 81.6 %"
+          },
+          {
+            "value": 81.9,
+            "unit": "%",
+            "condition_id": "C004",
+            "source_text": "Long-term cycling at 0.1 C Fig. 6d revealed a comparable capacity retention between graphite || UiO/PPV-Li || LiCoO2 81.9 % and graphite || LE || LiCoO2 81.6 %"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: $Electrolytes^a$; Ionic conductivity (mS·cm-1)b; Electrochemical stability (V); 1C Capacity (mAh·g-1)c; Ref.\nRows:\nRow 1: $Electrolytes^a$ = LATP-PVDF CSE; Ionic conductivity",
+      "conditions": [
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Electrochemical_Stability_Window",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Electrochemical_Stability_Window": [
+          {
+            "value": {
+              "max_V": 4.76
+            },
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C001",
+            "source_text": "LATP-PVDF CSE; Electrochemical stability 4.76 V"
+          },
+          {
+            "value": {
+              "max_V": 4.65
+            },
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C002",
+            "source_text": "6FPSF-FPES; Electrochemical stability 4.65 V"
+          },
+          {
+            "value": {
+              "max_V": 4.54
+            },
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C004",
+            "source_text": "c-GPE-2; Electrochemical stability 4.54 V"
+          },
+          {
+            "value": {
+              "max_V": 4.9
+            },
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C005",
+            "source_text": "PEEC-TEGDA; Electrochemical stability 4.90 V"
+          },
+          {
+            "value": {
+              "max_V": 5.0
+            },
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C006",
+            "source_text": "PEGDA-LiTFSI-LiBOB-SN; Electrochemical stability 5.00 V"
+          },
+          {
+            "value": {
+              "max_V": 4.6
+            },
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C007",
+            "source_text": "30PEC-70LiMNT-80LiFSI-15FEC-3PTFE; Electrochemical stability 4.60 V"
+          },
+          {
+            "value": {
+              "max_V": 4.3
+            },
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C008",
+            "source_text": "PEGDME-LiTFSI-LIFSI; Electrochemical stability 4.30 V"
+          },
+          {
+            "value": {
+              "max_V": 4.75
+            },
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C009",
+            "source_text": "PMA-LiTFSI; Electrochemical stability 4.75 V"
+          },
+          {
+            "value": {
+              "max_V": 4.8
+            },
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C010",
+            "source_text": "50[PEO8-LiTFSI]-40Li6.75La3Zr1.75Ta0.25O12-10PVDF+9 % oxalate; Electrochemical stability 4.80 V"
+          },
+          {
+            "value": {
+              "max_V": 5.31
+            },
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C011",
+            "source_text": "UiO/PPV-Li; Electrochemical stability 5.31 V"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              93
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "LATP-PVDF CSE; 1C Capacity 93 mAh·g⁻¹"
+          },
+          {
+            "value": [
+              140
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "6FPSF-FPES; 1C Capacity 140 mAh·g⁻¹"
+          },
+          {
+            "value": [
+              86
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "SI; 1C Capacity 86 mAh·g⁻¹"
+          },
+          {
+            "value": [
+              144
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "c-GPE-2; 1C Capacity 144 mAh·g⁻¹"
+          },
+          {
+            "value": [
+              77
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "PEGDA-LiTFSI-LiBOB-SN; 1C Capacity 77 (NCA) mAh·g⁻¹"
+          },
+          {
+            "value": [
+              105
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "30PEC-70LiMNT-80LiFSI-15FEC-3PTFE; 1C Capacity 105 mAh·g⁻¹"
+          },
+          {
+            "value": [
+              82
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C008",
+            "source_text": "PEGDME-LiTFSI-LIFSI; 1C Capacity 82 mAh·g⁻¹"
+          },
+          {
+            "value": [
+              101
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C009",
+            "source_text": "PMA-LiTFSI; 1C Capacity 101 (LCO) mAh·g⁻¹"
+          },
+          {
+            "value": [
+              104
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C010",
+            "source_text": "50[PEO8-LiTFSI]-40Li6.75La3Zr1.75Ta0.25O12-10PVDF+9 % oxalate; 1C Capacity 104 mAh·g⁻¹"
+          },
+          {
+            "value": [
+              185.8
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C011",
+            "source_text": "UiO/PPV-Li; 1C Capacity 185.8 mAh·g⁻¹"
+          }
+        ],
+        "Ionic_Conductivity": [
+          {
+            "value": 0.03,
+            "unit": "mS/cm",
+            "source_text": "LATP-PVDF CSE; 0.03 mS·cm⁻¹"
+          },
+          {
+            "value": 0.69,
+            "unit": "mS/cm",
+            "temperature_C": 40,
+            "source_text": "6FPSF-FPES; 0.69 (40 °C) mS·cm⁻¹"
+          },
+          {
+            "value": 1.0,
+            "unit": "mS/cm",
+            "source_text": "SI; ~1.00 mS·cm⁻¹"
+          },
+          {
+            "value": 0.38,
+            "unit": "mS/cm",
+            "source_text": "c-GPE-2; 0.38 mS·cm⁻¹"
+          },
+          {
+            "value": 0.02,
+            "unit": "mS/cm",
+            "source_text": "PEEC-TEGDA; 0.02 mS·cm⁻¹"
+          },
+          {
+            "value": 1.76,
+            "unit": "mS/cm",
+            "source_text": "PEGDA-LiTFSI-LiBOB-SN; 1.76 mS·cm⁻¹"
+          },
+          {
+            "value": 3.5,
+            "unit": "mS/cm",
+            "source_text": "30PEC-70LiMNT-80LiFSI-15FEC-3PTFE; 3.50 mS·cm⁻¹"
+          },
+          {
+            "value": 0.15,
+            "unit": "mS/cm",
+            "source_text": "PEGDME-LiTFSI-LIFSI; 0.15 mS·cm⁻¹"
+          },
+          {
+            "value": 0.2,
+            "unit": "mS/cm",
+            "source_text": "PMA-LiTFSI; 0.20 mS·cm⁻¹"
+          },
+          {
+            "value": 0.2,
+            "unit": "mS/cm",
+            "temperature_C": 50,
+            "source_text": "50[PEO8-LiTFSI]-40Li6.75La3Zr1.75Ta0.25O12-10PVDF+9 % oxalate; 0.20 (50 °C) mS·cm⁻¹"
+          },
+          {
+            "value": 9.12,
+            "unit": "mS/cm",
+            "source_text": "UiO/PPV-Li; 9.12 mS·cm⁻¹"
+          }
+        ]
+      },
+      "condition_id": "C011"
+    }
+  ]
+}

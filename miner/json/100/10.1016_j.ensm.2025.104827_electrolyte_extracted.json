@@ -1,0 +1,1321 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.ensm.2025.104827.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/j.ensm.2025.104827",
+  "doi": "10.1016/j.ensm.2025.104827",
+  "material_id": "10.1016_j.ensm.2025.104827",
+  "meta": {
+    "meta_title": "Hydrogen-bond regulated solvent networks for fast-charging high-voltage lithium ",
+    "meta_authors": "Huijie Tian a,1 , Erlei Zhang a,1 , Wanbao Wu b,c,\\* , Yu Wang a , Qing Li d , Hao Wu a , Kai Lu e , Jialin Wang a , Yunyun Lei a , Jiaheng Zhang a,\\* , Qunhui Yuan a,\\*",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "Commercial Carbonate Electrolyte (CCE)",
+      "short_name": "CCE",
+      "formula": "Not specified",
+      "role": "baseline",
+      "description": "Standard commercial carbonate electrolyte used as baseline for comparison",
+      "material_id": "10.1016_j.ensm.2025.104827_M001"
+    },
+    {
+      "name": "1 m LiDFOB in MSN deep eutectic solvent (MSM:SN 1:4)",
+      "short_name": "1 m MSN-LD",
+      "formula": "1M LiDFOB in MSM/SN (1:4 mol)",
+      "role": "novel",
+      "description": "Low-concentration deep eutectic electrolyte with 1.0 mol L⁻¹ LiDFOB in MSM:SN (1:4) DES",
+      "material_id": "10.1016_j.ensm.2025.104827_M002"
+    },
+    {
+      "name": "1.2 m LiDFOB in MSN deep eutectic solvent (MSM:SN 1:4)",
+      "short_name": "1.2 m MSN-LD",
+      "formula": "1.2M LiDFOB in MSM/SN (1:4 mol)",
+      "role": "novel",
+      "description": "Higher-concentration deep eutectic electrolyte with 1.2 mol L⁻¹ LiDFOB in MSM:SN (1:4) DES, anion-rich solvation structure",
+      "material_id": "10.1016_j.ensm.2025.104827_M003"
+    }
+  ],
+  "n_materials": 3,
+  "table_items": [
+    "TABLE DATA BLOCK\nNearby text: the Li metal during cycling.\n\n(a)   \n![](10.1016_j.ensm.2025.104827images/5df7bc780feb55fc76b1f4c052a1fa54009f97f34ec81b2893d0da8278e330af.jpg)\n\n<details>\n<summary>geo</summary>\n\n| Ra (nm) | Value |\n| ------- | ----- |\n| 89.1    | 400.0 |\n</details>\n\n![](10.1016_j.ensm.2025.104827images/e3210d889ed8\nHeaders: Ra=72.3 nm\nRows:\nRow 1: Ra=72.3 nm = 72.3\nColumn data:\n  Ra=72.3 nm: 72.3",
+    "TABLE DATA BLOCK\nHeaders: ; 3 s ignition; 10 s; 15 s; 20 s; 30 s\nRows:\nRow 1:  = CCE; 3 s ignition = ; 10 s = ; 15 s = ; 20 s = ; 30 s = \nRow 2:  = ; 3 s ignition = 3 s ignition; 10 s = 10 s; 15 s = 10 s ignition; 20 s = 10 s; 30 s = 20 s\nRow 3:  = 1.2 m\nMSN-LD; 3 s ignition = ; 10 s = ; 15 s = ; 20 s = ; 30 s = \nColumn data:\n  : CCE; ; 1.2 m\nMSN-LD\n  3 s ignition: ; 3 s ignition; \n  10 s: ; 10 s; \n  15 s: ; 10 s ignition; \n  20 s: ; 10 s; \n  30 s: ; 20 s; "
+  ],
+  "n_items": 22,
+  "items": [
+    {
+      "paragraph": "Additionally, this anion-dominated solvation structure weakens Li⁺- solvent interactions, thereby facilitating rapid mathrm de-solvation kinetics. The de-solvation activation energy mathrm E a , , 36.",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "electrolyte": "1.2 m LiDFOB in MSM/SN (1:4 mol)",
+          "test_method": "EIS (temperature-dependent)"
+        },
+        {
+          "condition_id": "C002",
+          "electrolyte": "1 m LiDFOB in MSM/SN (1:4 mol)",
+          "test_method": "EIS (temperature-dependent)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Li_Desolvation_Activation_Energy",
+        "Li_Transport_Activation_Energy_SEI"
+      ],
+      "performance_info": {
+        "Li_Desolvation_Activation_Energy": [
+          {
+            "value": 36.32,
+            "unit": "kJ/mol",
+            "method": "Arrhenius plots from temperature-dependent charge transfer resistance",
+            "electrode": "electrode/electrolyte interface",
+            "condition_id": "C001",
+            "source_text": "The de-solvation activation energy E a , 36.32 - 1 was derived from the temperature-dependent charge transfer resistance R analysis using Arrhenius plots, which confirmed the lower energy barrier for de-solvation at the electrode/electrolyte interface in the 1.2 m MSN-LD electrolyte"
+          }
+        ],
+        "Li_Transport_Activation_Energy_SEI": [
+          {
+            "value": 50.66,
+            "unit": "kJ/mol",
+            "condition_id": "C001",
+            "source_text": "the significantly lower activation energy for diffusion through the SEI E a in the 1.2 m MSN-LD electrolyte 50.66 kJ mol−1"
+          },
+          {
+            "value": 52.18,
+            "unit": "kJ/mol",
+            "condition_id": "C002",
+            "source_text": "compared to that of 1 m MSN-LD 52.18 kJ mol−1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To overcome the characteristically high viscosity of DEEs, which arises from the strong coordinative interactions between solid hydrogenbond donors and lithium salts, we engineered a DES using MSM as ",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "electrolyte": "MSN-4 (MSM:SN 1:4 molar ratio) DES"
+        }
+      ],
+      "property_types": [
+        "Viscosity"
+      ],
+      "extracted_info": {
+        "Viscosity": [
+          {
+            "value": 10.31,
+            "unit": "mPa·s",
+            "source_text": "Combined with its lower viscosity of 10.31 mPa s Fig. S4"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Based on the MD results, the existence form of mathrm was quantified to further analyze the solvation structures Fig. 2f, i. The proportion of solvent-separated ion pairs SSIPs was 2.5 % in the 1 m MS",
+      "property_types": [
+        "CIP_AGG_Fraction"
+      ],
+      "extracted_info": {
+        "CIP_AGG_Fraction": [
+          {
+            "value": {
+              "AGG": 62
+            },
+            "unit": "%",
+            "conditions": "1 m MSN-LD",
+            "source_text": "Based on the MD results, the existence form of mathrm was quantified to further analyze the solvation structures Fig. 2f, i. The proportion of solvent-separated ion pairs SSIPs was 2.5 % in the 1 m MSN-LD Fig. 2g, while all mathrm preferentially formed anion-induced contact ion pairs CIPs or aggregates AGGs in the 1.2 m MSN-LD Fig. 2j. This trend was supported by deconvolution analysis of the Raman spectra Fig. S16, which showed an increase in the proportion of AGGs from 62 % to 67.9 %."
+          },
+          {
+            "value": {
+              "AGG": 67.9
+            },
+            "unit": "%",
+            "conditions": "1.2 m MSN-LD",
+            "source_text": "Based on the MD results, the existence form of mathrm was quantified to further analyze the solvation structures Fig. 2f, i. The proportion of solvent-separated ion pairs SSIPs was 2.5 % in the 1 m MSN-LD Fig. 2g, while all mathrm preferentially formed anion-induced contact ion pairs CIPs or aggregates AGGs in the 1.2 m MSN-LD Fig. 2j. This trend was supported by deconvolution analysis of the Raman spectra Fig. S16, which showed an increase in the proportion of AGGs from 62 % to 67.9 %."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The solvation structures were analyzed utilizing Fourier-transform infrared FTIR spectroscopy and molecular dynamics MD simulations. Both DEEs displayed altered vibrational modes compared with those o",
+      "property_types": [
+        "Li_Solvent_Coordination_Number_MD",
+        "Li_Anion_Coordination_Number_MD",
+        "Li_Solvent_Binding_Energy"
+      ],
+      "extracted_info": {
+        "Li_Solvent_Coordination_Number_MD": [
+          {
+            "value": 0.282,
+            "simulation_conditions": "1 m MSN-LD (1M LiDFOB in MSM/SN 1:4)",
+            "source_text": "one mathrm is solvated by 0.282 SN, 2.01 MSM, and 2.787 DFOB− anions on average in 1 m MSN-LD"
+          },
+          {
+            "value": 2.01,
+            "simulation_conditions": "1 m MSN-LD (1M LiDFOB in MSM/SN 1:4)",
+            "source_text": "one mathrm is solvated by 0.282 SN, 2.01 MSM, and 2.787 DFOB− anions on average in 1 m MSN-LD"
+          },
+          {
+            "value": 0.233,
+            "simulation_conditions": "1.2 m MSN-LD (1.2M LiDFOB in MSM/SN 1:4)",
+            "source_text": "Increasing the LiDFOB concentration to 1.2 mol mathbf - 1 further reduces the coordination number of SN and MSM SN: 0.233, MSM: 1.841"
+          },
+          {
+            "value": 1.841,
+            "simulation_conditions": "1.2 m MSN-LD (1.2M LiDFOB in MSM/SN 1:4)",
+            "source_text": "Increasing the LiDFOB concentration to 1.2 mol mathbf - 1 further reduces the coordination number of SN and MSM SN: 0.233, MSM: 1.841"
+          }
+        ],
+        "Li_Anion_Coordination_Number_MD": [
+          {
+            "value": 2.787,
+            "simulation_conditions": "1 m MSN-LD (1M LiDFOB in MSM/SN 1:4)",
+            "source_text": "one mathrm is solvated by 0.282 SN, 2.01 MSM, and 2.787 DFOB− anions on average in 1 m MSN-LD"
+          },
+          {
+            "value": 2.96,
+            "simulation_conditions": "1.2 m MSN-LD (1.2M LiDFOB in MSM/SN 1:4)",
+            "source_text": "increases the participation of DFOB- to 2.96"
+          }
+        ],
+        "Li_Solvent_Binding_Energy": [
+          {
+            "value": -2.57,
+            "unit": "eV",
+            "solvent": "MSM",
+            "source_text": "stronger binding energy between MSM and mathrm - 2.57 mathrm compared with that of SN"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Through deliberate manipulation of hydrogen-bonding networks and solvent-ion interactions, these DEEs overcome the inherent viscosity limitations of conventional deep eutectic systems. mathbf 25 circ ",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1 m MSN-LD",
+          "test_method": "viscosity measurement, ionic conductivity measurement, contact angle measurement"
+        },
+        {
+          "condition_id": "C005",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "1.2 m MSN-LD",
+          "test_method": "viscosity measurement, ionic conductivity measurement, contact angle measurement"
+        },
+        {
+          "condition_id": "C006",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrolyte": "CCE",
+          "test_method": "viscosity measurement"
+        }
+      ],
+      "property_types": [
+        "Viscosity"
+      ],
+      "extracted_info": {
+        "Viscosity": [
+          {
+            "value": 15.46,
+            "unit": "mPa·s",
+            "temperature_C": 25,
+            "source_text": "mathbf 25 circ mathbf C , 1 m MSN-LD achieve viscosities of 15.46 mPa s, respectively Fig. 1a and Fig. S9"
+          },
+          {
+            "value": 18.73,
+            "unit": "mPa·s",
+            "temperature_C": 25,
+            "source_text": "mathbf 25 circ mathbf C , 1.2 m MSN-LD achieve viscosities of 18.73 mPa s, respectively Fig. 1a and Fig. S9"
+          },
+          {
+            "value": 5.67,
+            "unit": "mPa·s",
+            "temperature_C": 25,
+            "source_text": "which approach the viscosity of commercial carbonate electrolytes CCE, 5.67 mPa s."
+          }
+        ]
+      },
+      "performance_types": [
+        "Ionic_Conductivity"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 3.21,
+            "unit": "mS/cm",
+            "temperature_C": 25,
+            "condition_id": "C001",
+            "source_text": "yielding superior ionic conductivities of 3.21 mS mathrm - 1 mathrm 1 m MSN-LD at 25 circ mathrm C , respectively"
+          },
+          {
+            "value": 3.14,
+            "unit": "mS/cm",
+            "temperature_C": 25,
+            "condition_id": "C002",
+            "source_text": "yielding superior ionic conductivities of 3.14 mS mathrm - 1 mathrm 1.2 m MSN-LD at 25 circ mathrm C , respectively"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To visually reveal the influence of different electrolytes on the Li deposition/stripping behavior, we characterized the morphological evolution after 50 cycles in LiLi symmetric cells at various curr",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "electrolyte": "CCE, 1 m MSN-LD, 1.2 m MSN-LD",
+          "c_rate_or_current": {
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 50,
+          "electrode_config": "symmetric Li||Li cell",
+          "test_method": "galvanostatic cycling, SEM"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Battery safety critically depends on the thermal stability and nonflammability of electrolytes, particularly under thermal abusive conditions. Investigation of the thermal behavior of the DEE with TGA",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "test_method": "Linear sweep voltammetry (LSV)",
+          "electrode_config": "Li||Al/C",
+          "voltage_range": {
+            "max": 5.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C009",
+          "test_method": "Electrochemical impedance spectroscopy (EIS) and polarization",
+          "electrode_config": "Li||Li symmetric cell"
+        }
+      ],
+      "property_types": [
+        "Melting_Point"
+      ],
+      "extracted_info": {
+        "Melting_Point": [
+          {
+            "value": -21.0,
+            "unit": "°C",
+            "source_text": "- 21.0 \\mathbf{\\Omega} \\circ \\mathbf{C} 1 \\mathbf{\\Omega m} MSN-LD"
+          },
+          {
+            "value": -30.7,
+            "unit": "°C",
+            "source_text": "- 30.7 \\circ \\mathrm{C} 1.2 m MSN-LD"
+          }
+        ]
+      },
+      "performance_types": [
+        "Anodic_Stability_Onset_Potential"
+      ],
+      "performance_info": {
+        "Anodic_Stability_Onset_Potential": [
+          {
+            "value": 5.3,
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C001",
+            "source_text": "Both 1 m MSN-LD and 1.2 m MSN-LD exhibited oxidation voltages up to 5.3 V"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "g） The reversibility and kinetics of Li deposition/stripping were comprehensively assessed in LiCu and LiLi cells. As shown in Fig. 3a, the 1.2 m MSN-LD exhibited an average Coulombic efficiency CE of",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "Aurbach method"
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "CCE",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1 m MSN-LD",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic deposition"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 98.3,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the 1.2 m MSN-LD exhibited an average Coulombic efficiency CE of 98.3 % as measured by Aurbach method at 0.5 mA cm^-2 ."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To evaluate the application potential of 1.2 m MSN-LD in practical LMBs, we assembled full cells using LCO cathodes at a mass loading of 10 mg cm− 2 paired with ultra-thin Li foil anodes, then evaluat",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10.0,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1.2 m MSN-LD",
+          "cycle_number": 100,
+          "electrode_config": "full cell, LCO cathode, ultra-thin Li foil anode",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C016",
+          "mass_loading": {
+            "value": 15.0,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1.2 m MSN-LD",
+          "cycle_number": 70,
+          "electrode_config": "full cell, LCO cathode, Li foil anode",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C017",
+          "mass_loading": {
+            "value": 16.0,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "full cell, NCM811 cathode, 20 μm Li foil anode",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C018",
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "pouch cells, 90 mAh LCO||Li and 300 mAh NCM811||Li",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 99.5,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C001",
+            "source_text": "An excellent capacity retention of 99.5 % was achieved after 100 cycles at 0.5C."
+          },
+          {
+            "value": 93.8,
+            "unit": "%",
+            "cycle_number": 70,
+            "condition_id": "C002",
+            "source_text": "Even under challenging conditions with a high cathode mass loading of 15 mg cm− 2 and an ultra-low N/P ratio of 1.45, the LCOLi cell maintained stable operation for 70 cycles with a capacity retention of 93.8 % Fig. S28."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The surface morphologies and interfacial chemical compositions of the cycled Li-metal anodes were analyzed to gain insight into the excellent electrochemical performance of 1.2 m MSN-LD. SEM Fig. S34a",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interface_Roughness",
+        "SEI_Thickness"
+      ],
+      "performance_info": {
+        "Interface_Roughness": [
+          {
+            "value": 89.1,
+            "unit": "nm",
+            "condition": "post-cycling",
+            "source_text": "atomic force microscopy AFM quantification further confirmed the substantially lower surface roughness of the ... CCE 89.1 nm"
+          },
+          {
+            "value": 72.3,
+            "unit": "nm",
+            "condition": "post-cycling",
+            "source_text": "atomic force microscopy AFM quantification further confirmed the substantially lower surface roughness of the ... 1 m MSN-LD 72.3 nm"
+          },
+          {
+            "value": 31.7,
+            "unit": "nm",
+            "condition": "post-cycling",
+            "source_text": "atomic force microscopy AFM quantification further confirmed the substantially lower surface roughness of the 1.2 m MSN-LD 31.7 nm"
+          }
+        ],
+        "SEI_Thickness": [
+          {
+            "value": 60000,
+            "unit": "nm",
+            "cycle_number": 0,
+            "method": "SEM",
+            "source_text": "a corrosion layer of 60 μm in thickness"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Simultaneously, such electrolyte preserved a laterally extended, cobblestone-like morphology at the micrometer scale even under elevated current density of 0.5 mA cm− 2 Fig. S19e, f. In sharp contrast",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.2 m MSN-LD",
+          "cycle_number": 100,
+          "electrode_config": "LiCu",
+          "test_method": "galvanostatic cycling",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "LiCu",
+          "test_method": "galvanostatic cycling",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "LiCu",
+          "test_method": "galvanostatic Li plating for SEM morphology",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 95.4,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C001",
+            "source_text": "average CEs of 95.4 % over 100 cycles at 0.2 mA cm−2 and 0.2 mAh cm−2"
+          },
+          {
+            "value": 93.0,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "93.0 % at 0.5 mA cm−2 and 0.5 mAh cm−2"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In situ optical microscopy provided direct visualization of the Li deposition dynamics on the Cu foil at 0.5 mA cm− 2 . In the CCE, irregular protrusions emerged on the surface of the Cu foil after de",
+      "conditions": [
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "CCE",
+          "electrode_config": "Li plating on Cu foil (Li||Cu half cell)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "in situ optical microscopy"
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1 m MSN-LD",
+          "electrode_config": "Li plating on Cu foil (Li||Cu half cell)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "in situ optical microscopy"
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "Li plating on Cu foil (Li||Cu half cell)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "in situ optical microscopy"
+        },
+        {
+          "condition_id": "C025",
+          "electrolyte": "CCE",
+          "electrode_config": "Li||Li symmetric cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "CCD measurement (galvanostatic cycling)"
+        },
+        {
+          "condition_id": "C026",
+          "electrolyte": "1 m MSN-LD",
+          "electrode_config": "Li||Li symmetric cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "CCD measurement (galvanostatic cycling)"
+        },
+        {
+          "condition_id": "C027",
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "Li||Li symmetric cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "CCD measurement (galvanostatic cycling)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To probe the depth-dependent chemical composition of the SEI layer formed in 1.2 m MSN-LD electrolyte, X-ray photoelectron spectroscopy XPS etching was performed on the anode surface Fig. 5d and Fig. ",
+      "property_types": [
+        "HOMO_LUMO_Energy"
+      ],
+      "extracted_info": {
+        "HOMO_LUMO_Energy": [
+          {
+            "value": {
+              "LUMO": -2.07
+            },
+            "unit": "eV",
+            "molecule": "LiDFOB",
+            "method": "theoretical prediction (likely DFT)",
+            "source_text": "preferential reduction of LiDFOB is theoretically predicted by its lowest LUMO energy level − 2.07 eV"
+          }
+        ]
+      },
+      "performance_types": [
+        "LiF_Content_in_SEI_CEI"
+      ],
+      "performance_info": {
+        "LiF_Content_in_SEI_CEI": [
+          {
+            "value": 86.2,
+            "unit": "at%",
+            "interphase": "SEI",
+            "source_text": "the relative concentration of LiF increased dramatically from 52.4 % to 86.2 % as the B–F species diminished, confirming its preferential accumulation in the inner SEI layer"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The exchange current density of 1.2 m MSN-LD obtained from the Tafel curves reached 0.82 mA cm− 2 , higher than that of the CCE and 1 m MSN-LD at 0.25 mA mathrm - 2 and 0.74 mA cm− 2 , respectively Fi",
+      "conditions": [
+        {
+          "condition_id": "C028",
+          "test_method": "Tafel curves",
+          "electrolyte": "1.2 m MSN-LD"
+        },
+        {
+          "condition_id": "C029",
+          "test_method": "Tafel curves",
+          "electrolyte": "CCE"
+        },
+        {
+          "condition_id": "C030",
+          "test_method": "Tafel curves",
+          "electrolyte": "1 m MSN-LD"
+        },
+        {
+          "condition_id": "C031",
+          "test_method": "polarization test (galvanostatic)",
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "Li||Li symmetric cell"
+        },
+        {
+          "condition_id": "C032",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "Li||Li symmetric cell",
+          "electrolyte": "1.2 m MSN-LD",
+          "test_method": "galvanostatic plating/stripping"
+        },
+        {
+          "condition_id": "C033",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "Li||Li symmetric cell",
+          "electrolyte": "1.2 m MSN-LD",
+          "test_method": "galvanostatic plating/stripping"
+        },
+        {
+          "condition_id": "C034",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "Li||Li symmetric cell",
+          "electrolyte": "1.2 m MSN-LD",
+          "test_method": "galvanostatic plating/stripping"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Voltage_Hysteresis"
+      ],
+      "performance_info": {
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.022,
+            "unit": "V",
+            "condition_id": "C007",
+            "source_text": "the Li1.2 m MSN-LDLi cell sustained stable cycling for 900 h with an ultralow overpotential of 22 mV"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "c） The effects of different electrolytes on the interfacial stability and structural integrity of the cathode were elucidated by conducting postcycling failure analysis on the LCO electrodes. SEM reve",
+      "conditions": [
+        {
+          "condition_id": "C035",
+          "electrolyte": "CCE",
+          "cycle_number": 400,
+          "test_method": "SEM, EIS"
+        },
+        {
+          "condition_id": "C036",
+          "electrolyte": "1 m MSN-LD",
+          "cycle_number": 400,
+          "test_method": "SEM"
+        },
+        {
+          "condition_id": "C037",
+          "electrolyte": "1.2 m MSN-LD",
+          "cycle_number": 400,
+          "test_method": "SEM, EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "CEI_Thickness"
+      ],
+      "performance_info": {
+        "CEI_Thickness": [
+          {
+            "value": 7,
+            "unit": "nm",
+            "cycle_number": 400,
+            "source_text": "average thickness of only 7 nm",
+            "condition_id": "C003"
+          }
+        ]
+      },
+      "condition_id": "C003"
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nNearby text: the Li metal during cycling.\n\n(a)   \n![](10.1016_j.ensm.2025.104827images/5df7bc780feb55fc76b1f4c052a1fa54009f97f34ec81b2893d0da8278e330af.jpg)\n\n<details>\n<summary>geo</s",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interface_Roughness"
+      ],
+      "performance_info": {
+        "Interface_Roughness": [
+          {
+            "value": 72.3,
+            "unit": "nm",
+            "source_text": "Ra=72.3 nm"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Additionally, the anion-rich solvation structure stabilized the solidelectrolyte interphase, endowing graphite-based full cells with superior cycling stability and rate capability. The LCOGr cell with",
+      "conditions": [
+        {
+          "condition_id": "C038",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "cycle_number": 1000,
+          "electrode_config": "LCOGr coin cell",
+          "electrolyte": "1.2 m MSN-LD (1.2M LiDFOB in MSM/SN 1:4 mol)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C039",
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "C"
+          },
+          "cycle_number": 800,
+          "electrode_config": "LCOGr coin cell",
+          "electrolyte": "1.2 m MSN-LD (1.2M LiDFOB in MSM/SN 1:4 mol)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C040",
+          "c_rate_or_current": {
+            "value": 3,
+            "unit": "C"
+          },
+          "electrode_config": "LCOGr coin cell",
+          "electrolyte": "1.2 m MSN-LD (1.2M LiDFOB in MSM/SN 1:4 mol)",
+          "test_method": "galvanostatic rate test"
+        },
+        {
+          "condition_id": "C041",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "cycle_number": 2500,
+          "electrode_config": "LCOGr pouch cell",
+          "electrolyte": "1.2 m MSN-LD (1.2M LiDFOB in MSM/SN 1:4 mol)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C042",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "cycle_number": 300,
+          "electrode_config": "NCM811Gr pouch cell",
+          "electrolyte": "1.2 m MSN-LD (1.2M LiDFOB in MSM/SN 1:4 mol)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C043",
+          "test_method": "nail penetration test",
+          "electrode_config": "NCM811Gr pouch cell 2 Ah",
+          "electrolyte": "Commercial Carbonate Electrolyte (CCE)",
+          "voltage_range": {
+            "max": 4.2,
+            "unit": "V",
+            "reference": "charged voltage"
+          }
+        },
+        {
+          "condition_id": "C044",
+          "test_method": "nail penetration test",
+          "electrode_config": "NCM811Gr pouch cell 2 Ah",
+          "electrolyte": "1.2 m MSN-LD (1.2M LiDFOB in MSM/SN 1:4 mol)",
+          "voltage_range": {
+            "max": 4.2,
+            "unit": "V",
+            "reference": "charged voltage"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Rate_Capability",
+        "Maximum_Thermal_Runaway_Temperature"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 83.4,
+            "unit": "%",
+            "cycle_number": 1000,
+            "condition_id": "C001",
+            "source_text": "retained 83.4 % of its capacity after 1000 cycles at 1C"
+          },
+          {
+            "value": 87.0,
+            "unit": "%",
+            "cycle_number": 800,
+            "condition_id": "C002",
+            "source_text": "87.0 % after 800 cycles at 2C"
+          },
+          {
+            "value": 90.3,
+            "unit": "%",
+            "cycle_number": 2500,
+            "condition_id": "C004",
+            "source_text": "retaining 90.3 % of its initial capacity after 2500 cycles at 1C"
+          },
+          {
+            "value": 90.2,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C005",
+            "source_text": "high capacity retention of 90.2 % after 300 cycles at 0.5C in a pouch cell"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              {
+                "C_rate": "3C",
+                "capacity": 118.8
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "delivering a reversible capacity of 118.8 mAh g^-1 at 3C"
+          }
+        ],
+        "Maximum_Thermal_Runaway_Temperature": [
+          {
+            "value": 411.3,
+            "unit": "°C",
+            "soc_percent": 100,
+            "condition_id": "C006",
+            "source_text": "temperature spike peaking at 411.3 °C"
+          },
+          {
+            "value": 36.4,
+            "unit": "°C",
+            "soc_percent": 100,
+            "condition_id": "C007",
+            "source_text": "mild temperature rise to 36.4 °C"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Having demonstrated that the 1.2 m MSN-LD is beneficial for forming a stable interface that promotes uniform mathrm diffusion on the Li metal anode in the LiLi and LiCu cells mentioned above, its cath",
+      "conditions": [
+        {
+          "condition_id": "C045",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 400,
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "half_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C046",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 400,
+          "electrolyte": "CCE",
+          "electrode_config": "half_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C047",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 400,
+          "electrolyte": "1 m MSN-LD",
+          "electrode_config": "half_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C048",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "cycle_number": 500,
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "half_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C049",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "cycle_number": 1000,
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "half_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C050",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "cycle_number": 1000,
+          "electrolyte": "CCE",
+          "electrode_config": "half_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C051",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "cycle_number": 1000,
+          "electrolyte": "1 m MSN-LD",
+          "electrode_config": "half_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C052",
+          "c_rate_or_current": {
+            "value": "10",
+            "unit": "C"
+          },
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "half_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C053",
+          "temperature": {
+            "value": -10,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "half_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C054",
+          "temperature": {
+            "value": -10,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "electrolyte": "1.2 m MSN-LD",
+          "electrode_config": "half_cell",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 95.0,
+            "unit": "%",
+            "cycle_number": 400,
+            "condition_id": "C001",
+            "source_text": "excellent capacity retention of 95.0 % after 400 cycles at 1 C"
+          },
+          {
+            "value": 61.3,
+            "unit": "%",
+            "cycle_number": 400,
+            "condition_id": "C002",
+            "source_text": "CCE 61.3 % retention"
+          },
+          {
+            "value": 86.2,
+            "unit": "%",
+            "cycle_number": 400,
+            "condition_id": "C003",
+            "source_text": "1 m MSN-LD 86.2 % retention"
+          },
+          {
+            "value": 97.4,
+            "unit": "%",
+            "cycle_number": 500,
+            "condition_id": "C004",
+            "source_text": "retaining 97.4 % of its initial capacity after 500 cycles"
+          },
+          {
+            "value": 87.4,
+            "unit": "%",
+            "cycle_number": 1000,
+            "condition_id": "C005",
+            "source_text": "the 1.2 m MSN-LD retained 87.4 % of its capacity after 1000 cycles"
+          },
+          {
+            "value": 30.7,
+            "unit": "%",
+            "cycle_number": 1000,
+            "condition_id": "C006",
+            "source_text": "30.7 % retention observed for CCE"
+          },
+          {
+            "value": 52.8,
+            "unit": "%",
+            "cycle_number": 1000,
+            "condition_id": "C007",
+            "source_text": "52.8 % retention observed for 1 m MSN-LD"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              168.3
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "delivered a reversible capacity of 168.3 mAh g-1"
+          },
+          {
+            "value": [
+              119.3
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C008",
+            "source_text": "delivering a reversible capacity of 119.3 mAh g-1"
+          },
+          {
+            "value": [
+              150
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C009",
+            "source_text": "delivered a stable discharge capacity of 150 mAh g-1 at 0.1C"
+          },
+          {
+            "value": [
+              131
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C010",
+            "source_text": "a capacity of 131 mAh g-1 was achieved"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The CEI components of the LCO cathode cycled in the three electrolytes were analyzed using XPS. Compared to CCE, the weaker Crelated signals in both DEE electrolytes suggested suppressed decomposition",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Inorganic_Organic_Ratio_SEI_CEI"
+      ],
+      "performance_info": {
+        "Inorganic_Organic_Ratio_SEI_CEI": [
+          {
+            "interphase": "CEI",
+            "cycle_number": 0,
+            "source_text": "Compared to CCE, the weaker Crelated signals in both DEE electrolytes suggested suppressed decomposition of the organic solvents Fig. S38a. The higher concentration of LiDFOB in the 1.2 m MSN-LD promoted the formation of a B/F-rich anion-derived CEI layer Fig. 6i and Fig. S38b to enhance both the ionic conductivity and mechanical stability. Meanwhile, the signals detected from the N 1 s and S 2p spectra indicated that SN and MSM also participated in CEI formation, which contained mathrm 3 mathrm N , , to further enhance ion transport Fig. 6j, l. The O 1 s spectra Fig. 6k revealed that the CEI formed in the CCE contained mathrm x y O z a typical reaction product of mathrm 6 with carbonate solvent, which generated HF to corrode the electrodes and accelerate the capacity decay 53. In contrast, the CEIs formed in the DEE electrolytes were entirely devoid of mathrm x y O z , exhibiting higher chemical stability. Notably, the absence of the mathrm - O peak from the 1.2 m MSN-LD spectrum confirmed the existence of a dense, homogeneous CEI layer that effectively passivated the cathode surface, suppressing Co dissolution and mitigating structural degradation 54."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In summary, we demonstrated a hydrogen-bond-mediated molecular engineering strategy for designing a low-viscosity DEE with enhanced interfacial stability. Specifically, the hydrogen bonds between the ",
+      "conditions": [
+        {
+          "condition_id": "C055",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "cycle_number": 1000,
+          "electrode_config": "LCO-based Li metal battery (LMB)",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C056",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 2500,
+          "electrode_config": "practical LCO||Graphite pouch cells",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 87.4,
+            "unit": "%",
+            "cycle_number": 1000,
+            "condition_id": "C001",
+            "source_text": "high-voltage LCO-based LMB retained 87.4 % of its capacity after 1000 cycles at 5C fast charging."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Inductively coupled plasma optical emission spectroscopy ICP-OES measurements confirmed significantly reduced Co deposition on the cycled Li metal anode in the 1.2 m MSN-LD compared to those cycled in",
+      "conditions": [
+        {
+          "condition_id": "C057",
+          "voltage_range": {
+            "min": 4.5,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "1.2M LiDFOB in MSM/SN (1:4 mol)",
+          "test_method": "DSC"
+        },
+        {
+          "condition_id": "C058",
+          "voltage_range": {
+            "min": 4.5,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "Commercial Carbonate Electrolyte (CCE) (Not specified) [baseline]",
+          "test_method": "DSC"
+        },
+        {
+          "condition_id": "C059",
+          "voltage_range": {
+            "min": 4.5,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "1M LiDFOB in MSM/SN (1:4 mol)",
+          "test_method": "DSC"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Self_Heating_Onset_Temperature"
+      ],
+      "performance_info": {
+        "Self_Heating_Onset_Temperature": [
+          {
+            "value": 201.7,
+            "unit": "°C",
+            "condition_id": "C001",
+            "source_text": "delayed the onset temperature of the initial exothermic reaction to 201.7 °C"
+          },
+          {
+            "value": 119.3,
+            "unit": "°C",
+            "condition_id": "C002",
+            "source_text": "onset temperatures observed for CCE at 119.3 °C"
+          },
+          {
+            "value": 189.4,
+            "unit": "°C",
+            "condition_id": "C003",
+            "source_text": "1 m MSN-LD at 189.4 °C"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: ; 3 s ignition; 10 s; 15 s; 20 s; 30 s\nRows:\nRow 1:  = CCE; 3 s ignition = ; 10 s = ; 15 s = ; 20 s = ; 30 s = \nRow 2:  = ; 3 s ignition = 3 s ignition; 10 s = 10 s; 15 s = 1",
+      "conditions": [
+        {
+          "condition_id": "C060",
+          "electrolyte": "Commercial Carbonate Electrolyte (CCE)",
+          "test_method": "ignition test"
+        },
+        {
+          "condition_id": "C061",
+          "electrolyte": "1 m LiDFOB in MSN deep eutectic solvent (MSM:SN 1:4)",
+          "test_method": "ignition test"
+        },
+        {
+          "condition_id": "C062",
+          "electrolyte": "1.2 m LiDFOB in MSN deep eutectic solvent (MSM:SN 1:4)",
+          "test_method": "ignition test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    }
+  ]
+}

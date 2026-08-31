@@ -1,0 +1,343 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.commatsci.2024.113019.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.commatsci.2024.113019",
+  "doi": "10.1016/j.commatsci.2024.113019",
+  "material_id": "10.1016_j.commatsci.2024.113019",
+  "meta": {
+    "meta_title": "Uncovering the potential of two-dimensional $\\mathrm { A l B } _ { 2 }$ monolaye",
+    "meta_authors": "Ziyi Hu a , Ziwei $\\mathrm { L i } ^ { \\mathrm { a , \\ast } }$ , Hongmei Sun b , Fenglian Lu b , Keliang Wang b,",
+    "meta_year": "2024"
+  },
+  "materials": [
+    {
+      "name": "anode material",
+      "short_name": "10.1016_j.commatsci.2024.113019",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.commatsci.2024.113019"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: ; $E^{Al_{\\text{ap}}}$ ads; $E^{Al_{\\text{down}}}$ ads; $E^{B_{\\text{up}}}$ ads; $E^{B_{\\text{down}}}$ ads; $E^{B-B_{\\text{up}}}$ ads; $E^{B-B_{\\text{down}}}$ ads; $\\Delta\\rho^{Al_{\\text{up}}}$\nRows:\nRow 1:  = Li; $E^{Al_{\\text{ap}}}$ ads = -1.74; $E^{Al_{\\text{down}}}$ ads = -0.39; $E^{B_{\\text{up}}}$ ads = -1.1; $E^{B_{\\text{down}}}$ ads = -0.70; $E^{B-B_{\\text{up}}}$ ads = -1.13; $E^{B-B_{\\text{down}}}$ ads = -0.66; $\\Delta\\rho^{Al_{\\text{up}}}$ = 0.87\nRow 2:  = Na; $E^{Al_{\\text{ap}}}$ ads = -1.31; $E^{Al_{\\text{down}}}$ ads = -0.57; $E^{B_{\\text{up}}}$ ads = -0.97; $E^{B_{\\text{down}}}$ ads = -0.72; $E^{B-B_{\\text{up}}}$ ads = -0.99; $E^{B-B_{\\text{down}}}$ ads = -0.69; $\\Delta\\rho^{Al_{\\text{up}}}$ = 0.82\nRow 3:  = K; $E^{Al_{\\text{ap}}}$ ads = -1.59; $E^{Al_{\\text{down}}}$ ads = -0.92; $E^{B_{\\text{up}}}$ ads = -1.40; $E^{B_{\\text{down}}}$ ads = -0.98; $E^{B-B_{\\text{up}}}$ ads = -1.42; $E^{B-B_{\\text{down}}}$ ads = -0.97; $\\Delta\\rho^{Al_{\\text{up}}}$ = 0.79\nColumn data:\n  : Li; Na; K\n  $E^{Al_{\\text{ap}}}$ ads: -1.74; -1.31; -1.59\n  $E^{Al_{\\text{down}}}$ ads: -0.39; -0.57; -0.92\n  $E^{B_{\\text{up}}}$ ads: -1.1; -0.97; -1.40\n  $E^{B_{\\text{down}}}$ ads: -0.70; -0.72; -0.98\n  $E^{B-B_{\\text{up}}}$ ads: -1.13; -0.99; -1.42\n  $E^{B-B_{\\text{down}}}$ ads: -0.66; -0.69; -0.97\n  $\\Delta\\rho^{Al_{\\text{up}}}$: 0.87; 0.82; 0.79"
+  ],
+  "n_items": 8,
+  "items": [
+    {
+      "paragraph": "This work also investigated the mathrm 2 monolayer’s electron localization function ELF to study the bonding characteristics of mathrm bf 2 . . As shown in Fig. 1 B-B bonds are located between the red",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": 300,
+            "unit": "K"
+          },
+          "test_method": "AIMD"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "First, we investigated the structure, electronic properties, and stability of AlB2 monolayers. The relaxed crystal structure of an AlB2 monolayer space group P6/mmm is shown in Fig. 1 From the side, t",
+      "property_types": [
+        "Space_Group",
+        "Lattice_Parameters",
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Space_Group": [
+          {
+            "value": "P6/mmm",
+            "source_text": "The relaxed crystal structure of an AlB2 monolayer space group P6/mmm is shown in Fig. 1"
+          }
+        ],
+        "Lattice_Parameters": [
+          {
+            "value": {
+              "a": 3.001,
+              "b": 3.001,
+              "c": 3.256
+            },
+            "unit": "Å / °",
+            "source_text": "the lattice constants are a=b=3.001 Å and c=3.256 Å"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "AlB2",
+            "state": "monolayer",
+            "source_text": "AlB2 monolayer"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Al",
+              "B"
+            ],
+            "source_text": "B atoms arranged in the top layer and Al atoms in the bottom layer"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "For electrode materials, excellent electrical conductivity is an essential prerequisite for superior electrochemical performance. To investigate the electrical conductivity of mathbf 2 , the energy ba",
+      "property_types": [
+        "Band_Gap",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Band_Gap": [
+          {
+            "value": 0,
+            "unit": "eV",
+            "type": "metallic",
+            "method": "calculated",
+            "source_text": "the valence band line of mathrm 2 passes through the Fermi energy level see Fig. 1 b. At the K point, an evident Dirac cone is present, indicating that mathrm 2 has metallic properties"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "AlB2",
+            "source_text": "mathrm 2"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The calculation formula of OCV is as follows: mathrmOCV - frac mathrmE leftmathrmM mathrmx mathrmAlB 2right - mathrmE leftmathrmAlB 2right - mathrmxE mathrmMmathrmxne where mathrm E mathrm M mathrm X ",
+      "property_types": [
+        "Theoretical_Specific_Capacity"
+      ],
+      "extracted_info": {
+        "Theoretical_Specific_Capacity": [
+          {
+            "value": 1102,
+            "unit": "mAh/g",
+            "n_electrons": 0,
+            "source_text": "theoretical capacities of 1102 mA h g-1 for Li"
+          },
+          {
+            "value": 1102,
+            "unit": "mAh/g",
+            "n_electrons": 0,
+            "source_text": "theoretical capacities of 1102 mA h g-1 for Na"
+          },
+          {
+            "value": 413,
+            "unit": "mAh/g",
+            "n_electrons": 0,
+            "source_text": "theoretical capacities of 413 mA h g-1 for K"
+          }
+        ]
+      },
+      "performance_types": [
+        "Open_Circuit_Voltage"
+      ],
+      "performance_info": {
+        "Open_Circuit_Voltage": [
+          {
+            "value": 0.85,
+            "unit": "V",
+            "source_text": "average OCVs were 0.85 V for Li"
+          },
+          {
+            "value": 0.84,
+            "unit": "V",
+            "source_text": "average OCVs were 0.84 V for K"
+          },
+          {
+            "value": 0.4,
+            "unit": "V",
+            "source_text": "average OCVs were 0.4 V for Na"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To obtain the open circuit voltage OCV and theoretical capacity the adsorption of Li, Na, and K ions on both sides of the mathrm bf 2 monolayer was simulated in a certain range of alkali metal ion con",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "AlB2Li2",
+            "state": "fully lithiated",
+            "source_text": "can be stably adsorbed on both surfaces of the AlB monolayer, realizing double-layer adsorption, which corresponds to the stoichiometry of mathbf 2 mathbf 2 and mathrm bf 22 , respectively."
+          },
+          {
+            "value": "AlB2Na2",
+            "state": "fully sodiated",
+            "source_text": "can be stably adsorbed on both surfaces of the AlB monolayer, realizing double-layer adsorption, which corresponds to the stoichiometry of mathbf 2 mathbf 2 and mathrm bf 22 , respectively."
+          },
+          {
+            "value": "AlB2K0.75",
+            "state": "fully potassiated",
+            "source_text": "the maximum number of stable adsorption atoms of potassium ion is 3, which corresponds to the chemical formula of AlB2K0.75"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The charge/discharge rate is a key performance measure of electrode materials, which mainly depends on the transport properties of ions and electrons. This diffusion rate directly affects the charge/d",
+      "property_types": [
+        "Li_Ion_Migration_Barrier",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Li_Ion_Migration_Barrier": [
+          {
+            "value": 0.449,
+            "unit": "eV",
+            "path": "Li Path I (B-B bond)",
+            "method": "DFT NEB",
+            "source_text": "The calculation results show that the migration energy barrier of Li, Na, and K are 0.449, 0.186, and 0.036 eV in path I, respectively, and 0.428, 0.162, and 0.019 eV in path II, respectively."
+          },
+          {
+            "value": 0.186,
+            "unit": "eV",
+            "path": "Na Path I (B-B bond)",
+            "method": "DFT NEB",
+            "source_text": "The calculation results show that the migration energy barrier of Li, Na, and K are 0.449, 0.186, and 0.036 eV in path I, respectively, and 0.428, 0.162, and 0.019 eV in path II, respectively."
+          },
+          {
+            "value": 0.036,
+            "unit": "eV",
+            "path": "K Path I (B-B bond)",
+            "method": "DFT NEB",
+            "source_text": "The calculation results show that the migration energy barrier of Li, Na, and K are 0.449, 0.186, and 0.036 eV in path I, respectively, and 0.428, 0.162, and 0.019 eV in path II, respectively."
+          },
+          {
+            "value": 0.428,
+            "unit": "eV",
+            "path": "Li Path II (B site)",
+            "method": "DFT NEB",
+            "source_text": "The calculation results show that the migration energy barrier of Li, Na, and K are 0.449, 0.186, and 0.036 eV in path I, respectively, and 0.428, 0.162, and 0.019 eV in path II, respectively."
+          },
+          {
+            "value": 0.162,
+            "unit": "eV",
+            "path": "Na Path II (B site)",
+            "method": "DFT NEB",
+            "source_text": "The calculation results show that the migration energy barrier of Li, Na, and K are 0.449, 0.186, and 0.036 eV in path I, respectively, and 0.428, 0.162, and 0.019 eV in path II, respectively."
+          },
+          {
+            "value": 0.019,
+            "unit": "eV",
+            "path": "K Path II (B site)",
+            "method": "DFT NEB",
+            "source_text": "The calculation results show that the migration energy barrier of Li, Na, and K are 0.449, 0.186, and 0.036 eV in path I, respectively, and 0.428, 0.162, and 0.019 eV in path II, respectively."
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "AlB2",
+            "state": "monolayer",
+            "source_text": "single-layer AlB2"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The change in material volume is the key factor in determining the safety performance of the anode. To analyze the impact of metal atoms on the volume of the mathrm 2 material, this study computes the",
+      "property_types": [
+        "Chemical_Formula",
+        "Unit_Cell_Volume_Change"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "AlB2",
+            "source_text": "mathrm 2 material"
+          }
+        ],
+        "Unit_Cell_Volume_Change": [
+          {
+            "value": 2,
+            "unit": "%",
+            "from_state": "pristine",
+            "to_state": "saturated adsorption of Li",
+            "source_text": "the lattice expansion rates of Li, Na, and K after saturation adsorption were 2 %, 4.3 %, and 2.6 %, respectively"
+          },
+          {
+            "value": 4.3,
+            "unit": "%",
+            "from_state": "pristine",
+            "to_state": "saturated adsorption of Na",
+            "source_text": "the lattice expansion rates of Li, Na, and K after saturation adsorption were 2 %, 4.3 %, and 2.6 %, respectively"
+          },
+          {
+            "value": 2.6,
+            "unit": "%",
+            "from_state": "pristine",
+            "to_state": "saturated adsorption of K",
+            "source_text": "the lattice expansion rates of Li, Na, and K after saturation adsorption were 2 %, 4.3 %, and 2.6 %, respectively"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In this paper, the structural parameters, electronic properties, and electrochemical properties of mathrm 2 single-molecule membrane as a negative electrode material of alkali metal ion Li/Na/K batter",
+      "property_types": [
+        "Chemical_Formula",
+        "Theoretical_Specific_Capacity",
+        "Unit_Cell_Volume_Change"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "AlB2",
+            "source_text": "mathrm 2 single-molecule membrane"
+          }
+        ],
+        "Theoretical_Specific_Capacity": [
+          {
+            "value": 1102,
+            "unit": "mAh/g",
+            "n_electrons": 0,
+            "source_text": "the theoretical capacities of Li and Na reaching 1102 mA h cdot bf g - 1"
+          },
+          {
+            "value": 1102,
+            "unit": "mAh/g",
+            "n_electrons": 0,
+            "source_text": "the theoretical capacities of Li and Na reaching 1102 mA h cdot bf g - 1"
+          },
+          {
+            "value": 413,
+            "unit": "mAh/g",
+            "n_electrons": 0,
+            "source_text": "the theoretical capacity of K atoms reaching 413 mA h mathbf g - 1"
+          }
+        ],
+        "Unit_Cell_Volume_Change": [
+          {
+            "value": 2.0,
+            "unit": "%",
+            "from_state": "pristine",
+            "to_state": "fully lithiated",
+            "source_text": "the lattice expansion rate is very low under such high storage capacity conditions, with 2 %, 4.3 %, and 2.6 % for Li, Na, and K, respectively."
+          },
+          {
+            "value": 4.3,
+            "unit": "%",
+            "from_state": "pristine",
+            "to_state": "fully sodiated",
+            "source_text": "the lattice expansion rate is very low under such high storage capacity conditions, with 2 %, 4.3 %, and 2.6 % for Li, Na, and K, respectively."
+          },
+          {
+            "value": 2.6,
+            "unit": "%",
+            "from_state": "pristine",
+            "to_state": "fully potassiated",
+            "source_text": "the lattice expansion rate is very low under such high storage capacity conditions, with 2 %, 4.3 %, and 2.6 % for Li, Na, and K, respectively."
+          }
+        ]
+      }
+    }
+  ]
+}

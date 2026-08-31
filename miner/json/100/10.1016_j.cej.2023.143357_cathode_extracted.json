@@ -1,0 +1,218 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.cej.2023.143357.md",
+  "component": "cathode",
+  "paper_id": "10.1016/j.cej.2023.143357",
+  "doi": "10.1016/j.cej.2023.143357",
+  "material_id": "10.1016_j.cej.2023.143357",
+  "meta": {
+    "meta_title": "Bifunctional lithiophilic carbon fibers with hierarchical structure for high-ene",
+    "meta_authors": "Taiyu Lyu a,1 , Fenqiang Luo a,1 , Zhen Wang b , Futing Jiang a , Shize Geng a , Yan Zhuang a,c , Xin Lin a , Junkai Chen a , Dechao Wang a , Lingzheng Bu a , Lei Tao d , Lizhe Liang e , Zhifeng Zheng a,f",
+    "meta_year": "2023"
+  },
+  "materials": [
+    {
+      "name": "cathode material",
+      "short_name": "10.1016_j.cej.2023.143357",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.cej.2023.143357"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 2,
+  "items": [
+    {
+      "paragraph": "The rate performance is explored to reflect the robustness of the electrode against different current densities. As shown in Figure S13 Supporting Information, three symmetrical cells exhibit an incre",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C002",
+          "c_rate_or_current": {
+            "value": 3.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [
+        "Volume_Change_Ratio"
+      ],
+      "extracted_info": {
+        "Volume_Change_Ratio": [
+          {
+            "value": 11.3,
+            "unit": "%",
+            "from_state": "initial Co-N-CNT-CF",
+            "to_state": "Co-N-CNT-CFLi after 8 mA h cm⁻² Li plating",
+            "source_text": "compared with the initial Co-N-CNT-CF, the thickness of Co-N-CNT-CFLi is only increased by 11.3% Figure S15, Supporting Information"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To further investigate the practical application of the Co-N-CNT-CF substrate, the Co-N-CNT-CFLi composite anode with a Li capacity of 6 mA h is prepared by electrochemical deposition Figure S16, Supp",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": "0.2C",
+            "unit": "C"
+          },
+          "electrode_config": "full cell (Co-N-CNT-CFLi||LFP)",
+          "n_p_ratio": {
+            "value": 3
+          },
+          "test_method": "galvanostatic rate test"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": "0.5C",
+            "unit": "C"
+          },
+          "electrode_config": "full cell (Co-N-CNT-CFLi||LFP)",
+          "n_p_ratio": {
+            "value": 3
+          },
+          "test_method": "galvanostatic rate test"
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": "1C",
+            "unit": "C"
+          },
+          "electrode_config": "full cell (Co-N-CNT-CFLi||LFP)",
+          "n_p_ratio": {
+            "value": 3
+          },
+          "test_method": "galvanostatic rate test"
+        },
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": "2C",
+            "unit": "C"
+          },
+          "electrode_config": "full cell (Co-N-CNT-CFLi||LFP)",
+          "n_p_ratio": {
+            "value": 3
+          },
+          "test_method": "galvanostatic rate test"
+        },
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": "3C",
+            "unit": "C"
+          },
+          "electrode_config": "full cell (Co-N-CNT-CFLi||LFP)",
+          "n_p_ratio": {
+            "value": 3
+          },
+          "test_method": "galvanostatic rate test"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": "0.5C",
+            "unit": "C"
+          },
+          "cycle_number": 50,
+          "electrode_config": "full cell (Co-N-CNT-CFLi||LFP)",
+          "n_p_ratio": {
+            "value": 3
+          },
+          "test_method": "long-term galvanostatic cycling"
+        },
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": "1C",
+            "unit": "C"
+          },
+          "electrode_config": "full cell (Co-N-CNT-CFLi||LiCoO2)",
+          "n_p_ratio": {
+            "value": 3
+          },
+          "test_method": "long-term galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_Profile",
+        "Charge_Discharge_Voltage_Gap",
+        "Capacity_Retention_Ratio",
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Rate_Capability_Profile": [
+          {
+            "value": [
+              150,
+              142,
+              113,
+              100,
+              89
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001_0.2C",
+            "source_text": "The Co-N-CNT-CFLiLFP cell exhibits reversible average capacities of 150, 142, 113, 100, and 89 mA h g-1 at 0.2, 0.5, 1, 2, and 3C, respectively."
+          }
+        ],
+        "Charge_Discharge_Voltage_Gap": [
+          {
+            "value": 0.169,
+            "unit": "V",
+            "condition_id": "C001_0.2C",
+            "source_text": "The Co-N-CNT-CFLiLFP cell displays a smaller polarization voltage 169 mV than CuLiLFP 285 mV."
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 90,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 50,
+            "source_text": "remains 122 mA h g-1 after 50 cycles with a capacity retention of 90%."
+          }
+        ],
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 135,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "The Co- N-CNT-CFLiLFP cell exhibits an initial reversible capacity of 135 mA h g-1 at 0.5C."
+          },
+          {
+            "value": 203,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "a reversible capacity of 203 mA h g-1 for Co-N-CNT-CFLiLiCoO2 cell at 1C."
+          }
+        ]
+      },
+      "condition_id": "C001_0.2C"
+    }
+  ]
+}

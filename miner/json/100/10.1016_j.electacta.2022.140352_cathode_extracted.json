@@ -1,0 +1,770 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.electacta.2022.140352.md",
+  "component": "cathode",
+  "paper_id": "10.1016/j.electacta.2022.140352",
+  "doi": "10.1016/j.electacta.2022.140352",
+  "material_id": "10.1016_j.electacta.2022.140352",
+  "meta": {
+    "meta_title": "Spinel $\\mathrm { L i N i _ { 0 . 5 } M n _ { 1 . 5 } O _ { 4 } }$ shell enables",
+    "meta_authors": "Yang Xia a , Xiaohang Ren a , Zhen Xiao b,\\* , Yongping Gan a , Jun Zhang a , Hui Huang a , Xinping He a , Qinzhong Mao c , Guoguang Wang d , Wenkui Zhang a,",
+    "meta_year": "2022"
+  },
+  "materials": [
+    {
+      "name": "LiNi0.9Co0.1O2",
+      "short_name": "pristine",
+      "formula": "LiNi0.9Co0.1O2",
+      "role": "comparison",
+      "description": "bare LiNi0.9Co0.1O2 without shell coating, synthesized as baseline",
+      "material_id": "10.1016_j.electacta.2022.140352_M001"
+    },
+    {
+      "name": "LiNi0.9Co0.1O2·0.05LiNi0.5Mn1.5O4",
+      "short_name": "CS-0.05",
+      "formula": "LiNi0.9Co0.1O2·0.05LiNi0.5Mn1.5O4",
+      "role": "novel",
+      "description": "core-shell composite with 5 mol% LiNi0.5Mn1.5O4 shell",
+      "material_id": "10.1016_j.electacta.2022.140352_M002"
+    },
+    {
+      "name": "LiNi0.9Co0.1O2·0.1LiNi0.5Mn1.5O4",
+      "short_name": "CS-0.1",
+      "formula": "LiNi0.9Co0.1O2·0.1LiNi0.5Mn1.5O4",
+      "role": "novel",
+      "description": "core-shell composite with 10 mol% LiNi0.5Mn1.5O4 shell",
+      "material_id": "10.1016_j.electacta.2022.140352_M003"
+    },
+    {
+      "name": "LiNi0.9Co0.1O2·0.2LiNi0.5Mn1.5O4",
+      "short_name": "CS-0.2",
+      "formula": "LiNi0.9Co0.1O2·0.2LiNi0.5Mn1.5O4",
+      "role": "novel",
+      "description": "core-shell composite with 20 mol% LiNi0.5Mn1.5O4 shell",
+      "material_id": "10.1016_j.electacta.2022.140352_M004"
+    }
+  ],
+  "n_materials": 4,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: Sample; $R_e$  ( $\\Omega$ ); $R_{ct}$  ( $\\Omega$ ); $\\sigma$; $D(Li^{+})$  ( $cm^2 S^{-1}$ )\nRows:\nRow 1: Sample = Pristine; $R_e$  ( $\\Omega$ ) = 1.03; $R_{ct}$  ( $\\Omega$ ) = 30.6; $\\sigma$ = 38.8; $D(Li^{+})$  ( $cm^2 S^{-1}$ ) = $3.54 \\times 10^{-15}$\nRow 2: Sample = CS-0.05; $R_e$  ( $\\Omega$ ) = 3.67; $R_{ct}$  ( $\\Omega$ ) = 31.5; $\\sigma$ = 18.9; $D(Li^{+})$  ( $cm^2 S^{-1}$ ) = $1.49 \\times 10^{-14}$\nRow 3: Sample = CS-0.1; $R_e$  ( $\\Omega$ ) = 0.88; $R_{ct}$  ( $\\Omega$ ) = 24.1; $\\sigma$ = 18.1; $D(Li^{+})$  ( $cm^2 S^{-1}$ ) = $1.61 \\times 10^{-14}$\nRow 4: Sample = CS-0.2; $R_e$  ( $\\Omega$ ) = 0.88; $R_{ct}$  ( $\\Omega$ ) = 25.2; $\\sigma$ = 35.8; $D(Li^{+})$  ( $cm^2 S^{-1}$ ) = $4.12 \\times 10^{-15}$\nColumn data:\n  Sample: Pristine; CS-0.05; CS-0.1; CS-0.2\n  $R_e$  ( $\\Omega$ ): 1.03; 3.67; 0.88; 0.88\n  $R_{ct}$  ( $\\Omega$ ): 30.6; 31.5; 24.1; 25.2\n  $\\sigma$: 38.8; 18.9; 18.1; 35.8\n  $D(Li^{+})$  ( $cm^2 S^{-1}$ ): $3.54 \\times 10^{-15}$; $1.49 \\times 10^{-14}$; $1.61 \\times 10^{-14}$; $4.12 \\times 10^{-15}$"
+  ],
+  "n_items": 15,
+  "items": [
+    {
+      "paragraph": "The synthetic process of core-shell structural mathrm 0.9 mathrm 0.1 mathrm O 2 mathrm . - operatorname 0 . Mn . 504 composite cathode materials is schematically described in Fig. 1. In a typical proc",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": 80,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The XRD patterns of pristine mathrm 0.90.1 O 2 and mathrm 0.9 mathrm 0.1 mathrm O 2 mathrm . - mathrm 0.5 mathrm 1.504 composites are presented in Fig. 2. And the corresponding Rietveld refinement plo",
+      "property_types": [
+        "Crystal_Space_Group"
+      ],
+      "extracted_info": {
+        "Crystal_Space_Group": [
+          {
+            "value": "R-3m",
+            "method": "XRD",
+            "source_text": "hexagonal α-NaFeO2 structure with R-3 m space group"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In order to further investigate the surface chemical state of pristine mathrm 0.90.1 O 2 and mathrm 0.90.1 O 20.51.5 O 4 composites, XPS analysis is performed. As shown in Fig. 3, there are four peaks",
+      "property_types": [
+        "Element_Valence_State"
+      ],
+      "extracted_info": {
+        "Element_Valence_State": [
+          {
+            "value": {
+              "Ni": "2+,3+",
+              "Mn": "2+,3+,4+"
+            },
+            "unit": "oxidation state",
+            "state": "pristine surface",
+            "method": "XPS",
+            "source_text": "the Ni 2p peak and Ni 2p peak can be deconvoluted into two peaks, which are assigned to Ni2+ and Ni3+ signals ... with increasing the content of the LiNi0.5Mn1.5O4 shell layer, the Ni 2p3/2 peak and Ni 2p1/2 peak gradually shift to the low binding energy, implying more Ni2+ ions are observed at the surface ... the position of Mn 2p1/2 peak shifts from high binding energy of 643.0 eV CS-0.05 to low binding energy of 641.7 eV CS-0.2, indicating the amount of Mn3+ is increased ... The emergent Mn3+ ions mainly originated from the interfacial oxidation of Mn2+ to Mn3+ in LiNi0.9Co0.1O2 core by Mn4+ in LiNi0.5Mn1.5O4 shell"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The morphology and microstructure of the pristine mathrm 0.90.1 O 2 and core-shell mathrm 0.90.1 O 20.51.5 O 4 composites are further investigated by SEM tests. As depicted in Fig. 4a-d, all the sampl",
+      "property_types": [
+        "Secondary_Particle_Size_Distribution"
+      ],
+      "extracted_info": {
+        "Secondary_Particle_Size_Distribution": [
+          {
+            "value": {
+              "D50": 12
+            },
+            "unit": "μm",
+            "method": "SEM",
+            "source_text": "all the samples are composed of abundant primary particles, which exhibit spherical morphology with a uniform monodisperse distribution Fig. S3a and an average secondary particle size of 12 μm."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The thermal stability of samples was analyzed with differential scanning calorimeter DSC. The sample was charged to 4.3 V and disassembled in Ar-filled glovebox, and then tested. The DSC data were col",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "temperature": {
+            "value": 400,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 4.3,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "DSC"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "mathrm 0.9 mathrm 0.1 mathrm 2 and mathrm 0.90.120.250.753 precursors were mixed with 5 wt.% excess of LiOH⋅H O Aladdin, 99.8%. The mixtures were calcined at 450 circ mathrm C for 6 h and then 740 cir",
+      "conditions": [
+        {
+          "condition_id": "C003"
+        }
+      ],
+      "property_types": [
+        "Chemical_Composition_Mole_Fractions"
+      ],
+      "extracted_info": {
+        "Chemical_Composition_Mole_Fractions": [
+          {
+            "value": {},
+            "unit": "mole fraction",
+            "source_text": "to achieve pristine LiNi0.9Co0.1O2 and various LiNi0.9Co0.1O2·xLiNi0.5Mn1.5O4 composites denoted as CS-0.05, CS-0.1, CS-0.2, corresponding to x = 0.05, 0.1, 0.2, respectively"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To better validate the remarkable cycling stability of core-shell mathrm 0.90.1 O 20.51.5 O 4 composites, the microstructure evolution of CS-0.1 sample is inspected by SEM tests. As shown in Fig. 9a-d",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "voltage_range": {
+            "max": 4.5,
+            "unit": "V"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In order to confirm the existence of mathrm 0.51.5 O 4 spinel phase and the detail correlation between mathrm 0.5 mathrm 1.5 mathrm O 4 and mathrm 0.90.1 O 2 , , TEM tests are further performed. As de",
+      "property_types": [
+        "Interlayer_Spacing_of_TM_Layers",
+        "Crystal_Space_Group"
+      ],
+      "extracted_info": {
+        "Interlayer_Spacing_of_TM_Layers": [
+          {
+            "value": 0.47,
+            "unit": "nm",
+            "plane": "(003)",
+            "state": "pristine",
+            "source_text": "the inner part and outer part of pristine mathrm 0.90.1 O 2 sample both exhibit the same crystal planes 003 with lattice spacings of 0.47 nm R-3‾m"
+          }
+        ],
+        "Crystal_Space_Group": [
+          {
+            "value": "R-3‾m",
+            "method": "TEM",
+            "source_text": "crystal planes 003 with lattice spacings of 0.47 nm R-3‾m"
+          },
+          {
+            "value": "Fd-3‾m",
+            "method": "TEM",
+            "source_text": "two groups of crystal planes with lattice spacings of 0.47 and 0.25 nm, corresponding to 003 R-3‾m and 311 Fd-3‾m"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The electrochemical dynamic behaviors of all the samples are further analyzed by electrochemical impedance spectroscopy EIS. Fig. 8a depicts the EIS results of all the samples without charging. The Ny",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Charge_Transfer_Resistance",
+        "Ion_Diffusion_Coefficient"
+      ],
+      "performance_info": {},
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The electrochemical performance of pristine mathrm 0.90.1 O 2 and coreshell mathrm 0.90.1 O 20.51.5 O 4 composites are inspected by CR2025 coin cells. As shown in Fig. 6a-c, the discharge capacity of ",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "cycle_number": 100,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Capacity_Retention_Ratio",
+        "Initial_Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 184.1,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "discharge capacity of pristine ... decreases rapidly from 184.1 mA h g -1 to 98.5 mA h g -1"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 53.5,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "low-capacity retention of 53.5% after 100 cycles (pristine)"
+          },
+          {
+            "value": 68.1,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "After 100 cycles, the capacity retentions of CS-0.05, CS-0.1, and CS-0.2 samples are 68.1%, 85.7% and 78.5%"
+          },
+          {
+            "value": 85.7,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "After 100 cycles, the capacity retentions of CS-0.05, CS-0.1, and CS-0.2 samples are 68.1%, 85.7% and 78.5%"
+          },
+          {
+            "value": 78.5,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "After 100 cycles, the capacity retentions of CS-0.05, CS-0.1, and CS-0.2 samples are 68.1%, 85.7% and 78.5%"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 79,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the initial Coulombic efficiency of pristine ... cathode 79%"
+          },
+          {
+            "value": 83,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the initial Coulombic efficiency of ... O 2 0.51.5 O 4 cathode 83%"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The thermal stability and safety of Ni-rich layered NCM cathode materials are very important for their practical applications 45. Fig. S4 presents DSC curves of pristine mathrm 0.90.1 O 2 and various ",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "voltage_range": {
+            "min": 4.3,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "test_method": "DSC"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Thermal_Runaway_Onset_Temperature"
+      ],
+      "performance_info": {
+        "Thermal_Runaway_Onset_Temperature": [
+          {
+            "value": 228.7,
+            "unit": "°C",
+            "method": "DSC",
+            "condition_id": "C001",
+            "source_text": "a distinct exothermic peak is located at 228.7 °C"
+          },
+          {
+            "value": 239.1,
+            "unit": "°C",
+            "method": "DSC",
+            "condition_id": "C001",
+            "source_text": "exothermic peaks of core-shell LiNi Co O LiNi Mn O composites greatly shift from low temperature of 239.1 °C CS-0.05"
+          },
+          {
+            "value": 254.5,
+            "unit": "°C",
+            "method": "DSC",
+            "condition_id": "C001",
+            "source_text": "peak temperature of exothermic reaction in CS-0.1 sample 254.5 °C"
+          },
+          {
+            "value": 267.5,
+            "unit": "°C",
+            "method": "DSC",
+            "condition_id": "C001",
+            "source_text": "to high temperature of 267.5 °C CS-0.2"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Sample; $R_e$  ( $\\Omega$ ); $R_{ct}$  ( $\\Omega$ ); $\\sigma$; $D(Li^{+})$  ( $cm^2 S^{-1}$ )\nRows:\nRow 1: Sample = Pristine; $R_e$  ( $\\Omega$ ) = 1.03; $R_{ct}$  ( $\\Omega$",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Charge_Transfer_Resistance",
+        "Ion_Diffusion_Coefficient"
+      ],
+      "performance_info": {
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 30.6,
+            "unit": "Ω",
+            "source_text": "Row 1: Sample = Pristine; $R_e$  ( $\\Omega$ ) = 1.03; $R_{ct}$  ( $\\Omega$ ) = 30.6; $\\sigma$ = 38.8; $D(Li^{+})$  ( $cm^2 S^{-1}$ ) = $3.54 \\times 10^{-15}$"
+          },
+          {
+            "value": 31.5,
+            "unit": "Ω",
+            "source_text": "Row 2: Sample = CS-0.05; $R_e$  ( $\\Omega$ ) = 3.67; $R_{ct}$  ( $\\Omega$ ) = 31.5; $\\sigma$ = 18.9; $D(Li^{+})$  ( $cm^2 S^{-1}$ ) = $1.49 \\times 10^{-14}$"
+          },
+          {
+            "value": 24.1,
+            "unit": "Ω",
+            "source_text": "Row 3: Sample = CS-0.1; $R_e$  ( $\\Omega$ ) = 0.88; $R_{ct}$  ( $\\Omega$ ) = 24.1; $\\sigma$ = 18.1; $D(Li^{+})$  ( $cm^2 S^{-1}$ ) = $1.61 \\times 10^{-14}$"
+          },
+          {
+            "value": 25.2,
+            "unit": "Ω",
+            "source_text": "Row 4: Sample = CS-0.2; $R_e$  ( $\\Omega$ ) = 0.88; $R_{ct}$  ( $\\Omega$ ) = 25.2; $\\sigma$ = 35.8; $D(Li^{+})$  ( $cm^2 S^{-1}$ ) = $4.12 \\times 10^{-15}$"
+          }
+        ],
+        "Ion_Diffusion_Coefficient": [
+          {
+            "value": 3.54e-15,
+            "unit": "cm2/s",
+            "method": "EIS",
+            "source_text": "Row 1: Sample = Pristine; $R_e$  ( $\\Omega$ ) = 1.03; $R_{ct}$  ( $\\Omega$ ) = 30.6; $\\sigma$ = 38.8; $D(Li^{+})$  ( $cm^2 S^{-1}$ ) = $3.54 \\times 10^{-15}$"
+          },
+          {
+            "value": 1.49e-14,
+            "unit": "cm2/s",
+            "method": "EIS",
+            "source_text": "Row 2: Sample = CS-0.05; $R_e$  ( $\\Omega$ ) = 3.67; $R_{ct}$  ( $\\Omega$ ) = 31.5; $\\sigma$ = 18.9; $D(Li^{+})$  ( $cm^2 S^{-1}$ ) = $1.49 \\times 10^{-14}$"
+          },
+          {
+            "value": 1.61e-14,
+            "unit": "cm2/s",
+            "method": "EIS",
+            "source_text": "Row 3: Sample = CS-0.1; $R_e$  ( $\\Omega$ ) = 0.88; $R_{ct}$  ( $\\Omega$ ) = 24.1; $\\sigma$ = 18.1; $D(Li^{+})$  ( $cm^2 S^{-1}$ ) = $1.61 \\times 10^{-14}$"
+          },
+          {
+            "value": 4.12e-15,
+            "unit": "cm2/s",
+            "method": "EIS",
+            "source_text": "Row 4: Sample = CS-0.2; $R_e$  ( $\\Omega$ ) = 0.88; $R_{ct}$  ( $\\Omega$ ) = 25.2; $\\sigma$ = 35.8; $D(Li^{+})$  ( $cm^2 S^{-1}$ ) = $4.12 \\times 10^{-15}$"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The electrochemical properties of samples were measured by using CR2025 coin-type cells. The electrode slurry consisted with 85 wt.% of active materials, 10 wt.% of carbon black, and 5 wt.% poly-vinyl",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 95,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in EC:EMC:DEC (1:1:1 volume)",
+          "cycle_number": 0,
+          "mass_loading": {
+            "value": 5,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li metal",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C009",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 95,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in EC:EMC:DEC (1:1:1 volume)",
+          "cycle_number": 0,
+          "mass_loading": {
+            "value": 5,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li metal",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C010",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 190,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in EC:EMC:DEC (1:1:1 volume)",
+          "cycle_number": 0,
+          "mass_loading": {
+            "value": 5,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li metal",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C011",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 190,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in EC:EMC:DEC (1:1:1 volume)",
+          "cycle_number": 0,
+          "mass_loading": {
+            "value": 5,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li metal",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C012",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "test_method": "EIS",
+          "electrolyte": "1 M LiPF6 in EC:EMC:DEC (1:1:1 volume)",
+          "mass_loading": {
+            "value": 5,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li metal"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In summary, a series of core-shell structured mathrm 0.9 mathrm 0.1 mathrm O 2 mathrm - - mathrm 0.5 mathrm 1.5 mathrm O 4 composites with Ni-rich composition of layer-structure mathrm 0.90.1 O 2 core",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "voltage_range": {
+            "max": 4.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [
+        "Chemical_Composition_Mole_Fractions"
+      ],
+      "extracted_info": {
+        "Chemical_Composition_Mole_Fractions": [
+          {
+            "value": {
+              "Li": 0.4783,
+              "Ni": 0.413,
+              "Co": 0.0435,
+              "Mn": 0.0652
+            },
+            "unit": "mole fraction",
+            "method": "derived from formula",
+            "source_text": "LiNi0.9Co0.1O2·0.1LiNi0.5Mn1.5O4"
+          }
+        ]
+      },
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Capacity_Retention_Ratio",
+        "Rate_Capability_Profile",
+        "Thermal_Runaway_Onset_Temperature"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 157.4,
+            "unit": "mAh/g",
+            "source_text": "CS-0.1 not only delivers high reversible capacity of 157.4 mA h g -1"
+          },
+          {
+            "value": 195.5,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "even at high charging cut-off voltage of 4.5 V, … illustrates … high initial capacity of 195.5 mA h g -1"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 85.7,
+            "unit": "%",
+            "cycle_number": 100,
+            "source_text": "capacity retention of 85.7% after 100 cycles"
+          },
+          {
+            "value": 86.0,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C001",
+            "source_text": "86% capacity retention at 0.5 C after 100 cycles"
+          }
+        ],
+        "Rate_Capability_Profile": [
+          {
+            "value": [
+              134.2
+            ],
+            "unit": "mAh/g",
+            "source_text": "significantly enhanced rate performance 134.2 mA h g -1 at 5.0 C"
+          },
+          {
+            "value": [
+              162.5
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "remarkable rate capability 162.5 mA h g -1 at 5.0 C"
+          }
+        ],
+        "Thermal_Runaway_Onset_Temperature": [
+          {
+            "value": 228.7,
+            "unit": "°C",
+            "method": "DSC (exothermic peak)",
+            "source_text": "peak temperature of exothermic reaction … 228.7 °C for pristine LiNi0.9Co0.1O2"
+          },
+          {
+            "value": 260.7,
+            "unit": "°C",
+            "method": "DSC (exothermic peak)",
+            "source_text": "peak temperature … 260.7 °C for CS-0.1 composite"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The rate capability comparison of pristine mathrm 0.90.1 O 2 and mathrm 0.90.1 O 20.51.5 O 4 composites are further evaluated under different current densities 0.2, 0.5, 1.0, 2.0, and 5.0 C in the vol",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "0.2, 0.5, 1, 2, 5",
+            "unit": "C"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C015",
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.5,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C016",
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.5,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "0.2, 0.5, 1, 2, 5",
+            "unit": "C"
+          },
+          "test_method": "rate test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_Profile",
+        "Capacity_Retention_Ratio",
+        "Initial_Coulombic_Efficiency",
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Rate_Capability_Profile": [
+          {
+            "value": [
+              134.2
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "CS-0.1 could deliver a discharge capacity of 134.2 mA h g^{-1} under a high rate of 5.0 C"
+          },
+          {
+            "value": [
+              71.4
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "pristine sample 71.4 mA h g^{-1} under a high rate of 5.0 C"
+          },
+          {
+            "value": [
+              231.1,
+              219.1,
+              206.3,
+              189.9,
+              162.5
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "the reversible discharge capacities of CS-0.1 sample are 231.1, 219.1, 206.3, 189.9, and 162.5 mA h g^{-1}, respectively, under 0.2 C to 5.0 C"
+          },
+          {
+            "value": [
+              219.9
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "when the current density is switched back to 0.2 C, the CS-0.1 sample still delivers a remarkable discharge capacity of 219.9 mA h g^{-1}"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 86,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "the CS-0.1 sample has a satisfactory capacity retention of 86% after 100 cycles at 0.5 C within the charge-discharge voltage ranging from 2.8 V to 4.5 V"
+          },
+          {
+            "value": 59.4,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "the discharge capacity is rapidly decreased from 208.8 mA h g^{-1} to 124.1 mA h g^{-1} with a low capacity retention of 59.4%"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 80.9,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "even expanding the charging cut-off voltage to 4.5 V, the initial Coulombic efficiency of CS-0.1 cathode 80.9% still is higher than that of pristine one 78.8%"
+          },
+          {
+            "value": 78.8,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "pristine one 78.8%"
+          }
+        ],
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 208.8,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "discharge capacity is rapidly decreased from 208.8 mA h g^{-1} to 124.1 mA h g^{-1}"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    }
+  ]
+}

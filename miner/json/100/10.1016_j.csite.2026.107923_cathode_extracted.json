@@ -1,0 +1,263 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.csite.2026.107923.md",
+  "component": "cathode",
+  "paper_id": "10.1016/j.csite.2026.107923",
+  "doi": "10.1016/j.csite.2026.107923",
+  "material_id": "10.1016_j.csite.2026.107923",
+  "meta": {
+    "meta_title": "Study on the temperature uniformity of lithium batteries based on gradient porou",
+    "meta_authors": "Wenhao Li a,b,\\* , Yinxiang Wu a,b , Min Huang c , Zhenyong Liu c",
+    "meta_year": "2026"
+  },
+  "materials": [
+    {
+      "name": "cathode material",
+      "short_name": "10.1016_j.csite.2026.107923",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.csite.2026.107923"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: ; ; act; active\nRows:\nRow 1:  = a;  = specific surface area(1/m); act = e; active = effectiveness\nRow 2:  = c;  = lithium ion concentration(mol/m3); act = f; active = fluid\nRow 3:  = D;  = diffusion coefficient(m2/s); act = k; active = cathode, anode, separator\nRow 4:  = F;  = Faraday constant (C/mol); act = l; active = liquid\nRow 5:  = F;  = Faraday constant; act = max; active = maximum\nRow 6:  = h;  = convective heat transfer coefficient(W/(m2·K)); act = min; active = minimum\nRow 7: ref; refrigerant\nRow 8:  = I;  = electrode current (A); act = s; active = solid phase\nRow 9:  = j;  = reaction current density(A/m3); act = tot; active = total\nRow 10:  = k;  = thermal conductivity(W/(m·K); act = w; active = temperature-dependent\nRow 11:  = K;  = reaction rate constant(m/s); act = Abbreviations; active = \nRow 12:  = L;  = grade thickness(μm); act = BTMS; active = battery thennal management system\nRow 13:  = Q;  = quantity of heat (W·m-3); act = LCP; active = liquid-cooled plate\nRow 14:  = r;  = particle radius(μm); act = PCM; active = phase change material\nRow 15:  = R;  = gas constant (J/(mol·K)); act = Greek symbols; active = \nRow 16:  = t0+;  = lithium ion transference number; act = φ; active = electric potential(V)\nRow 17:  = T;  = temperature (°C); act = ε; active = volume fraction\nRow 18:  = μ;  = overtension(V); act = ρ; active = density (kg/m3)\nRow 19:  = U;  = voltage (V); act = σ; active = electronic conductivity\nRow 20:  = V;  = Volume (m3); act = α; active = charge transfer coefficient\nRow 21:  = ν;  = velocity; act = ε; active = radiance\nRow 22:  = Subscript;  = ; act = Δ; active = difference\nColumn data:\n  : a; c; D; F; F; h; ref; I; j; k; K; L; Q; r; R; t0+; T; μ; U; V; ν; Subscript\n  : specific surface area(1/m); lithium ion concentration(mol/m3); diffusion coefficient(m2/s); Faraday constant (C/mol); Faraday constant; convective heat transfer coefficient(W/(m2·K)); refrigerant; electrode current (A); reaction current density(A/m3); thermal conductivity(W/(m·K); reaction rate constant(m/s); grade thickness(μm); quantity of heat (W·m-3); particle radius(μm); gas constant (J/(mol·K)); lithium ion transference number; temperature (°C); overtension(V); voltage (V); Volume (m3); velocity; \n  act: e; f; k; l; max; min; s; tot; w; Abbreviations; BTMS; LCP; PCM; Greek symbols; φ; ε; ρ; σ; α; ε; Δ\n  active: effectiveness; fluid; cathode, anode, separator; liquid; maximum; minimum; solid phase; total; temperature-dependent; ; battery thennal management system; liquid-cooled plate; phase change material; ; electric potential(V); volume fraction; density (kg/m3); electronic conductivity; charge transfer coefficient; radiance; difference",
+    "TABLE DATA BLOCK\nHeaders: Parameter; Anode; Diaphragm; Cathode\nRows:\nRow 1: Parameter = Electrode thickness,L(μm); Anode = 38.5; Diaphragm = 12; Cathode = 31.25\nRow 2: Parameter = Current collector thickness,L(μm); Anode = 10; Diaphragm = ; Cathode = 6\nRow 3: Parameter = Particle radius,  $r_{\\text{act}}$  (μm); Anode = 7; Diaphragm = ; Cathode = 4\nRow 4: Parameter = Liquid phase volume fraction,  $\\varepsilon_1$; Anode = 0.3; Diaphragm = 0.4; Cathode = 0.29\nRow 5: Parameter = Active substance volume fraction,  $\\varepsilon_s$; Anode = 0.7; Diaphragm = ; Cathode = 0.71\nRow 6: Parameter = Maximum Li concentration in the solid phase,  $c_{s,\\text{max}}$  (mol/m $^3$ ); Anode = 30548; Diaphragm = ; Cathode = 50805\nRow 7: Parameter = Reference reaction rate constant,  $k_c$ 、 $k_a$  (m/s); Anode = $3 \\times 10^{-11}$; Diaphragm = ; Cathode = $1.2 \\times 10^{-14}$\nRow 8: Parameter = Solid phase electronic conductivity,  $\\sigma_s$  (S/m); Anode = 100; Diaphragm = ; Cathode = 10\nRow 9: Parameter = Bruegmann coefficient, p; Anode = 2.5; Diaphragm = 2; Cathode = 2\nRow 10: Parameter = Anode and cathode transfer coefficients,  $\\alpha_c$ ,  $\\alpha_a$; Anode = 0.5; Diaphragm = ; Cathode = 0.5\nRow 11: Parameter = Lithium-ion transfer coefficient,  $t_+$; Anode = ; Diaphragm = 0.425; Cathode = \nRow 12: Parameter = Initial Li concentration,  $c_{s,0}$  (mol/m $^3$ ); Anode = 27351; Diaphragm = ; Cathode = 18356\nRow 13: Parameter = Electrolyte salt concentration (mol/m $^3$ ); Anode = ; Diaphragm = 1000; Cathode = \nRow 14: Parameter = Faraday constant, F (C/mol); Anode = ; Diaphragm = 96485.0; Cathode = \nRow 15: Parameter = Reference temperature,  $T_{\\text{ref}}$  (K); Anode = ; Diaphragm = 298.15; Cathode = \nRow 16: Parameter = Convective heat transfer coefficient  $h_{\\text{ht}}$  ((W/m $^2$ K); Anode = ; Diaphragm = 20; Cathode = \nRow 17: Parameter = Specific surface area  $a_k$ (1/m); Anode = 172730; Diaphragm = ; Cathode = 825880\nColumn data:\n  Parameter: Electrode thickness,L(μm); Current collector thickness,L(μm); Particle radius,  $r_{\\text{act}}$  (μm); Liquid phase volume fraction,  $\\varepsilon_1$; Active substance volume fraction,  $\\varepsilon_s$; Maximum Li concentration in the solid phase,  $c_{s,\\text{max}}$  (mol/m $^3$ ); Reference reaction rate constant,  $k_c$ 、 $k_a$  (m/s); Solid phase electronic conductivity,  $\\sigma_s$  (S/m); Bruegmann coefficient, p; Anode and cathode transfer coefficients,  $\\alpha_c$ ,  $\\alpha_a$; Lithium-ion transfer coefficient,  $t_+$; Initial Li concentration,  $c_{s,0}$  (mol/m $^3$ ); Electrolyte salt concentration (mol/m $^3$ ); Faraday constant, F (C/mol); Reference temperature,  $T_{\\text{ref}}$  (K); Convective heat transfer coefficient  $h_{\\text{ht}}$  ((W/m $^2$ K); Specific surface area  $a_k$ (1/m)\n  Anode: 38.5; 10; 7; 0.3; 0.7; 30548; $3 \\times 10^{-11}$; 100; 2.5; 0.5; ; 27351; ; ; ; ; 172730\n  Diaphragm: 12; ; ; 0.4; ; ; ; ; 2; ; 0.425; ; 1000; 96485.0; 298.15; 20; \n  Cathode: 31.25; 6; 4; 0.29; 0.71; 50805; $1.2 \\times 10^{-14}$; 10; 2; 0.5; ; 18356; ; ; ; ; 825880",
+    "TABLE DATA BLOCK\nHeaders: Parameter; Anode current collector; anode; separator; cathode; cathode current collector\nRows:\nRow 1: Parameter = specific heat capacity (J/(K•kg)); Anode current collector = 905; anode = 1600; separator = 2351; cathode = 1731; cathode current collector = 386\nRow 2: Parameter = densities (kg/m3); Anode current collector = 2700; anode = 3960; separator = 1300; cathode = 1930; cathode current collector = 8200\nRow 3: Parameter = thermal conductivity (W/(K•m)); Anode current collector = 237; anode = 1.58; separator = 1.3344; cathode = 1.04; cathode current collector = 401\nColumn data:\n  Parameter: specific heat capacity (J/(K•kg)); densities (kg/m3); thermal conductivity (W/(K•m))\n  Anode current collector: 905; 2700; 237\n  anode: 1600; 3960; 1.58\n  separator: 2351; 1300; 1.3344\n  cathode: 1731; 1930; 1.04\n  cathode current collector: 386; 8200; 401",
+    "TABLE DATA BLOCK\nHeaders: Component; Material; Density(kg/m3); Specific heat capacity (J/(K•kg)); Thermal conductivity (W/(K•m))\nRows:\nRow 1: Component = Thermal pad; Material = Silica; Density(kg/m3) = 2400; Specific heat capacity (J/(K•kg)) = 620; Thermal conductivity (W/(K•m)) = 3\nRow 2: Component = Coolant; Material = Water; Density(kg/m3) = 1000; Specific heat capacity (J/(K•kg)) = 4200; Thermal conductivity (W/(K•m)) = 0.6\nRow 3: Component = Porous Metal Liquid Cooling Plate; Material = Aluminum foam; Density(kg/m3) = 2700; Specific heat capacity (J/(K•kg)) = 905; Thermal conductivity (W/(K•m)) = 237\nColumn data:\n  Component: Thermal pad; Coolant; Porous Metal Liquid Cooling Plate\n  Material: Silica; Water; Aluminum foam\n  Density(kg/m3): 2400; 1000; 2700\n  Specific heat capacity (J/(K•kg)): 620; 4200; 905\n  Thermal conductivity (W/(K•m)): 3; 0.6; 237",
+    "TABLE DATA BLOCK\nHeaders: Discharge rate; 1D electrochemically coupled 3D thermal model; Full three-dimensional electrochemical thermal coupling\nRows:\nRow 1: Voltage; Temperature rise; Voltage; Temperature rise\nRow 2: Maximum error; Average error; Maximum error; Average error; Maximum error; Average error; Maximum error; Average error\nRow 3: 2C; 3.67%; 1.04%; 4.38%; 1.94%; 1.38%; 0.57%; 4.29%; 1.91%\nRow 4: 3C; 3.14%; 1.02%; 4.75%; 1.04%; 1.47%; 0.45%; 3.76%; 1.03%\nRow 5: 5C; 3.45%; 0.95%; 4.57%; 0.89%; 1.89%; 0.85%; 3.58%; 0.64%\nRow 6: 7C; 3.18%; 1.26%; 4.66%; 2.76%; 2.02%; 0.89%; 2.63%; 0.44%\nColumn data:\n  Discharge rate: Voltage; Maximum error; 2C; 3C; 5C; 7C\n  1D electrochemically coupled 3D thermal model: Temperature rise; Average error; 3.67%; 3.14%; 3.45%; 3.18%\n  Full three-dimensional electrochemical thermal coupling: Voltage; Maximum error; 1.04%; 1.02%; 0.95%; 1.26%",
+    "TABLE DATA BLOCK\nHeaders: Discharge rate; Maximum temperature  $T_{max}$; Temperature difference  $\\Delta T_{max}$\nRows:\nRow 1: Maximum percentage reduction; Maximum percentage reduction\nRow 2: n = 0; n = 0.5; n = 1; n = 2; n = 0; n = 0.5; n = 1; n = 2\nRow 3: 2C; 4.9%; 6.2%; 7.2%; 9.5%; 46.6%; 53.7%; 54.9%; 58.1%\nRow 4: 3C; 6.3%; 7.2%; 7.8%; 11.6%; 45.1%; 52.2%; 53.8%; 56.1%\nRow 5: 5C; 7.9%; 8.9%; 9.2%; 13.4%; 45.9%; 52.7%; 52.8%; 56.4%\nRow 6: 7C; 8.1%; 9.9%; 10.2%; 13.5%; 43.9%; 50.5%; 50.8%; 53.7%\nColumn data:\n  Discharge rate: Maximum percentage reduction; n = 0; 2C; 3C; 5C; 7C\n  Maximum temperature  $T_{max}$: Maximum percentage reduction; n = 0.5; 4.9%; 6.3%; 7.9%; 8.1%\n  Temperature difference  $\\Delta T_{max}$: n = 1; 6.2%; 7.2%; 8.9%; 9.9%",
+    "TABLE DATA BLOCK\nHeaders: ; No porous metals; n = 0; n = 0.5; n = 1; n = 2\nRows:\nRow 1:  = Pressure drop (Pa); No porous metals = 85.7; n = 0 = 92.0; n = 0.5 = 94.8; n = 1 = 96.3; n = 2 = 97.6\nColumn data:\n  : Pressure drop (Pa)\n  No porous metals: 85.7\n  n = 0: 92.0\n  n = 0.5: 94.8\n  n = 1: 96.3\n  n = 2: 97.6",
+    "TABLE DATA BLOCK\nHeaders: ; n = 0; n = 0.5; n = 1; n = 2\nRows:\nRow 1:  = 2C; n = 0 = 1.829; n = 0.5 = 2.144; n = 1 = 2.077; n = 2 = 2.285\nRow 2:  = 3C; n = 0 = 1.779; n = 0.5 = 2.093; n = 1 = 2.012; n = 2 = 2.181\nRow 3:  = 5C; n = 0 = 1.805; n = 0.5 = 2.049; n = 1 = 2.034; n = 2 = 2.196\nRow 4:  = 7C; n = 0 = 1.741; n = 0.5 = 1.965; n = 1 = 1.943; n = 2 = 2.068\nColumn data:\n  : 2C; 3C; 5C; 7C\n  n = 0: 1.829; 1.779; 1.805; 1.741\n  n = 0.5: 2.144; 2.093; 2.049; 1.965\n  n = 1: 2.077; 2.012; 2.034; 1.943\n  n = 2: 2.285; 2.181; 2.196; 2.068"
+  ],
+  "n_items": 4,
+  "items": [
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Discharge rate; 1D electrochemically coupled 3D thermal model; Full three-dimensional electrochemical thermal coupling\nRows:\nRow 1: Voltage; Temperature rise; Voltage; Temper",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C002",
+          "c_rate_or_current": {
+            "value": "3",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": "7",
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Discharge rate; Maximum temperature  $T_{max}$; Temperature difference  $\\Delta T_{max}$\nRows:\nRow 1: Maximum percentage reduction; Maximum percentage reduction\nRow 2: n = 0;",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C002",
+          "c_rate_or_current": {
+            "value": "3",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": "7",
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: ; n = 0; n = 0.5; n = 1; n = 2\nRows:\nRow 1:  = 2C; n = 0 = 1.829; n = 0.5 = 2.144; n = 1 = 2.077; n = 2 = 2.285\nRow 2:  = 3C; n = 0 = 1.779; n = 0.5 = 2.093; n = 1 = 2.012; n",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "n": 0
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "n": 0.5
+        },
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "n": 1
+        },
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "n": 2
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": "3",
+            "unit": "C"
+          },
+          "n": 0
+        },
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": "3",
+            "unit": "C"
+          },
+          "n": 0.5
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": "3",
+            "unit": "C"
+          },
+          "n": 1
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": "3",
+            "unit": "C"
+          },
+          "n": 2
+        },
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "n": 0
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "n": 0.5
+        },
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "n": 1
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "n": 2
+        },
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": "7",
+            "unit": "C"
+          },
+          "n": 0
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": "7",
+            "unit": "C"
+          },
+          "n": 0.5
+        },
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": "7",
+            "unit": "C"
+          },
+          "n": 1
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": "7",
+            "unit": "C"
+          },
+          "n": 2
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Parameter; Anode; Diaphragm; Cathode\nRows:\nRow 1: Parameter = Electrode thickness,L(μm); Anode = 38.5; Diaphragm = 12; Cathode = 31.25\nRow 2: Parameter = Current collector th",
+      "conditions": [
+        {
+          "condition_id": "C021"
+        }
+      ],
+      "property_types": [
+        "Secondary_Particle_Size_Distribution"
+      ],
+      "extracted_info": {
+        "Secondary_Particle_Size_Distribution": [
+          {
+            "value": {
+              "D50": 4
+            },
+            "unit": "μm",
+            "method": "from table",
+            "source_text": "Particle radius, $r_{\\text{act}}$ (μm) = 4"
+          }
+        ]
+      }
+    }
+  ]
+}

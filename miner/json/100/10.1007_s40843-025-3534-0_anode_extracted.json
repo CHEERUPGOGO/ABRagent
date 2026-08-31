@@ -1,0 +1,923 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s40843-025-3534-0.md",
+  "component": "anode",
+  "paper_id": "10.1007/s40843-025-3534-0",
+  "doi": "10.1007/s40843-025-3534-0",
+  "material_id": "10.1007_s40843-025-3534-0",
+  "meta": {
+    "meta_title": "Toward dendrite-free and fast-charging lithium metal batteries: interfacial engi",
+    "meta_authors": "Jing Zhu1,2,3, Yang Yang1 , Yuanfan Zhao1 , Jiaojuan Lin1 , Jie Zhang1 , Pengqian Guo4* and Xinghui Wang1 ,2,3*",
+    "meta_year": null
+  },
+  "materials": [
+    {
+      "name": "Li-ZnO/ZnSeBrass",
+      "short_name": "Li-ZnO/ZnSeBrass",
+      "formula": "Li/ZnO/ZnSe/CuZn",
+      "role": "novel",
+      "description": "Novel composite anode fabricated by pressing Li metal onto ZnO/ZnSe heterostructure-coated brass mesh.",
+      "material_id": "10.1007_s40843-025-3534-0_M001"
+    },
+    {
+      "name": "Li-Brass",
+      "short_name": "Li-Brass",
+      "formula": "Li/CuZn",
+      "role": "comparison",
+      "description": "Li metal pressed onto bare brass mesh as a control anode.",
+      "material_id": "10.1007_s40843-025-3534-0_M002"
+    },
+    {
+      "name": "Li-ZnOBrass",
+      "short_name": "Li-ZnOBrass",
+      "formula": "Li/ZnO/CuZn",
+      "role": "comparison",
+      "description": "Li metal pressed onto ZnO-coated brass mesh as a control anode.",
+      "material_id": "10.1007_s40843-025-3534-0_M003"
+    }
+  ],
+  "n_materials": 3,
+  "table_items": [],
+  "n_items": 11,
+  "items": [
+    {
+      "paragraph": "To validate the crucial role of the ZnO/ZnSeBrass in pro- moting homogeneous deposition of Li, an optical digital method was conducted to observe the real-time behavior of Li deposition more intuitive",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "optical digital method"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 25,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "even at a high deposition capacity of 25 mathrm mathrm h mathrm - 2 , a smooth, dense and dendrite-free Li layer can be obtained"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To investigate the electrochemical reaction products of Li-ZnO/ZnSeBrass and Li, XRD analysis was performed on the samples after five cycles under the conditions of 1 mathrm mathrm - 2 and 1 mathrm m ",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "mA/cm2"
+          },
+          "areal_capacity": {
+            "value": 1,
+            "unit": "mAh/cm2"
+          },
+          "cycle_number": 5
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "LiZn",
+            "state": "after 5 cycles, in situ formed",
+            "source_text": "producing LiZn, mathrm 2 mathrm mathrm i , and mathrm 2 mathrm O Fig. S7. Notably, the in situ formed mathrm 2 mathrm and mathrm 2 mathrm O contribute to the development of an ideal SEI"
+          },
+          {
+            "value": "Li2Se",
+            "state": "after 5 cycles, in situ formed",
+            "source_text": "producing LiZn, mathrm 2 mathrm mathrm i , and mathrm 2 mathrm O Fig. S7. Notably, the in situ formed mathrm 2 mathrm and mathrm 2 mathrm O contribute to the development of an ideal SEI"
+          },
+          {
+            "value": "Li2O",
+            "state": "after 5 cycles, in situ formed",
+            "source_text": "producing LiZn, mathrm 2 mathrm mathrm i , and mathrm 2 mathrm O Fig. S7. Notably, the in situ formed mathrm 2 mathrm and mathrm 2 mathrm O contribute to the development of an ideal SEI"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The crystalline structures of the brass, ZnOBrass, and Z mathrm / ZnSeBrass characterized by XRD were displayed in Fig. 2a. As can be seen, the diffraction peaks of the brass mesh at 42.32 circ , 49.2",
+      "property_types": [
+        "Elemental_Composition",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Zn",
+              "Cu",
+              "O",
+              "Se"
+            ],
+            "method": "XPS",
+            "source_text": "XPS was utilized to gain insights into the surface element and chemical state of ZnO/ZnSeBrass, in which the full spectra revealed the presence of Zn, Cu, O, and Se elements Fig. 2b."
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Cu0.64Zn0.36",
+            "state": "brass",
+            "source_text": "the diffraction peaks of the brass mesh at 42.32°, 49.27°, and 72.24° correspond to the 111, 200, and 220 planes of Cu0.64Zn0.36 JCPDS No.50-1333"
+          },
+          {
+            "value": "ZnO",
+            "state": "ZnO",
+            "source_text": "the peaks of ZnO JCPDS No.36-1451 were observed in the XRD pattern, confirming the successful fabrication of ZnO/ZnSe heterostructures."
+          },
+          {
+            "value": "ZnSe",
+            "state": "ZnSe",
+            "source_text": "the peaks of ... and ZnSe JCPDS No.37-1463 were observed in the XRD pattern, confirming the successful fabrication of ZnO/ZnSe heterostructures."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To better elucidate the performance enhancement mechanism of Li-ZnO/ZnSeBrass anodes, morphological evolutions of Z mathrm / ZnSeBrass, Brass, and bare Li anodes with different Li capacities 1, 3, and",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "test_method": "ex situ SEM"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 5,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "the deposited Li on the ZnO/ZnSeBrass host exhibits a dense, smooth, and dendritefree morphology even at a high deposition capacity of 5 mAh cm-2"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The synthesis process of the Li-ZnO/ZnSeBrass is illustrated in Fig. 1a. First, a brass mesh Fig. S1a was placed in a muffle furnace and subjected to high-temperature oxidation to obtain Z mathrm odot",
+      "property_types": [
+        "Interlayer_Spacing",
+        "Crystallite_Size",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Interlayer_Spacing": [
+          {
+            "value": 2.01,
+            "unit": "Å",
+            "plane": "Cu0.64Zn0.36(111)",
+            "source_text": "interplanar spacings of 0.201, 0.253, and 0.312 nm, corresponding to the Cu0.64Zn0.36(111), ZnO 101, and ZnSe 111 planes"
+          },
+          {
+            "value": 2.53,
+            "unit": "Å",
+            "plane": "ZnO(101)",
+            "source_text": "interplanar spacings of 0.201, 0.253, and 0.312 nm, corresponding to the Cu0.64Zn0.36(111), ZnO 101, and ZnSe 111 planes"
+          },
+          {
+            "value": 3.12,
+            "unit": "Å",
+            "plane": "ZnSe(111)",
+            "source_text": "interplanar spacings of 0.201, 0.253, and 0.312 nm, corresponding to the Cu0.64Zn0.36(111), ZnO 101, and ZnSe 111 planes"
+          }
+        ],
+        "Crystallite_Size": [
+          {
+            "value": 1700,
+            "unit": "nm",
+            "method": "TEM",
+            "source_text": "average diameter of the ZnSe particles is around 1.7 μm"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Cu",
+              "Zn",
+              "O",
+              "Se"
+            ],
+            "method": "EDS mapping",
+            "source_text": "Elemental mappings of ZnSeBrass Fig. 1g confirm that Se and O are uniformly distributed in regions coinciding with Zn"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The nucleation overpotential is defined as the voltage difference between the tip voltage at the lowest point and the overpotential stabilized by mass transfer, which is crucial for the affinity of Li",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half-cell (bare Li counter electrode)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "nucleation overpotential measurement"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half-cell (bare Li counter electrode)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "nucleation overpotential measurement"
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half-cell (bare Li counter electrode)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "nucleation overpotential measurement"
+        },
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 50,
+          "electrode_config": "half-cell (cells with Li-based anodes and Li counter electrode)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Li_Nucleation_Overpotential"
+      ],
+      "performance_info": {
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 10.0,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "substrate": "ZnO/ZnSeBrass",
+            "source_text": "the nucleation overpotentials of ZnO/ZnSeBrass 10 ... at current densities of 1"
+          },
+          {
+            "value": 22.0,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 2.0,
+            "substrate": "ZnO/ZnSeBrass",
+            "source_text": "the nucleation overpotentials of ZnO/ZnSeBrass ... 22 ... at current densities of ... 2"
+          },
+          {
+            "value": 30.0,
+            "unit": "mV",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 5.0,
+            "substrate": "ZnO/ZnSeBrass",
+            "source_text": "the nucleation overpotentials of ZnO/ZnSeBrass ... 30 ... at current densities of ... 5"
+          },
+          {
+            "value": 149.0,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "substrate": "Brass",
+            "source_text": "nucleation overpotentials of ... Brass 149 ... at current densities of 1"
+          },
+          {
+            "value": 200.0,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 2.0,
+            "substrate": "Brass",
+            "source_text": "nucleation overpotentials of ... Brass ... 200 ... at current densities of ... 2"
+          },
+          {
+            "value": 220.0,
+            "unit": "mV",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 5.0,
+            "substrate": "Brass",
+            "source_text": "nucleation overpotentials of ... Brass ... 220 ... at current densities of ... 5"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Furthermore, the long-term cycling performance of Li-ZnO/ ZnSeBrass symmetric cells was evaluated under ultra-high current density and capacity conditions of 40 mathrm mathrm - 2 / 40 mathrm mathrm - ",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 40,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 80,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "3-min fast-charging procedure",
+          "cycle_number": 5000
+        }
+      ],
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "Li₂O",
+              "LiF"
+            ],
+            "state": "in situ formed SEI",
+            "source_text": "formation of a Li₂O/LiF-enriched SEI"
+          }
+        ]
+      },
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 1000,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "extraordinary cycling life exceeding 1000 h"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In conclusion, a novel 3D Li host is smartly designed by incorporating ZnO/ZnSe heterostructures onto commercial brass mesh. The ZnO/ZnSeBrass-based LMA was then fabricated using a simple stress-press",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "mA/cm2"
+          }
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 20,
+            "unit": "mA/cm2"
+          }
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 80,
+            "unit": "mA/cm2"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity",
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 1,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "cycling stably for over 3000 cycles at 1 mathrm m dot mathrm A mathrm - 2 / mathrm 1 : dot m A mathrm h mathrm - 2"
+          },
+          {
+            "value": 4,
+            "unit": "mAh/cm2",
+            "condition_id": "C003",
+            "source_text": "fast-charging process within 3 min at an ultra-high current density of 80 mathrm mathrm - 2 and a cycling capacity of 4 mA h mathrm - 2 for 5000 cycles."
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 3000,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "cycling stably for over 3000 cycles at 1 mathrm m dot mathrm A mathrm - 2 / mathrm 1 : dot m A mathrm h mathrm - 2"
+          },
+          {
+            "value": 10000,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "source_text": "At a higher current density of 20 mathrm mathrm - 2 , this designed anode maintains ultra-stable cycling up to 10,000 cycles."
+          },
+          {
+            "value": 5000,
+            "unit": "cycles",
+            "condition_id": "C003",
+            "source_text": "fast-charging process within 3 min at an ultra-high current density of 80 mathrm mathrm - 2 and a cycling capacity of 4 mA h mathrm - 2 for 5000 cycles."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The full cell was assembled for electrochemical testing to assess the practical application potential of the Li-ZnO/ZnSeBrass anode. LFP was selected as the cathode and paired with three different ano",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": "0.5, 1, 3, 5",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "rate performance"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "C"
+          },
+          "cycle_number": 500,
+          "electrode_config": "full_cell",
+          "test_method": "cycling stability"
+        },
+        {
+          "condition_id": "C015",
+          "electrode_config": "full_cell",
+          "test_method": "initial discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Rate_Recovery_Percent",
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "First_Lithiation_Capacity"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 118.5,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Li-ZnO/ZnSeBrass||LFP cell at 0.5 C: 118.5 mAh g-1"
+          },
+          {
+            "value": 100.4,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Li-ZnO/ZnSeBrass||LFP cell at 1 C: 100.4 mAh g-1"
+          },
+          {
+            "value": 66.5,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Li-ZnO/ZnSeBrass||LFP cell at 3 C: 66.5 mAh g-1"
+          },
+          {
+            "value": 51.2,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Li-ZnO/ZnSeBrass||LFP cell at 5 C: 51.2 mAh g-1"
+          },
+          {
+            "value": 109.8,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Li-Brass||LFP cell at 0.5 C: 109.8 mAh g-1"
+          },
+          {
+            "value": 92.2,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Li-Brass||LFP cell at 1 C: 92.2 mAh g-1"
+          },
+          {
+            "value": 55.9,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Li-Brass||LFP cell at 3 C: 55.9 mAh g-1"
+          },
+          {
+            "value": 37.1,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Li-Brass||LFP cell at 5 C: 37.1 mAh g-1"
+          },
+          {
+            "value": 110.6,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Bare Li||LFP cell at 0.5 C: 110.6 mAh g-1"
+          },
+          {
+            "value": 92.1,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Bare Li||LFP cell at 1 C: 92.1 mAh g-1"
+          },
+          {
+            "value": 45.4,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Bare Li||LFP cell at 3 C: 45.4 mAh g-1"
+          },
+          {
+            "value": 25.1,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Bare Li||LFP cell at 5 C: 25.1 mAh g-1"
+          },
+          {
+            "value": 79.5,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "Li-ZnO/ZnSeBrass||LFP cell at 2 C after 500 cycles: 79.5 mAh g-1"
+          }
+        ],
+        "Rate_Recovery_Percent": [
+          {
+            "value": 95.9,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "when the rate was reduced from 5 C back to 0.5 C, the discharge capacity of the Li-ZnO/ZnSeBrass||LFP cell could recover to 113.7 mAh g-1 (initial 0.5 C capacity 118.5 mAh g-1)"
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.7,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "the Li-ZnO/ ZnSeBrassLFP cell achieved an impressive CE of 99.7 % after 500 cycles at 2 C"
+          }
+        ],
+        "First_Lithiation_Capacity": [
+          {
+            "value": 118.9,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "full cells based on Li-ZnO/ZnSeBrass anode delivered a high initial discharge capacity of 118.9 mA h g-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "朱敬1,2,3, 杨洋1 , 赵元凡1 , 林娇娟1 , 张颉1 , 郭鹏乾4 , 王星辉 1,2,3 摘要 锂金属负极因其极高的理论比容量和低氧化还原电势而备受关注. 然而, 锂枝晶的不可控生长和剧烈的体积膨胀严重限制了其循环稳定性, 在较高电流密度下尤为严重. 本文通过在黄铜纤维表面构筑ZnO/ZnSe异质结构 ZnO/ZnSeBrass, 设计并开发了一种三维亲锂锂宿主材料, 来提升锂金属电",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 20,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric cell (Li||Li)",
+          "cycle_number": 10000,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 80,
+            "unit": "mA/cm2"
+          },
+          "test_method": "galvanostatic fast charging"
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "electrode_config": "full cell (Li-ZnO/ZnSeBrass||LFP)",
+          "cycle_number": 500
+        }
+      ],
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "Li2Se",
+              "Li2O"
+            ],
+            "state": "in-situ formed SEI on Li-ZnO/ZnSeBrass",
+            "source_text": "原位形成的富含Li Se和Li O的固态电解质界面层具有高离子电导率和优异的机械强度"
+          }
+        ]
+      },
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 10000,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "所组装的锂对称电池表现出卓越的循环稳定性 20 mA cm^-2 / 1 mAh cm^-2 下循环超过10,000次"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Next, in order to evaluate the long-term cycling and fast-charging performance of bare Li, Li-Brass, Li-ZnOBrass, and Li-ZnO/ZnSeBrass anodes, galvanostatic charge/discharge tests were carried out on ",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 20.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": 3.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 10.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": 40.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential",
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 11,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "maintained stable cycling for more than 3000 h 1500 cycles with a low overpotential of 11 mV"
+          },
+          {
+            "value": 6,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of the Li-ZnO/ZnSeBrass symmetric cells 6, 10, 13, 19, 33, and 60 mV (rate test)"
+          },
+          {
+            "value": 8,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of the Li-Brass symmetric cells 8, 23, 38, 75, 150, and 300 mV"
+          },
+          {
+            "value": 40,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of bare Li symmetric cells 40, 60, 90, 130, 190, and 400 mV"
+          },
+          {
+            "value": 17,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "continued to cycle stably for over 900 cycles with a small overpotential of 17 mV"
+          },
+          {
+            "value": 13,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of the Li-ZnO/ZnSeBrass symmetric cells 6, 10, 13, 19, 33, and 60 mV (rate test)"
+          },
+          {
+            "value": 38,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of the Li-Brass symmetric cells 8, 23, 38, 75, 150, and 300 mV"
+          },
+          {
+            "value": 90,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of bare Li symmetric cells 40, 60, 90, 130, 190, and 400 mV"
+          },
+          {
+            "value": 33,
+            "unit": "mV",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 20.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of the Li-ZnO/ZnSeBrass symmetric cells 6, 10, 13, 19, 33, and 60 mV (rate test)"
+          },
+          {
+            "value": 150,
+            "unit": "mV",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 20.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of the Li-Brass symmetric cells 8, 23, 38, 75, 150, and 300 mV"
+          },
+          {
+            "value": 190,
+            "unit": "mV",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 20.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of bare Li symmetric cells 40, 60, 90, 130, 190, and 400 mV"
+          },
+          {
+            "value": 10,
+            "unit": "mV",
+            "condition_id": "C004",
+            "current_density_mA_cm2": 3.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of the Li-ZnO/ZnSeBrass symmetric cells 6, 10, 13, 19, 33, and 60 mV (rate test)"
+          },
+          {
+            "value": 23,
+            "unit": "mV",
+            "condition_id": "C004",
+            "current_density_mA_cm2": 3.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of the Li-Brass symmetric cells 8, 23, 38, 75, 150, and 300 mV"
+          },
+          {
+            "value": 60,
+            "unit": "mV",
+            "condition_id": "C004",
+            "current_density_mA_cm2": 3.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of bare Li symmetric cells 40, 60, 90, 130, 190, and 400 mV"
+          },
+          {
+            "value": 19,
+            "unit": "mV",
+            "condition_id": "C005",
+            "current_density_mA_cm2": 10.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of the Li-ZnO/ZnSeBrass symmetric cells 6, 10, 13, 19, 33, and 60 mV (rate test)"
+          },
+          {
+            "value": 75,
+            "unit": "mV",
+            "condition_id": "C005",
+            "current_density_mA_cm2": 10.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of the Li-Brass symmetric cells 8, 23, 38, 75, 150, and 300 mV"
+          },
+          {
+            "value": 130,
+            "unit": "mV",
+            "condition_id": "C005",
+            "current_density_mA_cm2": 10.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of bare Li symmetric cells 40, 60, 90, 130, 190, and 400 mV"
+          },
+          {
+            "value": 60,
+            "unit": "mV",
+            "condition_id": "C006",
+            "current_density_mA_cm2": 40.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of the Li-ZnO/ZnSeBrass symmetric cells 6, 10, 13, 19, 33, and 60 mV (rate test)"
+          },
+          {
+            "value": 300,
+            "unit": "mV",
+            "condition_id": "C006",
+            "current_density_mA_cm2": 40.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of the Li-Brass symmetric cells 8, 23, 38, 75, 150, and 300 mV"
+          },
+          {
+            "value": 400,
+            "unit": "mV",
+            "condition_id": "C006",
+            "current_density_mA_cm2": 40.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "overpotentials of bare Li symmetric cells 40, 60, 90, 130, 190, and 400 mV"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 45,
+            "unit": "hours",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "bare Li and Li-Brass symmetrical cells began to fluctuate obviously after 45 and 170 h, respectively"
+          },
+          {
+            "value": 170,
+            "unit": "hours",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "bare Li and Li-Brass symmetrical cells began to fluctuate obviously after 45 and 170 h, respectively"
+          },
+          {
+            "value": 3000,
+            "unit": "hours",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "the Li-ZnO/ZnSeBrass symmetric cell maintained stable cycling for more than 3000 h (1500 cycles)"
+          },
+          {
+            "value": 1500,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "the Li-ZnO/ZnSeBrass symmetric cell maintained stable cycling for more than 3000 h (1500 cycles)"
+          },
+          {
+            "value": 900,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "source_text": "the Li-ZnO/ZnSeBrass cell continued to cycle stably for over 900 cycles"
+          },
+          {
+            "value": 10000,
+            "unit": "cycles",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 20.0,
+            "source_text": "the Li-ZnO/ZnSeBrass symmetric cell presented stable Li stripping/plating behavior for over 10,000 cycles"
+          }
+        ]
+      }
+    }
+  ]
+}

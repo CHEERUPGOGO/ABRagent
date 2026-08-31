@@ -1,0 +1,810 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s40843-021-1764-x.md",
+  "component": "anode",
+  "paper_id": "10.1007/s40843-021-1764-x",
+  "doi": "10.1007/s40843-021-1764-x",
+  "material_id": "10.1007_s40843-021-1764-x",
+  "meta": {
+    "meta_title": "General construction of lithiophilic 3D skeleton for dendrite-free lithium metal",
+    "meta_authors": "Liyan Zeng, Ting Zhou, Xijun Xu, Fangkun Li, Jiadong Shen, Dechao Zhang, Jun Liu* and Min Zhu",
+    "meta_year": null
+  },
+  "materials": [
+    {
+      "name": "CCZnO/NC",
+      "short_name": "CCZnO/NC",
+      "formula": "ZnO/N-doped C nanosheets on carbon cloth",
+      "role": "novel",
+      "description": "MOF-derived ZnO and N-doped carbon nanosheets grown on carbon cloth as a lithiophilic host for Li metal anodes",
+      "material_id": "10.1007_s40843-021-1764-x_M001"
+    },
+    {
+      "name": "CCZnO/NCLi",
+      "short_name": "CCZnO/NCLi",
+      "formula": "Li-infused ZnO/N-doped C nanosheets on carbon cloth",
+      "role": "novel",
+      "description": "Molten lithium infused into the CCZnO/NC host to form a composite Li metal anode",
+      "material_id": "10.1007_s40843-021-1764-x_M002"
+    },
+    {
+      "name": "CM/NC NWA",
+      "short_name": "CM/NC NWA",
+      "formula": "N-doped carbon nanowire array on Cu mesh",
+      "role": "novel",
+      "description": "Cu-MOF-derived N-doped carbon nanowire array grown on Cu mesh as a universal 3D host for Li metal anodes",
+      "material_id": "10.1007_s40843-021-1764-x_M003"
+    },
+    {
+      "name": "CM/NC NWALi",
+      "short_name": "CM/NC NWALi",
+      "formula": "Li@N-doped carbon nanowire array on Cu mesh",
+      "role": "novel",
+      "description": "Lithium electrodeposited into the CM/NC NWA host to form a composite Li metal anode",
+      "material_id": "10.1007_s40843-021-1764-x_M004"
+    }
+  ],
+  "n_materials": 4,
+  "table_items": [],
+  "n_items": 12,
+  "items": [
+    {
+      "paragraph": "0.281 mathrm on the nanoparticles, which can be assigned to the 101 and 100 planes of cubic ZnO, respectively, and all nanoparticles were connected by the amorphous carbon originating from the pyrolyt",
+      "property_types": [
+        "Elemental_Composition",
+        "Crystal_System"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Zn",
+              "O",
+              "C",
+              "N"
+            ],
+            "method": "TEM elemental mapping",
+            "source_text": "The TEM elemental mapping signals of ZnO/NC nanosheet Fig. 1g and Fig. S3 demonstrate the co-existence and homogeneous distribution of Zn, O, C, and N"
+          }
+        ],
+        "Crystal_System": [
+          {
+            "value": "cubic",
+            "source_text": "cubic ZnO"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In the assessment of the cyclic property of the mathrm mathrm / mathrm composite anode, SEM characterizations of the mathrm mathrm / mathrm and bare Li electrodes before and after cycling were careful",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 100,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To explore whether the CCZnO/NCLi composite anode can maintain stable Li stripping/plating and inhibit the formation of lithium dendrites, we characterized the electrodes at different stripping/platin",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "areal_capacity": {
+            "values": [
+              5,
+              10,
+              20
+            ],
+            "unit": "mAh/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "ex-situ SEM"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "First, 2-methylimidazole left 0.4 mathrm mathrm L - 1 right and mathrm mathrm 32 cdot 6 mathrm H 2 mathrm O 0.05 mathrm mathrm L - 1 textrm tau were mixed in 80 mathrm of ultra-pure water to form a un",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "time": {
+            "value": 6,
+            "unit": "h"
+          },
+          "test_method": "in-situ growth"
+        },
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 80,
+            "unit": "°C"
+          },
+          "time": {
+            "value": "overnight"
+          },
+          "test_method": "drying"
+        },
+        {
+          "condition_id": "C005",
+          "temperature": {
+            "value": 400,
+            "unit": "°C"
+          },
+          "time": {
+            "value": 1,
+            "unit": "h"
+          },
+          "ramp_rate": {
+            "value": 1,
+            "unit": "°C/min"
+          },
+          "test_method": "pyrolysis"
+        },
+        {
+          "condition_id": "C006",
+          "temperature": {
+            "value": 320,
+            "unit": "°C"
+          },
+          "test_method": "Li infusion"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "CC skeleton. Fig. 2 illustrates the morphology of mathrm mathrm / NCLi. Evidently, the surface of the CCZnO/NCLi composite anode is smooth, and the thickness of the Li metal is sim 292 mu mathrm m . A",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "mass_loading": {
+            "value": 13.5,
+            "unit": "mg/cm2"
+          },
+          "coating_thickness": {
+            "value": 292,
+            "unit": "µm"
+          }
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "Zn",
+              "C",
+              "O",
+              "N"
+            ],
+            "method": "XPS",
+            "source_text": "the XPS result of mathrm mathrm / mathrm identifies the presence of Li, Zn, C, O, and N elements Fig. S7. The high-resolution spectrum of Li 1s can be divided into three different signal peaks, which were located at 54.9 Li, 55.3 mathrm 3 or mathrm 3 , and 55.9 mathrm mathrm 2 mathrm O"
+          }
+        ]
+      },
+      "performance_types": [
+        "Areal_Capacity",
+        "First_Lithiation_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 53.8,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "a high areal capacity of 53.8 mathrm - 2"
+          }
+        ],
+        "First_Lithiation_Capacity": [
+          {
+            "value": 2001.5,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "specific capacity of sim 2001.5 mathrm mathrm bar h g - 1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Coin cells tests were performed with CR2016-type coin cells, and polypropylene film Celgard 2400 was used as the separator in all cells. For half cells, Cu foil, mathrm mathrm / , and CM/NC NWA were a",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "electrode_config": "half_cell",
+          "separator": "Celgard 2400",
+          "electrolyte": "1 M LiTFSI in 1,3-dioxolane (DOL)/dimethoxyethane (DME) 1:1 (v/v) with 2% LiNO3",
+          "reference_electrode": "Li foil",
+          "test_method": "Galvanostatic cycling; EIS (frequency range 0.01 - 10^5 Hz)"
+        },
+        {
+          "condition_id": "C009",
+          "electrode_config": "symmetric_cell",
+          "separator": "Celgard 2400",
+          "electrolyte": "1 M LiTFSI in 1,3-dioxolane (DOL)/dimethoxyethane (DME) 1:1 (v/v) with 2% LiNO3",
+          "test_method": "Galvanostatic cycling; EIS (frequency range 0.01 - 10^5 Hz)"
+        },
+        {
+          "condition_id": "C010",
+          "electrode_config": "full-cell (coin)",
+          "separator": "Celgard 2400",
+          "electrolyte": "commercial 1 M LiPF6 in ethylene carbonate/dimethyl carbonate 1:1 (v/v)",
+          "mass_loading": {
+            "value": 1.3,
+            "unit": "mg/cm2"
+          },
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.0,
+            "unit": "V"
+          },
+          "test_method": "Galvanostatic cycling"
+        },
+        {
+          "condition_id": "C011",
+          "electrode_config": "full-cell (flexible pouch)",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "For further exploration of the dynamic behavior of the CCZnO/NCLi electrode, EIS test was conducted for the CCZnO/NCLi and bare Li electrodes before and after 100 cycles Fig. 4e, f. Fig. S13 illustrat",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "test_method": "EIS",
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C013",
+          "test_method": "EIS",
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "max": 1,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling (CE measurement)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct",
+        "Initial_Coulombic_Efficiency",
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 46,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "Before cycling, given the highly reactive nature of Li, a native SEI layer formed on the surface of the Li anode surface... interfacial resistance of the bare Li electrode decreased from sim 46 to sim 8 Omega"
+          },
+          {
+            "value": 8,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "After 100 cycles, the interfacial resistance of the bare Li electrode decreased from sim 46 to sim 8 Omega"
+          },
+          {
+            "value": 31,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "the mathrm mathrm / mathrm composite anode consistently presented low R mathrm f values before and after cycling, sim 31 Omega before cycling and sim 5 Omega after 100 cycles"
+          },
+          {
+            "value": 5,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "... sim 5 Omega after 100 cycles"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 61.6,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "As shown in Fig. 4g, the initial CE of mathrm mathrm / 61.6 % 1 was lower than that of Cu foil 76.0 %"
+          },
+          {
+            "value": 76.0,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "the initial CE of mathrm mathrm / 61.6 % 1 was lower than that of Cu foil 76.0 %"
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.7,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "The average CE of mathrm mathrm / remained around 99.7 % for over 500 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "CCZnO/NCLiLFP pouch cells were fabricated to verify the flexibility of CCZnO/NCLi. At 0.2 mathrm C , , the flexible CCZnO/NCLiLFP cell showed a high initial discharge capacity of 154.5 mathrm - 1 . Af",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "C"
+          },
+          "cycle_number": 1,
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "cycle_number": 40,
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": {
+          "value": 154.5,
+          "unit": "mAh/g",
+          "condition_id": "C001",
+          "source_text": "the flexible CCZnO/NCLiLFP cell showed a high initial discharge capacity of 154.5 mAh g^{-1} at 0.2 C"
+        },
+        "Capacity_Retention_at_Nth_Cycle": {
+          "value": 94.8,
+          "unit": "%",
+          "condition_id": "C002",
+          "cycle_number": 40,
+          "source_text": "After increasing the rate to 0.5 C and continuous running until the 40th cycle, a capacity retention of 94.8 % was achieved Fig. 8a, b."
+        }
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The CCZnO/NCLi and bare Li electrodes were assembled into symmetric cells to further evaluate the cycling stability and fluctuation of the overpotential via galvanostatic charge/discharge measurement.",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "areal_capacity": {
+            "value": 1.0,
+            "unit": "mAh/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "areal_capacity": {
+            "value": 1.0,
+            "unit": "mAh/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 10.0,
+            "unit": "mA/cm2"
+          },
+          "areal_capacity": {
+            "value": 1.0,
+            "unit": "mAh/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "areal_capacity": {
+            "value": 1.0,
+            "unit": "mAh/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "areal_capacity": {
+            "value": 1.0,
+            "unit": "mAh/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "unit": "mA/cm2"
+          },
+          "areal_capacity": {
+            "value": 5.0,
+            "unit": "mAh/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential",
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 29,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "The overpotential of mathrm mathrm / NCLi was sim 29 mathrm 5th"
+          },
+          {
+            "value": 17,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "The overpotential of mathrm mathrm / NCLi was ... 17 mathrm 500th"
+          },
+          {
+            "value": 38,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "the bare Li electrode 38 mathrm 5th"
+          },
+          {
+            "value": 74,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "the bare Li electrode ... 74 mathrm 500th"
+          },
+          {
+            "value": 16,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "the CCZnO/NCLi electrode achieved a stable cycling performance over 1000 mathrm h and possessed an ultra-low voltage hysteresis of sim 16 mathrm without evident fluctuation."
+          },
+          {
+            "value": 19,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "the overpotential of the mathrm mathrm / mathrm electrode was 19 mathrm at 5 mathrm mathrm - 2"
+          },
+          {
+            "value": 187,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "The overpotential of the bare Li electrode gradually increased to mathrm sim 187 mathrm at 5 mathrm - 2"
+          },
+          {
+            "value": 90,
+            "unit": "mV",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 10.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "the overpotential of the mathrm mathrm / mathrm electrode was ... 90 mathrm at 10 mathrm - 2"
+          },
+          {
+            "value": 216,
+            "unit": "mV",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 10.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "the bare Li electrode ... sim 216 mathrm at 10 mathrm - 2"
+          },
+          {
+            "value": 17,
+            "unit": "mV",
+            "condition_id": "C004",
+            "current_density_mA_cm2": 0.5,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "The mathrm mathrm / mathrm electrode exhibited the low overpotentials of 17 ... at the current densities of 0.5 ... mathrm - 2 , respectively Fig. 4d."
+          },
+          {
+            "value": 20,
+            "unit": "mV",
+            "condition_id": "C005",
+            "current_density_mA_cm2": 1.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "The mathrm mathrm / mathrm electrode exhibited the low overpotentials of ... 20 ... at the current densities of ... 1 ... mathrm - 2 , respectively Fig. 4d."
+          },
+          {
+            "value": 31,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "The mathrm mathrm / mathrm electrode exhibited the low overpotentials of ... 31 ... at the current densities of ... 2 ... mathrm - 2 , respectively Fig. 4d."
+          },
+          {
+            "value": 60,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "The mathrm mathrm / mathrm electrode exhibited the low overpotentials of ... 60 ... at the current densities of ... 5 ... mathrm - 2 , respectively Fig. 4d."
+          },
+          {
+            "value": 98,
+            "unit": "mV",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 10.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "The mathrm mathrm / mathrm electrode exhibited the low overpotentials of ... 98 ... at the current densities of ... 10 ... mathrm - 2 , respectively Fig. 4d."
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 1000,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "the CCZnO/NCLi electrode achieved a stable cycling performance over 1000 mathrm h"
+          },
+          {
+            "value": 800,
+            "unit": "h",
+            "condition_id": "C006",
+            "source_text": "When the plating/stripping capacity was increased to 5 mathrm - 2 , the CCZnO/NCLi electrode can still stably run over 800 mathrm h"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To explore the Li plating/stripping behavior and CE of the 3D CM/NC NWA host, we assembled half cells by pairing a CM/NC NWA electrode with a Li foil electrode. Fig. 6i presents the voltage-capacity c",
+      "conditions": [
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic plating"
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": 10.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "cycle_number": 400,
+          "test_method": "Coulombic efficiency measurement"
+        },
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": 10.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Li_Nucleation_Overpotential",
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 44.9,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "The CM/NC NWA electrode showed a reduced nucleation overpotential of 44.9 mV, which implies a small nucleation barrier on its surface."
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 97.95,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "The CM/NC NWA electrode can maintain a stable cyclic property with an average CE value of 97.95 % for more than 400 cycles"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 180,
+            "unit": "h",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 10.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "the CM/NC NWALi composite electrode exhibited a prolonged cyclic life for over 180 h with a smaller voltage hysteresis"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "曾立艳, 周婷, 许希军, 李方坤, 沈家东, 张德超, 刘军 , 朱敏 摘要 对高续航里程车型的追求使锂金属电池LMBs再次引起研究人员的关注. 然而, 锂金属负极在循环过程中会出现不可控的锂枝晶形成和无限大的体积变化, 阻碍了其实际应用. 为了解决这些棘手问题, 本文采用一种金属有机框架MOF衍生路线, 在不同的基底如碳布和铜网上通用地构建出亲锂三维骨架, 以实现无枝晶锂金属负极. 作为一个典",
+      "conditions": [
+        {
+          "condition_id": "C026",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential",
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 19,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 5.0,
+            "source_text": "19 mathrm"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 1000,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "稳定循环超过1000次"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To further verify the potential of composite lithium anodes for commercial applications, we measured the relevant electrochemical performance in full cells with the LFP cathode. At 1 C, the LiLFP and ",
+      "conditions": [
+        {
+          "condition_id": "C027",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 1,
+          "electrode_config": "full cell with LFP cathode",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C028",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "cycle_number": 800,
+          "electrode_config": "full cell with LFP cathode",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C029",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "electrode_config": "full cell with LFP cathode",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C030",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 250,
+          "electrode_config": "full cell with LFP cathode",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": ">135",
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "At 1 C, the LiLFP and … cells exhibited capacities above 135 mAh g^{-1} in the 1st cycle"
+          },
+          {
+            "value": 127,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "capacity of CCZnO/NCLiLFP cell can still reach a capacity of 127 mAh g^{-1} at 5 C"
+          },
+          {
+            "value": 92,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "a value of 92 mAh g^{-1} is observed for the bare LiLFP cell"
+          },
+          {
+            "value": 113,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "CCZnO/NCLiLFP cell … capacity of 113 mAh g^{-1} retained after 800 cycles"
+          },
+          {
+            "value": 125.7,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "CM/NC NWALiLFP still showed a high capacity of 125.7 mAh g^{-1} after 250 cycles at 1 C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

@@ -1,0 +1,901 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.electacta.2025.147993.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/j.electacta.2025.147993",
+  "doi": "10.1016/j.electacta.2025.147993",
+  "material_id": "10.1016_j.electacta.2025.147993",
+  "meta": {
+    "meta_title": "PILs-E ionic liquids enable stable interfacial membranes for high performance an",
+    "meta_authors": "Xuhai Pan a,b,\\* , Tianwei Huang a , Zhixiang Chen a , Yahong Liu a , Hao Shen c , Min Hua a ,\\*",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v)",
+      "short_name": "CE",
+      "formula": "1M LiPF6 EC/DMC/EMC (1:1:1)",
+      "role": "baseline",
+      "description": "commercial carbonate electrolyte baseline",
+      "material_id": "10.1016_j.electacta.2025.147993_M001"
+    },
+    {
+      "name": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 10 wt% BMPTFSI",
+      "short_name": "PILs-E10",
+      "formula": "1M LiPF6 EC/DMC/EMC + 10 wt% BMPTFSI",
+      "role": "comparison",
+      "description": "binary electrolyte with 10 wt% BMPTFSI ionic liquid",
+      "material_id": "10.1016_j.electacta.2025.147993_M002"
+    },
+    {
+      "name": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 20 wt% BMPTFSI",
+      "short_name": "PILs-E20",
+      "formula": "1M LiPF6 EC/DMC/EMC + 20 wt% BMPTFSI",
+      "role": "comparison",
+      "description": "binary electrolyte with 20 wt% BMPTFSI ionic liquid",
+      "material_id": "10.1016_j.electacta.2025.147993_M003"
+    },
+    {
+      "name": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 30 wt% BMPTFSI",
+      "short_name": "PILs-E30",
+      "formula": "1M LiPF6 EC/DMC/EMC + 30 wt% BMPTFSI",
+      "role": "novel",
+      "description": "optimized binary electrolyte with 30 wt% BMPTFSI ionic liquid",
+      "material_id": "10.1016_j.electacta.2025.147993_M004"
+    },
+    {
+      "name": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 40 wt% BMPTFSI",
+      "short_name": "PILs-E40",
+      "formula": "1M LiPF6 EC/DMC/EMC + 40 wt% BMPTFSI",
+      "role": "comparison",
+      "description": "binary electrolyte with 40 wt% BMPTFSI ionic liquid",
+      "material_id": "10.1016_j.electacta.2025.147993_M005"
+    }
+  ],
+  "n_materials": 5,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: Electrolyte number; Composition of electrolyte\nRows:\nRow 1: Electrolyte number = CE; Composition of electrolyte = 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v)\nRow 2: Electrolyte number = [BMP]TFSI-10 %; Composition of electrolyte = 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v)+ 10 % [BMP]TFSI\nRow 3: Electrolyte number = [BMP]TFSI-20 %; Composition of electrolyte = 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v)+ 20 % [BMP]TFSI\nRow 4: Electrolyte number = [BMP]TFSI-30 %; Composition of electrolyte = 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v)+ 30 % [BMP]TFSI\nRow 5: Electrolyte number = [BMP]TFSI-40 %; Composition of electrolyte = 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v)+ 40 % [BMP]TFSI\nRow 6: Electrolyte number = [BMP]TFSI-60 %; Composition of electrolyte = 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v)+ 60 % [BMP]TFSI\nRow 7: Electrolyte number = [BMP]TFSI-80 %; Composition of electrolyte = 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v)+ 80 % [BMP]TFSI\nRow 8: Electrolyte number = [BMP]TFSI-100 %; Composition of electrolyte = 100 % [BMP]TFSI\nColumn data:\n  Electrolyte number: CE; [BMP]TFSI-10 %; [BMP]TFSI-20 %; [BMP]TFSI-30 %; [BMP]TFSI-40 %; [BMP]TFSI-60 %; [BMP]TFSI-80 %; [BMP]TFSI-100 %\n  Composition of electrolyte: 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v); 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v)+ 10 % [BMP]TFSI; 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v)+ 20 % [BMP]TFSI; 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v)+ 30 % [BMP]TFSI; 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v)+ 40 % [BMP]TFSI; 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v)+ 60 % [BMP]TFSI; 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v)+ 80 % [BMP]TFSI; 100 % [BMP]TFSI",
+    "TABLE DATA BLOCK\nHeaders: Electrolyte number; CE-0.5C; PILs-E30–0.5 C; CE-2C; PILs-E30–2 C\nRows:\nRow 1: Electrolyte number = Initial Discharge Capacity (mAh g $^{-1}$ ); CE-0.5C = 125.3; PILs-E30–0.5 C = 125.6; CE-2C = 137.2; PILs-E30–2 C = 131.0\nRow 2: Electrolyte number = Discharge Capacity at 25th cycle (mAh g $^{-1}$ ); CE-0.5C = 106.3; PILs-E30–0.5 C = 118.8; CE-2C = 107.2; PILs-E30–2 C = 106.5\nRow 3: Electrolyte number = Discharge Capacity at 50th cycle (mAh g $^{-1}$ ); CE-0.5C = 79.7; PILs-E30–0.5 C = 108.5; CE-2C = 65.2; PILs-E30–2 C = 90.6\nRow 4: Electrolyte number = Capacity Retention at 25th cycle( %); CE-0.5C = 77.5; PILs-E30–0.5 C = 95.2; CE-2C = 81.6; PILs-E30–2 C = 81.3\nRow 5: Electrolyte number = Capacity Retention at 50th cycle( %); CE-0.5C = 58.2; PILs-E30–0.5 C = 90.8; CE-2C = 47.5; PILs-E30–2 C = 69.2\nColumn data:\n  Electrolyte number: Initial Discharge Capacity (mAh g $^{-1}$ ); Discharge Capacity at 25th cycle (mAh g $^{-1}$ ); Discharge Capacity at 50th cycle (mAh g $^{-1}$ ); Capacity Retention at 25th cycle( %); Capacity Retention at 50th cycle( %)\n  CE-0.5C: 125.3; 106.3; 79.7; 77.5; 58.2\n  PILs-E30–0.5 C: 125.6; 118.8; 108.5; 95.2; 90.8\n  CE-2C: 137.2; 107.2; 65.2; 81.6; 47.5\n  PILs-E30–2 C: 131.0; 106.5; 90.6; 81.3; 69.2",
+    "TABLE DATA BLOCK\nHeaders: Electrolyte number; CE; PILs-E30\nRows:\nRow 1: Electrolyte number = Initial Discharge Capacity (mAh g $^{-1}$ ); CE = 117.9; PILs-E30 = 123.7\nRow 2: Electrolyte number = Discharge Capacity at 50th cycle (mAh g $^{-1}$ ); CE = 113.7; PILs-E30 = 121.6\nRow 3: Electrolyte number = Discharge Capacity at 100th cycle (mAh g $^{-1}$ ); CE = 110.0; PILs-E30 = 120.6\nRow 4: Electrolyte number = Discharge Capacity at 200th cycle (mAh g $^{-1}$ ); CE = 98.6; PILs-E30 = 117.5\nRow 5: Electrolyte number = Capacity Retention at 50th cycle( %); CE = 96.5; PILs-E30 = 98.3\nRow 6: Electrolyte number = Capacity Retention at 100th cycle( %); CE = 93.3; PILs-E30 = 97.5\nRow 7: Electrolyte number = Capacity Retention at 200th cycle( %); CE = 83.7; PILs-E30 = 95.0\nColumn data:\n  Electrolyte number: Initial Discharge Capacity (mAh g $^{-1}$ ); Discharge Capacity at 50th cycle (mAh g $^{-1}$ ); Discharge Capacity at 100th cycle (mAh g $^{-1}$ ); Discharge Capacity at 200th cycle (mAh g $^{-1}$ ); Capacity Retention at 50th cycle( %); Capacity Retention at 100th cycle( %); Capacity Retention at 200th cycle( %)\n  CE: 117.9; 113.7; 110.0; 98.6; 96.5; 93.3; 83.7\n  PILs-E30: 123.7; 121.6; 120.6; 117.5; 98.3; 97.5; 95.0"
+  ],
+  "n_items": 18,
+  "items": [
+    {
+      "paragraph": "Electrolyte viscosity is a key factor governing battery performance as it directly influences ion diffusion kinetics. The strong Coulombic interactions within ionic liquids result in significant van d",
+      "property_types": [
+        "Viscosity"
+      ],
+      "extracted_info": {
+        "Viscosity": [
+          {
+            "value": 2.85,
+            "unit": "mPa·s",
+            "source_text": "at a BMPTFSI content of 20 %, the viscosity is measured at 2.85 mPa⋅s."
+          },
+          {
+            "value": 3.84,
+            "unit": "mPa·s",
+            "source_text": "When the content is increased to 30 %, the viscosity remains relatively low at 3.84 mPa⋅s."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In this study, the elemental content and composition of the CEI film of the positive cells before and after cycling were analyzed using an ESCALAB 250Xi instrument from Thermo Fisher, USA. All samples",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "cycle_number": 200
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "All the batteries used in this study were coin cell type CR2032. All the electrode sheets were experimentally homemade. Each electrode sheet was configured using the cathode active material, the binde",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrode_config": "half_cell",
+          "electrolyte": "binary electrolyte"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In order to determine the effect of electrolyte viscosity on electrochemical properties, a rotational viscometer NDJ-9S, China was used in this study to test the viscosity of binary electrolytes with ",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "rotational viscometer"
+        }
+      ],
+      "property_types": [
+        "Viscosity"
+      ],
+      "extracted_info": {
+        "Viscosity": [
+          {
+            "unit": "mPa·s",
+            "temperature_C": 25,
+            "source_text": "In order to determine the effect of electrolyte viscosity on electrochemical properties, a rotational viscometer NDJ-9S, China was used in this study to test the viscosity of binary electrolytes with different ratios. The experimental temperature was 25 circ mathrm C at room temperature and the rotational speed was 60 mathrm r mathrm - 1 ."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In this study, electrochemical impedance spectroscopy EIS indirect measurement method was used. The working electrode of the test cell was selected as a stainless steel disc, and a stainless steel dis",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "stainless steel disc",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In contrast, the electrode cycled in the PILs-E30 electrolyte developed a smooth, dense, and gel-like layer after 30 cycles Figs. 3d-f. The SEI film exhibits a smooth and uniform morphology, devoid of",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 30 wt% BMPTFSI",
+          "cycle_number": 30,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The chemical composition of the surface films formed on the metal anode was analyzed using X-ray photoelectron spectroscopy XPS, as shown in Fig. 4. In the C 1 s spectra Figures a and b, peaks at 284.",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 30 wt% BMPTFSI",
+          "test_method": "XPS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The long-term cycling performance of NCM111Li half-cells employing the PILs-E30 binary electrolyte was evaluated and compared with that of the commercial electrolyte CE. Figs. 2b-c and 2e-f present th",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "cycle_number": 50,
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) (CE)"
+        },
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "cycle_number": 50,
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 30 wt% BMPTFSI (PILs-E30)"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "C"
+          },
+          "cycle_number": 50,
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) (CE)"
+        },
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "C"
+          },
+          "cycle_number": 50,
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 30 wt% BMPTFSI (PILs-E30)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency",
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 58.5,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C001",
+            "source_text": "The initial Coulombic efficiencies ICE for the CE- and PILs-E30-based cells at 0.5 C were 58.5 % and 74.8 %, respectively."
+          },
+          {
+            "value": 74.8,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C002",
+            "source_text": "The initial Coulombic efficiencies ICE for the CE- and PILs-E30-based cells at 0.5 C were 58.5 % and 74.8 %, respectively."
+          },
+          {
+            "value": 52.1,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C003",
+            "source_text": "At the higher rate of 2 C, the ICE values were 52.1 % and 72.5 %, respectively."
+          },
+          {
+            "value": 72.5,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C004",
+            "source_text": "At the higher rate of 2 C, the ICE values were 52.1 % and 72.5 %, respectively."
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 47.5,
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C003",
+            "source_text": "the CE-based cell suffered from severe capacity decay, dropping from 137.2 mAh g⁻¹ to 65.2 mAh g⁻¹ over 50 cycles, corresponding to a capacity retention of merely 47.5 %."
+          },
+          {
+            "value": 69.2,
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C004",
+            "source_text": "the PILs-E30-based cell ... discharge capacity declining from 131.0 mAh g⁻¹ to 90.6 mAh g⁻¹, achieving a capacity retention of 69.2 %."
+          }
+        ]
+      },
+      "condition_id": "C004"
+    },
+    {
+      "paragraph": "Content wt% Content wt% Content wt% Voltage vs Lithium To assess the compatibility of the commercial electrolyte CE and the PILs-E30 binary electrolyte with a ternary lithium cathode NCM111, NCM111Li ",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "electrode_config": "half-cell (NCM111 vs Li)",
+          "reference_electrode": "Li/Li+",
+          "cycle_number": 100,
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v)",
+          "test_method": "galvanostatic charge/discharge cycling, EIS"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "electrode_config": "half-cell (NCM111 vs Li)",
+          "reference_electrode": "Li/Li+",
+          "cycle_number": 100,
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC + 30 wt% BMPTFSI",
+          "test_method": "galvanostatic charge/discharge cycling, EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Charge_Transfer_Resistance"
+      ],
+      "performance_info": {
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 123,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "The charge transfer resistance Rct of the CE-based cell decreased from 123 Ω to 103 Ω after cycling."
+          },
+          {
+            "value": 103,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "The charge transfer resistance Rct of the CE-based cell decreased from 123 Ω to 103 Ω after cycling."
+          },
+          {
+            "value": 134,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 0,
+            "source_text": "the PILs-E30-based cell exhibited a more pronounced decrease, from 134 Ω to 81 Ω."
+          },
+          {
+            "value": 81,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "the PILs-E30-based cell exhibited a more pronounced decrease, from 134 Ω to 81 Ω."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In this study, the ionic conductivity of the commercial electrolyte CE and binary electrolytes with varying ratios of PILs-Es was determined using electrochemical impedance spectroscopy EIS. The relat",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v)",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C014",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC + 10 wt% BMPTFSI",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C015",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC + 20 wt% BMPTFSI",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C016",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC + 30 wt% BMPTFSI",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C017",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v)",
+          "test_method": "LSV"
+        },
+        {
+          "condition_id": "C018",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC + 30 wt% BMPTFSI",
+          "test_method": "LSV"
+        },
+        {
+          "condition_id": "C019",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC + 40 wt% BMPTFSI",
+          "test_method": "LSV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Anodic_Stability_Onset_Potential"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 0.465,
+            "unit": "mS/cm",
+            "condition_id": "C001",
+            "source_text": "4.65 times 10 - 1 ¹ mS cm⁻¹"
+          },
+          {
+            "value": 0.466,
+            "unit": "mS/cm",
+            "condition_id": "C001",
+            "source_text": "4.66 times 10 - 1 mS cm⁻¹"
+          },
+          {
+            "value": 0.514,
+            "unit": "mS/cm",
+            "condition_id": "C002",
+            "source_text": "5.14 × 10⁻¹ mS cm⁻¹"
+          },
+          {
+            "value": 0.593,
+            "unit": "mS/cm",
+            "condition_id": "C003",
+            "source_text": "5.93 times 10 - 1 mS mathrm - 1"
+          },
+          {
+            "value": 0.656,
+            "unit": "mS/cm",
+            "condition_id": "C004",
+            "source_text": "6.56 times 10 - 1 mS cm⁻¹"
+          }
+        ],
+        "Anodic_Stability_Onset_Potential": [
+          {
+            "value": 4.22,
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C005",
+            "source_text": "the CE begins to oxidize at 4.22 V"
+          },
+          {
+            "value": 5.0,
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C006",
+            "source_text": "the decomposition onset for both PILs-E30 and PILs-E40 is shifted to above 5 V"
+          },
+          {
+            "value": 5.0,
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C007",
+            "source_text": "the decomposition onset for both PILs-E30 and PILs-E40 is shifted to above 5 V"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In conclusion, this study demonstrates that the incorporation of BMPTFSI ionic liquid facilitates the formation of a more stable solid electrolyte interphase SEI, significantly suppresses the decompos",
+      "conditions": [
+        {
+          "condition_id": "C020",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 30 wt% BMPTFSI (PILs-E30)",
+          "cycle_number": 200,
+          "electrode_config": "full cell (LiFePO4||Graphite)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 95.0,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C001",
+            "source_text": "The cell retains a specific discharge capacity of 117.5 mAh g⁻¹, corresponding to a capacity retention of 95.0 %"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 100.0,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C001",
+            "source_text": "while maintaining a near-100 % Coulombic efficiency"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The electrochemical performance of the optimized PILs-E30 binary electrolyte was further evaluated in LiFePO₄Graphite full cells to verify its practical compatibility and performance in a representati",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 200,
+          "electrode_config": "full cell (LiFePO₄||Graphite)",
+          "test_method": "galvanostatic cycling",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) (baseline CE)"
+        },
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 200,
+          "electrode_config": "full cell (LiFePO₄||Graphite)",
+          "test_method": "galvanostatic cycling",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 30 wt% BMPTFSI (PILs-E30)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability",
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Rate_Capability": [],
+        "Coulombic_Efficiency": []
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Electrolyte number; Composition of electrolyte\nRows:\nRow 1: Electrolyte number = CE; Composition of electrolyte = 1M  $LiPF_{6}$ /DMC:EMA:EC(1:1:1,v/v/v)\nRow 2: Electrolyte n",
+      "conditions": [
+        {
+          "condition_id": "C023",
+          "electrolyte": "1M LiPF6 in DMC:EMA:EC (1:1:1, v/v/v)"
+        },
+        {
+          "condition_id": "C024",
+          "electrolyte": "1M LiPF6 in DMC:EMA:EC (1:1:1, v/v/v) + 10% BMPTFSI"
+        },
+        {
+          "condition_id": "C025",
+          "electrolyte": "1M LiPF6 in DMC:EMA:EC (1:1:1, v/v/v) + 20% BMPTFSI"
+        },
+        {
+          "condition_id": "C026",
+          "electrolyte": "1M LiPF6 in DMC:EMA:EC (1:1:1, v/v/v) + 30% BMPTFSI"
+        },
+        {
+          "condition_id": "C027",
+          "electrolyte": "1M LiPF6 in DMC:EMA:EC (1:1:1, v/v/v) + 40% BMPTFSI"
+        },
+        {
+          "condition_id": "C028",
+          "electrolyte": "1M LiPF6 in DMC:EMA:EC (1:1:1, v/v/v) + 60% BMPTFSI"
+        },
+        {
+          "condition_id": "C029",
+          "electrolyte": "1M LiPF6 in DMC:EMA:EC (1:1:1, v/v/v) + 80% BMPTFSI"
+        },
+        {
+          "condition_id": "C030",
+          "electrolyte": "100% BMPTFSI"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In order to deeply investigate the performance of mathrm 4 Graphite full battery based on PILs-E30 binary electrolyte, the charge-discharge curves were further analyzed.As shown in Fig. 5c and 5d, the",
+      "conditions": [
+        {
+          "condition_id": "C031",
+          "electrode_config": "full_cell",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v)",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C032",
+          "electrode_config": "full_cell",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 30 wt% BMPTFSI",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 0
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Voltage_Hysteresis",
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.15,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "the voltage plateau of the CE-based full cell is stabilized at 3.35 V during charging, and the discharge voltage plateau is maintained at 3.20 V, with a voltage hysteresis of 150 mV."
+          },
+          {
+            "value": 0.09,
+            "unit": "V",
+            "condition_id": "C002",
+            "source_text": "the PILs-E30-based full cell is stabilized at 3.32 V during charging, and the discharge voltage plateau is maintained at 3.21 V, which shows a smaller voltage hysteresis 90 mV"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 100,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C001",
+            "source_text": "the full battery based on the binary electrolyte composition of CE ... has a close to 100 % Coulombic efficiency"
+          },
+          {
+            "value": 100,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C002",
+            "source_text": "the full battery based on the binary electrolyte composition of ... PILs-E30 has a close to 100 % Coulombic efficiency"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "According to the Table 3, the specific capacity of the PILs-E30-based full battery remains at 117.5 mAh g - 1 after 200 charge/discharge cycles, with a capacity retention rate of 95.0 %. Its Coulombic",
+      "conditions": [
+        {
+          "condition_id": "C033",
+          "electrolyte": "PILs-E30-based electrolyte",
+          "cycle_number": 200,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge cycling"
+        },
+        {
+          "condition_id": "C034",
+          "electrolyte": "commercial carbonate electrolyte",
+          "cycle_number": 200,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 95.0,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C001",
+            "source_text": "the specific capacity of the PILs-E30-based full battery remains at 117.5 mAh g - 1 after 200 charge/discharge cycles, with a capacity retention rate of 95.0 %."
+          },
+          {
+            "value": 83.7,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C002",
+            "source_text": "its capacity even dropped from 117.9 mAh g - 1 at the beginning to 83.7 mAh g-1 , with a capacity retention rate of only 83.7 %."
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 100.0,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C001",
+            "source_text": "Its Coulombic efficiency throughout the charge/discharge cycle is also close to 100 %."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Electrolyte number; CE; PILs-E30\nRows:\nRow 1: Electrolyte number = Initial Discharge Capacity (mAh g $^{-1}$ ); CE = 117.9; PILs-E30 = 123.7\nRow 2: Electrolyte number = Disch",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 96.5,
+            "unit": "%",
+            "cycle_number": 50,
+            "source_text": "CE Capacity Retention at 50th cycle: 96.5%"
+          },
+          {
+            "value": 93.3,
+            "unit": "%",
+            "cycle_number": 100,
+            "source_text": "CE Capacity Retention at 100th cycle: 93.3%"
+          },
+          {
+            "value": 83.7,
+            "unit": "%",
+            "cycle_number": 200,
+            "source_text": "CE Capacity Retention at 200th cycle: 83.7%"
+          },
+          {
+            "value": 98.3,
+            "unit": "%",
+            "cycle_number": 50,
+            "source_text": "PILs-E30 Capacity Retention at 50th cycle: 98.3%"
+          },
+          {
+            "value": 97.5,
+            "unit": "%",
+            "cycle_number": 100,
+            "source_text": "PILs-E30 Capacity Retention at 100th cycle: 97.5%"
+          },
+          {
+            "value": 95.0,
+            "unit": "%",
+            "cycle_number": 200,
+            "source_text": "PILs-E30 Capacity Retention at 200th cycle: 95.0%"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "First, commercial electrolytes were prepared. In a glove box under a high-purity argon environment all with water-oxygen content lower than 0.1 ppm, dimethyl carbonate DMC, ethyl methyl carbonate EMC,",
+      "conditions": [
+        {
+          "condition_id": "C035"
+        },
+        {
+          "condition_id": "C036",
+          "temperature": {
+            "value": 200,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C035"
+        },
+        {
+          "condition_id": "C037",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v)"
+        },
+        {
+          "condition_id": "C037",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v)"
+        },
+        {
+          "condition_id": "C038",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 10 wt% BMPTFSI"
+        },
+        {
+          "condition_id": "C039",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 20 wt% BMPTFSI"
+        },
+        {
+          "condition_id": "C040",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 30 wt% BMPTFSI"
+        },
+        {
+          "condition_id": "C041",
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 40 wt% BMPTFSI"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Electrolyte number; CE-0.5C; PILs-E30–0.5 C; CE-2C; PILs-E30–2 C\nRows:\nRow 1: Electrolyte number = Initial Discharge Capacity (mAh g $^{-1}$ ); CE-0.5C = 125.3; PILs-E30–0.5 ",
+      "conditions": [
+        {
+          "condition_id": "C042",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v)"
+        },
+        {
+          "condition_id": "C043",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 30 wt% BMPTFSI"
+        },
+        {
+          "condition_id": "C044",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v)"
+        },
+        {
+          "condition_id": "C045",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EC/DMC/EMC (1:1:1 v/v) + 30 wt% BMPTFSI"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 77.5,
+            "unit": "%",
+            "cycle_number": 25,
+            "condition_id": "C001",
+            "source_text": "Capacity Retention at 25th cycle( %) CE-0.5C = 77.5"
+          },
+          {
+            "value": 58.2,
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C001",
+            "source_text": "Capacity Retention at 50th cycle( %) CE-0.5C = 58.2"
+          },
+          {
+            "value": 95.2,
+            "unit": "%",
+            "cycle_number": 25,
+            "condition_id": "C002",
+            "source_text": "Capacity Retention at 25th cycle( %) PILs-E30–0.5 C = 95.2"
+          },
+          {
+            "value": 90.8,
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C002",
+            "source_text": "Capacity Retention at 50th cycle( %) PILs-E30–0.5 C = 90.8"
+          },
+          {
+            "value": 81.6,
+            "unit": "%",
+            "cycle_number": 25,
+            "condition_id": "C003",
+            "source_text": "Capacity Retention at 25th cycle( %) CE-2C = 81.6"
+          },
+          {
+            "value": 47.5,
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C003",
+            "source_text": "Capacity Retention at 50th cycle( %) CE-2C = 47.5"
+          },
+          {
+            "value": 81.3,
+            "unit": "%",
+            "cycle_number": 25,
+            "condition_id": "C004",
+            "source_text": "Capacity Retention at 25th cycle( %) PILs-E30–2 C = 81.3"
+          },
+          {
+            "value": 69.2,
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C004",
+            "source_text": "Capacity Retention at 50th cycle( %) PILs-E30–2 C = 69.2"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              125.3,
+              106.3,
+              79.7
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "CE-0.5C: Initial Discharge Capacity = 125.3, Discharge Capacity at 25th cycle = 106.3, Discharge Capacity at 50th cycle = 79.7"
+          },
+          {
+            "value": [
+              125.6,
+              118.8,
+              108.5
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "PILs-E30–0.5 C: Initial Discharge Capacity = 125.6, Discharge Capacity at 25th cycle = 118.8, Discharge Capacity at 50th cycle = 108.5"
+          },
+          {
+            "value": [
+              137.2,
+              107.2,
+              65.2
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "CE-2C: Initial Discharge Capacity = 137.2, Discharge Capacity at 25th cycle = 107.2, Discharge Capacity at 50th cycle = 65.2"
+          },
+          {
+            "value": [
+              131.0,
+              106.5,
+              90.6
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "PILs-E30–2 C: Initial Discharge Capacity = 131.0, Discharge Capacity at 25th cycle = 106.5, Discharge Capacity at 50th cycle = 90.6"
+          }
+        ]
+      }
+    }
+  ]
+}

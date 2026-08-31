@@ -1,0 +1,606 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.cej.2025.161931.md",
+  "component": "cathode",
+  "paper_id": "10.1016/j.cej.2025.161931",
+  "doi": "10.1016/j.cej.2025.161931",
+  "material_id": "10.1016_j.cej.2025.161931",
+  "meta": {
+    "meta_title": "Pore microstructure and mass transfer dynamics in thick electrodes for high ener",
+    "meta_authors": "Bowei Li a,b , Shanfeng Wang d , Pan He c,\\* , Zhenyao Huang a , Bo Mai a , Xia Zhang f Yuhang Chen a , Yuehua Wen a , Xiaqing Ran a , Chunhua Han a , Ingo Manke f , Kang Dong b, , Mengyu Yan a,e,\\*",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "cathode material",
+      "short_name": "10.1016_j.cej.2025.161931",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.cej.2025.161931"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 11,
+  "items": [
+    {
+      "paragraph": "Based on the aforementioned studies, it is hypothesized that the majority of active particles near the current collector are less likely to fully participate in the electrochemical reaction due to wea",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To investigate the impact of electrode thickness on redox heterogeneity, LCO particles near the current collector from both LMLE and HMLEs were extracted using focused ion beam-SEM Fig. S7 followed by",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "cycle_number": 100,
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Under near-practical conditions, the electrolyte-to-cathode capacity ratio E/C was controlled at 5 μL/mAh with a current density of 0.1C Fig. 3e. At this low E/C ratio, the initial specific capacity o",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Under near-practical conditions, the electrolyte-to-cathode capacity ratio E/C was controlled at 5 μL/mAh with a current density of 0.1C Fig. 3e. At this low E/C ratio, the initial specific capacity o",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "electrolyte": "Electrolyte-to-cathode capacity ratio E/C controlled at 5 μL/mAh (thin electrolyte condition)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "electrolyte": "Higher initial electrolyte volume of approximately 150 μL (excess electrolyte condition)",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "At this low E/C ratio, the initial specific capacity of HMLE decreased significantly compared to measurements with a higher initial electrolyte volume of approximately 150 μL, whereas the capacity of LMLE remained essentially unchanged."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Multi-scale imaging techniques including synchrotron micro-CT, nano-scale TXM-XANES, and ToF-SIMS, were employed to investigate the pore microstructure, mass dynamic transfer in thick mathrm 2 electro",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "mass_loading": {
+            "value": 20,
+            "unit": "mg/cm2"
+          }
+        },
+        {
+          "condition_id": "C007",
+          "mass_loading": {
+            "value": 50,
+            "unit": "mg/cm2"
+          }
+        },
+        {
+          "condition_id": "C008",
+          "mass_loading": {
+            "value": 20,
+            "unit": "mg/cm2"
+          },
+          "electrode_thickness": {
+            "value": 68,
+            "unit": "μm"
+          },
+          "electrolyte": "lean-electrolyte, 5 μL/mAh"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 80,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "decline in capacity retention rate from 80 % to 14 %"
+          },
+          {
+            "value": 14,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "decline in capacity retention rate from 80 % to 14 %"
+          },
+          {
+            "value": 23,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "the capacity retention of 68 μm electrodes decreases from 80 % to 23 % when decreasing the electrolyte to 5 μL/mAh"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To investigate the impact of electrode thickness on redox heterogeneity, LCO particles near the current collector from both LMLE and HMLEs were extracted using focused ion beam-SEM Fig. S7 followed by",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "cycle_number": 100,
+          "test_method": "TXM-XANES (focused ion beam-SEM, spectro-tomography)"
+        }
+      ],
+      "property_types": [
+        "Element_Valence_State"
+      ],
+      "extracted_info": {
+        "Element_Valence_State": [
+          {
+            "value": {},
+            "unit": "oxidation state",
+            "state": "delithiated, after 100 cycles",
+            "method": "TXM-XANES",
+            "source_text": "To investigate the impact of electrode thickness on redox heterogeneity, LCO particles near the current collector from both LMLE and HMLEs were extracted using focused ion beam-SEM Fig. S7 followed by spectro-tomographic scans over the absorption K-edge of the Co element, namely TXM-XANES. This technique enables nanoscale, threedimensional spatial resolution of the local valence state of the Co element. As shown in Fig. 4a-c, the particle from the HMLE exhibits significantly higher valence inhomogeneity of Co element. Clearly, local area with high Co valence exists at the edge of the particle from HML electrode, which is further confirmed by the XANES plots in Fig. 4d obtained over the area in Fig. S839. Since the electrodes were cycled 100 times and analyzed in their delithiated states, the overall higher Co valence in the HMLE particle indicates reduced redox homogeneity."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "LiCoO LCO electrodes were made by blading coating followed by a calendaring process to achieve a desired tap density see methods. The mass loading of the low-mass loading electrode LMLE and high-mass ",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "mass_loading": {
+            "value": 20,
+            "unit": "mg/cm2"
+          },
+          "electrode_thickness": {
+            "value": 68,
+            "unit": "μm"
+          },
+          "electrode_porosity": {
+            "value": 0.213
+          }
+        },
+        {
+          "condition_id": "C011",
+          "mass_loading": {
+            "value": 50,
+            "unit": "mg/cm2"
+          },
+          "electrode_thickness": {
+            "value": 190,
+            "unit": "μm"
+          },
+          "electrode_porosity": {
+            "value": 0.115
+          }
+        }
+      ],
+      "property_types": [
+        "Secondary_Particle_Size_Distribution"
+      ],
+      "extracted_info": {
+        "Secondary_Particle_Size_Distribution": [
+          {
+            "value": {
+              "D50": 12
+            },
+            "unit": "μm",
+            "source_text": "commercial LiCoO2 particles were employed with particle size around 12 μm Fig. 1c."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The rate performance of LMLE and HMLE batteries, tested at increasing rates from 0.1C to 3C, is shown in Fig. 3f. LiLMLE cells deliver discharge capacities of 221, 217.5, 193, 152, 37, and 15 mAh/g at",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": "0.1-3",
+            "unit": "C"
+          },
+          "test_method": "galvanostatic rate test",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C013",
+          "test_method": "EIS",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "cycle_number": 1
+        },
+        {
+          "condition_id": "C014",
+          "test_method": "EIS",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C015",
+          "test_method": "EIS",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "cycle_number": 0
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_Profile",
+        "Discharge_Specific_Capacity_Initial",
+        "Charge_Transfer_Resistance"
+      ],
+      "performance_info": {
+        "Rate_Capability_Profile": [
+          {
+            "value": [
+              221,
+              217.5,
+              193,
+              152,
+              37,
+              15
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "LiLMLE cells deliver discharge capacities of 221, 217.5, 193, 152, 37, and 15 mAh/g at rates of 0.1, 0.2, 0.5, 1, 2, and 3C, respectively."
+          },
+          {
+            "value": [
+              198,
+              172,
+              102,
+              14,
+              0.02,
+              0.02
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "LiHMLE cells, in comparison, provide corresponding capacities of 198, 172, 102, 14, 0.02, and 0.02 mAh/g."
+          }
+        ],
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 221,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "LiLMLE cells deliver discharge capacities of 221 mAh/g at 0.1C"
+          },
+          {
+            "value": 198,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "LiHMLE cells provide corresponding capacities of 198 mAh/g at 0.1C"
+          }
+        ],
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 95.9,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 1,
+            "source_text": "After one cycle, the Rct of the Li LMLE is 95.9 Ω"
+          },
+          {
+            "value": 122.3,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 1,
+            "source_text": "HMLE battery 122.3 Ω."
+          },
+          {
+            "value": 128.1,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "cycle_number": 100,
+            "source_text": "After 100 cycles, the Rct increases to 128.1 Ω for LMLE"
+          },
+          {
+            "value": 149.7,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "cycle_number": 100,
+            "source_text": "HMLE’s 149.7 Ω."
+          },
+          {
+            "value": 390.9,
+            "unit": "Ω",
+            "condition_id": "C004",
+            "cycle_number": 0,
+            "source_text": "Additional EIS tests on pristine batteries ... revealed resistances of 390.9 Ω for LMLE"
+          },
+          {
+            "value": 630.9,
+            "unit": "Ω",
+            "condition_id": "C004",
+            "cycle_number": 0,
+            "source_text": "630.9 Ω for HMLE."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "LiCoO LCO electrodes were made by blading coating followed by a calendaring process to achieve a desired tap density see methods. The mass loading of the low-mass loading electrode LMLE and high-mass ",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "mass_loading": {
+            "value": 20,
+            "unit": "mg/cm2"
+          },
+          "electrode_thickness": {
+            "value": 68,
+            "unit": "µm"
+          },
+          "electrode_porosity": {
+            "value": 0.213
+          }
+        },
+        {
+          "condition_id": "C017",
+          "mass_loading": {
+            "value": 50,
+            "unit": "mg/cm2"
+          },
+          "electrode_thickness": {
+            "value": 190,
+            "unit": "µm"
+          },
+          "electrode_porosity": {
+            "value": 0.115
+          }
+        }
+      ],
+      "property_types": [
+        "Secondary_Particle_Size_Distribution",
+        "Chemical_Composition_Mole_Fractions"
+      ],
+      "extracted_info": {
+        "Secondary_Particle_Size_Distribution": [
+          {
+            "value": {
+              "D50": 12
+            },
+            "unit": "μm",
+            "source_text": "commercial LiCoO2 particles were employed with particle size around 12 μm Fig. 1c."
+          }
+        ],
+        "Chemical_Composition_Mole_Fractions": [
+          {
+            "value": {
+              "Li": 0.5,
+              "Co": 0.5
+            },
+            "unit": "mole fraction",
+            "source_text": "commercial LiCoO2 particles were employed"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Furthermore, the tortuosity of LMLE and HMLEs was calculated according to the pore distribution from micro-CT results see Note 1 in SI. As shown in Fig. 2a, the tortuosity of the HMLE is 1.77, which i",
+      "conditions": [
+        {
+          "condition_id": "C018",
+          "electrode_config": "symmetric_cell",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C019",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ion_Diffusion_Coefficient",
+        "Charge_Transfer_Resistance"
+      ],
+      "performance_info": {
+        "Ion_Diffusion_Coefficient": [
+          {
+            "value": 1.82e-08,
+            "unit": "cm2/s",
+            "condition_id": "C002",
+            "method": "GITT",
+            "source_text": "the LMLE exhibited an average solid-phase intrinsic diffusion coefficient DLi of 1.82 times 10 - 8 cm2/s"
+          },
+          {
+            "value": 1.82e-09,
+            "unit": "cm2/s",
+            "condition_id": "C002",
+            "method": "GITT",
+            "source_text": "which is 10 times that in HMLE"
+          }
+        ],
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 42.42,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "impedance plots of symmetric batteries from HMLEs display a resistance of 42.42 Ω"
+          },
+          {
+            "value": 6.21,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "which is 36.21 Ω higher than that of LMLEs"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The rate performance of LMLE and HMLE batteries, tested at increasing rates from 0.1C to 3C, is shown in Fig. 3f. LiLMLE cells deliver discharge capacities of 221, 217.5, 193, 152, 37, and 15 mAh/g at",
+      "conditions": [
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": "0.1-3C",
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "vs. Li/Li+",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C021",
+          "electrode_config": "half_cell",
+          "reference_electrode": "vs. Li/Li+",
+          "test_method": "EIS",
+          "cycle_number": 1
+        },
+        {
+          "condition_id": "C022",
+          "electrode_config": "half_cell",
+          "reference_electrode": "vs. Li/Li+",
+          "test_method": "EIS",
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C023",
+          "electrode_config": "half_cell",
+          "reference_electrode": "vs. Li/Li+",
+          "test_method": "EIS",
+          "cycle_number": 0
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_Profile",
+        "Charge_Transfer_Resistance",
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Rate_Capability_Profile": [
+          {
+            "value": [
+              221,
+              217.5,
+              193,
+              152,
+              37,
+              15
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "LiLMLE cells deliver discharge capacities of 221, 217.5, 193, 152, 37, and 15 mAh/g at rates of 0.1, 0.2, 0.5, 1, 2, and 3C, respectively."
+          },
+          {
+            "value": [
+              198,
+              172,
+              102,
+              14,
+              0.02,
+              0.02
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "LiHMLE cells, in comparison, provide corresponding capacities of 198, 172, 102, 14, 0.02, and 0.02 mAh/g."
+          }
+        ],
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 95.9,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 1,
+            "source_text": "After one cycle, the operatorname R operatorname of the Li LMLE is 95.9 Ω"
+          },
+          {
+            "value": 122.3,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 1,
+            "source_text": "After one cycle, ... lower than that of the HMLE battery 122.3 Ω."
+          },
+          {
+            "value": 128.1,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "cycle_number": 100,
+            "source_text": "After 100 cycles, the operatorname R operatorname increases to 128.1 Ω for LMLE"
+          },
+          {
+            "value": 149.7,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "cycle_number": 100,
+            "source_text": "remained lower than HMLE’s 149.7 Ω."
+          },
+          {
+            "value": 390.9,
+            "unit": "Ω",
+            "condition_id": "C004",
+            "cycle_number": 0,
+            "source_text": "Additional EIS tests on pristine batteries without sufficient standing time prior to testing Fig. S6 revealed resistances of 390.9 Ω for LMLE"
+          },
+          {
+            "value": 630.9,
+            "unit": "Ω",
+            "condition_id": "C004",
+            "cycle_number": 0,
+            "source_text": "revealed resistances of 390.9 Ω for LMLE and 630.9 Ω for HMLE."
+          }
+        ],
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 221,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "LiLMLE cells deliver discharge capacities of 221 ... at 0.1C"
+          },
+          {
+            "value": 198,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "LiHMLE cells ... provide corresponding capacities of 198 ... at 0.1C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

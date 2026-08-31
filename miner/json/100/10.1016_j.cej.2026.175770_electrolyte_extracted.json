@@ -1,0 +1,685 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.cej.2026.175770.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/j.cej.2026.175770",
+  "doi": "10.1016/j.cej.2026.175770",
+  "material_id": "10.1016_j.cej.2026.175770",
+  "meta": {
+    "meta_title": "Amine-functionalized BN reinforced gel polymer electrolyte enabling high-perform",
+    "meta_authors": "Aadheeshwaran Saminathan a,1 , Ziheng Zhang a,1 , Yu Wu a , Daiqian Chen a,\\* , Hesheng Yu a , Sankaranarayanan Krishnasamy b , Chen Yuanfu a,\\*",
+    "meta_year": "2026"
+  },
+  "materials": [
+    {
+      "name": "PVDF-HFP/LiTFSI (1:1 w/w) gel polymer electrolyte (PL-GPE)",
+      "short_name": "PL-GPE",
+      "formula": "PVDF-HFP:LiTFSI 1:1 w/w",
+      "role": "baseline",
+      "description": "Filler-free PVDF-HFP/LiTFSI gel polymer electrolyte with 1:1 weight ratio of polymer to lithium salt",
+      "material_id": "10.1016_j.cej.2026.175770_M001"
+    },
+    {
+      "name": "BN/PVDF-HFP/LiTFSI (6 wt% BN, 1:1 w/w polymer:salt) hybrid gel polymer electrolyte (BN-HGPE)",
+      "short_name": "BN-HGPE",
+      "formula": "6 wt% BN in PVDF-HFP:LiTFSI 1:1 w/w",
+      "role": "comparison",
+      "description": "Hybrid gel polymer electrolyte with 6 wt% unmodified boron nitride filler and 1:1 PVDF-HFP:LiTFSI",
+      "material_id": "10.1016_j.cej.2026.175770_M002"
+    },
+    {
+      "name": "Amine-functionalized BN/PVDF-HFP/LiTFSI (6 wt% fBN, 1:1 w/w polymer:salt) hybrid gel polymer electrolyte (fBN-HGPE)",
+      "short_name": "fBN-HGPE",
+      "formula": "6 wt% amine-functionalized BN in PVDF-HFP:LiTFSI 1:1 w/w",
+      "role": "novel",
+      "description": "Novel hybrid gel polymer electrolyte with 6 wt% amine-functionalized boron nitride filler to enhance LiTFSI dissociation and mechanical stability",
+      "material_id": "10.1016_j.cej.2026.175770_M003"
+    }
+  ],
+  "n_materials": 3,
+  "table_items": [],
+  "n_items": 20,
+  "items": [
+    {
+      "paragraph": "The schematic representation and fabrication strategy of the aminefunctionalized boron nitride-reinforced hybrid gel polymer electrolyte fBN-HGPE are depicted in Fig. 1a. The mechanical flexibility of",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "bending and folding tests"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In real-world applications, the polymer electrolytes need to be mechanically robust to endure the stress created by casual collisions 74. On this aspect, the stress-strain measurement of the hybrid GP",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "test_method": "uniaxial tensile test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "From the practical stand point, the polymer electrolyte should maintain good thermal stability to ensure reliable and safe electrochemical performance. The internal resistive heating and side reaction",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "test_method": "thermogravimetric analysis (TGA)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Interfacial stability of the hybrid GPE was evaluated at open circuit potential against LiLi symmetric cell by monitoring the impedance during different time intervals and the corresponding Nyquist pl",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Li-ion transference number is considered an essential factor in appreciating the performance of GPEs 78. Fig. 3b illustrates the chronoamperometric i-t curve and corresponding EIS spectra of the aspre",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "electrode_config": "Li|Li symmetric cells",
+          "test_method": "chronoamperometry and EIS (Li+ transference number measurement)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The fabrication of hybrid GPE was carried out under an argon-filled glove box with 0.1 ppm of mathrm O 2 and 0.1 ppm of H2O. The detailed preparation method of amine functionalized BN is presented in ",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "temperature": {
+            "value": 80,
+            "unit": "C"
+          },
+          "electrolyte": "fBN-HGPE"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "c） （e To investigate thermal-dimensional shrinkage, the as-prepared HGPEs were treated under a fast-heating process for the safe application of LMBs. Fig. 2c compares the digital photographs of the PL",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "temperature": {
+            "unit": "C"
+          },
+          "test_method": "thermal-dimensional shrinkage test (fast-heating process)"
+        }
+      ],
+      "property_types": [
+        "Melting_Point"
+      ],
+      "extracted_info": {
+        "Melting_Point": [
+          {
+            "value": 120,
+            "unit": "°C",
+            "source_text": "While the filler-free medium begins at sim 120 circ mathrm C and it is difficult to peel off melted during such treatment."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To visualize the dendrites inhibition on the anode surface, In-situ optical microscope was carried out to analyze the plating/stripping behavior in Li symmetric cell during cycling Fig. S14. Initially",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "electrode_config": "symmetric_cell",
+          "test_method": "in-situ optical microscopy"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The Li plating/stripping behavior was initially evaluated using the coulombic efficiency CE of LiCu cells through galvanostatic plating/ stripping tests, as shown in Figs. 3h and S11 a–b. As illustrat",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "test_method": "galvanostatic plating/stripping",
+          "electrode_config": "Li/Cu cell"
+        },
+        {
+          "condition_id": "C010",
+          "test_method": "long-term charge-discharge",
+          "electrode_config": "Li/Cu cell",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 50
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 95.2,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the LiCu cell with fBN-HGPE exhibits an average CE of 95.2%"
+          },
+          {
+            "value": 77.0,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "PL-GPE Fig. S11a 77.0%"
+          },
+          {
+            "value": 92.8,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "BN-HGPE Fig. S11b 92.8%"
+          },
+          {
+            "value": 93.5,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 50,
+            "source_text": "The LiCu cells with fBN-HGPE and BN-HGPE exhibit better coulombic efficiencies of 93.5% and 90.7%, respectively, after 50 cycles."
+          },
+          {
+            "value": 90.7,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 50,
+            "source_text": "The LiCu cells with fBN-HGPE and BN-HGPE exhibit better coulombic efficiencies of 93.5% and 90.7%, respectively, after 50 cycles."
+          },
+          {
+            "value": 74.1,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 50,
+            "source_text": "In contrast, the LiCu cell with PL-GPE shows a relatively low and unstable CE of 74.1% after cycling"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "Ionic conductivity and interfacial resistance are the key factors that directly influence the electrochemical performances of the GPEs. As illustrated in Fig. 3a, the semicircular loops at the high-fr",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "electrode_config": "symmetric cell (SS||SS)",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 2.48,
+            "unit": "mS/cm",
+            "method": "EIS",
+            "source_text": "The ionic conductivity of the PL-GPE is found to be 2.48 times 10 - 3 mathrm - 1",
+            "condition_id": "C001"
+          },
+          {
+            "value": 2.3,
+            "unit": "mS/cm",
+            "method": "EIS",
+            "source_text": "fBN-HGPE 2.3 times 10 - 3 mathsf S - 1",
+            "condition_id": "C001"
+          },
+          {
+            "value": 1.8,
+            "unit": "mS/cm",
+            "method": "EIS",
+            "source_text": "BN-HGPE 1.8 times 10 - 3 mathrm S - 1",
+            "condition_id": "C001"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To deepen the understanding of interfacial charge-transfer behavior, Tafel measurements were conducted using symmetric Li cells assembled with the as-prepared polymer electrolytes. As presented in Fig",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "electrode_config": "symmetric Li cell",
+          "test_method": "Tafel measurement",
+          "electrolyte": "PVDF-HFP/LiTFSI (1:1 w/w) gel polymer electrolyte (PL-GPE)"
+        },
+        {
+          "condition_id": "C013",
+          "electrode_config": "symmetric Li cell",
+          "test_method": "Tafel measurement",
+          "electrolyte": "BN/PVDF-HFP/LiTFSI (6 wt% BN, 1:1 w/w polymer:salt) hybrid gel polymer electrolyte (BN-HGPE)"
+        },
+        {
+          "condition_id": "C014",
+          "electrode_config": "symmetric Li cell",
+          "test_method": "Tafel measurement",
+          "electrolyte": "Amine-functionalized BN/PVDF-HFP/LiTFSI (6 wt% fBN, 1:1 w/w polymer:salt) hybrid gel polymer electrolyte (fBN-HGPE)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To elucidate the origin of the rate capability, electrochemical impedance spectroscopy EIS was conducted at different states of charge 3.8–4.2 V as illustrated in Figs. 3j and S12 a–b. The Nyquist plo",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "voltage_range": {
+            "min": 3.8,
+            "max": 4.2,
+            "unit": "V"
+          },
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Charge_Transfer_Resistance"
+      ],
+      "performance_info": {
+        "Charge_Transfer_Resistance": [
+          {
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "The Nyquist plots reveal a pronounced decrease in charge-transfer resistance with increasing potential for all GPEs, accompanied by differences in the lowfrequency Warburg region associated with ion diffusion. Particularly, the fBN-HGPE exhibits the smallest semicircle diameter and the least variation in impedance across different voltages, indicating faster charge-transfer kinetics and more stable interfacial characteristics."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The resistance against dendritic nucleation on the lithium anode was characterized by plating-stripping in LiLi cells at a current density of 0.1 mA cm− 2 as depicted in Fig. 3g. The PL-GPE cell exhib",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "LiLi symmetric",
+          "test_method": "galvanostatic plating-stripping"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Voltage_Hysteresis"
+      ],
+      "performance_info": {
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.11,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "The PL-GPE cell exhibits an initial over potential of 110 mV"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To examine the decomposition products of the fBN-HGPE, XPS was carried out after LSV testing as presented in Figs. 5b and S20. The spectra are dominated by characteristic signals of the pristine compo",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "test_method": "LSV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "b） Binding energy ev Besides, the XPS analysis was explored to analyze the synergy of the amine-functionalized BN toward TFSI− ions and surface groups of the hybrid GPE as depicted in Fig. 5a. It is w",
+      "conditions": [
+        {
+          "condition_id": "C018",
+          "test_method": "XPS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The electrochemical stability of the fabricated polymer electrolytes was monitored with a linear sweep voltammetry LSV profile in the potential range 2.5–6.5 V as divulged in Fig. S19. The fBN-HGPE an",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 6.5,
+            "unit": "V",
+            "reference": "Li/Li"
+          },
+          "test_method": "linear sweep voltammetry (LSV)",
+          "reference_electrode": "Li/Li"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Anodic_Stability_Onset_Potential"
+      ],
+      "performance_info": {
+        "Anodic_Stability_Onset_Potential": [
+          {
+            "value": 4.75,
+            "unit": "V vs. Li/Li⁺",
+            "source_text": "fBN-HGPE and BN-HGPE cells exhibit a stable voltage profile of 4.75 V versus Li/Li",
+            "condition_id": "C001"
+          },
+          {
+            "value": 4.3,
+            "unit": "V vs. Li/Li⁺",
+            "source_text": "the PL-GPE cell increases rapidly after 4.3 V",
+            "condition_id": "C001"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Similarly, the formation of a solid electrolyte interphase SEI on the cycled lithium anodes is elucidated by XPS analysis, as shown in Figs. 6d–f and S21a–c. The results clearly demonstrate that the S",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "LiF_Content_in_SEI_CEI",
+        "Inorganic_Organic_Ratio_SEI_CEI"
+      ],
+      "performance_info": {
+        "LiF_Content_in_SEI_CEI": [
+          {
+            "unit": "at%",
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "source_text": "the fBN-HGPE Fig. 6f endows a higher enrichment of LiF along with a reduced contribution from unstable organic species, suggesting the formation of a more robust, inorganicdominated SEI"
+          }
+        ],
+        "Inorganic_Organic_Ratio_SEI_CEI": [
+          {
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "source_text": "suggesting the formation of a more robust, inorganicdominated SEI"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The CEI composition was characterized by XPS analysis and （a h-BN （c） d） - 2 - - / - f10 presented in Fig. 6a–c. As shown in the F 1s spectra, the peak at 684–685 eV ascribed to LiF generated from the",
+      "conditions": [
+        {
+          "condition_id": "C020",
+          "test_method": "XPS analysis"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To validate the practicability of the polymer electrolytes in a realtime application, NCMLi, LFPLi, and LCOLi cells were assembled with the as-prepared polymer electrolytes and cycled at 30 circ mathr",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "rate performance test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [
+              171.1,
+              158.8,
+              141.2,
+              128.1,
+              168.4
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the NCMfBN-HGPELi cell, which delivers a splendid rate performance and specific discharge capacities of 171.1, 158.8, 141.2, and 128.1 mAh g-1 at different rates of 0.1, 0.2, 0.5, and 1.0 C, respectively. After the end of cycling at 1.0C, the cell displays the reversible capacity reached 168.4 mAh g-1 as the rate is switched to 0.1C."
+          },
+          {
+            "value": [
+              165.5,
+              155.2,
+              136.7,
+              117.4
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the discharge capacities of the BN-HGPE cell display 165.5, 155.2, 136.7, and 117.4 mAh g-1, at various rates of 0.1, 0.2, 0.5, and 1.0C, respectively"
+          },
+          {
+            "value": [
+              154.1,
+              145.4,
+              127.9,
+              111.7
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the PL-GPE cell shows 154.1, 145.4, 127.9, and 111.7 mAh g-1, at various rates of 0.1, 0.2, 0.5, and 1.0C, respectively"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The cyclic stability of the prepared polymer electrolytes assembled with NCMLi cell with in the potential range of 2.5–4.2 V at 0.2C as revealed in Fig. 4c. that can deliver a high discharge capacity ",
+      "conditions": [
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 100,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "C"
+          },
+          "cycle_number": 300,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C025",
+          "electrode_config": "full_cell",
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C025",
+          "electrode_config": "full_cell",
+          "test_method": "rate test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Coulombic_Efficiency",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 94.8,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C001",
+            "source_text": "The cyclic stability ... can deliver a high discharge capacity of 158.8 mAh\\mathbf{g}^{-1} at the initial cycle and reached up to 150.6 mAh\\mathbf{g}^{-1} of the 100th cycle with a capacity retention of 94.8%."
+          },
+          {
+            "value": 91.3,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C001",
+            "source_text": "However, the capacity retention and decay rate per cycle are achieved to be 91.3%, and 0.086% for the NCMBN-HGPELi cell"
+          },
+          {
+            "value": 81.9,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C001",
+            "source_text": "81.9%, and 0.18% for the NCMPL-GPELi cell at same rate, respectively."
+          },
+          {
+            "value": 77.1,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C002",
+            "source_text": "The capacity retention and decay rate per cycle of the NCMfBN-HGPELi cell are achieved to be 77.1%, and 0.076%, respectively."
+          },
+          {
+            "value": 65.7,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C002",
+            "source_text": "However, the capacity retention and decay rate are achieved to be 65.7%, and 0.11% for the NCMBN-HGPELi cell"
+          },
+          {
+            "value": 27.1,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C002",
+            "source_text": "27.1%, and 0.24% for the NCMPL-GPELi cell at similar rate, respectively."
+          },
+          {
+            "value": 92.8,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C003",
+            "source_text": "Although, the LFPfBN-HGPE Li cell Fig. 4g renders a first discharge capacity of 148.9 mAh\\mathbf{g}^{-1} at the initial cycle and reached up to 137.5 mAh\\mathbf{g}^{-1} in the 100th cycle with a retention of 92.8%."
+          },
+          {
+            "value": 92.6,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C005",
+            "source_text": "Fig. 4j elucidates the LCOfBN-HGPELi cell displays a discharge capacity of 137.3 mAh\\mathbf{g}^{-1} and reached up to 127.2 mAh\\mathbf{g}^{-1} with a capacity retention of 92.6% after 100 cycles."
+          },
+          {
+            "value": 89.9,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C005",
+            "source_text": "Although the cell assembled with BN-HGPE delivers comparable discharge capacity 132.3 mAh\\mathbf{g}^{-1} at the initial cycle and finally reached up to 119.0 mAh\\mathbf{g}^{-1} of the 100th cycle with a capacity retention of 89.9%"
+          },
+          {
+            "value": 81.7,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C005",
+            "source_text": "The PL-GPE cell shows the discharge capacity of 124.1 mAh\\mathbf{g}^{-1} : , and the discharge capacity was dropped rapidly to 101.4 mAh\\mathbf{g}^{-1} with a final retention of only 81.7%."
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 98.6,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C001",
+            "source_text": "The initial coulombic efficiency, and decay rate per cycle of the NCMfBN-HGPELi cell are achieved to be 98.6%, and 0.05% at 0.2C, respectively."
+          },
+          {
+            "value": 97.6,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C003",
+            "source_text": "The achieved coulombic efficiency and capacity loss per cycle of the LFPfBN-HGPELi cell is 97.6%, and 0.07% at 0.2C, respectively."
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              157.5,
+              148.9,
+              134.2,
+              112.3,
+              74.4
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "Similarly, the cell assembled with LFPfBN-HGPELi Fig. 4e–g which displays a rate performance and discharge capacities of 157.5, 148.9, 134.2, 112.3, and 74.4 mAh\\mathbf{g}^{-1} at different rates of 0.1, 0.2, 0.5, 1.0, and 2.0C, respectively. After cycling at 2.0C, the cell delivers the capacity achieved of 155.5 mAh\\mathbf{g}^{-1} as the rate is switched to 0.1C."
+          },
+          {
+            "value": [
+              143.2,
+              137.3,
+              125.6,
+              101.6
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "Fig. 4h–j shows the charge-discharge profile and corresponding rate performance of the LCOfBN-HGPELi cell, which delivers a splendid rate performance and specific discharge capacities of 143.2, 137.3, 125.6, and 101.6 mAh\\mathbf{g}^{-1} at different rates of 0.1, 0.2, 0.5, and 1.0C, respectively."
+          }
+        ]
+      }
+    }
+  ]
+}

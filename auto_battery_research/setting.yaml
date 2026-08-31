@@ -1,0 +1,61 @@
+
+
+version: "1.0.0"
+agent_name: "AutoBatteryResearch Agent"
+agent_abbr: "ABRAgent"
+
+paths:
+  workspace_root: "."
+  papers_raw_dir: "papers/pdf"
+  papers_doi_dir: "papers/pdf_doi"
+  papers_markdown_dir: "papers/markdown"
+  papers_merged_dir: "papers/merged"
+  database_type_dir: "database/type"
+  database_battery_type_dir: "database/battery_type"
+  miner_json_dir: "miner/json"
+  metadata_file: "miner/json/metadata/meta_merged.json"
+  chroma_dir: "miner/chroma/paragraphs_q"
+  chroma_collection: "battery_paragraphs_q"
+  rag_data_dir: "src/lmllm/RAG/data"
+  pinn_dir: "pinn"
+  pinn_tools_dir: "src/lmllm/RAG/pinn_tools"
+  output_dir: "output/auto_battery_research"
+  journal_file: "output/auto_battery_research/abr_agent_journal.json"
+  final_report_file: "output/auto_battery_research/final_research_report.md"
+
+# 通用 OpenAI 兼容大模型接口配置 (支持 OpenAI / DeepSeek / Qwen / MiniMax / Claude 等)
+openai:
+  model_name: "$(OPENAI_MODEL: MiniMax-M2.7-highspeed)"
+  openai_api_base: "$(OPENAI_API_BASE: https://api.minimaxi.com/v1)"
+  openai_api_key: "$(OPENAI_API_KEY:sk-cp--cx85xZFHpyrY6ki1DVdSLoQBEa-Wc5d4iuwO02MGawPblUiFIGH0fjdQ7kmdb2g7S3T-wp2xv1_b338ggwwpMp_zBOk-SPD90SmGF0DkvuJ-msghTMUnWI)"
+
+llm:
+  backend: "openai"
+  model: "$(OPENAI_MODEL: MiniMax-M2.7-highspeed)"
+  base_url: "$(OPENAI_API_BASE: https://api.minimaxi.com/v1)"
+  api_key: "$(OPENAI_API_KEY:)"
+  planner_model: "$(OPENAI_MODEL: MiniMax-M2.7-highspeed)"
+  extraction_model: "$(OPENAI_MODEL: MiniMax-M2.7-highspeed)"
+  writer_model: "$(OPENAI_MODEL: MiniMax-M2.7-highspeed)"
+  reviewer_model: "$(OPENAI_MODEL: MiniMax-M2.7-highspeed)"
+  checker_model: "$(OPENAI_MODEL: MiniMax-M2.7-highspeed)"
+  temperature: 0.1
+  max_tokens: 4096
+  request_timeout: 120
+  # ReAct 循环递归深度上限 (每轮工具调用约耗 2 个 super-step，25 支持完整多轮工具编排)
+  recursion_limit: 25
+
+embedding:
+  model: "qwen3-embedding:8b"
+  ollama_base_url: "http://localhost:11434"
+
+runtime_options:
+  skip_pinn_default: true
+  enable_llm_checker: true
+  strict_mode: true
+  max_retries_per_stage: 3
+  save_step_artifacts: true
+  mcp_server:
+    host: "127.0.0.1"
+    port: 5005
+    timeout: 300

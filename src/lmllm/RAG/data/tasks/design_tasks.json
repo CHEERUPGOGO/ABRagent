@@ -1,0 +1,480 @@
+{
+  "version": "0.1",
+  "updated": "2026-08-18",
+  "n_tasks": 26,
+  "tasks": [
+    {
+      "task_type": "combination_recommendation",
+      "question": "设计一套能量密度不低于350 Wh/kg的液态锂电池方案，给出正极/负极/电解液组合。",
+      "expected": {
+        "feasible": true,
+        "best_scheme": {
+          "cathode": "LRMO",
+          "anode": "graphite",
+          "electrolyte": "fluorinated",
+          "target_energy": 350
+        },
+        "energy_estimate": 494.0,
+        "n_feasible": 44,
+        "required_inclusions": []
+      },
+      "tag": {
+        "relation": "compatibility",
+        "verifiable": true,
+        "source": "candidates x constraints x energy_model"
+      }
+    },
+    {
+      "task_type": "combination_recommendation",
+      "question": "设计一套能量密度不低于400 Wh/kg的液态锂电池方案。",
+      "expected": {
+        "feasible": false,
+        "reason": "候选表内无约束可行的组合达到 400 Wh/kg"
+      },
+      "tag": {
+        "relation": "compatibility",
+        "verifiable": true,
+        "source": "energy_model 上限"
+      }
+    },
+    {
+      "task_type": "combination_recommendation",
+      "question": "设计一套能量密度不低于450 Wh/kg的液态锂电池方案。",
+      "expected": {
+        "feasible": false,
+        "reason": "候选表内无约束可行的组合达到 450 Wh/kg"
+      },
+      "tag": {
+        "relation": "compatibility",
+        "verifiable": true,
+        "source": "energy_model 上限"
+      }
+    },
+    {
+      "task_type": "constraint_check",
+      "question": "方案：正极 LRMO + 负极 graphite + 电解液 carbonate_ec，不使用任何界面添加剂或表面改性。该组合可行吗？为什么？",
+      "expected": {
+        "feasible": false,
+        "violated_rules": [
+          "C1"
+        ],
+        "reason": "正极充电截止电压超过常规碳酸酯氧化窗口(~4.3V)，电解液氧化分解",
+        "scheme": {
+          "cathode": "LRMO",
+          "anode": "graphite",
+          "electrolyte": "carbonate_ec"
+        }
+      },
+      "tag": {
+        "relation": "exclusion",
+        "verifiable": true,
+        "source": "constraints #C1"
+      }
+    },
+    {
+      "task_type": "constraint_check",
+      "question": "方案：正极 LNMO + 负极 graphite + 电解液 carbonate_ec，不使用任何界面添加剂或表面改性。该组合可行吗？为什么？",
+      "expected": {
+        "feasible": false,
+        "violated_rules": [
+          "C2"
+        ],
+        "reason": ">4.6V 需氧化窗口 >5V 的电解液（高浓/LHCE/砜类）",
+        "scheme": {
+          "cathode": "LNMO",
+          "anode": "graphite",
+          "electrolyte": "carbonate_ec"
+        }
+      },
+      "tag": {
+        "relation": "exclusion",
+        "verifiable": true,
+        "source": "constraints #C2"
+      }
+    },
+    {
+      "task_type": "constraint_check",
+      "question": "方案：正极 NCM811 + 负极 li_metal + 电解液 carbonate_ec，不使用任何界面添加剂或表面改性。该组合可行吗？为什么？",
+      "expected": {
+        "feasible": false,
+        "violated_rules": [
+          "C3"
+        ],
+        "reason": "锂金属负极 + 常规低浓碳酸酯 → 枝晶生长、库仑效率低",
+        "scheme": {
+          "cathode": "NCM811",
+          "anode": "li_metal",
+          "electrolyte": "carbonate_ec"
+        }
+      },
+      "tag": {
+        "relation": "exclusion",
+        "verifiable": true,
+        "source": "constraints #C3"
+      }
+    },
+    {
+      "task_type": "constraint_check",
+      "question": "方案：正极 LRMO + 负极 graphite + 电解液 carbonate_ec，不使用任何界面添加剂或表面改性。该组合可行吗？为什么？",
+      "expected": {
+        "feasible": false,
+        "violated_rules": [
+          "C6"
+        ],
+        "reason": "高压正极导致常规碳酸酯分解，且 Mn 溶解加剧",
+        "scheme": {
+          "cathode": "LRMO",
+          "anode": "graphite",
+          "electrolyte": "carbonate_ec"
+        }
+      },
+      "tag": {
+        "relation": "exclusion",
+        "verifiable": true,
+        "source": "constraints #C6"
+      }
+    },
+    {
+      "task_type": "constraint_check",
+      "question": "方案：正极 NCM811 + 负极 graphite + 电解液 carbonate_ec，不使用任何界面添加剂或表面改性。该组合可行吗？为什么？",
+      "expected": {
+        "feasible": false,
+        "violated_rules": [
+          "C7"
+        ],
+        "reason": "石墨体系电芯级能量密度上限约 350 Wh/kg，≥400 Wh/kg 必须锂金属负极",
+        "scheme": {
+          "cathode": "NCM811",
+          "anode": "graphite",
+          "electrolyte": "carbonate_ec",
+          "target_energy": 400
+        }
+      },
+      "tag": {
+        "relation": "exclusion",
+        "verifiable": true,
+        "source": "constraints #C7"
+      }
+    },
+    {
+      "task_type": "doping_design",
+      "question": "LRMO经Mg,Al掺杂后，capacity_retention达到多少？（条件：{'c_rate': '0.1C', 'cycles': 200}）",
+      "expected": {
+        "material": "Mg/Al-LRMO",
+        "property": "capacity_retention",
+        "value": 93.3,
+        "unit": "%",
+        "condition": {
+          "c_rate": "0.1C",
+          "cycles": 200
+        }
+      },
+      "tag": {
+        "relation": "doping",
+        "verifiable": true,
+        "source_text": "Mg/Al-LRMO retains 93.3% of its capacity, significantly better than LRMO (68.3%)"
+      }
+    },
+    {
+      "task_type": "doping_design",
+      "question": "LRMO经Mg,Al掺杂后，ice达到多少？（条件：{}）",
+      "expected": {
+        "material": "Mg/Al-LRMO",
+        "property": "ice",
+        "value": 85.7,
+        "unit": "%",
+        "condition": {}
+      },
+      "tag": {
+        "relation": "doping",
+        "verifiable": true,
+        "source_text": "The initial Coulombic efficiency is notably higher for Mg/Al-LRMO (85.7%)"
+      }
+    },
+    {
+      "task_type": "doping_design",
+      "question": "LRMO经Mg,Al掺杂后，discharge_capacity达到多少？（条件：{'c_rate': '5.0C'}）",
+      "expected": {
+        "material": "Mg/Al-LRMO",
+        "property": "discharge_capacity",
+        "value": 160.7,
+        "unit": "mAh/g",
+        "condition": {
+          "c_rate": "5.0C"
+        }
+      },
+      "tag": {
+        "relation": "doping",
+        "verifiable": true,
+        "source_text": "Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh/g even at a high rate of 5.0C"
+      }
+    },
+    {
+      "task_type": "doping_design",
+      "question": "LRMO经Mg,Al掺杂后，plateau_capacity达到多少？（条件：{}）",
+      "expected": {
+        "material": "Mg/Al-LRMO",
+        "property": "plateau_capacity",
+        "value": 194.9,
+        "unit": "mAh/g",
+        "condition": {}
+      },
+      "tag": {
+        "relation": "doping",
+        "verifiable": true,
+        "source_text": "194.9 mAh/g for Mg/Al-LRMO"
+      }
+    },
+    {
+      "task_type": "doping_design",
+      "question": "LRMO经Mg,Al掺杂后，voltage_decay达到多少？（条件：{'cycles': 200}）",
+      "expected": {
+        "material": "Mg/Al-LRMO",
+        "property": "voltage_decay",
+        "value": 25.68,
+        "unit": "%",
+        "condition": {
+          "cycles": 200
+        }
+      },
+      "tag": {
+        "relation": "doping",
+        "verifiable": true,
+        "source_text": "the co-doping of Mg and Al effectively inhibited the voltage decay"
+      }
+    },
+    {
+      "task_type": "doping_design",
+      "question": "LRMO经Mg,Al掺杂后，capacity_retention达到多少？（条件：{'c_rate': '1.0C', 'cycles': 200}）",
+      "expected": {
+        "material": "Mg/Al-LRMO",
+        "property": "capacity_retention",
+        "value": 90.0,
+        "unit": "%",
+        "condition": {
+          "c_rate": "1.0C",
+          "cycles": 200
+        }
+      },
+      "tag": {
+        "relation": "doping",
+        "verifiable": true,
+        "source_text": "the co-doped Mg/Al-LRMO showcased significantly enhanced electrochemical performance, including excellent cycling stability (90.0% capacity retention after 200 cycles at 1.0C)"
+      }
+    },
+    {
+      "task_type": "parameter_design",
+      "question": "Mg/Al-LRMO在cycles=100下的energy_density是多少？",
+      "expected": {
+        "material": "Mg/Al-LRMO",
+        "property": "energy_density",
+        "value": 314.2,
+        "unit": "Wh/kg",
+        "condition": {
+          "cycles": 100
+        }
+      },
+      "tag": {
+        "relation": "performance",
+        "verifiable": true,
+        "source_text": "Mg/Al-LRMO pouch cell achieves an energy density of 314.2 Wh/kg with a retention of 96.2% after 100 cycles"
+      }
+    },
+    {
+      "task_type": "parameter_design",
+      "question": "Mg/Al-LRMO在无额外条件下的discharge_capacity是多少？",
+      "expected": {
+        "material": "Mg/Al-LRMO",
+        "property": "discharge_capacity",
+        "value": 269.9,
+        "unit": "mAh/g",
+        "condition": {}
+      },
+      "tag": {
+        "relation": "performance",
+        "verifiable": true,
+        "source_text": "Mg/Al-LRMO outperforms the others with 269.9 mAh/g"
+      }
+    },
+    {
+      "task_type": "parameter_design",
+      "question": "LRMO在无额外条件下的discharge_capacity是多少？",
+      "expected": {
+        "material": "LRMO",
+        "property": "discharge_capacity",
+        "value": 237.7,
+        "unit": "mAh/g",
+        "condition": {}
+      },
+      "tag": {
+        "relation": "performance",
+        "verifiable": true,
+        "source_text": "237.7 mAh/g"
+      }
+    },
+    {
+      "task_type": "parameter_design",
+      "question": "Mg/Al-LRMO在c_rate=1.0C、cycles=200下的capacity_retention是多少？",
+      "expected": {
+        "material": "Mg/Al-LRMO",
+        "property": "capacity_retention",
+        "value": 90.0,
+        "unit": "%",
+        "condition": {
+          "c_rate": "1.0C",
+          "cycles": 200
+        }
+      },
+      "tag": {
+        "relation": "performance",
+        "verifiable": true,
+        "source_text": "After 200 cycles, Mg/Al-LRMO retains 90.0% of its initial capacity"
+      }
+    },
+    {
+      "task_type": "parameter_design",
+      "question": "Mg/Al-LRMO在c_rate=5.0C下的discharge_capacity是多少？",
+      "expected": {
+        "material": "Mg/Al-LRMO",
+        "property": "discharge_capacity",
+        "value": 160.7,
+        "unit": "mAh/g",
+        "condition": {
+          "c_rate": "5.0C"
+        }
+      },
+      "tag": {
+        "relation": "performance",
+        "verifiable": true,
+        "source_text": "Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh/g even at a high rate of 5.0C"
+      }
+    },
+    {
+      "task_type": "parameter_design",
+      "question": "LRMO在cycles=100下的energy_density是多少？",
+      "expected": {
+        "material": "LRMO",
+        "property": "energy_density",
+        "value": 270.0,
+        "unit": "Wh/kg",
+        "condition": {
+          "cycles": 100
+        }
+      },
+      "tag": {
+        "relation": "performance",
+        "verifiable": true,
+        "source_text": "LRMO only delivers an energy density of 270.0 Wh/kg, with the retention dropping to 89.8% after 100 cycles"
+      }
+    },
+    {
+      "task_type": "parameter_design",
+      "question": "Mg/Al-LRMO在c_rate=2.0C、cycles=600下的capacity_retention是多少？",
+      "expected": {
+        "material": "Mg/Al-LRMO",
+        "property": "capacity_retention",
+        "value": 86.2,
+        "unit": "%",
+        "condition": {
+          "c_rate": "2.0C",
+          "cycles": 600
+        }
+      },
+      "tag": {
+        "relation": "performance",
+        "verifiable": true,
+        "source_text": "After cycling at 2.0C for 600 cycles, the Mg/Al-LRMO pouch full cell maintains a specific capacity retention of 86.2%"
+      }
+    },
+    {
+      "task_type": "parameter_design",
+      "question": "LRMO在c_rate=2.0C、cycles=600下的capacity_retention是多少？",
+      "expected": {
+        "material": "LRMO",
+        "property": "capacity_retention",
+        "value": 54.1,
+        "unit": "%",
+        "condition": {
+          "c_rate": "2.0C",
+          "cycles": 600
+        }
+      },
+      "tag": {
+        "relation": "performance",
+        "verifiable": true,
+        "source_text": "the pristine LRMO pouch cell only displays 54.1%"
+      }
+    },
+    {
+      "task_type": "parameter_design",
+      "question": "(FeCoNiCrMn)3O4在c_rate=2.0C、cycles=1200下的discharge_capacity是多少？",
+      "expected": {
+        "material": "(FeCoNiCrMn)3O4",
+        "property": "discharge_capacity",
+        "value": 596.5,
+        "unit": "mAh/g",
+        "condition": {
+          "c_rate": "2.0C",
+          "cycles": 1200
+        }
+      },
+      "tag": {
+        "relation": "performance",
+        "verifiable": true,
+        "source_text": "The as-prepared (FeCoNiCrMn)3O4 HEO achieved a high reversible capacity of 596.5 mAh/g"
+      }
+    },
+    {
+      "task_type": "parameter_design",
+      "question": "(FeCoNiCrMn)3O4在c_rate=0.1C下的discharge_capacity是多少？",
+      "expected": {
+        "material": "(FeCoNiCrMn)3O4",
+        "property": "discharge_capacity",
+        "value": 967.3,
+        "unit": "mAh/g",
+        "condition": {
+          "c_rate": "0.1C"
+        }
+      },
+      "tag": {
+        "relation": "performance",
+        "verifiable": true,
+        "source_text": "(FeCoNiCrMn)3O4 HEO delivered a high reversible capacity of 967.3 mAh/g at 0.1C"
+      }
+    },
+    {
+      "task_type": "parameter_design",
+      "question": "(FeCoNiCrMn)3O4在cycles=260下的capacity_retention是多少？",
+      "expected": {
+        "material": "(FeCoNiCrMn)3O4",
+        "property": "capacity_retention",
+        "value": 97.5,
+        "unit": "%",
+        "condition": {
+          "cycles": 260
+        }
+      },
+      "tag": {
+        "relation": "performance",
+        "verifiable": true,
+        "source_text": "Even after 260 cycles, (FeCoNiCrMn)3O4 HEO still reached up to 692.8 mAh/g with a high capacity retention of 97.5%"
+      }
+    },
+    {
+      "task_type": "parameter_design",
+      "question": "LRMO在无额外条件下的charge_capacity是多少？",
+      "expected": {
+        "material": "LRMO",
+        "property": "charge_capacity",
+        "value": 1.389,
+        "unit": "Ah",
+        "condition": {}
+      },
+      "tag": {
+        "relation": "performance",
+        "verifiable": true,
+        "source_text": "the pristine LRMO, which has a charge/discharge capacity of 1.389/1.107 Ah and an ICE of 79.8%"
+      }
+    }
+  ]
+}

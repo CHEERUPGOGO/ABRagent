@@ -1,0 +1,418 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s40843-024-2914-x.md",
+  "component": "anode",
+  "paper_id": "10.1007/s40843-024-2914-x",
+  "doi": "10.1007/s40843-024-2914-x",
+  "material_id": "10.1007_s40843-024-2914-x",
+  "meta": {
+    "meta_title": "A tough, resilient, and fluorinated solid-electrolyte interphase stabilizing lit",
+    "meta_authors": "Jia $\\mathrm { K o n g ^ { 1 } }$ , Tianyi $\\mathrm { H o u } ^ { 1 }$ , Ting $\\mathrm { S h i ^ { \\mathrm { 1 } } }$ , Jianbo $\\mathrm { L i } ^ { 1 }$ , Xin Deng1 , Dinggen ${ \\mathrm { L i } ^ { 2 ^ { * } } }$ , Yunhui Huang1* and Henghui ${ \\mathrm { X u } } ^ { 1 ^ { * } }$",
+    "meta_year": null
+  },
+  "materials": [
+    {
+      "name": "anode material",
+      "short_name": "10.1007_s40843-024-2914-x",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1007_s40843-024-2914-x"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 11,
+  "items": [
+    {
+      "paragraph": "The utilization of UV curing enables the instant reaction, improving production efficiency. The homogeneous precursor solution can be entirely cured by exposing it to a UV lamp for 1 min Fig. 1b. To v",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "F"
+            ],
+            "method": "XPS",
+            "source_text": "From the X-ray photoelectron spectroscopy XPS results Fig. 1d, a pronounced fluorine signal is observed on RASEILi, indicating the presence of the characteristic F element stemming from the PHFBA-BAED coating."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "A coating possessing high mechanical stiffness and good elastic strength can effectively inhibit dendrite growth and adapt to large volume changes of lithium metal to maintain structural integrity 32.",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "uniaxial tensile and compression testing"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To assess the chemical stability between the elastic coating and electrolyte, the PHFBA-BAED was immersed in a carbonatebased electrolyte, and remained the structural integrity after 30 days Fig. 2g. ",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrolyte": "carbonate-based electrolyte",
+          "test_method": "immersion test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity_of_SEI"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity_of_SEI": [
+          {
+            "value": 2.52e-06,
+            "unit": "S/cm",
+            "condition_id": "C001",
+            "source_text": "elastic coating of PHFBA-BAED has ... good ionic conductivity of 2.52 times 10 - 6 mathrm - 1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To gain further insight into the Li electrodeposition and electrochemical dissolution in bare Li and RASEILi, the surface and cross-sectional SEM images of the Li anodes after cycling were acquired. T",
+      "property_types": [
+        "Exchange_Current_Density"
+      ],
+      "extracted_info": {
+        "Exchange_Current_Density": [
+          {
+            "unit": "mA/cm2",
+            "source_text": "the exchange current density of RASEILi was twice higher than that of bare Li"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Furthermore, a practical pouch cell using commercial highnickel cathodes and RASEILi anodes exhibited an impressive capacity retention of over 85 % after 200 cycles under 1/3 C charge and 1C discharge",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": "1/3 C charge, 1C discharge",
+            "unit": "C"
+          },
+          "cycle_number": 200,
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 85,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "exhibited an impressive capacity retention of over 85 % after 200 cycles under 1/3 C charge and 1C discharge conditions"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To evaluate the effectiveness of RASEI in enhancing the interfacial stability of the lithium metal anode, the cycling performance of the symmetric cells in a carbonate-based electrolyte was investigat",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "electrolyte": "carbonate-based electrolyte",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 500,
+            "unit": "h",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "symmetric cell with an elastic coating of PHFBA-2%BAED exhibits excellent cycle stability over 500 mathrm h under a high areal capacity of 1 mathrm c mathrm m - 2 at a current density of 1 mathrm mathrm - 2"
+          },
+          {
+            "value": 320,
+            "unit": "h",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "symmetric cells with bare Li only exhibit significantly reduced cycling life 320 mathrm h"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "By contrast, the cells with RASEILi demonstrate significantly improved cycling performance, with a capacity retention of sim 85 % even after 400 cycles. This enhancement is further validated by the ga",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "electrode_config": "full-cell (Li/LFP)",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 400
+        },
+        {
+          "condition_id": "C006",
+          "electrode_config": "full-cell (Li/NCM811)",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 190,
+          "mass_loading": {
+            "value": 20,
+            "unit": "mg/cm2"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 85,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 400,
+            "source_text": "capacity retention of sim 85 % even after 400 cycles"
+          },
+          {
+            "value": 90,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 190,
+            "source_text": "delivered a capacity retention of 90 % after 190 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In order to demonstrate the potential of the RASEILi in lithium metal batteries, the electrochemical performance of Li/NCM811 and Li/LFP cells was investigated. Fig. 4a illustrates the cycling perform",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 300
+        },
+        {
+          "condition_id": "C008",
+          "electrode_config": "full_cell",
+          "test_method": "cycling",
+          "cycle_number": 220
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 80,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 300,
+            "source_text": "The cells with RASEILi exhibit greatly improved cycling performance over sim 80 % capacity retention after 300 cycles"
+          },
+          {
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 220,
+            "source_text": "Li/LFP cells with bare Li experience rapid capacity fading, with less than 80 % capacity retention after only 220 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The electrochemical impedance spectroscopy EIS test result shows that the impedance of LiLi symmetric cells with RASEILi- 2 % exhibits only a slight increase when compared with bare Li Fig. S9, sugges",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "electrode_config": "Li||Li symmetric cell",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "test_method": "galvanostatic cycling",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C010",
+          "electrode_config": "Li||Li symmetric cell",
+          "test_method": "galvanostatic cycling",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C011",
+          "electrode_config": "Li||Li symmetric cell",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "test_method": "in-situ optical microscopy"
+        },
+        {
+          "condition_id": "C012",
+          "electrode_config": "Li||Li symmetric cell",
+          "test_method": "EIS",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability",
+        "Plateau_Overpotential"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 1300,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "achieved 1300 mathrm h stable cycling under conditions of 0.5 mathrm mathrm - 2 mathrm area current density and 1 mAh mathrm - 2 of areal capacity"
+          }
+        ],
+        "Plateau_Overpotential": [
+          {
+            "value": 60,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 0.5,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "with the overpotential not exceeding 60 mathrm Fig. S10"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Additionally, the surface chemistries of cycled lithium metal anodes were studied via X-ray photoelectron spectroscopy XPS analysis to further illustrate the advantage of RASEILi. In the C 1s spectrum",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "cycle_number": 1,
+          "test_method": "XPS"
+        },
+        {
+          "condition_id": "C014",
+          "cycle_number": 20,
+          "test_method": "XPS"
+        }
+      ],
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "CO3^2- peak at ~293.8 eV (elastic coating)",
+              "C-C peak at 285.1 eV (HFBA origin)",
+              "absence of CO3^2- peak from solvent decomposition"
+            ],
+            "state": "RASEILi after first cycle",
+            "source_text": "In the C 1s spectrum of RASEILi after the first cycle... the new peak located at sim 293.8 mathrm corresponds to mathrm - 3 , which is attributed to elastic coating. In addition, it has a stronger C–C 285.1 mathrm peak intensity... There is a clear peak of CO2− 3290.2 eV in the C 1s spectrum of bare Li... However, the presence of the peak of CO2− 3 is absent on the surface of RASEILi"
+          },
+          {
+            "value": [
+              "CO3^2- peak at 3290.2 eV (solvent decomposition product)"
+            ],
+            "state": "bare Li after first cycle",
+            "source_text": "There is a clear peak of CO2− 3290.2 eV in the C 1s spectrum of bare Li, which primarily arises from the decomposition product of solvents"
+          },
+          {
+            "value": [
+              "CO3^2- peak intensity 20 % (RASEILi), 25.5 % (bare Li)",
+              "LiF peak at 684.85 eV in F 1s, intensity much higher for RASEILi than bare Li"
+            ],
+            "state": "after 20 cycles",
+            "source_text": "As shown in Fig. 4e, although the peak of CO2− 3 also appears in the C 1s spectrum of RASEILi 20 % , the peak intensity is much weaker than that of bare Li 25.5 % . In the F 1s spectrum of RASEILi Fig. 4f, ... the peak intensity of LiF 684.85 mathrm for RASEILi is much higher than that of bare Li"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "孔佳1 , 侯添壹1 , 石婷1 , 李剑波1 , 邓鑫1 , 李顶根2 , 黄云辉1 ,许恒辉1 摘要 锂金属负极和碳酸酯类电解液之间不稳定的界面是限制高比能锂金属电池循环寿命的关键挑战. 本文使用含苯环的双酚A乙氧基化物二甲基丙烯酸酯BAED交联剂调节聚丙烯酸六氟丁酯PHFBA, 设计了一种弹性人造固体电解质中间相RASEI来解决这个问题. 刚性BAED分子可以对柔性PHBA基体进行调控, 实",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C016",
+          "mass_loading": {
+            "value": 20.0,
+            "unit": "mg/cm2"
+          },
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 200,
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 500,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "实现超过500小时的长期循环"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 85,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 200,
+            "source_text": "经过200次循环后容量保持率超过 85 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

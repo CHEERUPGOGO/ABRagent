@@ -1,0 +1,868 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.carbon.2024.119452.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.carbon.2024.119452",
+  "doi": "10.1016/j.carbon.2024.119452",
+  "material_id": "10.1016_j.carbon.2024.119452",
+  "meta": {
+    "meta_title": "Carbon cloth with lithiophilic carbon-coated ZnO nanotubes as anode current coll",
+    "meta_authors": "Yunfei Ouyang a , Shifei Huang a,b , Nanrui Li a,b , Sirong Lu c , Yao Lv a , Yanru Liu a,b , Feiyu Kang a,b,\\*\\*, Yidan Cao a,b,\\*",
+    "meta_year": "2024"
+  },
+  "materials": [
+    {
+      "name": "Carbon-coated ZnO nanotube arrays on carbon cloth",
+      "short_name": "CZnOntsCC",
+      "formula": "ZnO/C/carbon cloth",
+      "role": "novel",
+      "description": "Carbon-coated ZnO nanotubes on carbon cloth prepared by hydrothermal ZnO nanorod growth, resorcinol-formaldehyde carbon coating, and partial HCl etching of ZnO to form nanotubes.",
+      "material_id": "10.1016_j.carbon.2024.119452_M001"
+    },
+    {
+      "name": "Carbon-coated ZnO nanorods on carbon cloth",
+      "short_name": "CZnOnrsCC",
+      "formula": "ZnO@C nanorods/carbon cloth",
+      "role": "comparison",
+      "description": "Carbon-coated ZnO nanorods on carbon cloth, intermediate before acid etching, retaining the nanorod morphology.",
+      "material_id": "10.1016_j.carbon.2024.119452_M002"
+    },
+    {
+      "name": "ZnO nanorods on carbon cloth",
+      "short_name": "ZnOnrsCC",
+      "formula": "ZnO/carbon cloth",
+      "role": "comparison",
+      "description": "ZnO nanorods directly grown on carbon cloth without any carbon coating, used to evaluate the effect of carbon coating.",
+      "material_id": "10.1016_j.carbon.2024.119452_M003"
+    },
+    {
+      "name": "Carbon-coated carbon cloth",
+      "short_name": "CCC",
+      "formula": "C/carbon cloth",
+      "role": "comparison",
+      "description": "Bare carbon cloth coated with resorcinol-formaldehyde-derived amorphous carbon layer, without ZnO component.",
+      "material_id": "10.1016_j.carbon.2024.119452_M004"
+    }
+  ],
+  "n_materials": 4,
+  "table_items": [],
+  "n_items": 20,
+  "items": [
+    {
+      "paragraph": "Raman spectra Fig. 2e of bare CC, CZnOnrsCC and CZnOntsCC all consist of the D band at 1386 cm− 1 and the G band mathrm sim 1588 mathrm - 1 corresponding to the carbon species. The mathrm I D / I G in",
+      "property_types": [
+        "Chemical_Formula",
+        "Crystal_System"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "ZnO",
+            "source_text": "the peaks at 560.3 cm⁻¹ and 1150.3 cm⁻¹ correspond to the characteristic peaks of hexagonal wurtzite ZnO"
+          }
+        ],
+        "Crystal_System": [
+          {
+            "value": "hexagonal",
+            "source_text": "characteristic peaks of hexagonal wurtzite ZnO"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Carbon cloth CC possesses good mechanical strength and flexibility, and can still maintain integrity after being curled and folded into different shapes Fig. 1a–b. A strand of carbon fiber consisting ",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "O",
+              "Zn",
+              "C"
+            ],
+            "method": "EDS",
+            "source_text": "It shows that CZnOntsCC is mainly composed of O, Zn and C."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The X-ray diffraction XRD patterns were measured on a Rigaku D/ MAX-2500 powder diffractometer with Cu-Kα radiation λ 0.154 nm operated at 40 kV, 200 mA. Raman spectra were recorded on a Renishaw in V",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "XRD",
+          "voltage_range": {
+            "value": 40,
+            "unit": "kV"
+          },
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA"
+          },
+          "wavelength": {
+            "value": 0.154,
+            "unit": "nm"
+          }
+        },
+        {
+          "condition_id": "C002",
+          "test_method": "Raman",
+          "wavelength": {
+            "value": 532,
+            "unit": "nm"
+          }
+        },
+        {
+          "condition_id": "C003",
+          "test_method": "XPS",
+          "source": "Al-Kα"
+        },
+        {
+          "condition_id": "C004",
+          "test_method": "SEM/EDS",
+          "voltage_range": {
+            "value": 5,
+            "unit": "kV"
+          }
+        },
+        {
+          "condition_id": "C005",
+          "test_method": "SAED",
+          "voltage_range": {
+            "value": 300,
+            "unit": "kV"
+          }
+        },
+        {
+          "condition_id": "C006",
+          "test_method": "Optical Microscopy"
+        },
+        {
+          "condition_id": "C007",
+          "test_method": "TGA",
+          "atmosphere": "air",
+          "heating_rate": {
+            "value": 10,
+            "unit": "°C/min"
+          },
+          "temperature_range": {
+            "min": 50,
+            "max": 900,
+            "unit": "°C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Full cells were assembled using NCM811 electrodes 4 mathrm cdot mathrm - 2 paired with bare CC or CZnOntsCC Φ 12 mm, respectively, in an Ar-filled glovebox H2O and 020.01 mathrm . The Celgard 2325 was",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.7,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "electrolyte": "1.2 M LiPF6 in EC:EMC (3:7 v/v) with 2.0 vol% VC",
+          "cycle_number": 2,
+          "electrode_config": "full-cell, NCM811 cathode vs. bare CC or CZnOntsCC anode",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.7,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "electrolyte": "1.2 M LiPF6 in EC:EMC (3:7 v/v) with 2.0 vol% VC",
+          "electrode_config": "full-cell, NCM811 cathode vs. bare CC or CZnOntsCC anode",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C010",
+          "electrolyte": "1.2 M LiPF6 in EC:EMC (3:7 v/v) with 2.0 vol% VC",
+          "electrode_config": "full-cell, NCM811 cathode vs. bare CC or CZnOntsCC anode",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The cells were cycled at plating/stripping current of 1 mathrm - 2 / 2 mA mathrm - 2 with 4 mAh⋅cm− 2 using battery tester station Land CT3001A, China, before which the cells were initially cycled 2 t",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 2,
+          "test_method": "galvanostatic formation cycling"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 1.5,
+            "unit": "mA/cm2"
+          },
+          "test_method": "galvanostatic plating/stripping"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The composition and microstructure of CZnOntsCC were further studied by high resolution transmission electron microscope HRTEM. The diameter of carbon-coated ZnO nanotubes is about 30 nm with amorphou",
+      "conditions": [
+        {
+          "condition_id": "C013"
+        }
+      ],
+      "property_types": [
+        "Interlayer_Spacing"
+      ],
+      "extracted_info": {
+        "Interlayer_Spacing": [
+          {
+            "value": 0.26,
+            "unit": "nm",
+            "plane": "002",
+            "source_text": "The lattice fringes with d-spacing of 0.26 nm correspond to the 002 crystal plane of ZnO Fig. 2c."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The standard CR2032 type coin half-cells were assembled using Li foil 16 mm in diameter paired with CC or CZnOntsCC current collectors Φ 12 mm in an Ar-filled glovebox H O and 020.01 ppm. The Celgard ",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li foil 16 mm in diameter",
+          "electrolyte": "75 μL of LiTFSI 1 M in DOL/DME 1:1, by volume with 2 wt% mathrm 3 additive"
+        },
+        {
+          "condition_id": "C015",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li foil 16 mm in diameter",
+          "electrolyte": "75 μL of mathrm 61.2 M in EC/EMC 3:7, by volume with 2 vol% VC"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The XPS results Table S1 show that pristine CC mainly contains mathrm C , O and N, with contents of 84.43 at.%, 14.17 at.% and 2.40 at.% respectively. CZnOntsCC mainly contains C, O, N and Zn, with th",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              {
+                "element": "C",
+                "content": 84.43
+              },
+              {
+                "element": "O",
+                "content": 14.17
+              },
+              {
+                "element": "N",
+                "content": 2.4
+              }
+            ],
+            "unit": "at%",
+            "method": "XPS",
+            "source_text": "pristine CC mainly contains C, O and N, with contents of 84.43 at.%, 14.17 at.% and 2.40 at.% respectively."
+          },
+          {
+            "value": [
+              {
+                "element": "C",
+                "content": 85.73
+              },
+              {
+                "element": "O",
+                "content": 7.33
+              },
+              {
+                "element": "N",
+                "content": 5.93
+              },
+              {
+                "element": "Zn",
+                "content": 1.02
+              }
+            ],
+            "unit": "at%",
+            "method": "XPS",
+            "source_text": "CZnOntsCC mainly contains C, O, N and Zn, with the contents of 85.73 at.%, 7.33 at.%, 5.93 at.% and 1.02 at.% respectively."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The carbon cloth CeTech WOS1011 was soaked in acetone solution for 24 h in order to remove the sizing agent on the surface of the carbon fiber. The carbon cloth was activated with a mixture of mathrm ",
+      "property_types": [
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "ZnO",
+            "source_text": "ZnO nanorods were grown on the surface of carbon cloth to obtain ZnO nanorods current collector ZnOnrsCC."
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Zn",
+              "O",
+              "C"
+            ],
+            "source_text": "Carbon-coated ZnO nanotube arrays on carbon cloth; ZnO growth solution and carbon coating."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The peaks located at 1022.1 and 1045.2 eV in the spectra of Zn2p Fig. 3d are attributed to the mathtt 2 p 3 / 2 and mathrm 2 p 1 / 2 , respectively, which is related to the incorporation of ZnO in the",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Zn",
+              "O",
+              "C"
+            ],
+            "method": "XPS",
+            "source_text": "The peaks located at 1022.1 and 1045.2 eV in the spectra of Zn2p Fig. 3d are attributed to the mathtt 2 p 3 / 2 and mathrm 2 p 1 / 2 , respectively, which is related to the incorporation of ZnO in the carbon cloth 38. The peaks located at 1021.5 eV and 1023.8 eV in the spectra of Zn2p3/2 Fig. 3e are attributed to mathrm 2 and C–O–Zn species, respectively 39, indicating the existence of ZnO and C–O–Zn interaction. It agrees well with the above results and further demonstrates the formation of lithiophilic sites after the surface modification by carbon-coated ZnO nanotubes."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The deconvolution of the O 1s spectra of CC Fig. 3b consists of two peaks at 530.7 eV and 532.6 eV, which are assigned to O–C––O and C–O species, respectively 40. The deconvolution of the O 1s spectru",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "C",
+              "O",
+              "Zn",
+              "N"
+            ],
+            "method": "XPS",
+            "source_text": "The deconvolution of the O 1s spectra of CC Fig. 3b consists of two peaks at 530.7 eV and 532.6 eV, which are assigned to O–C––O and C–O species, respectively 40. The deconvolution of the O 1s spectrum of CZnOntsCC Fig. 3b consists of four peaks at 530.7 eV, 531.6, 532.6 eV and 533.7eV, which are attributed to scriptstyle 0 - mathrm C 0 , 02 - , mathrm C - 0 and C–O–Zn species 41.02 - originates from the oxygen in zinc oxide 42. The appearance of mathrm C mathrm - mathrm O - mathrm bond further proves that zinc oxide may react with the carboxyl group in carbon fiber, resulting in the bonding between carbon and zinc through oxygen, ultimately forming C–O–Zn connection 43. The detection on C–O–Zn formation is consistent with the growth mechanism of zinc oxide grown under hydrothermal conditions 44. For the N 1s spectra Fig. 3c, there are four peaks attributed to C–N/pyridinic N 399.0 eV, pyrrolic N 401.2 eV, graphitic N 403.2 eV, and N–O 405.1 eV, respectively 45. The contents of nitrogen-containing functional groups pyridinic N and pyrrolic N, which possess good lithium affinity 46, are increased in the CZnOntsCC."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In order to understand the performance improvement by the carboncoated ZnO nanotubes on carbon cloth, the microstructure of SEI and morphology of plated lithium on the CZnOntsCC were investigated. Fig",
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "Li2O",
+              "Li2CO3",
+              "Li3N",
+              "LiF"
+            ],
+            "state": "after initial cycle SEI",
+            "source_text": "The inorganic components in SEI mainly consist of thermodynamically stable Li2O PDF#12–0254, mathrm 23 PDF#22–1141, Li3N PDF#02–0301 and LiF PDF#04–0857."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The bare CC and CZnOntsCC current collectors were assembled into half cells with Li reference electrode to evaluate their electrochemical performance. The initial discharge curve of Li CZnOntsCC shows",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "voltage_range": {
+            "min": 0.0,
+            "max": 2.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The chemical structures of SEI of CC and CZnOntsCC are schematically shown in Fig. 6e and f respectively. The SEI of CC electrode is mainly composed of C-OR, ROCO2Li, R-O-R, COOR, while the SEI of CZn",
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "C-OR",
+              "ROCO2Li",
+              "R-O-R",
+              "COOR"
+            ],
+            "state": "CC electrode",
+            "source_text": "The SEI of CC electrode is mainly composed of C-OR, ROCO2Li, R-O-R, COOR"
+          },
+          {
+            "value": [
+              "Li2O",
+              "Li2CO3",
+              "Li3N",
+              "LiF"
+            ],
+            "state": "CZnOntsCC electrode",
+            "source_text": "the SEI of CZnOntsCC is rich in Li2O, Li2CO3, Li3N and LiF"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Nucleation overpotential before the lithium plating is observed, as shown in the inset Fig. 4b. Compared with the pristine CC cell 28.5 mV, the CZnOntsCC cell shows reduced nucleation overpotential 23",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "electrode_config": "symmetric Li plating cell",
+          "test_method": "nucleation overpotential measurement"
+        },
+        {
+          "condition_id": "C018",
+          "electrode_config": "symmetric Li plating cell",
+          "test_method": "average nucleation overpotential over first 15 cycles"
+        },
+        {
+          "condition_id": "C019",
+          "electrode_config": "symmetric Li plating cell",
+          "test_method": "plateau overpotential measurement"
+        },
+        {
+          "condition_id": "C020",
+          "electrode_config": "symmetric Li plating cell",
+          "test_method": "cycling stability test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Li_Nucleation_Overpotential",
+        "Plateau_Overpotential",
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 28.5,
+            "unit": "mV",
+            "condition_id": "C_nuc_initial",
+            "source_text": "pristine CC cell 28.5 mV"
+          },
+          {
+            "value": 23.7,
+            "unit": "mV",
+            "condition_id": "C_nuc_initial",
+            "source_text": "the CZnOntsCC cell shows reduced nucleation overpotential 23.7 mV"
+          },
+          {
+            "value": 31.2,
+            "unit": "mV",
+            "condition_id": "C_nuc_avg15",
+            "source_text": "average overpotential of CC ... 31.2 mV"
+          },
+          {
+            "value": 24.9,
+            "unit": "mV",
+            "condition_id": "C_nuc_avg15",
+            "source_text": "CZnOntsCC ... 24.9 mV"
+          }
+        ],
+        "Plateau_Overpotential": [
+          {
+            "value": 2.0,
+            "unit": "mV",
+            "condition_id": "C_plateau",
+            "source_text": "overpotential 2 mV on CZnOntsCC"
+          },
+          {
+            "value": 10.9,
+            "unit": "mV",
+            "condition_id": "C_plateau",
+            "source_text": "on CC 10.9 mV"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 15,
+            "unit": "cycles",
+            "condition_id": "C_cycling",
+            "source_text": "LiCC cell experiences quick degradation after only 15 cycles"
+          },
+          {
+            "value": ">100",
+            "unit": "cycles",
+            "condition_id": "C_cycling",
+            "source_text": "LiCZnOntsCC cell stably cycles for more than 100 cycles"
+          }
+        ]
+      },
+      "condition_id": "C_cycling"
+    },
+    {
+      "paragraph": "The chemical composition of SEI in bare CC and CZnOntsCC was further analyzed by XPS. Table S3 lists the details for XPS fitting. In the C1s spectra Fig. 6a, the peak intensities of CFx 293.5 eV, COOR",
+      "property_types": [
+        "SEI_Chemical_Composition_XPS",
+        "LiF_Content_in_SEI_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              {
+                "element": "CFx",
+                "content": 19.61,
+                "unit": "%"
+              },
+              {
+                "element": "COOR",
+                "content": 9.6,
+                "unit": "%"
+              },
+              {
+                "element": "C-OR",
+                "content": 33.78,
+                "unit": "%"
+              },
+              {
+                "element": "CO3^2-",
+                "content": 11.53,
+                "unit": "%"
+              },
+              {
+                "element": "ROCO2Li",
+                "content": 29.93,
+                "unit": "%"
+              },
+              {
+                "element": "R-O-R",
+                "content": 11.26,
+                "unit": "%"
+              },
+              {
+                "element": "Li2CO3",
+                "content": 46.92,
+                "unit": "%"
+              },
+              {
+                "element": "Li2O",
+                "content": 11.89,
+                "unit": "%"
+              },
+              {
+                "element": "LiF",
+                "content": 5.45,
+                "unit": "%"
+              }
+            ],
+            "state": "bare CC",
+            "source_text": "In the C1s spectra Fig. 6a, the peak intensities of CFx 293.5 eV, COOR 288.0 eV and C-OR 286.6 eV, which are the products of electrolyte decomposition, are significantly lower in cycled CZnOntsCC compared to those in cycled CC. The contents decrease from 19.61 %, 9.60 % and 33.78 % in CC to 11.56 %, 5.07 % and 9.57 % in CZnOntsCC, respectively ... Meanwhile, the peak intensity of CO3^2- 289.9 eV increases, and the content of CO3^2- increases from 11.53 % in CC to 20.01 % in CZnOntsCC ... As shown in the O1s spectra Fig. 6b, the contents of organic components including ROCO2Li 531.2 eV and R-O-R 533.1 eV decrease significantly, from 29.93 % and 11.26 % in CC to 6.25 % and 7.44 % in CZnOntsCC, respectively ... The content of inorganic component Li2CO3 532.1 eV and Li2O 530.6 eV increases significantly from 46.92 % and 11.89 % in CC to 65.33 and 20.97 % in CZnOntsCC, respectively ... Additionally, in the F1s spectra Fig. 6c, the content of LiF 684.9 eV in the SEI also increases significantly from 5.45 % in CC to 17.93 % in CZnOntsCC."
+          },
+          {
+            "value": [
+              {
+                "element": "CFx",
+                "content": 11.56,
+                "unit": "%"
+              },
+              {
+                "element": "COOR",
+                "content": 5.07,
+                "unit": "%"
+              },
+              {
+                "element": "C-OR",
+                "content": 9.57,
+                "unit": "%"
+              },
+              {
+                "element": "CO3^2-",
+                "content": 20.01,
+                "unit": "%"
+              },
+              {
+                "element": "ROCO2Li",
+                "content": 6.25,
+                "unit": "%"
+              },
+              {
+                "element": "R-O-R",
+                "content": 7.44,
+                "unit": "%"
+              },
+              {
+                "element": "Li2CO3",
+                "content": 65.33,
+                "unit": "%"
+              },
+              {
+                "element": "Li2O",
+                "content": 20.97,
+                "unit": "%"
+              },
+              {
+                "element": "LiF",
+                "content": 17.93,
+                "unit": "%"
+              }
+            ],
+            "state": "CZnOntsCC",
+            "source_text": "In the C1s spectra Fig. 6a ... the contents decrease ... to 11.56 %, 5.07 % and 9.57 % in CZnOntsCC ... content of CO3^2- increases ... to 20.01 % in CZnOntsCC ... O1s spectra ... ROCO2Li ... to 6.25 % ... R-O-R ... to 7.44 % ... Li2CO3 ... to 65.33 ... Li2O ... to 20.97 % ... F1s spectra ... LiF ... increases ... to 17.93 % in CZnOntsCC."
+          }
+        ],
+        "LiF_Content_in_SEI_XPS": [
+          {
+            "value": 5.45,
+            "unit": "at%",
+            "state": "bare CC",
+            "spectrum": "F1s",
+            "source_text": "in the F1s spectra Fig. 6c, the content of LiF 684.9 eV in the SEI also increases significantly from 5.45 % in CC to 17.93 % in CZnOntsCC."
+          },
+          {
+            "value": 17.93,
+            "unit": "at%",
+            "state": "CZnOntsCC",
+            "spectrum": "F1s",
+            "source_text": "in the F1s spectra Fig. 6c, the content of LiF 684.9 eV in the SEI also increases significantly from 5.45 % in CC to 17.93 % in CZnOntsCC."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "As shown in Fig. 7a–d, the modified CZnOntsCC current collector was assembled with either Li LiCZnOntsCC or LiNi0.8- mathrm 0.10.1 O 2 NCM811CZnOntsCC cathode to evaluate its electrochemical performan",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "electrolyte": "ester electrolyte",
+          "electrode_config": "half_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 98.54,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the LiCZnOntsCC cell shows excellent electrochemical performance Fig. 7e with average coulombic efficiency ACE of 98.54 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The transport kinetics of lithium ion at the electrode/electrolyte interface is highly dependent on the quality of SEI and charge transfer process. Electrochemical impedance spectroscopy EIS measureme",
+      "conditions": [
+        {
+          "condition_id": "C022",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS",
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 50,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 79.3,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "In the fresh state, the charge transfer resistance ... CZnOntsCC 79.3 Ω"
+          },
+          {
+            "value": 158.7,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "In the fresh state, the charge transfer resistance of bare CC is 158.7 Ω"
+          },
+          {
+            "value": 3.1,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "The mathtt R mathtt of CZnOntsCC 3.1Ω (SEI interfacial impedance after cycling)"
+          },
+          {
+            "value": 7.5,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "The mathtt R mathtt of bare CC 7.5Ω (SEI interfacial impedance after cycling)"
+          },
+          {
+            "value": 15.7,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "CZnOntsCC 15.7Ω (charge transfer resistance after cycling)"
+          },
+          {
+            "value": 59.3,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "bare CC ... 59.3 Ω (charge transfer resistance after cycling)"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "In summary, carbon-coated ZnO nanotube arrays with good lithium affinity were constructed on carbon cloth CZnOntsCC by simple hydrothermal method and thermal treatment, which is used as the anode curr",
+      "conditions": [
+        {
+          "condition_id": "C024",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 150
+        },
+        {
+          "condition_id": "C025",
+          "electrode_config": "full_cell",
+          "electrolyte": "carbonate-based electrolyte",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 600
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 98.54,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "high average Coulombic efficiency of 98.54 % is achieved after 150 cycles in the LiCZnOntsCC half-cell."
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 47,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 600,
+            "source_text": "capacity retention of 47 % over 600 cycles is realized for the NCM811CZnOntsCC full cell with carbonate-based electrolyte."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In order to further prove the potential application of CZnOntsCC, a full battery was assembled, and the current collector was paired with a commercial NCM811 cathode with areal capacity of 4 mAh⋅cm− 2",
+      "conditions": [
+        {
+          "condition_id": "C026",
+          "electrolyte": "Carbonate electrolyte",
+          "cycle_number": 600,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C027",
+          "electrolyte": "Carbonate electrolyte",
+          "electrode_config": "full_cell",
+          "test_method": "rate capability test",
+          "c_rate_or_current": {
+            "value": "various",
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle",
+        "Rate_Capability_at_Given_C_rate",
+        "Energy_Density_Full_Cell"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 47.0,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 600,
+            "source_text": "The capacity retention rate CRR of NCM811 CZnOntsCC and NCM811CC batteries is 47.0 % and 15.5 % respectively after 600 cycles."
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 151,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "After recovering to 0.2C, NCM811CZnOntsCC battery still maintains a considerable capacity of 151 ⋅ g - 1 ."
+          }
+        ],
+        "Energy_Density_Full_Cell": [
+          {
+            "value": 426,
+            "unit": "Wh/kg",
+            "condition_id": "C001",
+            "source_text": "The energy density of NCM811 CZnOntsCC is 426 Wh⋅kg− 1 , which is 9.2 % higher than that of NCM811CC 390 Wh⋅kg− 1 ."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

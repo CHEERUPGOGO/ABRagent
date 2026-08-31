@@ -1,0 +1,447 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s11771-022-5144-0.md",
+  "component": "anode",
+  "paper_id": "10.1007/s11771-022-5144-0",
+  "doi": "10.1007/s11771-022-5144-0",
+  "material_id": "10.1007_s11771-022-5144-0",
+  "meta": {
+    "meta_title": "Recycling waste crystalline-silicon solar cells: Application as high performance",
+    "meta_authors": "WANG Qi(汪齐) 1 , MENG Bi-cheng(孟必成) 2 , DU Yue-yong(杜岳勇) 1 ,",
+    "meta_year": "2022"
+  },
+  "materials": [
+    {
+      "name": "WSNPsC",
+      "short_name": "WSNPsC",
+      "formula": "Si/Al/Ag/C composite (with CNTs and N-doped carbon)",
+      "role": "novel",
+      "description": "Waste Si nanoparticles containing Al and Ag, coated with CNTs and N-doped carbon",
+      "material_id": "10.1007_s11771-022-5144-0_M001"
+    },
+    {
+      "name": "W-rAlC",
+      "short_name": "W-rAlC",
+      "formula": "Si/Ag/C composite (with CNTs and N-doped carbon, Al removed)",
+      "role": "novel",
+      "description": "Waste Si nanoparticles after Al removal, retaining Ag, coated with CNTs and N-doped carbon",
+      "material_id": "10.1007_s11771-022-5144-0_M002"
+    },
+    {
+      "name": "W-rAlAgC",
+      "short_name": "W-rAlAgC",
+      "formula": "Si/C composite (with CNTs and N-doped carbon, Al and Ag removed)",
+      "role": "novel",
+      "description": "Waste Si nanoparticles after Al and Ag removal, coated with CNTs and N-doped carbon",
+      "material_id": "10.1007_s11771-022-5144-0_M003"
+    },
+    {
+      "name": "pure SiC",
+      "short_name": "pure SiC",
+      "formula": "Si/C composite (with CNTs and N-doped carbon)",
+      "role": "comparison",
+      "description": "Commercial pure Si nanoparticles coated with CNTs and N-doped carbon, used as comparison",
+      "material_id": "10.1007_s11771-022-5144-0_M004"
+    }
+  ],
+  "n_materials": 4,
+  "table_items": [],
+  "n_items": 8,
+  "items": [
+    {
+      "paragraph": "A schematic diagram of the recycling procedure is illustrated in Figure 1. It was known that the particle size is a determinant to the electrochemical performance of Si-based anodes 11, 21, therefore,",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "high energy ball milling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Preparation of waste silicon nanoparticles WSNPs. The waste solar panels in large rectangular fragments where the frames and ethylene/vinyl acetate EVA copolymer layers have been preliminarily removed",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Si",
+              "Al",
+              "Ag",
+              "N"
+            ],
+            "source_text": "containing four major chemical constituents of Si 91.9 mathrm % , Al 7.0 mathrm % , Ag 1.0 wt% and mathrm 3 mathrm N 40.1 wt%"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Electrochemical performance. Each cell was measured in the voltaic region of 0.01 - 1.00 mathrm V with a multichannel battery test system LAND CT2001A. Cyclic voltammetry CV was utilized from CHI 610 ",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 1.0,
+            "unit": "V",
+            "reference": "vs Li/Li+"
+          },
+          "test_method": "galvanostatic cycling, cyclic voltammetry, electrochemical impedance spectroscopy",
+          "cv_scan_rate": {
+            "value": 0.1,
+            "unit": "mV/s"
+          },
+          "eis_amplitude": {
+            "value": 10,
+            "unit": "mV"
+          },
+          "eis_frequency_range": "100 kHz to 0.01 Hz"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Electrode fabrication. For WSNPsC, WrAlC, W-rAlAgC, and mathrm mathrm C electrodes, the active material, super P, and polyvinylidene fluorid PVDF with a weight ratio of 60:30:10 were mixed and homogen",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "value": 80,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "X-ray diffraction XRD, Raman spectroscopy, and X-ray photoelectron XPS were utilized to characterize the crystalline structures and surface information of the samples. The diffraction peaks of WSNPsC,",
+      "property_types": [
+        "Elemental_Composition",
+        "Crystal_System",
+        "Space_Group",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "C",
+              "Si",
+              "N",
+              "O"
+            ],
+            "method": "XPS",
+            "source_text": "The third characterization technique XPS was implemented to further validate the compositions of elements C, Si, N, and O Figure 4c."
+          }
+        ],
+        "Crystal_System": [
+          {
+            "value": "cubic",
+            "source_text": "The diffraction peaks of WSNPsC, W-rAlC, and W-rAlAgC in Figure 4a were synchronized to be the crystalline silicon phase JCPDS no. 75-0589"
+          }
+        ],
+        "Space_Group": [
+          {
+            "value": "Fd-3m",
+            "source_text": "The diffraction peaks of WSNPsC, W-rAlC, and W-rAlAgC in Figure 4a were synchronized to be the crystalline silicon phase JCPDS no. 75-0589"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Si",
+            "state": "crystalline phase",
+            "source_text": "The diffraction peaks of WSNPsC, W-rAlC, and W-rAlAgC in Figure 4a were synchronized to be the crystalline silicon phase JCPDS no. 75-0589"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "W-rAl was prepared by removing Al in WSNPs with NaOH solution, whilst W-rAlAg was generated by removing Ag through mathrm 3 from W-rAl. The morphologies of the three kinds of nanoparticles are shown i",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Si",
+              "Al",
+              "Ag",
+              "C",
+              "N"
+            ],
+            "method": "EDS elemental mapping",
+            "source_text": "WSNPsC (Si/Al/Ag/C composite (with CNTs and N-doped carbon)) ... Figures 2g − shows the corresponding EDS elementary mapping images of WSNPs with weak signals of Al and Ag."
+          },
+          {
+            "value": [
+              "Si",
+              "Ag",
+              "C",
+              "N"
+            ],
+            "method": "EDS elemental mapping",
+            "source_text": "W-rAl was prepared by removing Al in WSNPs with NaOH solution ... The Al ... completely removed in W-rAl ... W-rAlC (Si/Ag/C composite (with CNTs and N-doped carbon, Al removed))"
+          },
+          {
+            "value": [
+              "Si",
+              "C",
+              "N"
+            ],
+            "method": "EDS elemental mapping",
+            "source_text": "W-rAlAg was generated by removing Ag ... from W-rAl ... The Al and Ag elements were completely removed in W-rAl and W-rAlAg ... W-rAlAgC (Si/C composite (with CNTs and N-doped carbon, Al and Ag removed))"
+          },
+          {
+            "value": [
+              "Si",
+              "C",
+              "N"
+            ],
+            "method": "coating with CNTs and N-doped carbon",
+            "source_text": "pure Si with a particle size of 150 − 200 mathrm was coated in an identical way to produce the pure mathrm mathrm C nanocomposite"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "On the other hand, transmission electron microscopy TEM and high-resolution TEM HRTEM were used to confirm the morphology and phase structure of mathrm W - mathcal W mathrm C . The nanoparticles coate",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C005",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "cyclic voltammetry"
+        },
+        {
+          "condition_id": "C006",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "electrochemical impedance spectroscopy"
+        }
+      ],
+      "property_types": [
+        "Interlayer_Spacing",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Interlayer_Spacing": [
+          {
+            "value": 3.21,
+            "unit": "Å",
+            "plane": "(111)",
+            "state": "c-Si",
+            "source_text": "Clear lattice fringes with spacing of 0.321 nm can be observed in Figures 5c and which is associated with the interplanar space of 111 phase and indicates that the inner particle is c-Si."
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Si",
+              "C",
+              "N"
+            ],
+            "method": "TEM/HRTEM",
+            "source_text": "The nanoparticles coated by the carbon layer... N-doped carbon layer and CNTs matrix in Si/C composite... inner particle is c-Si."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The cycling results were used to further confirm the prominent electrochemical property of W-rAlC, as shown in Figure 7a. The anodes of WSNPsC, W-rAlC, W-rAlAgC, and pure SiC delivered initial dischar",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "cycle_number": 1,
+          "test_method": "initial discharge"
+        },
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "cycle_number": 50,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          },
+          "test_method": "rate capability"
+        },
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "test_method": "rate capability"
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          },
+          "test_method": "rate capability"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "test_method": "long-term cycling"
+        }
+      ],
+      "property_types": [
+        "Theoretical_Specific_Capacity"
+      ],
+      "extracted_info": {
+        "Theoretical_Specific_Capacity": [
+          {
+            "value": 990,
+            "unit": "mAh/g",
+            "n_electrons": 0,
+            "source_text": "which possesses only a quarter of silicon’s theoretical capacity 990 mAh/g"
+          }
+        ]
+      },
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Initial_Coulombic_Efficiency",
+        "Rate_Capability_at_Given_C_rate",
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 1671.7,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The anodes of WSNPsC delivered initial discharge capacities of 1671.7 mAh/g"
+          },
+          {
+            "value": 2273.3,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The anodes of W-rAlC delivered initial discharge capacities of 2273.3 mAh/g"
+          },
+          {
+            "value": 2334.5,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The anodes of W-rAlAgC delivered initial discharge capacities of 2334.5 mAh/g"
+          },
+          {
+            "value": 2225.5,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The anodes of pure SiC delivered initial discharge capacities of 2225.5 mAh/g"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 54.04,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "corresponding coulombic efficiencies of 54.04% for WSNPsC"
+          },
+          {
+            "value": 48.41,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "corresponding coulombic efficiencies of 48.41% for W-rAlC"
+          },
+          {
+            "value": 44.99,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "corresponding coulombic efficiencies of 44.99% for W-rAlAgC"
+          },
+          {
+            "value": 47.06,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "corresponding coulombic efficiencies of 47.06% for pure SiC"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 961.9,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "W-rAlC anode has shown a high capacity of 961.9 mAh/g after 50 cycles at 0.1 A/g"
+          },
+          {
+            "value": 866.1,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "WSNPsC delivered relatively low capacity of 866.1 mAh/g after 50 cycles at 0.1 A/g"
+          },
+          {
+            "value": 879.1,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "W-rAlAgC delivered relatively low capacity of 879.1 mAh/g after 50 cycles at 0.1 A/g"
+          },
+          {
+            "value": 915.6,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "pure SiC delivered relatively low capacity of 915.6 mAh/g after 50 cycles at 0.1 A/g"
+          },
+          {
+            "value": 987.4,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "W-rAlC reversible capacity of 987.4 mAh/g at 0.2 A/g"
+          },
+          {
+            "value": 665.1,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "W-rAlC reversible capacity of 665.1 mAh/g at 0.5 A/g"
+          },
+          {
+            "value": 384.3,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "W-rAlC reversible capacity of 384.3 mAh/g at 1.0 A/g"
+          },
+          {
+            "value": 838.6,
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "W-rAlC electrode can reach a remarkable and reversible capacity of 838.6 mAh/g at 0.5 A/g long-term cycling"
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.23,
+            "unit": "%",
+            "condition_id": "C006",
+            "source_text": "outstanding coulombic efficiency of 99.23% for W-rAlC during long-term cycling at 0.5 A/g"
+          }
+        ]
+      }
+    }
+  ]
+}

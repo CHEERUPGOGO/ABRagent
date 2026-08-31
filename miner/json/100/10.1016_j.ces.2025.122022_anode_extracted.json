@@ -1,0 +1,595 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.ces.2025.122022.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.ces.2025.122022",
+  "doi": "10.1016/j.ces.2025.122022",
+  "material_id": "10.1016_j.ces.2025.122022",
+  "meta": {
+    "meta_title": "Ultrafast fabrication of $\\mathrm { C O } _ { 2 ^ { - } }$ derived porous micro-",
+    "meta_authors": "Yunan Wei a , Leyi Li a , Han Liang a , Fan Zhang a , Runwei Mo a,b,\\*",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "Si/C composite",
+      "short_name": "Si/C",
+      "formula": "Si/C",
+      "role": "novel",
+      "description": "Micro-sized porous silicon – carbon composite synthesized via ultrafast electromagnetic induction heating of Mg₂Si in a CO₂/Ar atmosphere followed by HCl and HF acid washing.",
+      "material_id": "10.1016_j.ces.2025.122022_M001"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 12,
+  "items": [
+    {
+      "paragraph": "In order to investigate the reaction kinetics of Si/C electrodes, we performed electrochemical impedance tests. The open-circuit potential of Si/C is 2.53 V, and that of pure Si is 2.83 V. As shown in",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct",
+        "Open_Circuit_Voltage"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 77.93,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "the electrochemical impedance of Si/C is very low 77.93 Ω"
+          }
+        ],
+        "Open_Circuit_Voltage": [
+          {
+            "value": 2.53,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "The open-circuit potential of Si/C is 2.53 V"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Lay the Mg2Si powder sold in the market in a pure iron boat, and then put it into an electromagnetic induction heating furnace. First pass pure Ar to exhaust the air in the quartz tube. The mixture of",
+      "property_types": [
+        "Elemental_Composition",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Si",
+              "C"
+            ],
+            "source_text": "The pickled Si/C composites were dried in vacuum at 100 ℃ for 12 h."
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Si/C",
+            "source_text": "Si/C composites"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The test battery uses lithium foil as reference electrode and counter electrode, and Celgard 2400 as diaphragm. The electrode slurry is made of active material, carbon black, SBR and CMC 7:2:0.5:0.5, ",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrolyte": "1M LiPF6 in EC:DEC (1:1) + 5% Ethyl carbonate (FEC) additive",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "CV, EIS, galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "22 xrightarrow Delta 2 C tag 1 In our work, we use electromagnetic rapid heating to speed up the preparation. When the power was 630 W voltage 28.5 mathrm v , current 22.1A, the ratio of Ar and mathrm",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "voltage_range": {
+            "min": 28.5,
+            "max": 28.5,
+            "unit": "V"
+          },
+          "test_method": "electromagnetic induction heating"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Si/C",
+            "source_text": "The product after acid washing was mathrm / C."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "As shown in Fig. 1c, after the product was treated with 1.5 mol mathrm L - 1 HCl, the characteristic diffraction peaks of Si/C were located at 28.5 circ , , 47.3 circ and 56.1◦, which were consistent ",
+      "property_types": [
+        "Crystal_System",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Crystal_System": [
+          {
+            "value": "cubic",
+            "source_text": "the characteristic diffraction peaks of Si/C were located at 28.5°, 47.3° and 56.1°, which were consistent with 111, 220 and 311 for crystalline silicon"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Si",
+              "C"
+            ],
+            "method": "XRD, TGA, Raman",
+            "source_text": "carbon content in the composites ... TGA ... weight loss of carbon of 5.01 % ... Raman ... characteristic peaks of Si at 295 cm⁻¹, 506 cm⁻¹ and 931 cm⁻¹"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Z prime R b R c t sigma omega - 1 / 2 tag 2 D L i frac R 2 T 22 A 2 n 4 F 4 C 2 sigma 2 tag 3 σ is the slope determined by linear fitting Z’, R is the gas constant, T is the absolute temperature, A is",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "test_method": "Electrochemical Impedance Spectroscopy (EIS)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Chemical_Diffusion_Coefficient_of_Li_GITT"
+      ],
+      "performance_info": {
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "value": 2.25e-15,
+            "unit": "cm^2/s",
+            "condition_id": "C001",
+            "source_text": "The results show that the mathrm D of Si/C electrode is 2.25 times 10 - 15 mathrm 2 s - 1 and that of Si electrode is 2.89 times 10 - 16 mathrm 2 s - 1."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Si/C composites, which are typical type IV isotherms. The results exhibit that the specific surface area of Si/C is 101.1 mathbf m 2 mathbf g - 1 . As shown in Fig. 1g, the pore size distribution of S",
+      "property_types": [
+        "Elemental_Composition",
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Si",
+              "C",
+              "O"
+            ],
+            "method": "XPS",
+            "source_text": "Fig. 1h shows the full XPS spectrum, which indicates that the sample contains Si, C and O with no other impurities."
+          }
+        ],
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              {
+                "species": "O-C=O",
+                "binding_energy_eV": 288.3,
+                "spectrum": "C 1s"
+              },
+              {
+                "species": "C-O-C",
+                "binding_energy_eV": 286.04,
+                "spectrum": "C 1s"
+              },
+              {
+                "species": "C-C/C=C",
+                "binding_energy_eV": 284.6,
+                "spectrum": "C 1s"
+              },
+              {
+                "species": "C-Si",
+                "binding_energy_eV": 282.8,
+                "spectrum": "C 1s"
+              },
+              {
+                "species": "Si 2p3/2",
+                "binding_energy_eV": 99.47,
+                "spectrum": "Si 2p"
+              },
+              {
+                "species": "Si 2p1/2",
+                "binding_energy_eV": 100.05,
+                "spectrum": "Si 2p"
+              },
+              {
+                "species": "SiO2",
+                "binding_energy_eV": 103.4,
+                "spectrum": "Si 2p"
+              }
+            ],
+            "state": "as-synthesized",
+            "source_text": "In the high-resolution C 1s XPS spectrum Fig. 1i, the spectral peaks can be decomposed into four sub-peaks: O-CO 288.30 eV, C-O-C 286.04 eV, C-C/CC 284.60 eV and C-Si 282.80 eV. Fig. 1j shows the Si 2p XPS spectrum of Si/C composite, which can be divided into three peaks: 99.47 eV, 100.05 eV and 103.40 eV for Si 2p3/2, 2p1/2 and SiO2, respectively."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In order to test the electrochemical performance of Si/C electrodes, cyclic voltammetry CV was performed on Si/C electrodes at a rate of 0.1 mV mathsf s - 1 , which showed highly overlapping redox pea",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "test_method": "cyclic voltammetry",
+          "reference_electrode": "vs. Li/Li+"
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "test_method": "galvanostatic charge/discharge",
+          "reference_electrode": "vs. Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Initial_Coulombic_Efficiency",
+        "First_Lithiation_Capacity"
+      ],
+      "performance_info": {
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 73.03,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "The initial discharge and charge specific capacities are 2619.52 and 1912.96 mAh g-1, respectively, with a corresponding Coulombic efficiency of 73.03 %"
+          }
+        ],
+        "First_Lithiation_Capacity": [
+          {
+            "value": 2619.52,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "The initial discharge and charge specific capacities are 2619.52 and 1912.96 mAh g-1, respectively"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "In order to deeply investigate the mechanism of the improved electrochemical properties, we observed the Si/C electrode after 100 cycles by SEM and EDS. It can be seen that the Si/C composites still h",
+      "property_types": [
+        "Elemental_Composition",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Si",
+              "C"
+            ],
+            "method": "EDS",
+            "source_text": "the corresponding EDS elemental spectra show a relatively uniform distribution of Si and C, which indicates that the composites maintain their original structure after cycling without structural damage."
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Si/C",
+            "source_text": "the Si/C composites still have a relatively uniform porous structure after 100 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In order to verify its practical application, we assembled the Si/C composite into a soft pack full cell for performance testing. Fig. 5a shows the schematic diagram of the full battery consisting of ",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 500,
+            "unit": "mA/g"
+          },
+          "cycle_number": 200,
+          "electrode_config": "full cell (Si/C anode, NCM811 cathode)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 2000,
+            "unit": "mA/g"
+          },
+          "electrode_config": "full cell (Si/C anode, NCM811 cathode)",
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "electrode_config": "full cell (Si/C anode, NCM811 cathode)",
+          "test_method": "rate test (restored)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 167,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the specific capacity of the Si-C NCM811 full cell is 167 mAh g-1"
+          },
+          {
+            "value": 157.2,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "still up to 157.2mAh g-1 for the full cell at 2000mA g-1"
+          },
+          {
+            "value": 201.9,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "can be quickly restored to 201.9 mAh g-1"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 91.8,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "91.8 % capacity retention after 200 cycles at 500 mA g-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In summary, we develop an innovative, ultrafast and green method to prepare micro-sized porous Si-C composites by reacting mathrm 2 as a carbon source with a commercial alloy through a straightforward",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "unit": "A/g"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "A/g"
+          },
+          "cycle_number": 300,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "A/g"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "cycle_number": 200,
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Si/C",
+            "source_text": "micro-sized porous Si-C composites"
+          }
+        ]
+      },
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Initial_Coulombic_Efficiency",
+        "Capacity_Retention_at_Nth_Cycle",
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 1617.2,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "high reversible capacity 1617.2 mAh mathbf g - 1 downarrow"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 73.03,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "higher initial coulombic efficiencies of up to 73.03 %"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 80.3,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 300,
+            "source_text": "outstanding cycling performance 300 cycles, 80.3 % capacity retention at 1 mathsf A mathsf g - 1"
+          },
+          {
+            "value": 91.8,
+            "unit": "%",
+            "condition_id": "C005",
+            "cycle_number": 200,
+            "source_text": "the full cells achieved 91.8 % capacity retention after 200 cycles at 0.5 mathrm - 1"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 839.6,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "excellent rate capability 839.6 mAh mathbf g - 1 mathbf a mathbf t 2 textrm A mathbf g - 1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "As shown in Fig. 3d, the specific capacity of the operatorname / mathrm c electrode is 1617.2 mAh mathbf g - 1 after 100 cycles at a charge/discharge rate of 100 mA mathbf g - 1 : , with a capacity re",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "cycle_number": 100,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 1000,
+            "unit": "mA/g"
+          },
+          "cycle_number": 300,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 2000,
+            "unit": "mA/g"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "test_method": "rate test recovery step"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle",
+        "Rate_Capability_at_Given_C_rate",
+        "Rate_Recovery_Percent"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 82.3,
+            "unit": "%",
+            "condition_id": "C1",
+            "cycle_number": 100,
+            "source_text": "capacity retention rate of 82.3 %"
+          },
+          {
+            "value": 80.3,
+            "unit": "%",
+            "condition_id": "C2",
+            "cycle_number": 300,
+            "source_text": "80.3 % capacity retention for 300 cycles at 1 A g - 1"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 1617.2,
+            "unit": "mAh/g",
+            "condition_id": "C1",
+            "source_text": "specific capacity of the operatorname / mathrm c electrode is 1617.2 mAh mathbf g - 1 after 100 cycles at a charge/discharge rate of 100 mA mathbf g - 1"
+          },
+          {
+            "value": 921.34,
+            "unit": "mAh/g",
+            "condition_id": "C2",
+            "source_text": "specific capacity of Si/C electrode is still 921.34 mAh mathbf g - 1 after 300 cycles at 1000 mA g - 1"
+          },
+          {
+            "value": 1836,
+            "unit": "mAh/g",
+            "condition_id": "C3",
+            "source_text": "specific capacity of Si/C electrode is 1836 mAh mathbf g - 1 when the current density is 100mA bf g - 1"
+          },
+          {
+            "value": 839.6,
+            "unit": "mAh/g",
+            "condition_id": "C7",
+            "source_text": "specific capacity of Si/C electrode is still as high as 839.6 mAh stackrel cdot mathbf g - 1 at a current density of 2000 mA g - 1"
+          },
+          {
+            "value": 1784.8,
+            "unit": "mAh/g",
+            "condition_id": "C8",
+            "source_text": "When the current density was gradually restored to 100 mA mathbf g - 1 , the specific capacity of the Si/C electrode increased to 1784.8 mAh mathbf g - 1"
+          }
+        ],
+        "Rate_Recovery_Percent": [
+          {
+            "value": 97.21,
+            "unit": "%",
+            "condition_id": "C8",
+            "source_text": "97.21 % capacity retention"
+          }
+        ]
+      },
+      "condition_id": "C1"
+    }
+  ]
+}

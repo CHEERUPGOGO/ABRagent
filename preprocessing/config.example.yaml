@@ -1,0 +1,83 @@
+# =============================================================================
+# MinerU PDF -> Markdown 转换配置文件   上传github
+# =============================================================================
+# 使用说明 (两种方式任选其一):
+#   [方式 A — YAML 配置文件]
+#     1. 复制此文件:  cp config.example.yaml config.yaml
+#     2. 在 config.yaml 中直接填写 token 字段
+#     3. 运行:  python pdf_to_markdown.py
+#   [方式 B — 环境变量（不落地磁盘，更安全）]
+#     1. export MINERU_TOKEN='your_token_here'
+#     2. 运行:  python pdf_to_markdown.py
+#     3. token 字段可留空，环境变量优先级更高
+# =============================================================================
+
+# --- MinerU API 配置 ---
+mineru:
+  # API 认证令牌（优先使用环境变量 MINERU_TOKEN）
+  # 获取方式: 登录 https://mineru.net 后在个人中心获取
+  token: ""   # 留空则从环境变量 MINERU_TOKEN 读取
+
+  # API 基础地址
+  api_base_url: "https://mineru.net/api/v4"
+
+  # 模型版本: "vlm" 使用视觉语言模型（GPU 加速，推荐）
+  # 可选值: "pipeline" (默认) / "vlm" (推荐, GPU加速) / "MinerU-HTML"
+  model_version: "vlm"
+
+  # 是否优先使用 GPU（vlm 模型默认在 GPU 上运行）
+  use_gpu: true
+
+  # --- OCR 与解析参数 ---
+  # 解析语言，影响 OCR 识别效果。常用值: "ch"(中文), "en"(英文)
+  # 更多语言代码见 MinerU API 文档 language 取值参考
+  language: "ch"
+
+  # 是否强制启用 OCR（对扫描件 PDF 建议开启）
+  is_ocr: false
+
+  # 是否启用公式识别（LaTeX 转换）
+  enable_formula: true
+
+  # 是否启用表格识别（HTML 表格转换）
+  enable_table: true
+
+  # 页码范围（可选），如 "1-10" 表示只解析前10页，留空则解析全部
+  # 仅对 PDF 文件生效
+  page_range: ""
+
+# --- 路径配置 ---
+paths:
+  # PDF 源文件夹（支持嵌套目录结构和扁平目录结构）
+  pdf_root: "./papers/pdf"
+
+  # Markdown 输出文件夹（pdf_to_markdown.py 的输出，merge_markdown.py 的默认输入）
+  output_root: "./papers/markdown"
+
+  # 合并后的 Markdown 输出文件夹（merge_markdown.py 使用）
+  merged_root: "./papers/merged"
+
+# --- 处理参数 ---
+processing:
+  # 每批处理的文件数量（批量接口最大支持 200 个）
+  batch_size: 50
+
+  # 轮询解析状态的间隔（秒）
+  poll_interval: 40
+
+  # 最大重试次数
+  max_retries: 5
+
+  # 初始重试延迟（秒），使用指数退避策略
+  retry_delay: 10
+
+  # 批次之间的延迟（秒），避免触发 API 限流
+  batch_delay: 30
+
+  # 转换完成后是否自动合并 markdown（true: 联动, false: 不联动）
+  auto_merge: false
+
+# --- 日志配置 ---
+logging:
+  # 日志级别: DEBUG, INFO, WARNING, ERROR
+  level: "INFO"

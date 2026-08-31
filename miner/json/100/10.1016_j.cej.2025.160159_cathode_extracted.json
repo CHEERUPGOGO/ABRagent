@@ -1,0 +1,590 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.cej.2025.160159.md",
+  "component": "cathode",
+  "paper_id": "10.1016/j.cej.2025.160159",
+  "doi": "10.1016/j.cej.2025.160159",
+  "material_id": "10.1016_j.cej.2025.160159",
+  "meta": {
+    "meta_title": "A breakthrough in dry electrode technology for high-energy-density lithium-ion b",
+    "meta_authors": "Insung Hwang a,1 , Kyung-Eun Sung b,1 , Jieun Hong a , Gil-Seon Kang b , Jihee Yoon b,\\*",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "sw-CNT/NCM composite",
+      "short_name": "SW-SPD",
+      "formula": "NCM811/SWCNT",
+      "role": "novel",
+      "description": "Composite of single-crystal LiNi0.8Mn0.1Co0.1O2 and single-walled carbon nanotubes prepared by spray-drying to achieve uniform SWCNT coating.",
+      "material_id": "10.1016_j.cej.2025.160159_M001"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 11,
+  "items": [
+    {
+      "paragraph": "In this study, the active material used was single-crystal LiNi0.8- mathrm 0.10.1 O 2 NCM811, SMLab. The conductive additives were carbon black CB, Super C65, Imerys and single-walled carbon nanotubes",
+      "property_types": [
+        "Chemical_Composition_Mole_Fractions"
+      ],
+      "extracted_info": {
+        "Chemical_Composition_Mole_Fractions": [
+          {
+            "value": {
+              "Li": 1,
+              "Ni": 0.8,
+              "Co": 0.1,
+              "Mn": 0.1
+            },
+            "unit": "mole fraction",
+            "source_text": "single-crystal LiNi0.8- mathrm 0.10.1 O 2 NCM811"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To further investigate the effect of microstructure uniformity of dryprocessed electrode on battery performance, we fabricated symmetric cells and conducted electrochemical impedance spectroscopy EIS ",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "electrode_config": "symmetric_cell",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Charge_Transfer_Resistance"
+      ],
+      "performance_info": {
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 32.1,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "CB exhibiting significantly higher resistance at 32.1 Ω"
+          },
+          {
+            "value": 5,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "SW cell showing 5 Ω"
+          },
+          {
+            "value": 6.9,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "SW-SPD showing 6.9 Ω"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The dry electrode was fabricated using a fibrillation method involving PTFE. The electrode fabrication followed a kneading-sheetingcalendering process. The composition of the electrode with carbon bla",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "conductive_additive_binder_ratio": {
+            "value": {
+              "NCM": 96.8,
+              "CB": 1.2,
+              "PTFE": 2
+            },
+            "unit": "wt%"
+          },
+          "active_material_mass_fraction": {
+            "value": 96.8,
+            "unit": "%"
+          }
+        },
+        {
+          "condition_id": "C003",
+          "conductive_additive_binder_ratio": {
+            "value": {
+              "NCM": 97.88,
+              "sw-CNT": 0.12,
+              "PTFE": 2
+            },
+            "unit": "wt%"
+          },
+          "active_material_mass_fraction": {
+            "value": 97.88,
+            "unit": "%"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To evaluate the electrochemical performance of the dry cathode, we fabricated cathodes with low areal capacity 4 mAh/cm2 , 21 mg/cm2 and high areal capacity 7 mAh/cm2 , 36 mg/cm2 and assembled CR2032-",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 21,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 36,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 189.4,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial discharge capacities for SW 189.4 mAh/g compared to SW-SPD 192.4 mAh/g"
+          },
+          {
+            "value": 178.4,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "under high areal capacity conditions Fig. 6d, where SW showed a discharge capacity of 178.4 mAh/g"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Direct Current Internal Resistance DCIR analysis was conducted to evaluate the internal resistance of cells based on three different conductive additives, comparing the voltage drop over 10 s at 2C pu",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "C"
+          },
+          "test_method": "DCIR (Direct Current Internal Resistance)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In conclusion, the SW-SPD electrode presents a critical breakthrough in overcoming the dispersion limitations of conductive additives in dry electrode fabrication processes, offering a pathway for the",
+      "conditions": [
+        {
+          "condition_id": "C007"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Gravimetric_Energy_Density"
+      ],
+      "performance_info": {
+        "Gravimetric_Energy_Density": [
+          {
+            "value": 336,
+            "unit": "Wh/kg",
+            "condition_id": "C001",
+            "basis": "pouch cell",
+            "source_text": "It was calculated that cells fabricated with the highloading cathode used in our experiments could achieve an energy density of 336 Wh/kg in a pouch cell Table S4."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The composition of the CEI layer on the cathode surface was further analyzed before and after 100 cycles using X-ray photoelectron spectroscopy XPS. The F 1 s XPS spectrum for the electrode is shown i",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [
+        "LixPOyFz"
+      ],
+      "extracted_info": {
+        "LixPOyFz": [
+          {
+            "value": 27.72,
+            "unit": "%",
+            "state": "CB cathode",
+            "source_text": "peak area ratios of LiF and LixPOyFz to the total surface composition were 27.72 % for the CB cathode"
+          },
+          {
+            "value": 27.18,
+            "unit": "%",
+            "state": "SW-based cathode",
+            "source_text": "peak area ratios of LiF and LixPOyFz to the total surface composition were 27.18 % for the SW-based cathode"
+          },
+          {
+            "value": 38.97,
+            "unit": "%",
+            "state": "SW-SPD cathode",
+            "source_text": "peak area ratios of LiF and LixPOyFz to the total surface composition were 38.97 % for the SW-SPD cathode"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Notably, the SW-SPD electrode exhibited excellent electrical and electrochemical properties, despite containing 10 times less conductive additive compared to conventional carbon black-based electrodes",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 90,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "Achieving about 90 % capacity retention after 100 cycles with an exceptionally low conductive additive content of just 0.12 wt% is a truly remarkable result"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To compare the discharge characteristics of the cells at different current densities, the C-rate capability was analyzed at 0.33C, 0.5C, 1C, and mathrm 2 C , as shown in Fig. 6b. Even at the highest r",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C010",
+          "mass_loading": {
+            "unit": "mg/cm2",
+            "description": "high areal capacity (thick electrodes)"
+          },
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C009",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 137.39,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Even at the highest rate of 2C, the SW-SPD cell maintained a discharge capacity of 137.39 mAh/g",
+            "cell": "SW-SPD"
+          },
+          {
+            "value": 55.3,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "under the same 2C condition, the CB cell exhibited a much lower discharge capacity of 55.30 mAh/g",
+            "cell": "CB"
+          },
+          {
+            "value": 6.3,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The SW cell, however, demonstrated an almost negligible discharge capacity of 6.3 mAh/g",
+            "cell": "SW"
+          },
+          {
+            "value": 185.91,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "0.33C capacity of SW-SPD cell (calculated from 137.39 mAh/g / 0.739)",
+            "cell": "SW-SPD"
+          },
+          {
+            "value": 172.27,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "0.33C capacity of CB cell (calculated from 55.30 mAh/g / 0.321)",
+            "cell": "CB"
+          },
+          {
+            "value": 5.4,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "both CB and SW exhibited nearly zero discharge capacity at 2C CB: 5.40 mAh/g",
+            "cell": "CB"
+          },
+          {
+            "value": 1.83,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "SW: 1.83 mAh/g",
+            "cell": "SW"
+          },
+          {
+            "value": 49.39,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "the SW-SPD cell showed a discharge capacity of 49.39 mAh/g at 2C even in thick electrodes",
+            "cell": "SW-SPD"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 73.9,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "corresponding to 73.9 % of its 0.33C capacity",
+            "cell": "SW-SPD"
+          },
+          {
+            "value": 32.1,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "with a capacity retention of only 32.1 % compared to its 0.33C capacity",
+            "cell": "CB"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "From further analyses, it was revealed that the improved dispersion of conductive additives significantly influences the cycling performance of batteries. As shown in Fig. 8a, a cycling test at a 1C r",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "cycle_number": 100,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C012",
+          "test_method": "EIS",
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C013",
+          "test_method": "EIS",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_Ratio",
+        "Charge_Transfer_Resistance"
+      ],
+      "performance_info": {
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 89.4,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "The SW-SPD electrode maintained a capacity retention of 89.4 % after 100 cycles, with a discharge capacity of 138.1 mAh/g."
+          }
+        ],
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 3,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 0,
+            "soc_percent": 0,
+            "source_text": "the operatorname R operatorname component of the SW-SPD cell was calculated to be 3 Ω, approximately half that of the other two cells, which had values of 5–5.5 Ω"
+          },
+          {
+            "value": 5.4,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "cycle_number": 100,
+            "soc_percent": 0,
+            "source_text": "the operatorname R operatorname for the SW-SPD cell was calculated at 5.4 Ω, the lowest among the tested cells."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "For coin-type full-cell CR2032, Wellcos testing, the cathode composition for ‘CB’ samples was NCM: carbon black: PTFE in a ratio of 96.8:1.2:2, while the conductive additive content for ‘SW’ and ‘SW-S",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "electrode_config": "full-cell (coin-type CR2032)",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in EC/DMC (3:7 v/v) with 5 wt% FEC",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "cycle_number": 3,
+          "test_method": "formation cycles at 0.1C/0.1C",
+          "mass_loading": {
+            "value": 21.0,
+            "unit": "mg/cm2"
+          }
+        },
+        {
+          "condition_id": "C015",
+          "electrode_config": "full-cell (coin-type CR2032)",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in EC/DMC (3:7 v/v) with 5 wt% FEC",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "cycle_number": 3,
+          "test_method": "formation cycles at 0.1C/0.1C",
+          "mass_loading": {
+            "value": 36.0,
+            "unit": "mg/cm2"
+          }
+        },
+        {
+          "condition_id": "C016",
+          "electrode_config": "full-cell (coin-type CR2032)",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in EC/DMC (3:7 v/v) with 5 wt% FEC",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "test_method": "CC/CV mode with charge and discharge at 1C/1C, cut-off current rate 0.05C",
+          "mass_loading": {
+            "value": 21.0,
+            "unit": "mg/cm2"
+          }
+        },
+        {
+          "condition_id": "C017",
+          "electrode_config": "full-cell (coin-type CR2032)",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in EC/DMC (3:7 v/v) with 5 wt% FEC",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "test_method": "CC/CV mode with charge and discharge at 1C/1C, cut-off current rate 0.05C",
+          "mass_loading": {
+            "value": 36.0,
+            "unit": "mg/cm2"
+          }
+        },
+        {
+          "condition_id": "C018",
+          "electrode_config": "full-cell (coin-type CR2032)",
+          "electrolyte": "1 M LiPF6 in EC/DMC (3:7 v/v) with 5 wt% FEC",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "test_method": "DC-IR after one charge-discharge cycle at 0.1C CC/CV, 2C peak current for 10 s",
+          "mass_loading": {
+            "value": 21.0,
+            "unit": "mg/cm2"
+          }
+        },
+        {
+          "condition_id": "C019",
+          "electrode_config": "full-cell (coin-type CR2032)",
+          "electrolyte": "1 M LiPF6 in EC/DMC (3:7 v/v) with 5 wt% FEC",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "test_method": "DC-IR after one charge-discharge cycle at 0.1C CC/CV, 2C peak current for 10 s",
+          "mass_loading": {
+            "value": 36.0,
+            "unit": "mg/cm2"
+          }
+        },
+        {
+          "condition_id": "C020",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "electrolyte": "1 M LiPF6 in EC/DMC (3:7 v/v) with 5 wt% FEC",
+          "test_method": "EIS with Biologic SP-300, frequency 7 MHz to 0.1 Hz, 10 mV amplitude at OCV"
+        },
+        {
+          "condition_id": "C021",
+          "electrode_config": "symmetric_cell",
+          "electrolyte": "1 M LiPF6 in EC/DMC (3:7 v/v) with 5 wt% FEC",
+          "test_method": "EIS with Biologic SP-300, frequency 7 MHz to 0.1 Hz, 10 mV amplitude at OCV"
+        },
+        {
+          "condition_id": "C022",
+          "electrode_config": "full-cell (coin-type CR2032, after cycling)",
+          "electrolyte": "1 M LiPF6 in EC/DMC (3:7 v/v) with 5 wt% FEC",
+          "test_method": "EIS after cycling, frequency 1 MHz to 0.1 Hz, 10 mV amplitude, ZIVE SP1",
+          "mass_loading": {
+            "value": 21.0,
+            "unit": "mg/cm2"
+          }
+        },
+        {
+          "condition_id": "C023",
+          "electrode_config": "full-cell (coin-type CR2032, after cycling)",
+          "electrolyte": "1 M LiPF6 in EC/DMC (3:7 v/v) with 5 wt% FEC",
+          "test_method": "EIS after cycling, frequency 1 MHz to 0.1 Hz, 10 mV amplitude, ZIVE SP1",
+          "mass_loading": {
+            "value": 36.0,
+            "unit": "mg/cm2"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    }
+  ]
+}

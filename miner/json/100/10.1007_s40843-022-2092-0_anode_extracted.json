@@ -1,0 +1,570 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s40843-022-2092-0.md",
+  "component": "anode",
+  "paper_id": "10.1007/s40843-022-2092-0",
+  "doi": "10.1007/s40843-022-2092-0",
+  "material_id": "10.1007_s40843-022-2092-0",
+  "meta": {
+    "meta_title": "Electronic modulation and structure engineered MoSe2 with multichannel paths as ",
+    "meta_authors": "Chengkui $\\mathrm { L } \\mathbf { v } ^ { 1 , 2 \\dagger }$ , Chunfa $\\operatorname { L i n } ^ { 2 \\dag }$ , Huilong Dong2†, Huaixin Wei1* , Jun Yang3* and Hongbo Geng2 2",
+    "meta_year": "2092"
+  },
+  "materials": [
+    {
+      "name": "MoSe2/MCFsNC",
+      "short_name": "MoSe2/MCFsNC",
+      "formula": "MoSe2/C (N-doped carbon coating)",
+      "role": "novel",
+      "description": "N-doped dual carbon-coated MoSe2 on multichannel carbon fibers, primary material studied",
+      "material_id": "10.1007_s40843-022-2092-0_M001"
+    },
+    {
+      "name": "MoSe2/MCFs",
+      "short_name": "MoSe2/MCFs",
+      "formula": "MoSe2/C",
+      "role": "comparison",
+      "description": "MoSe2 on multichannel carbon fibers without N-doped carbon coating, synthesized for comparison",
+      "material_id": "10.1007_s40843-022-2092-0_M002"
+    },
+    {
+      "name": "Pure MoSe2",
+      "short_name": "MoSe2",
+      "formula": "MoSe2",
+      "role": "comparison",
+      "description": "Bare MoSe2 nanosheets prepared without MCFs, used as control",
+      "material_id": "10.1007_s40843-022-2092-0_M003"
+    }
+  ],
+  "n_materials": 3,
+  "table_items": [],
+  "n_items": 9,
+  "items": [
+    {
+      "paragraph": "The morphologies of MCF precursor and mathrm 2 / mathrm were characterized via SEM and TEM. With an average diameter of sim 500 mathrm , MCFs are well distributed as a connected network structure Fig.",
+      "property_types": [
+        "Elemental_Composition",
+        "Interlayer_Spacing"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Mo",
+              "Se",
+              "C",
+              "N"
+            ],
+            "method": "EDX mapping",
+            "source_text": "The HAADF and elemental mapping images of mathrm 2 / indicate the even distribution of C, N, Mo, and Se elements Fig. 3g."
+          }
+        ],
+        "Interlayer_Spacing": [
+          {
+            "value": 0.68,
+            "unit": "nm",
+            "plane": "(002)",
+            "source_text": "the visible lattice fringes with an interplanar spacing of 0.68 mathrm are compatible with the bf 2002 crystal plane Fig. 3f."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The overall fabrication sequence of mathrm 2 / mathrm composites is presented in Fig. 1a. Firstly, MCFs are prepared using PAN via thermal annealing treatment. During the process, PS acts as the pore-",
+      "property_types": [
+        "Space_Group",
+        "Crystal_System",
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Space_Group": [
+          {
+            "value": "P63/mmc",
+            "source_text": "other four diffraction peaks match well with the hexagonal phase of bf 2 JCPDS No. 29-0914 accompanied by the space group of P 63 / mmc"
+          }
+        ],
+        "Crystal_System": [
+          {
+            "value": "hexagonal",
+            "source_text": "other four diffraction peaks match well with the hexagonal phase of bf 2 JCPDS No. 29-0914 accompanied by the space group of P 63 / mmc"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "MoSe2",
+            "source_text": "hexagonal phase of bf 2 JCPDS No. 29-0914"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "C",
+              "N",
+              "Mo",
+              "Se",
+              "O"
+            ],
+            "method": "XPS",
+            "source_text": "The survey spectrum Fig. S3 reveals C, N, Mo, and Se elements in bf 2 / MCFsNC, where trace amount of oxygen is from the exposure to air."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Density functional theory DFT calculations were performed to obtain the adsorption and diffusion performance of sodium ions. Within the framework of generalized gradient approximation, the study of el",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Mo",
+              "Se",
+              "C",
+              "N"
+            ],
+            "source_text": "the carbon nanofibers / mathrm 2 heterostructure mathrm 2 / mathrm was modeled with the carbon 4 times 4 and mathbf 2 boldsymbol 3 times boldsymbol 3 supercell. And one of the carbon atoms was replaced by a nitrogen atom to obtain the nitrogen-doped mathrm 2 / mathrm heterostructure mathrm 2 / MCFsNC."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To test the electrochemical characteristics, the composite mathrm 2 / MCFsNC was constructed into a half-cell. The electrodes were made up of active materials, carbon nanotubes CNT, and polyvinylidene",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "electrode_config": "half_cell",
+          "mass_loading": {
+            "value": "1-1.5",
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1.0 M LiPF6 in 1,2-dimethoxyethane",
+          "separator": "glass fiber film",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "test_method": "GCD, EIS (10^-2 to 10^5 Hz), CV"
+        },
+        {
+          "condition_id": "C002",
+          "electrode_config": "half_cell",
+          "mass_loading": {
+            "value": "1-1.5",
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1.0 M LiPF6 in 1,2-dimethoxyethane",
+          "separator": "glass fiber film",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 5,
+          "test_method": "galvanostatic pre-sodiation"
+        },
+        {
+          "condition_id": "C003",
+          "electrode_config": "full_cell",
+          "electrolyte": "1.0 M LiPF6 in 1,2-dimethoxyethane",
+          "separator": "glass fiber film",
+          "test_method": "GCD"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Polyacrylonitrile PAN, 0.4 g and polystyrene PS, 0.4 g were dissolved in 5 mathrm of N , N . -dimethylformamide at 60 circ mathrm C for 12 mathrm h with magnetic stirring in an oil bath to obtain a ho",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "test_method": "dissolution"
+        },
+        {
+          "condition_id": "C005",
+          "test_method": "electrospinning"
+        },
+        {
+          "condition_id": "C006",
+          "temperature": {
+            "value": 260,
+            "unit": "C"
+          },
+          "test_method": "stabilization"
+        },
+        {
+          "condition_id": "C007",
+          "temperature": {
+            "value": 900,
+            "unit": "C"
+          },
+          "test_method": "carbonization"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In summary, electronic modulation and structural engineering were used to design a N-doped dual carbon-coated bf 2 with multichannel paths mathrm 2 / . Owing to sufficient ion/electron transport chann",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Na/Na+"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 10,
+            "unit": "A/g"
+          },
+          "cycle_number": 1100,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Na/Na+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 411,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "exhibits a capacity of 411 mAh g-1 at 0.2 A g-1"
+          },
+          {
+            "value": 303,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "appreciable capacity of 303 mAh g-1 after 1100 cycles at 10 A g-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "吕成魁1,2†, 蔺春发2†, 董慧龙2†, 魏怀鑫1 , 杨骏3 , 耿洪波2 摘要 由于钠资源储量丰富且价格低廉, 钠离子电池SIBs可作为锂离子电池LIBs的有效替代品已成为共识. 基于此, 开发适合钠存储的电极材料是钠离子电池发展的关键. 近年来, 二维层状过渡金属硫属化物在能源和环境领域受到广泛关注. 其中 mathrm bf 2 , 由于其宽的层间距和较高电导率, 被认为是一种具有潜力",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 10,
+            "unit": "A/g"
+          },
+          "cycle_number": 1100,
+          "electrode_config": "half_cell",
+          "reference_electrode": "vs. Na/Na+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 319,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "高的比容量 10 mathrm A g - 1 电流密度下为319 mA h mathbf g - 1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Considering the attractive sodium storage property of bf 2 / MCFsNC, the mathrm 2 / anode was assembled into a sodium-ion full cell by blending with the mathrm 3 V 242 O 2 F NVPOF cathode. Fig. 6a and",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic (Ragone plot derived)"
+        },
+        {
+          "condition_id": "C012",
+          "electrode_config": "full_cell",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          }
+        },
+        {
+          "condition_id": "C013",
+          "electrode_config": "full_cell",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          }
+        },
+        {
+          "condition_id": "C014",
+          "electrode_config": "full_cell",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          }
+        },
+        {
+          "condition_id": "C015",
+          "electrode_config": "full_cell",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          }
+        },
+        {
+          "condition_id": "C016",
+          "electrode_config": "full_cell",
+          "c_rate_or_current": {
+            "value": 1.5,
+            "unit": "A/g"
+          }
+        },
+        {
+          "condition_id": "C017",
+          "electrode_config": "full_cell",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "A/g"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Energy_Density_Full_Cell"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 311,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "capacities of 311 mA h g^{-1} can be recorded at 0.1 A g^{-1}"
+          },
+          {
+            "value": 276,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "276 mA h g^{-1} at 0.2 A g^{-1}"
+          },
+          {
+            "value": 254,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "254 mA h g^{-1} at 0.5 A g^{-1}"
+          },
+          {
+            "value": 239,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "239 mA h g^{-1} at 1 A g^{-1}"
+          },
+          {
+            "value": 229,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "229 mA h g^{-1} at 1.5 A g^{-1}"
+          },
+          {
+            "value": 221,
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "221 mA h g^{-1} at 2 A g^{-1}"
+          }
+        ],
+        "Energy_Density_Full_Cell": [
+          {
+            "value": 104,
+            "unit": "Wh/kg",
+            "condition_id": "C000",
+            "basis": "total cell mass (assumed)",
+            "source_text": "At a power density of 226 W kg^{-1}, the assembled full cell delivers 104 W h kg^{-1} of energy"
+          },
+          {
+            "value": 65,
+            "unit": "Wh/kg",
+            "condition_id": "C000",
+            "basis": "total cell mass (assumed)",
+            "source_text": "it keeps 65 W h kg^{-1} at a higher power density of 3960 W kg^{-1}"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The sodium storage performance of mathrm 2 / was systematically evaluated. The first five curves of the CV profiles of mathrm 2 / mathrm were obtained at 0.1 mathrm s - 1 , as depicted in Fig. 4a. In ",
+      "conditions": [
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          },
+          "cycle_number": 1,
+          "test_method": "GCD"
+        },
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          },
+          "cycle_number": 100,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "A/g"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "A/g"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": 10.0,
+            "unit": "A/g"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C026",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          },
+          "test_method": "rate recovery"
+        },
+        {
+          "condition_id": "C027",
+          "c_rate_or_current": {
+            "value": 10.0,
+            "unit": "A/g"
+          },
+          "cycle_number": 1100,
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Initial_Coulombic_Efficiency",
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 676,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the MoSe2/MCFsNC anode has a first discharge specific capacity of 676 mA h g-1"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 67.1,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "and an initial Coulombic efficiency CE of 67.1 %"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 411,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "The reversible capacities of MoSe2/MCFsNC are 411 mA h g-1 at 0.2 A g-1"
+          },
+          {
+            "value": 387,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "The reversible capacities of MoSe2/MCFsNC are 387 mA h g-1 at 0.5 A g-1"
+          },
+          {
+            "value": 374,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "The reversible capacities of MoSe2/MCFsNC are 374 mA h g-1 at 1.0 A g-1"
+          },
+          {
+            "value": 363,
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "The reversible capacities of MoSe2/MCFsNC are 363 mA h g-1 at 2.0 A g-1"
+          },
+          {
+            "value": 344,
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "The reversible capacities of MoSe2/MCFsNC are 344 mA h g-1 at 5.0 A g-1"
+          },
+          {
+            "value": 319,
+            "unit": "mAh/g",
+            "condition_id": "C008",
+            "source_text": "The reversible capacities of MoSe2/MCFsNC are 319 mA h g-1 at 10.0 A g-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

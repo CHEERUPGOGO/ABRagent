@@ -1,0 +1,721 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.chempr.2024.09.005.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/j.chempr.2024.09.005",
+  "doi": "10.1016/j.chempr.2024.09.005",
+  "material_id": "10.1016_j.chempr.2024.09.005",
+  "meta": {
+    "meta_title": "Non-fluorinated electrolytes with micelle-like solvation for ultra-high-energy-d",
+    "meta_authors": "H --> I[\"0.1 C charge, 0.5 C discharge\"]",
+    "meta_year": "October 3, 2025"
+  },
+  "materials": [
+    {
+      "name": "1.5 M LiFSI in DME",
+      "short_name": "1.5 M LiFSI/DME",
+      "formula": "1.5M LiFSI DME",
+      "role": "comparison",
+      "description": "Ether-based electrolyte with low salt concentration used as comparison, no micelle-like structure.",
+      "material_id": "10.1016_j.chempr.2024.09.005_M001"
+    },
+    {
+      "name": "1.5 M LiFSI in MNBE",
+      "short_name": "1.5 M LiFSI/MNBE",
+      "formula": "1.5M LiFSI MNBE",
+      "role": "comparison",
+      "description": "Pure MNBE solvent electrolyte forming micelle-like solvation structures but with low ionic conductivity.",
+      "material_id": "10.1016_j.chempr.2024.09.005_M002"
+    },
+    {
+      "name": "1.5 M LiFSI in DME/MNBE (3:2 v/v)",
+      "short_name": "1.5 M LiFSI/DME-MNBE 3:2",
+      "formula": "1.5M LiFSI DME:MNBE (3:2 v/v)",
+      "role": "novel",
+      "description": "Hybrid micelle-like electrolyte combining DME and MNBE, achieving high conductivity and stable anode interface.",
+      "material_id": "10.1016_j.chempr.2024.09.005_M003"
+    },
+    {
+      "name": "4 M LiFSI in DME (HCE)",
+      "short_name": "HCE 4 M LiFSI/DME",
+      "formula": "4M LiFSI DME",
+      "role": "comparison",
+      "description": "High-concentration ether electrolyte, no cluster formation, referenced for SAXS comparison.",
+      "material_id": "10.1016_j.chempr.2024.09.005_M004"
+    },
+    {
+      "name": "LHCE LiFSI-1.2DME-3TTE",
+      "short_name": "LHCE LiFSI-1.2DME-3TTE",
+      "formula": "LiFSI DME TTE (1:1.2:3 mol)",
+      "role": "comparison",
+      "description": "Localized high-concentration electrolyte with TTE diluent, no micelle-like clusters, referenced for comparison.",
+      "material_id": "10.1016_j.chempr.2024.09.005_M005"
+    }
+  ],
+  "n_materials": 5,
+  "table_items": [],
+  "n_items": 19,
+  "items": [
+    {
+      "paragraph": "MNBE consists of a lithiophilic segment i.e., –O–, which is used to dissolve Li salts, and a lithiophobic segment left mathsf i . e . , - 223 right to maintain an amphiphilic structure. Unlike DME Fig",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 12.55,
+            "unit": "mS/cm",
+            "source_text": "Later experiments demonstrated that 1.5 M LiFSI/DME-MNBE v:v 3:2 ... has an ionic conductivity as high as 12.55 mS cm\u0001"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Molecular dynamics MD simulations were further carried out to investigate the solvation structure of the three electrolytes. MD snapshots of the three electrolytes are shown in Figures 2D–2F, while th",
+      "property_types": [
+        "Li_Anion_Coordination_Number_MD",
+        "Li_Solvent_Coordination_Number_MD"
+      ],
+      "extracted_info": {
+        "Li_Anion_Coordination_Number_MD": [
+          {
+            "value": 0.3,
+            "simulation_conditions": "1.5 M LiFSI in DME",
+            "source_text": "in the first solvation shell of 1.5 M LiFSI/DME, the coordination number of Li /O FSI is as low as 0.3"
+          },
+          {
+            "value": 1.8,
+            "simulation_conditions": "1.5 M LiFSI in MNBE",
+            "source_text": "for 1.5 M LiFSI/MNBE, indicated by a high Li /O FSI coordination number of 1.8"
+          },
+          {
+            "value": 0.9,
+            "simulation_conditions": "1.5 M LiFSI in DME/MNBE (3:2 v/v)",
+            "source_text": "Li /O FSI is enhanced from 0.3 to 0.9"
+          }
+        ],
+        "Li_Solvent_Coordination_Number_MD": [
+          {
+            "value": 5.6,
+            "simulation_conditions": "1.5 M LiFSI in DME",
+            "source_text": "in 1.5 M LiFSI/DME, the Li /O DME is as high as 5.6"
+          },
+          {
+            "value": 3.2,
+            "simulation_conditions": "1.5 M LiFSI in DME/MNBE (3:2 v/v)",
+            "source_text": "compared with 1.5 M LiFSI/DME, the coordination number of Li /O DME in 1.5 M LiFSI/DME-MNBE decreases from 5.6 to 3.2"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "D–F Snapshots of the MD simulation boxes of the three electrolytes: 1.5 M LiFSI/DME 1.5 M LiFSI/MNBE and 1.5 M LiFSI/DME-MNBE Colors of elements: H, white Li, green C, black N, blue O, red F, cyan S, ",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "MD simulation",
+          "electrolyte": "1.5 M LiFSI/DME"
+        },
+        {
+          "condition_id": "C002",
+          "test_method": "MD simulation",
+          "electrolyte": "1.5 M LiFSI/MNBE"
+        },
+        {
+          "condition_id": "C003",
+          "test_method": "MD simulation",
+          "electrolyte": "1.5 M LiFSI/DME-MNBE"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "SEM images of the surface of deposited Li metal on the Cu foil using 1.5 M LiFSI/DME and 1.5 M LiFSI/DME-MNBE.",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "electrolyte": "1.5 M LiFSI/DME",
+          "electrode_config": "Li||Cu (Li deposition on Cu foil)",
+          "test_method": "SEM"
+        },
+        {
+          "condition_id": "C005",
+          "electrolyte": "1.5 M LiFSI/DME-MNBE",
+          "electrode_config": "Li||Cu (Li deposition on Cu foil)",
+          "test_method": "SEM"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "G–I The radial distribution function RDF plots of Li /O DME, Li /O MNBE, and Li /O FSI\u0001 in the three electrolytes: 1.5 M LiFSI/DME 1.5 M LiFSI/MNBE and 1.5 M LiFSI/DME-MNBE Small-angle X-ray scatterin",
+      "property_types": [
+        "Li_Anion_Binding_Energy"
+      ],
+      "extracted_info": {
+        "Li_Anion_Binding_Energy": [
+          {
+            "value": 1.55,
+            "unit": "eV",
+            "anion": "FSI-",
+            "method": "DFT",
+            "source_text": "The binding energy of Li -FSI in DME is 1.55 eV"
+          },
+          {
+            "value": 2.79,
+            "unit": "eV",
+            "anion": "FSI-",
+            "method": "DFT",
+            "source_text": "that of Li -FSI in MNBE 2.79 eV"
+          },
+          {
+            "value": 1.81,
+            "unit": "eV",
+            "anion": "FSI-",
+            "method": "DFT",
+            "source_text": "With the addition of MNBE, the binding energy of Li -FSI in DME-MNBE increases absolute value significantly compared with that in DME 1.81 eV"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "SEM images of the cross-section of deposited Li metal on the Cu foil using 1.5 M LiFSI/DME and 1.5 M LiFSI/DME-MNBE.",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "electrolyte": "1.5 M LiFSI/DME and 1.5 M LiFSI/DME-MNBE",
+          "electrode_config": "Li metal deposition on Cu foil",
+          "test_method": "SEM (cross-section imaging)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "B–D Peak fitting of the FSI\u0001 S-N-S bending peak in the frequency range of 680 - 780 mathsf - 1 : 1.5 M LiFSI/DME 1.5 M LiFSI/MNBE and 1.5 M LiFSI/DME-MNBE see also Table S4.",
+      "property_types": [
+        "CIP_AGG_Fraction"
+      ],
+      "extracted_info": {
+        "CIP_AGG_Fraction": [
+          {
+            "value": {},
+            "unit": "%",
+            "conditions": "1.5 M LiFSI/DME, 1.5 M LiFSI/MNBE, 1.5 M LiFSI/DME-MNBE",
+            "source_text": "B–D Peak fitting of the FSI\u0001 S-N-S bending peak in the frequency range of 680 - 780 mathsf - 1 : 1.5 M LiFSI/DME 1.5 M LiFSI/MNBE and 1.5 M LiFSI/DME-MNBE see also Table S4."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Nuclear magnetic resonance NMR analysis is performed on these three electrolytes as well as on the solvents to further verify the formation of micelle-like solvation structure. As shown in Figures 5E ",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "test_method": "1H NMR spectroscopy; 2D NOE spectroscopy",
+          "electrolyte": "1.5 M LiFSI/DME-MNBE; 1.5 M LiFSI/MNBE; 1.5 M LiFSI/DME; DME-MNBE mixture (neat solvents)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The oxidation stability of these electrolytes was evaluated by linear sweep voltammetry LSV Figure 3A.28,29 Based on the weaker solvation ability of MNBE and its unique micelle-like solvation structur",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "voltage_range": {
+            "min": 0.0,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1.5 M LiFSI in DME/MNBE (3:2 v/v)",
+          "electrode_config": "half-cell (Al/Li)",
+          "test_method": "LSV",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C009",
+          "voltage_range": {
+            "min": 0.0,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1.5 M LiFSI in DME",
+          "electrode_config": "half-cell (Al/Li)",
+          "test_method": "LSV",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C010",
+          "voltage_range": {
+            "min": 4.7,
+            "max": 4.7,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1.5 M LiFSI in DME/MNBE (3:2 v/v)",
+          "electrode_config": "half-cell (Al/Li)",
+          "test_method": "voltage hold (chronoamperometry)",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C011",
+          "voltage_range": {
+            "min": 4.7,
+            "max": 4.7,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1.5 M LiFSI in DME",
+          "electrode_config": "half-cell (Al/Li)",
+          "test_method": "voltage hold (chronoamperometry)",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The thickness changes of Li during cycling were quantified by using an in situ thickness measurement instrument.32 The LiCu half cells were operated at a current density of 0.5 mA mathsf - 2 with a co",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "mass_loading": {
+            "value": 2.0,
+            "unit": "mAh/cm2"
+          },
+          "cycle_number": 10,
+          "electrode_config": "half-cell (Li||Cu)",
+          "test_method": "in situ thickness measurement"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Cryo-transmission electron microscopy cryo-TEM and time-offlight secondary ion mass spectrometry ToF-SIMS resolved the microstructure of SEI. As shown in Figures 6A–6D and S35, the SEI of 1.5 M LiFSI/",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "SEI_Thickness",
+        "LiF_Content_in_SEI_CEI"
+      ],
+      "performance_info": {
+        "SEI_Thickness": [
+          {
+            "value": 15,
+            "unit": "nm",
+            "cycle_number": 0,
+            "method": "cryo-TEM",
+            "source_text": "the SEI of 1.5 M LiFSI/DME presents an inhomogeneous layered morphology and reaches a thickness of 15 nm"
+          },
+          {
+            "value": 7,
+            "unit": "nm",
+            "cycle_number": 0,
+            "method": "cryo-TEM",
+            "source_text": "the SEI of 1.5 M LiFSI/DME-MNBE not only exhibits a uniform amorphous morphology, but the thickness is only 7 nm"
+          }
+        ],
+        "LiF_Content_in_SEI_CEI": [
+          {
+            "unit": "at%",
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "source_text": "at the sputtering time of 50 s, the content of LiF in the SEI of 1.5 M LiFSI/DME-MNBE is 1.2 times higher than that of 1.5 M LiFSI/DME"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "As shown in Figures 3D–3F, to further verify the effectiveness in practical applications, the full-cell performance of these electrolytes was tested under high-areal-capacity mathsf 0.8 mathsf 0.1 mat",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 2.1,
+            "unit": "mA/cm2"
+          },
+          "mass_loading": {
+            "value": 23.0,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1.5 M LiFSI in DME/MNBE (3:2 v/v)",
+          "cycle_number": 200,
+          "electrode_config": "full-cell (Li||NMC811 coin cell)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 4.2,
+            "unit": "mA/cm2"
+          },
+          "mass_loading": {
+            "value": 23.0,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1.5 M LiFSI in DME/MNBE (3:2 v/v)",
+          "cycle_number": 200,
+          "electrode_config": "full-cell (Li||NMC811 coin cell)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 8.4,
+            "unit": "mA/cm2"
+          },
+          "mass_loading": {
+            "value": 23.0,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1.5 M LiFSI in DME/MNBE (3:2 v/v)",
+          "cycle_number": 200,
+          "electrode_config": "full-cell (Li||NMC811 coin cell)",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 90.1,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C001",
+            "source_text": "1.5 M LiFSI/DME-MNBE achieves 90.1% capacity retention after 200 cycles at a current density of 2.1 mA cm^-2 with an average CE up to 99.78%"
+          },
+          {
+            "value": 87.2,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C002",
+            "source_text": "1.5 M LiFSI/DME-MNBE also achieves superior cycling performance, with a capacity retention of 87.2% and an average CE of 99.75% after 200 cycles"
+          },
+          {
+            "value": 84.3,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C003",
+            "source_text": "1.5 M LiFSI/DME-MNBE still maintains excellent cycling stability, with a capacity retention of 84.3% and an average CE of 99.75% after 200 cycles"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 99.78,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C001",
+            "source_text": "with an average CE up to 99.78%"
+          },
+          {
+            "value": 99.75,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C002",
+            "source_text": "and an average CE of 99.75% after 200 cycles"
+          },
+          {
+            "value": 99.75,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C003",
+            "source_text": "and an average CE of 99.75% after 200 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The compatibility of MNBE with the Li anode was then investigated. As shown in Figure 3B, the Coulombic efficiency CE of different cells was tested at 1 mA cm\u00012 and 1 mAh cm\u00012 using a typical LiCu hal",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "CE cycling"
+        },
+        {
+          "condition_id": "C017",
+          "test_method": "Aurbach CE test"
+        },
+        {
+          "condition_id": "C018",
+          "test_method": "Aurbach CE test with 20 h resting"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 97.4,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C001",
+            "source_text": "low average CE of only 97.4%"
+          },
+          {
+            "value": 99.3,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C001",
+            "source_text": "high average CE of 99.3%"
+          },
+          {
+            "value": 99.2,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C001",
+            "source_text": "high average CE of 99.2%"
+          },
+          {
+            "value": 99.4,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C002",
+            "source_text": "Aurbach CE test ... substantially higher CE 99.4% for 1.5 M LiFSI/DME-MNBE"
+          },
+          {
+            "value": 98.9,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C002",
+            "source_text": "1.5 M LiFSI/DME 98.9%"
+          },
+          {
+            "value": 99.4,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C003",
+            "source_text": "after a long resting for 20 h, the CE of 1.5 M LiFSI/DME-MNBE was still as high as 99.4%"
+          },
+          {
+            "value": 98.8,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C003",
+            "source_text": "while that of 1.5 M LiFSI/DME was reduced to 98.8%"
+          }
+        ],
+        "Ionic_Conductivity": [
+          {
+            "value": 3.96,
+            "unit": "mS/cm",
+            "source_text": "ionic conductivity of 3.96 mS cm⁻¹ for 1.5 M LiFSI/MNBE Figure 2A"
+          },
+          {
+            "value": 12.55,
+            "unit": "mS/cm",
+            "source_text": "ionic conductivity of 12.55 mS cm⁻¹ Figure 2A"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Simultaneously, the FSI\u0001 S-N-S bending peak in 1.5 M LiFSI/ DME-MNBE shows a new peak at 725 - 1 , indicating that the Li -FSI\u0001 interaction is significantly enhanced with the addition of MNBE. Further",
+      "property_types": [
+        "CIP_AGG_Fraction"
+      ],
+      "extracted_info": {
+        "CIP_AGG_Fraction": [
+          {
+            "value": {
+              "CIP": 31.7
+            },
+            "unit": "%",
+            "conditions": "1.5 M LiFSI/DME",
+            "source_text": "For 1.5 M LiFSI/DME, the SSIPs 717 cm^-1 peak as the dominant configuration accounts for up to 68.3%, while the CIPs 727 cm^-1 and 743 cm^-1 account for only 22.1% and 9.6%, respectively."
+          },
+          {
+            "value": {
+              "AGG": 83.7
+            },
+            "unit": "%",
+            "conditions": "1.5 M LiFSI/MNBE",
+            "source_text": "On the contrary, the peak percentage of AGGs reaches 83.7% in 1.5 M LiFSI/MNBE."
+          },
+          {
+            "value": {
+              "CIP": 48.4
+            },
+            "unit": "%",
+            "conditions": "1.5 M LiFSI/DME-MNBE",
+            "source_text": "Furthermore, compared with DME, the peak of SSIPs in 1.5 M LiFSI/DME-MNBE is greatly reduced from 68.3% to 35.9%, and CIPs become the dominant configuration from 22.1% to 48.4%."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "A1.5M LiFSI/DME B 1.5 M LiFSI/DME C1.5 M LiFSI/DME-MNBE D1.5 M LiFSI/DME-MNBE 1.5MLiFSI/DMESEI 1.5MLiFSI/DME-MNBESEI 1.5MLiFSI/DME 1.5MLiFSI/DME-MNBE A–D Cryo-TEM images of deposited Li metal and SEIs",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "electrolyte": "1.5 M LiFSI in DME; 1.5 M LiFSI in DME/MNBE",
+          "test_method": "Cryo-TEM"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Comparison of our work with recent electrolyte works that included testing of pouch cells above 300 Wh kg\u00011 . recent years that included testing of pouch cells above 300 Wh kg\u00011 , the specific energy ",
+      "conditions": [
+        {
+          "condition_id": "C020",
+          "electrolyte": "1.5 M LiFSI/DME-MNBE",
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Energy_Density",
+        "Cycle_Life_80"
+      ],
+      "performance_info": {
+        "Energy_Density": [
+          {
+            "value": {
+              "gravimetric": 503.7
+            },
+            "unit": "Wh/kg / Wh/L",
+            "basis": "pouch cell",
+            "condition_id": "C001",
+            "source_text": "the specific energy of 503.7 Wh kg⁻¹ and stable cycling of 100 cycles achieved in 1.5 M LiFSI/DME-MNBE is extremely competitive Figure 7D"
+          }
+        ],
+        "Cycle_Life_80": [
+          {
+            "value": 100,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "stable cycling of 100 cycles achieved in 1.5 M LiFSI/DME-MNBE"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "X-ray photoelectron spectroscopy XPS was used to track the compositional differences in the SEI generated by these two electrolytes.40,41 As shown in Figures 6I, 6J, and S36, the SEI compositions of t",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "cycle_number": 10,
+          "electrolyte": "1.5 M LiFSI/DME-MNBE and 1.5 M LiFSI/DME",
+          "test_method": "corrosion current density measurement"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In this work, we present a class of non-fluorinated electrolytes with micelle-like solvation structures toward the realization of practical LMBs. A series of experimental analyses and theoretical calc",
+      "conditions": [
+        {
+          "condition_id": "C022",
+          "electrolyte": "1.5 M LiFSI/DME-MNBE",
+          "electrode_config": "7.3 Ah Li NMC811 pouch cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Energy_Density",
+        "Cycle_Life_80"
+      ],
+      "performance_info": {
+        "Energy_Density": [
+          {
+            "value": {
+              "gravimetric": 503.7
+            },
+            "unit": "Wh/kg / Wh/L",
+            "basis": "cell",
+            "condition_id": "C001",
+            "source_text": "ultra-high energy density of 503.7 Wh kg-1"
+          }
+        ],
+        "Cycle_Life_80": [
+          {
+            "value": 100,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "achieves a lifespan of 100 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "High-capacity LiNMC811 pouch cells 7.3 Ah were assembled and evaluated to demonstrate the feasibility of the micellelike solvation strategy. The pouch cells were prepared by stacking cathodes and Li f",
+      "conditions": [
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": "0.1 charge / 0.5 discharge",
+            "unit": "C"
+          },
+          "electrolyte": "1.5 M LiFSI in DME/MNBE (3:2 v/v), lean electrolyte 1.38 g Ah-1",
+          "cycle_number": 100,
+          "electrode_config": "LiNMC811 cathode (areal capacity 6.17 mAh cm-2) | Li metal anode, N/P ratio 1.62, pouch cell",
+          "test_method": "galvanostatic charge-discharge cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Energy_Density",
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Energy_Density": [
+          {
+            "value": {
+              "gravimetric": 503.7
+            },
+            "unit": "Wh/kg / Wh/L",
+            "basis": "mass of all components in the pouch cell",
+            "condition_id": "C001",
+            "source_text": "delivers an ultra-high energy density of 503.7 Wh \\mathsf{-1} based on the mass of all components in the pouch cell"
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 84.1,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C001",
+            "source_text": "work stably for 100 cycles with a high-capacity retention of 84.1% at 0.1 C charging/0.5 C discharging conditions"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

@@ -1,0 +1,458 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.csite.2025.107492.md",
+  "component": "electrolyte",
+  "paper_id": "10.1007/s10584-013-0969-z",
+  "doi": "10.1007/s10584-013-0969-z",
+  "material_id": "10.1016_j.csite.2025.107492",
+  "meta": {
+    "meta_title": "A comparative study of the electro-thermal behaviour of the high energy density ",
+    "meta_authors": "Berkay Tahiragao ˘ glu ˘ a,\\* , Gokhan ¨ Sevilgen a , Merve Bürümlü b",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "electrolyte material",
+      "short_name": "10.1016_j.csite.2025.107492",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.csite.2025.107492"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: Characteristics; Values\nRows:\nRow 1: Characteristics = Type; Values = Pouch Cell\nRow 2: Characteristics = Weight; Values = 953 [g]\nRow 3: Characteristics = Geometric Dimensions; Values = 294 x 103 x 14.5 [mm]\nRow 4: Characteristics = Energy Density; Values = 642 [Wh/L]\nRow 5: Characteristics = Nominal Capacity; Values = 73 [Ah]\nRow 6: Characteristics = Nominal Voltage; Values = 3.65 [V]\nRow 7: Characteristics = Voltage Range; Values = 2.75–4,2 [V]\nRow 8: Characteristics = Cathode; Values = NMC 811\nRow 9: Characteristics = Anode; Values = Graphite\nColumn data:\n  Characteristics: Type; Weight; Geometric Dimensions; Energy Density; Nominal Capacity; Nominal Voltage; Voltage Range; Cathode; Anode\n  Values: Pouch Cell; 953 [g]; 294 x 103 x 14.5 [mm]; 642 [Wh/L]; 73 [Ah]; 3.65 [V]; 2.75–4,2 [V]; NMC 811; Graphite",
+    "TABLE DATA BLOCK\nHeaders: Domains; Parameters; Values\nRows:\nRow 1: Domains = Active Zone; Parameters = Density; Values = 2500 [kg/m3]\nRow 2: Specific Heat; 1050 [J/(kg K)]\nRow 3: Thermal Conductivity (x-y-z); (13.5–0.74 – 13.5) [W/(m K)]\nRow 4: Domains = Negative Tab; Parameters = Density; Values = 8940 [kg/m3]\nRow 5: Specific Heat; 385 [J/(kg K)]\nRow 6: Thermal Conductivity; 391 [W/(m K)]\nRow 7: Domains = Positive Tab; Parameters = Density; Values = 2705 [kg/m3]\nRow 8: Specific Heat; 900 [J/(kg K)]\nRow 9: Thermal Conductivity; 231 [W/(m K)]\nRow 10: Domains = Ambient Temperature; Parameters = ; Values = 288.15 [°K]\nRow 11: Domains = Outer Surfaces of Battery Cell; Parameters = ; Values = Convection boundary condition\nColumn data:\n  Domains: Active Zone; Specific Heat; Thermal Conductivity (x-y-z); Negative Tab; Specific Heat; Thermal Conductivity; Positive Tab; Specific Heat; Thermal Conductivity; Ambient Temperature; Outer Surfaces of Battery Cell\n  Parameters: Density; 1050 [J/(kg K)]; (13.5–0.74 – 13.5) [W/(m K)]; Density; 385 [J/(kg K)]; 391 [W/(m K)]; Density; 900 [J/(kg K)]; 231 [W/(m K)]; ; \n  Values: 2500 [kg/m3]; 8940 [kg/m3]; 2705 [kg/m3]; 288.15 [°K]; Convection boundary condition",
+    "TABLE DATA BLOCK\nHeaders: Parameters; Values\nRows:\nRow 1: Parameters = Vehicle weight [m]; Values = 1266 [kg]\nRow 2: Parameters = Capacity of battery pack; Values = 88 [kWh]\nRow 3: Parameters = Radius of tire [ $R_t$ ]; Values = 0.5 [m]\nRow 4: Parameters = Transmission Efficiency [η]; Values = 95 %\nRow 5: Parameters = Rolling resistance constant [ $f_y$ ]; Values = 0.006\nRow 6: Parameters = Aerodynamic resistance constant [ $k_a$ ]; Values = 1.3 [kg m $^{-1}$ ]\nRow 7: Parameters = Resistance of motor [r]; Values = 0.11 [Ω]\nRow 8: Parameters = Product of armature constant and magnetic flux [K]; Values = 10.08 [V·s]\nColumn data:\n  Parameters: Vehicle weight [m]; Capacity of battery pack; Radius of tire [ $R_t$ ]; Transmission Efficiency [η]; Rolling resistance constant [ $f_y$ ]; Aerodynamic resistance constant [ $k_a$ ]; Resistance of motor [r]; Product of armature constant and magnetic flux [K]\n  Values: 1266 [kg]; 88 [kWh]; 0.5 [m]; 95 %; 0.006; 1.3 [kg m $^{-1}$ ]; 0.11 [Ω]; 10.08 [V·s]",
+    "TABLE DATA BLOCK\nHeaders: The Mathematical Model; The ECM Model; The NTGK Model\nRows:\nRow 1: The Mathematical Model = Determining vehicle characteristics; The ECM Model = Creating the CAD model of the cell; The NTGK Model = Creating the CAD model of the cell\nRow 2: The Mathematical Model = Determining the cell characteristics by applying the HPPC test at various ambient temperatures; The ECM Model = Determining of the physical model and boundary conditions; The NTGK Model = Determining of the physical model and boundary conditions\nRow 3: The Mathematical Model = Collection of temperature data from the cell surface; The ECM Model = Dividing the domain into small control volumes; The NTGK Model = Dividing the domain into small control volumes\nRow 4: The Mathematical Model = Import of electrical and thermal parameters of the cell into the software; The ECM Model = Calculation of ECM parameters by applying the HPPC test at various ambient temperatures; The NTGK Model = Determining of U and Y parameters by curve fitting based on CC discharge tests conducted at various ambient temperatures\nRow 5: The Mathematical Model = Determining the driving cycle or current condition; The ECM Model = Import of electrical and thermal parameters of the cell into the software; The NTGK Model = Import of electrical and thermal parameters of the cell into the software\nRow 6: The Mathematical Model = Review and validation of results.; The ECM Model = Review and validation of results.; The NTGK Model = Review and validation of results.\nColumn data:\n  The Mathematical Model: Determining vehicle characteristics; Determining the cell characteristics by applying the HPPC test at various ambient temperatures; Collection of temperature data from the cell surface; Import of electrical and thermal parameters of the cell into the software; Determining the driving cycle or current condition; Review and validation of results.\n  The ECM Model: Creating the CAD model of the cell; Determining of the physical model and boundary conditions; Dividing the domain into small control volumes; Calculation of ECM parameters by applying the HPPC test at various ambient temperatures; Import of electrical and thermal parameters of the cell into the software; Review and validation of results.\n  The NTGK Model: Creating the CAD model of the cell; Determining of the physical model and boundary conditions; Dividing the domain into small control volumes; Determining of U and Y parameters by curve fitting based on CC discharge tests conducted at various ambient temperatures; Import of electrical and thermal parameters of the cell into the software; Review and validation of results.",
+    "TABLE DATA BLOCK\nHeaders: Parameters; Values\nRows:\nRow 1: Parameters = Material; Values = PU\nRow 2: Parameters = Density; Values = 250 [kg/m3]\nRow 3: Parameters = Thickness; Values = 2 [mm]\nRow 4: Parameters = Thermal conductivity; Values = 0.07 [W/mK]\nRow 5: Parameters = Flame Resistance; Values = ASTM D4986\nColumn data:\n  Parameters: Material; Density; Thickness; Thermal conductivity; Flame Resistance\n  Values: PU; 250 [kg/m3]; 2 [mm]; 0.07 [W/mK]; ASTM D4986",
+    "TABLE DATA BLOCK\nHeaders: Experimental Devices; Measurement Range; Accuracy\nRows:\nRow 1: DC Power Supply Unit; Voltage; 2.7 V/4.2 V; ±0.02 %\nRow 2: Experimental Devices = Current; Measurement Range = -73 A/73 A; Accuracy = ±0.1 %\nRow 3: IR Thermal Camera; Temperature; -20 °C/+100 °C; ±2 °C\nRow 4: K-type thermocouple; Temperature; -40 °C/+300 °C; ±1.5 °C\nColumn data:\n  Experimental Devices: DC Power Supply Unit; Current; IR Thermal Camera; K-type thermocouple\n  Measurement Range: Voltage; -73 A/73 A; Temperature; Temperature\n  Accuracy: 2.7 V/4.2 V; ±0.1 %; -20 °C/+100 °C; -40 °C/+300 °C",
+    "TABLE DATA BLOCK\nHeaders: Speed Regions; Maximum Relative Error Rates\nRows:\nRow 1: Mathematical Model; ECM Model; NTGK Model\nRow 2: Low-speed region; 0.49 %; 0.47 %; 0.65 %\nRow 3: Medium-speed region; 1.25 %; 0.98 %; 1.49 %\nRow 4: High-speed region; 1.65 %; 1.48 %; 1.79 %\nRow 5: Extra-high-speed region; 2.53 %; 1.36 %; 2.27 %\nColumn data:\n  Speed Regions: Mathematical Model; Low-speed region; Medium-speed region; High-speed region; Extra-high-speed region\n  Maximum Relative Error Rates: ECM Model; 0.49 %; 1.25 %; 1.65 %; 2.53 %"
+  ],
+  "n_items": 9,
+  "items": [
+    {
+      "paragraph": "The experimental study was conducted at 5 different C-rates and 4 varying ambient temperatures. As a result of these experiments, variation curves of TV of the cell were obtained as shown in Fig. 12.",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "temperature": {
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Characteristics; Values\nRows:\nRow 1: Characteristics = Type; Values = Pouch Cell\nRow 2: Characteristics = Weight; Values = 953 [g]\nRow 3: Characteristics = Geometric Dimensio",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "voltage_range": {
+            "min": 2.75,
+            "max": 4.2,
+            "unit": "V"
+          },
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Energy_Density"
+      ],
+      "performance_info": {
+        "Energy_Density": [
+          {
+            "value": {
+              "volumetric": 642
+            },
+            "unit": "Wh/L",
+            "basis": "pouch cell",
+            "condition_id": "C001",
+            "source_text": "Energy Density = 642 [Wh/L]"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In Fig. 12, temperature and current dependent change curves of the TV of the single cell are presented. Accordingly, it is understood that the cell takes larger voltage values depending on the increas",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "unit": "C"
+          },
+          "c_rate_or_current": {},
+          "test_method": "galvanostatic constant current (CC) discharge",
+          "electrode_config": "single cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Domains; Parameters; Values\nRows:\nRow 1: Domains = Active Zone; Parameters = Density; Values = 2500 [kg/m3]\nRow 2: Specific Heat; 1050 [J/(kg K)]\nRow 3: Thermal Conductivity ",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 288.15,
+            "unit": "K"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "During the HPPC test, the cell is subjected to charge and discharge processes in the current profile shown in Fig. 2. Accordingly, changes in TV of the cell are analysed, and the SOEC parameters are o",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": "C/3",
+            "unit": "C"
+          },
+          "test_method": "HPPC",
+          "cycle_number": 10
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "During the HPPC test, the cell is subjected to charge and discharge processes in the current profile shown in Fig. 2. Accordingly, changes in TV of the cell are analysed, and the SOEC parameters are o",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": "C/3 (base); pulses: 1C discharge, 0.75C charge",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "unit": "V",
+            "reference": "operating voltage range"
+          },
+          "cycle_number": 10,
+          "test_method": "HPPC test with 30s 1C discharge, 10s 0.75C charge pulses, and C/3 CC discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Parameters; Values\nRows:\nRow 1: Parameters = Material; Values = PU\nRow 2: Parameters = Density; Values = 250 [kg/m3]\nRow 3: Parameters = Thickness; Values = 2 [mm]\nRow 4: Par",
+      "property_types": [
+        "Density"
+      ],
+      "extracted_info": {
+        "Density": [
+          {
+            "value": 250,
+            "unit": "kg/m³",
+            "source_text": "250 [kg/m3]"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The experimental setup was used to carry out HPPC tests and CC discharge at ambient temperatures of 15, 20, 25 and 30 circ mathrm C . In the CC discharge, the cell was discharged at 0.5 C, 0.75 C, 1 C",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "temperature": {
+            "value": 15,
+            "unit": "C"
+          },
+          "test_method": "HPPC"
+        },
+        {
+          "condition_id": "C008",
+          "temperature": {
+            "value": 20,
+            "unit": "C"
+          },
+          "test_method": "HPPC"
+        },
+        {
+          "condition_id": "C009",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "HPPC"
+        },
+        {
+          "condition_id": "C010",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "test_method": "HPPC"
+        },
+        {
+          "condition_id": "C011",
+          "temperature": {
+            "value": 15,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C012",
+          "temperature": {
+            "value": 15,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 0.75,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C013",
+          "temperature": {
+            "value": 15,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C014",
+          "temperature": {
+            "value": 15,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 1.5,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C015",
+          "temperature": {
+            "value": 15,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C016",
+          "temperature": {
+            "value": 20,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C017",
+          "temperature": {
+            "value": 20,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 0.75,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C018",
+          "temperature": {
+            "value": 20,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C019",
+          "temperature": {
+            "value": 20,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 1.5,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C020",
+          "temperature": {
+            "value": 20,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C021",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C022",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 0.75,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C023",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C024",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 1.5,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C025",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C026",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C027",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 0.75,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C028",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C029",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 1.5,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        },
+        {
+          "condition_id": "C030",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "C"
+          },
+          "test_method": "CC discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Experimental Devices; Measurement Range; Accuracy\nRows:\nRow 1: DC Power Supply Unit; Voltage; 2.7 V/4.2 V; ±0.02 %\nRow 2: Experimental Devices = Current; Measurement Range = ",
+      "conditions": [
+        {
+          "condition_id": "C031",
+          "voltage_range": {
+            "min": 2.7,
+            "max": 4.2,
+            "unit": "V"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    }
+  ]
+}

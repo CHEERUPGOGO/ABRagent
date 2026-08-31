@@ -1,0 +1,666 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s40843-022-2082-y.md",
+  "component": "anode",
+  "paper_id": "10.1007/s40843-022-2082-y",
+  "doi": "10.1007/s40843-022-2082-y",
+  "material_id": "10.1007_s40843-022-2082-y",
+  "meta": {
+    "meta_title": "High-capacity, high-rate, and dendrite-free lithium metal anodes based on a 3D m",
+    "meta_authors": "Tao Zhang1 , Zhiyuan Sang1* , Lichang $\\mathrm { Y i n } ^ { 2 }$ , Yonghuan $\\mathrm { H a n } ^ { 1 }$ , Wenping $\\mathrm { S i } ^ { 1 }$ , Yuxin $\\mathrm { Y i n } ^ { 3 }$ and Feng Hou1*",
+    "meta_year": "2082"
+  },
+  "materials": [
+    {
+      "name": "Li metal anode on Ni foam with in-situ formed Li3P and Ni nanoparticles",
+      "short_name": "L-LPNNF",
+      "formula": "Li/Li3P/Ni@Ni foam",
+      "role": "novel",
+      "description": "Lithium metal infused into nickel foam decorated with Ni2P nanosheets that convert to Li3P and Ni nanoparticles during melt infusion; primary anode studied",
+      "material_id": "10.1007_s40843-022-2082-y_M001"
+    },
+    {
+      "name": "Li metal anode on bare Ni foam",
+      "short_name": "L-NF",
+      "formula": "Li@Ni foam",
+      "role": "comparison",
+      "description": "Lithium metal infused into bare nickel foam without Ni2P modification, used as a control anode",
+      "material_id": "10.1007_s40843-022-2082-y_M002"
+    },
+    {
+      "name": "Thinned Li metal anode on Ni foam with in-situ formed Li3P and Ni nanoparticles",
+      "short_name": "L-LPNNF thin",
+      "formula": "Li/Li3P/Ni@Ni foam (thin)",
+      "role": "novel",
+      "description": "Same as L-LPNNF but thinned to 94 µm for higher Li utilization in full-cell tests",
+      "material_id": "10.1007_s40843-022-2082-y_M003"
+    }
+  ],
+  "n_materials": 3,
+  "table_items": [],
+  "n_items": 11,
+  "items": [
+    {
+      "paragraph": "Density functional theory DFT calculations were carried out using the Vienna ab initio simulation package VASP. The calculation adopted the projector augmented-wave PAW 27,28 pseudopotentials and Perd",
+      "conditions": [
+        {
+          "condition_id": "C001"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The microstructures were observed using scanning electron microscopy SEM, Hitachi, S-4800 at an operating voltage of 5 mathrm and transmission electron microscopy TEM, JOEL, JEM-2100 at an acceleratio",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "XPS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In order to understand the changes in the surface of the scaffold, lithium metal was removed from L-LPNNF by stripping at the current density of 0.25 mathrm mathrm - 2 named LPNNF. Besides the obvious",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": 0.25,
+            "unit": "mA/cm2"
+          }
+        }
+      ],
+      "property_types": [
+        "Interlayer_Spacing",
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Interlayer_Spacing": [
+          {
+            "value": 0.205,
+            "unit": "nm",
+            "plane": "(111)",
+            "state": "Ni metal nanoparticles",
+            "source_text": "d 10.205 : mathrm , d 20.204 : mathrm , Fig. S8 corresponding to Ni 111 crystal facet"
+          },
+          {
+            "value": 0.204,
+            "unit": "nm",
+            "plane": "(111)",
+            "state": "Ni metal nanoparticles",
+            "source_text": "d 10.205 : mathrm , d 20.204 : mathrm , Fig. S8 corresponding to Ni 111 crystal facet"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Li3P",
+            "state": "LPNNF",
+            "source_text": "peaks at 23.4 circ and 26.8 circ correspond to the 002 and 101 crystal facets of mathrm # 87 mathrm - 0712 mathrm 3 mathrm P"
+          },
+          {
+            "value": "Ni",
+            "state": "Ni nanoparticles",
+            "source_text": "Ni metal nanoparticles dot d 10.205 : mathrm , d 20.204 : mathrm , Fig. S8 corresponding to Ni 111 crystal facet are distributed in LPNNF"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "P",
+              "Ni",
+              "O"
+            ],
+            "method": "XPS, EDS",
+            "source_text": "In the HRXPS spectrum of Li 1s ... indicate the existence of mathrm and Li metal; Ni 2p ... correspond to Ni 2 mathsf p 3 / 2 and Ni 2 mathsf p 1 / 2 of mathrm 0; P 2p ... peaks at 129.0 eV ... of the Li–P bond; Another two peaks at 134.0 and 133.1 mathrm are assigned to the P–O bond"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To have a deeper understanding of the chemical affinity between scaffolds and Li, we used DFT to calculate the adsorption energies of the Li atom on the surface of different materials. The optimized a",
+      "property_types": [
+        "Band_Gap",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Band_Gap": [
+          {
+            "value": 0.84,
+            "unit": "eV",
+            "type": "HOMO-LUMO gap",
+            "method": "DFT",
+            "source_text": "the difference between the highest occupied molecular orbital HOMO and lowest unoccupied molecular orbital LUMO orbitals of mathrm 3 mathrm P is only 0.84 : mathrm"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Li3P",
+            "source_text": "strongest interaction between Li and Li3P 001"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "We also characterized the surface morphologies of the L-LPNNF after cycling at different current densities and compared them with pure Li and L-NF anodes. It can be seen that regardless of the conditi",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 500
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 5,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 500
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 20,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 500
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To clarify the lithiophilicity during the electroplating process, the nucleation overpotentials of three different types of anodes were characterized. In addition to its excellent affinity for Li, LPN",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "test_method": "nucleation overpotential measurement"
+        },
+        {
+          "condition_id": "C008",
+          "electrode_config": "symmetric_cell",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Li_Nucleation_Overpotential",
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 22.6,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "source_text": "LPNNF exhibits a 22.6 mathrm nucleation overpotential at a deposition current density of 2 mathrm mathrm - 2"
+          }
+        ],
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 90.1,
+            "unit": "Ohm",
+            "condition_id": "C002",
+            "source_text": "resistance of charge transport at the interface R mathrm 90.1 Omega"
+          },
+          {
+            "value": 3.2,
+            "unit": "Ohm",
+            "condition_id": "C002",
+            "source_text": "resistance between electrolyte and electrode R Omega 3.2 Omega"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The electrolyte was 1.0 mathrm mathrm L - 1 lithium bistrifluoromethanesulfonyl imide LiTFSI in a mixture solution of 1,3-dioxolane DOL and 1,2-dimethoxyethane DME 1:1, vol. ratio with 1 mathrm % math",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 0.25,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 M LiTFSI in DOL/DME (1:1 vol) with 1% LiNO3",
+          "electrode_config": "half-cell (L-LPNNF vs Cu foil)",
+          "test_method": "galvanostatic stripping (areal capacity measurement)"
+        },
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 M LiTFSI in DOL/DME (1:1 vol) with 1% LiNO3",
+          "electrode_config": "asymmetric cell (Li||Li, Ni foam||Li, LPNNF||Li) with Li plating",
+          "test_method": "galvanostatic plating (overpotential measurement) at 1 mAh cm⁻²"
+        },
+        {
+          "condition_id": "C011",
+          "electrolyte": "1.0 M LiTFSI in DOL/DME (1:1 vol) with 1% LiNO3",
+          "electrode_config": "symmetric cell (Li||Li, L-NF||L-NF, L-LPNNF||L-LPNNF)",
+          "test_method": "galvanostatic cycling (long-term stability)"
+        },
+        {
+          "condition_id": "C012",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.0,
+            "unit": "V",
+            "reference": "vs Li/Li+"
+          },
+          "mass_loading": {
+            "value": 12.0,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1.0 M LiTFSI in DOL/DME (1:1 vol) with 1% LiNO3",
+          "electrode_config": "full cell (LFP cathode vs Li, LNF, or LNPNF anode)",
+          "test_method": "galvanostatic charge-discharge (Neware battery testing system)"
+        },
+        {
+          "condition_id": "C013",
+          "electrolyte": "1.0 M LiTFSI in DOL/DME (1:1 vol) with 1% LiNO3",
+          "test_method": "EIS (AC amplitude 5 mV, frequency range 100 kHz to 0.01 Hz)",
+          "electrode_config": "not specified (likely symmetric or full cells)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "As shown in Fig. 1a, the synthetic procedure of L-LPNNF consists of two steps: 1 the preparation of NPNF through a typical hydrothermal-phosphating process from pre-cleaned NF, and 2 the in-situ conve",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "temperature": {
+            "value": 350,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 16.4,
+            "unit": "mg/cm2"
+          }
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "Ni",
+              "P"
+            ],
+            "method": "hydrothermal-phosphating and melt impregnation",
+            "source_text": "uniform distribution of Ni and P elements ... in-situ conversion reaction between Ni2P and Li"
+          }
+        ]
+      },
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 63.2,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "specific areal capacity of 63.2 mA h cm^-2"
+          },
+          {
+            "value": 59.1,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "that of L-NF ... 59.1 mA h cm^-2"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "张涛1 , 桑志远1 , 尹利长2 , 韩永欢1 , 司文平1 , 阴育新3 , 侯峰1 摘要 锂金属负极因具有较高的理论容量和最低的氧化还原电位有望成为下一代电池负极材料, 而严重的锂枝晶生长阻碍了其实际应用. 本文中, 我们制备了 mathrm 3 mathrm P 纳米片和Ni纳米颗粒修饰的泡沫镍结构作为无枝晶锂金属负极的三维骨架. 其中Li P纳米片表现出优异的锂离子电导率和优异的亲锂性,",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 20,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic plating/stripping cycling",
+          "cycle_number": 500
+        },
+        {
+          "condition_id": "C016",
+          "electrode_config": "full cell (Li/Li3P/Ni@Ni foam || LiFePO4)",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 180
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 104.2,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 20,
+            "capacity_mAh_cm2": 10,
+            "source_text": "在 20 mA cm−2 和10 mA h cm−2 下电镀/剥离循环500次后的电压滞后为104.2 mathrm"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 90.8,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 180,
+            "source_text": "180次循环后的比容量为 124.6 mathrm mathrm h mathrm g - 1 , 对应容量保持率为 90.8 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Full cells were assembled to verify the practicality of the anodes by pairing L-LPNNF with commercial LFP cathodes. Compared with LiLFP and L-NFLFP, L-LPNNFLFP has better rate capability and longer cy",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": "0.5, 1, 2, 3",
+            "unit": "C"
+          },
+          "electrode_config": "full cell (L-LPNNF||LFP, Li||LFP, L-NF||LFP)",
+          "test_method": "galvanostatic rate test",
+          "voltage_range": {
+            "unit": "V"
+          }
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "full cell (L-LPNNF||LFP, Li||LFP, L-NF||LFP)",
+          "cycle_number": 180,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C019",
+          "temperature": {
+            "value": "22 to 29",
+            "unit": "C"
+          },
+          "electrode_config": "full cell (L-LPNNF||LFP, Li||LFP)",
+          "test_method": "galvanostatic temperature-dependent test"
+        },
+        {
+          "condition_id": "C020",
+          "electrode_config": "full cell (L-LPNNF thin||LFP)",
+          "electrolyte": "limited electrolyte 20 μL",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle",
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Areal_Capacity",
+        "Plateau_Overpotential",
+        "First_Lithiation_Capacity"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 100,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "L-LPNNFLFP has a reversible capacity of 100 mAh g-1 at a high current density of 3 C."
+          },
+          {
+            "value": 141,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "When the current density returns to 0.5 C, the specific capacity of L-LPNNFLFP still retains 141 mAh g-1, showing its high reversibility of L-LPNNF Fig. 4a."
+          },
+          {
+            "value": 150,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "the L-LPNNF thinLFP with limited electrolyte 20 μL still suggests a large reversible capacity ~150 mAh g-1 with respect to the mass of LFP and good stability."
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 90.8,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 180,
+            "source_text": "L-LPNNFLFP has a specific capacity of 124.6 mAh g-1 and capacity retention of 90.8 % after 180 cycles."
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 100,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "And the Coulombic efficiency CE of L-LPNNFLFP is always around 100 %, whereas the CE of LiLFP and L-NFLFP both drop rapidly at 90 and 157 cycles Fig. S18."
+          }
+        ],
+        "Areal_Capacity": [
+          {
+            "value": 9,
+            "unit": "mAh/cm2",
+            "condition_id": "C004",
+            "source_text": "we thinned L-LPNNF to 94 μm, corresponding to a specific areal capacity of 9 mAh cm-2 Fig. S21, named as L-LPNNF thin."
+          }
+        ],
+        "Plateau_Overpotential": [
+          {
+            "value": 146,
+            "unit": "mV",
+            "condition_id": "C001",
+            "source_text": "L-LPNNFLFP delivers a polarization of 146 ... mV at the rates of 0.5 ... C"
+          },
+          {
+            "value": 236,
+            "unit": "mV",
+            "condition_id": "C001",
+            "source_text": "L-LPNNFLFP delivers a polarization of ... 236 ... mV at the rates of ... 1 ... C"
+          },
+          {
+            "value": 605,
+            "unit": "mV",
+            "condition_id": "C001",
+            "source_text": "L-LPNNFLFP delivers a polarization of ... 605 ... mV at the rates of ... 3 ... C"
+          }
+        ],
+        "First_Lithiation_Capacity": [
+          {
+            "value": 124.6,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "L-LPNNFLFP has a specific capacity of 124.6 mAh g-1 and capacity retention of 90.8 % after 180 cycles."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The cycling stability and reversibility of Li, L-NF, and L-LPNNF symmetric cells were evaluated through the electroplating/stripping process. Compared with LiLi and L-NFL-NF, L-LPNNFL-LPNNF has a more",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 500,
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 500,
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 20.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 500,
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 200,
+          "electrode_config": "symmetric_cell",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential",
+        "Li_Nucleation_Overpotential",
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 10.1,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "After cycling for 500 h, the symmetrical cell based on L-LPNNF retains a low voltage hysteresis of 10.1 mV"
+          },
+          {
+            "value": 72.1,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "LiLi possesses much higher voltage hysteresis of 72.1 mV at the beginning of the repeated electroplating/stripping process"
+          },
+          {
+            "value": 258.1,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "LiLi voltage hysteresis ... gradually increase to 258.1 mV at 500 h"
+          },
+          {
+            "value": 57.7,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "L-NFL-NF possess much higher voltage hysteresis of 57.7 mV at the beginning"
+          },
+          {
+            "value": 231.3,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "L-NFL-NF voltage hysteresis ... gradually increase to 231.3 mV at 500 h"
+          },
+          {
+            "value": 15.7,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "capacity_mAh_cm2": 2.5,
+            "source_text": "L-LPNNF exhibits a lifespan up to 500 h with the voltage hysteresis of 15.7 mV Fig. 3b"
+          },
+          {
+            "value": 195.6,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "capacity_mAh_cm2": 2.5,
+            "source_text": "much lower than that of LiLi 195.6 mV"
+          },
+          {
+            "value": 173.3,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "capacity_mAh_cm2": 2.5,
+            "source_text": "L-NFL-NF 173.3 mV"
+          }
+        ],
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 15.2,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "source_text": "at a current density of 2 mA cm-2 present that LPNNF has a 15.2 mV nucleation overpotential lower than that of Li and NF after 500 cycles"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 500,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "After cycling for 500 h, the symmetrical cell based on L-LPNNF retains a low voltage hysteresis"
+          },
+          {
+            "value": 500,
+            "unit": "h",
+            "condition_id": "C002",
+            "source_text": "L-LPNNF exhibits a lifespan up to 500 h with the voltage hysteresis of 15.7 mV"
+          },
+          {
+            "value": 500,
+            "unit": "h",
+            "condition_id": "C003",
+            "source_text": "Even at 20 mA cm-2, L-LPNNF achieves stable cycling of electroplating-stripping for 500 h"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

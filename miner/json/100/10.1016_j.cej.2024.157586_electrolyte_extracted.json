@@ -1,0 +1,637 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.cej.2024.157586.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/j.cej.2024.157586",
+  "doi": "10.1016/j.cej.2024.157586",
+  "material_id": "10.1016_j.cej.2024.157586",
+  "meta": {
+    "meta_title": "Constructing valid $\\mathrm { L i ^ { + } }$ fast-transfer channels on novel P(T",
+    "meta_authors": "Lei Ding a,\\* , Dandan Li a,\\* , Sihang Zhang b,\\* , Shuo Zhang d , Zhaoyang Wang a , Fanghui Du a , Pengfang Zhang a , Feng Yang",
+    "meta_year": "2024"
+  },
+  "materials": [
+    {
+      "name": "electrolyte material",
+      "short_name": "10.1016_j.cej.2024.157586",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.cej.2024.157586"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 9,
+  "items": [
+    {
+      "paragraph": "Superior electrolyte affinity improves electrolyte fill conditions within porous skeletons and provides smoother ion transport paths 59. CPP exhibits the contact angle of 49.1◦ and electrolyte uptake ",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Contact_Angle"
+      ],
+      "performance_info": {
+        "Contact_Angle": [
+          {
+            "value": 49.1,
+            "unit": "°",
+            "substrate": "CPP",
+            "source_text": "CPP exhibits the contact angle of 49.1◦"
+          },
+          {
+            "value": 14.8,
+            "unit": "°",
+            "substrate": "PTPCLys",
+            "source_text": "PTPCLys and PTPCLys-Li present much better compatibility with electrolytes and minish contact angles to 14.8◦ and 7.7◦, respectively."
+          },
+          {
+            "value": 7.7,
+            "unit": "°",
+            "substrate": "PTPCLys-Li",
+            "source_text": "PTPCLys and PTPCLys-Li present much better compatibility with electrolytes and minish contact angles to 14.8◦ and 7.7◦, respectively."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Interfacial impedance mathrm R i , Fig. 4e states compatibilities between separators and Li electrodes, which relates to charge transport through the SEI layer 67. The high mathrm R i of CPP 406 Ω mea",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "electrode_config": "Li/Li symmetric cell",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C001",
+          "electrode_config": "Li/Li symmetric cell",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "SEI_Resistance"
+      ],
+      "performance_info": {
+        "SEI_Resistance": [
+          {
+            "value": 406,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "The high mathrm R i of CPP 406 Ω means poor compatibility."
+          },
+          {
+            "value": 251,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "Superior electrolyte uptake and retention enable full contact with Li electrodes and promote more compatible interfaces, generating a much lower mathrm R i of 251 Ω for PTPCLys."
+          },
+          {
+            "value": 150,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "PTPCLys-Li with a minimized mathrm R i of 150 Ω signifies the optimal compatibility with Li electrodes."
+          },
+          {
+            "value": 4522,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 0,
+            "source_text": "mathrm R i values of CPP Fig. 5a increased visibly with the passage of storage time, reaching the maximum of 4522 Ω after 30 days Fig. 5d."
+          },
+          {
+            "value": 547,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 0,
+            "source_text": "the minimum mathrm R i value of 547 Ω at 30 days for PTPCLys-Li indicates stable SEI layer formations"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To verify the lithium replenishment effects of PTPCLys-Li, the charge–discharge plots Fig. 5g and initial coulomb efficiency ICE, Fig. 5h of NCM523/graphite cell ensure non-lithium state of anode, cha",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.35,
+            "unit": "V",
+            "reference": "cell voltage"
+          },
+          "cycle_number": 1,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 71.1,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C001",
+            "source_text": "Cell with CPP shows the lowest ICE of 71.1 %"
+          },
+          {
+            "value": 90.2,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C001",
+            "source_text": "the remarkable ICE of 90.2 % for PTPCLys-Li"
+          },
+          {
+            "value": 78.9,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C001",
+            "source_text": "compared with PTPCLys 78.9 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Pore size distributions of separator skeletons were acquired by the CFP 1300 PMI Porometer. Porosity was calculated by mathrm V s – mathrm V mathrm p / mathrm V s , where mathrm V s and mathrm V p are",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "test_method": "porometry, Gurley test"
+        },
+        {
+          "condition_id": "C004",
+          "electrolyte": "EC: mathrm 1 : 1",
+          "test_method": "electrolyte uptake, electrolyte retention, contact angle measurement"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Contact_Angle"
+      ],
+      "performance_info": {
+        "Contact_Angle": [
+          {
+            "unit": "°",
+            "condition_id": "C002",
+            "substrate": "separator",
+            "source_text": "The contact angle was measured by the KRUSS K100 contact angle meter drop volume: 4 μL."
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "LSV plots in Fig. 4a assess separator stability windows. Gently voltage platforms within 4.7 V certify stable states for three separators. Excessively raised voltage causes electrolyte decomposition a",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "test_method": "LSV"
+        },
+        {
+          "condition_id": "C006",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Anodic_Stability_Onset_Potential",
+        "Ionic_Conductivity"
+      ],
+      "performance_info": {
+        "Anodic_Stability_Onset_Potential": [
+          {
+            "value": 4.79,
+            "unit": "V vs. Li/Li⁺",
+            "current_density_criterion": "quickly raised current",
+            "condition_id": "C001",
+            "source_text": "The voltage of CPP holds stable till 4.79 V, followed by the quickly raised current."
+          },
+          {
+            "value": 5.24,
+            "unit": "V vs. Li/Li⁺",
+            "current_density_criterion": "minimum current",
+            "condition_id": "C001",
+            "source_text": "The highest voltage of 5.24 V and minimum current of PTPCLys-Li reveal the optimal stabilizing effect on electrolytes"
+          }
+        ],
+        "Ionic_Conductivity": [
+          {
+            "value": 1.59,
+            "unit": "mS/cm",
+            "method": "EIS",
+            "condition_id": "C002",
+            "source_text": "PTPCLys-Li possesses merits of superior electrolyte affinity and permeability and heightens σ to 1.59 mS/cm compared with CPP 0.55 mS/cm."
+          },
+          {
+            "value": 0.55,
+            "unit": "mS/cm",
+            "method": "EIS",
+            "condition_id": "C002",
+            "source_text": "PTPCLys-Li possesses merits of superior electrolyte affinity and permeability and heightens σ to 1.59 mS/cm compared with CPP 0.55 mS/cm."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Detailed CV plots of NCM523/Li cells at specific cycles are further measured to study PTPCLys-Li influenced electrode reaction kinetics. SEI layer formations generate large deviations at the first cyc",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "cycle_number": 700,
+          "mass_loading": {
+            "value": 12,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "40 μL lean electrolyte",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "cycle_number": 5,
+          "mass_loading": {
+            "value": 12,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "40 μL lean electrolyte",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "C-rate test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 47.5,
+            "unit": "%",
+            "cycle_number": 700,
+            "condition_id": "C001",
+            "source_text": "CPP presents poor capacity retention of 47.5 % 83.6 mA h/g after 700 cycles at 0.5C."
+          },
+          {
+            "value": 87.2,
+            "unit": "%",
+            "cycle_number": 700,
+            "condition_id": "C001",
+            "source_text": "PTPCLys-Li shows a superior capacity retention of 87.2 % 158.8 mA h/g after 700th cycles"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              {
+                "material": "CPP",
+                "c_rate": "0.2C",
+                "capacity": 185.3
+              },
+              {
+                "material": "CPP",
+                "c_rate": "10C",
+                "capacity": 34.1
+              },
+              {
+                "material": "PTPCLys-Li",
+                "c_rate": "10C",
+                "capacity": 105
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "CPP shows a capacity of 185.3 mA h/g at 0.2C Fig. 6d and then evident decline as current rises ... exhibiting unmeaning capacity of 34.1 and 16.7 mA h/g as cycles at 10C for 1st and 5th. PTPCLys-Li gives much higher capacity retentions during C-rate tests, reaching a capacity of 105 mA h/g at 10C for 1st cycle"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Reference 3000 electrochemical workstation was used to evaluate electrochemical performances. Electrochemical windows were obtained by linear sweep voltammetry LSV, Li-stainless steel SS cell, 2–6 V, ",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "voltage_range": {
+            "min": 2,
+            "max": 6,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrode_config": "Li-stainless steel (SS) cell",
+          "test_method": "linear sweep voltammetry (LSV)"
+        },
+        {
+          "condition_id": "C010",
+          "electrode_config": "SS symmetric cell",
+          "test_method": "AC impedance (EIS)"
+        },
+        {
+          "condition_id": "C011",
+          "test_method": "Arrhenius analysis (ion migration activation energy)"
+        },
+        {
+          "condition_id": "C012",
+          "electrode_config": "Li symmetric cells",
+          "test_method": "AC impedance"
+        },
+        {
+          "condition_id": "C013",
+          "test_method": "chronoamperometry"
+        },
+        {
+          "condition_id": "C014",
+          "electrode_config": "Li-Cu cells",
+          "voltage_range": {
+            "max": 1,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "test_method": "coulombic efficiency measurement"
+        },
+        {
+          "condition_id": "C015",
+          "electrode_config": "Li symmetric cell",
+          "test_method": "chronopotentiometry"
+        },
+        {
+          "condition_id": "C016",
+          "electrode_config": "NCM523/Li",
+          "voltage_range": {
+            "min": 3,
+            "max": 4.35,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "mass_loading": {
+            "value": 12,
+            "unit": "mg/cm2"
+          },
+          "test_method": "cyclic voltammetry (CV)"
+        },
+        {
+          "condition_id": "C017",
+          "electrode_config": "NCM523/Li",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 3,
+            "max": 4.35,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 12,
+            "unit": "mg/cm2"
+          },
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C018",
+          "electrode_config": "NCM523/Li",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 3,
+            "max": 4.35,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "mass_loading": {
+            "value": 12,
+            "unit": "mg/cm2"
+          },
+          "test_method": "C-rate test"
+        },
+        {
+          "condition_id": "C019",
+          "electrode_config": "NCM523/Li",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 3,
+            "max": 4.35,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "cycle_number": 3,
+          "mass_loading": {
+            "value": 12,
+            "unit": "mg/cm2"
+          },
+          "test_method": "activation cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To illustrate regulations of PTPCLys-Li on Li depositions, the first galvanostatic plots of Li/Cu cells are further listed in Fig. 7a and 7b. The nucleation left mathfrak n mathfrak n right and platfo",
+      "conditions": [
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "CPP, PTPCLys, PTPCLys-Li",
+          "cycle_number": 1,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic plating"
+        },
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "CPP, PTPCLys, PTPCLys-Li",
+          "cycle_number": 1,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic plating"
+        },
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "CPP, PTPCLys, PTPCLys-Li",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic plating"
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "CPP, PTPCLys, PTPCLys-Li",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic plating"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 69.3,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C001",
+            "source_text": "CPP cells give low ICE of 69.3 % at 0.5 mA/cm2"
+          },
+          {
+            "value": 92.1,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C001",
+            "source_text": "P TPCLys-Li visibly augments corresponding ICE to 92.1 % at 0.5 mA/cm2"
+          },
+          {
+            "value": 78.8,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C002",
+            "source_text": "CPP cells give low ICE of 78.8 % at 1 mA/cm2"
+          },
+          {
+            "value": 96.4,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C002",
+            "source_text": "P TPCLys-Li visibly augments corresponding ICE to 96.4 % at 1 mA/cm2"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Cycling coulomb efficiency CE of Li/Cu cells is presented in Fig. 7g and 7h embedded pictures are specific voltage cycling plots. Voltage hysteresis indicated by Figure S8 and impedance changes are ex",
+      "conditions": [
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "electrolyte": "lean",
+          "mass_loading": {
+            "value": "high",
+            "unit": "mg/cm2"
+          },
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C026",
+          "temperature": {
+            "value": 200,
+            "unit": "C"
+          },
+          "test_method": "thermal stability test"
+        },
+        {
+          "condition_id": "C006",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Coulombic_Efficiency",
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 1.59,
+            "unit": "mS/cm",
+            "method": "EIS",
+            "source_text": "PTPCLys-Li separator presented the σ of 1.59 mS/cm",
+            "condition_id": "C004"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": ">90",
+            "unit": "%",
+            "cycle_number": 102,
+            "condition_id": "C001",
+            "source_text": "Cell with CPP holds stable CEs above 90 % for 102 cycles"
+          },
+          {
+            "value": ">92",
+            "unit": "%",
+            "cycle_number": 250,
+            "condition_id": "C001",
+            "source_text": "PTPCLys-Li maintains CEs above 92 % over 250 cycles"
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 87.2,
+            "unit": "%",
+            "cycle_number": 700,
+            "condition_id": "C002",
+            "source_text": "batteries assembled with PTPCLys-Li maintained excellent capacity retention of 87.2 % during 700 cycles at 0.5C"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    }
+  ]
+}

@@ -1,0 +1,1181 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.carbon.2023.118498.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.carbon.2023.118498",
+  "doi": "10.1016/j.carbon.2023.118498",
+  "material_id": "10.1016_j.carbon.2023.118498",
+  "meta": {
+    "meta_title": "Graphene coated lithium foil anode enables long cycle life Li metal pouch cells",
+    "meta_authors": "Yanan Yu a,b , Danfeng Ying a , Shijie Xu a , Qiang Guo a , Yimei Li a , Shuhui Wang a , Xufeng Zhou a,\\* , Guangjie Shao b,\\*\\*, Zhaoping Liu a ,\\*\\*\\*",
+    "meta_year": "2023"
+  },
+  "materials": [
+    {
+      "name": "Graphene-coated lithium foil with graphene/PVDF mass ratio 1:1",
+      "short_name": "GLi",
+      "formula": "Li|graphene-PVDF coating",
+      "role": "novel",
+      "description": "Porous graphene coating on Li foil with optimized binder ratio for long-term cycling stability.",
+      "material_id": "10.1016_j.carbon.2023.118498_M001"
+    },
+    {
+      "name": "Graphene-coated lithium foil with graphene/PVDF mass ratio 9:1",
+      "short_name": "GLi (9:1)",
+      "formula": "Li|graphene-PVDF coating (9:1)",
+      "role": "comparison",
+      "description": "Variant with higher graphene content, tested to compare cycling performance.",
+      "material_id": "10.1016_j.carbon.2023.118498_M002"
+    },
+    {
+      "name": "Graphene-coated lithium foil with graphene/PVDF mass ratio 1:9",
+      "short_name": "GLi (1:9)",
+      "formula": "Li|graphene-PVDF coating (1:9)",
+      "role": "comparison",
+      "description": "Variant with higher binder content, tested to compare cycling performance.",
+      "material_id": "10.1016_j.carbon.2023.118498_M003"
+    },
+    {
+      "name": "Densified graphene-coated lithium foil",
+      "short_name": "dGLi",
+      "formula": "Li|compacted graphene-PVDF coating",
+      "role": "comparison",
+      "description": "GLi after roller pressing to densify the coating, leading to severe polarization.",
+      "material_id": "10.1016_j.carbon.2023.118498_M004"
+    },
+    {
+      "name": "Graphene-coated copper foil",
+      "short_name": "GCu",
+      "formula": "Cu|graphene-PVDF coating",
+      "role": "comparison",
+      "description": "Graphene coating on Cu foil used as substrate for Li plating/stripping Coulombic efficiency measurements.",
+      "material_id": "10.1016_j.carbon.2023.118498_M005"
+    }
+  ],
+  "n_materials": 5,
+  "table_items": [],
+  "n_items": 24,
+  "items": [
+    {
+      "paragraph": "NMC811 mathrm 0.80.10.102 power was purchased from Ningbo Ronbay New Energy Technology Co., Ltd. Commercial graphene powder provided by Ningbo Morsh Technology Co., Ltd. was dried in an oven at 80 cir",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": 80,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The surface morphology of the GLi anode is shown in Fig. 1b, and an enlarged view of the surface morphology of the yellow region marked in Fig. 1b is shown in Fig. 1d. Graphene nanosheets with a later",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "mass_loading": {
+            "value": 0.56,
+            "unit": "mg/cm2"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Graphene coated lithium foil GLi was prepared by a simple method which is illustrated in Fig. 1a. Firstly, graphene powder was mixed in a pre-prepared PVDF/NMP solution detailed information in the exp",
+      "property_types": [
+        "Interlayer_Spacing"
+      ],
+      "extracted_info": {
+        "Interlayer_Spacing": [
+          {
+            "value": 3.59,
+            "unit": "Å",
+            "plane": "(002)",
+            "state": "lithiated (LiC6)",
+            "source_text": "the characteristic diffraction peak of graphene in GLi shifts to smaller 2 theta of 24.8°"
+          }
+        ]
+      },
+      "performance_types": [
+        "First_Lithiation_Capacity"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 36,
+            "unit": "mAh/g",
+            "source_text": "the lithiation capacity of the GLi anode is 36 mAh g-1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The entire process of pouch cell assembly was carried out in a drying room with a dew point temperature of ＜-40 ◦C. GLi foil was cut into the size of 5.7 cm × 4.7 cm with a tab. NCM811 cathodes with a",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "value": -40,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 21.0,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1.0 M LiPF in FEC/EMC volume ratio 1:5",
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": -40,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 21.0,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1.0 M lithium hexafluorophosphate in EC/DMC volume ratio 3:7",
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The as-prepared graphene slurry was coated on a Cu foil with a thickness of 100 μm and dried at 80 circ mathrm C for 6 h.",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "temperature": {
+            "value": 80,
+            "unit": "C"
+          },
+          "coating_thickness": {
+            "value": 100,
+            "unit": "μm"
+          },
+          "drying_time": {
+            "value": 6,
+            "unit": "h"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The content of organic binder PVDF in the slurry has a great influence on the morphology and property of the composite anode. The surface morphology of the graphene coatings with three different graph",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The graphene coating presents excellent electrical conductivity, which can serve as a substrate for lithium metal deposition, and has a significant effect on the deposition morphology. To investigate ",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "electrolyte": "1.0 M LiPF6 in FEC/EMC (1:5 v/v)",
+          "test_method": "electrodeposition"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The surface morphology of bare Li foil and GLi after long-term cycling was also compared. The symmetric cell was assembled and applied a current density of 1 mA cm− 2 with a deposition capacity of 1 m",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "areal_capacity": {
+            "value": 1.0,
+            "unit": "mAh/cm2"
+          },
+          "cycle_number": 50,
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "LiC6",
+            "state": "lithium-carbon compound generated during cycling",
+            "source_text": "indicating the generation of lithium-carbon compounds mathrm 6"
+          }
+        ]
+      },
+      "performance_types": [
+        "Li_Nucleation_Overpotential"
+      ],
+      "performance_info": {
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 136,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "nucleation overpotential of Li anode is 136 mV"
+          },
+          {
+            "value": 80,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "GLi anode exhibits a lower nucleation overpotential of only 80 mV"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The galvanostatic cycling performances were conducted at 25 circ mathrm C using the Land-CT 2100A test system Jinnuo Wuhan Corp, China. Symmetric coin cells were tested at current densities of 0.5 mA ",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling",
+          "areal_capacity": {
+            "value": 1.0,
+            "unit": "mAh/cm2"
+          }
+        },
+        {
+          "condition_id": "C010",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling",
+          "areal_capacity": {
+            "value": 1.0,
+            "unit": "mAh/cm2"
+          }
+        },
+        {
+          "condition_id": "C011",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "max": 0.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling",
+          "areal_capacity": {
+            "value": 0.5,
+            "unit": "mAh/cm2"
+          }
+        },
+        {
+          "condition_id": "C012",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "max": 0.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling",
+          "areal_capacity": {
+            "value": 1.0,
+            "unit": "mAh/cm2"
+          }
+        },
+        {
+          "condition_id": "C013",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling",
+          "cathode": "NCM811",
+          "cathode_areal_capacity": {
+            "value": 2,
+            "unit": "mAh/cm2"
+          }
+        },
+        {
+          "condition_id": "C014",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling",
+          "cathode": "NCM811",
+          "cathode_areal_capacity": {
+            "value": 4,
+            "unit": "mAh/cm2"
+          }
+        },
+        {
+          "condition_id": "C015",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C016",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.33",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C017",
+          "electrode_config": "coin cell (CR2032)",
+          "test_method": "EIS",
+          "frequency_range": {
+            "min": 0.01,
+            "max": 1000000,
+            "unit": "Hz"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "f） The effect of pressure on the structure of the three-dimensional graphene layer in pouch cells was also evaluated by applying different stack pressures of 185 kPa, 370 kPa, and 740 kPa to the assem",
+      "conditions": [
+        {
+          "condition_id": "C018",
+          "pressure": {
+            "value": 185,
+            "unit": "kPa"
+          },
+          "test_method": "stack pressure test"
+        },
+        {
+          "condition_id": "C019",
+          "pressure": {
+            "value": 370,
+            "unit": "kPa"
+          },
+          "test_method": "stack pressure test"
+        },
+        {
+          "condition_id": "C020",
+          "pressure": {
+            "value": 740,
+            "unit": "kPa"
+          },
+          "test_method": "stack pressure test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The as-obtained GLi foil was transferred to a glovebox and cut to circular electrodes for coin cells with a diameter of 14 mm. The dGLi and GCu coin cells electrodes were obtained by the same procedur",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "electrolyte": "70 μL of 1.0 M LiPF6 in FEC/EMC (1:5 v/v) with Celgard 2400 separator",
+          "electrode_config": "symmetric_cell",
+          "test_method": "cell assembly"
+        },
+        {
+          "condition_id": "C022",
+          "electrolyte": "70 μL of 1.0 M LiPF6 in FEC/EMC (1:5 v/v) with Celgard 2400 separator",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li metal",
+          "test_method": "cell assembly"
+        },
+        {
+          "condition_id": "C023",
+          "electrolyte": "70 μL of 1.0 M LiPF6 in FEC/EMC (1:5 v/v) with Celgard 2400 separator",
+          "electrode_config": "full_cell",
+          "mass_loading": {
+            "value": 11.0,
+            "unit": "mg/cm2"
+          },
+          "test_method": "cell assembly"
+        },
+        {
+          "condition_id": "C024",
+          "electrolyte": "70 μL of 1.0 M LiPF6 in FEC/EMC (1:5 v/v) with Celgard 2400 separator",
+          "electrode_config": "full_cell",
+          "mass_loading": {
+            "value": 21.0,
+            "unit": "mg/cm2"
+          },
+          "test_method": "cell assembly"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In lithium-metal batteries, electrochemical side reactions are the main reason for the poor reversibility of lithium. The SEI formed by side reactions between lithium metal and electrolyte and the den",
+      "conditions": [
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C026",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 95.37,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "a high average CE of 95.37% was achieved on LiGCu half cells"
+          },
+          {
+            "value": 89.37,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the average CE LiCu half cell was merely 89.37%"
+          },
+          {
+            "value": 96.0,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "the CE of LiGCu half cell kept steady within 60 cycles with an average value of 96.0%"
+          },
+          {
+            "value": 86.3,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "with an average CE of 86.30%"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Bare Li anode was employed as a comparison with GLi. As expected, obvious heterogeneous deposition morphology and a large number of Li dendrites was observed on the surface of Li foil after initial el",
+      "conditions": [
+        {
+          "condition_id": "C027",
+          "test_method": "electrodeposition at 4 mAh cm^{-2}"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 4,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "Li deposited in a much more uniform and denser way on the GLi electrodes, even with a large deposition capacity of 4 mAh cm^{-2} Fig. 2b."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To investigate the influence of the micro-structure of graphene coatings on the lithium metal plating/stripping behaviors, the original GLi anode was roll-pressed to densify the graphene coating, and ",
+      "conditions": [
+        {
+          "condition_id": "C028",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic stripping"
+        },
+        {
+          "condition_id": "C029",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 10
+        },
+        {
+          "condition_id": "C030",
+          "electrode_config": "full_cell",
+          "cycle_number": 40,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 50,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "the stripping profiles of GLi and Li exhibit a normal and stable voltage plateau with much lower polarization of 50 mV"
+          },
+          {
+            "value": 500,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "the stripping voltage profile of the dGLi cell... exhibits extremely high polarization voltage of 0.5 V at the beginning of stripping"
+          },
+          {
+            "value": 28,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "polarization voltages are 28 mV... at the 10th... cycle"
+          },
+          {
+            "value": 30,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "polarization voltages are... 30 mV at the... 50th cycle"
+          },
+          {
+            "value": 1000,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "the voltage of the dGLi cell is extremely unstable and the voltage hysteresis even exceeds 1.0 V"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 0,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 40,
+            "source_text": "The dGLiNCM811 full cell was also assembled, whose discharge capacity rapidly decayed to 0 after 40 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "a） （g） The charge-discharge profiles of the LiNCM811 and GLi NCM811 full cells at various cycles between 2.8 V and 4.3 V are shown in Fig. 4c and d. The capacity of Li NCM811 full cell continuously de",
+      "conditions": [
+        {
+          "condition_id": "C031",
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "cell voltage"
+          },
+          "cycle_number": 470,
+          "electrode_config": "full cell (GLi|NCM811)",
+          "test_method": "in-situ internal resistance monitoring during cycling"
+        },
+        {
+          "condition_id": "C032",
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "cell voltage"
+          },
+          "cycle_number": 300,
+          "electrode_config": "full cell (Li|NCM811)",
+          "test_method": "in-situ internal resistance monitoring during cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 3000,
+            "unit": "mΩ",
+            "condition_id": "C001",
+            "source_text": "The resistance of the GLi full cell was about 3000 mΩ after 470 cycles"
+          },
+          {
+            "value": 6500,
+            "unit": "mΩ",
+            "condition_id": "C002",
+            "source_text": "the internal resistance of the Li full cell reached 6500 mΩ after only 300 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Failure mechanisms of GLi anode were also explored. There are three common failure reasons for LMBs, including electrolyte depletion, loss of Li inventory, and increased cell impedance 50. Firstly, th",
+      "conditions": [
+        {
+          "condition_id": "C033",
+          "cycle_number": 50,
+          "electrode_config": "full cell (pouch)"
+        },
+        {
+          "condition_id": "C034",
+          "cycle_number": 100,
+          "electrode_config": "full cell (pouch)"
+        },
+        {
+          "condition_id": "C035",
+          "cycle_number": 150,
+          "electrode_config": "full cell (pouch)"
+        },
+        {
+          "condition_id": "C036",
+          "electrode_config": "full cell (pouch)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The cycle performance of pouch cells were also verified by repeated experiments Figs. S11a–b. As plotted in Fig. 4h, the cells with GLi anode have an average cycle life of 390 cycles, while the cells ",
+      "conditions": [
+        {
+          "condition_id": "C037",
+          "c_rate_or_current": {
+            "value": "0.1C/0.3C (charge/discharge)",
+            "unit": "C"
+          },
+          "electrode_config": "full-cell (pouch cell)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C038",
+          "c_rate_or_current": {
+            "value": "0.33C",
+            "unit": "C"
+          },
+          "electrode_config": "full-cell (pouch cell)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C039",
+          "electrolyte": "1.0 M LiPF6 in EC: DMC",
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Cycle_Life_80_Percent_Capacity_Retention"
+      ],
+      "performance_info": {
+        "Cycle_Life_80_Percent_Capacity_Retention": [
+          {
+            "value": 390,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "the cells with GLi anode have an average cycle life of 390 cycles"
+          },
+          {
+            "value": 167,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "the cells with Li anode have an average cycle life of only 167 cycles"
+          },
+          {
+            "value": 131,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "source_text": "the GLi full cell still achieves a remarkable cycling performance with 131 cycles"
+          },
+          {
+            "value": 95,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "source_text": "the Li full cell has a cycle life of only 95 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Volume expansion of the pouch cells after continuous cycles can also be ascribed to the accumulation of dead lithium, which can be reflected by in situ pressure variation of the cells tested by a home",
+      "conditions": [
+        {
+          "condition_id": "C040",
+          "electrode_config": "full-cell (pouch cell, Li or GLi anode matched with NCM811 cathode)",
+          "cycle_number": 60,
+          "test_method": "in situ pressure monitoring using a homemade apparatus with clamps and a dynamic in-situ pressure monitoring device; initial pressure 370 kPa applied"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Electrochemical impedance spectroscopy EIS measurements were conducted for GLi and Li full pouch cells after 50, 100, and 150 cycles. In Nyquist plots, the semicircle at the high frequency reflects th",
+      "conditions": [
+        {
+          "condition_id": "C041",
+          "test_method": "EIS",
+          "cycle_number": 50,
+          "electrode_config": "full pouch cell"
+        },
+        {
+          "condition_id": "C042",
+          "test_method": "EIS",
+          "cycle_number": 100,
+          "electrode_config": "full pouch cell"
+        },
+        {
+          "condition_id": "C043",
+          "test_method": "EIS",
+          "cycle_number": 150,
+          "electrode_config": "full pouch cell"
+        },
+        {
+          "condition_id": "C044",
+          "test_method": "EIS",
+          "electrode_config": "symmetric_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": "the cell with bare Li anode exhibit increasing SEI resistance"
+          },
+          {
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "the R of GLi full cell remained stable after 50 and 100 cycles"
+          },
+          {
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": "increase in charge transfer impedance of Li anode"
+          },
+          {
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": "the GLi cell displayed much more stable resistance within the whole cycling process"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "As shown in Fig. 5a, under the current density of 0.1C charging and 0.3C discharging, the dead lithium thickness on the surface of the lithium foil reached 85 μm after the initial 50 cycles, and as th",
+      "conditions": [
+        {
+          "condition_id": "C045",
+          "c_rate_or_current": {
+            "value": "0.1C (charge) / 0.3C (discharge)",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle",
+        "Cycle_Life_80_Percent_Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 80,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 170,
+            "source_text": "When the capacity of the LiNCM811 full cell dropped to 80% of its initial capacity after 170 charge/discharge cycles"
+          },
+          {
+            "value": 80,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 350,
+            "source_text": "After 350 cycles, the capacity retention rate decreased to 80%"
+          }
+        ],
+        "Cycle_Life_80_Percent_Capacity_Retention": [
+          {
+            "value": 170,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "When the capacity of the LiNCM811 full cell dropped to 80% of its initial capacity after 170 charge/discharge cycles"
+          },
+          {
+            "value": 350,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "After 350 cycles, the capacity retention rate decreased to 80%"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The electrochemical performances GLi anodes were systematically investigated and compared with bare Li anode. Fig. S9a shows the cycling performance of symmetrical cells cycled at 1 mA mathrm - 2 with",
+      "conditions": [
+        {
+          "condition_id": "C046",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C047",
+          "c_rate_or_current": {
+            "value": "0.1/0.3",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 470
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 500,
+            "unit": "h",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "GLi anode maintained stable cycling over 500 h"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 76,
+            "unit": "%",
+            "cycle_number": 470,
+            "condition_id": "C002",
+            "source_text": "the cell still delivered a high reversible capacity of 130 mAh g - 1 , corresponding to 76% of the initial capacity after 470 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Following the above experiments, the content of active lithium remained in the anodes after different cycle numbers was also measured. After disassembling the pouch cells, three identical discs with a",
+      "conditions": [
+        {
+          "condition_id": "C048",
+          "cycle_number": 50,
+          "test_method": "Continuous lithium stripping until complete removal of active lithium",
+          "electrode_config": "Half-cell (coin cell)",
+          "reference_electrode": "vs. Li/Li+"
+        },
+        {
+          "condition_id": "C049",
+          "cycle_number": 100,
+          "test_method": "Continuous lithium stripping until complete removal of active lithium",
+          "electrode_config": "Half-cell (coin cell)",
+          "reference_electrode": "vs. Li/Li+"
+        },
+        {
+          "condition_id": "C050",
+          "cycle_number": 150,
+          "test_method": "Continuous lithium stripping until complete removal of active lithium",
+          "electrode_config": "Half-cell (coin cell)",
+          "reference_electrode": "vs. Li/Li+"
+        },
+        {
+          "condition_id": "C051",
+          "test_method": "Continuous lithium stripping until complete removal of active lithium",
+          "electrode_config": "Half-cell (coin cell)",
+          "reference_electrode": "vs. Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 14,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "after 50 charge/discharge cycles, the average capacity of remaining active lithium in the Li anode is 14 mAh cm− 2"
+          },
+          {
+            "value": 16.6,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "after 50 charge/discharge cycles, the average capacity of remaining active lithium in the GLi anode is 16.6 mAh cm− 2"
+          },
+          {
+            "value": 11.7,
+            "unit": "mAh/cm2",
+            "condition_id": "C002",
+            "source_text": "after 100 charge/discharge cycles, the average capacity of remaining active lithium in the Li anode is 11.7 mAh cm− 2"
+          },
+          {
+            "value": 13.9,
+            "unit": "mAh/cm2",
+            "condition_id": "C002",
+            "source_text": "after 100 charge/discharge cycles, the average capacity of remaining active lithium in the GLi anode is 13.9 mAh cm− 2"
+          },
+          {
+            "value": 10.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C003",
+            "source_text": "after 150 charge/discharge cycles, the average capacity of remaining active lithium in the Li anode is 10.0 mAh cm− 2"
+          },
+          {
+            "value": 12.6,
+            "unit": "mAh/cm2",
+            "condition_id": "C003",
+            "source_text": "after 150 charge/discharge cycles, the average capacity of remaining active lithium in the GLi anode is 12.6 mAh cm− 2"
+          },
+          {
+            "value": 8.7,
+            "unit": "mAh/cm2",
+            "condition_id": "C004",
+            "source_text": "When the discharge capacity retention rate of the cells decreased to 80% of the initial capacity, the Li anode stripped off 8.7 mAh cm− 2 active lithium"
+          },
+          {
+            "value": 11,
+            "unit": "mAh/cm2",
+            "condition_id": "C004",
+            "source_text": "the GLi anode contained 11 mAh cm− 2 of residual active lithium"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In summary, a feasible and simple fabrication strategy has been proposed to obtain graphene-coated lithium metal anode with a double layer structure in this work. First, the large surface area of grap",
+      "conditions": [
+        {
+          "condition_id": "C052",
+          "mass_loading": {
+            "value": 4,
+            "unit": "mAh/cm2"
+          },
+          "electrode_config": "full_cell",
+          "cycle_number": 470
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 76,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 470,
+            "source_text": "The full cells show extraordinary cycling stability and prolonged lifespan over 470 cycles with capacity retention of 76% when matching the NCM811 cathode with a high mass loading of 4 mAh cm−2."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "C） The optical image of the GLi anode after cycling is shown in Fig. 5e. The regions with golden color on the front side towards the cathode of the anode correspond to lithium-carbon compounds, while ",
+      "conditions": [
+        {
+          "condition_id": "C053",
+          "c_rate_or_current": {},
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C054",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic discharge"
+        },
+        {
+          "condition_id": "C055",
+          "c_rate_or_current": {
+            "value": 0.01,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic discharge"
+        },
+        {
+          "condition_id": "C056",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic discharge",
+          "electrolyte": "refilled electrolyte (composition unspecified)"
+        },
+        {
+          "condition_id": "C054",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 267.1,
+            "unit": "mAh",
+            "condition_id": "C001",
+            "source_text": "discharge capacity increased from 267.1 mAh to 369.7 mAh"
+          },
+          {
+            "value": 369.7,
+            "unit": "mAh",
+            "condition_id": "C002",
+            "source_text": "discharge capacity increased to 369.7 mAh"
+          },
+          {
+            "value": 269.3,
+            "unit": "mAh",
+            "condition_id": "C003",
+            "source_text": "discharge capacity was recovered to 269.3 mAh after electrolyte refilling"
+          },
+          {
+            "value": 264.8,
+            "unit": "mAh",
+            "condition_id": "C004",
+            "source_text": "discharge capacity was recovered from 264.8 mAh"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 80,
+            "unit": "%",
+            "condition_id": "C000",
+            "source_text": "when its capacity decayed to 80% of the initial value"
+          }
+        ]
+      },
+      "condition_id": "C000"
+    }
+  ]
+}

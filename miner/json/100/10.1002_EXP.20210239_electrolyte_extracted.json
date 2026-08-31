@@ -1,0 +1,3466 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1002_EXP.20210239.md",
+  "component": "electrolyte",
+  "paper_id": "10.1002/EXP.20210239",
+  "doi": "10.1002/EXP.20210239",
+  "material_id": "10.1002_EXP.20210239",
+  "meta": {
+    "meta_title": "Electrolyte formulation strategies for potassium-based batteries",
+    "meta_authors": "fundamentals of organic electrolytes, liquid electrolytes, potassium-based batteries, solid-state electrolytes",
+    "meta_year": "2022"
+  },
+  "materials": [
+    {
+      "name": "1 M KPF6 in EC/PC (1:1 v/v)",
+      "short_name": "KPF6-EC/PC",
+      "formula": "1M KPF6 EC/PC",
+      "role": "baseline",
+      "description": "Standard ester-based electrolyte for potassium-ion batteries",
+      "material_id": "10.1002_EXP.20210239_M001"
+    },
+    {
+      "name": "1M KPF6 in EC/DMC",
+      "short_name": "KPF6-EC/DMC",
+      "formula": "1M KPF6 EC/DMC",
+      "role": "comparison",
+      "description": "Ester mixture with DMC tested for graphite anodes",
+      "material_id": "10.1002_EXP.20210239_M002"
+    },
+    {
+      "name": "1M KPF6 in EC/DEC",
+      "short_name": "KPF6-EC/DEC",
+      "formula": "1M KPF6 EC/DEC",
+      "role": "baseline",
+      "description": "Common ester baseline electrolyte widely used in PIBs",
+      "material_id": "10.1002_EXP.20210239_M003"
+    },
+    {
+      "name": "0.8 M KPF6 in EC/DEC",
+      "short_name": "0.8M KPF6 EC/DEC",
+      "formula": "0.8M KPF6 EC/DEC",
+      "role": "comparison",
+      "description": "Diluted KPF6 concentration used for initial graphite intercalation study",
+      "material_id": "10.1002_EXP.20210239_M004"
+    },
+    {
+      "name": "1M KFSI in EC/DEC",
+      "short_name": "KFSI-EC/DEC",
+      "formula": "1M KFSI EC/DEC",
+      "role": "comparison",
+      "description": "Alternative K salt in ester solvent to stabilize RP/C anode",
+      "material_id": "10.1002_EXP.20210239_M005"
+    },
+    {
+      "name": "Moderately concentrated KFSI in TEP",
+      "short_name": "mc-KFSI/TEP",
+      "formula": "KFSI TEP (moderate concentration)",
+      "role": "novel",
+      "description": "Non-flammable phosphate ester electrolyte with moderate KFSI concentration",
+      "material_id": "10.1002_EXP.20210239_M006"
+    },
+    {
+      "name": "3.9 M KFSI in DME",
+      "short_name": "3.9M KFSI/DME",
+      "formula": "3.9M KFSI DME",
+      "role": "comparison",
+      "description": "High-concentration ether electrolyte enabling low-polarization K metal plating/stripping",
+      "material_id": "10.1002_EXP.20210239_M007"
+    },
+    {
+      "name": "1 M KCF3SO3 in DEGDME",
+      "short_name": "KCF3SO3-DEGDME",
+      "formula": "1M KCF3SO3 DEGDME",
+      "role": "comparison",
+      "description": "Ether-based electrolyte enabling K-solvent co-intercalation into graphite for high rate performance",
+      "material_id": "10.1002_EXP.20210239_M008"
+    },
+    {
+      "name": "Concentrated KFSI in EMC",
+      "short_name": "conc-KFSI/EMC",
+      "formula": "KFSI EMC (concentrated)",
+      "role": "comparison",
+      "description": "High-concentration ester electrolyte for stable long-cycle graphite anode",
+      "material_id": "10.1002_EXP.20210239_M009"
+    },
+    {
+      "name": "1 M KPF6 in EC/DEC with 2 vol% FEC",
+      "short_name": "KPF6-EC/DEC+2%FEC",
+      "formula": "1M KPF6 EC/DEC + 2% FEC",
+      "role": "comparison",
+      "description": "FEC additive to improve initial coulombic efficiency of PBA cathodes",
+      "material_id": "10.1002_EXP.20210239_M010"
+    },
+    {
+      "name": "0.5 M KPF6 in DME",
+      "short_name": "0.5M KPF6/DME",
+      "formula": "0.5M KPF6 DME",
+      "role": "comparison",
+      "description": "Ether electrolyte for first K-O2 battery with low overpotential",
+      "material_id": "10.1002_EXP.20210239_M011"
+    },
+    {
+      "name": "1 M KTFSI in tetraglyme",
+      "short_name": "KTFSI-tetraglyme",
+      "formula": "1M KTFSI tetraglyme",
+      "role": "comparison",
+      "description": "Ether electrolyte with KTFSI salt to form O2-impermeable layer on K anode",
+      "material_id": "10.1002_EXP.20210239_M012"
+    },
+    {
+      "name": "1.0 M KFSI in TMP",
+      "short_name": "KFSI-TMP",
+      "formula": "1.0M KFSI TMP",
+      "role": "novel",
+      "description": "Non-flammable phosphate electrolyte enabling stable graphite cycling",
+      "material_id": "10.1002_EXP.20210239_M013"
+    },
+    {
+      "name": "1.0 M KFSI in TMP with 6 wt% DTD",
+      "short_name": "KFSI-TMP+6%DTD",
+      "formula": "1.0M KFSI TMP + 6% DTD",
+      "role": "novel",
+      "description": "DTD additive improves compatibility of TMP electrolyte with graphite anode",
+      "material_id": "10.1002_EXP.20210239_M014"
+    },
+    {
+      "name": "KFSI-C3ClpyrrFSI ionic liquid",
+      "short_name": "KFSI-C3ClpyrrFSI IL",
+      "formula": "KFSI C3ClpyrrFSI",
+      "role": "comparison",
+      "description": "Ionic liquid with wide electrochemical window (5.72 V) and high conductivity",
+      "material_id": "10.1002_EXP.20210239_M015"
+    },
+    {
+      "name": "KFSI0.55FTA0.45 single cation ionic liquid (K SCIL)",
+      "short_name": "K-SCIL",
+      "formula": "KFSI0.55FTA0.45",
+      "role": "comparison",
+      "description": "Single-cation IL with high potassium transport number",
+      "material_id": "10.1002_EXP.20210239_M016"
+    },
+    {
+      "name": "1 M KBF4 in EC/EMC",
+      "short_name": "KBF4-EC/EMC",
+      "formula": "1M KBF4 EC/EMC",
+      "role": "comparison",
+      "description": "Early potassium salt in ester mixture for KFeFeCN6 cathode study",
+      "material_id": "10.1002_EXP.20210239_M017"
+    },
+    {
+      "name": "5 M KTFSI in TEGDME",
+      "short_name": "5M KTFSI/TEGDME",
+      "formula": "5M KTFSI TEGDME",
+      "role": "comparison",
+      "description": "High-concentration ether electrolyte effectively suppressing polysulfide shuttle in K-S cells",
+      "material_id": "10.1002_EXP.20210239_M018"
+    },
+    {
+      "name": "1 M KTFSI in TEGDME",
+      "short_name": "1M KTFSI/TEGDME",
+      "formula": "1M KTFSI TEGDME",
+      "role": "comparison",
+      "description": "Dilute ether electrolyte showing severe polysulfide dissolution and shuttle",
+      "material_id": "10.1002_EXP.20210239_M019"
+    },
+    {
+      "name": "3 M KTFSI in TEGDME",
+      "short_name": "3M KTFSI/TEGDME",
+      "formula": "3M KTFSI TEGDME",
+      "role": "comparison",
+      "description": "Intermediate concentration still exhibits noticeable polysulfide shuttle",
+      "material_id": "10.1002_EXP.20210239_M020"
+    },
+    {
+      "name": "1 M KCF3SO3 in TEGDME",
+      "short_name": "KCF3SO3-TEGDME",
+      "formula": "1M KCF3SO3 TEGDME",
+      "role": "comparison",
+      "description": "Ether electrolyte used for room-temperature K-S battery with carbon-sulfur cathode",
+      "material_id": "10.1002_EXP.20210239_M021"
+    },
+    {
+      "name": "1 M KPF6 in EC/PC (1:1) for K-Se battery",
+      "short_name": "KPF6-EC/PC",
+      "formula": "1M KPF6 EC/PC (1:1)",
+      "role": "comparison",
+      "description": "Ester electrolyte used for reversible K-Se battery with high cycling performance",
+      "material_id": "10.1002_EXP.20210239_M022"
+    },
+    {
+      "name": "0.7 M KPF6 in ester solvent",
+      "short_name": "0.7M KPF6 ester",
+      "formula": "0.7M KPF6 ester",
+      "role": "comparison",
+      "description": "Diluted KPF6 ester electrolyte for two-step Se reduction mechanism study",
+      "material_id": "10.1002_EXP.20210239_M023"
+    },
+    {
+      "name": "PEO/KAg4I5 solid polymer electrolyte",
+      "short_name": "PEO/KAg4I5",
+      "formula": "PEO KAg4I5",
+      "role": "comparison",
+      "description": "Early solid polymer electrolyte with high room-temperature ionic conductivity",
+      "material_id": "10.1002_EXP.20210239_M024"
+    },
+    {
+      "name": "(1-x)PEO/x KBr solid polymer electrolyte with 30 wt% KBr",
+      "short_name": "PEO-30%KBr",
+      "formula": "PEO 30% KBr",
+      "role": "comparison",
+      "description": "Polymer-salt complex SPE film with conductivity increasing with salt content",
+      "material_id": "10.1002_EXP.20210239_M025"
+    },
+    {
+      "name": "95PEO/5CH3COOK solid polymer electrolyte",
+      "short_name": "95PEO/5CH3COOK",
+      "formula": "95PEO 5CH3COOK",
+      "role": "comparison",
+      "description": "Hot-pressed SPE film with potassium acetate",
+      "material_id": "10.1002_EXP.20210239_M026"
+    },
+    {
+      "name": "PPC/KFSI solid polymer electrolyte with 18 wt% KFSI",
+      "short_name": "PPC/KFSI-18%",
+      "formula": "PPC 18% KFSI",
+      "role": "comparison",
+      "description": "Poly(propylene carbonate)-based SPE enabling all-solid-state K battery with PTCDA cathode",
+      "material_id": "10.1002_EXP.20210239_M027"
+    },
+    {
+      "name": "50PEO/50KFSI solid polymer electrolyte",
+      "short_name": "50PEO/50KFSI",
+      "formula": "PEO KFSI (50:50 w/w)",
+      "role": "comparison",
+      "description": "SPE used in K-Ni3S2 full cell with high capacity and stable cycling",
+      "material_id": "10.1002_EXP.20210239_M028"
+    },
+    {
+      "name": "PMMA-based gel polymer electrolyte",
+      "short_name": "PMMA GPE",
+      "formula": "PMMA GPE (salt not specified)",
+      "role": "comparison",
+      "description": "Gel polymer electrolyte for K-polyaniline cell with high oxidation resistance over 4.9 V",
+      "material_id": "10.1002_EXP.20210239_M029"
+    },
+    {
+      "name": "PVDF-HFP/KPF6 gel polymer electrolyte",
+      "short_name": "PVDF-HFP/KPF6 GPE",
+      "formula": "PVDF-HFP KPF6 GPE",
+      "role": "comparison",
+      "description": "Flexible GPE for potassium ion hybrid capacitor with Sn anode",
+      "material_id": "10.1002_EXP.20210239_M030"
+    },
+    {
+      "name": "PAN/KI gel polymer electrolyte",
+      "short_name": "PAN/KI GPE",
+      "formula": "PAN KI GPE",
+      "role": "comparison",
+      "description": "Polyacrylonitrile-potassium iodide GPE with conductivity of 2.089e-5 S/cm at 30°C",
+      "material_id": "10.1002_EXP.20210239_M031"
+    },
+    {
+      "name": "Potassium beta-alumina solid electrolyte (K-BASE)",
+      "short_name": "K-BASE",
+      "formula": "K-beta-Al2O3",
+      "role": "comparison",
+      "description": "Inorganic solid electrolyte for moderate-temperature K-S batteries",
+      "material_id": "10.1002_EXP.20210239_M032"
+    },
+    {
+      "name": "K3Sb4O10BO3 solid electrolyte",
+      "short_name": "K3Sb4O10BO3",
+      "formula": "K3Sb4O10BO3",
+      "role": "comparison",
+      "description": "1D K-ion conductor with conductivity 1.5e-4 S/cm at 400°C",
+      "material_id": "10.1002_EXP.20210239_M033"
+    },
+    {
+      "name": "K0.72In0.72Hf0.28O2 lamellar solid electrolyte",
+      "short_name": "KInHfO",
+      "formula": "K0.72In0.72Hf0.28O2",
+      "role": "comparison",
+      "description": "Layered oxide with ionic conductivity exceeding beta-alumina above 250°C",
+      "material_id": "10.1002_EXP.20210239_M034"
+    },
+    {
+      "name": "K2Fe4O7 solid electrolyte",
+      "short_name": "K2Fe4O7",
+      "formula": "K2Fe4O7",
+      "role": "comparison",
+      "description": "Open-framework potassium ferrite with high RT conductivity and 5 V stability window",
+      "material_id": "10.1002_EXP.20210239_M035"
+    },
+    {
+      "name": "K2Mg2TeO6 tellurate solid electrolyte",
+      "short_name": "K2Mg2TeO6",
+      "formula": "K2Mg2TeO6",
+      "role": "comparison",
+      "description": "Layered honeycomb tellurate with high ionic conductivity of 40 mS/cm at 300°C",
+      "material_id": "10.1002_EXP.20210239_M036"
+    },
+    {
+      "name": "K2YZr(PO4)3 NASICON-like solid electrolyte",
+      "short_name": "K2YZr(PO4)3",
+      "formula": "K2YZr(PO4)3",
+      "role": "comparison",
+      "description": "NASICON-like potassium ion conductor with conductivity 1.19e-3 S/cm at 800°C",
+      "material_id": "10.1002_EXP.20210239_M037"
+    },
+    {
+      "name": "Molten KF electrolyte",
+      "short_name": "Molten KF",
+      "formula": "KF (molten)",
+      "role": "comparison",
+      "description": "High-temperature molten salt used for initial K-graphite intercalation discovery",
+      "material_id": "10.1002_EXP.20210239_M038"
+    },
+    {
+      "name": "1-Ethyl-3-methylimidazolium chloride/AlCl3/KCl/KFSI ionic liquid (K-Cl-IL)",
+      "short_name": "K-Cl-IL",
+      "formula": "[EMIm]Cl AlCl3 KCl KFSI",
+      "role": "comparison",
+      "description": "Nonflammable IL electrolyte with high conductivity enabling long-cycle K metal batteries",
+      "material_id": "10.1002_EXP.20210239_M039"
+    },
+    {
+      "name": "1 M KTFSI in DME",
+      "short_name": "1M KTFSI/DME",
+      "formula": "1M KTFSI DME",
+      "role": "comparison",
+      "description": "Ether electrolyte used with electrochemical polishing to achieve ultra-flat K metal SEI",
+      "material_id": "10.1002_EXP.20210239_M040"
+    },
+    {
+      "name": "KFSI in DME (high concentration, exact molarity not specified)",
+      "short_name": "conc-KFSI/DME",
+      "formula": "KFSI DME (high conc.)",
+      "role": "comparison",
+      "description": "Concentrated KFSI-DME electrolyte to pre-form stable SEI for K-O2 battery",
+      "material_id": "10.1002_EXP.20210239_M041"
+    }
+  ],
+  "n_materials": 41,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: Ion; Desolvation energy (kJ mol-1)\nRows:\nRow 1: DEC; PC; EMC; FEC; VC; TMP; BC; DMF\nRow 2: Li+; 205.6; 215.8; 199.1; 188.8; 191.4; 249.1; 219.5; 230.1\nRow 3: Na+; 147.9; 158.2; 143.1; 136.2; 138.3; 181.2; 161.4; 165.5\nRow 4: K+; 105.1; 119.2; 101.6; 100.5; 102.2; 135.4; 121.9; 122.8\nColumn data:\n  Ion: DEC; Li+; Na+; K+\n  Desolvation energy (kJ mol-1): PC; 205.6; 147.9; 105.1",
+    "TABLE DATA BLOCK\nHeaders: Electrode; Electrolyte; Capacity retention (mAh g-1); Voltage window (V); Ref.\nRows:\nRow 1: Electrode = KTiOPO4; Electrolyte = 0.8 M KPF6in EC/DEC = 1; Capacity retention (mAh g-1) = 78.4% after 10,000 cycles (20 C); Voltage window (V) = 0–3; Ref. = [43]\nRow 2: Electrode = Hollow hierarchical porous olive-like carbon; Electrolyte = 0.8 M KPF6in EC/DEC = 1; Capacity retention (mAh g-1) = >90% after 800 cycles (1 A g-1); Voltage window (V) = 0.01–3; Ref. = [44]\nRow 3: Electrode = F, N co-doped carbon nanosheets; Electrolyte = 0.8 M KPF6in EC/DEC = 1; Capacity retention (mAh g-1) = 69% after 5000 cycles (2 A g-1); Voltage window (V) = 0.01–3; Ref. = [45]\nRow 4: Electrode = TiO2ww/CN; Electrolyte = 1 M KFSI in EC/DMC = 1; Capacity retention (mAh g-1) = 75.6% after 6000 cycles (5 A g-1); Voltage window (V) = 0.01–3; Ref. = [46]\nRow 5: Electrode = Fex-1Sex/MXene/FCR; Electrolyte = 0.8 M KPF6in EC/DMC = 1; Capacity retention (mAh g-1) = 67.7% after 2000 cycles (10A g-1); Voltage window (V) = 0.01–3; Ref. = [47]\nRow 6: Electrode = Ultrasmall CoP nanoparticles; Electrolyte = 0.8 M KPF6in EC/DEC = 1; Capacity retention (mAh g-1) = 74.3% after 2800 cycles (100 mA g-1); Voltage window (V) = 0.01–3; Ref. = [48]\nRow 7: Electrode = Antimony (Sb); Electrolyte = 4.0 M KFSI in DME; Capacity retention (mAh g-1) = 95.4% after 200 cycles (200 mA g-1); Voltage window (V) = 0.01–2; Ref. = [49]\nRow 8: Electrode = BiPS4-CNT hybrid; Electrolyte = 1 M KFSI in EC/DEC = 1; Capacity retention (mAh g-1) = 72.5% after 600 cycles (1 A g-1); Voltage window (V) = 0.01–3; Ref. = [50]\nRow 9: Electrode = Lamellar tetrapotassium pyromellitic; Electrolyte = 5.0 M KFSI in DME; Capacity retention (mAh g-1) = 83% after 1000 cycles (500 mA g-1); Voltage window (V) = 0.01–3; Ref. = [51]\nRow 10: Electrode = K1/2Mn5/6Mg1/12Ni1/12O2; Electrolyte = 0.8 M KPF6in EC/PC = 1; Capacity retention (mAh g-1) = 70.4% after 200 cycles (120 mA g-1); Voltage window (V) = 1.5–3.9; Ref. = [52]\nRow 11: Electrode = K0.5V2O5·0.5H2O; Electrolyte = KFSI in TEP (weight ratio of 1:2); Capacity retention (mAh g-1) = 74% after 400 cycles (100 mA g-1); Voltage window (V) = 2.0–4.5; Ref. = [53]\nRow 12: Electrode = K2Mn[Fe(CN)6; Electrolyte = 2.5 M in TEP; Capacity retention (mAh g-1) = 80% after 7800 cycles (500 mA g-1); Voltage window (V) = 2.7–4.4; Ref. = [54]\nRow 13: Electrode = K1.5VOPO4F0.5; Electrolyte = 0.5 M KPF6in EC/PC = 1; Capacity retention (mAh g-1) = 86% after 300 cycles (1 C); Voltage window (V) = 1.8–4.5; Ref. = [55]\nRow 14: Electrode = K4[Mn2Fe](PO4)2(P2O7); Electrolyte = 0.5 M KPF6in EC/DEC = 1; Capacity retention (mAh g-1) = 83% after 300 cycles (C/3); Voltage window (V) = 2.0–4.3; Ref. = [56]\nColumn data:\n  Electrode: KTiOPO4; Hollow hierarchical porous olive-like carbon; F, N co-doped carbon nanosheets; TiO2ww/CN; Fex-1Sex/MXene/FCR; Ultrasmall CoP nanoparticles; Antimony (Sb); BiPS4-CNT hybrid; Lamellar tetrapotassium pyromellitic; K1/2Mn5/6Mg1/12Ni1/12O2; K0.5V2O5·0.5H2O; K2Mn[Fe(CN)6; K1.5VOPO4F0.5; K4[Mn2Fe](PO4)2(P2O7)\n  Electrolyte: 0.8 M KPF6in EC/DEC = 1; 0.8 M KPF6in EC/DEC = 1; 0.8 M KPF6in EC/DEC = 1; 1 M KFSI in EC/DMC = 1; 0.8 M KPF6in EC/DMC = 1; 0.8 M KPF6in EC/DEC = 1; 4.0 M KFSI in DME; 1 M KFSI in EC/DEC = 1; 5.0 M KFSI in DME; 0.8 M KPF6in EC/PC = 1; KFSI in TEP (weight ratio of 1:2); 2.5 M in TEP; 0.5 M KPF6in EC/PC = 1; 0.5 M KPF6in EC/DEC = 1\n  Capacity retention (mAh g-1): 78.4% after 10,000 cycles (20 C); >90% after 800 cycles (1 A g-1); 69% after 5000 cycles (2 A g-1); 75.6% after 6000 cycles (5 A g-1); 67.7% after 2000 cycles (10A g-1); 74.3% after 2800 cycles (100 mA g-1); 95.4% after 200 cycles (200 mA g-1); 72.5% after 600 cycles (1 A g-1); 83% after 1000 cycles (500 mA g-1); 70.4% after 200 cycles (120 mA g-1); 74% after 400 cycles (100 mA g-1); 80% after 7800 cycles (500 mA g-1); 86% after 300 cycles (1 C); 83% after 300 cycles (C/3)\n  Voltage window (V): 0–3; 0.01–3; 0.01–3; 0.01–3; 0.01–3; 0.01–3; 0.01–2; 0.01–3; 0.01–3; 1.5–3.9; 2.0–4.5; 2.7–4.4; 1.8–4.5; 2.0–4.3\n  Ref.: [43]; [44]; [45]; [46]; [47]; [48]; [49]; [50]; [51]; [52]; [53]; [54]; [55]; [56]",
+    "TABLE DATA BLOCK\nHeaders: Category; Cathode; Electrolyte; Capacity (mAh g-1); Capacity retention; Ref.\nRows:\nRow 1: Category = Prussian blue analogues; Cathode = K2Ni0.05Fe0.95Fe(CN)6; Electrolyte = 0.8 M KPF6in EC/DEC (1/1) with 1 wt% FEC; Capacity (mAh g-1) = 135 at 20 mA g-1; Capacity retention = 83.1%@300 cycles (0.1 A g-1); Ref. = [83]\nRow 2: K0.220Fe[Fe(CN)6]0.805·4.01H2O; 0.8 M KPF6in EC/DEC; 65.0 at 100 mA g-1; 86.5%@150 cycles (0.1 A g-1); [84]\nRow 3: K0.3Ti0.75Fe0.25[Fe(CN)6]0.95·2.8H2O; 0.8 M KPF6in EC/DEC (1/1) with 5 wt% FEC; 136.7 at 50 mA g-1; 64.7%@100 cycles (0.1 A g-1); [85]\nRow 4: K1.89Mn[Fe(CN)6]0.92·0.75H2O; Saturated KClO4in PC with 10 wt% FEC; 146.2 at 0.2 C; 141.4%@100 cycles (1 C); [12a]\nRow 5: K2Ni0.36Co0.64Fe(CN)6; 0.8 M KPF6in EC/DEC (1/1) with 1 wt% FEC; 90 at 20 mA g-1; 88.2%@300 cycles (0.02 A g-1); [86]\nRow 6: Polypyrrole-coated K-rich iron hexacyanoferrate; 0.8 M KPF6in EC/DEC; 88.9 at 50 mA g-1; 85%@500 cycles (1 A g-1); [87]\nRow 7: K1.69Mn[Fe(CN)6]0.85·0.4H2O; 2.5 M KPF6in diglyme; 105 at 0.2 C; 68%@30 cycles (0.1 C); \nRow 8: Category = Layered transition metal oxides; Cathode = δ-K0.51V2O5; Electrolyte = 0.8 M KPF6in PC with 5 wt% FEC; Capacity (mAh g-1) = 125 at 50 mA g-1; Capacity retention = 61.3%@100 cycles (0.1 A g-1); Ref. = [88]\nRow 9: K0.3MnO2; 1 M KPF6in EC/DMC; 136 at 0.1 C; 57% @ 685 cycles (0.1 C); [89]\nRow 10: K0.83[Ni0.05Mn0.95]O2; 0.5 M KPF6in EC/DEC; 155 at 52 mA g-1; 83% @ 200 cycles (0.52 A g-1); [90]\nRow 11: K0.54[Co0.5Mn0.5]O2; 0.5 M KPF6in EC/DEC; 125 at 20 mA g-1; 62%@500 cycles (0.5 A g-1); [91]\nRow 12: K0.44Ni0.22Mn0.78O2; 0.8 M KPF6in EC/DEC (1/1); 125.5 at 10 mA g-1; 67%@500 cycles (0.2 A g-1); [92]\nRow 13: P2-KxCoO2; 1 M KFSI in EC/DEC (1/1); 60 at 11.8 mA g-1; 91.6%@30 cycles (0.011 A g-1); [93]\nRow 14: Category = Polyanion compounds; Cathode = K3V2(PO4)3/C; Electrolyte = 0.8 M KPF6in EC/DEC (1/1); Capacity (mAh g-1) = 50 at 20 mA g-1; Capacity retention = 99.1%@100 cycles (0.02 A g-1); Ref. = [94]\nRow 15: K2.95Rb0.05V2(PO4)3/C; 0.8 M KPF6in EC/DMC (1/1); 44 at 20 mA g-1; 95.4%@100 cycles (0.2 A g-1); [95]\nRow 16: K3V2(PO4)2F3; 1 M KPF6in EC/PC (1/1); 83 at 100 mA g-1; 97%@100 cycles (0.01 A g-1); [96]\nRow 17: KVOPO4; 0.5 M KPF6in EC/FEC (1/1); 115 at 24 mA g-1; 86.8%@100 cycles (0.06 A g-1); [97]\nRow 18: K4Fe3(PO4)2(P2O7); 0.5 M KPF6in EC/PC/FEC (20/20/1); 118 at 6 mA g-1; 82%@500 cycles (5 C); [98]\nRow 19: KTi2(PO4)3; 0.5 M KPF6in EC/DEC (1/1); 126 at 12.8 mA g-1; 89%@500 cycles (0.1 C); [99]\nRow 20: KFeC2O4F; 1 M KPF6in EC/PC (1/1); 112 at 200 mA g-1; 94%@2000 cycles (0.2 A g-1); [100]\nRow 21: Category = Organic materials; Cathode = PTCDA; Electrolyte = 0.5 M KPF6in EC/DEC (1/1); Capacity (mAh g-1) = 131 at 10 mA g-1; Capacity retention = 76%@2000 cycles (0.05 A g-1); Ref. = [101]\nRow 22: PAQS; 0.5 M KTFSI in DOL/DME (1/1); 200 at 20 mA g-1; 64%@200 cycles (0.2 A g-1); [102]\nRow 23: PTPAn; 0.8 M KPF6in EC/DEC (1/1); 60 at 50 mA g-1; 75%@500 cycles (0.1 A g-1); [103]\nRow 24: PTCDI-DAQ; 1 m KPF6in DME; 209 at 1000 mA g-1; 73.5%@900 cycles (3 A g-1); [14]\nColumn data:\n  Category: Prussian blue analogues; K0.220Fe[Fe(CN)6]0.805·4.01H2O; K0.3Ti0.75Fe0.25[Fe(CN)6]0.95·2.8H2O; K1.89Mn[Fe(CN)6]0.92·0.75H2O; K2Ni0.36Co0.64Fe(CN)6; Polypyrrole-coated K-rich iron hexacyanoferrate; K1.69Mn[Fe(CN)6]0.85·0.4H2O; Layered transition metal oxides; K0.3MnO2; K0.83[Ni0.05Mn0.95]O2; K0.54[Co0.5Mn0.5]O2; K0.44Ni0.22Mn0.78O2; P2-KxCoO2; Polyanion compounds; K2.95Rb0.05V2(PO4)3/C; K3V2(PO4)2F3; KVOPO4; K4Fe3(PO4)2(P2O7); KTi2(PO4)3; KFeC2O4F; Organic materials; PAQS; PTPAn; PTCDI-DAQ\n  Cathode: K2Ni0.05Fe0.95Fe(CN)6; 0.8 M KPF6in EC/DEC; 0.8 M KPF6in EC/DEC (1/1) with 5 wt% FEC; Saturated KClO4in PC with 10 wt% FEC; 0.8 M KPF6in EC/DEC (1/1) with 1 wt% FEC; 0.8 M KPF6in EC/DEC; 2.5 M KPF6in diglyme; δ-K0.51V2O5; 1 M KPF6in EC/DMC; 0.5 M KPF6in EC/DEC; 0.5 M KPF6in EC/DEC; 0.8 M KPF6in EC/DEC (1/1); 1 M KFSI in EC/DEC (1/1); K3V2(PO4)3/C; 0.8 M KPF6in EC/DMC (1/1); 1 M KPF6in EC/PC (1/1); 0.5 M KPF6in EC/FEC (1/1); 0.5 M KPF6in EC/PC/FEC (20/20/1); 0.5 M KPF6in EC/DEC (1/1); 1 M KPF6in EC/PC (1/1); PTCDA; 0.5 M KTFSI in DOL/DME (1/1); 0.8 M KPF6in EC/DEC (1/1); 1 m KPF6in DME\n  Electrolyte: 0.8 M KPF6in EC/DEC (1/1) with 1 wt% FEC; 65.0 at 100 mA g-1; 136.7 at 50 mA g-1; 146.2 at 0.2 C; 90 at 20 mA g-1; 88.9 at 50 mA g-1; 105 at 0.2 C; 0.8 M KPF6in PC with 5 wt% FEC; 136 at 0.1 C; 155 at 52 mA g-1; 125 at 20 mA g-1; 125.5 at 10 mA g-1; 60 at 11.8 mA g-1; 0.8 M KPF6in EC/DEC (1/1); 44 at 20 mA g-1; 83 at 100 mA g-1; 115 at 24 mA g-1; 118 at 6 mA g-1; 126 at 12.8 mA g-1; 112 at 200 mA g-1; 0.5 M KPF6in EC/DEC (1/1); 200 at 20 mA g-1; 60 at 50 mA g-1; 209 at 1000 mA g-1\n  Capacity (mAh g-1): 135 at 20 mA g-1; 86.5%@150 cycles (0.1 A g-1); 64.7%@100 cycles (0.1 A g-1); 141.4%@100 cycles (1 C); 88.2%@300 cycles (0.02 A g-1); 85%@500 cycles (1 A g-1); 68%@30 cycles (0.1 C); 125 at 50 mA g-1; 57% @ 685 cycles (0.1 C); 83% @ 200 cycles (0.52 A g-1); 62%@500 cycles (0.5 A g-1); 67%@500 cycles (0.2 A g-1); 91.6%@30 cycles (0.011 A g-1); 50 at 20 mA g-1; 95.4%@100 cycles (0.2 A g-1); 97%@100 cycles (0.01 A g-1); 86.8%@100 cycles (0.06 A g-1); 82%@500 cycles (5 C); 89%@500 cycles (0.1 C); 94%@2000 cycles (0.2 A g-1); 131 at 10 mA g-1; 64%@200 cycles (0.2 A g-1); 75%@500 cycles (0.1 A g-1); 73.5%@900 cycles (3 A g-1)\n  Capacity retention: 83.1%@300 cycles (0.1 A g-1); [84]; [85]; [12a]; [86]; [87]; ; 61.3%@100 cycles (0.1 A g-1); [89]; [90]; [91]; [92]; [93]; 99.1%@100 cycles (0.02 A g-1); [95]; [96]; [97]; [98]; [99]; [100]; 76%@2000 cycles (0.05 A g-1); [102]; [103]; [14]\n  Ref.: [83]; [88]; [94]; [101]",
+    "TABLE DATA BLOCK\nHeaders: Category; Anode; Electrolyte; Capacity (mAh g-1); Capacity retention; Ref.\nRows:\nRow 1: Category = Intercalation materials; Anode = Graphitic carbon hollow nanocage; Electrolyte = 1 M KFSI in EC/DEC (1/1); Capacity (mAh g-1) = 212 at 0.2 C; Capacity retention = 92%@100 cycles (0.2 C); Ref. = [9b]\nRow 2: Activated carbon; 0.8 M KPF6in EC/DEC (1/1); 209 at 100 A g-1; 62%@100 cycles (0.2 A g-1); [104]\nRow 3: F-doped graphite; 0.8 M KPF6in EC/DEC (1/1); 303 at 100 mA g-1; 74.6%@100 cycles (0.1 A g-1); [105]\nRow 4: Graphite fluoride; 0.8 M KPF6in EC/DEC (1/1); 281.2 at 100 mA g-1; 78% @ 50 cycles (0.1 A g-1); [106]\nRow 5: Honeycomb-like N-doped carbon; 0.8 M KPF6in EC/DEC (1/1); 367.1 at 50 mA g-1; 87.8%@600 cycles (0.3 A g-1); [107]\nRow 6: Category = Conversion materials; Anode = Bismuth-carbon (Bi@C); Electrolyte = 5 M KTFSI in DEGDME; Capacity (mAh g-1) = 220 at 50 mA g-1; Capacity retention = 85%@600 cycles (0.2 A g-1); Ref. = [108]\nRow 7: Ti6O11/CNT; 0.8 M KPF6in EC/DMC (1/1); 135 at 50 mA g-1; 76% after 500 cycles (0.2 A g-1); [109]\nRow 8: β-FeOOH; 1 M KFSI in EC/DEC (1/1); 218.2 at 100 mA g-1; 81% after 100 cycles (0.1 A g-1); [110]\nRow 9: FeS2@NC nanosheets; 1 M KFSI in EC/DEC (1/1); 525.5 at 100 A g-1; 90% after 100 cycles (0.5 A g-1); [111]\nRow 10: ZnSe/C; 1 M KFSI in EC/DEC (1/1); 318 at 50 mA g-1; 92% after 1000 cycles (0.5 A g-1); [112]\nRow 11: Category = Alloying; Anode = Sn-C; Electrolyte = 0.75 M KPF6in EC/DEC (1/1); Capacity (mAh g-1) = 150 at 25 mA g-1; Capacity retention = 81% after 30 cycles (0.025 A g-1); Ref. = [113]\nRow 12: Sb/CNS; 1 M KPF6in EC/DMC (1/1); 395.9 at 50 mA g-1; 90% after 600 cycles (0.2 A g-1); [114]\nRow 13: BiSb@C; 5 M KFSI in DME; 598 at 100 mA g-1; 97.5% after 600 cycles (0.5 A g-1); [115]\nRow 14: BiND/G; 1 M KPF6in DME; 320 at 100 mA g-1; 99% after 500 cycles (5 A g-1); [116]\nColumn data:\n  Category: Intercalation materials; Activated carbon; F-doped graphite; Graphite fluoride; Honeycomb-like N-doped carbon; Conversion materials; Ti6O11/CNT; β-FeOOH; FeS2@NC nanosheets; ZnSe/C; Alloying; Sb/CNS; BiSb@C; BiND/G\n  Anode: Graphitic carbon hollow nanocage; 0.8 M KPF6in EC/DEC (1/1); 0.8 M KPF6in EC/DEC (1/1); 0.8 M KPF6in EC/DEC (1/1); 0.8 M KPF6in EC/DEC (1/1); Bismuth-carbon (Bi@C); 0.8 M KPF6in EC/DMC (1/1); 1 M KFSI in EC/DEC (1/1); 1 M KFSI in EC/DEC (1/1); 1 M KFSI in EC/DEC (1/1); Sn-C; 1 M KPF6in EC/DMC (1/1); 5 M KFSI in DME; 1 M KPF6in DME\n  Electrolyte: 1 M KFSI in EC/DEC (1/1); 209 at 100 A g-1; 303 at 100 mA g-1; 281.2 at 100 mA g-1; 367.1 at 50 mA g-1; 5 M KTFSI in DEGDME; 135 at 50 mA g-1; 218.2 at 100 mA g-1; 525.5 at 100 A g-1; 318 at 50 mA g-1; 0.75 M KPF6in EC/DEC (1/1); 395.9 at 50 mA g-1; 598 at 100 mA g-1; 320 at 100 mA g-1\n  Capacity (mAh g-1): 212 at 0.2 C; 62%@100 cycles (0.2 A g-1); 74.6%@100 cycles (0.1 A g-1); 78% @ 50 cycles (0.1 A g-1); 87.8%@600 cycles (0.3 A g-1); 220 at 50 mA g-1; 76% after 500 cycles (0.2 A g-1); 81% after 100 cycles (0.1 A g-1); 90% after 100 cycles (0.5 A g-1); 92% after 1000 cycles (0.5 A g-1); 150 at 25 mA g-1; 90% after 600 cycles (0.2 A g-1); 97.5% after 600 cycles (0.5 A g-1); 99% after 500 cycles (5 A g-1)\n  Capacity retention: 92%@100 cycles (0.2 C); [104]; [105]; [106]; [107]; 85%@600 cycles (0.2 A g-1); [109]; [110]; [111]; [112]; 81% after 30 cycles (0.025 A g-1); [114]; [115]; [116]\n  Ref.: [9b]; [108]; [113]",
+    "TABLE DATA BLOCK\nHeaders: Classification; Electrolyte composition; Ionic conductivity (S cm-1); Activation energies (eV); Electrochemical stable voltage (V)\nRows:\nRow 1: Classification = Gel polymer electrolyte; Electrolyte composition = 70PAN/30KI[131]; Ionic conductivity (S cm-1) = 2.089 × 10-5; Activation energies (eV) = 0.35; Electrochemical stable voltage (V) = -\nRow 2: 85PAU/25KI[157]; 1.59 × 10-4; -; -\nRow 3: PMMA/KPF6[132]; 3.7 × 10-2; 2.5-4.9; 0.27\nRow 4: Classification = Solid polymer electrolytes; Electrolyte composition = PEO/KHCO3(70/30)[158]; Ionic conductivity (S cm-1) = 1.4 × 10-7; Activation energies (eV) = Region I, 0.21; Electrochemical stable voltage (V) = -\nRow 5: PEO/KIO3(73/30)[159]; 4.4 × 10-7; 0.17; -\nRow 6: Sago starch/KI (70/30[160]; 6.01 × 10-6; ; 2 V\nRow 7: PVP/KIO4(85/15)[161]; 1.421 × 10-4; 0.21; -\nRow 8: PVC/PEO/KCl (42.5/42.5/15)[162]; 8.29 × 10-6; 0.48; -\nRow 9: PVC/PEO/KI (42.5/42.5/15)[163]; 3.66 × 10-4; 0.28; -\nRow 10: PVA/CH3COOK (70/30)[164]; 4.82 × 10-7; Region I, 0.7927; -\nRow 11: 95(70PEO/30KBr)+5SiO2[159]; 2.5 × 10-5; 0.34; -\nRow 12: PPPCB/KFSI[154]; 1.36 × 10-5; -; 4.15 V\nRow 13: 95(80PEO/20KI)+5TiO2[165]; 8.7 × 10-5; 0.31; \nRow 14: 85PVA/15KCl[166]; 9.68 × 10-7; 0.29; \nRow 15: Classification = Inorganic solid electrolytes; Electrolyte composition = K2Fe4O7; Ionic conductivity (S cm-1) = 5 × 10-2; Activation energies (eV) = 0.08 (a-axis); Electrochemical stable voltage (V) = -2 to 5 V\nRow 16: K3Sb4O10(BO3)[167]; 1.5 × 10-4(400°C); 0.325; -\nRow 17: K2Mg2TeO6[168]; 3.8 × 10-2(300°C); -; -\nRow 18: K-BASE; 0.01 (150°C); 0.27; -\nColumn data:\n  Classification: Gel polymer electrolyte; 85PAU/25KI[157]; PMMA/KPF6[132]; Solid polymer electrolytes; PEO/KIO3(73/30)[159]; Sago starch/KI (70/30[160]; PVP/KIO4(85/15)[161]; PVC/PEO/KCl (42.5/42.5/15)[162]; PVC/PEO/KI (42.5/42.5/15)[163]; PVA/CH3COOK (70/30)[164]; 95(70PEO/30KBr)+5SiO2[159]; PPPCB/KFSI[154]; 95(80PEO/20KI)+5TiO2[165]; 85PVA/15KCl[166]; Inorganic solid electrolytes; K3Sb4O10(BO3)[167]; K2Mg2TeO6[168]; K-BASE\n  Electrolyte composition: 70PAN/30KI[131]; 1.59 × 10-4; 3.7 × 10-2; PEO/KHCO3(70/30)[158]; 4.4 × 10-7; 6.01 × 10-6; 1.421 × 10-4; 8.29 × 10-6; 3.66 × 10-4; 4.82 × 10-7; 2.5 × 10-5; 1.36 × 10-5; 8.7 × 10-5; 9.68 × 10-7; K2Fe4O7; 1.5 × 10-4(400°C); 3.8 × 10-2(300°C); 0.01 (150°C)\n  Ionic conductivity (S cm-1): 2.089 × 10-5; -; 2.5-4.9; 1.4 × 10-7; 0.17; ; 0.21; 0.48; 0.28; Region I, 0.7927; 0.34; -; 0.31; 0.29; 5 × 10-2; 0.325; -; 0.27\n  Activation energies (eV): 0.35; -; 0.27; Region I, 0.21; -; 2 V; -; -; -; -; -; 4.15 V; ; ; 0.08 (a-axis); -; -; -\n  Electrochemical stable voltage (V): -; -; -2 to 5 V"
+  ],
+  "n_items": 26,
+  "items": [
+    {
+      "paragraph": "For mathrmKBF4 and mathrmKClO4 salts, the poor solubility 0.05mathrmM in typical aprotic solvents lead to the low conductivity of the electrolyte, limiting their potential in potassium based batteries",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Voltage_Hysteresis",
+        "Anodic_Stability_Onset_Potential",
+        "SEI_Resistance"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "unit": "mS/cm",
+            "source_text": "For KBF4 and KClO4 salts, the poor solubility 0.05 M in typical aprotic solvents lead to the low conductivity of the electrolyte, limiting their potential in potassium based batteries."
+          }
+        ],
+        "Voltage_Hysteresis": [
+          {
+            "value": 25.0,
+            "unit": "mV",
+            "source_text": "3.9 M KFSI/DME realized the smallest polarization of 25 mV"
+          }
+        ],
+        "Anodic_Stability_Onset_Potential": [
+          {
+            "value": 4.0,
+            "unit": "V vs. K/K⁺",
+            "source_text": "low concentration KFSI based electrolytes exhibit Al corrosion at potential of approx 4.0 V versus K/K"
+          }
+        ],
+        "SEI_Resistance": [
+          {
+            "unit": "Ω",
+            "cycle_number": 0,
+            "source_text": "KFSI/DME electrolyte could significantly improve the electrochemical performance of such kinds of electrodes, that is, carbonaceous material, alloy, and sulfide anodes by building highly stable SEI."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Phosphorus-based organic solvents are often used as nonflammable additives to retard possible fire hazard in LIBs. Guo et al. made attempts to use TEP as single solvent in graphite/ mathrmK0.5mathrmMn",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "electrolyte": "moderate-concentration KFSI in TMP",
+          "cycle_number": 2000,
+          "electrode_config": "half_cell",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 74,
+            "unit": "%",
+            "cycle_number": 2000,
+            "condition_id": "C001",
+            "source_text": "74% capacity retention over 2000 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Ji et al. first reported the mathrmK electrochemical intercalation behaviors into commercial graphite in 0.8mathrmM mathrmKPF6 based electrolytes.81b They proved potassium graphite intercalation compo",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrolyte": "0.8 M KPF6 based electrolytes",
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [
+              {
+                "capacity": 273
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "graphite delivered 273 mAh g-1 initial capacity"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To improve the cycle stability of graphite, two type of solvents are adopted. One kind of Solvents is stable enough and could be reversible co-intercalation into graphite. Or, another class of solvent",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": 10.0,
+            "unit": "A/g"
+          },
+          "electrolyte": "unique 1 M KCF3SO3 based DEGDME electrolyte",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability",
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": 77.8,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "graphite showed superior rate performance 77.8 mAh g-1 at 10 A g-1"
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 88.5,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C001",
+            "source_text": "maintained 88.5% capacity retention after 100 cycles in PIBs"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Lu et al. explored a high concentrated KFSI/EMC based electrolyte for graphite anode.118 Remarkably, when using KFSI based concentrated electrolyte, the graphite could deliver a stable cycle performan",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "electrolyte": "high concentrated KFSI/EMC",
+          "cycle_number": 2000,
+          "mass_loading": {
+            "value": 28.56,
+            "unit": "mg/cm2"
+          },
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability",
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [
+              255
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the graphite could deliver a stable cycle performance over 2000 cycles with reversible capacity of 255mathrmmAhg-1"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 99,
+            "unit": "%",
+            "cycle_number": 5,
+            "condition_id": "C001",
+            "source_text": "The coulombic efficiency of the battery with KFSI based concentrated electrolyte could increase to 99% within 5 cycles."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The effect of solvents on anode electrode performance has been widely explored. EC become indispensable ester solvent for a number of electrolyte properties. Meanwhile, the EC/PC-based electrolytes sh",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "electrolyte": "Moderately concentrated KFSI in TEP",
+          "electrode_config": "half_cell",
+          "reference_electrode": "K metal",
+          "test_method": "galvanostatic plating/stripping"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 99.6,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C001",
+            "source_text": "high average coulombic efficiency of 99.6%"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Currently, novel fire-retardant ionic liquids ILs have been developed for high performance PIBs. They exhibit excellent physical properties, such as KFSI-C3ClpyrrFSI mathrmC3Clpyrr N -methyl- N -propy",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Electrochemical_Stability_Window"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 4.8,
+            "unit": "mS/cm",
+            "source_text": "KFSI-C3ClpyrrFSI mathrmC3Clpyrr N -methyl- N -propylpyrrolidinium with high ionic conductivity and wide electrochemical window 4.8mathrmmS mathrmcm-1 and 5.72mathrmV, respectively,121"
+          }
+        ],
+        "Electrochemical_Stability_Window": [
+          {
+            "value": {
+              "max_V": 5.72
+            },
+            "unit": "V",
+            "source_text": "KFSI-C3ClpyrrFSI mathrmC3Clpyrr N -methyl- N -propylpyrrolidinium with high ionic conductivity and wide electrochemical window 4.8mathrmmS mathrmcm-1 and 5.72mathrmV, respectively,121"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Like Li, Na-sulfur batteries, potassium-sulfur K-S batteries has a theoretical energy density of 914 Wh kg -1 , much higher than the current commercial lithium-ion battery, which is a key motivation f",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Energy_Density"
+      ],
+      "performance_info": {
+        "Energy_Density": [
+          {
+            "value": {
+              "gravimetric": 914
+            },
+            "unit": "Wh/kg / Wh/L",
+            "basis": "theoretical",
+            "source_text": "potassium-sulfur K-S batteries has a theoretical energy density of 914 Wh kg -1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "So far, PBAs have been widely used as cathodes for PIBs. They belong to metal hexacyanoferrates family with composition of mathrmAxmathrmMAmathrmMBmathrmCN6ycdot zmathrmH2mathrmO , where mathrmMA and ",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "electrolyte": "1 M KBF4 in EC/EMC"
+        },
+        {
+          "condition_id": "C007",
+          "electrolyte": "KClO4 salt based electrolyte, low concentration"
+        },
+        {
+          "condition_id": "C008",
+          "electrolyte": "KPF6 based EC/DEC electrolytes"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Voltage_Hysteresis"
+      ],
+      "performance_info": {
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.5,
+            "unit": "V",
+            "condition_id": "C002",
+            "source_text": "it experienced a large voltage polarization 0.5 V"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "Currently, there are no specific potassium ion electrolyte additives. Fluoroethylene carbonate FEC can improve the stability of solvent under high voltage, and at the same time, FEC can effectively im",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "electrolyte": "2 vol% FEC additive based electrolyte",
+          "electrode_config": "K half cells (Prussian blue analogue cathode)"
+        },
+        {
+          "condition_id": "C010",
+          "electrolyte": "electrolyte containing FEC (unspecified base)",
+          "electrode_config": "K/Sn3P4 half cells"
+        },
+        {
+          "condition_id": "C011",
+          "electrolyte": "1.0 M KFSI in TMP with DTD additive",
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C012",
+          "electrolyte": "molten KF",
+          "electrode_config": "graphite electrode"
+        },
+        {
+          "condition_id": "C013",
+          "electrolyte": "0.5 M KPF6 in DME",
+          "electrode_config": "K-O2 battery"
+        },
+        {
+          "condition_id": "C014",
+          "electrolyte": "EC/DEC electrolyte",
+          "electrode_config": "graphite electrode"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 90,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C001",
+            "source_text": "The 2 vol% FEC additive based electrolyte could improve the initial coulombic efficiency of K-MnHCFe from 61% to 90%"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Chen et al. first designed rechargeable K-S batteries using ordered mesoporous carbon CMK-3/sulfur composites as the cathode in TEGDME based electrolyte Figure 12A,B.135a The S cathode showed a slopin",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "electrolyte": "TEGDME based electrolyte (salt not specified in this excerpt)",
+          "cycle_number": 50,
+          "electrode_config": "K-S full cell (K anode, CMK-3/S composite cathode)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C016",
+          "electrolyte": "1M KCF3SO3/TEGDME",
+          "cycle_number": 50,
+          "electrode_config": "room-temperature K-S cell with cathode separator",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 62.9,
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C001",
+            "source_text": "the initial discharge capacity was as low as 523.5 mAh/g and reduced to 329.3 mAh/g over 50 cycles"
+          },
+          {
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C002",
+            "source_text": "After 50 continuous cycles, the discharge capacity remained at approx 600 mAh/g"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In addition, the facile one-electron redox process of mathrmK mathrmO2 eleftrightarrow mathrmKO2 solves the major challenges in mathrmLi - O2 batteries. The thermodynamically and kinetically stable ma",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "electrolyte": "0.5 M KPF6 in ether",
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C018",
+          "electrolyte": "1 M KTFSI in tetraglyme",
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Cycle_Life_80",
+        "SEI_Thickness"
+      ],
+      "performance_info": {
+        "Cycle_Life_80": [
+          {
+            "value": 40,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "the polymeric K+ membrane Nafion-K was applied as K-O2 battery separator, which improved the cycle life over 40 cycles"
+          },
+          {
+            "value": 60,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "source_text": "K-O2 batteries showed significantly improved cycling stability over 60 cycles"
+          }
+        ],
+        "SEI_Thickness": [
+          {
+            "value": "500",
+            "unit": "μm",
+            "condition_id": "C001",
+            "source_text": "the surface layer formed in KTFSI-based electrolyte 2-3 μm was much thinner than that of in KPF6 electrolyte 500 μm"
+          },
+          {
+            "value": "2-3",
+            "unit": "μm",
+            "condition_id": "C002",
+            "source_text": "the surface layer formed in KTFSI-based electrolyte 2-3 μm was much thinner than that of in KPF6 electrolyte 500 μm"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "Subsequently, it was proved that the Se cathode experienced a two-step reduction mechanism by Yu and coworkers in 0.7mathrmM mathrmKPF6 based ester electrolyte.142 As shown in Figure 15A, in situ Rama",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "electrolyte": "0.7 M KPF6 based ester electrolyte",
+          "test_method": "CV"
+        },
+        {
+          "condition_id": "C020",
+          "electrolyte": "concentrated ether-based electrolytes",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "cycle_number": 350,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [
+              252
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "displayed a capacity of 252mathrmmAhg-1mathrmSe after 350 cycles at 0.5mathrmC with average discharge plateau voltage of 1.85mathrmV"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "GPE has also been investigated with growing interest because of combinative of liquid and solid-state electrolytes. Jyothi et al. demonstrated polyacrylonitrile PAN/potassium iodide KI GPE with conduc",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "electrolyte": "PAN/KI GPE",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C022",
+          "temperature": {
+            "value": "room temperature"
+          },
+          "electrolyte": "PMMA GPE",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C023",
+          "temperature": {
+            "value": "room temperature"
+          },
+          "voltage_range": {
+            "max": 4.9,
+            "unit": "V vs. K/K+"
+          },
+          "electrolyte": "PMMA GPE",
+          "test_method": "LSV"
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": 10,
+            "unit": "mA/g"
+          },
+          "electrolyte": "PMMA GPE",
+          "electrode_config": "full cell (K/polyaniline)",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Anodic_Stability_Onset_Potential",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 2.089e-05,
+            "unit": "S/cm",
+            "temperature_C": 30,
+            "method": "EIS",
+            "condition_id": "C001",
+            "source_text": "Jyothi et al. demonstrated polyacrylonitrile PAN/potassium iodide KI GPE with conductivity of 2.089 times 10-5 mathrmS mathrmcm-1 at 30circ mathrmC and activation energy of 0.358 mathrmeV .131"
+          },
+          {
+            "value": 0.0043,
+            "unit": "S/cm",
+            "temperature_C": "room temperature",
+            "method": "EIS",
+            "condition_id": "C002",
+            "source_text": "The GPE with high conductivity of 4.3 times 10-3 mathrmS mathrmcm-1 realized reversible plating/stripping of K at room temperature"
+          }
+        ],
+        "Anodic_Stability_Onset_Potential": [
+          {
+            "value": ">4.9",
+            "unit": "V vs. K/K+",
+            "condition_id": "C003",
+            "source_text": "Moreover, the strong oxidation resistance over 4.9 mathrmV is conducive to match with high-voltage cathodes Figure 11C."
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              {
+                "current_density": "10 mA/g",
+                "capacity": 138
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "The Kpolyaniline cell with PMMA exhibited nearly the same discharge capacity 138 mathrmmAh mathrmg-1 as the cell with the organic liquid electrolyte at 10 mathrmmA mathrmg-1 Figure 11D, and even a better cycle and rate performance Figure 11E,F."
+          }
+        ]
+      },
+      "condition_id": "C004"
+    },
+    {
+      "paragraph": "However, the three-electrode measurement showed the SEI in KTFSI base electrolyte had low mathrmK conductivity, increasing K plating/stripping overpotential. Wu et al. developed a modified SEI in KFSI",
+      "conditions": [
+        {
+          "condition_id": "C025",
+          "electrolyte": "KTFSI base electrolyte",
+          "test_method": "three-electrode measurement"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "SEI_Resistance",
+        "Voltage_Hysteresis",
+        "Cycle_Life_80"
+      ],
+      "performance_info": {
+        "SEI_Resistance": [
+          {
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "the SEI in KTFSI base electrolyte had low mathrmK conductivity, increasing K plating/stripping overpotential."
+          }
+        ],
+        "Voltage_Hysteresis": [
+          {
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "Wu et al. developed a modified SEI in KFSI-DME electrolyte for K metal anode.149 The modified K anode showed significantly reduced the overpotential"
+          }
+        ],
+        "Cycle_Life_80": [
+          {
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "doubled the cycle life of mathrmK - O2 batteries in KTFSI based electrolyte"
+          },
+          {
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "Lu et al. exploited a strong electron-donating DMSO solvent to stabilize superoxide, resulting in significant improvement in electrode kinetics and cycle life"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "NASICON mathrmNa1 xZr2P3 - xSixO120 x 3 structure was built by mathrmSi,mathrmPmathrmO4 tetrahedra and mathrmZrO6 octahedra, and it provided a 3D open network for mathrmNa 176 mathrmNa3mathrmZr2mathrm",
+      "conditions": [
+        {
+          "condition_id": "C026",
+          "temperature": {
+            "value": 800,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C027",
+          "temperature": {
+            "value": 27,
+            "unit": "C"
+          },
+          "test_method": "high-throughput computational method"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 0.00119,
+            "unit": "S/cm",
+            "temperature_C": 800,
+            "condition_id": "C001",
+            "source_text": "showed ion conductivity of 1.19 times 10-3 S cm -1 at 800circmathrmC"
+          },
+          {
+            "value": 2.2e-05,
+            "unit": "S/cm",
+            "temperature_C": 27,
+            "method": "high-throughput computational method",
+            "condition_id": "C002",
+            "source_text": "2.2 times 10-5 mathrmS mathrmcm-1 at 27circ mathrmC by high-throughput computational method"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In the previous chapters, the recent progress of widely applied organic electrolytes has been reviewed. However, the high flammability and volatility of organic electrolytes raises the safety concern ",
+      "conditions": [
+        {
+          "condition_id": "C028",
+          "temperature": {
+            "value": "room temperature",
+            "unit": "C"
+          },
+          "electrolyte": "PEO/KAg4I5 solid polymer electrolyte",
+          "test_method": "ionic conductivity measurement"
+        },
+        {
+          "condition_id": "C029",
+          "temperature": {
+            "unit": "C"
+          },
+          "electrolyte": "(1-x)PEO/x KBr solid polymer electrolyte with 30 wt% KBr",
+          "test_method": "ionic conductivity measurement"
+        },
+        {
+          "condition_id": "C030",
+          "temperature": {
+            "value": "room temperature",
+            "unit": "C"
+          },
+          "electrolyte": "95PEO/5CH3COOK solid polymer electrolyte",
+          "test_method": "ionic conductivity measurement"
+        },
+        {
+          "condition_id": "C031",
+          "temperature": {
+            "value": 20,
+            "unit": "C"
+          },
+          "electrolyte": "PPC/KFSI solid polymer electrolyte with 18 wt% KFSI",
+          "test_method": "ionic conductivity measurement, CV, LSV"
+        },
+        {
+          "condition_id": "C032",
+          "temperature": {
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 10,
+            "unit": "mA/g"
+          },
+          "electrolyte": "PPC/KFSI solid polymer electrolyte with 18 wt% KFSI",
+          "electrode_config": "all-solid-state battery (PTCDA cathode, K anode)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C033",
+          "temperature": {
+            "unit": "C"
+          },
+          "electrolyte": "50PEO/50KFSI solid polymer electrolyte",
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Li_Transport_Activation_Energy_SEI",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 2.0,
+            "unit": "mS/cm",
+            "temperature_C": "room temperature",
+            "condition_id": "C001",
+            "source_text": "The discovered PEO/KAg4I5 displayed ionic conductivity of 2×10⁻³ S cm⁻¹ at room temperature"
+          },
+          {
+            "value": 0.0005,
+            "unit": "mS/cm",
+            "condition_id": "C002",
+            "source_text": "It displayed maximal σ = 5.0×10⁻⁷ at 30 wt% of salt KBr"
+          },
+          {
+            "value": 0.000274,
+            "unit": "mS/cm",
+            "temperature_C": "room temperature",
+            "condition_id": "C003",
+            "source_text": "it delivered a conductivity of 2.74×10⁻⁷ S cm⁻¹ at RT"
+          },
+          {
+            "value": 0.0136,
+            "unit": "mS/cm",
+            "temperature_C": 20,
+            "condition_id": "C004",
+            "source_text": "PPC/KFSI showed maximal ionic conductivity of 1.36×10⁻⁵ S cm⁻¹ at 20°C with 18 wt% KFSI"
+          }
+        ],
+        "Li_Transport_Activation_Energy_SEI": [
+          {
+            "value": 0.16,
+            "unit": "eV",
+            "condition_id": "C001",
+            "source_text": "with a low activation energy of 0.16 eV"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              {
+                "rate": "10 mA g⁻¹",
+                "capacity": 118
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "The all-solid-state battery delivered a high capacity of 118 mAh g⁻¹ for the first cycle at 10 mA g⁻¹"
+          }
+        ]
+      },
+      "condition_id": "C004"
+    },
+    {
+      "paragraph": "K metal anode received extensive attention as anode for high-capacity KMBs. However, the ultrahigh reactivity resulting unstable SEI film, dendrites growth, and huge volume change severely constrain i",
+      "conditions": [
+        {
+          "condition_id": "C034",
+          "electrolyte": "[EMIm]Cl AlCl3 KCl KFSI",
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C035",
+          "electrolyte": "1M KTFSI DME",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling (with electrochemical polishing)"
+        },
+        {
+          "condition_id": "C036",
+          "temperature": {
+            "value": 22,
+            "unit": "C"
+          },
+          "electrolyte": "[EMIm]Cl AlCl3 KCl KFSI",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Coulombic_Efficiency",
+        "Ionic_Conductivity",
+        "Electrochemical_Stability_Window"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 89,
+            "unit": "%",
+            "cycle_number": 820,
+            "condition_id": "C001",
+            "source_text": "with high retaining rate approx 89%"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 99.9,
+            "unit": "%",
+            "cycle_number": 820,
+            "condition_id": "C001",
+            "source_text": "CE approx 99.9%"
+          }
+        ],
+        "Ionic_Conductivity": [
+          {
+            "value": 13.1,
+            "unit": "mS/cm",
+            "temperature_C": 22,
+            "method": "EIS",
+            "condition_id": "C003",
+            "source_text": "high ionic conductivity of 13.1 mS cm-1 at 22"
+          }
+        ],
+        "Electrochemical_Stability_Window": [
+          {
+            "value": {
+              "max_V": 5.0
+            },
+            "unit": "V vs. K/K+",
+            "source_text": "the KFSI/DME electrolyte showed wide voltage stability window over 5V"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Compared with PEs, ISEs generally possess high ionic conductivities 0.1mathrmmScm-1 at RT, high mechanical modulus 1 GPa for oxides, wide excellent thermal/electrochemical stability windows 4.0mathrmV",
+      "conditions": [
+        {
+          "condition_id": "C037",
+          "temperature": {
+            "value": 300,
+            "unit": "C"
+          },
+          "electrolyte": "K-BASE (K-beta-Al2O3)",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C038",
+          "temperature": {
+            "value": 150,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "C/40, 1.2C",
+            "unit": "C"
+          },
+          "electrolyte": "K-BASE (K-beta-Al2O3)",
+          "electrode_config": "full_cell",
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C039",
+          "temperature": {
+            "value": 150,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "C/4.2",
+            "unit": "C"
+          },
+          "cycle_number": 1000,
+          "electrolyte": "K-BASE (K-beta-Al2O3)",
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [],
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "The K-S batteries showed excellent rate performance with retention rate of 75% at 1.2C compared to the rate of C/40 Figure 18B.",
+            "retention_rate_percent": 75,
+            "at_c_rate": "1.2C",
+            "reference_c_rate": "C/40"
+          }
+        ],
+        "Ionic_Conductivity": [
+          {
+            "value": 0.056,
+            "unit": "mS/cm",
+            "temperature_C": 300,
+            "method": "EIS",
+            "source_text": "The conductivity of K-BASE was approx 0.056 at 300°C Figure 18A."
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Ion; Desolvation energy (kJ mol-1)\nRows:\nRow 1: DEC; PC; EMC; FEC; VC; TMP; BC; DMF\nRow 2: Li+; 205.6; 215.8; 199.1; 188.8; 191.4; 249.1; 219.5; 230.1\nRow 3: Na+; 147.9; 158.",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Li_Desolvation_Activation_Energy"
+      ],
+      "performance_info": {
+        "Li_Desolvation_Activation_Energy": [
+          {
+            "unit": "eV",
+            "source_text": "TABLE DATA BLOCK\nHeaders: Ion; Desolvation energy (kJ mol-1)\nRows:\nRow 1: DEC; PC; EMC; FEC; VC; TMP; BC; DMF\nRow 2: Li+; 205.6; 215.8; 199.1; 188.8; 191.4; 249.1; 219.5; 230.1\nRow 3: Na+; 147.9; 158.2; 143.1; 136.2; 138.3; 181.2; 161.4; 165.5\nRow 4: K+; 105.1; 119.2; 101.6; 100.5; 102.2; 135.4; 121.9; 122.8\nColumn data:\n  Ion: DEC; Li+; Na+; K+\n  Desolvation energy (kJ mol-1): PC; 205.6; 147.9; 105.1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In addition, various ISEs with suitable 1D, 2D, or 3D channels, where mathrmK charge carrier ions could move quickly along, have been studied. mathrmK3mathrmSb4mathrmO10mathrmBO3 compound with 1D math",
+      "conditions": [
+        {
+          "condition_id": "C040",
+          "test_method": "hydrothermal synthesis"
+        },
+        {
+          "condition_id": "C041",
+          "temperature": {
+            "value": 400,
+            "unit": "C"
+          },
+          "test_method": "ionic conductivity measurement"
+        },
+        {
+          "condition_id": "C042",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "ionic conductivity measurement"
+        },
+        {
+          "condition_id": "C043",
+          "test_method": "electrochemical stability window measurement"
+        },
+        {
+          "condition_id": "C044",
+          "electrolyte": "K2Fe4O7",
+          "electrode_config": "all-solid-state K metal battery with PBA cathode",
+          "cycle_number": 50,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C045",
+          "temperature": {
+            "value": 300,
+            "unit": "C"
+          },
+          "test_method": "ionic conductivity measurement"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Electrochemical_Stability_Window",
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 0.15,
+            "unit": "mS/cm",
+            "temperature_C": 400,
+            "source_text": "about 1.5times 10-4mathrmScm-1 at 400circmathrmC",
+            "condition_id": "C002"
+          },
+          {
+            "value": 50,
+            "unit": "mS/cm",
+            "temperature_C": 25,
+            "source_text": "5.0times 10-2mathrmScm-1 at RT",
+            "condition_id": "C003"
+          },
+          {
+            "value": 40,
+            "unit": "mS/cm",
+            "temperature_C": 300,
+            "source_text": "40mathrmmScm-1 at 300circmathrmC",
+            "condition_id": "C006"
+          }
+        ],
+        "Electrochemical_Stability_Window": [
+          {
+            "value": {
+              "max_V": 5
+            },
+            "unit": "V vs. K/K⁺",
+            "source_text": "wide working voltage 5 V vs. mathrmK / K",
+            "condition_id": "C004"
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 78,
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C005",
+            "source_text": "retention rate of 78%"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The continuous dissolution, relocation, and shuttle of polysulfides lead to the low utilization rate of active materials and passivation of positive/negative electrodes, which further result in rapid ",
+      "conditions": [
+        {
+          "condition_id": "C046",
+          "electrolyte": "5 M KTFSI/TEGDME",
+          "electrode_config": "half-cell (K-S battery)",
+          "reference_electrode": "K/K+",
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C047",
+          "electrolyte": "1 M KTFSI/TEGDME",
+          "electrode_config": "half-cell (K-S battery)",
+          "reference_electrode": "K/K+",
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C048",
+          "electrolyte": "3 M KTFSI/TEGDME",
+          "electrode_config": "half-cell (K-S battery)",
+          "reference_electrode": "K/K+",
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C049",
+          "voltage_range": {
+            "min": 1.2,
+            "max": 2.28,
+            "unit": "V",
+            "reference": "K/K+"
+          },
+          "electrolyte": "1 M KTFSI/TEGDME",
+          "electrode_config": "half-cell (transparent K-S battery)",
+          "reference_electrode": "K/K+",
+          "test_method": "transparent cell visualization"
+        },
+        {
+          "condition_id": "C050",
+          "voltage_range": {
+            "min": 1.2,
+            "max": 2.28,
+            "unit": "V",
+            "reference": "K/K+"
+          },
+          "electrolyte": "3 M KTFSI/TEGDME",
+          "electrode_config": "half-cell (transparent K-S battery)",
+          "reference_electrode": "K/K+",
+          "test_method": "transparent cell visualization"
+        },
+        {
+          "condition_id": "C051",
+          "voltage_range": {
+            "min": 1.2,
+            "max": 2.28,
+            "unit": "V",
+            "reference": "K/K+"
+          },
+          "electrolyte": "5 M KTFSI/TEGDME",
+          "electrode_config": "half-cell (transparent K-S battery)",
+          "reference_electrode": "K/K+",
+          "test_method": "transparent cell visualization"
+        },
+        {
+          "condition_id": "C052",
+          "electrolyte": "1 M KPF6 in EC/PC (1:1)",
+          "cycle_number": 2,
+          "electrode_config": "half-cell (K-Se battery)",
+          "reference_electrode": "K/K+",
+          "test_method": "rate test, galvanostatic"
+        },
+        {
+          "condition_id": "C053",
+          "electrolyte": "1 M KPF6 in EC/PC (1:1)",
+          "electrode_config": "half-cell (K-Se battery)",
+          "reference_electrode": "K/K+",
+          "test_method": "rate test, galvanostatic"
+        },
+        {
+          "condition_id": "C053",
+          "electrolyte": "1 M KPF6 in EC/PC (1:1)",
+          "electrode_config": "half-cell (K-Se battery)",
+          "reference_electrode": "K/K+",
+          "test_method": "rate test, galvanostatic"
+        },
+        {
+          "condition_id": "C054",
+          "electrolyte": "1 M KPF6 in EC/PC (1:1)",
+          "cycle_number": 200,
+          "electrode_config": "half-cell (K-Se battery)",
+          "reference_electrode": "K/K+",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 86.96,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C001",
+            "source_text": "initial CE of 86.96%"
+          },
+          {
+            "value": 99.0,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C010",
+            "source_text": "CEs up to 99%"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              100
+            ],
+            "unit": "%",
+            "condition_id": "C007",
+            "source_text": "second cycle capacity at 0.1 C (reference for rate retention)"
+          },
+          {
+            "value": [
+              89
+            ],
+            "unit": "%",
+            "condition_id": "C008",
+            "source_text": "maintained capacity of 89% at 0.2 C compared to the second cycle capacity at 0.1 C"
+          },
+          {
+            "value": [
+              673
+            ],
+            "unit": "mAh cm-3",
+            "condition_id": "C009",
+            "source_text": "Even at 10 C, it still could deliver a capacity of 673 mAh cm-3"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Electrode; Electrolyte; Capacity retention (mAh g-1); Voltage window (V); Ref.\nRows:\nRow 1: Electrode = KTiOPO4; Electrolyte = 0.8 M KPF6in EC/DEC = 1; Capacity retention (mA",
+      "conditions": [
+        {
+          "condition_id": "C055",
+          "electrolyte": "0.8 M KPF6 in EC/DEC = 1",
+          "voltage_range": {
+            "min": 0.0,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 0.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 10000,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C056",
+          "electrolyte": "0.8 M KPF6 in EC/DEC = 1",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "cycle_number": 800,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C057",
+          "electrolyte": "0.8 M KPF6 in EC/DEC = 1",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "cycle_number": 5000,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C058",
+          "electrolyte": "1 M KFSI in EC/DMC = 1",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "cycle_number": 6000,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C059",
+          "electrolyte": "0.8 M KPF6 in EC/DMC = 1",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "cycle_number": 2000,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C060",
+          "electrolyte": "0.8 M KPF6 in EC/DEC = 1",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "cycle_number": 2800,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C061",
+          "electrolyte": "4.0 M KFSI in DME",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 2.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "cycle_number": 200,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C062",
+          "electrolyte": "1 M KFSI in EC/DEC = 1",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "cycle_number": 600,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C063",
+          "electrolyte": "5.0 M KFSI in DME",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "cycle_number": 1000,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C064",
+          "electrolyte": "0.8 M KPF6 in EC/PC = 1",
+          "voltage_range": {
+            "min": 1.5,
+            "max": 3.9,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "cycle_number": 200,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C065",
+          "electrolyte": "KFSI in TEP (weight ratio of 1:2)",
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.5,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "cycle_number": 400,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C066",
+          "electrolyte": "2.5 M in TEP",
+          "voltage_range": {
+            "min": 2.7,
+            "max": 4.4,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "cycle_number": 7800,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C067",
+          "electrolyte": "0.5 M KPF6 in EC/PC = 1",
+          "voltage_range": {
+            "min": 1.8,
+            "max": 4.5,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 0.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 300,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C068",
+          "electrolyte": "0.5 M KPF6 in EC/DEC = 1",
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 0.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 300,
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 78.4,
+            "unit": "%",
+            "cycle_number": 10000,
+            "condition_id": "C001",
+            "source_text": "78.4% after 10,000 cycles (20 C)"
+          },
+          {
+            "value": ">90",
+            "unit": "%",
+            "cycle_number": 800,
+            "condition_id": "C002",
+            "source_text": ">90% after 800 cycles (1 A g-1)"
+          },
+          {
+            "value": 69.0,
+            "unit": "%",
+            "cycle_number": 5000,
+            "condition_id": "C003",
+            "source_text": "69% after 5000 cycles (2 A g-1)"
+          },
+          {
+            "value": 75.6,
+            "unit": "%",
+            "cycle_number": 6000,
+            "condition_id": "C004",
+            "source_text": "75.6% after 6000 cycles (5 A g-1)"
+          },
+          {
+            "value": 67.7,
+            "unit": "%",
+            "cycle_number": 2000,
+            "condition_id": "C005",
+            "source_text": "67.7% after 2000 cycles (10A g-1)"
+          },
+          {
+            "value": 74.3,
+            "unit": "%",
+            "cycle_number": 2800,
+            "condition_id": "C006",
+            "source_text": "74.3% after 2800 cycles (100 mA g-1)"
+          },
+          {
+            "value": 95.4,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C007",
+            "source_text": "95.4% after 200 cycles (200 mA g-1)"
+          },
+          {
+            "value": 72.5,
+            "unit": "%",
+            "cycle_number": 600,
+            "condition_id": "C008",
+            "source_text": "72.5% after 600 cycles (1 A g-1)"
+          },
+          {
+            "value": 83.0,
+            "unit": "%",
+            "cycle_number": 1000,
+            "condition_id": "C009",
+            "source_text": "83% after 1000 cycles (500 mA g-1)"
+          },
+          {
+            "value": 70.4,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C010",
+            "source_text": "70.4% after 200 cycles (120 mA g-1)"
+          },
+          {
+            "value": 74.0,
+            "unit": "%",
+            "cycle_number": 400,
+            "condition_id": "C011",
+            "source_text": "74% after 400 cycles (100 mA g-1)"
+          },
+          {
+            "value": 80.0,
+            "unit": "%",
+            "cycle_number": 7800,
+            "condition_id": "C012",
+            "source_text": "80% after 7800 cycles (500 mA g-1)"
+          },
+          {
+            "value": 86.0,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C013",
+            "source_text": "86% after 300 cycles (1 C)"
+          },
+          {
+            "value": 83.0,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C014",
+            "source_text": "83% after 300 cycles (C/3)"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Category; Anode; Electrolyte; Capacity (mAh g-1); Capacity retention; Ref.\nRows:\nRow 1: Category = Intercalation materials; Anode = Graphitic carbon hollow nanocage; Electrol",
+      "conditions": [
+        {
+          "condition_id": "C069",
+          "electrolyte": "1 M KFSI in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C070",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "A/g"
+          },
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C071",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C072",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "cycle_number": 50
+        },
+        {
+          "condition_id": "C073",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          },
+          "cycle_number": 600
+        },
+        {
+          "condition_id": "C074",
+          "electrolyte": "5 M KTFSI in DEGDME",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          },
+          "cycle_number": 600
+        },
+        {
+          "condition_id": "C075",
+          "electrolyte": "0.8 M KPF6in EC/DMC (1/1)",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          },
+          "cycle_number": 500
+        },
+        {
+          "condition_id": "C076",
+          "electrolyte": "1 M KFSI in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C077",
+          "electrolyte": "1 M KFSI in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "A/g"
+          },
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C078",
+          "electrolyte": "1 M KFSI in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          },
+          "cycle_number": 1000
+        },
+        {
+          "condition_id": "C079",
+          "electrolyte": "0.75 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 25,
+            "unit": "mA/g"
+          },
+          "cycle_number": 30
+        },
+        {
+          "condition_id": "C080",
+          "electrolyte": "1 M KPF6in EC/DMC (1/1)",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          },
+          "cycle_number": 600
+        },
+        {
+          "condition_id": "C081",
+          "electrolyte": "5 M KFSI in DME",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "cycle_number": 600
+        },
+        {
+          "condition_id": "C082",
+          "electrolyte": "1 M KPF6in DME",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "cycle_number": 500
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability",
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [
+              {
+                "condition": "0.2 C",
+                "capacity": 212,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "212 at 0.2 C"
+          },
+          {
+            "value": [
+              {
+                "condition": "100 A g-1",
+                "capacity": 209,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "209 at 100 A g-1"
+          },
+          {
+            "value": [
+              {
+                "condition": "100 mA g-1",
+                "capacity": 303,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "303 at 100 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "condition": "100 mA g-1",
+                "capacity": 281.2,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "281.2 at 100 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "condition": "50 mA g-1",
+                "capacity": 367.1,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "367.1 at 50 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "condition": "50 mA g-1",
+                "capacity": 220,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "220 at 50 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "condition": "50 mA g-1",
+                "capacity": 135,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "135 at 50 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "condition": "100 mA g-1",
+                "capacity": 218.2,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C008",
+            "source_text": "218.2 at 100 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "condition": "100 A g-1",
+                "capacity": 525.5,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C009",
+            "source_text": "525.5 at 100 A g-1"
+          },
+          {
+            "value": [
+              {
+                "condition": "50 mA g-1",
+                "capacity": 318,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C010",
+            "source_text": "318 at 50 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "condition": "25 mA g-1",
+                "capacity": 150,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C011",
+            "source_text": "150 at 25 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "condition": "50 mA g-1",
+                "capacity": 395.9,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C012",
+            "source_text": "395.9 at 50 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "condition": "100 mA g-1",
+                "capacity": 598,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C013",
+            "source_text": "598 at 100 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "condition": "100 mA g-1",
+                "capacity": 320,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C014",
+            "source_text": "320 at 100 mA g-1"
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 92,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C001",
+            "source_text": "92%@100 cycles (0.2 C)"
+          },
+          {
+            "value": 62,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C002",
+            "source_text": "62%@100 cycles (0.2 A g-1)"
+          },
+          {
+            "value": 74.6,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C003",
+            "source_text": "74.6%@100 cycles (0.1 A g-1)"
+          },
+          {
+            "value": 78,
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C004",
+            "source_text": "78% @ 50 cycles (0.1 A g-1)"
+          },
+          {
+            "value": 87.8,
+            "unit": "%",
+            "cycle_number": 600,
+            "condition_id": "C005",
+            "source_text": "87.8%@600 cycles (0.3 A g-1)"
+          },
+          {
+            "value": 85,
+            "unit": "%",
+            "cycle_number": 600,
+            "condition_id": "C006",
+            "source_text": "85%@600 cycles (0.2 A g-1)"
+          },
+          {
+            "value": 76,
+            "unit": "%",
+            "cycle_number": 500,
+            "condition_id": "C007",
+            "source_text": "76% after 500 cycles (0.2 A g-1)"
+          },
+          {
+            "value": 81,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C008",
+            "source_text": "81% after 100 cycles (0.1 A g-1)"
+          },
+          {
+            "value": 90,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C009",
+            "source_text": "90% after 100 cycles (0.5 A g-1)"
+          },
+          {
+            "value": 92,
+            "unit": "%",
+            "cycle_number": 1000,
+            "condition_id": "C010",
+            "source_text": "92% after 1000 cycles (0.5 A g-1)"
+          },
+          {
+            "value": 81,
+            "unit": "%",
+            "cycle_number": 30,
+            "condition_id": "C011",
+            "source_text": "81% after 30 cycles (0.025 A g-1)"
+          },
+          {
+            "value": 90,
+            "unit": "%",
+            "cycle_number": 600,
+            "condition_id": "C012",
+            "source_text": "90% after 600 cycles (0.2 A g-1)"
+          },
+          {
+            "value": 97.5,
+            "unit": "%",
+            "cycle_number": 600,
+            "condition_id": "C013",
+            "source_text": "97.5% after 600 cycles (0.5 A g-1)"
+          },
+          {
+            "value": 99,
+            "unit": "%",
+            "cycle_number": 500,
+            "condition_id": "C014",
+            "source_text": "99% after 500 cycles (5 A g-1)"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Classification; Electrolyte composition; Ionic conductivity (S cm-1); Activation energies (eV); Electrochemical stable voltage (V)\nRows:\nRow 1: Classification = Gel polymer e",
+      "conditions": [
+        {
+          "condition_id": "C083",
+          "electrolyte": "70PAN/30KI[131]"
+        },
+        {
+          "condition_id": "C084",
+          "electrolyte": "85PAU/25KI[157]"
+        },
+        {
+          "condition_id": "C085",
+          "electrolyte": "PMMA/KPF6[132]"
+        },
+        {
+          "condition_id": "C086",
+          "electrolyte": "PEO/KHCO3(70/30)[158]"
+        },
+        {
+          "condition_id": "C087",
+          "electrolyte": "PEO/KIO3(73/30)[159]"
+        },
+        {
+          "condition_id": "C088",
+          "electrolyte": "Sago starch/KI (70/30[160]"
+        },
+        {
+          "condition_id": "C089",
+          "electrolyte": "PVP/KIO4(85/15)[161]"
+        },
+        {
+          "condition_id": "C090",
+          "electrolyte": "PVC/PEO/KCl (42.5/42.5/15)[162]"
+        },
+        {
+          "condition_id": "C091",
+          "electrolyte": "PVC/PEO/KI (42.5/42.5/15)[163]"
+        },
+        {
+          "condition_id": "C092",
+          "electrolyte": "PVA/CH3COOK (70/30)[164]"
+        },
+        {
+          "condition_id": "C093",
+          "electrolyte": "95(70PEO/30KBr)+5SiO2[159]"
+        },
+        {
+          "condition_id": "C094",
+          "electrolyte": "PPPCB/KFSI[154]"
+        },
+        {
+          "condition_id": "C095",
+          "electrolyte": "95(80PEO/20KI)+5TiO2[165]"
+        },
+        {
+          "condition_id": "C096",
+          "electrolyte": "85PVA/15KCl[166]"
+        },
+        {
+          "condition_id": "C097",
+          "electrolyte": "K2Fe4O7"
+        },
+        {
+          "condition_id": "C098",
+          "temperature": {
+            "value": 400,
+            "unit": "C"
+          },
+          "electrolyte": "K3Sb4O10(BO3)[167]"
+        },
+        {
+          "condition_id": "C099",
+          "temperature": {
+            "value": 300,
+            "unit": "C"
+          },
+          "electrolyte": "K2Mg2TeO6[168]"
+        },
+        {
+          "condition_id": "C100",
+          "temperature": {
+            "value": 150,
+            "unit": "C"
+          },
+          "electrolyte": "K-BASE"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Electrochemical_Stability_Window"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 2.089e-05,
+            "unit": "S/cm",
+            "condition_id": "C001",
+            "source_text": "Ionic conductivity (S cm-1) = 2.089 × 10-5"
+          },
+          {
+            "value": 0.000159,
+            "unit": "S/cm",
+            "condition_id": "C002",
+            "source_text": "1.59 × 10-4"
+          },
+          {
+            "value": 0.037,
+            "unit": "S/cm",
+            "condition_id": "C003",
+            "source_text": "3.7 × 10-2"
+          },
+          {
+            "value": 1.4e-07,
+            "unit": "S/cm",
+            "condition_id": "C004",
+            "source_text": "Ionic conductivity (S cm-1) = 1.4 × 10-7"
+          },
+          {
+            "value": 4.4e-07,
+            "unit": "S/cm",
+            "condition_id": "C005",
+            "source_text": "4.4 × 10-7"
+          },
+          {
+            "value": 6.01e-06,
+            "unit": "S/cm",
+            "condition_id": "C006",
+            "source_text": "6.01 × 10-6"
+          },
+          {
+            "value": 0.0001421,
+            "unit": "S/cm",
+            "condition_id": "C007",
+            "source_text": "1.421 × 10-4"
+          },
+          {
+            "value": 8.29e-06,
+            "unit": "S/cm",
+            "condition_id": "C008",
+            "source_text": "8.29 × 10-6"
+          },
+          {
+            "value": 0.000366,
+            "unit": "S/cm",
+            "condition_id": "C009",
+            "source_text": "3.66 × 10-4"
+          },
+          {
+            "value": 4.82e-07,
+            "unit": "S/cm",
+            "condition_id": "C010",
+            "source_text": "4.82 × 10-7"
+          },
+          {
+            "value": 2.5e-05,
+            "unit": "S/cm",
+            "condition_id": "C011",
+            "source_text": "2.5 × 10-5"
+          },
+          {
+            "value": 1.36e-05,
+            "unit": "S/cm",
+            "condition_id": "C012",
+            "source_text": "1.36 × 10-5"
+          },
+          {
+            "value": 8.7e-05,
+            "unit": "S/cm",
+            "condition_id": "C013",
+            "source_text": "8.7 × 10-5"
+          },
+          {
+            "value": 9.68e-07,
+            "unit": "S/cm",
+            "condition_id": "C014",
+            "source_text": "9.68 × 10-7"
+          },
+          {
+            "value": 0.05,
+            "unit": "S/cm",
+            "condition_id": "C015",
+            "source_text": "Ionic conductivity (S cm-1) = 5 × 10-2"
+          },
+          {
+            "value": 0.00015,
+            "unit": "S/cm",
+            "temperature_C": 400,
+            "condition_id": "C016",
+            "source_text": "1.5 × 10-4(400°C)"
+          },
+          {
+            "value": 0.038,
+            "unit": "S/cm",
+            "temperature_C": 300,
+            "condition_id": "C017",
+            "source_text": "3.8 × 10-2(300°C)"
+          },
+          {
+            "value": 0.01,
+            "unit": "S/cm",
+            "temperature_C": 150,
+            "condition_id": "C018",
+            "source_text": "0.01 (150°C)"
+          }
+        ],
+        "Electrochemical_Stability_Window": [
+          {
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "Electrochemical stable voltage (V) = -"
+          },
+          {
+            "unit": "V",
+            "condition_id": "C002",
+            "source_text": "-"
+          },
+          {
+            "value": {
+              "min": 2.5,
+              "max": 4.9
+            },
+            "unit": "V",
+            "condition_id": "C003",
+            "source_text": "2.5-4.9"
+          },
+          {
+            "unit": "V",
+            "condition_id": "C004",
+            "source_text": "-"
+          },
+          {
+            "unit": "V",
+            "condition_id": "C005",
+            "source_text": "-"
+          },
+          {
+            "value": {
+              "max": 2.0
+            },
+            "unit": "V",
+            "condition_id": "C006",
+            "source_text": "2 V"
+          },
+          {
+            "unit": "V",
+            "condition_id": "C007",
+            "source_text": "-"
+          },
+          {
+            "unit": "V",
+            "condition_id": "C008",
+            "source_text": "-"
+          },
+          {
+            "unit": "V",
+            "condition_id": "C009",
+            "source_text": "-"
+          },
+          {
+            "unit": "V",
+            "condition_id": "C010",
+            "source_text": "-"
+          },
+          {
+            "unit": "V",
+            "condition_id": "C011",
+            "source_text": "-"
+          },
+          {
+            "value": {
+              "max": 4.15
+            },
+            "unit": "V",
+            "condition_id": "C012",
+            "source_text": "4.15 V"
+          },
+          {
+            "unit": "V",
+            "condition_id": "C013"
+          },
+          {
+            "unit": "V",
+            "condition_id": "C014"
+          },
+          {
+            "value": {
+              "min": -2.0,
+              "max": 5.0
+            },
+            "unit": "V",
+            "condition_id": "C015",
+            "source_text": "-2 to 5 V"
+          },
+          {
+            "unit": "V",
+            "condition_id": "C016",
+            "source_text": "-"
+          },
+          {
+            "unit": "V",
+            "condition_id": "C017",
+            "source_text": "-"
+          },
+          {
+            "unit": "V",
+            "condition_id": "C018",
+            "source_text": "-"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Category; Cathode; Electrolyte; Capacity (mAh g-1); Capacity retention; Ref.\nRows:\nRow 1: Category = Prussian blue analogues; Cathode = K2Ni0.05Fe0.95Fe(CN)6; Electrolyte = 0",
+      "conditions": [
+        {
+          "condition_id": "C101",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1) with 1 wt% FEC",
+          "c_rate_or_current": {
+            "value": 20,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C102",
+          "electrolyte": "0.8 M KPF6in EC/DEC",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C103",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1) with 5 wt% FEC",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C104",
+          "electrolyte": "Saturated KClO4in PC with 10 wt% FEC",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "C"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C105",
+          "electrolyte": "0.8 M KPF6in EC/DEC",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C106",
+          "electrolyte": "2.5 M KPF6in diglyme",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "C"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C107",
+          "electrolyte": "0.8 M KPF6in PC with 5 wt% FEC",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C108",
+          "electrolyte": "1 M KPF6in EC/DMC",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C109",
+          "electrolyte": "0.5 M KPF6in EC/DEC",
+          "c_rate_or_current": {
+            "value": 52,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C110",
+          "electrolyte": "0.5 M KPF6in EC/DEC",
+          "c_rate_or_current": {
+            "value": 20,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C111",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 10,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C112",
+          "electrolyte": "1 M KFSI in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 11.8,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C113",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 20,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C114",
+          "electrolyte": "0.8 M KPF6in EC/DMC (1/1)",
+          "c_rate_or_current": {
+            "value": 20,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C115",
+          "electrolyte": "1 M KPF6in EC/PC (1/1)",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C116",
+          "electrolyte": "0.5 M KPF6in EC/FEC (1/1)",
+          "c_rate_or_current": {
+            "value": 24,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C117",
+          "electrolyte": "0.5 M KPF6in EC/PC/FEC (20/20/1)",
+          "c_rate_or_current": {
+            "value": 6,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C118",
+          "electrolyte": "0.5 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 12.8,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C119",
+          "electrolyte": "1 M KPF6in EC/PC (1/1)",
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C120",
+          "electrolyte": "0.5 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 10,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C121",
+          "electrolyte": "0.5 M KTFSI in DOL/DME (1/1)",
+          "c_rate_or_current": {
+            "value": 20,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C122",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C123",
+          "electrolyte": "1 m KPF6in DME",
+          "c_rate_or_current": {
+            "value": 1000,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C124",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1) with 1 wt% FEC",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "cycle_number": 300,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C125",
+          "electrolyte": "0.8 M KPF6in EC/DEC",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "cycle_number": 150,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C126",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1) with 5 wt% FEC",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "cycle_number": 100,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C127",
+          "electrolyte": "Saturated KClO4in PC with 10 wt% FEC",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C128",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1) with 1 wt% FEC",
+          "c_rate_or_current": {
+            "value": 0.02,
+            "unit": "A/g"
+          },
+          "cycle_number": 300,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C129",
+          "electrolyte": "0.8 M KPF6in EC/DEC",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "A/g"
+          },
+          "cycle_number": 500,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C130",
+          "electrolyte": "2.5 M KPF6in diglyme",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "cycle_number": 30,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C131",
+          "electrolyte": "0.8 M KPF6in PC with 5 wt% FEC",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "cycle_number": 100,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C132",
+          "electrolyte": "1 M KPF6in EC/DMC",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "cycle_number": 685,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C133",
+          "electrolyte": "0.5 M KPF6in EC/DEC",
+          "c_rate_or_current": {
+            "value": 0.52,
+            "unit": "A/g"
+          },
+          "cycle_number": 200,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C134",
+          "electrolyte": "0.5 M KPF6in EC/DEC",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "cycle_number": 500,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C135",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          },
+          "cycle_number": 500,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C136",
+          "electrolyte": "1 M KFSI in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 0.011,
+            "unit": "A/g"
+          },
+          "cycle_number": 30,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C137",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 0.02,
+            "unit": "A/g"
+          },
+          "cycle_number": 100,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C138",
+          "electrolyte": "0.8 M KPF6in EC/DMC (1/1)",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          },
+          "cycle_number": 100,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C139",
+          "electrolyte": "1 M KPF6in EC/PC (1/1)",
+          "c_rate_or_current": {
+            "value": 0.01,
+            "unit": "A/g"
+          },
+          "cycle_number": 100,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C140",
+          "electrolyte": "0.5 M KPF6in EC/FEC (1/1)",
+          "c_rate_or_current": {
+            "value": 0.06,
+            "unit": "A/g"
+          },
+          "cycle_number": 100,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C141",
+          "electrolyte": "0.5 M KPF6in EC/PC/FEC (20/20/1)",
+          "c_rate_or_current": {
+            "value": 5,
+            "unit": "C"
+          },
+          "cycle_number": 500,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C142",
+          "electrolyte": "0.5 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "cycle_number": 500,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C143",
+          "electrolyte": "1 M KPF6in EC/PC (1/1)",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          },
+          "cycle_number": 2000,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C144",
+          "electrolyte": "0.5 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 0.05,
+            "unit": "A/g"
+          },
+          "cycle_number": 2000,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C145",
+          "electrolyte": "0.5 M KTFSI in DOL/DME (1/1)",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          },
+          "cycle_number": 200,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C146",
+          "electrolyte": "0.8 M KPF6in EC/DEC (1/1)",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "cycle_number": 500,
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C147",
+          "electrolyte": "1 m KPF6in DME",
+          "c_rate_or_current": {
+            "value": 3,
+            "unit": "A/g"
+          },
+          "cycle_number": 900,
+          "electrode_config": "half_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability",
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [
+              {
+                "rate": "20 mA g-1",
+                "capacity": 135
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "K2Ni0.05Fe0.95Fe(CN)6; 0.8 M KPF6in EC/DEC (1/1) with 1 wt% FEC; 135 at 20 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "100 mA g-1",
+                "capacity": 65.0
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "K0.220Fe[Fe(CN)6]0.805·4.01H2O; 0.8 M KPF6in EC/DEC; 65.0 at 100 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "50 mA g-1",
+                "capacity": 136.7
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "K0.3Ti0.75Fe0.25[Fe(CN)6]0.95·2.8H2O; 0.8 M KPF6in EC/DEC (1/1) with 5 wt% FEC; 136.7 at 50 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "0.2 C",
+                "capacity": 146.2
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "K1.89Mn[Fe(CN)6]0.92·0.75H2O; Saturated KClO4in PC with 10 wt% FEC; 146.2 at 0.2 C"
+          },
+          {
+            "value": [
+              {
+                "rate": "20 mA g-1",
+                "capacity": 90
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "K2Ni0.36Co0.64Fe(CN)6; 0.8 M KPF6in EC/DEC (1/1) with 1 wt% FEC; 90 at 20 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "50 mA g-1",
+                "capacity": 88.9
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "Polypyrrole-coated K-rich iron hexacyanoferrate; 0.8 M KPF6in EC/DEC; 88.9 at 50 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "0.2 C",
+                "capacity": 105
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "K1.69Mn[Fe(CN)6]0.85·0.4H2O; 2.5 M KPF6in diglyme; 105 at 0.2 C"
+          },
+          {
+            "value": [
+              {
+                "rate": "50 mA g-1",
+                "capacity": 125
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "δ-K0.51V2O5; 0.8 M KPF6in PC with 5 wt% FEC; 125 at 50 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "0.1 C",
+                "capacity": 136
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C008",
+            "source_text": "K0.3MnO2; 1 M KPF6in EC/DMC; 136 at 0.1 C"
+          },
+          {
+            "value": [
+              {
+                "rate": "52 mA g-1",
+                "capacity": 155
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C009",
+            "source_text": "K0.83[Ni0.05Mn0.95]O2; 0.5 M KPF6in EC/DEC; 155 at 52 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "20 mA g-1",
+                "capacity": 125
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C010",
+            "source_text": "K0.54[Co0.5Mn0.5]O2; 0.5 M KPF6in EC/DEC; 125 at 20 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "10 mA g-1",
+                "capacity": 125.5
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C011",
+            "source_text": "K0.44Ni0.22Mn0.78O2; 0.8 M KPF6in EC/DEC (1/1); 125.5 at 10 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "11.8 mA g-1",
+                "capacity": 60
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C012",
+            "source_text": "P2-KxCoO2; 1 M KFSI in EC/DEC (1/1); 60 at 11.8 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "20 mA g-1",
+                "capacity": 50
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C013",
+            "source_text": "K3V2(PO4)3/C; 0.8 M KPF6in EC/DEC (1/1); 50 at 20 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "20 mA g-1",
+                "capacity": 44
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C014",
+            "source_text": "K2.95Rb0.05V2(PO4)3/C; 0.8 M KPF6in EC/DMC (1/1); 44 at 20 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "100 mA g-1",
+                "capacity": 83
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C015",
+            "source_text": "K3V2(PO4)2F3; 1 M KPF6in EC/PC (1/1); 83 at 100 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "24 mA g-1",
+                "capacity": 115
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C016",
+            "source_text": "KVOPO4; 0.5 M KPF6in EC/FEC (1/1); 115 at 24 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "6 mA g-1",
+                "capacity": 118
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C017",
+            "source_text": "K4Fe3(PO4)2(P2O7); 0.5 M KPF6in EC/PC/FEC (20/20/1); 118 at 6 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "12.8 mA g-1",
+                "capacity": 126
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C018",
+            "source_text": "KTi2(PO4)3; 0.5 M KPF6in EC/DEC (1/1); 126 at 12.8 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "200 mA g-1",
+                "capacity": 112
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C019",
+            "source_text": "KFeC2O4F; 1 M KPF6in EC/PC (1/1); 112 at 200 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "10 mA g-1",
+                "capacity": 131
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C020",
+            "source_text": "PTCDA; 0.5 M KPF6in EC/DEC (1/1); 131 at 10 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "20 mA g-1",
+                "capacity": 200
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C021",
+            "source_text": "PAQS; 0.5 M KTFSI in DOL/DME (1/1); 200 at 20 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "50 mA g-1",
+                "capacity": 60
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C022",
+            "source_text": "PTPAn; 0.8 M KPF6in EC/DEC (1/1); 60 at 50 mA g-1"
+          },
+          {
+            "value": [
+              {
+                "rate": "1000 mA g-1",
+                "capacity": 209
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C023",
+            "source_text": "PTCDI-DAQ; 1 m KPF6in DME; 209 at 1000 mA g-1"
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 83.1,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C024",
+            "source_text": "K2Ni0.05Fe0.95Fe(CN)6; 0.8 M KPF6in EC/DEC (1/1) with 1 wt% FEC; 83.1%@300 cycles (0.1 A g-1)"
+          },
+          {
+            "value": 86.5,
+            "unit": "%",
+            "cycle_number": 150,
+            "condition_id": "C025",
+            "source_text": "K0.220Fe[Fe(CN)6]0.805·4.01H2O; 0.8 M KPF6in EC/DEC; 86.5%@150 cycles (0.1 A g-1)"
+          },
+          {
+            "value": 64.7,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C026",
+            "source_text": "K0.3Ti0.75Fe0.25[Fe(CN)6]0.95·2.8H2O; 0.8 M KPF6in EC/DEC (1/1) with 5 wt% FEC; 64.7%@100 cycles (0.1 A g-1)"
+          },
+          {
+            "value": 141.4,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C027",
+            "source_text": "K1.89Mn[Fe(CN)6]0.92·0.75H2O; Saturated KClO4in PC with 10 wt% FEC; 141.4%@100 cycles (1 C)"
+          },
+          {
+            "value": 88.2,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C028",
+            "source_text": "K2Ni0.36Co0.64Fe(CN)6; 0.8 M KPF6in EC/DEC (1/1) with 1 wt% FEC; 88.2%@300 cycles (0.02 A g-1)"
+          },
+          {
+            "value": 85,
+            "unit": "%",
+            "cycle_number": 500,
+            "condition_id": "C029",
+            "source_text": "Polypyrrole-coated K-rich iron hexacyanoferrate; 0.8 M KPF6in EC/DEC; 85%@500 cycles (1 A g-1)"
+          },
+          {
+            "value": 68,
+            "unit": "%",
+            "cycle_number": 30,
+            "condition_id": "C030",
+            "source_text": "K1.69Mn[Fe(CN)6]0.85·0.4H2O; 2.5 M KPF6in diglyme; 68%@30 cycles (0.1 C)"
+          },
+          {
+            "value": 61.3,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C031",
+            "source_text": "δ-K0.51V2O5; 0.8 M KPF6in PC with 5 wt% FEC; 61.3%@100 cycles (0.1 A g-1)"
+          },
+          {
+            "value": 57,
+            "unit": "%",
+            "cycle_number": 685,
+            "condition_id": "C032",
+            "source_text": "K0.3MnO2; 1 M KPF6in EC/DMC; 57% @ 685 cycles (0.1 C)"
+          },
+          {
+            "value": 83,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C033",
+            "source_text": "K0.83[Ni0.05Mn0.95]O2; 0.5 M KPF6in EC/DEC; 83% @ 200 cycles (0.52 A g-1)"
+          },
+          {
+            "value": 62,
+            "unit": "%",
+            "cycle_number": 500,
+            "condition_id": "C034",
+            "source_text": "K0.54[Co0.5Mn0.5]O2; 0.5 M KPF6in EC/DEC; 62%@500 cycles (0.5 A g-1)"
+          },
+          {
+            "value": 67,
+            "unit": "%",
+            "cycle_number": 500,
+            "condition_id": "C035",
+            "source_text": "K0.44Ni0.22Mn0.78O2; 0.8 M KPF6in EC/DEC (1/1); 67%@500 cycles (0.2 A g-1)"
+          },
+          {
+            "value": 91.6,
+            "unit": "%",
+            "cycle_number": 30,
+            "condition_id": "C036",
+            "source_text": "P2-KxCoO2; 1 M KFSI in EC/DEC (1/1); 91.6%@30 cycles (0.011 A g-1)"
+          },
+          {
+            "value": 99.1,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C037",
+            "source_text": "K3V2(PO4)3/C; 0.8 M KPF6in EC/DEC (1/1); 99.1%@100 cycles (0.02 A g-1)"
+          },
+          {
+            "value": 95.4,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C038",
+            "source_text": "K2.95Rb0.05V2(PO4)3/C; 0.8 M KPF6in EC/DMC (1/1); 95.4%@100 cycles (0.2 A g-1)"
+          },
+          {
+            "value": 97,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C039",
+            "source_text": "K3V2(PO4)2F3; 1 M KPF6in EC/PC (1/1); 97%@100 cycles (0.01 A g-1)"
+          },
+          {
+            "value": 86.8,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C040",
+            "source_text": "KVOPO4; 0.5 M KPF6in EC/FEC (1/1); 86.8%@100 cycles (0.06 A g-1)"
+          },
+          {
+            "value": 82,
+            "unit": "%",
+            "cycle_number": 500,
+            "condition_id": "C041",
+            "source_text": "K4Fe3(PO4)2(P2O7); 0.5 M KPF6in EC/PC/FEC (20/20/1); 82%@500 cycles (5 C)"
+          },
+          {
+            "value": 89,
+            "unit": "%",
+            "cycle_number": 500,
+            "condition_id": "C042",
+            "source_text": "KTi2(PO4)3; 0.5 M KPF6in EC/DEC (1/1); 89%@500 cycles (0.1 C)"
+          },
+          {
+            "value": 94,
+            "unit": "%",
+            "cycle_number": 2000,
+            "condition_id": "C043",
+            "source_text": "KFeC2O4F; 1 M KPF6in EC/PC (1/1); 94%@2000 cycles (0.2 A g-1)"
+          },
+          {
+            "value": 76,
+            "unit": "%",
+            "cycle_number": 2000,
+            "condition_id": "C044",
+            "source_text": "PTCDA; 0.5 M KPF6in EC/DEC (1/1); 76%@2000 cycles (0.05 A g-1)"
+          },
+          {
+            "value": 64,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C045",
+            "source_text": "PAQS; 0.5 M KTFSI in DOL/DME (1/1); 64%@200 cycles (0.2 A g-1)"
+          },
+          {
+            "value": 75,
+            "unit": "%",
+            "cycle_number": 500,
+            "condition_id": "C046",
+            "source_text": "PTPAn; 0.8 M KPF6in EC/DEC (1/1); 75%@500 cycles (0.1 A g-1)"
+          },
+          {
+            "value": 73.5,
+            "unit": "%",
+            "cycle_number": 900,
+            "condition_id": "C047",
+            "source_text": "PTCDI-DAQ; 1 m KPF6in DME; 73.5%@900 cycles (3 A g-1)"
+          }
+        ]
+      }
+    }
+  ]
+}

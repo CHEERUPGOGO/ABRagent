@@ -1,0 +1,506 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.cej.2022.138049.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.cej.2022.138049",
+  "doi": "10.1016/j.cej.2022.138049",
+  "material_id": "10.1016_j.cej.2022.138049",
+  "meta": {
+    "meta_title": "Quasi-metallic lithium encapsulated in the subnanopores of hard carbon for hybri",
+    "meta_authors": "Kai Su a , Tong Jin a , Cai Hong Zhang a , Rui Wang a , Shuai Yuan b,\\* , Nian Wu $\\mathrm { L i } ^ { \\mathrm { a , \\ast } }$ , Le $\\mathrm { Y u } ^ { \\mathrm { a } , \\mathrm { * } }$",
+    "meta_year": "2022"
+  },
+  "materials": [
+    {
+      "name": "anode material",
+      "short_name": "10.1016_j.cej.2022.138049",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.cej.2022.138049"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 10,
+  "items": [
+    {
+      "paragraph": "V text pore 1 / rho text tested - 1 / rho text baseline tag 1 Both the open pore and closed pore may provide space for QM–Li plating. The possible QM–Li mathrm x , 2 leq x 6 structures have been simul",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "LiC6, LiC12",
+            "state": "lithiated HC intercalation phases",
+            "source_text": "the intercalation phases of LiC 6.9 ppm, LiC 12.2 ppm, and LiC can be observed on the lithiated HC"
+          }
+        ]
+      },
+      "performance_types": [
+        "First_Lithiation_Capacity"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 700,
+            "unit": "mAh/g",
+            "source_text": "the metallic Li emerges on the lithiated HC at the capacity of 700 mathrm g - 1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In-situ optical observations were carried out in an optical cell with quartz window E001, Tianjin Aida Hengsheng Technology Development Co., ltd.. After Li anode and cathode Cu, AG or HC were placed i",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "in-situ optical microscopy"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "LSV curves show the Li deintercalation process in HC/QM–Li and AG/Li electrodes Fig. S8. Two redox peaks related to the Li stripping and Li deintercalation can be found in AG/Li. Whereas, there is onl",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "voltage_range": {
+            "min": 0.0,
+            "max": 0.2,
+            "unit": "V",
+            "reference": "vs Li/Li+"
+          },
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Average_Operating_Voltage_vs_Li_Li"
+      ],
+      "performance_info": {
+        "Average_Operating_Voltage_vs_Li_Li": [
+          {
+            "value": 0.08,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "Li stripping 0.08 V"
+          },
+          {
+            "value": 0.1,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "Li deintercalation 0.1–0.2 V"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "FESEM are further employed to investigate the morphology of AG and HC after lithiation. Both pristine AG and HC are micrometer-sized particles Fig. 4a, b. After discharged for the capacity of 500 mAh ",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "cycle_number": 1,
+          "test_method": "discharge to 500 mAh/g"
+        },
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 100,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "test_method": "in-situ optical microscopy lithiation"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The anode active material, Super P carbon black, CMC and SBR were mixed in a mass ratio of 90:4:3:3 into a homogeneous slurry in water. The slurry was coated onto a Cu foil and vacuum-dried at 100 cir",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "temperature": {
+            "value": 100,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C007",
+          "temperature": {
+            "value": 120,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 4.6,
+            "unit": "mg/cm2"
+          }
+        },
+        {
+          "condition_id": "C008",
+          "electrode_config": "half_cell",
+          "reference_electrode": "vs. Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 600,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "The Li storage capacity for AG/Li and HC/QM–Li was 600 mAh mathbf g - 1 ."
+          }
+        ]
+      },
+      "condition_id": "C003"
+    },
+    {
+      "paragraph": "LiC4 LiC LiC2 LiC2 XPS data are also collected to investigate the component and valence of AG and HC in lithiated state at different etching depths. By using the same electrolyte system, the lithiated",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "voltage_range": {
+            "min": 0.01,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "cycle_number": 0,
+          "test_method": "galvanostatic discharge"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula",
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "LiC4",
+            "state": "lithiated",
+            "source_text": "LiC4 LiC LiC2 LiC2 XPS data are also collected to investigate the component and valence of AG and HC in lithiated state at different etching depths."
+          },
+          {
+            "value": "LiC",
+            "state": "lithiated",
+            "source_text": "LiC4 LiC LiC2 LiC2 XPS data are also collected to investigate the component and valence of AG and HC in lithiated state at different etching depths."
+          },
+          {
+            "value": "LiC2",
+            "state": "lithiated",
+            "source_text": "LiC4 LiC LiC2 LiC2 XPS data are also collected to investigate the component and valence of AG and HC in lithiated state at different etching depths."
+          }
+        ],
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "CF",
+              "CO3(2-)",
+              "C-O",
+              "C=O",
+              "LixFy",
+              "LiF"
+            ],
+            "state": "lithiated",
+            "source_text": "By using the same electrolyte system, the lithiated AG and HC possess similar SEI composition including CF, mathrm 32 - , C - O , C O , 6 , x y F , , and LiF groups."
+          }
+        ]
+      },
+      "performance_types": [
+        "First_Lithiation_Capacity"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 500,
+            "unit": "mAh/g",
+            "source_text": "When further discharged to the capacity of 500 mAh mathbf g - 1 , the metallic Li binding energy: about 53.0 eV emerges at AGs after etching."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In conclusion, we demonstrate that the sub-nanometer confinement can significantly improve the performance of HC based hybrid LMA. HC possesses abundant subnanopores for the encapsulation of QM–Li mat",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "electrolyte": "ester electrolyte",
+          "cycle_number": 240,
+          "electrode_config": "half_cell"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "QM–Li_x (2 ≤ x ≤ 6)",
+            "source_text": "QM–Li mathrm x , 2 leq x 6"
+          }
+        ]
+      },
+      "performance_types": [
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.7,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the CE of the half cell based on HC electrode can reach 99.7% over 240 cycles in ester electrolyte"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The full cells using NCM811 cathode and HC/QM–Li anode are assembled to investigate the practical potential of sub-nanometer confinement effect Fig. 5c and Fig. S17. The Li storage capacity for AG/Li ",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g"
+          },
+          "cycle_number": 200,
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 600,
+            "unit": "mAh/g",
+            "source_text": "The Li storage capacity for AG/Li and HC/QM–Li is 600 mAh g - 1."
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 80,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "HC/QM–LiNCM811 full cell demonstrates excellent cycling performance over 200 cycles with 0.1% capacity decay per cycle"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "CR2032 type coin cells were used to assemble all the cells and the process was accomplished in an Ar-filled glove with mathrm O 2 and mathrm H 2 O content below 0.5 ppm. Celgard 2325 membrane was used",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "electrolyte": "1 M mathrm 6 in EC/DEC/DMC in a volume ratio of 1:1:1 with 5 vol% FEC",
+          "test_method": "cell assembly"
+        },
+        {
+          "condition_id": "C013",
+          "voltage_range": {
+            "min": "OCV",
+            "max": 1.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "reference_electrode": "Li/Li+",
+          "electrode_config": "half_cell",
+          "electrolyte": "1 M mathrm 6 in EC/DEC/DMC in a volume ratio of 1:1:1 with 5 vol% FEC",
+          "test_method": "LSV at 0.04 mV/s"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "max": 1.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "reference_electrode": "Li/Li+",
+          "electrode_config": "half_cell",
+          "electrolyte": "1 M mathrm 6 in EC/DEC/DMC in a volume ratio of 1:1:1 with 5 vol% FEC",
+          "test_method": "GITT"
+        },
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "max": 1.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "reference_electrode": "Li/Li+",
+          "electrode_config": "half_cell",
+          "electrolyte": "1 M mathrm 6 in EC/DEC/DMC in a volume ratio of 1:1:1 with 5 vol% FEC",
+          "test_method": "Coulombic efficiency test"
+        },
+        {
+          "condition_id": "C016",
+          "electrode_config": "symmetric_cell",
+          "electrolyte": "1 M mathrm 6 in EC/DEC/DMC in a volume ratio of 1:1:1 with 5 vol% FEC"
+        },
+        {
+          "condition_id": "C017",
+          "electrode_config": "full_cell",
+          "electrolyte": "1 M mathrm 6 in EC/DEC/DMC in a volume ratio of 1:1:1 with 5 vol% FEC",
+          "test_method": "full cell test"
+        },
+        {
+          "condition_id": "C018",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The CE profiles of HC and AG in half cells are shown in Fig. 5a. HC encapsulated with highly reversible QM–Li maintain a high CE of 99.7% from the 10th cycle to the 250th cycle at a current density of",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 250,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling, coulombic efficiency measurement"
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 190,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling, coulombic efficiency measurement"
+        },
+        {
+          "condition_id": "C022",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Areal_Capacity",
+        "Rate_Capability_at_Given_C_rate",
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.7,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "HC encapsulated with highly reversible QM–Li maintain a high CE of 99.7% from the 10th cycle to the 250th cycle at a current density of 1 mA mathrm - 2 with a areal capacity of 1.42 mAh cm− 2"
+          },
+          {
+            "value": 96.5,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "While the AG shows a lower CE 96.5% from the 10th cycle to the 180th cycle and a fast drop."
+          },
+          {
+            "value": 99.3,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "HC demonstrates a high average CE of 99.3% over 190 cycles"
+          },
+          {
+            "value": 97.1,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "AG shows an average CE of 97.1% over 90 cycles"
+          }
+        ],
+        "Areal_Capacity": [
+          {
+            "value": 1.42,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "with a areal capacity of 1.42 mAh cm− 2"
+          },
+          {
+            "value": 2.19,
+            "unit": "mAh/cm2",
+            "condition_id": "C003",
+            "source_text": "with a fixed areal capacity of 2.19 mAh mathrm - 2"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 600,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "corresponding to 600 mAh bf g - 1"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 600,
+            "unit": "h",
+            "condition_id": "C004",
+            "source_text": "The HC/QM–Li based symmetric cell exhibits a flat voltage plateau over 600 h."
+          },
+          {
+            "value": 40,
+            "unit": "h",
+            "condition_id": "C004",
+            "source_text": "the AG/Li based symmetric cell shows huge voltage fluctuation after 40 h."
+          }
+        ]
+      }
+    }
+  ]
+}

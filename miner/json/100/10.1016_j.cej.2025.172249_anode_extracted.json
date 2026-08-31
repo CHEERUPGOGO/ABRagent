@@ -1,0 +1,1091 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.cej.2025.172249.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.cej.2025.172249",
+  "doi": "10.1016/j.cej.2025.172249",
+  "material_id": "10.1016_j.cej.2025.172249",
+  "meta": {
+    "meta_title": "Alloy-sulfide co-engineered thin Li anodes suppress dead-Li for practical high-e",
+    "meta_authors": "Qiyang Chen a,b,c , Jing Zhu a , Yuanfan Zhao a , Wenrui Zheng a , Hanqing Pan a , Yinlong Lin a , Yating Ke a , Xinghui Wang a,b,c,\\*",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "LAS composite anode with Li:Ag2S mass ratio 3:1",
+      "short_name": "LAS-3:1",
+      "formula": "Li/Li-Ag/Li2S (3:1 Li:Ag2S w/w)",
+      "role": "comparison",
+      "description": "Lithium metal composite containing in-situ formed LixAg alloy and Li2S phases, mass ratio Li:Ag2S = 3:1.",
+      "material_id": "10.1016_j.cej.2025.172249_M001"
+    },
+    {
+      "name": "LAS composite anode with Li:Ag2S mass ratio 2:1",
+      "short_name": "LAS-2:1",
+      "formula": "Li/Li-Ag/Li2S (2:1 Li:Ag2S w/w)",
+      "role": "novel",
+      "description": "Optimal lithium metal composite with 3D LixAg-Li2S framework, mass ratio Li:Ag2S = 2:1, selected for main studies.",
+      "material_id": "10.1016_j.cej.2025.172249_M002"
+    },
+    {
+      "name": "LAS composite anode with Li:Ag2S mass ratio 1:1",
+      "short_name": "LAS-1:1",
+      "formula": "Li/Li-Ag/Li2S (1:1 Li:Ag2S w/w)",
+      "role": "comparison",
+      "description": "Lithium metal composite with higher Ag2S loading, mass ratio Li:Ag2S = 1:1.",
+      "material_id": "10.1016_j.cej.2025.172249_M003"
+    },
+    {
+      "name": "LA composite anode",
+      "short_name": "LA",
+      "formula": "Li/Li-Ag",
+      "role": "comparison",
+      "description": "Li-Ag alloy composite fabricated by adding Ag powder to molten Li, same Li/Ag atomic ratio as in LAS-2:1, no Li2S phase.",
+      "material_id": "10.1016_j.cej.2025.172249_M004"
+    },
+    {
+      "name": "Bare Li thin foil",
+      "short_name": "bare Li",
+      "formula": "Li",
+      "role": "comparison",
+      "description": "Thin Li foil produced by rolling pristine Li foil between PET films, used as baseline anode.",
+      "material_id": "10.1016_j.cej.2025.172249_M005"
+    }
+  ],
+  "n_materials": 5,
+  "table_items": [],
+  "n_items": 12,
+  "items": [
+    {
+      "paragraph": "First, remove the passivation layer on the surface of Li foil with a stainless-steel scraper, then place it in a stainless-steel crucible, and continue heating it to 300 ◦C until it is completely molt",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": 300,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To identify the optimal mass ratio of Li to Ag2S in LAS composite anodes, the mass ratio of Li to Ag S was optimized to 3:1, 2:1, and 1:1, which correspond to their respective molar ratios of 107.1:1,",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "symmetric cell cycling"
+        },
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": 3.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "symmetric cell cycling"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Li/Li-Ag/Li2S (2:1 Li:Ag2S w/w)",
+            "source_text": "the LAS anode with the mass ratio of 2:1"
+          }
+        ]
+      },
+      "performance_types": [
+        "First_Lithiation_Capacity"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 2532,
+            "unit": "mAh/g",
+            "source_text": "significant reversible capacity 2532 mAh g^{-1}"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "sulfidation followed by alloying in situ forms Li-Ag alloy and Li₂S phases within the Li matrix. Continuous stirring ensures complete reaction, resulting in a 3D uniformly cross-linked mathrm mathrm x",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Li, Li2S, Li10Ag3, Li9Ag4",
+            "source_text": "the diffraction peaks at 27.0, 31.2, 44.8, 55.6, and 65.3° are assigned to the characteristic planes of Li2S JCPDS: 26-1188. Additionally, strong characteristic peaks of metallic lithium and Li-Ag alloy Li10Ag3 and Li9Ag4 phases are observed"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In symmetric cell tests, the electrochemical performance of LAS, LA, and bare Li electrodes all about 50 μm-thick at different current densities were investigated. As shown in Fig. 2a, the LAS composi",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 3.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C007",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential",
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 25,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "the LAS composite electrode cycles stably for over 520 h with an overpotential of only 25 mV at 1 mA cm−2 / 1 mAh cm−2"
+          },
+          {
+            "value": 50,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "even at higher current densities of 2 ... mA cm−2, the LAS electrodes still maintain lowest overpotentials 50 mV"
+          },
+          {
+            "value": 75,
+            "unit": "mV",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 3.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "even at higher current densities of ... 3 mA cm−2, the LAS electrodes still maintain lowest overpotentials ... 75 mV"
+          },
+          {
+            "value": 30,
+            "unit": "mV",
+            "condition_id": "C005",
+            "capacity_mAh_cm2": 5.0,
+            "source_text": "The LAS electrode can cycle stably for 480 h with a well-restrained overpotential of 30 mV, outperforming bare Li and LA electrodes"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 520,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "the LAS composite electrode cycles stably for over 520 h ... at 1 mA cm−2 / 1 mAh cm−2",
+            "electrode": "LAS"
+          },
+          {
+            "value": 140,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "the symmetric cell with bare Li electrodes occurs a fluctuation in the polarization voltage starting around 140 h",
+            "electrode": "Bare Li"
+          },
+          {
+            "value": 270,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "the symmetric cell with LA electrodes also begins to exhibit gradual polarization increase after 270 h",
+            "electrode": "LA"
+          },
+          {
+            "value": 210,
+            "unit": "h",
+            "condition_id": "C002",
+            "source_text": "the LAS electrodes ... demonstrate prolonged cycling lifespan over 210 h at 2 mA cm−2",
+            "electrode": "LAS"
+          },
+          {
+            "value": 40,
+            "unit": "h",
+            "condition_id": "C002",
+            "source_text": "the bare Li electrode shows a sudden significant potential drop after 40 h at 2 mA cm−2 / 1 mAh cm−2",
+            "electrode": "Bare Li"
+          },
+          {
+            "value": 110,
+            "unit": "h",
+            "condition_id": "C002",
+            "source_text": "The polarization voltage of the LA electrodes increases significantly after 110 h at 2 mA cm−2 / 1 mAh cm−2",
+            "electrode": "LA"
+          },
+          {
+            "value": 140,
+            "unit": "h",
+            "condition_id": "C003",
+            "source_text": "the LAS electrodes ... demonstrate prolonged cycling lifespan over ... 140 h at 3 mA cm−2",
+            "electrode": "LAS"
+          },
+          {
+            "value": 35,
+            "unit": "h",
+            "condition_id": "C003",
+            "source_text": "the symmetric cells with bare Li ... electrodes exhibit significant fluctuation in polarization voltage after only 35 h at 3 mA cm−2 / 1 mAh cm−2",
+            "electrode": "Bare Li"
+          },
+          {
+            "value": 75,
+            "unit": "h",
+            "condition_id": "C003",
+            "source_text": "the symmetric cells with ... LA electrodes exhibit significant fluctuation in polarization voltage after only ... 75 h at 3 mA cm−2 / 1 mAh cm−2",
+            "electrode": "LA"
+          },
+          {
+            "value": 480,
+            "unit": "h",
+            "condition_id": "C005",
+            "source_text": "The LAS electrode can cycle stably for 480 h with a well-restrained overpotential of 30 mV at areal capacity of 5 mAh cm−2",
+            "electrode": "LAS"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Commercial LFP cathodes 11.3 mg mathrm - 2 were paired with LAS anodes to assess their application potential in low-cost and high-safety LMBs. Fig. 5a shows the rate performance of the LAS and bare Li",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 11.3,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 11.3,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 11.3,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": "3",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 11.3,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 11.3,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "rate performance test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Rate_Recovery_Percent"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 160,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The reversible capacities of the LASLFP full cell are about 160 mAh g-1 at 0.2C"
+          },
+          {
+            "value": 154,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "154 mAh g-1 at 0.5C"
+          },
+          {
+            "value": 145,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "145 mAh g-1 at 1C"
+          },
+          {
+            "value": 125,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "125 mAh g-1 at 3C"
+          },
+          {
+            "value": 110,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "110 mAh g-1 at 5C"
+          },
+          {
+            "value": 159,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "When the current density is reduced back to 0.2C, the capacity recovers to 159 mAh g-1"
+          },
+          {
+            "value": 90,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "bare LiLFP full cell provides an initial capacity of 90 mAh g-1 at 5C"
+          },
+          {
+            "value": 136,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "recovers to 136 mAh g-1 when the current density is reduced to 0.2C"
+          }
+        ],
+        "Rate_Recovery_Percent": [
+          {
+            "value": 99.375,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "capacity recovers to 159 mAh g-1, with no significant capacity decay (initial 0.2C capacity 160 mAh/g)"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To investigate how this strategy enhances electrochemical performance, we first employed electrochemical impedance spectroscopy EIS to assess the reaction kinetics of the electrodes. As shown in Fig. ",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 1,
+          "electrode_config": "symmetric_cell",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 50,
+          "electrode_config": "symmetric_cell",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 30,
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling; SEM"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "Ag",
+              "S"
+            ],
+            "source_text": "Li-Ag alloy and Li2S"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Li2S",
+            "source_text": "Li2S"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Based on the slope of the linear fit Fig. 5g and the Randles-Sevcik equation Eq. S1, Supporting information 40, the LASLFP full cell exhibits higher mathrm diffusion coefficients at A13.82 times 10 - ",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Chemical_Diffusion_Coefficient_of_Li_GITT"
+      ],
+      "performance_info": {
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "value": 1.382e-07,
+            "unit": "cm2/s",
+            "method": "CV (Randles-Sevcik)",
+            "source_text": "A13.82 times 10 - 8 mathrm 2 s - 1"
+          },
+          {
+            "value": 1.289e-07,
+            "unit": "cm2/s",
+            "method": "CV (Randles-Sevcik)",
+            "source_text": "phantom - 12.89 times 10 - 8 mathrm 2 s - 1"
+          },
+          {
+            "value": 1.22e-08,
+            "unit": "cm2/s",
+            "method": "CV (Randles-Sevcik)",
+            "source_text": "1.22 × 10 - 8 mathrm 2 s - 1"
+          },
+          {
+            "value": 7.23e-09,
+            "unit": "cm2/s",
+            "method": "CV (Randles-Sevcik)",
+            "source_text": "7.23 times 10 - 9 mathrm 2 s - 1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Since the Li diffusion rate within the electrode is often the ratelimiting step in the charging/discharging process, cyclic voltammetry CV was employed to assess the mathrm diffusion coefficient and i",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "electrode_config": "full_cell",
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Given that the mechanical rolling method can prepare LAS thin anodes with controllable thicknesses and areal capacities Fig. S9, Supporting information, LAS anodes of specific thicknesses were paired ",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 200,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling",
+          "n_p_ratio": {
+            "value": 5.9
+          },
+          "anode_thickness_um": {
+            "value": 50,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "cycle_number": 150,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling",
+          "n_p_ratio": {
+            "value": 2.7
+          },
+          "anode_thickness_um": {
+            "value": 25,
+            "unit": "μm"
+          }
+        },
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 130,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling",
+          "n_p_ratio": {
+            "value": 2.8
+          }
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 180,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling",
+          "n_p_ratio": {
+            "value": 5.9
+          }
+        },
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 120,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling",
+          "n_p_ratio": {
+            "value": 2.8
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle",
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 145,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "high reversible capacity of approximately 145 mAh g^-1 at 1C"
+          },
+          {
+            "value": 153,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "reversible capacity of 153 mAh g^-1 at 0.5C"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 87,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "capacity retention rate of over 87 % after 200 cycles"
+          },
+          {
+            "value": 96.3,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 150,
+            "source_text": "capacity retention rate of 96.3 % after 150 cycles"
+          },
+          {
+            "value": 81.5,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 130,
+            "source_text": "capacity retention exceeding 81.5 % at a low N/ P ratio of 2.8"
+          },
+          {
+            "value": 25.8,
+            "unit": "%",
+            "condition_id": "C004",
+            "cycle_number": 180,
+            "source_text": "capacity retention rate of only 25.8 % after 180 cycles"
+          },
+          {
+            "value": 30.5,
+            "unit": "%",
+            "condition_id": "C005",
+            "cycle_number": 120,
+            "source_text": "capacity retention rate of only 30.5 % after 120 cycles"
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.9,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "stable Coulombic efficiency CE of over 99.9 % at the N/P ratio of 5.9"
+          },
+          {
+            "value": 99.7,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "average CE exceeding 99.7 %"
+          },
+          {
+            "value": 99.6,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "average CE of over 99.6 %"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Electrochemical performance of the LAS anodes was tested using CR2025-type coin cells. All the electrodes were cut into disks with a diameter of 12 mm. All cells were assembled in an Ar-filled glove b",
+      "conditions": [
+        {
+          "condition_id": "C022",
+          "electrode_config": "symmetric_cell",
+          "electrolyte": "1 M LiTFSI + 1% LiNO3 in DOL/DME (1:1 v/v)",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C023",
+          "electrode_config": "symmetric_cell",
+          "electrolyte": "1 M LiTFSI + 1% LiNO3 in DOL/DME (1:1 v/v)",
+          "voltage_range": {
+            "min": -0.17,
+            "max": 0.17,
+            "unit": "V"
+          },
+          "test_method": "LSV"
+        },
+        {
+          "condition_id": "C024",
+          "electrode_config": "full cell with LFP cathode",
+          "electrolyte": "1 M LiTFSI + 1% LiNO3 in DOL/DME (1:1 v/v)",
+          "mass_loading": {
+            "value": 11.3,
+            "unit": "mg/cm2"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V"
+          },
+          "test_method": "CV"
+        },
+        {
+          "condition_id": "C025",
+          "electrode_config": "full cell with LFP cathode",
+          "electrolyte": "1 M LiTFSI + 1% LiNO3 in DOL/DME (1:1 v/v)",
+          "mass_loading": {
+            "value": 11.3,
+            "unit": "mg/cm2"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V"
+          },
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C026",
+          "electrode_config": "full cell with NCM811 cathode",
+          "electrolyte": "1.0 M LiPF6 in DEC/EC/EMC (2:3:5 by mass) with 3% FEC, 3% HFE, 0.5% LiBF4, 2% LiDFOB, 0.5% LiFSI, 1% PS, 1% VC",
+          "mass_loading": {
+            "value": 10.1,
+            "unit": "mg/cm2"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C027",
+          "electrode_config": "full cell with NCM811 cathode",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Furthermore, a 25 μm-thick LAS anode was paired with NCM811 cathode to assemble a full cell with the N/P ratio of only 2.4 , this cell maintains a capacity retention of 81.5 % for 130 stable cycles at",
+      "conditions": [
+        {
+          "condition_id": "C028",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "cycle_number": 130,
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C029",
+          "cycle_number": 100,
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C030",
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "Ag",
+              "S"
+            ],
+            "source_text": "in situ form a 3D LixAg-Li2S mixed conductive framework"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "LixAg-Li2S",
+            "source_text": "3D LixAg-Li2S mixed conductive framework"
+          }
+        ]
+      },
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle",
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Energy_Density_Full_Cell"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 81.5,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 130,
+            "source_text": "maintains a capacity retention of 81.5 % for 130 stable cycles at 0.5C"
+          },
+          {
+            "value": 6.9,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "capacity retention drops to only 6.9 % after 100 cycles"
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.9,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "steady CE of 99.9 %"
+          }
+        ],
+        "Energy_Density_Full_Cell": [
+          {
+            "value": 347,
+            "unit": "Wh/kg",
+            "condition_id": "C003",
+            "basis": "gravimetric",
+            "source_text": "delivers a high energy density up to 347 Wh kg^{-1}"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Commercial NCM811 cathodes 10.2 mg cm− 2 were paired with LAS anodes to explore the application potential of LAS anodes in LMBs with higher energy density. As shown in Fig. 6a–c, the reversible capaci",
+      "conditions": [
+        {
+          "condition_id": "C031",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10.2,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full-cell (LAS || NCM811)"
+        },
+        {
+          "condition_id": "C032",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10.2,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full-cell (LAS || NCM811)"
+        },
+        {
+          "condition_id": "C033",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10.2,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full-cell (LAS || NCM811)"
+        },
+        {
+          "condition_id": "C034",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10.2,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full-cell (LAS || NCM811)"
+        },
+        {
+          "condition_id": "C035",
+          "c_rate_or_current": {
+            "value": "4",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10.2,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full-cell (LAS || NCM811)"
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10.2,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full-cell (bare Li || NCM811)"
+        },
+        {
+          "condition_id": "C037",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10.2,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full-cell (bare Li || NCM811)"
+        },
+        {
+          "condition_id": "C038",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10.2,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full-cell (bare Li || NCM811)"
+        },
+        {
+          "condition_id": "C039",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10.2,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full-cell (bare Li || NCM811)"
+        },
+        {
+          "condition_id": "C040",
+          "c_rate_or_current": {
+            "value": "4",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10.2,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full-cell (bare Li || NCM811)"
+        },
+        {
+          "condition_id": "C041",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 160,
+          "mass_loading": {
+            "value": 10.2,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full-cell (LAS || NCM811)"
+        },
+        {
+          "condition_id": "C042",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 120,
+          "mass_loading": {
+            "value": 10.2,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full-cell (bare Li || NCM811)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 204,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the reversible capacities of the LASNCM811 full cell are 204 mAh g− 1 at rate of 0.2 C"
+          },
+          {
+            "value": 195,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "195 mAh g− 1 at 0.5 C (LASNCM811)"
+          },
+          {
+            "value": 187,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "187 mAh g− 1 at 1 C (LASNCM811)"
+          },
+          {
+            "value": 176,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "176 mAh g− 1 at 2 C (LASNCM811)"
+          },
+          {
+            "value": 146,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "146 mAh g− 1 at 4 C (LASNCM811)"
+          },
+          {
+            "value": 199,
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "bare LiNCM811 cell at 0.2 C: 199 mAh g− 1"
+          },
+          {
+            "value": 188,
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "bare LiNCM811 at 0.5 C: 188 mAh g− 1"
+          },
+          {
+            "value": 177,
+            "unit": "mAh/g",
+            "condition_id": "C008",
+            "source_text": "bare LiNCM811 at 1 C: 177 mAh g− 1"
+          },
+          {
+            "value": 157,
+            "unit": "mAh/g",
+            "condition_id": "C009",
+            "source_text": "bare LiNCM811 at 2 C: 157 mAh g− 1"
+          },
+          {
+            "value": 114,
+            "unit": "mAh/g",
+            "condition_id": "C010",
+            "source_text": "bare LiNCM811 at 4 C: 114 mAh g− 1"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 80,
+            "unit": "%",
+            "condition_id": "C011",
+            "cycle_number": 160,
+            "source_text": "capacity retention exceeding 80 % after 160 cycles at the N/P ratio of 5.1"
+          },
+          {
+            "value": 9.4,
+            "unit": "%",
+            "condition_id": "C012",
+            "cycle_number": 120,
+            "source_text": "capacity retention of only 9.4 % after 120 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

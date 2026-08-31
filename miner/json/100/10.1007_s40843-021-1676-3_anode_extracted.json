@@ -1,0 +1,1405 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s40843-021-1676-3.md",
+  "component": "anode",
+  "paper_id": "10.1007/s40843-021-1676-3",
+  "doi": "10.1007/s40843-021-1676-3",
+  "material_id": "10.1007_s40843-021-1676-3",
+  "meta": {
+    "meta_title": "Highly elastic wrinkled structures for stable and low volume-expansion lithium m",
+    "meta_authors": "Wenwen Lu1,2, Huicong Yang 1,2, Jing Chen1 , Chihang Sun1 , and Feng Li1,2*",
+    "meta_year": null
+  },
+  "materials": [
+    {
+      "name": "graphitic carbon nitride/reduced graphene oxide composite (g-C3N4/rGO)",
+      "short_name": "GCN",
+      "formula": "g-C3N4/rGO",
+      "role": "novel",
+      "description": "Highly elastic wrinkled 3D current collector for Li metal anodes, synthesized by heating a GO/dicyandiamide aerogel at 550 °C in Ar.",
+      "material_id": "10.1007_s40843-021-1676-3_M001"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: ; 1 mA cm-2; Overpotential (mV)\nRows:\nRow 1: ; 2 mA cm-2; 3 mA cm-2; 5 mA cm-2\nRow 2: Cu; 58; 61; 70; 149\nRow 3: rGO; 25; 52; 69; 85\nRow 4: GCN; 15; 31; 62; 66\nColumn data:\n  : ; Cu; rGO; GCN\n  1 mA cm-2: 2 mA cm-2; 58; 25; 15\n  Overpotential (mV): 3 mA cm-2; 61; 52; 31",
+    "TABLE DATA BLOCK\nHeaders: Configuration; Electrochemical performance; Electrolyte; Ref.\nRows:\nRow 1: Half-cell; Symmetric cell\nRow 2: 3D Graphene; 0.5 mA cm-2,; 1.0 mA cm-2,; 1.0 mol L-1LiTFSI; 40\nRow 3: Configuration = 1.0 mA h cm-2,; Electrochemical performance = 1.0 mA h cm-2, 1000 h; Electrolyte = in DOL:DME (1:1); Ref. = \nRow 4: Configuration = 200 cycles,; Electrochemical performance = ; Electrolyte = with 1 wt% LiNO3; Ref. = \nRow 5: Configuration = CE: 97.8%; Electrochemical performance = ; Electrolyte = ; Ref. = \nRow 6: Graphene + Carbon fiber; 1.0 mA cm-2,; 0.5 mA cm-2,; 1.0 mol L-1LiTFSI; 41\nRow 7: Configuration = 1.0 mA h cm-2,; Electrochemical performance = 1.0 mA h cm-2, 1000 h; Electrolyte = in DOL:DME (1:1); Ref. = \nRow 8: Configuration = 200 cycles,; Electrochemical performance = ; Electrolyte = with 1 wt% LiNO3; Ref. = \nRow 9: Configuration = CE: 97.6%; Electrochemical performance = ; Electrolyte = ; Ref. = \nRow 10: Graphene + Au; 0.5 mA cm-2,; -; 1.0 mol L-1LiPF6in; 42\nRow 11: Configuration = 1.0 mA h cm-2,; Electrochemical performance = ; Electrolyte = 89 vol% EC:DEC; Ref. = \nRow 12: Configuration = 90 cycles,; Electrochemical performance = ; Electrolyte = (1:1) with 10 vol%; Ref. = \nRow 13: Configuration = CE: 98%; Electrochemical performance = ; Electrolyte = FEC and 1 vol% VC; Ref. = \nRow 14: Graphene + Cu foam; 2.0 mA cm-2,; 0.5 mA cm-2,; 1.0 mol L-1LiTFSI; 43\nRow 15: Configuration = 1.0 mA h cm-2,; Electrochemical performance = 1.0 mA h cm-2, 2000 h; Electrolyte = in DOL:DME (1:1); Ref. = \nRow 16: Configuration = 150 cycles,; Electrochemical performance = ; Electrolyte = with 2 wt% LiNO3; Ref. = \nRow 17: Configuration = CE: 97.4%; Electrochemical performance = ; Electrolyte = ; Ref. = \nRow 18: Graphene + Ni foam; 0.5 mA cm-2,; 0.5 mA cm-2,; 1.0 mol L-1LiPF6in; 44\nRow 19: ; 1.0 mA h cm-2; 1.0 mA h cm-2, 2000 h; EC:DEC (1:1); \nRow 20: ; 250 cycles,; ; with 2 vol% FEC; \nRow 21: ; CE: 97%; ; ; \nRow 22: Graphene + Cu mesh; 2.0 mA cm-2,; 5.0 mA cm-2,; 1.0 mol L-1LiPF6in; 45\nRow 23: ; 1.0 mA h cm-2,; 1.0 mA h cm-2,; EC:DEC (1:1); \nRow 24: ; 250 cycles,; 500 h; ; \nRow 25: ; CE: 97.4%; ; ; \nRow 26: CuFG; 1.0 mA cm-2,; 1.0 mA cm-2,; 1.0 mol L-1LiPF6in; 46\nRow 27: ; 1.0 mA h cm-2,; 1.0 mA h cm-2,; EC:DEC (1:1); \nRow 28: ; 200 cycles,; 1300 h; ; \nRow 29: ; CE: 98%; ; ; \nRow 30: SG; 0.5 mA cm-2,; -; 1.0 mol L-1LiTFSI; 47\nRow 31: ; 1.0 mA h cm-2,; ; in DOL:DME (1:1); \nRow 32: ; 180 cycles,; ; with 1 wt% LiNO3; \nRow 33: ; CE: 98.2%; ; ; \nRow 34: G@POF; 1.0 mA cm-2,; -; 1.0 mol L-1LiTFSI; 48\nRow 35: ; 1.0 mA h cm-2,; ; in DOL:DME (1:1); \nRow 36: ; 300 cycles,; ; with 5 wt% LiNO3; \nRow 37: ; CE: 98%; ; ; \nRow 38: NG@3D Cu; 0.5 mA cm-2,; -; 1.0 mol L-1LiTFSI; 49\nRow 39: ; 1.0 mA h cm-2,; ; in DOL:DME (1:1); \nRow 40: ; 150 cycles,; ; with 1 wt% LiNO3; \nRow 41: ; CE: 97.5%; ; ; \nRow 42: AgNCs@GA; 0.5 mA cm-2,; -; ; 50\nRow 43: ; 1.0 mA h cm-2,; ; ; \nRow 44: ; 150 cycles,; ; ; \nRow 45: ; CE: 97%; ; ; \nColumn data:\n  Configuration: Half-cell; 3D Graphene; 1.0 mA h cm-2,; 200 cycles,; CE: 97.8%; Graphene + Carbon fiber; 1.0 mA h cm-2,; 200 cycles,; CE: 97.6%; Graphene + Au; 1.0 mA h cm-2,; 90 cycles,; CE: 98%; Graphene + Cu foam; 1.0 mA h cm-2,; 150 cycles,; CE: 97.4%; Graphene + Ni foam; ; ; ; Graphene + Cu mesh; ; ; ; CuFG; ; ; ; SG; ; ; ; G@POF; ; ; ; NG@3D Cu; ; ; ; AgNCs@GA; ; ; \n  Electrochemical performance: Symmetric cell; 0.5 mA cm-2,; 1.0 mA h cm-2, 1000 h; ; ; 1.0 mA cm-2,; 1.0 mA h cm-2, 1000 h; ; ; 0.5 mA cm-2,; ; ; ; 2.0 mA cm-2,; 1.0 mA h cm-2, 2000 h; ; ; 0.5 mA cm-2,; 1.0 mA h cm-2; 250 cycles,; CE: 97%; 2.0 mA cm-2,; 1.0 mA h cm-2,; 250 cycles,; CE: 97.4%; 1.0 mA cm-2,; 1.0 mA h cm-2,; 200 cycles,; CE: 98%; 0.5 mA cm-2,; 1.0 mA h cm-2,; 180 cycles,; CE: 98.2%; 1.0 mA cm-2,; 1.0 mA h cm-2,; 300 cycles,; CE: 98%; 0.5 mA cm-2,; 1.0 mA h cm-2,; 150 cycles,; CE: 97.5%; 0.5 mA cm-2,; 1.0 mA h cm-2,; 150 cycles,; CE: 97%\n  Electrolyte: 1.0 mA cm-2,; in DOL:DME (1:1); with 1 wt% LiNO3; ; 0.5 mA cm-2,; in DOL:DME (1:1); with 1 wt% LiNO3; ; -; 89 vol% EC:DEC; (1:1) with 10 vol%; FEC and 1 vol% VC; 0.5 mA cm-2,; in DOL:DME (1:1); with 2 wt% LiNO3; ; 0.5 mA cm-2,; 1.0 mA h cm-2, 2000 h; ; ; 5.0 mA cm-2,; 1.0 mA h cm-2,; 500 h; ; 1.0 mA cm-2,; 1.0 mA h cm-2,; 1300 h; ; -; ; ; ; -; ; ; ; -; ; ; ; -; ; ; \n  Ref.: 1.0 mol L-1LiTFSI; ; ; ; 1.0 mol L-1LiTFSI; ; ; ; 1.0 mol L-1LiPF6in; ; ; ; 1.0 mol L-1LiTFSI; ; ; ; 1.0 mol L-1LiPF6in; EC:DEC (1:1); with 2 vol% FEC; ; 1.0 mol L-1LiPF6in; EC:DEC (1:1); ; ; 1.0 mol L-1LiPF6in; EC:DEC (1:1); ; ; 1.0 mol L-1LiTFSI; in DOL:DME (1:1); with 1 wt% LiNO3; ; 1.0 mol L-1LiTFSI; in DOL:DME (1:1); with 5 wt% LiNO3; ; 1.0 mol L-1LiTFSI; in DOL:DME (1:1); with 1 wt% LiNO3; ; ; ; ; ",
+    "TABLE DATA BLOCK\nHeaders: ; Before cycling; 50thcycles; 100thcycles\nRows:\nRow 1: ; R(SEI) (Ω); R(ct) (Ω); R(SEI) (Ω); R(ct) (Ω); R(SEI) (Ω); R(ct) (Ω)\nRow 2: Li@Cu; 45.9; 13.7; 51.2; 14.4; 18.7; 17.0\nRow 3: Li@rGO; 15.8; 4.9; 10.8; 8.3; 11.3; 8.3\nRow 4: Li@GCN; 9.7; 9.2; 9.3; 6.0; 7.9; 4.0\nColumn data:\n  : ; Li@Cu; Li@rGO; Li@GCN\n  Before cycling: R(SEI) (Ω); 45.9; 15.8; 9.7\n  50thcycles: R(ct) (Ω); 13.7; 4.9; 9.2\n  100thcycles: R(SEI) (Ω); 51.2; 10.8; 9.3"
+  ],
+  "n_items": 11,
+  "items": [
+    {
+      "paragraph": "Electrochemical impedance spectroscopy EIS was conducted to evaluate the electrochemical performance of the electrodes on a VSP-300 multichannel workstation. Testing was carried out in the frequency r",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "EIS analysis showed that the GCN electrode exhibited an SEI resistance R mathrm of 9.7 Omega and charge transfer resistance R mathrm of 9.2 Omega before cycling Fig. 4e. After 50 cycles, the R mathrm ",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "cycle_number": 0,
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C003",
+          "cycle_number": 50,
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C004",
+          "cycle_number": 100,
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 9.7,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "SEI resistance R mathrm of 9.7 Omega before cycling"
+          },
+          {
+            "value": 9.2,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "charge transfer resistance R mathrm of 9.2 Omega before cycling"
+          },
+          {
+            "value": 9.2,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "After 50 cycles, the R mathrm (SEI) value was 9.2 Omega"
+          },
+          {
+            "value": 6.0,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "After 50 cycles, the R mathrm (charge transfer) value was 6.0 Omega"
+          },
+          {
+            "value": 7.9,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": "After 100 cycles, the R mathrm (SEI) of the GCN electrode were 7.9 Omega"
+          },
+          {
+            "value": 4.0,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": "After 100 cycles, the R mathrm (charge transfer) of the GCN electrode were 4.0 Omega"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "芦雯雯1,2, 杨慧聪1,2, 陈静1 , 孙驰航1 , 李峰1,2 摘要 锂金属由于低电化学还原电位和高比容量, 被认为是最具发展前景的负极材料. 然而, 锂枝晶和体积膨胀等问题严重制约了锂金属电池的应用发展. 本研究中, 我们制备了高弹性波浪结构的mathrm - C 3 N 4 GCN作为三维集流体. GCN的高弹性可有效释放锂沉积过程产生的应力, 保持电极结构完整, 减小电极体积膨胀. m",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "cycle_number": 300
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Electrode thicknesses after charge-discharge cycling were measured by SEM to understand the vital role played by the highly elastic wrinkled structure in restricting volume expansion in the electrode.",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 300
+        },
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              {
+                "peak": "N1s before lithiation",
+                "binding_energy_eV": 398.03,
+                "assignment": "C-N=C groups"
+              },
+              {
+                "peak": "N1s before lithiation",
+                "binding_energy_eV": 399.2,
+                "assignment": "N-C3"
+              },
+              {
+                "peak": "N1s before lithiation",
+                "binding_energy_eV": 400.7,
+                "assignment": "C-N=C"
+              },
+              {
+                "peak": "N1s after lithiation",
+                "binding_energy_eV": 398.31,
+                "assignment": "C-N=C"
+              },
+              {
+                "peak": "N1s after lithiation",
+                "binding_energy_eV": 399.51,
+                "assignment": "N-C3"
+              },
+              {
+                "peak": "N1s after lithiation",
+                "binding_energy_eV": 398.6,
+                "assignment": "Li3N"
+              },
+              {
+                "peak": "Li1s after lithiation",
+                "binding_energy_eV": 55.2,
+                "assignment": "Li3N"
+              }
+            ],
+            "unit": "eV",
+            "state": "after lithiation (for Li3N peaks)",
+            "source_text": "The N 1s spectrum ... exhibited a strong peak at 398.03 ... two peaks at 399.20 and 400.70 ... N1s pattern of GCN after lithiation ... peaks at 398.31 and 399.51 eV, a new peak at 398.60 eV ... Li 1s ... peak at 55.20 eV"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "A 3D current collector with highly elastic, lithiophilic sites, and wrinkled structure was developed in this study for Li-metal anodes. This highly elastic structure effectively released the stress ca",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Symmetric_Cell_Cycling_Stability",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 98.6,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_range": "after 300 cycles",
+            "source_text": "high CE of 98.6 % after 300 cycles"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 1700,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "long cycle life of more than 1700 mathrm h at mathrm i . 0 mathrm mathrm - 2"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 98.15,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "capacity-retention rate of the cells assembled with LFP was 98.15 % after 100 cycles at 1 C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "GCN with a diameter of 15 mathrm was used to fabricate half-cells and symmetrical cells. LiGCN electrodes were used for symmetric cells after Li deposition at 5.0 mathrm mathrm dot - 2 on GCN. Lithium",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "2 wt% LiNO3 + 1.0 M LiTFSI in DOL:DME (1:1 v/v)",
+          "electrode_config": "symmetric_cell",
+          "test_method": "Li deposition"
+        },
+        {
+          "condition_id": "C011",
+          "test_method": "Coulombic efficiency test",
+          "electrode_config": "half_cell",
+          "electrolyte": "ester and ether electrolyte systems"
+        },
+        {
+          "condition_id": "C012",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.0,
+            "unit": "V"
+          },
+          "mass_loading": {
+            "value": 2.25,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "electrolyte": "1.0 M LiPF6 in EC:DEC:DMC (1:1:1 v/v)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: ; 1 mA cm-2; Overpotential (mV)\nRows:\nRow 1: ; 2 mA cm-2; 3 mA cm-2; 5 mA cm-2\nRow 2: Cu; 58; 61; 70; 149\nRow 3: rGO; 25; 52; 69; 85\nRow 4: GCN; 15; 31; 62; 66\nColumn data:\n ",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "test_method": "galvanostatic plating"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "test_method": "galvanostatic plating"
+        },
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 3.0,
+            "unit": "mA/cm2"
+          },
+          "test_method": "galvanostatic plating"
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "test_method": "galvanostatic plating"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Li_Nucleation_Overpotential"
+      ],
+      "performance_info": {
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 58,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "substrate": "Cu",
+            "source_text": "Cu; 58"
+          },
+          {
+            "value": 61,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 2.0,
+            "substrate": "Cu",
+            "source_text": "Cu; 61"
+          },
+          {
+            "value": 70,
+            "unit": "mV",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 3.0,
+            "substrate": "Cu",
+            "source_text": "Cu; 70"
+          },
+          {
+            "value": 149,
+            "unit": "mV",
+            "condition_id": "C004",
+            "current_density_mA_cm2": 5.0,
+            "substrate": "Cu",
+            "source_text": "Cu; 149"
+          },
+          {
+            "value": 25,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "substrate": "rGO",
+            "source_text": "rGO; 25"
+          },
+          {
+            "value": 52,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 2.0,
+            "substrate": "rGO",
+            "source_text": "rGO; 52"
+          },
+          {
+            "value": 69,
+            "unit": "mV",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 3.0,
+            "substrate": "rGO",
+            "source_text": "rGO; 69"
+          },
+          {
+            "value": 85,
+            "unit": "mV",
+            "condition_id": "C004",
+            "current_density_mA_cm2": 5.0,
+            "substrate": "rGO",
+            "source_text": "rGO; 85"
+          },
+          {
+            "value": 15,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "substrate": "GCN",
+            "source_text": "GCN; 15"
+          },
+          {
+            "value": 31,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 2.0,
+            "substrate": "GCN",
+            "source_text": "GCN; 31"
+          },
+          {
+            "value": 62,
+            "unit": "mV",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 3.0,
+            "substrate": "GCN",
+            "source_text": "GCN; 62"
+          },
+          {
+            "value": 66,
+            "unit": "mV",
+            "condition_id": "C004",
+            "current_density_mA_cm2": 5.0,
+            "substrate": "GCN",
+            "source_text": "GCN; 66"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "A comparison of the nucleation overpotentials of different electrodes further proved the lithiophilicity of mathrm C 3 mathrm N 4 . The nucleation overpotential of GCN was 15 mathrm at 1 mathrm mathrm",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "ether",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic plating/stripping"
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "ether",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic plating/stripping"
+        },
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "ester",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic plating/stripping"
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "ester",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic plating/stripping"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Li_Nucleation_Overpotential",
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 15,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "The nucleation overpotential of GCN was 15 mathrm at 1 mathrm mathrm - 2"
+          },
+          {
+            "value": 25,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "that of the rGO 25 mathrm and Cu mathrm 58 electrodes"
+          },
+          {
+            "value": 58,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "that of the rGO 25 mathrm and Cu mathrm 58 electrodes"
+          },
+          {
+            "value": 66,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 5.0,
+            "source_text": "Even at a current density as high as 5.0 mathrm mathrm - 2 , it exhibited a low overpotential of 66 mathrm Fig. 4b"
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 98.6,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "The CE of the GCN electrode was 98.6 % at 1.0 mathrm mathrm - 2 and 1.0 mathrm mathrm - 2 over 300 cycles in ether electrolyte."
+          },
+          {
+            "value": 96.6,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the CEs of the rGO and Cu electrodes began to decay at the 180 mathrm and 50 mathrm cycles with values of 96.6 % and 95.0 % , respectively Fig. 4c"
+          },
+          {
+            "value": 95.0,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the CEs of the rGO and Cu electrodes began to decay at the 180 mathrm and 50 mathrm cycles with values of 96.6 % and 95.0 % , respectively Fig. 4c"
+          },
+          {
+            "value": 80.0,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "the CE of the GCN electrode in ester electrolyte was shown in Fig. S7, it was 80.0 % at 1.0 mathrm mathrm - 2 and 1.0 mathrm mathrm - 2 over 80 cycles"
+          },
+          {
+            "value": 78.0,
+            "unit": "%",
+            "condition_id": "C004",
+            "source_text": "began to decay at the 40 mathrm cycles with a value of 78.0 % at 5.0 mathrm mathrm - 2"
+          }
+        ],
+        "Areal_Capacity": [
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "at 1.0 mathrm mathrm - 2 and 1.0 mathrm mathrm - 2"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Symmetrical cells were fabricated to test the long-cycling stability of the electrodes. As shown in Fig. 5a, the LiGCN electrode was stable for over 1700 mathrm h at 1.0 mathrm mathrm - 2 . It exhibit",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic plating/stripping"
+        },
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic plating/stripping"
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 3.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic plating/stripping"
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": 6.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C026",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C027",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C028",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C029",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 60,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C030",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability",
+        "Plateau_Overpotential",
+        "Rate_Capability_at_Given_C_rate",
+        "Rate_Recovery_Percent",
+        "Capacity_Retention_at_Nth_Cycle",
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 1700,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "the LiGCN electrode was stable for over 1700 h at 1.0 mA cm-2"
+          },
+          {
+            "value": 1100,
+            "unit": "h",
+            "condition_id": "C002",
+            "source_text": "When the current density was raised to 2 ... the electrode exhibited a stable cycling performance to 1100 h"
+          },
+          {
+            "value": 550,
+            "unit": "h",
+            "condition_id": "C003",
+            "source_text": "When the current density was raised to ... 3.0 mA cm-2, the electrode exhibited a stable cycling performance to ... 550 h"
+          }
+        ],
+        "Plateau_Overpotential": [
+          {
+            "value": 40,
+            "unit": "mV",
+            "condition_id": "C004",
+            "current_density_mA_cm2": 6.0,
+            "source_text": "Its voltage hysteresis was less than 40 mV even at a current density as high as 6.0 mA cm-2"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 138.5,
+            "unit": "mAh/g",
+            "condition_id": "C005_02C",
+            "source_text": "the capacities of the LiGCNLFP cell were 138.5 ... at 0.2 C"
+          },
+          {
+            "value": 138.3,
+            "unit": "mAh/g",
+            "condition_id": "C005_05C",
+            "source_text": "the capacities of the LiGCNLFP cell were ... 138.3 ... at 0.5 C"
+          },
+          {
+            "value": 135.3,
+            "unit": "mAh/g",
+            "condition_id": "C005_1C",
+            "source_text": "the capacities of the LiGCNLFP cell were ... 135.3 ... at 1 C"
+          },
+          {
+            "value": 130,
+            "unit": "mAh/g",
+            "condition_id": "C005_2C",
+            "source_text": "the capacities of the LiGCNLFP cell were ... 130 mAh g-1 at ... 2 C"
+          }
+        ],
+        "Rate_Recovery_Percent": [
+          {
+            "value": 99.2,
+            "unit": "%",
+            "condition_id": "C005_rec",
+            "source_text": "When the rate was back to 0.2 C, the capacity recovered to 137 mAh g-1 (99.2% retention)."
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 98.15,
+            "unit": "%",
+            "condition_id": "C006_60cyc",
+            "cycle_number": 60,
+            "source_text": "After 60 cycles, ... LiGCNLFP exhibited capacity retentions of ... 98.15 %"
+          },
+          {
+            "value": 89.46,
+            "unit": "%",
+            "condition_id": "C006_100cyc",
+            "cycle_number": 100,
+            "source_text": "Even after 100 cycles, the capacity retention ... of LiGCNLFP were 89.46 %"
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 98.67,
+            "unit": "%",
+            "condition_id": "C006_100cyc",
+            "source_text": "Even after 100 cycles, the capacity retention and CE of LiGCNLFP were 89.46 % and 98.67 %, respectively."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: ; Before cycling; 50thcycles; 100thcycles\nRows:\nRow 1: ; R(SEI) (Ω); R(ct) (Ω); R(SEI) (Ω); R(ct) (Ω); R(SEI) (Ω); R(ct) (Ω)\nRow 2: Li@Cu; 45.9; 13.7; 51.2; 14.4; 18.7; 17.0\n",
+      "conditions": [
+        {
+          "condition_id": "C031",
+          "cycle_number": 0,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C032",
+          "cycle_number": 50,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C033",
+          "cycle_number": 100,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C031",
+          "cycle_number": 0,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C032",
+          "cycle_number": 50,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C033",
+          "cycle_number": 100,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C031",
+          "cycle_number": 0,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C032",
+          "cycle_number": 50,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C033",
+          "cycle_number": 100,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 45.9,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": " Li@Cu; 45.9; 13.7; 51.2; 14.4; 18.7; 17.0 (R(SEI) before cycling)"
+          },
+          {
+            "value": 13.7,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": " Li@Cu; 45.9; 13.7; 51.2; 14.4; 18.7; 17.0 (R(ct) before cycling)"
+          },
+          {
+            "value": 51.2,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": " Li@Cu; 45.9; 13.7; 51.2; 14.4; 18.7; 17.0 (R(SEI) 50th cycles)"
+          },
+          {
+            "value": 14.4,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": " Li@Cu; 45.9; 13.7; 51.2; 14.4; 18.7; 17.0 (R(ct) 50th cycles)"
+          },
+          {
+            "value": 18.7,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": " Li@Cu; 45.9; 13.7; 51.2; 14.4; 18.7; 17.0 (R(SEI) 100th cycles)"
+          },
+          {
+            "value": 17.0,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": " Li@Cu; 45.9; 13.7; 51.2; 14.4; 18.7; 17.0 (R(ct) 100th cycles)"
+          },
+          {
+            "value": 15.8,
+            "unit": "Ω",
+            "condition_id": "C004",
+            "source_text": " Li@rGO; 15.8; 4.9; 10.8; 8.3; 11.3; 8.3 (R(SEI) before cycling)"
+          },
+          {
+            "value": 4.9,
+            "unit": "Ω",
+            "condition_id": "C004",
+            "source_text": " Li@rGO; 15.8; 4.9; 10.8; 8.3; 11.3; 8.3 (R(ct) before cycling)"
+          },
+          {
+            "value": 10.8,
+            "unit": "Ω",
+            "condition_id": "C005",
+            "source_text": " Li@rGO; 15.8; 4.9; 10.8; 8.3; 11.3; 8.3 (R(SEI) 50th cycles)"
+          },
+          {
+            "value": 8.3,
+            "unit": "Ω",
+            "condition_id": "C005",
+            "source_text": " Li@rGO; 15.8; 4.9; 10.8; 8.3; 11.3; 8.3 (R(ct) 50th cycles)"
+          },
+          {
+            "value": 11.3,
+            "unit": "Ω",
+            "condition_id": "C006",
+            "source_text": " Li@rGO; 15.8; 4.9; 10.8; 8.3; 11.3; 8.3 (R(SEI) 100th cycles)"
+          },
+          {
+            "value": 8.3,
+            "unit": "Ω",
+            "condition_id": "C006",
+            "source_text": " Li@rGO; 15.8; 4.9; 10.8; 8.3; 11.3; 8.3 (R(ct) 100th cycles)"
+          },
+          {
+            "value": 9.7,
+            "unit": "Ω",
+            "condition_id": "C007",
+            "source_text": " Li@GCN; 9.7; 9.2; 9.3; 6.0; 7.9; 4.0 (R(SEI) before cycling)"
+          },
+          {
+            "value": 9.2,
+            "unit": "Ω",
+            "condition_id": "C007",
+            "source_text": " Li@GCN; 9.7; 9.2; 9.3; 6.0; 7.9; 4.0 (R(ct) before cycling)"
+          },
+          {
+            "value": 9.3,
+            "unit": "Ω",
+            "condition_id": "C008",
+            "source_text": " Li@GCN; 9.7; 9.2; 9.3; 6.0; 7.9; 4.0 (R(SEI) 50th cycles)"
+          },
+          {
+            "value": 6.0,
+            "unit": "Ω",
+            "condition_id": "C008",
+            "source_text": " Li@GCN; 9.7; 9.2; 9.3; 6.0; 7.9; 4.0 (R(ct) 50th cycles)"
+          },
+          {
+            "value": 7.9,
+            "unit": "Ω",
+            "condition_id": "C009",
+            "source_text": " Li@GCN; 9.7; 9.2; 9.3; 6.0; 7.9; 4.0 (R(SEI) 100th cycles)"
+          },
+          {
+            "value": 4.0,
+            "unit": "Ω",
+            "condition_id": "C009",
+            "source_text": " Li@GCN; 9.7; 9.2; 9.3; 6.0; 7.9; 4.0 (R(ct) 100th cycles)"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Configuration; Electrochemical performance; Electrolyte; Ref.\nRows:\nRow 1: Half-cell; Symmetric cell\nRow 2: 3D Graphene; 0.5 mA cm-2,; 1.0 mA cm-2,; 1.0 mol L-1LiTFSI; 40\nRow",
+      "conditions": [
+        {
+          "condition_id": "C034",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiTFSI in DOL:DME (1:1) with 1 wt% LiNO3",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C035",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiTFSI in DOL:DME (1:1) with 1 wt% LiNO3",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiPF6 in EC:DEC (1:1) with 10 vol% FEC and 1 vol% VC",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C037",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiTFSI in DOL:DME (1:1) with 2 wt% LiNO3",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C038",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiPF6 in EC:DEC (1:1) with 2 vol% FEC",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C039",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiPF6 in EC:DEC (1:1)",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C040",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiPF6 in EC:DEC (1:1)",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C034",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiTFSI in DOL:DME (1:1) with 1 wt% LiNO3",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C041",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiTFSI in DOL:DME (1:1) with 5 wt% LiNO3",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C034",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiTFSI in DOL:DME (1:1) with 1 wt% LiNO3",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C042",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C043",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiTFSI in DOL:DME (1:1) with 1 wt% LiNO3",
+          "electrode_config": "half_cell",
+          "cycle_number": 200,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C044",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiTFSI in DOL:DME (1:1) with 1 wt% LiNO3",
+          "electrode_config": "half_cell",
+          "cycle_number": 200,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C045",
+          "c_rate_or_current": {
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiPF6 in EC:DEC (1:1) with 10 vol% FEC and 1 vol% VC",
+          "electrode_config": "half_cell",
+          "cycle_number": 90,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C046",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiTFSI in DOL:DME (1:1) with 2 wt% LiNO3",
+          "electrode_config": "half_cell",
+          "cycle_number": 150,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C047",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiPF6 in EC:DEC (1:1) with 2 vol% FEC",
+          "electrode_config": "half_cell",
+          "cycle_number": 250,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C048",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiPF6 in EC:DEC (1:1)",
+          "electrode_config": "half_cell",
+          "cycle_number": 250,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C049",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 mol L-1 LiPF6 in EC:DEC (1:1)",
+          "electrode_config": "half_cell",
+          "cycle_number": 200,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity",
+        "Symmetric_Cell_Cycling_Stability",
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "Row 3: Configuration = 1.0 mA h cm-2,; Electrochemical performance = 1.0 mA h cm-2, 1000 h"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C002",
+            "source_text": "Row 7: Configuration = 1.0 mA h cm-2,; Electrochemical performance = 1.0 mA h cm-2, 1000 h"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C003",
+            "source_text": "Row 11: Configuration = 1.0 mA h cm-2,"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C004",
+            "source_text": "Row 15: Configuration = 1.0 mA h cm-2,; Electrochemical performance = 1.0 mA h cm-2, 2000 h"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C005",
+            "source_text": "Row 19: 1.0 mA h cm-2"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C006",
+            "source_text": "Row 23: 1.0 mA h cm-2,"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C007",
+            "source_text": "Row 27: 1.0 mA h cm-2,"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C008",
+            "source_text": "Row 31: 1.0 mA h cm-2,"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C009",
+            "source_text": "Row 35: 1.0 mA h cm-2,"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C010",
+            "source_text": "Row 39: 1.0 mA h cm-2,"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C011",
+            "source_text": "Row 43: 1.0 mA h cm-2,"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C012",
+            "source_text": "Row 3: Configuration = 1.0 mA h cm-2,"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C013",
+            "source_text": "Row 7: Configuration = 1.0 mA h cm-2,"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C014",
+            "source_text": "Row 11: Configuration = 1.0 mA h cm-2,"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C015",
+            "source_text": "Row 15: Configuration = 1.0 mA h cm-2,"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C016",
+            "source_text": "Row 19: 1.0 mA h cm-2"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C017",
+            "source_text": "Row 23: 1.0 mA h cm-2,"
+          },
+          {
+            "value": 1.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C018",
+            "source_text": "Row 27: 1.0 mA h cm-2,"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 1000,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "Row 3: Electrochemical performance = 1.0 mA h cm-2, 1000 h"
+          },
+          {
+            "value": 1000,
+            "unit": "h",
+            "condition_id": "C002",
+            "source_text": "Row 7: Electrochemical performance = 1.0 mA h cm-2, 1000 h"
+          },
+          {
+            "value": 2000,
+            "unit": "h",
+            "condition_id": "C004",
+            "source_text": "Row 15: Electrochemical performance = 1.0 mA h cm-2, 2000 h"
+          },
+          {
+            "value": 250,
+            "unit": "cycles",
+            "condition_id": "C005",
+            "source_text": "Row 20: 250 cycles,"
+          },
+          {
+            "value": 500,
+            "unit": "h",
+            "condition_id": "C006",
+            "source_text": "Row 24: 500 h"
+          },
+          {
+            "value": 1300,
+            "unit": "h",
+            "condition_id": "C007",
+            "source_text": "Row 28: 1300 h"
+          },
+          {
+            "value": 180,
+            "unit": "cycles",
+            "condition_id": "C008",
+            "source_text": "Row 32: 180 cycles,"
+          },
+          {
+            "value": 300,
+            "unit": "cycles",
+            "condition_id": "C009",
+            "source_text": "Row 36: 300 cycles,"
+          },
+          {
+            "value": 150,
+            "unit": "cycles",
+            "condition_id": "C010",
+            "source_text": "Row 40: 150 cycles,"
+          },
+          {
+            "value": 150,
+            "unit": "cycles",
+            "condition_id": "C011",
+            "source_text": "Row 44: 150 cycles,"
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 97.8,
+            "unit": "%",
+            "condition_id": "C012",
+            "source_text": "Row 5: CE: 97.8%"
+          },
+          {
+            "value": 97.6,
+            "unit": "%",
+            "condition_id": "C013",
+            "source_text": "Row 9: CE: 97.6%"
+          },
+          {
+            "value": 98,
+            "unit": "%",
+            "condition_id": "C014",
+            "source_text": "Row 13: CE: 98%"
+          },
+          {
+            "value": 97.4,
+            "unit": "%",
+            "condition_id": "C015",
+            "source_text": "Row 17: CE: 97.4%"
+          },
+          {
+            "value": 97,
+            "unit": "%",
+            "condition_id": "C016",
+            "source_text": "Row 21: CE: 97%"
+          },
+          {
+            "value": 97.4,
+            "unit": "%",
+            "condition_id": "C017",
+            "source_text": "Row 25: CE: 97.4%"
+          },
+          {
+            "value": 98,
+            "unit": "%",
+            "condition_id": "C018",
+            "source_text": "Row 29: CE: 98%"
+          },
+          {
+            "value": 98.2,
+            "unit": "%",
+            "condition_id": "C008",
+            "source_text": "Row 33: CE: 98.2% (symmetric cell, 180 cycles)"
+          },
+          {
+            "value": 98,
+            "unit": "%",
+            "condition_id": "C009",
+            "source_text": "Row 37: CE: 98% (symmetric cell, 300 cycles)"
+          },
+          {
+            "value": 97.5,
+            "unit": "%",
+            "condition_id": "C010",
+            "source_text": "Row 41: CE: 97.5% (symmetric cell, 150 cycles)"
+          },
+          {
+            "value": 97,
+            "unit": "%",
+            "condition_id": "C011",
+            "source_text": "Row 45: CE: 97% (symmetric cell, 150 cycles)"
+          },
+          {
+            "value": 97,
+            "unit": "%",
+            "condition_id": "C005",
+            "source_text": "Row 21: CE: 97% (symmetric cell, 250 cycles)"
+          },
+          {
+            "value": 97.4,
+            "unit": "%",
+            "condition_id": "C006",
+            "source_text": "Row 25: CE: 97.4% (symmetric cell, 250 cycles)"
+          },
+          {
+            "value": 98,
+            "unit": "%",
+            "condition_id": "C007",
+            "source_text": "Row 29: CE: 98% (symmetric cell, 200 cycles)"
+          }
+        ]
+      }
+    }
+  ]
+}

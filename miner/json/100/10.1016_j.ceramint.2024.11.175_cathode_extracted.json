@@ -1,0 +1,534 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.ceramint.2024.11.175.md",
+  "component": "cathode",
+  "paper_id": "10.1016/j.ceramint.2024.11.175",
+  "doi": "10.1016/j.ceramint.2024.11.175",
+  "material_id": "10.1016_j.ceramint.2024.11.175",
+  "meta": {
+    "meta_title": "Comparative analysis of $\\mathrm { L i C o P O } _ { 4 }$ cuboid particles via v",
+    "meta_authors": "Yong-Cheng Chen , Karan Kumar Gupta , Chang-Ying Ou , Chun Wei Yu , Chung-Hsin Lu",
+    "meta_year": "2024"
+  },
+  "materials": [
+    {
+      "name": "LiCoPO4 (sample MH)",
+      "short_name": "MH",
+      "formula": "LiCoPO4",
+      "role": "novel",
+      "description": "LiCoPO4 synthesized via microwave-assisted hydrothermal process",
+      "material_id": "10.1016_j.ceramint.2024.11.175_M001"
+    },
+    {
+      "name": "LiCoPO4 (sample ME-1)",
+      "short_name": "ME-1",
+      "formula": "LiCoPO4",
+      "role": "novel",
+      "description": "LiCoPO4 synthesized via microwave-assisted microemulsion process using microemulsion solution 1 (oil-rich composition)",
+      "material_id": "10.1016_j.ceramint.2024.11.175_M002"
+    },
+    {
+      "name": "LiCoPO4 (sample ME-2)",
+      "short_name": "ME-2",
+      "formula": "LiCoPO4",
+      "role": "novel",
+      "description": "LiCoPO4 synthesized via microwave-assisted microemulsion process using stable microemulsion solution 2 (higher surfactant concentration)",
+      "material_id": "10.1016_j.ceramint.2024.11.175_M003"
+    }
+  ],
+  "n_materials": 3,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: Samples; $R_e$  (Ω); $R_f$  (Ω); CPE1 (S·s $^a$ ); $R_{ct}$  (Ω); CPE2 (S·s $^a$ )\nRows:\nRow 1: Samples = MH; $R_e$  (Ω) = 7.86; $R_f$  (Ω) = 13.72; CPE1 (S·s $^a$ ) = $3.01 \\times 10^{-5}$; $R_{ct}$  (Ω) = 119.80; CPE2 (S·s $^a$ ) = $1.31 \\times 10^{-2}$\nRow 2: Samples = ME-1; $R_e$  (Ω) = 9.54; $R_f$  (Ω) = 10.37; CPE1 (S·s $^a$ ) = $2.03 \\times 10^{-5}$; $R_{ct}$  (Ω) = 95.30; CPE2 (S·s $^a$ ) = $7.05 \\times 10^{-3}$\nRow 3: Samples = ME-2; $R_e$  (Ω) = 7.40; $R_f$  (Ω) = 10.31; CPE1 (S·s $^a$ ) = $2.51 \\times 10^{-5}$; $R_{ct}$  (Ω) = 57.04; CPE2 (S·s $^a$ ) = $7.77 \\times 10^{-3}$\nColumn data:\n  Samples: MH; ME-1; ME-2\n  $R_e$  (Ω): 7.86; 9.54; 7.40\n  $R_f$  (Ω): 13.72; 10.37; 10.31\n  CPE1 (S·s $^a$ ): $3.01 \\times 10^{-5}$; $2.03 \\times 10^{-5}$; $2.51 \\times 10^{-5}$\n  $R_{ct}$  (Ω): 119.80; 95.30; 57.04\n  CPE2 (S·s $^a$ ): $1.31 \\times 10^{-2}$; $7.05 \\times 10^{-3}$; $7.77 \\times 10^{-3}$",
+    "TABLE DATA BLOCK\nHeaders: Method; Sample; Capacity (mAh/g); References\nRows:\nRow 1: Method = Sol-gel; Sample = $LiCo_{1-x}Fe_xPO_4$; Capacity (mAh/g) = 130; References = [37]\nRow 2: Method = Sol-gel; Sample = $LiCoPO_4/C$; Capacity (mAh/g) = 92; References = [38]\nRow 3: Method = Sol-gel; Sample = $LiCoPO_4/C$; Capacity (mAh/g) = 105; References = [39]\nRow 4: Method = Solid-state; Sample = $LiCoPO_4$; Capacity (mAh/g) = 82; References = [40]\nRow 5: Method = Solid-state; Sample = $LiFe_{0.15}Co_{0.85}PO_4/C$; Capacity (mAh/g) = 118; References = [41]\nRow 6: Method = Solid-state; Sample = $LiCoPO_4/C$; Capacity (mAh/g) = 128; References = [42]\nRow 7: Method = Hydrothermal; Sample = $LiCoPO_4/C$; Capacity (mAh/g) = 135; References = [43]\nRow 8: Method = Hydrothermal; Sample = $LiCoPO_4/C$; Capacity (mAh/g) = 107; References = [44]\nRow 9: Method = Hydrothermal; Sample = $LiCoPO_4$; Capacity (mAh/g) = 78; References = This work\nRow 10: Method = Microwave-assisted microemulsion; Sample = $LiCoPO_4$; Capacity (mAh/g) = 138; References = This work\nColumn data:\n  Method: Sol-gel; Sol-gel; Sol-gel; Solid-state; Solid-state; Solid-state; Hydrothermal; Hydrothermal; Hydrothermal; Microwave-assisted microemulsion\n  Sample: $LiCo_{1-x}Fe_xPO_4$; $LiCoPO_4/C$; $LiCoPO_4/C$; $LiCoPO_4$; $LiFe_{0.15}Co_{0.85}PO_4/C$; $LiCoPO_4/C$; $LiCoPO_4/C$; $LiCoPO_4/C$; $LiCoPO_4$; $LiCoPO_4$\n  Capacity (mAh/g): 130; 92; 105; 82; 118; 128; 135; 107; 78; 138\n  References: [37]; [38]; [39]; [40]; [41]; [42]; [43]; [44]; This work; This work"
+  ],
+  "n_items": 14,
+  "items": [
+    {
+      "paragraph": "The XRD patterns of mathrm 4 samples were presented in Fig. 3. All samples matched well with COD standard 1560574 without any impurity phases, indicating the existence of an orthorhombic crystal struc",
+      "property_types": [
+        "Crystal_Space_Group"
+      ],
+      "extracted_info": {
+        "Crystal_Space_Group": [
+          {
+            "value": "Pnma",
+            "method": "XRD",
+            "source_text": "All samples matched well with COD standard 1560574 without any impurity phases, indicating the existence of an orthorhombic crystal structure with a Pnma space group"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "mathrm / . An electrochemical workstation Gamry Instruments recorded electrochemical impedance spectroscopy EIS at frequencies ranging from 100 kHz to 0.01 Hz with an amplitude of 10 mV.",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The stability of emulsion solution was tested by a UV–Visible Spectrophotometer UV–Vis, Hitachi U-2001 at a wavelength of 550 nm. The scriptstyle mathbf X mathbf - diffractometer Rigaku, Ultimate UV w",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "temperature": {
+            "value": 373,
+            "unit": "K"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The battery test system Arbin, BT-2000 was utilized to measure the electrochemical properties of prepared batteries. Cyclic voltammogram CV analysis was measured in potential range between 3.9 and 5.1",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "voltage_range": {
+            "min": 3.9,
+            "max": 5.1,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "reference_electrode": "Li/Li+",
+          "test_method": "CV"
+        },
+        {
+          "condition_id": "C004",
+          "voltage_range": {
+            "min": 3.0,
+            "max": 5.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic, GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "With CR2032 coin cells, prepared samples were examined for electrochemical performances. For the preparation of working electrodes, a high energy ball milling process was used to blend the active mate",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "electrolyte": "1.0 M LiPF6 in EC:DMC (1:1 v/v)",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "LiCoPO4 powders were synthesized via microwave-assisted hydrothermal and microwave-assisted microemulsion processes, as schematically illustrated in Fig. 1. Orthophosphoric acid H3PO4, ascorbic acid m",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "temperature": {
+            "value": 240,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C007",
+          "temperature": {
+            "value": 70,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [
+        "Chemical_Composition_Mole_Fractions"
+      ],
+      "extracted_info": {
+        "Chemical_Composition_Mole_Fractions": [
+          {
+            "value": {
+              "Li": 3,
+              "Co": 1,
+              "PO4": 1
+            },
+            "unit": "mole fraction",
+            "method": "precursor_ratio",
+            "source_text": "The molar ratio between Li : Co : PO4 ions was fixed at 3: 1: 1."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The morphology of the samples MH, ME-1, and ME-2 obtained from SEM analysis is presented in Fig. 4. The samples MH were observed to possess cubic-shaped bulk particles with particle sizes larger than ",
+      "property_types": [
+        "Primary_Particle_Size_Distribution"
+      ],
+      "extracted_info": {
+        "Primary_Particle_Size_Distribution": [
+          {
+            "value": {},
+            "unit": "nm",
+            "method": "SEM",
+            "source_text": "The samples MH were observed to possess cubic-shaped bulk particles with particle sizes larger than 1 μm"
+          },
+          {
+            "value": {
+              "D50": 365
+            },
+            "unit": "nm",
+            "method": "TEM",
+            "source_text": "the cuboid particles of ME-1 were observed with the formation of the particle dimension of 365 nm along the 010 direction"
+          },
+          {
+            "value": {
+              "D50": 130
+            },
+            "unit": "nm",
+            "method": "TEM",
+            "source_text": "The sample ME-2 synthesized from stable microemulsion solution showed a further reduction in cuboid dimension 130 nm along 010 direction"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The electrochemical properties of the produced mathrm 4 powders were investigated through cyclic voltammetry, impedance analysis, and galvanostatic charge-discharge analysis. Fig. 7 represents the cyc",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "test_method": "cyclic voltammetry, impedance analysis, galvanostatic charge-discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Phase_Transition_Voltage"
+      ],
+      "performance_info": {
+        "Phase_Transition_Voltage": [
+          {
+            "value": 4.85,
+            "unit": "V",
+            "transition_name": "first de-lithiation peak (one-third of Li)",
+            "condition_id": "C001",
+            "source_text": "The first peak at 4.85 V corresponded to the de-lithiation of one-third of Li in mathrm 4 lattice"
+          },
+          {
+            "value": 4.95,
+            "unit": "V",
+            "transition_name": "second de-lithiation peak (residual Li)",
+            "condition_id": "C001",
+            "source_text": "the second peak at 4.95 V corresponded to the de-lithiation of residual Li"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "c） The electrochemical kinetics and the lithium-ion diffusion coefficient D during charging and discharging reactions were calculated by using Fick’s second law, as shown in Eq. 148,49: D L i frac 4pi",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ion_Diffusion_Coefficient"
+      ],
+      "performance_info": {
+        "Ion_Diffusion_Coefficient": []
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Samples; $R_e$  (Ω); $R_f$  (Ω); CPE1 (S·s $^a$ ); $R_{ct}$  (Ω); CPE2 (S·s $^a$ )\nRows:\nRow 1: Samples = MH; $R_e$  (Ω) = 7.86; $R_f$  (Ω) = 13.72; CPE1 (S·s $^a$ ) = $3.01 ",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Charge_Transfer_Resistance"
+      ],
+      "performance_info": {
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 119.8,
+            "unit": "Ω",
+            "cycle_number": 0,
+            "source_text": "Row 1: Samples = MH; $R_e$  (Ω) = 7.86; $R_f$  (Ω) = 13.72; CPE1 (S·s $^a$ ) = $3.01 \\times 10^{-5}$; $R_{ct}$  (Ω) = 119.80; CPE2 (S·s $^a$ ) = $1.31 \\times 10^{-2}$"
+          },
+          {
+            "value": 95.3,
+            "unit": "Ω",
+            "cycle_number": 0,
+            "source_text": "Row 2: Samples = ME-1; $R_e$  (Ω) = 9.54; $R_f$  (Ω) = 10.37; CPE1 (S·s $^a$ ) = $2.03 \\times 10^{-5}$; $R_{ct}$  (Ω) = 95.30; CPE2 (S·s $^a$ ) = $7.05 \\times 10^{-3}$"
+          },
+          {
+            "value": 57.04,
+            "unit": "Ω",
+            "cycle_number": 0,
+            "source_text": "Row 3: Samples = ME-2; $R_e$  (Ω) = 7.40; $R_f$  (Ω) = 10.31; CPE1 (S·s $^a$ ) = $2.51 \\times 10^{-5}$; $R_{ct}$  (Ω) = 57.04; CPE2 (S·s $^a$ ) = $7.77 \\times 10^{-3}$"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The cycle life studies of prepared mathrm 4 samples at 0.2C rate are presented in Fig. 8 After 20 cycles, the MH, ME-1, and ME-2 samples delivered discharge capacities around 41 mAh/g, 72 mAh/g, and 9",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "cycle_number": 30,
+          "test_method": "cycle life study"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The first charge-discharge cycle of the synthesized cathode materials was tested at 0.1 C-rate and shown in Fig. 8 Each of the samples showed two charge and discharge plateaus of 4.8–4.9 V and 4.7–4.8",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "cycle_number": 1,
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C012",
+          "test_method": "galvanostatic charge-discharge rate test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Initial_Coulombic_Efficiency",
+        "Rate_Performance"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 80,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "material": "sample MH",
+            "source_text": "The discharge capacities of sample MH, ME-1, and ME-2 were 80, 118, and 138 mAh/g, respectively."
+          },
+          {
+            "value": 118,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "material": "sample ME-1",
+            "source_text": "The discharge capacities of sample MH, ME-1, and ME-2 were 80, 118, and 138 mAh/g, respectively."
+          },
+          {
+            "value": 138,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "material": "sample ME-2",
+            "source_text": "The discharge capacities of sample MH, ME-1, and ME-2 were 80, 118, and 138 mAh/g, respectively."
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 78,
+            "unit": "%",
+            "condition_id": "C001",
+            "material": "all samples",
+            "source_text": "The coulombic efficiencies of all samples were around 78 %"
+          }
+        ],
+        "Rate_Performance": [
+          {
+            "value": 0.1,
+            "unit": "ratio",
+            "condition_id": "C002",
+            "high_rate": "1C",
+            "low_rate": "0.1C",
+            "material": "sample MH",
+            "source_text": "The percentage of capacity retained between 0.1C and 1C rate of the samples MH, ME-1, and ME-2 were 10 %, 50 %, and 72 %, respectively."
+          },
+          {
+            "value": 0.5,
+            "unit": "ratio",
+            "condition_id": "C002",
+            "high_rate": "1C",
+            "low_rate": "0.1C",
+            "material": "sample ME-1",
+            "source_text": "The percentage of capacity retained between 0.1C and 1C rate of the samples MH, ME-1, and ME-2 were 10 %, 50 %, and 72 %, respectively."
+          },
+          {
+            "value": 0.72,
+            "unit": "ratio",
+            "condition_id": "C002",
+            "high_rate": "1C",
+            "low_rate": "0.1C",
+            "material": "sample ME-2",
+            "source_text": "The percentage of capacity retained between 0.1C and 1C rate of the samples MH, ME-1, and ME-2 were 10 %, 50 %, and 72 %, respectively."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "mathrm 4 powders were synthesized via a microwave-assisted microemulsion process. The cuboid morphology of nanoparticles obtained through the microwave-assisted microemulsion process shortened the dim",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": "0.1C, 0.5C",
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "rate capability test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Rate_Capability_Profile"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 138,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the prepared half cells based on mathrm 4 cuboid nanoparticles exhibited excellent discharge capacity and rate capability, which were 138 mAh/g at 0.1C and 110 mAh/g at 0.5C."
+          },
+          {
+            "value": 110,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "the prepared half cells based on mathrm 4 cuboid nanoparticles exhibited excellent discharge capacity and rate capability, which were 138 mAh/g at 0.1C and 110 mAh/g at 0.5C."
+          }
+        ],
+        "Rate_Capability_Profile": [
+          {
+            "value": [
+              138,
+              110
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "the prepared half cells based on mathrm 4 cuboid nanoparticles exhibited excellent discharge capacity and rate capability, which were 138 mAh/g at 0.1C and 110 mAh/g at 0.5C."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Method; Sample; Capacity (mAh/g); References\nRows:\nRow 1: Method = Sol-gel; Sample = $LiCo_{1-x}Fe_xPO_4$; Capacity (mAh/g) = 130; References = [37]\nRow 2: Method = Sol-gel; ",
+      "property_types": [
+        "Chemical_Composition_Mole_Fractions"
+      ],
+      "extracted_info": {
+        "Chemical_Composition_Mole_Fractions": [
+          {
+            "value": {
+              "Li": 0.5,
+              "Co": 1.0,
+              "Fe": 0.0
+            },
+            "unit": "mole fraction",
+            "method": "derived from chemical formula LiCoPO4",
+            "source_text": "Sample = LiCoPO4/C (Sol-gel, [38]) and similar LiCoPO4 samples"
+          },
+          {
+            "value": {
+              "Li": 0.5,
+              "Co": 0.425,
+              "Fe": 0.075
+            },
+            "unit": "mole fraction",
+            "method": "derived from chemical formula LiFe0.15Co0.85PO4/C",
+            "source_text": "Sample = LiFe_{0.15}Co_{0.85}PO_4/C"
+          }
+        ]
+      },
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 130,
+            "unit": "mAh/g",
+            "source_text": "Method = Sol-gel; Sample = LiCo_{1-x}Fe_xPO_4; Capacity (mAh/g) = 130; References = [37]"
+          },
+          {
+            "value": 92,
+            "unit": "mAh/g",
+            "source_text": "Method = Sol-gel; Sample = LiCoPO_4/C; Capacity (mAh/g) = 92; References = [38]"
+          },
+          {
+            "value": 105,
+            "unit": "mAh/g",
+            "source_text": "Method = Sol-gel; Sample = LiCoPO_4/C; Capacity (mAh/g) = 105; References = [39]"
+          },
+          {
+            "value": 82,
+            "unit": "mAh/g",
+            "source_text": "Method = Solid-state; Sample = LiCoPO_4; Capacity (mAh/g) = 82; References = [40]"
+          },
+          {
+            "value": 118,
+            "unit": "mAh/g",
+            "source_text": "Method = Solid-state; Sample = LiFe_{0.15}Co_{0.85}PO_4/C; Capacity (mAh/g) = 118; References = [41]"
+          },
+          {
+            "value": 128,
+            "unit": "mAh/g",
+            "source_text": "Method = Solid-state; Sample = LiCoPO_4/C; Capacity (mAh/g) = 128; References = [42]"
+          },
+          {
+            "value": 135,
+            "unit": "mAh/g",
+            "source_text": "Method = Hydrothermal; Sample = LiCoPO_4/C; Capacity (mAh/g) = 135; References = [43]"
+          },
+          {
+            "value": 107,
+            "unit": "mAh/g",
+            "source_text": "Method = Hydrothermal; Sample = LiCoPO_4/C; Capacity (mAh/g) = 107; References = [44]"
+          },
+          {
+            "value": 78,
+            "unit": "mAh/g",
+            "source_text": "Method = Hydrothermal; Sample = LiCoPO_4; Capacity (mAh/g) = 78; References = This work"
+          },
+          {
+            "value": 138,
+            "unit": "mAh/g",
+            "source_text": "Method = Microwave-assisted microemulsion; Sample = LiCoPO_4; Capacity (mAh/g) = 138; References = This work"
+          }
+        ]
+      }
+    }
+  ]
+}

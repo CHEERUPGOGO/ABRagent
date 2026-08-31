@@ -1,0 +1,612 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.ensm.2025.104202.md",
+  "component": "cathode",
+  "paper_id": "10.1016/j.ensm.2025.104202",
+  "doi": "10.1016/j.ensm.2025.104202",
+  "material_id": "10.1016_j.ensm.2025.104202",
+  "meta": {
+    "meta_title": "Three birds with one stone: Reducing gases manipulate surface reconstruction of ",
+    "meta_authors": "Kejie Jin a , Liaoliao $\\mathrm { L i ^ { a } }$ , Hao Tian a , Mengxing Su a , Yang Yang a , Zhijun Wu a,\\* , Shengnan He a,\\* , Yanxia Liu a,\\* , Chao Zheng a , Jiantuo Gan a , Wubin Du a,\\* , Liaona She a , Yaxiong Yang a , Mingchang Zhang a , Hongge Pan a,b,\\*",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "Li1.2Mn0.54Ni0.13Co0.13O2",
+      "short_name": "LRMO",
+      "formula": "Li1.2Mn0.54Ni0.13Co0.13O2",
+      "role": "comparison",
+      "description": "Pristine Li-rich Mn-based oxide without P modification, used as control.",
+      "material_id": "10.1016_j.ensm.2025.104202_M001"
+    },
+    {
+      "name": "20P-LRMO",
+      "short_name": "20P-LRMO",
+      "formula": "Li1.2Mn0.54Ni0.13Co0.13O2 with P modification (x=20)",
+      "role": "novel",
+      "description": "P-modified LRMO cathode with phosphating amount corresponding to 20, featuring Li3PO4 capping layer and oxygen vacancies.",
+      "material_id": "10.1016_j.ensm.2025.104202_M002"
+    },
+    {
+      "name": "25P-LRMO",
+      "short_name": "25P-LRMO",
+      "formula": "Li1.2Mn0.54Ni0.13Co0.13O2 with P modification (x=25)",
+      "role": "novel",
+      "description": "P-modified LRMO cathode with phosphating amount corresponding to 25, featuring Li3PO4 capping layer and enhanced structural stability.",
+      "material_id": "10.1016_j.ensm.2025.104202_M003"
+    },
+    {
+      "name": "30P-LRMO",
+      "short_name": "30P-LRMO",
+      "formula": "Li1.2Mn0.54Ni0.13Co0.13O2 with P modification (x=30)",
+      "role": "novel",
+      "description": "P-modified LRMO cathode with phosphating amount corresponding to 30, featuring Li3PO4 capping layer.",
+      "material_id": "10.1016_j.ensm.2025.104202_M004"
+    }
+  ],
+  "n_materials": 4,
+  "table_items": [],
+  "n_items": 12,
+  "items": [
+    {
+      "paragraph": "Scanning electron microscopy SEM images depicted in Figure S9 manifest that 25P-LRMO still maintains original morphology and size of approximately 200 nm after integrated modification. High-resolution",
+      "property_types": [
+        "Secondary_Particle_Size_Distribution",
+        "Interlayer_Spacing_of_TM_Layers",
+        "Surface_Spinel_Layer_Thickness"
+      ],
+      "extracted_info": {
+        "Secondary_Particle_Size_Distribution": [
+          {
+            "value": {
+              "D50": 0.2
+            },
+            "unit": "μm",
+            "method": "SEM",
+            "source_text": "Scanning electron microscopy SEM images depicted in Figure S9 manifest that 25P-LRMO still maintains original morphology and size of approximately 200 nm after integrated modification."
+          }
+        ],
+        "Interlayer_Spacing_of_TM_Layers": [
+          {
+            "value": 4.7,
+            "unit": "Å",
+            "plane": "003",
+            "state": "bare LRMO",
+            "source_text": "LRMO possesses a well layered crystal structure, with a lattice spacing of 0.470 nm conforming to the typical 003 plane"
+          },
+          {
+            "value": 4.71,
+            "unit": "Å",
+            "plane": "layered",
+            "state": "25P-LRMO",
+            "source_text": "The measured spacing between the internal lattice stripe is 0.471 nm Fig. 2j, suggesting that 25P-LRMO samples exhibit a well-defined layered structure."
+          }
+        ],
+        "Surface_Spinel_Layer_Thickness": [
+          {
+            "value": 5,
+            "unit": "nm",
+            "state": "25P-LRMO",
+            "method": "HAADF-STEM",
+            "source_text": "From the high-angle annular dark field-scanning transmission electron microscopy HAADF-STEM images Fig. 2i, it is evident that the surface is enveloped with an amorphous layer 5 nm thick, which it speculated to be lithium phosphate oxides."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Cyclic voltammetry CV and electrochemical impedance spectroscopy EIS were utilized to examine the electrochemical reaction kinetics of all cathode materials. Figure S13 demonstrates that the mathrm O ",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "CV and EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "g） Raman spectroscopy can be employed to reveal fine structural changes by applying its sensitivity to short-range order. As expressed in Fig. 2a, b, two apparent peaks at 597 and 488 mathrm - 1 corre",
+      "property_types": [
+        "Oxygen_Vacancy_Concentration",
+        "Crystal_Space_Group"
+      ],
+      "extracted_info": {
+        "Oxygen_Vacancy_Concentration": [
+          {
+            "value": 42.7,
+            "unit": "%",
+            "method": "XPS O 1s peak area",
+            "source_text": "The O 1 s spectra Fig. 2e were separated into three distinct peaks at 529.5, 531.5 and 532.8 eV, corresponding to lattice oxygen, oxygen vacancies and surface oxides, respectively 37. The proportion of oxygen vacancies has increased reaching 42.7 % compared with LRMO, revealing the fabrication of more oxygen vacancies on the 25P-LRMO particles surface."
+          }
+        ],
+        "Crystal_Space_Group": [
+          {
+            "value": "Fd-3m",
+            "method": "Raman spectroscopy",
+            "source_text": "Notably, a shoulder peak of LRMO and 25P-LRMO at about 675 cm− 1 was detected, which belong to the cubic spinel phase with Fd-3m space group 34."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The P-modification Li1.2 mathrm 0.54 mathrm 0.13 mathrm 0.13 mathrm O 2 LRMO cathode materials, namely as xP-LRMO x 20 , 25 and 30, is fabricated through one-step phosphating strategy, which could enh",
+      "property_types": [
+        "Crystal_Space_Group",
+        "Chemical_Composition_Mole_Fractions"
+      ],
+      "extracted_info": {
+        "Crystal_Space_Group": [
+          {
+            "value": "R-3m",
+            "method": "XRD",
+            "source_text": "all samples are composed of the ... R-3 m space group along with the monoclinic Li2MnO3 phase C2/m space group"
+          }
+        ],
+        "Chemical_Composition_Mole_Fractions": [
+          {
+            "value": {
+              "Li": 0.6,
+              "Mn": 0.27,
+              "Ni": 0.065,
+              "Co": 0.065
+            },
+            "unit": "mole fraction",
+            "method": "nominal formula",
+            "source_text": "Li1.2Mn0.54Ni0.13Co0.13O2"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Additionally, the charge compensation mechanism of lattice mathrm O 2 mathrm - can be further disclosed by analyzing the changes in the lower energy regions 534 eV of the O K-edge Soft X-ray absorptio",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V"
+          },
+          "test_method": "constant-voltage charge to 4.8 V followed by discharge to 2.0 V; measurement by O K-edge sXAS (TEY and TFY modes)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To elucidate the mechanism by which the phosphating strategy inhibits battery polarization and further investigate the influence of mathrm 34 capping layer on D mathrm diffusion coefficient, galvanost",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [
+        "Oxygen_Vacancy_Formation_Energy"
+      ],
+      "extracted_info": {
+        "Oxygen_Vacancy_Formation_Energy": [
+          {
+            "value": 3.4,
+            "unit": "eV",
+            "method": "DFT",
+            "source_text": "Fig. 4c, F distinctly shown that the calculated oxygen vacancy formation energy in 25P-LRMO 3.40 eV is higher than that in the pristine LRMO 2.92 eV."
+          },
+          {
+            "value": 2.92,
+            "unit": "eV",
+            "method": "DFT",
+            "source_text": "Fig. 4c, F distinctly shown that the calculated oxygen vacancy formation energy in 25P-LRMO 3.40 eV is higher than that in the pristine LRMO 2.92 eV."
+          }
+        ]
+      },
+      "performance_types": [
+        "Ion_Diffusion_Coefficient"
+      ],
+      "performance_info": {
+        "Ion_Diffusion_Coefficient": [
+          {
+            "value": 1.91e-10,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "source_text": "The maximum D value of 25P-LRMO (1.91 × 10^{-10} cm^2 s^{-1}) is higher than that of the pristine LRMO (1.33 × 10^{-10} cm^2 s^{-1})."
+          },
+          {
+            "value": 1.33e-10,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "source_text": "The maximum D value of 25P-LRMO (1.91 × 10^{-10} cm^2 s^{-1}) is higher than that of the pristine LRMO (1.33 × 10^{-10} cm^2 s^{-1})."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To investigate the phase transition of LRMO and 25P-LRMO material for the initial charge-discharge process, in situ XRD measurements were performed to detect crystal structure evolution. As displayed ",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "test_method": "in situ XRD"
+        }
+      ],
+      "property_types": [
+        "a_c_axis_expansion"
+      ],
+      "extracted_info": {
+        "a_c_axis_expansion": [
+          {
+            "value": {
+              "delta_a": 0.64,
+              "delta_c": 1.38
+            },
+            "unit": "%",
+            "from_state": "pristine",
+            "to_state": "charged (initial cycle)",
+            "source_text": "LRMO 0.64 % ... change in lattice parameter c 1.38 %"
+          },
+          {
+            "value": {
+              "delta_a": 0.48,
+              "delta_c": 1.05
+            },
+            "unit": "%",
+            "from_state": "pristine",
+            "to_state": "charged (initial cycle)",
+            "source_text": "25P-LRMO exhibits smaller variations in lattice parameter a 0.48 % ... change in lattice parameter c 1.05 %"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In summary, one-step phosphatizing-assisted interface engineering strategy effectively improves both the comprehensive electrochemical performance and kinetic properties, while achieving remarkable st",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 500,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "cycle_number": 500,
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 312.9,
+            "unit": "mAh/g",
+            "source_text": "25P-LRMO exhibits a high discharge capacity of 312.9 mAh g^{-1}"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 91.87,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 500,
+            "source_text": "capacity retention of 91.87 % after 500 cycles at 1 C"
+          },
+          {
+            "value": 82.43,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 500,
+            "source_text": "capacity retention of 82.43 % after 500 cycles at 2 C"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "（c） In-situ differential electrochemical mass spectrometry DEMS was utilized to quantify gas production behavior throughout the delithiation process Fig. 6d, g. The mathrm O 2 release peak of LRMO is ",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "test_method": "DEMS (in-situ differential electrochemical mass spectrometry)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "O2_CO2_Evolution"
+      ],
+      "performance_info": {
+        "O2_CO2_Evolution": [
+          {
+            "value": {
+              "O2": 8.851,
+              "CO2": 9.442
+            },
+            "unit": "μmol/mg",
+            "method": "DEMS",
+            "condition_id": "C001",
+            "source_text": "The mathrm O 2 release peak of LRMO is noticed at 4.59 V during charging, which primarily stems from the irreversible oxidation of lattice oxygen. The maximum mathrm O 2 release reaches 8.851 μmol mathbf m mathbf g - 1 . The evolution of mathrm 2 attributed to the decomposition of surface carbonate and side reactions of electrolyte in the high-voltage range 4.5 V, is also reduced from 9.442 to 7.817 μmol mg− 1 ."
+          },
+          {
+            "value": {
+              "O2": 6.214,
+              "CO2": 7.817
+            },
+            "unit": "μmol/mg",
+            "method": "DEMS",
+            "condition_id": "C001",
+            "source_text": "In contrast, the starting voltage for mathrm O 2 production in 25P-LRMO is postponed to 4.66 mathrm v , , and the amount released is decreased to 6.214 μmol mg− 1 . The evolution of mathrm 2 attributed to the decomposition of surface carbonate and side reactions of electrolyte in the high-voltage range 4.5 V, is also reduced from 9.442 to 7.817 μmol mg− 1 ."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Various electrochemical characterizations were employed to evaluate the impact of interfacial engineering on the electrochemical performance. In accordance with the intrinsic characteristics of LRMO, ",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "cycle_number": 1,
+          "test_method": "galvanostatic charge-discharge (initial cycle)"
+        },
+        {
+          "condition_id": "C009",
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "cycle_number": 50,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C010",
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "10",
+            "unit": "C"
+          },
+          "test_method": "rate performance"
+        },
+        {
+          "condition_id": "C011",
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 1,
+          "test_method": "galvanostatic charge-discharge (initial cycle at 1C)"
+        },
+        {
+          "condition_id": "C012",
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 500,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C013",
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Initial_Coulombic_Efficiency",
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 276.0,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the LRMO, 20P-LRMO, 25P-LRMO, and 30P-LRMO electrodes exhibit initial discharge capacities of 276.0, 288.4, 312.9, and 295.1 mAh g-1"
+          },
+          {
+            "value": 288.4,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the LRMO, 20P-LRMO, 25P-LRMO, and 30P-LRMO electrodes exhibit initial discharge capacities of 276.0, 288.4, 312.9, and 295.1 mAh g-1"
+          },
+          {
+            "value": 312.9,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the LRMO, 20P-LRMO, 25P-LRMO, and 30P-LRMO electrodes exhibit initial discharge capacities of 276.0, 288.4, 312.9, and 295.1 mAh g-1"
+          },
+          {
+            "value": 295.1,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the LRMO, 20P-LRMO, 25P-LRMO, and 30P-LRMO electrodes exhibit initial discharge capacities of 276.0, 288.4, 312.9, and 295.1 mAh g-1"
+          },
+          {
+            "value": 125.66,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "the 25P-LRMO still maintains a higher capacity of 125.66 mAh g-1 at 10 C in contrast to LRMO 92.92 mAh g-1"
+          },
+          {
+            "value": 92.92,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "the 25P-LRMO still maintains a higher capacity of 125.66 mAh g-1 at 10 C in contrast to LRMO 92.92 mAh g-1"
+          },
+          {
+            "value": 241.1,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "The initial discharge capacity of 241.10 mAh g-1 at 1 C for 25P-LRMO, higher than 197.06 mAh g-1 of pristine LRMO."
+          },
+          {
+            "value": 197.06,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "The initial discharge capacity of 241.10 mAh g-1 at 1 C for 25P-LRMO, higher than 197.06 mAh g-1 of pristine LRMO."
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 85.02,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "The Coulombic efficiency of 20P-LRMO, 25P-LRMO, and 30P-LRMO are improved 85.02 %, 82.17 % and 82.88 %, respectively Fig. 3b."
+          },
+          {
+            "value": 82.17,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "The Coulombic efficiency of 20P-LRMO, 25P-LRMO, and 30P-LRMO are improved 85.02 %, 82.17 % and 82.88 %, respectively Fig. 3b."
+          },
+          {
+            "value": 82.88,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "The Coulombic efficiency of 20P-LRMO, 25P-LRMO, and 30P-LRMO are improved 85.02 %, 82.17 % and 82.88 %, respectively Fig. 3b."
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 98.86,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 50,
+            "source_text": "After 50 cycles at 0.1C ... 25P-LRMO retains a capacity retention rate of 98.86 %, whereas it is only 85.07 % for LRMO."
+          },
+          {
+            "value": 85.07,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 50,
+            "source_text": "After 50 cycles at 0.1C ... 25P-LRMO retains a capacity retention rate of 98.86 %, whereas it is only 85.07 % for LRMO."
+          },
+          {
+            "value": 91.87,
+            "unit": "%",
+            "condition_id": "C005",
+            "cycle_number": 500,
+            "source_text": "Compared with LRMO 65.17 %, 25P-LRMO exhibits superior cyclic stability with capacity-retention of 91.87 % after 500 cycles at 1 C"
+          },
+          {
+            "value": 65.17,
+            "unit": "%",
+            "condition_id": "C005",
+            "cycle_number": 500,
+            "source_text": "Compared with LRMO 65.17 %, 25P-LRMO exhibits superior cyclic stability with capacity-retention of 91.87 % after 500 cycles at 1 C"
+          },
+          {
+            "value": 82.43,
+            "unit": "%",
+            "condition_id": "C006",
+            "source_text": "25P-LRMO still is capable of maintaining steady cycling at 2 C, achieving a high capacity retention rate of 82.43 % Fig. 3e."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Since the evolution of lattice oxygen is closely linked to structural transition of material, a series of characterizations were employed to explore the morphology and microstructure changes of LRMO a",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "cycle_number": 500,
+          "test_method": "post-cycling HRTEM, Raman, STEM-EDS"
+        }
+      ],
+      "property_types": [
+        "Surface_Spinel_Layer_Thickness",
+        "Crystal_Space_Group"
+      ],
+      "extracted_info": {
+        "Surface_Spinel_Layer_Thickness": [
+          {
+            "value": 3,
+            "unit": "nm",
+            "state": "cycled",
+            "method": "HRTEM",
+            "source_text": "the layered structure remains stable of 25P-LRMO sample, except that a thin 3 nm spinel layer in the surface region is beneficial for suppressing infiltration of electrolyte"
+          }
+        ],
+        "Crystal_Space_Group": [
+          {
+            "value": "R-3m",
+            "method": "electron diffraction",
+            "source_text": "the internal and edge region can be connected to the 003 facet of the layered structure with the R-3 m space group"
+          },
+          {
+            "value": "Fd-3m",
+            "method": "electron diffraction",
+            "source_text": "the 311 facet with the Fd-3 m space group"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Furthermore, the dissolution measurements of TM ions after 500 cycles was assessed through inductively coupled plasma optical emission spectrometry ICP-OES, as displayed in Fig. 7g. The dissolution of",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "cycle_number": 500,
+          "test_method": "ICP-OES"
+        },
+        {
+          "condition_id": "C016",
+          "cycle_number": 500,
+          "test_method": "EELS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    }
+  ]
+}

@@ -1,0 +1,948 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s40843-022-2457-4.md",
+  "component": "anode",
+  "paper_id": "10.1007/s40843-022-2457-4",
+  "doi": "10.1007/s40843-022-2457-4",
+  "material_id": "10.1007_s40843-022-2457-4",
+  "meta": {
+    "meta_title": "Atomic Mo-NC-sourced robust $M \\circ 0 _ { 3 } / \\mathbb { C }$ nanocomposite fo",
+    "meta_authors": "Mei Guo1 , Liyin Huang1 , Changkai Zhao2 , Luman $\\mathrm { H e ^ { 1 } }$ , Yaqun Wang2 , Gang Dou1 , Guoxin Zhang1 ,2* and Xiaoming Sun3",
+    "meta_year": null
+  },
+  "materials": [
+    {
+      "name": "MoO3 nanoparticles embedded in N-doped carbon network",
+      "short_name": "NC-MoO3-400",
+      "formula": "MoO3/C (N-doped carbon matrix)",
+      "role": "novel",
+      "description": "MoO3 nanoparticles (10-15 nm) tightly embedded in an in-situ formed N-doped carbon network, obtained by annealing f-Mo-NC precursor at 400 °C.",
+      "material_id": "10.1007_s40843-022-2457-4_M001"
+    },
+    {
+      "name": "N-doped MoO3 (carbon-free)",
+      "short_name": "N-MoO3-500",
+      "formula": "MoO3:N",
+      "role": "comparison",
+      "description": "Carbon-free N-doped MoO3 bulk granular material obtained by annealing f-Mo-NC precursor at 500 °C, used as a control to demonstrate the benefit of the carbon network.",
+      "material_id": "10.1007_s40843-022-2457-4_M002"
+    }
+  ],
+  "n_materials": 2,
+  "table_items": [],
+  "n_items": 18,
+  "items": [
+    {
+      "paragraph": "All electrochemical tests were conducted in CR2032 coin cells. To prepare the anode, mathrm mathrm - 3 or bf N bf - bf 3 bf - 50070 wt%, Super P conductive carbon black, 10 mathrm % , and LA132 waterb",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": 70,
+            "unit": "C"
+          },
+          "c_rate_or_current": {},
+          "voltage_range": {},
+          "cycle_number": 0,
+          "mass_loading": {},
+          "electrode_config": "CR2032 coin cell",
+          "test_method": "electrochemical tests"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "As schematized in Fig. 1a, the precursor f-Mo-NC was first prepared by solvothermal treatment of Mo salt in FA at 180 circ mathrm C . The f-Mo-NC precursor was first characterized using electron micro",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "temperature": {
+            "value": 180,
+            "unit": "C"
+          },
+          "test_method": "solvothermal"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "C 49.9%",
+              "O 12.2%",
+              "N 31.8%",
+              "Mo 6.2%"
+            ],
+            "unit": "%",
+            "method": "EDS",
+            "source_text": "the EDS spectrum in Fig. S1 confirm the presence and uniform distribution of C 49.9 mathrm % , O 12.2 mathrm % , N 31.8 mathrm % , and Mo 6.2 mathrm %"
+          },
+          {
+            "value": [
+              "C 41.40%",
+              "O 12.80%",
+              "N 41.10%",
+              "Mo 4.69%"
+            ],
+            "unit": "%",
+            "method": "XPS",
+            "source_text": "f-Mo-NC contains 41.40 : mathrm % C, 12.80 mathrm % O, 41.10 mathrm % N , and 4.69 mathrm % Mo"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Typically 40, to realize highly dispersed Mo in N-doped carbonaceous materials, 1.00 mathrm g of mathbf 5 was dissolved in 30.0 mathrm of FA under ultrasonication, sealed in a 50 mathrm - packed autoc",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "value": 180,
+            "unit": "C"
+          },
+          "test_method": "solvothermal treatment"
+        },
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "test_method": "drying in vacuum"
+        },
+        {
+          "condition_id": "C005",
+          "temperature": {
+            "value": 300,
+            "unit": "C"
+          },
+          "test_method": "annealing in air"
+        },
+        {
+          "condition_id": "C006",
+          "temperature": {
+            "value": 400,
+            "unit": "C"
+          },
+          "test_method": "annealing in air"
+        },
+        {
+          "condition_id": "C007",
+          "temperature": {
+            "value": 500,
+            "unit": "C"
+          },
+          "test_method": "annealing in air"
+        },
+        {
+          "condition_id": "C008",
+          "temperature": {
+            "value": 600,
+            "unit": "C"
+          },
+          "test_method": "annealing in air"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The XRD curve of f-Mo-NC in Fig. 2c confirms the successful conversion from highly dispersed Mo to small-sized mathbf 3 . As revealed by TGA Fig. 2a, mathrm mathrm - 3 cdot -400 undergoes a weight los",
+      "property_types": [
+        "Elemental_Composition",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Mo",
+              "O",
+              "C",
+              "N"
+            ],
+            "source_text": "The XRD curve of f-Mo-NC in Fig. 2c confirms the successful conversion from highly dispersed Mo to small-sized MoO3. ... the XRD curves of the derivatives ... reveal the typical phase of MoO3 ... The diffraction peak ... is due to a Mo4O11 phase of MoO3. ... decomposable carbon nitride ..."
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "MoO3",
+            "source_text": "the typical phase of MoO3 with sharper peaks"
+          },
+          {
+            "value": "Mo4O11",
+            "state": "oxygen-deficient phase",
+            "source_text": "The diffraction peak of NC-MoO3-400 at approximately 22° is due to a Mo4O11 phase of MoO3. This specific phase can be considered an oxygen-deficient phase of MoO3 (Mo4O12)."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Galvanostatic intermittent titration technique GITT measurements were conducted at a current density of 0.3 mathrm A g - 1 mathbf g - 1 with a discharge/charge pulse of 5 min, followed by a rest of ov",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 0.3,
+            "unit": "A/g"
+          },
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "test_method": "GITT"
+        },
+        {
+          "condition_id": "C010",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Coin-type full cells were fabricated using an anode prepared using a home-made electrode sample:Super P:binder 8 : 1 : 1 in weight ratios, areal loading of 0.8 mathrm - 1.0 mathrm mathrm - 2 , , a cat",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "voltage_range": {
+            "min": 0.8,
+            "max": 3.8,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in a 1:1:1 v/v/v mixture of EC/DMC/DEC",
+          "mass_loading": {
+            "value": 0.9,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "vs. Li/Li+",
+          "test_method": "galvanostatic charge/discharge on LAND battery tester CT-3001A"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Coin-type half-cells were assembled with lithium metal foil as the counter and reference electrodes in an Ar-filled glove box mathrm H 2 mathrm O and mathrm O 20.1 mathrm , . A Whatman glass-fiber she",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1.0 M LiPF6 in EC/DMC/EMC (1:1:1 v/v/v)",
+          "test_method": "Galvanostatic charge/discharge",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C013",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1.0 M LiPF6 in EC/DMC/EMC (1:1:1 v/v/v)",
+          "test_method": "Cyclic voltammetry (CV)",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "As shown in Fig. 3a, b, the derivative annealed at 400 circ mathrm C named mathrm - 3 mathrm - 400 exhibits a considerably altered morphology of amorphous aggregates compared with the dispersive parti",
+      "property_types": [
+        "Crystal_System",
+        "Chemical_Formula",
+        "Crystallite_Size"
+      ],
+      "extracted_info": {
+        "Crystal_System": [
+          {
+            "value": "orthorhombic",
+            "source_text": "orthorhombic phase #76-1003"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "MoO3",
+            "source_text": "formation of mathbf 3 NPs orthorhombic phase"
+          }
+        ],
+        "Crystallite_Size": [
+          {
+            "value": "10-15",
+            "unit": "nm",
+            "source_text": "The sizes of mathbf 3 NPs are 10 - 15 mathrm"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Electrochemical measurements of the Li-ion storage properties of mathrm cdot mathrm 3 cdot 400 and bf N bf - bf 3 bf - 500 were then performed in coin cells with voltages ranging from 0.01 to 3.00 V. ",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The XPS technique was employed to reveal the role of the Ndoped carbon network in the enhancement of the Li-ion storage performance of mathrm mathrm - 3 -400. Fig. 5a compares the elemental surveys of",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "C",
+              "O",
+              "N",
+              "Mo"
+            ],
+            "method": "XPS",
+            "source_text": "Fig. 5a compares the elemental surveys of MoO3/C-400 and N-MoO3-500, revealing both samples comprise C 1s (~285 eV), O 1s (~533 eV), N 1s (~400 eV), and Mo 3d (~233 eV)."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The kinetic behavior of lithium ions in NC-MoO -400 and N-mathbf 3 – 500 was investigated at different scan rates using CV. The relationship between CV peak current and scan rate can be described usin",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Notably, no weight loss occurs when annealing the mathrm N - 3 - 500 in the air Fig. 2a, implying the complete removal of carbon at 500 circ mathrm C and higher temperatures. In Fig. 2d, the Raman spe",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "temperature": {
+            "value": 500,
+            "unit": "C"
+          },
+          "test_method": "annealing"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "GITT measurements were performed to study the diffusion behavior of lithium ions in mathrm cdot mathrm 3 cdot 400 and bf N bf - bf 3 bf - 500 . Fig. 6a shows the open-circuit voltage curves of the two",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "test_method": "GITT"
+        },
+        {
+          "condition_id": "C018",
+          "test_method": "symmetric cell cycling",
+          "electrode_config": "symmetric_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 440,
+            "unit": "h",
+            "condition_id": "C002",
+            "source_text": "both samples can be stably cycled for an additional 440 h"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "EIS was measured after 10 cycles of stable cycling at 0.1 mathrm A g - 1 . As shown in Fig. S6a, the Nyquist curves of the two samples comprise a semicircle in the high/mid-frequency region and a diag",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "cycle_number": 10,
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "cycle_number": 200,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 621,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "mathrm cdot mathrm 3 cdot 400 exhibits a reversible capacity of 621 mathrm mathrm h mathrm g -1 after five activation cycles"
+          },
+          {
+            "value": 450,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "mathbf N cdot mathbf M mathbf o mathbf O 3 -500 ... with an initial stable capacity of 450 mA h mathbf g -1"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 81,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 200,
+            "source_text": "retains approximately 81 % of the discharge capacity after 200 cycles."
+          },
+          {
+            "value": 87,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 200,
+            "source_text": "and a C s retention of 87 % ."
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "Constant current charge-discharge measurements were performed at different current densities over the same voltage range of 0.01 to 3.0 mathrm V as the CV study. Fig. 4a, b show the galvanostatic char",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "cycle_number": 1,
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C022",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          },
+          "cycle_number": 5,
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C023",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 10.0,
+            "unit": "A/g"
+          },
+          "cycle_number": 5,
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C024",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "cycle_number": 5,
+          "test_method": "galvanostatic charge-discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Initial_Coulombic_Efficiency",
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 1994,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial discharge capacities of ... 1994 ... for MoO3/C-400"
+          },
+          {
+            "value": 1599,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial discharge capacities ... 1599 ... for N-MoO3-500"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 79,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "initial coulombic efficiencies CEs are 79 % ... for MoO3/C-400"
+          },
+          {
+            "value": 78,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "initial coulombic efficiencies CEs ... 78 % for N-MoO3-500"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 1362,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "voltage_range": "0.01-3.0 V",
+            "source_text": "stable specific capacity C_s at 0.1 A g-1 is 1362 mAh g-1 for MoO3/C-400"
+          },
+          {
+            "value": 1001,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "voltage_range": "0.01-3.0 V",
+            "source_text": "stable specific capacity ... 1001 mAh g-1 for N-MoO3-500 at 0.1 A g-1"
+          },
+          {
+            "value": 392,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "voltage_range": "0.01-3.0 V",
+            "source_text": "at 10.0 A g-1, MoO3/C-400 maintains a C_s of 392 mAh g-1"
+          },
+          {
+            "value": 95,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "voltage_range": "0.01-3.0 V",
+            "source_text": "N-MoO3-500 only exhibits a C_s of 95 mAh g-1 at 10.0 A g-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To evaluate the full cell performance of the mathbf 3 composites, coin-type full cells were fabricated using bulk LFP as the cathode material and tested in a potential range of 0.8 substack - 3.8 math",
+      "conditions": [
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.8,
+            "max": 3.8,
+            "unit": "V"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C026",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.8,
+            "max": 3.8,
+            "unit": "V"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C027",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.8,
+            "max": 3.8,
+            "unit": "V"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C028",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.8,
+            "max": 3.8,
+            "unit": "V"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C029",
+          "c_rate_or_current": {
+            "value": "3",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.8,
+            "max": 3.8,
+            "unit": "V"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C030",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.8,
+            "max": 3.8,
+            "unit": "V"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C031",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 106,
+          "voltage_range": {
+            "min": 0.8,
+            "max": 3.8,
+            "unit": "V"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Initial_Coulombic_Efficiency",
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 127,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The initial specific discharge capacity ... at 0.2 C are 127 mA h mathbf g - 1 ... for the mathrm / / mathrm cdot mathrm 3 - 400 cell"
+          },
+          {
+            "value": 98,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "and 98 mathrm mathrm h mathrm g - 1 ... for the mathrm / / mathrm N cdot mathrm 3 - 5000 cell"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 88,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "and CE ... 88 % ... for the mathrm / / mathrm cdot mathrm 3 - 400 cell"
+          },
+          {
+            "value": 85,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "and 85 % ... for the mathrm / / mathrm N cdot mathrm 3 - 5000 cell"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 112,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "voltage_range": "0.8-3.8 V",
+            "source_text": "the discharge capacities of the LFP//NC- mathbf 3 -400 cell are 112 ... at 0.5 C"
+          },
+          {
+            "value": 105,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "voltage_range": "0.8-3.8 V",
+            "source_text": "105 ... at 1 C"
+          },
+          {
+            "value": 95,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "voltage_range": "0.8-3.8 V",
+            "source_text": "95 ... at 2 C"
+          },
+          {
+            "value": 90,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "voltage_range": "0.8-3.8 V",
+            "source_text": "90 ... at 3 C"
+          },
+          {
+            "value": 81,
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "voltage_range": "0.8-3.8 V",
+            "source_text": "81 ... at 5 C"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 89.3,
+            "unit": "%",
+            "condition_id": "C007",
+            "cycle_number": 106,
+            "source_text": "high retention of discharge capacity of 89.3 % at 1 C after 106 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "郭梅1 , 黄立印1 , 赵常凯2 , 何路嫚1 , 王亚群2 , 窦刚1 , 张国新1,2 ,孙晓明3 摘要 氧化钼 left mathbf 3 right 是一种具有吸引力的锂离子电池LIBs负极材料然而, 其导电性低、锂化后体积膨胀大、锂离子扩散动力学缓慢等特点严重限制了其实际应用. 本文中, 我们利用高量Mo/N掺杂的碳前驱材料合成了超细的 mathbf 3 纳米颗粒NPs, 10 - 1",
+      "conditions": [
+        {
+          "condition_id": "C032",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          }
+        },
+        {
+          "condition_id": "C033",
+          "c_rate_or_current": {
+            "value": 10.0,
+            "unit": "A/g"
+          }
+        },
+        {
+          "condition_id": "C034",
+          "c_rate_or_current": {
+            "value": 5,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [
+        "Crystallite_Size",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Crystallite_Size": [
+          {
+            "value": 12.5,
+            "unit": "nm",
+            "method": "TEM (implied)",
+            "source_text": "超细的 MoO3 纳米颗粒NPs, 10 - 15 nm"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "MoO3",
+            "state": "nanoparticle composite",
+            "source_text": "氧化钼 MoO3"
+          }
+        ]
+      },
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 1362,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "1362 mA h g - 10.1 A g - 1"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 394,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "394 mA h g - 1 的可逆容量"
+          },
+          {
+            "value": 81,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "81 mA h g - 1 的比容量"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In conclusion, we developed an in-situ conversion method for constructing strongly coupled N-doped mathrm 3 NPs 10–15 nm in a highly N-doped carbon network. A unique Mo/NC material f-Mo-NC with highly",
+      "conditions": [
+        {
+          "condition_id": "C035",
+          "temperature": {
+            "value": 400,
+            "unit": "C"
+          },
+          "test_method": "thermal conversion"
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "vs. Li/Li+"
+        },
+        {
+          "condition_id": "C037",
+          "c_rate_or_current": {
+            "value": 10.0,
+            "unit": "A/g"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "vs. Li/Li+"
+        },
+        {
+          "condition_id": "C038",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "cycle_number": 200,
+          "electrode_config": "half_cell",
+          "reference_electrode": "vs. Li/Li+"
+        },
+        {
+          "condition_id": "C039",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [
+        "Crystallite_Size"
+      ],
+      "extracted_info": {
+        "Crystallite_Size": [
+          {
+            "value": 12.5,
+            "unit": "nm",
+            "source_text": "N-doped MoO3 NPs 10–15 nm"
+          }
+        ]
+      },
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 1362,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "reversible capacity 1362 mAh/g at 0.1 A/g"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 394,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "high rate performance 394 mAh/g at 10.0 A/g"
+          },
+          {
+            "value": 81,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "coin-type full cell LFP//NC-MoO3-400 delivered a specific capacity of 81 mAh/g at a high rate of 5 C"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 79,
+            "unit": "%",
+            "condition_id": "C004",
+            "cycle_number": 200,
+            "source_text": "79% capacity retention after 200 cycles at 500 mA/g"
+          }
+        ]
+      }
+    }
+  ]
+}

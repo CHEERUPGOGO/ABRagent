@@ -1,0 +1,751 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s40843-023-2626-0.md",
+  "component": "anode",
+  "paper_id": "10.1007/s40843-023-2626-0",
+  "doi": "10.1007/s40843-023-2626-0",
+  "material_id": "10.1007_s40843-023-2626-0",
+  "meta": {
+    "meta_title": "One-step synthesis of dual-ligand 2D conductive metal-organic framework for high",
+    "meta_authors": "Jia-Cheng $\\operatorname { Y i n } ^ { 1 }$ , Yin-Qiang Zhang2 , Zhi-Gang $\\mathrm { L i } ^ { 1 }$ , Mingren Cheng1 , Ming Liu1 , Wei $\\mathrm { L i } ^ { 1 }$ , Na ${ \\mathrm { L i } ^ { 2 ^ { * } } }$ and Xian-He Bu1,2* $\\mathrm { B u } ^ { 1 , 2 ^ { * } }$",
+    "meta_year": null
+  },
+  "materials": [
+    {
+      "name": "Cu3HHTPTHQ",
+      "short_name": "Cu3HHTPTHQ",
+      "formula": "Cu3(HHTP)(THQ)",
+      "role": "novel",
+      "description": "Dual-ligand 2D conductive metal-organic framework synthesized by a one-step reaction of Cu(NO3)2, HHTP, and THQ; primary anode material studied",
+      "material_id": "10.1007_s40843-023-2626-0_M001"
+    },
+    {
+      "name": "HHTP",
+      "short_name": "HHTP",
+      "formula": "C18H12O6",
+      "role": "comparison",
+      "description": "2,3,6,7,10,11-hexahydroxytriphenylene monomer synthesized by the authors and tested as anode material for comparison",
+      "material_id": "10.1007_s40843-023-2626-0_M002"
+    }
+  ],
+  "n_materials": 2,
+  "table_items": [],
+  "n_items": 15,
+  "items": [
+    {
+      "paragraph": "The elemental compositions of mathrm 3 mathrm mathrm were conducted by EDS and the corresponding elemental mapping analysis, and the results reveal that the uniform distribution of C, O, and Cu elemen",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "C",
+              "O",
+              "Cu"
+            ],
+            "method": "EDS, XPS",
+            "source_text": "The elemental compositions of mathrm 3 mathrm mathrm were conducted by EDS and the corresponding elemental mapping analysis, and the results reveal that the uniform distribution of C, O, and Cu elements throughout the mathrm 3 mathrm mathrm sample Fig. 1f Figs S8 and S9. XPS survey spectrum further confirms the presence of C, O, and Cu elements in the Cu3HHTPTHQ sample Fig. S10."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Inspired by its excellent structural features, high electrical conductivity, and eximious chemical stability, the potential application of mathrm 3 mathrm mathrm for mathrm storage was investigated. T",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1.0 M LiPF6 in EC/DEC/DMC (1:1:1 volume ratio)",
+          "electrode_config": "half-cell (R2032-type coin cell)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Cu3HHTPTHQ",
+            "source_text": "Cu3HHTPTHQ"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Given the mathrm d mathord - pi conjugated structure of mathrm 3 mathrm mathrm , , its electronic properties were further investigated. First, the band structure of mathrm 3 mathrm mathrm was calculat",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "two-contact probe method on a pressed pellet"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula",
+        "Band_Gap"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Cu3HHTPTHQ",
+            "source_text": "for Cu3HHTPTHQ at room temperature"
+          }
+        ],
+        "Band_Gap": [
+          {
+            "value": 1.06,
+            "unit": "eV",
+            "type": "indirect",
+            "method": "DFT",
+            "source_text": "the calculated band structure shows a significant anisotropy in the divergence of the band with an indirect band gap of 1.06 eV"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Polypropylene film Celgard 2400 served as a separator to separate the mathrm 3 / / cathode and Li anode, and mathrm 1 L - 16 in ethylene carbonate EC/diethyl carbonate DEC/dimethyl carbonate DMC mixtu",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "electrolyte": "1 M LiPF6 in ethylene carbonate (EC)/diethyl carbonate (DEC)/dimethyl carbonate (DMC) (1:1:1 v/v/v), ~70 μL",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "reference_electrode": "Li/Li+",
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling, cyclic voltammetry, electrochemical impedance spectroscopy"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Different from the complicated steps reported in previous literature 19, dual-ligand-based 2D c-MOF mathrm 3 mathrm mathrm was synthesized by a facile one-step reaction of mathrm mathrm 32 cdot 3 math",
+      "property_types": [
+        "Chemical_Formula",
+        "Lattice_Parameters",
+        "Crystal_System",
+        "Interlayer_Spacing"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Cu3HHTPTHQ",
+            "source_text": "Cu3HHTPTHQ"
+          }
+        ],
+        "Lattice_Parameters": [
+          {
+            "value": {
+              "a": 17.48,
+              "b": 17.48,
+              "c": 3.13,
+              "alpha": 90,
+              "beta": 90,
+              "gamma": 120
+            },
+            "unit": "Å / °",
+            "crystal_system": "hexagonal",
+            "method": "Le Bail fitting against experiment PXRD",
+            "source_text": "the resulting refinement unit cell parameters are a dot b 17.48 mathrm AA , c 3.13 mathrm AA , alpha beta 90 circ , gamma 120 circ"
+          }
+        ],
+        "Crystal_System": [
+          {
+            "value": "hexagonal",
+            "source_text": "the resulting refinement unit cell parameters are a dot b 17.48 mathrm AA , c 3.13 mathrm AA , alpha beta 90 circ , gamma 120 circ"
+          }
+        ],
+        "Interlayer_Spacing": [
+          {
+            "value": 1.5,
+            "unit": "nm",
+            "plane": "100",
+            "source_text": "clear lattice fringes perpendicular to 001 direction throughout the whole crystallites with a characteristic spacing distance of 1.5 mathrm"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "HHTP 13 mg, 0.04 mmol, THQ 6.9 mg, 0.04 mmol, mathrm mathrm 32 cdot 3 mathrm H 2 mathrm O 29 mg, 0.12 mmol, and 2.0 mathrm deionized water were added to a 10-mL scintillation vial followed by adding 2",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 80,
+            "unit": "C"
+          },
+          "electrolyte": "2.0 mL deionized water + 20 μL ethylenediamine",
+          "test_method": "sonication for 20 min at room temperature, sealed in oven at 80°C for 48 h, cooled, filtered, washed, dried at 100°C overnight"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Cu3(HHTP)(THQ)",
+            "source_text": "final product of mathrm 3 mathrm mathrm Q yield: 24 mathrm , 90 %"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To prepare the working electrodes, the electroactive materials including Cu HHTPTHQ, HHTP, and THQ were blended with Ketjen Black conductive additive and carboxymethyl cellulose CMC binder in a mass r",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "mass_loading": {
+            "value": 1.1,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Cu3(HHTP)(THQ)",
+            "source_text": "Cu HHTPTHQ"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In summary, a facile one-step synthetic method has been developed for preparing dual-ligand-based 2D c-MOF mathrm 3 mathrm mathrm with excellent electrical conductivity, abundant active sites, and hig",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "test_method": "spectroscopic analyses; DFT calculations"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Cu3(HHTP)(THQ)",
+            "source_text": "Cu3HHTPTHQ"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To deeply understand the lithium storage mechanism of Cu HHTPTHQ, DFT calculations were carried out. First, the surface electrostatic potential of Cu HHTPTHQ was afforded by theoretical calculations. ",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Cu3(HHTP)(THQ)",
+            "source_text": "Cu HHTPTHQ"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To explore the lithium storage mechanism of mathrm 3 mathrm - THQ, ex-situ FT-IR and XPS measurements were conducted at different discharge/charge states to monitor the composition variation in the Cu",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "reference_electrode": "Li/Li+",
+          "test_method": "ex-situ FT-IR and XPS"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Cu3(HHTP)(THQ)",
+            "state": "pristine",
+            "source_text": "the Cu HHTPTHQ electrode"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To clarify the superior electrochemical performance of Cu3HHTPTHQ, EIS, self-discharge, and solubility measurements were performed on mathrm 3 mathrm THQ, HHTP, and THQ electrodes. As shown in Fig. 4a",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "test_method": "self-discharge test; storage test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 100,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "after 20 days of storage, nearly 100 % of the initial capacity was still retained"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To further understand the charge-storage mechanism of Cu3HHTPTHQ, CV measurements at scan rates from 0.2 to 1.0 : mathrm : s - 1 were carried out. As shown in Fig. 4c, the current intensities of CV cu",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Pseudocapacitive_Contribution_Ratio"
+      ],
+      "performance_info": {
+        "Pseudocapacitive_Contribution_Ratio": [
+          {
+            "value": 59.5,
+            "unit": "%",
+            "condition_id": "C001",
+            "scan_rate_mV_s": 0.2,
+            "source_text": "the corresponding capacitive contribution ratios increase from 59.5 % to 78.4 % as the scan rate increases from 0.2 to 1.0 : mathrm : s - 1 Fig. 4f."
+          },
+          {
+            "value": 78.4,
+            "unit": "%",
+            "condition_id": "C001",
+            "scan_rate_mV_s": 1.0,
+            "source_text": "the corresponding capacitive contribution ratios increase from 59.5 % to 78.4 % as the scan rate increases from 0.2 to 1.0 : mathrm : s - 1 Fig. 4f."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "尹佳成1 , 张印强2 , 李志刚1 , 程明仁1 , 刘明1 , 李伟1 , 李娜2 ,卜显和1,2 摘要 基于双氧化还原活性有机配体的二维导电金属-有机框架2D c-MOFs是极具潜力的锂离子电池LIBs电极材料. 然而, 双配体竞争配位导致该类材料合成具有极大挑战性. 本文以乙二胺为调节剂, 发展了一步法合成双配体基2D c-MOF mathrm 3 HHTPTHQ HHTP 2,3,6,7",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Cu3(HHTP)(THQ)",
+            "source_text": "mathrm 3 HHTPTHQ (Cu3(HHTP)(THQ))"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To further evaluate the mathrm storage capacity of the mathrm 3 mathrm mathrm electrode, galvanostatic charge-discharge GCD measurements were performed under a current density of 50 mathrm mathrm g - ",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          },
+          "test_method": "galvanostatic charge-discharge (GCD)"
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 300,
+            "unit": "mA/g"
+          },
+          "cycle_number": 200,
+          "test_method": "long-term cycling"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 150,
+            "unit": "mA/g"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 300,
+            "unit": "mA/g"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 600,
+            "unit": "mA/g"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 900,
+            "unit": "mA/g"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 1200,
+            "unit": "mA/g"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": 1500,
+            "unit": "mA/g"
+          },
+          "test_method": "rate test"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Cu3(HHTP)(THQ)",
+            "source_text": "Cu3HHTPTHQ (Cu3(HHTP)(THQ)) [novel]"
+          }
+        ]
+      },
+      "performance_types": [
+        "Initial_Coulombic_Efficiency",
+        "First_Lithiation_Capacity",
+        "Irreversible_Capacity_Loss_First_Cycle",
+        "Capacity_Retention_at_Nth_Cycle",
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 57.9,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "coulombic efficiency of 57.9%"
+          }
+        ],
+        "First_Lithiation_Capacity": [
+          {
+            "value": 1218.9,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial discharge/charge capacities of 1218.9/ 705.4 mAh g-1"
+          }
+        ],
+        "Irreversible_Capacity_Loss_First_Cycle": [
+          {
+            "value": 513.5,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial discharge/charge capacities of 1218.9/ 705.4 mAh g-1 (difference 513.5 mAh/g)"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 87.1,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 200,
+            "source_text": "capacity retention of 87.1% after 200 cycles"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 725.1,
+            "unit": "mAh/g",
+            "condition_id": "C003_50",
+            "source_text": "at 50 mA g-1, provides reversible capacity of 725.1 mAh g-1"
+          },
+          {
+            "value": 550.5,
+            "unit": "mAh/g",
+            "condition_id": "C003_150",
+            "source_text": "at 150 mA g-1, provides reversible capacity of 550.5 mAh g-1"
+          },
+          {
+            "value": 508.2,
+            "unit": "mAh/g",
+            "condition_id": "C003_300",
+            "source_text": "at 300 mA g-1, provides reversible capacity of 508.2 mAh g-1"
+          },
+          {
+            "value": 443.7,
+            "unit": "mAh/g",
+            "condition_id": "C003_600",
+            "source_text": "at 600 mA g-1, provides reversible capacity of 443.7 mAh g-1"
+          },
+          {
+            "value": 409.5,
+            "unit": "mAh/g",
+            "condition_id": "C003_900",
+            "source_text": "at 900 mA g-1, provides reversible capacity of 409.5 mAh g-1"
+          },
+          {
+            "value": 379.9,
+            "unit": "mAh/g",
+            "condition_id": "C003_1200",
+            "source_text": "at 1200 mA g-1, provides reversible capacity of 379.9 mAh g-1"
+          },
+          {
+            "value": 347.0,
+            "unit": "mAh/g",
+            "condition_id": "C003_1500",
+            "source_text": "at 1500 mA g-1, provides reversible capacity of 347.0 mAh g-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "For comparison, the electrochemical behaviors of HHTP and THQ monomers were also evaluated under the same conditions Figs S14 and S15. Compared with Cu3HHTPTHQ, HHTP and THQ monomers represented lower",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 300,
+            "unit": "mA/g"
+          },
+          "cycle_number": 200
+        },
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 150,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": 300,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 600,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": 900,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": 1200,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C026",
+          "c_rate_or_current": {
+            "value": 1500,
+            "unit": "mA/g"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 456.0,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "HHTP and THQ monomers represented lower initial capacities of 456.0 and 993.1 mA h g−1 at bar 50 mathrm mathrm g - 1"
+          },
+          {
+            "value": 993.1,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "HHTP and THQ monomers represented lower initial capacities of 456.0 and 993.1 mA h g−1 at bar 50 mathrm mathrm g - 1"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 185.0,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "Cyclic performance tests at 300 mA g−1 current density show that the HHTP and THQ monomers can only provide limited reversible capacities of 185.0 and 381.8 mA h g−1, respectively."
+          },
+          {
+            "value": 381.8,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "Cyclic performance tests at 300 mA g−1 current density show that the HHTP and THQ monomers can only provide limited reversible capacities of 185.0 and 381.8 mA h g−1, respectively."
+          },
+          {
+            "value": 294.0,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "the low reversible capacities of 294.0/494.3, 170.5/364.8, 111.2/309.4, 72.5/252.9, 56.2/227.2, 48.6/209.9, and 42.9 / 194.8 mA h g−1 for HHTP and THQ were observed at current densities of 50, 150, 300, 600, 900, 1200, and 1500 mA g−1"
+          },
+          {
+            "value": 494.3,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "the low reversible capacities of 294.0/494.3, 170.5/364.8, 111.2/309.4, 72.5/252.9, 56.2/227.2, 48.6/209.9, and 42.9 / 194.8 mA h g−1 for HHTP and THQ were observed at current densities of 50, 150, 300, 600, 900, 1200, and 1500 mA g−1"
+          },
+          {
+            "value": 170.5,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "the low reversible capacities of 294.0/494.3, 170.5/364.8, 111.2/309.4, 72.5/252.9, 56.2/227.2, 48.6/209.9, and 42.9 / 194.8 mA h g−1 for HHTP and THQ were observed at current densities of 50, 150, 300, 600, 900, 1200, and 1500 mA g−1"
+          },
+          {
+            "value": 364.8,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "the low reversible capacities of 294.0/494.3, 170.5/364.8, 111.2/309.4, 72.5/252.9, 56.2/227.2, 48.6/209.9, and 42.9 / 194.8 mA h g−1 for HHTP and THQ were observed at current densities of 50, 150, 300, 600, 900, 1200, and 1500 mA g−1"
+          },
+          {
+            "value": 111.2,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "the low reversible capacities of 294.0/494.3, 170.5/364.8, 111.2/309.4, 72.5/252.9, 56.2/227.2, 48.6/209.9, and 42.9 / 194.8 mA h g−1 for HHTP and THQ were observed at current densities of 50, 150, 300, 600, 900, 1200, and 1500 mA g−1"
+          },
+          {
+            "value": 309.4,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "the low reversible capacities of 294.0/494.3, 170.5/364.8, 111.2/309.4, 72.5/252.9, 56.2/227.2, 48.6/209.9, and 42.9 / 194.8 mA h g−1 for HHTP and THQ were observed at current densities of 50, 150, 300, 600, 900, 1200, and 1500 mA g−1"
+          },
+          {
+            "value": 72.5,
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "the low reversible capacities of 294.0/494.3, 170.5/364.8, 111.2/309.4, 72.5/252.9, 56.2/227.2, 48.6/209.9, and 42.9 / 194.8 mA h g−1 for HHTP and THQ were observed at current densities of 50, 150, 300, 600, 900, 1200, and 1500 mA g−1"
+          },
+          {
+            "value": 252.9,
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "the low reversible capacities of 294.0/494.3, 170.5/364.8, 111.2/309.4, 72.5/252.9, 56.2/227.2, 48.6/209.9, and 42.9 / 194.8 mA h g−1 for HHTP and THQ were observed at current densities of 50, 150, 300, 600, 900, 1200, and 1500 mA g−1"
+          },
+          {
+            "value": 56.2,
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "the low reversible capacities of 294.0/494.3, 170.5/364.8, 111.2/309.4, 72.5/252.9, 56.2/227.2, 48.6/209.9, and 42.9 / 194.8 mA h g−1 for HHTP and THQ were observed at current densities of 50, 150, 300, 600, 900, 1200, and 1500 mA g−1"
+          },
+          {
+            "value": 227.2,
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "the low reversible capacities of 294.0/494.3, 170.5/364.8, 111.2/309.4, 72.5/252.9, 56.2/227.2, 48.6/209.9, and 42.9 / 194.8 mA h g−1 for HHTP and THQ were observed at current densities of 50, 150, 300, 600, 900, 1200, and 1500 mA g−1"
+          },
+          {
+            "value": 48.6,
+            "unit": "mAh/g",
+            "condition_id": "C008",
+            "source_text": "the low reversible capacities of 294.0/494.3, 170.5/364.8, 111.2/309.4, 72.5/252.9, 56.2/227.2, 48.6/209.9, and 42.9 / 194.8 mA h g−1 for HHTP and THQ were observed at current densities of 50, 150, 300, 600, 900, 1200, and 1500 mA g−1"
+          },
+          {
+            "value": 209.9,
+            "unit": "mAh/g",
+            "condition_id": "C008",
+            "source_text": "the low reversible capacities of 294.0/494.3, 170.5/364.8, 111.2/309.4, 72.5/252.9, 56.2/227.2, 48.6/209.9, and 42.9 / 194.8 mA h g−1 for HHTP and THQ were observed at current densities of 50, 150, 300, 600, 900, 1200, and 1500 mA g−1"
+          },
+          {
+            "value": 42.9,
+            "unit": "mAh/g",
+            "condition_id": "C009",
+            "source_text": "the low reversible capacities of 294.0/494.3, 170.5/364.8, 111.2/309.4, 72.5/252.9, 56.2/227.2, 48.6/209.9, and 42.9 / 194.8 mA h g−1 for HHTP and THQ were observed at current densities of 50, 150, 300, 600, 900, 1200, and 1500 mA g−1"
+          },
+          {
+            "value": 194.8,
+            "unit": "mAh/g",
+            "condition_id": "C009",
+            "source_text": "the low reversible capacities of 294.0/494.3, 170.5/364.8, 111.2/309.4, 72.5/252.9, 56.2/227.2, 48.6/209.9, and 42.9 / 194.8 mA h g−1 for HHTP and THQ were observed at current densities of 50, 150, 300, 600, 900, 1200, and 1500 mA g−1"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 26.9,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 200,
+            "source_text": "after 200 cycles, only 26.9% and 48.5% capacities can be retained for HHTP and THQ, respectively"
+          },
+          {
+            "value": 48.5,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 200,
+            "source_text": "after 200 cycles, only 26.9% and 48.5% capacities can be retained for HHTP and THQ, respectively"
+          }
+        ]
+      }
+    }
+  ]
+}

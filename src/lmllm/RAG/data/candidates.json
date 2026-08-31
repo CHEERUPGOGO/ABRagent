@@ -1,0 +1,908 @@
+{
+  "version": "0.4-llm-registered",
+  "updated": "2026-08-28",
+  "note": "provenance.mp 来自 Materials Project 快照（data/calibrated/mp_crosscheck.json）。MP 只验证『结构存在性/热力学稳定性』，不验证电化学容量/电压实验值——后者需 ChemDataExtractor 双源。电解液/添加剂无 MP 晶体结构，保持 seed-manual。 | 0.3 手工扩充：LCO/LFP/NCA/LMO/hard_carbon/soft_carbon/LTO/ether_ec/LiNO3/PS/DTD（seed-manual，置信度分级标注）。 | 0.4 LLM 注册：配方实体 30 + 材料 14 + 添加剂 17。",
+  "cathode": [
+    {
+      "id": "NCM811",
+      "formula": "LiNi0.8Co0.1Mn0.1O2",
+      "capacity": {
+        "value": 200,
+        "unit": "mAh/g",
+        "condition": "0.1C, 2.8-4.3V vs Li/Li+"
+      },
+      "avg_voltage": 3.8,
+      "voltage_limit": 4.3,
+      "weakness": "高电压下表面副反应加剧，热稳定性差",
+      "provenance": {
+        "source": "seed-manual+mp",
+        "confidence": "medium",
+        "mp": {
+          "chemsys": "Li-Ni-Co-Mn-O",
+          "assessment": "存在稳定插层相",
+          "verified": "structure"
+        }
+      }
+    },
+    {
+      "id": "LRMO",
+      "formula": "Li1.2Ni0.2Mn0.6O2",
+      "capacity": {
+        "value": 260,
+        "unit": "mAh/g",
+        "condition": "0.1C, 2.0-4.6V vs Li/Li+"
+      },
+      "avg_voltage": 3.8,
+      "voltage_limit": 4.6,
+      "weakness": "电压衰减、首圈不可逆容量大、倍率性能差",
+      "provenance": {
+        "source": "seed-manual+mp",
+        "confidence": "medium",
+        "mp": {
+          "chemsys": "Li-Ni-Mn-O",
+          "assessment": "存在稳定插层相",
+          "verified": "structure"
+        }
+      }
+    },
+    {
+      "id": "LNMO",
+      "formula": "LiNi0.5Mn1.5O4",
+      "capacity": {
+        "value": 130,
+        "unit": "mAh/g",
+        "condition": "0.1C, 3.5-4.9V vs Li/Li+"
+      },
+      "avg_voltage": 4.7,
+      "voltage_limit": 4.9,
+      "weakness": "Mn 溶解、常规电解液氧化分解",
+      "provenance": {
+        "source": "seed-manual+mp",
+        "confidence": "medium",
+        "mp": {
+          "chemsys": "Li-Ni-Mn-O",
+          "assessment": "存在稳定插层相",
+          "verified": "structure"
+        }
+      }
+    },
+    {
+      "id": "LCO",
+      "formula": "LiCoO2",
+      "capacity": {
+        "value": 155,
+        "unit": "mAh/g",
+        "condition": "0.1C, 3.0-4.3V vs Li/Li+"
+      },
+      "avg_voltage": 3.9,
+      "voltage_limit": 4.3,
+      "weakness": "钴成本高；>4.35V 结构不稳定，容量衰减快",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "high"
+      }
+    },
+    {
+      "id": "LFP",
+      "formula": "LiFePO4",
+      "capacity": {
+        "value": 165,
+        "unit": "mAh/g",
+        "condition": "0.1C, 2.5-3.65V vs Li/Li+"
+      },
+      "avg_voltage": 3.4,
+      "voltage_limit": 3.65,
+      "weakness": "电压平台低，能量密度受限；低温性能差",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "high"
+      }
+    },
+    {
+      "id": "NCA",
+      "formula": "LiNi0.8Co0.15Al0.05O2",
+      "capacity": {
+        "value": 195,
+        "unit": "mAh/g",
+        "condition": "0.1C, 2.8-4.3V vs Li/Li+"
+      },
+      "avg_voltage": 3.7,
+      "voltage_limit": 4.3,
+      "weakness": "高镍热稳定性差、产气、表面副反应",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LMO",
+      "formula": "LiMn2O4",
+      "capacity": {
+        "value": 110,
+        "unit": "mAh/g",
+        "condition": "0.1C, 3.0-4.3V vs Li/Li+"
+      },
+      "avg_voltage": 4.0,
+      "voltage_limit": 4.3,
+      "weakness": "Mn 溶解导致高温容量衰减，循环寿命受限",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "high"
+      }
+    },
+    {
+      "id": "NCM442",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      },
+      "formula": "LiNi0.42Mn0.42Co0.16O2",
+      "capacity": null,
+      "note": "LLM 注册新材料"
+    },
+    {
+      "id": "NCM955",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      },
+      "formula": "LiNi0.9Co0.05Mn0.05O2",
+      "capacity": null,
+      "note": "LLM 注册新材料"
+    }
+  ],
+  "anode": [
+    {
+      "id": "graphite",
+      "formula": "C",
+      "capacity": {
+        "value": 360,
+        "unit": "mAh/g",
+        "condition": "0.1C, 0.005-1.5V vs Li/Li+"
+      },
+      "avg_voltage": 0.1,
+      "voltage_limit": null,
+      "weakness": "容量上限 ~372 mAh/g，倍率受限",
+      "provenance": {
+        "source": "seed-manual+mp",
+        "confidence": "high",
+        "mp": {
+          "chemsys": "C",
+          "assessment": "存在稳定基态",
+          "verified": "structure"
+        }
+      }
+    },
+    {
+      "id": "si_base",
+      "formula": "Si/SiOx",
+      "capacity": {
+        "value": 1500,
+        "unit": "mAh/g",
+        "condition": "0.1C, 0.005-1.5V vs Li/Li+"
+      },
+      "avg_voltage": 0.4,
+      "voltage_limit": null,
+      "weakness": "体积膨胀 ~300%，需 FEC 类添加剂稳定 SEI",
+      "provenance": {
+        "source": "seed-manual+mp",
+        "confidence": "medium",
+        "mp": {
+          "chemsys": "Si",
+          "assessment": "存在稳定基态",
+          "verified": "structure"
+        }
+      }
+    },
+    {
+      "id": "li_metal",
+      "formula": "Li",
+      "capacity": {
+        "value": 3860,
+        "unit": "mAh/g",
+        "condition": "理论值"
+      },
+      "avg_voltage": 0.0,
+      "voltage_limit": null,
+      "weakness": "枝晶、死锂、库仑效率低；液态下需高浓/LHCE 电解液",
+      "provenance": {
+        "source": "seed-manual+mp",
+        "confidence": "high",
+        "mp": {
+          "chemsys": "Li",
+          "assessment": "存在稳定基态",
+          "verified": "structure"
+        }
+      }
+    },
+    {
+      "id": "hard_carbon",
+      "formula": "C",
+      "capacity": {
+        "value": 350,
+        "unit": "mAh/g",
+        "condition": "0.1C, 0-2.0V vs Li/Li+"
+      },
+      "avg_voltage": 0.3,
+      "voltage_limit": null,
+      "weakness": "首效低、电压平台倾斜，倍率受限",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "soft_carbon",
+      "formula": "C",
+      "capacity": {
+        "value": 280,
+        "unit": "mAh/g",
+        "condition": "0.1C"
+      },
+      "avg_voltage": 0.3,
+      "voltage_limit": null,
+      "weakness": "容量较低、平台倾斜",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "LTO",
+      "formula": "Li4Ti5O12",
+      "capacity": {
+        "value": 170,
+        "unit": "mAh/g",
+        "condition": "0.1C, 1.0-2.5V vs Li/Li+"
+      },
+      "avg_voltage": 1.55,
+      "voltage_limit": null,
+      "weakness": "电压平台高(~1.55V)，能量密度低",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "high"
+      }
+    }
+  ],
+  "electrolyte": [
+    {
+      "id": "carbonate_ec",
+      "formula": "EC/DMC 体系",
+      "oxidation_window": 4.3,
+      "note": "常规碳酸酯（1M LiPF6 in EC/DMC/EMC）",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "high"
+      }
+    },
+    {
+      "id": "fluorinated",
+      "formula": "FEC/FEMC 体系",
+      "oxidation_window": 4.8,
+      "note": "含氟溶剂（FEC、氟代碳酸酯）",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "high_concentration",
+      "formula": ">3M LiFSI 体系",
+      "oxidation_window": 5.0,
+      "note": "高浓电解液，适合锂金属负极与高压正极",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "lhce",
+      "formula": "高浓+稀释剂",
+      "oxidation_window": 5.0,
+      "note": "局部高浓电解液（LHCE），兼顾粘度与稳定性",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "dilute_aqueous",
+      "formula": "稀盐溶液（如 1M Li2SO4/LiTFSI 水溶液）",
+      "oxidation_window": 1.23,
+      "note": "常规稀水系电解液，热力学窗口约1.23V（HER/OER）",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "high"
+      }
+    },
+    {
+      "id": "water_in_salt",
+      "formula": ">20m LiTFSI 水溶液",
+      "oxidation_window": 3.0,
+      "note": "water-in-salt 高浓水系，降低水活度扩窗，但高压正极仍处极限",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "ether_ec",
+      "formula": "DME/DOL 体系",
+      "oxidation_window": 4.0,
+      "note": "醚类电解液（1M LiTFSI in DME/DOL），锂硫/锂金属负极常用",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "1.15M_LIPF6_DEC-EC_DMAC-TEMEP-TFSI",
+      "formula": "1.15M LiPF6 EC/DEC (v/v=1/1) + 1 wt% DMAc + 10 wt.% TEMEP-TFSI",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "1.2M_LIPF6_DMC-EC_MPS",
+      "formula": "1.2M LiPF6 in EC/DMC (v/v=3/7) + 0.1wt% MPS",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "1.5M_LISAC_TEP_VC",
+      "formula": "{\"additives\": [{\"name\": \"VC\", \"ratio\": \"2%\"}], \"salt\": [{\"concentration\": \"1.5 M\", \"name\": \"LiSac\"}], \"solvents\": [{\"nam",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIBOB-LISAC_TEP_VC",
+      "formula": "{\"additives\": [{\"name\": \"VC\", \"ratio\": \"2%\"}], \"salt\": [{\"concentration\": \"1.5 M\", \"name\": \"LiSac\"}, {\"concentration\": \"",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIBOB_TEP_VC",
+      "formula": "{\"additives\": [{\"name\": \"VC\", \"ratio\": \"2%\"}], \"salt\": [{\"concentration\": \"1.0 M\", \"name\": \"LiBOB\"}], \"solvents\": [{\"nam",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIDFOB-LIPF6_EMC-FEC",
+      "formula": "1M LiPF6 + 0.2M LiDFOB in FEC/EMC (v/v=1/3)",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIDFOB-LIPF6_EMC-FEC_FS",
+      "formula": "1M LiPF6 + 0.2M LiDFOB in FEC/EMC (v/v=1/3) + 0.1M FS",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_CF3-EC-DMC",
+      "formula": "{\"ratio\": \"1:4\", \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"CF3-EC\", \"role\": \"main\"}, {\"na",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_DEC-EC",
+      "formula": "1M LiPF6 in EC/DEC (1:1 v/v)",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_DEC-EC-EMC_MPL",
+      "formula": "1M LiPF6 in EC/EMC/DEC (v/v/v=3/5/2) + 0.3% MPL",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_DEC-EC-EMC_SE",
+      "formula": "1M LiPF6 in EC/EMC/DEC (v/v/v=3/5/2) + 0.25% SE",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_DEC-EC_NFSA",
+      "formula": "1M LiPF6 in EC/DEC + 0.5% NFSA",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_DEC-EC_PFPDPP",
+      "formula": "1M LiPF6 in EC/DEC (v/v=1/1) + 0.2wt% PFPDPP",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_DEC-EC_PFPN",
+      "formula": "1M LiPF6 in EC/DEC (v/v=1/1) + 10% PFPN",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_DI-(CF3)-EC-DMC",
+      "formula": "{\"ratio\": \"1:4\", \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"Di-(CF3)-EC\", \"role\": \"main\"},",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_DMC-EC",
+      "formula": "{\"ratio\": \"1:4\", \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EC\", \"role\": \"main\"}, {\"name\":",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_DMC-EC-EMC_DPE",
+      "formula": "1M LiPF6 in EC/DMC/EMC (v/v/v=1/1/1) + 0.1wt% DPE",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_DMC-EC_FEC-HDI",
+      "formula": "1M LiPF6 in EC/DMC (v/v=1/3) + 1M FEC + 25mM HDI",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_DMC-FEC_CF3-EC",
+      "formula": "{\"additives\": [{\"name\": \"CF3-EC\", \"ratio\": \"2%\"}], \"ratio\": \"1:4\", \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"so",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_DMC-FEC_DI-(CF3)-EC",
+      "formula": "{\"additives\": [{\"name\": \"Di-(CF3)-EC\", \"ratio\": \"2%\"}], \"ratio\": \"1:4\", \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_DMDOHD",
+      "formula": "1M LiPF6 in DMDOHD",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_EC-EMC",
+      "formula": "{\"additives\": [], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EC\", \"role\": ",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_EC-EMC_FEC",
+      "formula": "{\"additives\": [{\"name\": \"FEC\", \"ratio\": \"5 wt%\"}], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_EC-EMC_VC",
+      "formula": "{\"additives\": [{\"name\": \"VC\", \"ratio\": \"2%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solven",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_EMC",
+      "formula": "{\"additives\": [], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"EMC\", \"role\":",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_EMC_DIFEC",
+      "formula": "{\"additives\": [{\"name\": \"DiFEC\", \"ratio\": \"1%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"sol",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_EMC_FEC",
+      "formula": "{\"additives\": [{\"name\": \"FEC\", \"ratio\": \"1%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solve",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_EMC_MEC",
+      "formula": "{\"additives\": [{\"name\": \"MEC\", \"ratio\": \"1%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solve",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_EMC_VC",
+      "formula": "{\"additives\": [{\"name\": \"VC\", \"ratio\": \"1%\"}], \"diluents\": [], \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solven",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LIPF6_FEC",
+      "formula": "{\"ratio\": \"1:4\", \"salt\": {\"concentration\": \"1M\", \"name\": \"LiPF6\"}, \"solvents\": [{\"name\": \"FEC\", \"role\": \"main\"}, {\"name\"",
+      "note": "配方体系（LLM 注册，merge 重做）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "CILE",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      },
+      "note": "LLM 注册（非配方实体）"
+    },
+    {
+      "id": "D-CILE",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      },
+      "note": "LLM 注册（非配方实体）"
+    },
+    {
+      "id": "D-LCILE",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      },
+      "note": "LLM 注册（非配方实体）"
+    },
+    {
+      "id": "FS",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      },
+      "note": "LLM 注册（非配方实体）"
+    },
+    {
+      "id": "LCILE",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      },
+      "note": "LLM 注册（非配方实体）"
+    },
+    {
+      "id": "MA",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      },
+      "note": "LLM 注册（非配方实体）"
+    },
+    {
+      "id": "MDFA",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      },
+      "note": "LLM 注册（非配方实体）"
+    },
+    {
+      "id": "MDFSA",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      },
+      "note": "LLM 注册（非配方实体）"
+    },
+    {
+      "id": "MTFA",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      },
+      "note": "LLM 注册（非配方实体）"
+    },
+    {
+      "id": "P2PFS_additive",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      },
+      "note": "LLM 注册（非配方实体）"
+    },
+    {
+      "id": "TPP_additive",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      },
+      "note": "LLM 注册（非配方实体）"
+    },
+    {
+      "id": "trifluoroethyl_methyl_sulfone",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "medium"
+      },
+      "note": "LLM 注册（非配方实体）"
+    }
+  ],
+  "additive": [
+    {
+      "id": "FEC",
+      "role": "SEI 成膜剂，硅基/锂金属负极必需",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "high"
+      }
+    },
+    {
+      "id": "VC",
+      "role": "石墨负极成膜剂",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "high"
+      }
+    },
+    {
+      "id": "LiPO2F2",
+      "role": "高压正极 CEI 改善",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "LiNO3",
+      "role": "锂硫/锂金属电解液成膜添加剂，稳定 SEI 抑制多硫化物穿梭",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "high"
+      }
+    },
+    {
+      "id": "PS",
+      "role": "1,3-丙烷磺酸内酯，正极成膜、抑制产气",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "medium"
+      }
+    },
+    {
+      "id": "DTD",
+      "role": "硫酸乙烯酯，成膜添加剂，改善循环与低温性能",
+      "provenance": {
+        "source": "seed-manual",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "CF3-EC",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "DI-(CF3)-EC",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "DIFEC",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "DMAC",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "DPE",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "FS",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "HDI",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "LIBOB",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "LIDFOB",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "MEC",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "MPL",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "MPS",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "NFSA",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "PFPDPP",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "PFPN",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "SE",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    },
+    {
+      "id": "TEMEP-TFSI",
+      "role": "",
+      "note": "LLM 注册添加剂（从配方提取）",
+      "provenance": {
+        "source": "llm-registered",
+        "confidence": "low"
+      }
+    }
+  ]
+}

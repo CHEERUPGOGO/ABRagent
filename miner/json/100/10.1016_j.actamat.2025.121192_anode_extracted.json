@@ -1,0 +1,554 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.actamat.2025.121192.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.actamat.2025.121192",
+  "doi": "10.1016/j.actamat.2025.121192",
+  "material_id": "10.1016_j.actamat.2025.121192",
+  "meta": {
+    "meta_title": "Biomimetic structural foil anode with toughened fracture mechanism for high ener",
+    "meta_authors": "Song Sun a , Shukai Chen a , Jinhui Zhao a , Xin Zhang a,\\* , Huiyang Gou b,\\* , Gongkai Wang a,",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "Bio-Sn-1",
+      "short_name": "Bio-Sn-1",
+      "formula": "Sn/SWCNT composite",
+      "role": "novel",
+      "description": "Biomimetic laminated Sn foil with SWCNT interlayers, prepared using 100 stacked Sn foil layers (0.058 wt.% SWCNT)",
+      "material_id": "10.1016_j.actamat.2025.121192_M001"
+    },
+    {
+      "name": "Bio-Sn-2",
+      "short_name": "Bio-Sn-2",
+      "formula": "Sn/SWCNT composite",
+      "role": "novel",
+      "description": "Biomimetic laminated Sn foil with SWCNT interlayers, prepared using 200 stacked Sn foil layers (0.058 wt.% SWCNT)",
+      "material_id": "10.1016_j.actamat.2025.121192_M002"
+    },
+    {
+      "name": "Bio-Sn-5",
+      "short_name": "Bio-Sn-5",
+      "formula": "Sn/SWCNT composite",
+      "role": "novel",
+      "description": "Biomimetic laminated Sn foil with SWCNT interlayers, prepared using 500 stacked Sn foil layers (0.058 wt.% SWCNT)",
+      "material_id": "10.1016_j.actamat.2025.121192_M003"
+    }
+  ],
+  "n_materials": 3,
+  "table_items": [],
+  "n_items": 13,
+  "items": [
+    {
+      "paragraph": "Additionally, in the Bio-Sn-2LFP battery with an areal capacity of 2.6 mAh mathrm - 2 . , a high capacity retention rate of about 80 % is observed after 260 cycles at 0.4 C Fig. 3e. Bio-Sn-2 continues",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": 0.4,
+            "unit": "C"
+          },
+          "cycle_number": 260,
+          "electrode_config": "full-cell (Bio-Sn-2||LFP)",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 2.6,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "with an areal capacity of 2.6 mAh mathrm - 2 ."
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 80,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 260,
+            "source_text": "a high capacity retention rate of about 80 % is observed after 260 cycles at 0.4 C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The enhanced cycling performance of alloy-type foils is fundamentally tied to their fracture tolerance. The evolution of cracks at different areal capacities after the first cycle indicates that durin",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "cycle_number": 1
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 1,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "At an areal capacity of 1 mAh cm− 2"
+          },
+          {
+            "value": 10,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "By 10 mAh mathrm - 2"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To further confirm the practical applicability and energy density advantages of the biomimetic foils, theoretical calculations were performed using NCM811 as the cathode 4 mAh mathrm - 2 and prelithia",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "electrode_config": "pouch cell (NCM811 cathode, prelithiated Bio-Sn-2 anode)"
+        },
+        {
+          "condition_id": "C004",
+          "electrode_config": "pouch cell (Bio-Sn-2 anode, single-sided NCM811 cathode)",
+          "cycle_number": 100,
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Energy_Density_Full_Cell"
+      ],
+      "performance_info": {
+        "Energy_Density_Full_Cell": [
+          {
+            "value": 1001.1,
+            "unit": "Wh/L",
+            "condition_id": "C001",
+            "basis": "volumetric",
+            "source_text": "the Bio-Sn-2NCM811 pouch cell would achieve a high volumetric energy density of 1001.1 Wh L - 1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Cycling stability was further assessed through galvanostatic charge/ discharge tests conducted with assembled half-cells ranging from 1 mAh mathrm - 2 mathrm 2.5 mathrm - 2 , with a current density of",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 4,
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Micro computed tomography micro-CT offers a non-destructive 3D imaging approach with sub-micron spatial resolution, allowing assessing material morphology, composition and 3D crack distribution 49, 50",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "cycle_number": 1,
+          "test_method": "micro-CT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To elucidate the advantages of the biomimetic structure, we examine the macro- and micro-mechanical behavior of the foils before and after lithiation. Soft metals like Sn foils struggle to withstand s",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "cycle_number": 1,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 2.5,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "After the first cycle at an areal capacity of 2.5 mAh cm− 2 , both the surface and backside of the Bio-Sn remain relatively flat compared to the Sn foil"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "As expected, the biomimetic structure significantly enhances the electrochemical performance. The reaction mechanism of the Sn anode primarily involves multi-step alloying reactions: Sn ↔ Li₂Sn₅ ↔ LiS",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "cycle_number": 1,
+          "test_method": "EIS",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C009",
+          "cycle_number": 50,
+          "test_method": "EIS",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 6.2,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "For pure Sn foils, the RSEI quickly rises from 6.2 Ω after the first cycle to 14.6 Ω after 50 cycles."
+          },
+          {
+            "value": 5.4,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "In contrast, mathtt R mathtt of Bio-Sn-2 increases only from 5.4 Ω to 10.1 Ω"
+          },
+          {
+            "value": 14.6,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "For pure Sn foils, the RSEI quickly rises from 6.2 Ω after the first cycle to 14.6 Ω after 50 cycles."
+          },
+          {
+            "value": 10.1,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "In contrast, mathtt R mathtt of Bio-Sn-2 increases only from 5.4 Ω to 10.1 Ω"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To evaluate full cell performance, Bio-Sn-2NCM811 and Bio-Sn-2 LFP cells were assembled in CR2025 coin cells. The Bio-Sn-2NCM811 cell demonstrates impressive capacity retention of approximately 80 % a",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 0.4,
+            "unit": "C"
+          },
+          "cycle_number": 170,
+          "electrode_config": "full cell (Bio-Sn-2||NCM811)",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C011",
+          "cycle_number": 110,
+          "electrode_config": "full cell (Bio-Sn-2||NCM811)",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C012",
+          "electrode_config": "full cell (Bio-Sn-2||NCM811)",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle",
+        "Cycle_Life_80_Percent_Capacity_Retention",
+        "Areal_Capacity",
+        "Energy_Density_Full_Cell"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 80,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 170,
+            "source_text": "approximately 80 % after 170 cycles at 0.4 C, with a high areal capacity of 2.68 mAh mathrm - 2"
+          }
+        ],
+        "Cycle_Life_80_Percent_Capacity_Retention": [
+          {
+            "value": 170,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "approximately 80 % after 170 cycles at 0.4 C"
+          },
+          {
+            "value": 110,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "source_text": "with the ability to cycle for over 110 cycles at 4 mAh mathrm - 2"
+          }
+        ],
+        "Areal_Capacity": [
+          {
+            "value": 2.68,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "with a high areal capacity of 2.68 mAh mathrm - 2"
+          },
+          {
+            "value": 4.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C002",
+            "source_text": "at 4 mAh mathrm - 2"
+          },
+          {
+            "value": 10.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C003",
+            "source_text": "at an areal capacity of 10 mAh mathrm - bar 2"
+          }
+        ],
+        "Energy_Density_Full_Cell": [
+          {
+            "value": 1127.2,
+            "unit": "Wh/L",
+            "condition_id": "C003",
+            "basis": "volumetric",
+            "source_text": "The volumetric energy density achieved is 1127.2 Wh L - 1 at an areal capacity of 10 mAh mathrm - bar 2"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Bio-Sn 100, 200, and 500 Sn foil layers was fabricated through a mechanical bonding process, as illustrated in Supplementary Fig. 1. The samples were designated as Bio-Sn-1, Bio-Sn-2, and Bio-Sn-5, co",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "test_method": "electron backscatter diffraction (EBSD)"
+        },
+        {
+          "condition_id": "C014",
+          "test_method": "tensile testing"
+        }
+      ],
+      "property_types": [
+        "Crystallite_Size"
+      ],
+      "extracted_info": {
+        "Crystallite_Size": [
+          {
+            "value": 2000,
+            "unit": "nm",
+            "method": "EBSD",
+            "source_text": "The longitudinal grain size of Bio-Sn-1, Bio-Sn-2, and Bio-Sn-5 were confirmed to be 2 µm, 1.3 µm, and 2.7 µm, respectively Fig. 2b, c."
+          },
+          {
+            "value": 1300,
+            "unit": "nm",
+            "method": "EBSD",
+            "source_text": "The longitudinal grain size of Bio-Sn-1, Bio-Sn-2, and Bio-Sn-5 were confirmed to be 2 µm, 1.3 µm, and 2.7 µm, respectively Fig. 2b, c."
+          },
+          {
+            "value": 2700,
+            "unit": "nm",
+            "method": "EBSD",
+            "source_text": "The longitudinal grain size of Bio-Sn-1, Bio-Sn-2, and Bio-Sn-5 were confirmed to be 2 µm, 1.3 µm, and 2.7 µm, respectively Fig. 2b, c."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "A 2D polycrystalline geometry was constructed based on experimental observations, with a rectangular simulation domain measuring 30.0 times 20.0 mu mathrm m 2 . The average grain size in Sn was set to",
+      "property_types": [
+        "Crystallite_Size",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Crystallite_Size": [
+          {
+            "value": 30,
+            "unit": "µm",
+            "method": "experimental observation / simulation input",
+            "source_text": "The average grain size in Sn was set to 30 µm"
+          },
+          {
+            "value": 2,
+            "unit": "µm",
+            "method": "experimental observation / simulation input (longitudinal grains)",
+            "source_text": "Bio-Sn-2 featured longitudinal grains of 2 µm, separated by intercalated SWCNT layers"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Sn",
+              "C"
+            ],
+            "method": "material designation",
+            "source_text": "Bio-Sn-2 (Sn/SWCNT composite)"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Importantly, the repeated accumulation and release of lithiation/ delithiation stress over cycles govern crack evolution and ultimately determine electrochemical failure. After 50 cycles at an areal c",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "cycle_number": 50,
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C016",
+          "cycle_number": 260,
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Energy_Density_Full_Cell",
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Energy_Density_Full_Cell": [
+          {
+            "value": 1127.2,
+            "unit": "Wh/L",
+            "basis": "volumetric",
+            "source_text": "This approach enabled a notable energy density of 1127.2 Wh L - 1 in alloytype foil anodes with stable cyclic performance."
+          }
+        ],
+        "Areal_Capacity": [
+          {
+            "value": 2.6,
+            "unit": "mAh/cm2",
+            "condition_id": "C002",
+            "source_text": "The Bio-Sn-2LFP cell, with a high areal capacity of 2.6 mAh cm− 2 , completed over 260 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The 50 μm Sn foil was cut into regular squares measuring 50 times 50 mm. It was then placed on a heating table set to 70 circ mathrm C . A 0.15 wt. % aqueous dispersion of single-walled carbon nanotub",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "temperature": {
+            "value": 70,
+            "unit": "C"
+          },
+          "foil_thickness": {
+            "value": 50,
+            "unit": "μm"
+          },
+          "square_size": "50 x 50 mm",
+          "swcnt_dispersion_concentration": {
+            "value": 0.15,
+            "unit": "wt%"
+          },
+          "swcnt_content": {
+            "value": 0.058,
+            "unit": "wt%"
+          },
+          "layers": [
+            100,
+            200,
+            300,
+            500
+          ],
+          "compaction_load": {
+            "value": 500,
+            "unit": "kN"
+          },
+          "loading_speed": {
+            "value": 2.5,
+            "unit": "kN/s"
+          },
+          "hold_time": {
+            "value": 300,
+            "unit": "s"
+          },
+          "rolling_temperature": "room temperature",
+          "processing": "wire cut into regular blocks and rolled at room temperature through multiple passes using a rolling mill"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Sn",
+              "C"
+            ],
+            "source_text": "Sn foil with SWCNT content of 0.058 wt. %"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Standard CR2025 coin-type cells were assembled for electrochemical measurements. Celgard 2400 was used as the separator, and the electrolyte comprised 1 M LiPF dissolved in a 1:1 vol ratio of ethylene",
+      "conditions": [
+        {
+          "condition_id": "C018",
+          "electrolyte": "1 M LiPF6 in EC:DEC (1:1 vol) + 10% FEC + 1% VC",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "GCD"
+        },
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 0.3,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.2,
+            "unit": "V"
+          },
+          "mass_loading": {
+            "value": 22.7,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    }
+  ]
+}

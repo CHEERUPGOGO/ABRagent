@@ -1,0 +1,487 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s40843-024-3041-3.md",
+  "component": "anode",
+  "paper_id": "10.1007/s40843-024-3041-3",
+  "doi": "10.1007/s40843-024-3041-3",
+  "material_id": "10.1007_s40843-024-3041-3",
+  "meta": {
+    "meta_title": "Porous carbon microspheres assembled by defective nitrogen and sulfur co-doped n",
+    "meta_authors": "Yutian Chen† , Jie You† , Xiaoran Zhao† , Mai Li, Xiaolei Han, Hui Liu, Hongran Sun, Xiaojun Wang, Huifang Li* , Peng Wang* and Zhiming Liu* *",
+    "meta_year": null
+  },
+  "materials": [
+    {
+      "name": "N,S co-doped porous carbon microspheres",
+      "short_name": "N,S-PCS",
+      "formula": "N,S-doped porous carbon",
+      "role": "novel",
+      "description": "Primary anode material; porous carbon microspheres composed of 2D nanosheets with nitrogen and sulfur co-doping, synthesized by hydrothermal carbonization followed by Fe7S8 nanoparticle etching.",
+      "material_id": "10.1007_s40843-024-3041-3_M001"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 8,
+  "items": [
+    {
+      "paragraph": "To further investigate the composition and valence of N, S-PCS, X-ray photoelectron spectroscopy XPS was used. In the total spectrum of XPS Fig. S5, some iron peaks can be found in the unetched porous",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "C",
+              "N",
+              "S",
+              "O"
+            ],
+            "method": "XPS",
+            "source_text": "after aqua regia etching, it was found that the Fe 2p peaks disappeared from the total spectrum, and all C, N, S, and O elements were present"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Similarly, we applied N, S-PCS to sodium-ion batteries to explore the source of good electrochemical reaction kinetics by CV and by calculating its capacitive contribution at different scan rates, the",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "CV",
+          "extra_info": "scan_rate_range: 0.2 to 1 s⁻¹"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In view of the excellent cycling and multiplication performance of N, S-PCS in lithium-ion batteries, we compounded it with sodium plates and assembled it into a CR2032 coin cell to further evaluate i",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrode_config": "half-cell (CR2032 coin cell with sodium plates)",
+          "voltage_range": {
+            "min": 0.02,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "vs. Na/Na+"
+          },
+          "test_method": "CV (cyclic voltammetry)",
+          "reference_electrode": "Na/Na+"
+        },
+        {
+          "condition_id": "C003",
+          "electrode_config": "half-cell (CR2032 coin cell with sodium plates)",
+          "test_method": "GITT (galvanostatic intermittent titration technique)",
+          "reference_electrode": "Na/Na+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Chemical_Diffusion_Coefficient_of_Li_GITT"
+      ],
+      "performance_info": {
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "value": "1e-9 to 1e-11",
+            "unit": "cm2/s",
+            "condition_id": "C002",
+            "source_text": "The D values were stable in the order of 10⁻⁹ to 10⁻¹¹ cm² s⁻¹, showing good electrochemical reaction kinetics."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To explore the source of electrochemical reaction kinetics for the high-rate performance of N, S-PCS electrodes in LIBs, the CV characteristics were investigated at different scan rates from 0.2 to 1 ",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Pseudocapacitive_Contribution_Ratio"
+      ],
+      "performance_info": {
+        "Pseudocapacitive_Contribution_Ratio": [
+          {
+            "value": 79.46,
+            "unit": "%",
+            "condition_id": "C001",
+            "scan_rate_mV_s": 0.7,
+            "source_text": "At a scan rate of 0.7 : mathrm : bar s - 1 , a 79.46 % capacitance contribution is exhibited."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "陈昱天† , 由杰† , 赵晓冉† , 李劢, 韩晓蕾, 刘辉, 孙洪冉, 王晓君,李慧芳 , 王朋 , 刘治明 摘要 碳基负极材料具有成本低、来源广、电导率高、形态易控制等特点, 被广泛应用于各种电池储能系统中. 然而, 目前市售的作为锂/钠离子电池活性材料的负极材料普遍存在体积变化大、倍率性能差的问题. 为此, 我们根据希夫碱反应原理, 通过简单的水热、碳化和刻蚀工艺, 合成了由二维纳米片组装",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 20,
+            "unit": "A/g"
+          },
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "A/g"
+          },
+          "cycle_number": 500
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "C",
+              "N",
+              "S"
+            ],
+            "source_text": "合成了由二维纳米片组装而成的N、S共掺杂多孔碳微球N、S-PCS"
+          }
+        ]
+      },
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 1045,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "在0.1和20 A g^{-1}的条件下, 其可逆容量分别达到1045和237 mAh g^{-1}"
+          },
+          {
+            "value": 237,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "在0.1和20 A g^{-1}的条件下, 其可逆容量分别达到1045和237 mAh g^{-1}"
+          },
+          {
+            "value": 157,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "在1 A g^{-1}的条件下循环500次后, 容量为157 mAh g^{-1}"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In summary, we used the Schiff base reaction principle to insert mathrm 7 mathrm S 8 nanoparticles into nitro-doped carbon porous microspheres by the hydrothermal method combined with the carbonizatio",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          }
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 20,
+            "unit": "A/g"
+          }
+        },
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 5,
+            "unit": "A/g"
+          }
+        },
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "A/g"
+          },
+          "cycle_number": 500
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 1045,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "reversible capacity can reach 1045 mAh g-1 when the current density is 0.1 A g-1"
+          },
+          {
+            "value": 237,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "when the current density reached 20 A/g, it had a high specific capacity of 237 mAh g-1"
+          },
+          {
+            "value": 263,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "reversible capacity up to 263 mAh g-1 after cycling at 5 A g-1 high current density"
+          },
+          {
+            "value": 200,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "with a capacity of 200 mAh g-1 at 1 A g-1 after 500 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Due to the advantages of N, S-PCS in terms of porous structure, it has significant advantages in terms of lithium storage capacity and mathrm transfer kinetics. The lithium plates were assembled as re",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "CV"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "cycle_number": 100,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 5,
+            "unit": "A/g"
+          },
+          "cycle_number": 300,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C014",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Chemical_Diffusion_Coefficient_of_Li_GITT"
+      ],
+      "performance_info": {
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "unit": "cm2/s",
+            "condition_id": "C004",
+            "source_text": "its D value varied stably in the order of magnitude of 10-9 – 10-14 cm2 s-1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The charge-discharge curve of the reaction is in good agreement with CV curve, as shown in Fig. 8b and Fig. S11. At 0.2 mathrm A mathrm g - 1 , the specific capacity of the last four cycles, except fo",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "test_method": "constant current charge/discharge"
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          },
+          "test_method": "constant current charge/discharge"
+        },
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "test_method": "constant current charge/discharge"
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "A/g"
+          },
+          "test_method": "constant current charge/discharge"
+        },
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "A/g"
+          },
+          "test_method": "constant current charge/discharge"
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 5,
+            "unit": "A/g"
+          },
+          "test_method": "constant current charge/discharge"
+        },
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 10,
+            "unit": "A/g"
+          },
+          "test_method": "constant current charge/discharge"
+        },
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": 20,
+            "unit": "A/g"
+          },
+          "test_method": "constant current charge/discharge"
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "A/g"
+          },
+          "cycle_number": 500,
+          "test_method": "constant current charge/discharge cycling"
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "test_method": "constant current charge/discharge rate recovery"
+        },
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          },
+          "test_method": "constant current charge/discharge cycling"
+        },
+        {
+          "condition_id": "C026",
+          "cycle_number": 2,
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 369,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The average specific capacities were 369 ... at current densities of 0.1 A g-1"
+          },
+          {
+            "value": 305,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "The average specific capacities were ... 305 ... at current densities of 0.2 A g-1"
+          },
+          {
+            "value": 254,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "The average specific capacities were ... 254 ... at current densities of 0.5 A g-1"
+          },
+          {
+            "value": 216,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "The average specific capacities were ... 216 ... at current densities of 1 A g-1"
+          },
+          {
+            "value": 182,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "The average specific capacities were ... 182 ... at current densities of 2 A g-1"
+          },
+          {
+            "value": 177,
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "The average specific capacities were ... 177 ... at current densities of 5 A g-1"
+          },
+          {
+            "value": 150,
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "The average specific capacities were ... 150 ... at current densities of 10 A g-1"
+          },
+          {
+            "value": 95,
+            "unit": "mAh/g",
+            "condition_id": "C008",
+            "source_text": "The average specific capacities were ... 95 ... at current densities of 20 A g-1"
+          },
+          {
+            "value": 307,
+            "unit": "mAh/g",
+            "condition_id": "C010",
+            "source_text": "When the current density returned to 0.1 A g-1, the electrodes could recover to 307 mAh g-1"
+          },
+          {
+            "value": 400,
+            "unit": "mAh/g",
+            "condition_id": "C011",
+            "source_text": "At 0.2 A g-1, the specific capacity of the last four cycles, except for the first one, was also stabilized at around 400 mAh g-1"
+          }
+        ]
+      }
+    }
+  ]
+}

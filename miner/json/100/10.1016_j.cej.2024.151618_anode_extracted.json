@@ -1,0 +1,662 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.cej.2024.151618.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.cej.2024.151618",
+  "doi": "10.1016/j.cej.2024.151618",
+  "material_id": "10.1016_j.cej.2024.151618",
+  "meta": {
+    "meta_title": "Head-Mounted coating on graphite host enabling highly reversible Li Plating/Stri",
+    "meta_authors": "Zhicui Song a,c , Jing Xue b , Chaohui Wei c , Qiang Zhao a,c , Aijun Zhou a,c , Jingze Li a,c,\\*",
+    "meta_year": "2024"
+  },
+  "materials": [
+    {
+      "name": "Gra",
+      "short_name": "Gra",
+      "formula": "C",
+      "role": "comparison",
+      "description": "Pristine graphite electrode without surface coating, prepared from commercial graphite powder.",
+      "material_id": "10.1016_j.cej.2024.151618_M001"
+    },
+    {
+      "name": "Gra-OH",
+      "short_name": "Gra-OH",
+      "formula": "C/EVOH",
+      "role": "novel",
+      "description": "Graphite electrode with head-mounted EVOH coating from 1 wt% solution, optimized concentration.",
+      "material_id": "10.1016_j.cej.2024.151618_M002"
+    },
+    {
+      "name": "0.5%-OH",
+      "short_name": "0.5%-OH",
+      "formula": "C/EVOH",
+      "role": "comparison",
+      "description": "Graphite electrode with EVOH coating from 0.5 wt% solution, insufficient passivation.",
+      "material_id": "10.1016_j.cej.2024.151618_M003"
+    },
+    {
+      "name": "2%-OH",
+      "short_name": "2%-OH",
+      "formula": "C/EVOH",
+      "role": "comparison",
+      "description": "Graphite electrode with EVOH coating from 2 wt% solution, thick coating causing high polarization.",
+      "material_id": "10.1016_j.cej.2024.151618_M004"
+    },
+    {
+      "name": "Gra-OH (commercial)",
+      "short_name": "Gra-OH (com.)",
+      "formula": "C/EVOH",
+      "role": "comparison",
+      "description": "Commercial graphite anode (5.8 mg cm⁻²) with EVOH coating from 1 wt% solution for practical testing.",
+      "material_id": "10.1016_j.cej.2024.151618_M005"
+    }
+  ],
+  "n_materials": 5,
+  "table_items": [],
+  "n_items": 16,
+  "items": [
+    {
+      "paragraph": "The fabrication process of the Gra-OH electrode is schematically illustrated in Fig. 1c. A simple and industry viable method of spray coating, was adopted to develop an insulating polymer film of EVOH",
+      "conditions": [
+        {
+          "condition_id": "C001"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "XPS analysis was implemented to visually demonstrate the successful coating of EVOH. As shown in Fig. S2a, the C 1 s spectra displayed two fitting peaks at the binding energy of 284.5 and 290.5 eV, as",
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "C-C bond (284.5 eV)",
+              "pi-pi excitation (290.5 eV)",
+              "C-OH functional group (285.4 eV) from trace amount in graphite powder",
+              "After EVOH coating: C-OH bond strengthened; O 1s spectrum confirms hydroxyl groups introduced"
+            ],
+            "state": "coated with EVOH",
+            "source_text": "XPS analysis was implemented to visually demonstrate the successful coating of EVOH. As shown in Fig. S2a, the C 1 s spectra displayed two fitting peaks at the binding energy of 284.5 and 290.5 eV, assigned to C C C-C bond and pi - pi excitation, respectively. Another peak located at 285.4 eV was related to the small amount of functional group of C-OH, originating from the trace amount of in the graphite powder 45. After EVOH coating, the C-OH bond was strengthened in Fig. S2b due to hydroxyl groups of EVOH, further supported by O 1 s spectrum in Fig. 2g. These observations indicated more hydroxyl groups were introduced by EVOH."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "mathrm N 2 adsorption/desorption isotherm measurement was performed to evaluate the porosity of Gra-OH electrode Fig. 2j. Taking the contribution proportion of Cu current collector into consideration,",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "test_method": "N2 adsorption/desorption isotherm"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Commercial graphite powder was purchased without further treatment. The pristine graphite electrode Gra was fabricated via a typical cast-coating method by mixing the graphite powder, super P, and pol",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "value": 80,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 5.0,
+            "unit": "mg/cm2"
+          },
+          "test_method": "cast-coating and vacuum drying"
+        },
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "test_method": "spray coating of EVOH solution and drying"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The uneven Li plating behavior and the poor cycling reversibility of Gra electrode were further confirmed by the side perspectives. As exhibited in Fig. S5i and bf j , for the Gra electrode with a 600",
+      "conditions": [
+        {
+          "condition_id": "C001"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 600,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "a 600 mAh/g capacity of Li"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To further understand the effect of EVOH coating layer on the electrochemical performance of the hybrid graphite-Li anode, the galvanostatic charge/discharge profiles 1st to 100th cycles were further ",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "test_method": "galvanostatic charge/discharge cycling",
+          "voltage_range": {
+            "min": 0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "reference_electrode": "Li/Li+",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The CEs of batteries are critical to evaluate the reversibility of lithiation and de-lithiation process 49 in CR2032-type half cells with the as-prepared Gra-OH anode and Li metal as the counter elect",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "voltage_range": {
+            "max": 1.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "commercial carbonate electrolyte system",
+          "cycle_number": 140,
+          "electrode_config": "half-cell (CR2032-type)",
+          "reference_electrode": "Li metal",
+          "test_method": "galvanostatic discharge–charge cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 3.0,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "lithiation capacity was controlled as 600 mAh/g 3 mAh mathrm - 2"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Two redox peaks can be distinctly observed in LSV curves for two electrodes Figure S6, further confirming the energy storage mechanism of the hybrid anode was a combination of Li stripping and Li dein",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 80,
+            "unit": "mV",
+            "condition_id": "C001",
+            "source_text": "for Li stripping 0.08 V"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The effects of different coating concentrations of EVOH 0.5 wt%, 2 wt% on the electrochemical properties of the hybrid anode were also investigated, denoted as 0.5 %–OH and 2 %–OH, respectively. In Fi",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 115.5,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "the R value of the 0.5 %–OH 115.5 Ω"
+          },
+          {
+            "value": 166.2,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "Gra-OH 166.2 Ω"
+          },
+          {
+            "value": 73.7,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "the pristine graphite electrode 73.7 Ω"
+          },
+          {
+            "value": 447.6,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "the R value of the 2 %–OH anode intensively increased to 447.6 Ω"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The corresponding galvanostatic charge/discharge profiles of the Gra/LiLFP and the Gra-OH/LiLFP full cells are displayed in Fig. 8c and d. Typically, the discharge curves of Gra-OH/LiLFP in the first ",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "electrode_config": "full_cell",
+          "cycle_number": 100,
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Symmetric cells were conducted to further assess the reversibility of the as-prepared hybrid graphite-Li anode. Particularly, both Gra-OH and Gra anode were pre-deposited with a constant Li capacity o",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 500,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "symmetrical Gra-OH delivered a stable cyclic stability with a flat voltage plateau for more than 500 h"
+          },
+          {
+            "value": 290,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "Gra anode based symmetric cell triggers larger polarization after 100 h and eventually showed an inferior lifespan of 290 h"
+          },
+          {
+            "value": 200,
+            "unit": "h",
+            "condition_id": "C002",
+            "source_text": "When cycled at a higher current density of 2 mA cm−2, the Gra-OH anode based symmetric cell can also show a stable cycling lifespan of 200 h"
+          },
+          {
+            "value": 40,
+            "unit": "h",
+            "condition_id": "C002",
+            "source_text": "Gra anode can only run for 40 h"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In summary, an electric insulating EVOH copolymer film was headmounted coated on the graphite anode surface Gra-OH via a simple spray coating method for Li-ion/Li metal hybrid batteries and Li-ion bat",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "electrolyte": "carbonate electrolyte",
+          "electrode_config": "coin cell, pouch cell"
+        },
+        {
+          "condition_id": "C013",
+          "mass_loading": {
+            "value": 10.5,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "cycle_number": 270
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 600,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Gra-OH/Li hybrid anodes with a reversible capacity of 600 mAh/g presented high CEs in both coin cell and pouch cell under carbonate electrolyte condition."
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 77.4,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 270,
+            "source_text": "when paired with high mass loading LFP cathode 10.5 mg cm− 2 , the hybrid Gra-OH/Li based full cell delivered outstanding capacity retention of 77.4 % even after 270 cycles."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Raman spectra were further carried out to investigate the degree of the surface microstructure degradation for graphite-Li metal hybrid anodes during cycling. As shown in Fig. 6a and b, the Gra-OH ano",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "temperature": {},
+          "c_rate_or_current": {},
+          "voltage_range": {},
+          "cycle_number": 0,
+          "mass_loading": {
+            "value": 5.8,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "rate capability test"
+        },
+        {
+          "condition_id": "C015",
+          "temperature": {},
+          "c_rate_or_current": {
+            "value": 340,
+            "unit": "mA/g"
+          },
+          "voltage_range": {},
+          "cycle_number": 200,
+          "mass_loading": {
+            "value": 5.8,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C016",
+          "temperature": {},
+          "c_rate_or_current": {},
+          "voltage_range": {},
+          "cycle_number": 2,
+          "mass_loading": {
+            "value": 5.8,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling (formation cycles)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Initial_Coulombic_Efficiency",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 84.5,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "showed higher CEs of 84.5 % and 98.1 % than pure graphite anode during SEI formation cycles."
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 89.7,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 200,
+            "source_text": "realizes a prolonged cycling life of over 200 cycles with a superior capacity retention of 89.7 %"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "The CR2032-type coin cells were assembled in an argon-filled glove box and then monitored by a Neware battery testing system to evaluate the corresponding electrochemical performances of the as-prepar",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "voltage_range": {
+            "min": 0.0,
+            "max": 1.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in EC/DEC (1:1 v/v) with 5 wt% FEC",
+          "electrode_config": "half_cell",
+          "test_method": "GITT"
+        },
+        {
+          "condition_id": "C018",
+          "voltage_range": {
+            "min": 0.0,
+            "max": 1.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in EC/DEC (1:1 v/v) with 5 wt% FEC",
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C019",
+          "electrolyte": "1 M LiPF6 in EC/DEC (1:1 v/v) with 5 wt% FEC",
+          "electrode_config": "symmetric_cell"
+        },
+        {
+          "condition_id": "C020",
+          "electrolyte": "1 M LiPF6 in EC/DEC (1:1 v/v) with 5 wt% FEC",
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C020",
+          "electrolyte": "1 M LiPF6 in EC/DEC (1:1 v/v) with 5 wt% FEC",
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C021",
+          "mass_loading": {
+            "value": 23.8,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1 M LiPF6 in EC/DEC (1:1 v/v) with 5 wt% FEC",
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C022",
+          "electrolyte": "1 M LiPF6 in EC/DEC (1:1 v/v) with 5 wt% FEC",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li metal",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To challenge the practical application, the full cells paired with commercial LFP cathode 10.5 mathrm - 2 were tested in the hybrid anode working mode N/P 1.90, Fig. 8 and the Li-ion working mode math",
+      "conditions": [
+        {
+          "condition_id": "C023",
+          "electrode_config": "half_cell",
+          "test_method": "pre-lithiation"
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": "0.1, 1, 2",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic rate test"
+        },
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "cycle_number": 270,
+          "electrode_config": "full_cell",
+          "test_method": "long-term galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 600,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "a pre-lithiation process was employed on the Gra or Gra-OH electrode with the required capacity by half-cells to ensure the hybrid Li anode with the specific capacity of 600 mAh/g in full cells."
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 132.2,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "Gra-OH/Li LFP full cell displayed a superb rate performance with a higher discharge capacity of 132.2 mAh/g when cycled under the high rate of 1C"
+          },
+          {
+            "value": 115.9,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "115.9 mAh/g when cycled under the high rate of 2C"
+          },
+          {
+            "value": 137.4,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "When switched back to 0.1C, a specific capacity of 137.4 mAh/g was recovered"
+          },
+          {
+            "value": 95.1,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "Gra/Li anode 95.1 mAh/g at 2C"
+          },
+          {
+            "value": 124.7,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "124.7 mAh/g at 0.1C"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 77.4,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 270,
+            "source_text": "maintaining a high capacity of 98.7 mAh/g even after 270 cycles with a high-capacity retention of 77.4 %"
+          }
+        ]
+      },
+      "condition_id": "C003"
+    },
+    {
+      "paragraph": "The corresponding electrochemical performances of the full cells in the Li-ion working mode was also tested. Specially, there was no lithiation process for the Gra-OH and the Gra anode prior to assemb",
+      "conditions": [
+        {
+          "condition_id": "C026",
+          "c_rate_or_current": {
+            "unit": "C"
+          },
+          "cycle_number": 210,
+          "electrode_config": "full cell with LFP cathode, no pre-lithiation of anode, Li-ion working mode",
+          "test_method": "galvanostatic charge/discharge cycling"
+        },
+        {
+          "condition_id": "C027",
+          "electrode_config": "pouch cell with NCM811 cathode and spray-coated commercial graphite anode (Gra-OH)",
+          "mass_loading": {
+            "value": 23.8,
+            "unit": "mg/cm2"
+          },
+          "test_method": "cycling (capacity retention over 400 cycles)"
+        },
+        {
+          "condition_id": "C028",
+          "electrode_config": "pouch cell with Li metal counter electrode, Gra-OH working electrode",
+          "reference_electrode": "Li metal",
+          "cycle_number": 55,
+          "test_method": "Li plating/stripping coulombic efficiency test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 48.3,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 210,
+            "source_text": "the Gra anode delivered the deteriorative cycling performance of a specific capacity of 58.2 mAh/g with a capacity retention of 48.3 % after experiencing 210 cycles"
+          },
+          {
+            "value": 74.5,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 210,
+            "source_text": "the Gra-OH electrode harvested an outstanding cycling behavior with a higher capacity retention of 74.5 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

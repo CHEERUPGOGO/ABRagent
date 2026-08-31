@@ -1,0 +1,665 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s40843-023-2637-0.md",
+  "component": "anode",
+  "paper_id": "10.1007/s40843-023-2637-0",
+  "doi": "10.1007/s40843-023-2637-0",
+  "material_id": "10.1007_s40843-023-2637-0",
+  "meta": {
+    "meta_title": "$\\pmb { \\complement o _ { 3 } 0 _ { 4 } }$ nanosheets anchored on C/Cu porous mi",
+    "meta_authors": "Xun Sun1,2†, Jun Zhang1†, Huaran Zhang1 , Yuliang ${ \\mathrm { C a o } } ^ { 1 ^ { * } }$ and Jinping Zhou1 1火",
+    "meta_year": null
+  },
+  "materials": [
+    {
+      "name": "C/Co3O4 composite microspheres (Co3O4 nanosheets on C/Cu porous microspheres)",
+      "short_name": "C/Co3O4",
+      "formula": "Co3O4/C/Cu",
+      "role": "novel",
+      "description": "Vertically aligned Co3O4 nanosheets in situ grown on N- and Cu-doped chitin-derived carbon/Cu microspheres, primary anode material studied.",
+      "material_id": "10.1007_s40843-023-2637-0_M001"
+    },
+    {
+      "name": "Co3O4 nanosheets",
+      "short_name": "Co3O4 NS",
+      "formula": "Co3O4",
+      "role": "comparison",
+      "description": "Pure Co3O4 nanosheets synthesized without C/Cu substrate, used as a control anode.",
+      "material_id": "10.1007_s40843-023-2637-0_M002"
+    },
+    {
+      "name": "C/Cu porous microspheres",
+      "short_name": "C/Cu",
+      "formula": "C/Cu composite",
+      "role": "comparison",
+      "description": "Chitin-derived carbon/copper composite microspheres, the substrate material tested separately to determine its capacity contribution.",
+      "material_id": "10.1007_s40843-023-2637-0_M003"
+    }
+  ],
+  "n_materials": 3,
+  "table_items": [],
+  "n_items": 17,
+  "items": [
+    {
+      "paragraph": "The surface of the prepared chitin boldsymbol mathrm 2 microspheres shows a distinct porous structure Fig. 2a, and the average diameter is 70 pm 4 mu mathrm m . Furthermore, the resulting C/Cu microsp",
+      "property_types": [
+        "Crystal_System"
+      ],
+      "extracted_info": {
+        "Crystal_System": [
+          {
+            "value": "cubic",
+            "source_text": "distinct diffraction peaks at 2 theta 43.4 circ , 50.4 circ , and 74.1 circ , which correspond to the 111, 200, and 220 crystal planes of Cu PDF#70-3039"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "For comparison, C/Cu microspheres were oxidized in air at 300 circ mathrm C with a heating rate of 2 circ mathrm C operatorname - 1 for 3 mathrm h to produce C/CuO microspheres. The mathrm C / microsp",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": 300,
+            "unit": "C"
+          },
+          "test_method": "oxidation in air"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The LAND-CT2011A battery measurement system measured the galvanostatic charge/discharge GCD curves from 0.01 - 3 mathrm V . The CHI660E electrochemistry workstation Shanghai Chenhua was used to conduc",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3,
+            "unit": "V"
+          },
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3,
+            "unit": "V"
+          },
+          "test_method": "cyclic voltammogram"
+        },
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "electrochemical impedance spectroscopy"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Cobalt acetate tetrahydrate 2.0 g and PVP 0.8 : mathrm g were added into 60 mathrm of a mixture of ethylene glycol EG and deionized water volume ratio 5921 and stirred for 30 mathrm to obtain a burgun",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "C/Co3O4",
+            "source_text": "Finally, the resulting precursor was heated at 400 circ mathrm C under argon for 2 mathrm h , and C/Cu microspheres loaded with mathrm 3 mathrm O 4 NS mathrm C / mathrm mathrm 3 mathrm O 4 were obtained."
+          },
+          {
+            "value": "Co3O4",
+            "source_text": "Conversely, pure mathrm 3 mathrm O 4 NSs were prepared without adding C/Cu microspheres, while other parameters remained constant."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The active materials mathrm C / mathrm mathrm 3 mathrm O 4 microspheres and the pure mathrm 3 mathrm O 4 mathrm , carboxymethyl cellulose, and Super P were mixed in deionized water with a mass ratio o",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "mass_loading": {
+            "value": 1.5,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1 M LiPF6 in EC:DMC:EMC (1:1:1 v/v)",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The final hydrothermal reaction and calcination treatment did not considerably affect the size and morphology of the microspheres. The obtained mathrm C / mathrm mathrm 3 mathrm O 4 composite microsph",
+      "property_types": [
+        "Interlayer_Spacing",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Interlayer_Spacing": [
+          {
+            "value": 0.23,
+            "unit": "nm",
+            "plane": "(222)",
+            "source_text": "A lattice spacing of 0.23 mathrm was calculated between two neighboring planes, which is attributed to the 222 lattice plane of mathrm 3 mathrm O 4"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Co3O4",
+            "source_text": "mathrm 3 mathrm O 4 NS are evenly distributed on the surface of the microspheres and grow on the carbon walls of the microsphere internal channels"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "533.5 mathrm are attributed to Co–O, Cu–O, mathrm C mathrm O , and C–O/C–OH 49, respectively. The two prominent peaks at 780.3 and 795.3 mathrm in the high-resolution Co 2p XPS spectrum of mathrm C / ",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "C",
+              "O",
+              "Co",
+              "Cu"
+            ],
+            "method": "XPS",
+            "source_text": "attributed to Co–O, Cu–O, C O , and C–O/C–OH … high-resolution Co 2p XPS spectrum of C/Co3O4 … high-resolution Cu 2p XPS spectra of C/Cu and C/Co3O4"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "We investigated the CV curves of the mathrm C / mathrm mathrm 3 mathrm O 4 electrode at various scan rates Fig. 6a to further analyze the lithium storage mechanism in the electrode. These curves retai",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To demonstrate that the presence of Cu in C/Cu microspheres provides nucleation sites for the growth of mathrm 3 mathrm O 4 NS, the pure porous CMs were prepared. The SEM image in Fig. S9 shows the su",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "test_method": "solvothermal reaction"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "C",
+            "source_text": "the XPS spectrum and XRD pattern Fig. 4c, d prove that Cu is completely removed from CMs."
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "C"
+            ],
+            "method": "XPS, XRD",
+            "source_text": "the XPS spectrum and XRD pattern Fig. 4c, d prove that Cu is completely removed from CMs."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The charge transfer behavior and mathrm diffusion kinetics in the electrode materials were evaluated using EIS tests. Fig. 6e describes the EIS curves of mathrm C / mathrm mathrm 3 mathrm O 4 and math",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "cycle_number": 15,
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 67.3,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "the R ct value of the C/Co3O4 electrode left 67.3 Omega right was substantially lower"
+          },
+          {
+            "value": 126.5,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "that of the Co3O4 NS electrode 126.5 Omega"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The electrochemical performances of mathrm C / mathrm mathrm 3 mathrm O 4 as an anode material for LIBs were assessed. The lithium storage performance of mathrm 3 mathrm O 4 NS was likewise evaluated ",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "temperature": {},
+          "c_rate_or_current": {},
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "mass_loading": {},
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "CV at 0.2 mV/s"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The mathrm C / mathrm mathrm 3 mathrm O 4 electrode exhibits an excellent rate performance at various discharge/charge current densities. As illustrated in Fig. 5c, the mathrm C / mathrm mathrm 3 math",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": [
+              100,
+              200,
+              500,
+              1000,
+              2000,
+              5000
+            ],
+            "unit": "mA/g"
+          },
+          "test_method": "galvanostatic charge/discharge, rate test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Rate_Recovery_Percent"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 1140,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the mathrm C / mathrm mathrm 3 mathrm O 4 electrode exhibits high average charging capacities of 1140 ... mA h mathbf g - 1 at the current densities of 100 ... mathrm g - 1"
+          },
+          {
+            "value": 1050,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the mathrm C / mathrm mathrm 3 mathrm O 4 electrode exhibits high average charging capacities of ... 1050 ... mA h mathbf g - 1 at the current densities of ... 200 ... mathrm g - 1"
+          },
+          {
+            "value": 938,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the mathrm C / mathrm mathrm 3 mathrm O 4 electrode exhibits high average charging capacities of ... 938 ... mA h mathbf g - 1 at the current densities of ... 500 ... mathrm g - 1"
+          },
+          {
+            "value": 867,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the mathrm C / mathrm mathrm 3 mathrm O 4 electrode exhibits high average charging capacities of ... 867 ... mA h mathbf g - 1 at the current densities of ... 1000 ... mathrm g - 1"
+          },
+          {
+            "value": 730,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the mathrm C / mathrm mathrm 3 mathrm O 4 electrode exhibits high average charging capacities of ... 730 ... mA h mathbf g - 1 at the current densities of ... 2000 ... mathrm g - 1"
+          },
+          {
+            "value": 616,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the mathrm C / mathrm mathrm 3 mathrm O 4 electrode exhibits high average charging capacities of ... 616 mA h mathbf g - 1 at the current densities of ... 5000 mathrm g - 1"
+          }
+        ],
+        "Rate_Recovery_Percent": [
+          {
+            "value": 85.1,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "Even after discharge/charge processes at different current densities, the mathrm C / mathrm mathrm 3 mathrm O 4 electrode could maintain a stable and high charge-specific capacity of sim 970 mathrm mathrm h mathrm g - 1 when the current density was dropped to 100 mathrm - 1 again, suggesting the superior cyclic stability and reversibility of the electrode."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In this work, composite microspheres firmly coated with vertically aligned and interlaced mathrm 3 mathrm O 4 NS were synthesized using C/ Cu microspheres with a multiscale structure as the substrates",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "cycle_number": 200,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 1000,
+            "unit": "mA/g"
+          },
+          "cycle_number": 800,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "C/Co3O4",
+            "state": "composite microspheres",
+            "source_text": "composite microspheres firmly coated with vertically aligned and interlaced Co3O4 NS were synthesized using C/Cu microspheres with a multiscale structure as the substrates"
+          },
+          {
+            "value": "Co3O4",
+            "state": "nanosheets",
+            "source_text": "vertically aligned and interlaced Co3O4 NS"
+          },
+          {
+            "value": "C/Cu",
+            "state": "porous microspheres substrate",
+            "source_text": "C/Cu microspheres with a multiscale structure as the substrates"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "C",
+              "Co",
+              "O",
+              "Cu",
+              "N"
+            ],
+            "source_text": "N- and Cu-doped chitin-derived carbon substrate; Co3O4 nanosheets on C/Cu porous microspheres"
+          }
+        ]
+      },
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 907,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the specific capacity of ∼ 907 mAh g⁻¹ at a current density of 100 mA g⁻¹ after 200 cycles"
+          },
+          {
+            "value": 944,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "∼ 944 mAh g⁻¹ at a current density of 1000 mA g⁻¹ after 800 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "孙逊1,2†, 张珺1†, 张华然1 , 曹余良1 , 周金平1 摘要 过渡金属氧化物TMOs用作电极材料时, 会在循环过程中产生严重的体积变化, 并且其自身的导电率也较低, 因此它的电化学性能较差. 设计和开发独特的TMOs纳米结构并将其与导电碳基底相结合是改善其电化学性能的有效策略. 本工作中, 我们设计了一种C/Cu多孔微球, 并通过原位合成在碳壁上垂直生长 mathrm 3 mathrm ",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Co3O4",
+            "state": "nanosheet",
+            "source_text": " mathrm 3 mathrm O 4 纳米片"
+          },
+          {
+            "value": "C/Cu",
+            "state": "porous microsphere",
+            "source_text": "C/Cu多孔微球"
+          },
+          {
+            "value": "C/Co3O4",
+            "state": "composite microsphere",
+            "source_text": " mathrm C / mathrm mathrm 3 mathrm O 4 复合多孔微球"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To further analyze the diffusion behavior of mathrm , the diffusion coefficient of mathrm D mathrm in the electrode can be investigated as follows 66: D mathrm L i R 2 T 2 / 2 A 2 n 4 F 4 C 2 sigma 2,",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "test_method": "EIS (Electrochemical Impedance Spectroscopy) for Li⁺ diffusion coefficient determination"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The cycle performance of the mathrm C / mathrm mathrm 3 mathrm O 4 electrode was examined at current densities of 100 and 1000 mathrm mathrm g - 1 . The results of the mathrm 3 mathrm O 4 mathrm elect",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 1000,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Initial_Coulombic_Efficiency",
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 1511.2,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial discharge ... capacity of 1511.2 ... for the C/Co3O4 electrode"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 66.5,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "initial Coulomb efficiency of 66.5 %"
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 98,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the Coulomb efficiency gradually increases, reaches more than 98 % after several cycles, and remains stable"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 907,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "reversible charge-specific capacity of sim 907 mathrm mathrm h mathrm g - 1 after 200 cycles"
+          },
+          {
+            "value": 944,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "specific capacity ... stabilizes at sim 944 mathrm mathrm h mathrm g - 1"
+          },
+          {
+            "value": 381,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "only 381 mA h mathbf g - 1 of the charge-specific capacity is retained after 200 cycles at a current density of 100 mathrm m bar mathrm A mathrm g - 1"
+          },
+          {
+            "value": 266,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "C/Cu electrode shows the specific capacities of only 266 and 173 mA h mathbf g - 1 after 200 cycles at 100 mathrm - 1"
+          },
+          {
+            "value": 173,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "173 mA h mathbf g - 1 after ... 800 cycles at 1000 mathrm mathrm g - 1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "i k 1 v 1 / 2 k 2 v, tag 7 i / v 1 / 2 k 1 k 2 v 1 / 2, tag 8 where k 1 and k 2 represent variable constants, k 1 nu 1 / 2 is the contribution of diffusivity control, and k 2 nu represents the contrib",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "test_method": "Cyclic voltammetry (CV)"
+        },
+        {
+          "condition_id": "C016",
+          "test_method": "Cyclic voltammetry (CV)"
+        },
+        {
+          "condition_id": "C016",
+          "test_method": "Cyclic voltammetry (CV)"
+        },
+        {
+          "condition_id": "C016",
+          "test_method": "Cyclic voltammetry (CV)"
+        },
+        {
+          "condition_id": "C016",
+          "test_method": "Cyclic voltammetry (CV)"
+        },
+        {
+          "condition_id": "C016",
+          "test_method": "Cyclic voltammetry (CV)"
+        },
+        {
+          "condition_id": "C016",
+          "test_method": "Cyclic voltammetry (CV)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Pseudocapacitive_Contribution_Ratio"
+      ],
+      "performance_info": {
+        "Pseudocapacitive_Contribution_Ratio": [
+          {
+            "value": 49,
+            "unit": "%",
+            "condition_id": "C001",
+            "scan_rate_mV_s": 0.2,
+            "source_text": "For scanning rates of 0.2, 0.4, 0.6, 0.8, 1, 2, and 5 mV s^{-1}, the percentage of the capacitive contribution of the C/Co3O4 electrode is obtained to be 49%, 63%, 70%, 72%, 75%, 78%, and 84%, respectively."
+          },
+          {
+            "value": 63,
+            "unit": "%",
+            "condition_id": "C002",
+            "scan_rate_mV_s": 0.4,
+            "source_text": "For scanning rates of 0.2, 0.4, 0.6, 0.8, 1, 2, and 5 mV s^{-1}, the percentage of the capacitive contribution of the C/Co3O4 electrode is obtained to be 49%, 63%, 70%, 72%, 75%, 78%, and 84%, respectively."
+          },
+          {
+            "value": 70,
+            "unit": "%",
+            "condition_id": "C003",
+            "scan_rate_mV_s": 0.6,
+            "source_text": "For scanning rates of 0.2, 0.4, 0.6, 0.8, 1, 2, and 5 mV s^{-1}, the percentage of the capacitive contribution of the C/Co3O4 electrode is obtained to be 49%, 63%, 70%, 72%, 75%, 78%, and 84%, respectively."
+          },
+          {
+            "value": 72,
+            "unit": "%",
+            "condition_id": "C004",
+            "scan_rate_mV_s": 0.8,
+            "source_text": "For scanning rates of 0.2, 0.4, 0.6, 0.8, 1, 2, and 5 mV s^{-1}, the percentage of the capacitive contribution of the C/Co3O4 electrode is obtained to be 49%, 63%, 70%, 72%, 75%, 78%, and 84%, respectively."
+          },
+          {
+            "value": 75,
+            "unit": "%",
+            "condition_id": "C005",
+            "scan_rate_mV_s": 1.0,
+            "source_text": "For scanning rates of 0.2, 0.4, 0.6, 0.8, 1, 2, and 5 mV s^{-1}, the percentage of the capacitive contribution of the C/Co3O4 electrode is obtained to be 49%, 63%, 70%, 72%, 75%, 78%, and 84%, respectively."
+          },
+          {
+            "value": 78,
+            "unit": "%",
+            "condition_id": "C006",
+            "scan_rate_mV_s": 2.0,
+            "source_text": "For scanning rates of 0.2, 0.4, 0.6, 0.8, 1, 2, and 5 mV s^{-1}, the percentage of the capacitive contribution of the C/Co3O4 electrode is obtained to be 49%, 63%, 70%, 72%, 75%, 78%, and 84%, respectively."
+          },
+          {
+            "value": 84,
+            "unit": "%",
+            "condition_id": "C007",
+            "scan_rate_mV_s": 5.0,
+            "source_text": "For scanning rates of 0.2, 0.4, 0.6, 0.8, 1, 2, and 5 mV s^{-1}, the percentage of the capacitive contribution of the C/Co3O4 electrode is obtained to be 49%, 63%, 70%, 72%, 75%, 78%, and 84%, respectively."
+          },
+          {
+            "value": 84.3,
+            "unit": "%",
+            "condition_id": "C007",
+            "scan_rate_mV_s": 5.0,
+            "source_text": "At a scan rate of 5.0 mV s^{-1}, the capacitive contribution of the C/Co3O4 electrode is 84.3% according to the darkened area in Fig. 6c."
+          }
+        ]
+      },
+      "condition_id": "C007"
+    }
+  ]
+}

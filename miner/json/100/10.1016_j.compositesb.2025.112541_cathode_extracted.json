@@ -1,0 +1,669 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.compositesb.2025.112541.md",
+  "component": "cathode",
+  "paper_id": "10.1016/j.compositesb.2025.112541",
+  "doi": "10.1016/j.compositesb.2025.112541",
+  "material_id": "10.1016_j.compositesb.2025.112541",
+  "meta": {
+    "meta_title": "Dry-processed cathode with $\\mathrm { L i ^ { + } }$ -carrier composite binder f",
+    "meta_authors": "Fengqian Wang a,b , Qigao Han b , Yaqing Guo a,b , Shuaijing Ji a,b , Junwei Wang a,b , Keyao Li c , Liquan Tian c , Shun Tang b , Weixin Zhang b,\\* , Shijie Cheng b , Yuan-cheng Cao b ， b ,",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "cathode material",
+      "short_name": "10.1016_j.compositesb.2025.112541",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.compositesb.2025.112541"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 19,
+  "items": [
+    {
+      "paragraph": "（a The comparative cycling performances of the cells at 0.5C, as shown in Fig. 3d, reveal that the cell featuring PTFE suffers severe capacity loss during cycling. The capacity decay is attributed to ",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "cycle_number": 250,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 28.9,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 250,
+            "source_text": "The capacity retention rates of the batteries with PTFE, LCB-1, LCB-2, and LCB-3 at the 250th cycle at 0.5C is 28.9 %, 80.8 %, 41.4 %, and 46.7 %, respectively."
+          },
+          {
+            "value": 80.8,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 250,
+            "source_text": "The capacity retention rates of the batteries with PTFE, LCB-1, LCB-2, and LCB-3 at the 250th cycle at 0.5C is 28.9 %, 80.8 %, 41.4 %, and 46.7 %, respectively."
+          },
+          {
+            "value": 41.4,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 250,
+            "source_text": "The capacity retention rates of the batteries with PTFE, LCB-1, LCB-2, and LCB-3 at the 250th cycle at 0.5C is 28.9 %, 80.8 %, 41.4 %, and 46.7 %, respectively."
+          },
+          {
+            "value": 46.7,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 250,
+            "source_text": "The capacity retention rates of the batteries with PTFE, LCB-1, LCB-2, and LCB-3 at the 250th cycle at 0.5C is 28.9 %, 80.8 %, 41.4 %, and 46.7 %, respectively."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To investigate the influences of fibrous binders on the structural stability after prolonged cycling, SEM images were acquired to analyze the surface and cross-sectional morphologies of the dry cathod",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "cycle_number": 250
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Galvanostatic intermittent titration GITT studies were conducted to investigate the mathrm de-intercalation behaviours of the samples. Remarkably, the electrochemical kinetics of NCM523 with LCB-1 are",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ion_Diffusion_Coefficient"
+      ],
+      "performance_info": {
+        "Ion_Diffusion_Coefficient": [
+          {
+            "value": 1.272e-07,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "source_text": "Based on theoretical analysis, the calculated D of NCM523 with LCB-1 at the discharge plateau is 1.272 times 10 - 7 mathrm 2 s - 1"
+          },
+          {
+            "value": 3.168e-08,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "source_text": "those of NCM523 with LCB-2 ... 3.168 × 10−8"
+          },
+          {
+            "value": 2.668e-08,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "source_text": "LCB-3 ... 2.668 × 10−8"
+          },
+          {
+            "value": 1.224e-08,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "source_text": "PTFE 1.224 times 10 - 8 mathrm 2 s - 1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "SEM and cross-sectional SEM images of the prepared dry LCB cathode Fig. 2a–c reveal the presence of fibers evenly distributed on the surfaces of the NCM and SP particles and connected to form a dense,",
+      "conditions": [
+        {
+          "condition_id": "C004"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Prior to cycling, the use of PTFE and LCB samples in preparing the original composite cathodes results in good levels of adhesion between the components within the electrodes. Therefore, hot pressing ",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "cycle_number": 250
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The dry LCB-1 cathode exhibits good cycling stability, with an average Coulombic efficiency of 99.45 % and an initial discharge capacity retention of 80.8 % after 250 cycles at 0.5C, whereas that of s",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "cycle_number": 250
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "cycle_number": 150,
+          "mass_loading": {
+            "value": 43.44,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "single-layer pouch cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Initial_Coulombic_Efficiency",
+        "Capacity_Retention_Ratio",
+        "Gravimetric_Energy_Density"
+      ],
+      "performance_info": {
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 99.45,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "average Coulombic efficiency of 99.45 %"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 80.8,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 250,
+            "source_text": "initial discharge capacity retention of 80.8 % after 250 cycles at 0.5C"
+          },
+          {
+            "value": 85.5,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 150,
+            "source_text": "85.5 % of the capacity is retained after 150 cycles at 0.1C"
+          }
+        ],
+        "Gravimetric_Energy_Density": [
+          {
+            "value": 300,
+            "unit": "Wh/kg",
+            "condition_id": "C002",
+            "source_text": "the single-layer pouch cell can realise approximately 300 mathbf - 1 : , and 85.5 % of the capacity is retained after 150 cycles at 0.1C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Nanoindentation was used to further investigate the mechanical properties of the composite binder and moduli, hardnesses, and elasticities of the composite cathodes. To ensure the reliabilities of the",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "test_method": "nanoindentation"
+        },
+        {
+          "condition_id": "C008",
+          "test_method": "tensile test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Binder fibrillation significantly affects battery performance 29,40. Scanning electron microscopy SEM images of PTFE after jet and ball milling are shown in Fig. S1. After jet milling, the PTFE partic",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "temperature": {
+            "value": 100,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C010",
+          "test_method": "LSV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "X-ray photoelectron spectroscopy XPS of the NCM523 surface was performed before and after 250 cycles at 0.5C to further understand the effects of the CEI properties and mechanism of performance enhanc",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "cycle_number": 250
+        }
+      ],
+      "property_types": [
+        "XPS_ROCO2Li_Peak"
+      ],
+      "extracted_info": {
+        "XPS_ROCO2Li_Peak": [
+          {
+            "unit": "at%",
+            "state": "after 250 cycles",
+            "source_text": "O─C––O 289.6 eV"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "F XPS was conducted Fig. 7a and b, and new semi-ionic C–F bonds are detected within the composite binder-applied cell before cycling. Similarly, the F 1s spectrum of NCM523 with LCB after cycling can ",
+      "property_types": [
+        "LixPOyFz"
+      ],
+      "extracted_info": {
+        "LixPOyFz": [
+          {
+            "unit": "at%",
+            "source_text": "LixPFyOz 687.8 eV"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Before assembling the battery, we evaluated the ionic conductivities of the different binders in the electrolyte, and LCB-1 exhibits the highest ionic conductivity of 2.85 times 10 - 4 mathrm S mathrm",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 53.8,
+            "unit": "mg/cm2"
+          },
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 53.8,
+            "unit": "mg/cm2"
+          },
+          "test_method": "galvanostatic discharge profiles"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Rate_Capability_Profile",
+        "Charge_Discharge_Voltage_Gap"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 170.4,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The dry LCB-1 cathode displays the highest discharge capacity of 170.4 mAh g−1 at 0.1C"
+          }
+        ],
+        "Rate_Capability_Profile": [
+          {
+            "value": [
+              170.4,
+              155.7
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "discharge capacities at 0.1C and 0.5C are 170.4 and 155.7 mAh g−1, respectively."
+          }
+        ],
+        "Charge_Discharge_Voltage_Gap": [
+          {
+            "value": 0.12,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "the lowest polarization among those of the LIBs is that of the LIB with the LCB-1 NCM523 cathode of 0.12 V."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "All electrochemical measurements were conducted using stainlesssteel 2025 coin cells and a single-layer pouch cell with the cathode 43 times 53 mm and anode 47 times 57 mm and an appropriate injection",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "electrode_config": "full-cell (coin cell and single-layer pouch cell)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "As the striking differences in the cell cycling capacities and rate capabilities cannot be explained by mass transport within the electrode or electrolyte alone, we focused on the charge transfer dyna",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "test_method": "EIS",
+          "electrode_config": "dry NCM523 with composite binder (LCB-1) cathode"
+        },
+        {
+          "condition_id": "C016",
+          "test_method": "EIS",
+          "electrode_config": "dry NCM523 with PTFE binder cathode"
+        },
+        {
+          "condition_id": "C017",
+          "test_method": "EIS",
+          "electrode_config": "5% SP and LCB-1 cell cathode"
+        },
+        {
+          "condition_id": "C018",
+          "test_method": "cycling",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Charge_Transfer_Resistance"
+      ],
+      "performance_info": {
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 40.0,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "The average operatorname R operatorname values of the NCM cathode with LCB-1 at different potentials during charging/discharging 40/1.8 Ω are considerably lower... [charging value 40]"
+          },
+          {
+            "value": 1.8,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "The average operatorname R operatorname values of the NCM cathode with LCB-1 at different potentials during charging/discharging 40/1.8 Ω are considerably lower... [discharging value 1.8]"
+          },
+          {
+            "value": 598.0,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "The average operatorname R operatorname values of the NCM cathode with PTFE 598/44 Ω ... [charging value 598]"
+          },
+          {
+            "value": 44.0,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "The average operatorname R operatorname values of the NCM cathode with PTFE 598/44 Ω ... [discharging value 44]"
+          },
+          {
+            "value": 40.0,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": "The 5 % SP and LCB-1 cell ... displays a higher average operatorname R operatorname 40 Ω during charging"
+          },
+          {
+            "value": 1.8,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": "The 5 % SP and LCB-1 cell ... displays ... the lowest average mathrm R 1.8 Ω during discharging"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In-situ EIS tests: In situ EIS was conducted using an Autolab PGSTAT302 N Metrohm, Herisau, Switzerland at 25 circ mathrm C , , employing a Li plate as the anode and various NCM materials as the catho",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C020",
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "CV, LSV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In summary, we developed LCB with good elasticity and adhesive properties for use in the solvent-free fabrication of dry cathodes. Unlike adhesive-insulated PTFE, which is commonly used in dry composi",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "mass_loading": {
+            "value": 53.8,
+            "unit": "mg/cm2"
+          },
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C022",
+          "mass_loading": {
+            "value": 53.8,
+            "unit": "mg/cm2"
+          },
+          "cycle_number": 250
+        },
+        {
+          "condition_id": "C023",
+          "mass_loading": {
+            "value": 53.8,
+            "unit": "mg/cm2"
+          }
+        },
+        {
+          "condition_id": "C024",
+          "mass_loading": {
+            "value": 53.8,
+            "unit": "mg/cm2"
+          },
+          "cycle_number": 150,
+          "electrode_config": "full_cell",
+          "test_method": "cycled"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Capacity_Retention_Ratio",
+        "Rate_Capability_Profile"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 170.4,
+            "unit": "mAh/g",
+            "condition_id": "C1",
+            "source_text": "discharge capacity 170.4 mAh g - 1 ... at 0.1C"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 80.8,
+            "unit": "%",
+            "condition_id": "C2",
+            "cycle_number": 250,
+            "source_text": "cycle stability 80.8 % ... capacity retention after 250 cycles at 0.5C"
+          },
+          {
+            "value": 85.5,
+            "unit": "%",
+            "condition_id": "C4",
+            "cycle_number": 150,
+            "source_text": "capacity of the pouch cell remained at 85.5 % after 150 cycles at 0.1C"
+          }
+        ],
+        "Rate_Capability_Profile": [
+          {
+            "value": [
+              126.7
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C3",
+            "source_text": "rate capacity 126.7 mAh g - 1 at 2C"
+          }
+        ]
+      },
+      "condition_id": "C1"
+    },
+    {
+      "paragraph": "Material characterizations: The morphology was observed using scanning electron microscope SEM JSM-7100F, JEOL, Tokyo, Japan at an accelerating voltage of 20 kV, and Fourier infrared spectroscopy FTIR",
+      "conditions": [
+        {
+          "condition_id": "C025",
+          "temperature": {
+            "value": "30 to 800",
+            "unit": "°C"
+          },
+          "test_method": "TG/DSC"
+        },
+        {
+          "condition_id": "C026",
+          "electrolyte": "electrolyte",
+          "test_method": "capillary rise method"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "GITT Measurements: The 2025 coin cells based on NCM523 cath odes with the PTFE or PTFE/PAN binder were measured using a LAND CT2001A in the range 2.8–4.3 V. Each polarization cycle involved applying c",
+      "conditions": [
+        {
+          "condition_id": "C027",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Materials and electrode preparation: A dry mathrm 0.5 mathrm 0.2 mathrm 0.3 electrode purchased from Canrd New Energy Technology, Dongguan, China and Li plate, Celgard 2500, and 1 M mathrm 6 in ethyl ",
+      "conditions": [
+        {
+          "condition_id": "C028",
+          "electrolyte": "1 M LiPF6 in ethyl methyl carbonate (EMC) and fluoroethylene carbonate (FEC) in a volumetric ratio of 9:1",
+          "reference_electrode": "Li/Li+",
+          "electrode_config": "half_cell",
+          "separator": "Celgard 2500",
+          "mass_loading": {
+            "value": 53.8,
+            "unit": "mg/cm2"
+          },
+          "electrode_thickness": {
+            "value": 200,
+            "unit": "μm"
+          },
+          "conductive_additive_binder_ratio": "NCM523:SP:PTFE:PAN = 95:3:2:0, 95:3:1.5:0.5, 95:3:1:1, 95:3:0.5:1.5, 93:5:1.5:0.5"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Cycle and rate performance tests: LAND CT2001A was used in the charge/discharge studies at 2.8–4.3 V, and the rate performance was measured at currents of 0.1 , 0.2 , 0.5 , 1 , 2 , and 0.2 mathrm C le",
+      "conditions": [
+        {
+          "condition_id": "C029",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "test_method": "galvanostatic charge/discharge cycling"
+        },
+        {
+          "condition_id": "C030",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "test_method": "rate performance test at 0.1, 0.2, 0.5, 1, 2, and 0.2 C"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    }
+  ]
+}

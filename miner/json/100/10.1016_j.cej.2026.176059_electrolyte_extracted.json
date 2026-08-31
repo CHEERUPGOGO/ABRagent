@@ -1,0 +1,1415 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.cej.2026.176059.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/j.cej.2026.176059",
+  "doi": "10.1016/j.cej.2026.176059",
+  "material_id": "10.1016_j.cej.2026.176059",
+  "meta": {
+    "meta_title": "Synergistic $\\mathrm { L i N O _ { 3 } / F E C }$ modification to nonflammable L",
+    "meta_authors": "Chun-Jern Pan a,d,\\* , Chia-Ho Liu a , Shih-Che Lin a , Chun-I Lee b , Chia-Hsin Wang e , Bing-Joe Hwang c,d,e,\\*\\*",
+    "meta_year": "2026"
+  },
+  "materials": [
+    {
+      "name": "LiOTf in TMP (1:8 molar ratio)",
+      "short_name": "LiOTf",
+      "formula": "LiOTf:TMP 1:8",
+      "role": "baseline",
+      "description": "Baseline electrolyte: lithium triflate dissolved in trimethyl phosphate at a 1:8 molar ratio.",
+      "material_id": "10.1016_j.cej.2026.176059_M001"
+    },
+    {
+      "name": "LiOTf in TMP (1:6 molar ratio)",
+      "short_name": "LiOTf-1:6",
+      "formula": "LiOTf:TMP 1:6",
+      "role": "comparison",
+      "description": "Preliminary variant of LiOTf/TMP at 1:6 molar ratio evaluated for comparison.",
+      "material_id": "10.1016_j.cej.2026.176059_M002"
+    },
+    {
+      "name": "LiOTf/NO3 in TMP (0.8:0.2:8 molar ratio)",
+      "short_name": "LiOTf/NO3",
+      "formula": "LiOTf:LiNO3:TMP 0.8:0.2:8",
+      "role": "comparison",
+      "description": "Electrolyte with 20 mol% LiOTf replaced by LiNO3, maintaining total salt-to-TMP molar ratio of 1:8.",
+      "material_id": "10.1016_j.cej.2026.176059_M003"
+    },
+    {
+      "name": "LiOTf-FEC (1:8 LiOTf:TMP + 5 wt% FEC)",
+      "short_name": "LiOTf-FEC",
+      "formula": "LiOTf:TMP 1:8 + 5 wt% FEC",
+      "role": "comparison",
+      "description": "Baseline LiOTf/TMP 1:8 with 5 wt% fluoroethylene carbonate additive.",
+      "material_id": "10.1016_j.cej.2026.176059_M004"
+    },
+    {
+      "name": "LiOTf/NO3-FEC (0.8:0.2:8 LiOTf:LiNO3:TMP + 5 wt% FEC)",
+      "short_name": "LiOTf/NO3-FEC",
+      "formula": "LiOTf:LiNO3:TMP 0.8:0.2:8 + 5 wt% FEC",
+      "role": "novel",
+      "description": "Novel non-flammable electrolyte with LiNO3 substitution and FEC additive, designed for lithium metal batteries.",
+      "material_id": "10.1016_j.cej.2026.176059_M005"
+    },
+    {
+      "name": "1M LiPF6 in EC/DEC (1:1 v/v)",
+      "short_name": "LiPF6-EC/DEC (1:1)",
+      "formula": "1M LiPF6 EC/DEC (1:1 v/v)",
+      "role": "baseline",
+      "description": "Standard commercial electrolyte used as benchmark for high-rate cycling tests.",
+      "material_id": "10.1016_j.cej.2026.176059_M006"
+    }
+  ],
+  "n_materials": 6,
+  "table_items": [],
+  "n_items": 36,
+  "items": [
+    {
+      "paragraph": "The ionic conductivity of the electrolytes was measured using a conductivity meter FiveEasy F30, Mettler-Toledo. The viscosity was determined with a rotational viscometer ViscoQC 300, Anton Paar.The N",
+      "property_types": [
+        "Viscosity"
+      ],
+      "extracted_info": {
+        "Viscosity": [
+          {
+            "unit": "mPa·s",
+            "source_text": "The viscosity was determined with a rotational viscometer ViscoQC 300, Anton Paar."
+          }
+        ]
+      },
+      "performance_types": [
+        "Ionic_Conductivity"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "unit": "mS/cm",
+            "method": "conductivity meter FiveEasy F30, Mettler-Toledo",
+            "source_text": "The ionic conductivity of the electrolytes was measured using a conductivity meter FiveEasy F30, Mettler-Toledo."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The LiMn2O4 LMO, Cyber cathodes were prepared by mixing LMO active material, Super P conductive carbon, and polyvinylidene fluoride PVDF binder in a weight ratio of 80:10:10 in an N-methyl-2-pyrrolido",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": 100,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 2.3,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The physical and electrochemical properties of the electrolytes were systematically investigated. Fig. 1a shows the solubility evaluation, indicating that all four formulations—LiOTf LiOTf/TMP at a 1:",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "test_method": "solubility evaluation"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "All electrolytes were prepared inside an argon-filled glovebox. First, a baseline electrolyte, denoted as LiOTf, was prepared by dissolving lithium trifluoromethanesulfonate LiOTf, Changde Dado New Ma",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "electrolyte": "LiOTf in TMP (1:8 molar ratio)"
+        },
+        {
+          "condition_id": "C004",
+          "electrolyte": "LiOTf/NO3 in TMP (0.8:0.2:8 molar ratio) (LiOTf:LiNO3:TMP 0.8:0.2:8)"
+        },
+        {
+          "condition_id": "C005",
+          "electrolyte": "LiOTf-FEC (1:8 LiOTf:TMP + 5 wt% FEC)"
+        },
+        {
+          "condition_id": "C006",
+          "electrolyte": "LiOTf/NO3-FEC (0.8:0.2:8 LiOTf:LiNO3:TMP + 5 wt% FEC)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "All electrochemical measurements were conducted using CR2032 coin cells. The cells were assembled with a glass fiber separator, a lithium anode, a prepared cathode, and coin cell components. A total o",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "plating/stripping"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "min": 0.0,
+            "max": 0.8,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrode_config": "asymmetric cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "plating/stripping"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In addition to the ignition tests demonstrating non-flammability, the thermal stability of the electrolytes was further assessed using differential scanning calorimetry DSC Fig. S4. For the optimized ",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "test_method": "DSC"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In terms of safety, Fig. 1g illustrates that the mathrm / 3 mathrm - electrolyte passed rigorous flammability tests. Experimental results showed that neither direct ignition of the electrolyte nor ign",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "test_method": "flammability test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To more clearly observe the surface changes during lithium deposi tion and stripping, scanning electron microscopy SEM was performed on the Li//Cu cells after cycling for 10 cycles and stayed in the s",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "electrode_config": "Li//Cu",
+          "cycle_number": 10,
+          "test_method": "SEM",
+          "electrolyte": "LiOTf in TMP (1:8); LiOTf-FEC (1:8 + 5 wt% FEC); LiOTf/NO3 in TMP (0.8:0.2:8); LiOTf/NO3-FEC (0.8:0.2:8 + 5 wt% FEC)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Li//LMO half-cells were cycled at 100 mA/g within a voltage range of 3.0–4.5 V. Supplementary experiments under extreme temperatures - 20 circ mathbf C , 0 circ mathbf C , 45 circ mathbf C , , and 60 ",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C014",
+          "temperature": {
+            "value": -20,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C015",
+          "temperature": {
+            "value": 0,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C016",
+          "temperature": {
+            "value": 45,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C017",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C018",
+          "voltage_range": {
+            "min": -0.4,
+            "max": 0.4,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrode_config": "two-electrode",
+          "reference_electrode": "Li/Li+",
+          "test_method": "Tafel plot"
+        },
+        {
+          "condition_id": "C019",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To evaluate cycling reversibility under practical battery operating conditions, the Aurbach method was employed 13 mathrm i , as shown in mathrm . 1 f . The average coulombic efficiency mathrm is calc",
+      "conditions": [
+        {
+          "condition_id": "C020",
+          "electrolyte": "LiOTf-FEC",
+          "cycle_number": 55,
+          "test_method": "Aurbach method"
+        },
+        {
+          "condition_id": "C021",
+          "electrolyte": "LiOTf/ mathrm 3 -",
+          "cycle_number": 55,
+          "test_method": "Aurbach method"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 93.85,
+            "unit": "%",
+            "cycle_number": 55,
+            "condition_id": "C001",
+            "source_text": "After 55 cycles, the average CEs for LiOTf-FEC and LiOTf/ mathrm 3 - were 93.85% and 96.82%, respectively"
+          },
+          {
+            "value": 96.82,
+            "unit": "%",
+            "cycle_number": 55,
+            "condition_id": "C002",
+            "source_text": "After 55 cycles, the average CEs for LiOTf-FEC and LiOTf/ mathrm 3 - were 93.85% and 96.82%, respectively"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Electrochemical performance was evaluated in symmetric and asymmetric cells. Fig. 1c illustrates long-cycle testing in mathrm / / mathrm symmetric cells, where, compared to the LiOTf control, the math",
+      "conditions": [
+        {
+          "condition_id": "C022",
+          "electrode_config": "symmetric cells",
+          "test_method": "long-cycle testing",
+          "electrolyte": "LiOTf in TMP (1:8) control"
+        },
+        {
+          "condition_id": "C023",
+          "electrode_config": "symmetric cells",
+          "test_method": "long-cycle testing",
+          "electrolyte": "LiOTf/NO3 in TMP (0.8:0.2:8)"
+        },
+        {
+          "condition_id": "C024",
+          "electrode_config": "symmetric cells",
+          "test_method": "long-cycle testing",
+          "electrolyte": "LiOTf-FEC (1:8 LiOTf:TMP + 5 wt% FEC)"
+        },
+        {
+          "condition_id": "C025",
+          "electrode_config": "symmetric cells",
+          "test_method": "long-cycle testing",
+          "electrolyte": "LiOTf/NO3-FEC (0.8:0.2:8 LiOTf:LiNO3:TMP + 5 wt% FEC)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In the LiOTf-FEC formulation with only FEC added, the preferential decomposition of FEC led to significant LiF formation 686 eV in the F 1 s spectrum 15, with peak intensity indicating a fluoride-rich",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "electrolyte": "LiOTf-FEC (1:8 LiOTf:TMP + 5 wt% FEC)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To elucidate the fundamental reasons for the divergent electrochemical performances of different electrolyte formulations, XPS surface analysis was conducted on copper foil electrodes cycled for 10 cy",
+      "conditions": [
+        {
+          "condition_id": "C026",
+          "cycle_number": 10,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "LiOTf （g In the control LiOTf system Fig. 2e-g, the Li–O all primary peak occurs at r 1.87 mathrm AA , , with a lower total coordination number of 3.28. Origin-resolved decomposition indicates that TM",
+      "property_types": [
+        "Li_Solvent_Coordination_Number_MD",
+        "Li_Anion_Coordination_Number_MD"
+      ],
+      "extracted_info": {
+        "Li_Solvent_Coordination_Number_MD": [
+          {
+            "value": 2.73,
+            "simulation_conditions": "LiOTf in TMP system, from Fig. 2e-g",
+            "source_text": "Origin-resolved decomposition indicates that TMP contributes 83.23% CN 2.73"
+          }
+        ],
+        "Li_Anion_Coordination_Number_MD": [
+          {
+            "value": 0.55,
+            "simulation_conditions": "LiOTf in TMP system",
+            "source_text": "OTf− contributes 16.77% CN 0.55"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Ab initio molecular dynamics AIMD simulations were performed at 300 K using a cubic simulation cell side length 20.4 Å to compare the Li solvation structures of the nitrate-containing mathrm mathrm / ",
+      "conditions": [
+        {
+          "condition_id": "C027",
+          "temperature": {
+            "value": 300,
+            "unit": "K"
+          },
+          "electrolyte": "LiOTf/NO3 in TMP (0.8:0.2:8 molar ratio)",
+          "test_method": "AIMD simulation"
+        }
+      ],
+      "property_types": [
+        "Li_Solvent_Coordination_Number_MD",
+        "Li_Anion_Coordination_Number_MD"
+      ],
+      "extracted_info": {
+        "Li_Solvent_Coordination_Number_MD": [
+          {
+            "value": 2.44,
+            "simulation_conditions": "AIMD at 300 K, cubic cell 20.4 Å",
+            "source_text": "Using rcut Li–P 3.67 Å yields CN Li–P (TMP) 2.44, indicating that roughly two to three TMP molecules participate in the near-field environment of Li+."
+          }
+        ],
+        "Li_Anion_Coordination_Number_MD": [
+          {
+            "value": 0.52,
+            "simulation_conditions": "AIMD at 300 K, cubic cell 20.4 Å",
+            "source_text": "CN Li–O OTf 0.52, 14.17%"
+          },
+          {
+            "value": 0.32,
+            "simulation_conditions": "AIMD at 300 K, cubic cell 20.4 Å",
+            "source_text": "CN Li–O NO 0.32, 8.72%"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "These results are also in agreement with the EIS data mathbb F mathrm . 5 mathbf b , mathbf c mathrm : , which showed that all electrolytes exhibited a significant reduction in the semicircle represen",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Charge_Transfer_Resistance"
+      ],
+      "performance_info": {
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 75.06,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "LiOTf- FEC with solution resistance R of 9.02 Ω and charge transfer resistance R of 75.06 Ω"
+          },
+          {
+            "value": 76.46,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "LiOTf/NO -FEC has Rs of 6.85 Ω and R of 76.46 Ω"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To elucidate the mechanistic advantages of the optimized system, comprehensive quantitative XPS analysis was performed across all elemental regions to compare the SEI composition Fig. S6. As quantitat",
+      "conditions": [
+        {
+          "condition_id": "C028",
+          "test_method": "XPS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "LiF_Content_in_SEI_CEI",
+        "S_N_Content_in_SEI"
+      ],
+      "performance_info": {
+        "LiF_Content_in_SEI_CEI": [
+          {
+            "value": 86,
+            "unit": "at%",
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "source_text": "the synergistic interaction between mathrm 3 and FEC significantly promotes LiF formation, reaching a high proportion of 86%"
+          },
+          {
+            "value": 70,
+            "unit": "at%",
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "source_text": "which is markedly superior to the 70% observed in the LiOTf-FEC control group"
+          }
+        ],
+        "S_N_Content_in_SEI": [
+          {
+            "value": {
+              "N": 40
+            },
+            "unit": "at%",
+            "cycle_number": 0,
+            "source_text": "the FEC-free mathrm mathrm / mathrm 3 electrolyte leads to severe reduction and a higher proportion of Li N 40%"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To assess the practical applicability of the mathrm Gamma / 3 mathrm - electrolyte under demanding battery conditions, long-term stability tests were conducted at high plating/stripping capacities. Th",
+      "conditions": [
+        {
+          "condition_id": "C029",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 10,
+          "test_method": "galvanostatic plating/stripping; SEI formation at 0.5 mA/cm2 followed by increased current density and charge capacity up to 2 mAh/cm2",
+          "electrolyte": "Gamma/3 electrolyte and commercial 1M LiPF6 EC/DEC (1:1 v/v)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To thoroughly investigate the differences in behavioral patterns and performance of electrolytes, a series of advanced electrochemical tests were conducted. Tafel plot analysis Fig. 5a revealed that t",
+      "conditions": [
+        {
+          "condition_id": "C030",
+          "electrolyte": "LiOTf-FEC (LiOTf:TMP 1:8 + 5 wt% FEC)",
+          "cycle_number": 0,
+          "test_method": "Tafel plot",
+          "electrode_config": "Li//Li symmetric cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C031",
+          "electrolyte": "LiOTf/NO3-FEC (0.8:0.2:8 LiOTf:LiNO3:TMP + 5 wt% FEC)",
+          "cycle_number": 0,
+          "test_method": "Tafel plot",
+          "electrode_config": "Li//Li symmetric cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C032",
+          "electrolyte": "LiOTf-FEC (LiOTf:TMP 1:8 + 5 wt% FEC)",
+          "cycle_number": 20,
+          "test_method": "Tafel plot",
+          "electrode_config": "Li//Li symmetric cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C033",
+          "electrolyte": "LiOTf/NO3-FEC (0.8:0.2:8 LiOTf:LiNO3:TMP + 5 wt% FEC)",
+          "cycle_number": 20,
+          "test_method": "Tafel plot",
+          "electrode_config": "Li//Li symmetric cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "After 20 cycles, mathrm R s and mathrm R for LiOTf-FEC are 9.46 Ω and 11.68 Omega , with a notable SEI resistance RSEI of 10.19 Ω due to unstable or thicker SEI formation, whereas LiOTf/NO -FECs mathr",
+      "conditions": [
+        {
+          "condition_id": "C034",
+          "electrolyte": "LiOTf:TMP 1:8 + 5 wt% FEC",
+          "cycle_number": 20,
+          "electrode_config": "Li//Li symmetric cell",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C035",
+          "electrolyte": "LiOTf:LiNO3:TMP 0.8:0.2:8 + 5 wt% FEC",
+          "cycle_number": 20,
+          "electrode_config": "Li//Li symmetric cell",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C036",
+          "electrolyte": "LiOTf:LiNO3:TMP 0.8:0.2:8 + 5 wt% FEC",
+          "cycle_number": 10,
+          "electrode_config": "Li//Li symmetric cell",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Charge_Transfer_Resistance",
+        "SEI_Resistance"
+      ],
+      "performance_info": {
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 11.68,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 20,
+            "source_text": "mathrm R for LiOTf-FEC are 9.46 Ω and 11.68 Ω"
+          },
+          {
+            "value": 13.65,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 20,
+            "source_text": "operatorname R operatorname are 7.03 Ω and 13.65 Ω"
+          },
+          {
+            "value": 11.55,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "cycle_number": 10,
+            "source_text": "R for mathrm mathrm / mathrm 3 -FEC is 11.55 Ω"
+          }
+        ],
+        "SEI_Resistance": [
+          {
+            "value": 10.19,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 20,
+            "source_text": "SEI resistance RSEI of 10.19 Ω"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "As illustrated in Fig. 5e, after the current density was increased to 2 mathrm / mathrm 2 , the mathrm mathrm / mathrm 3 -FEC electrolyte achieved the longest cycling lifespan, demonstrating 74 h of s",
+      "conditions": [
+        {
+          "condition_id": "C037",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm^2"
+          }
+        },
+        {
+          "condition_id": "C038",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm^2"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To further explore the potential of the mathrm mathrm / mathrm 3 -FEC electrolyte in high-rate charge-discharge applications, rate capability tests were conducted Figs. 6d, e. When the current density",
+      "conditions": [
+        {
+          "condition_id": "C039",
+          "c_rate_or_current": {
+            "value": 0,
+            "unit": "mA/g"
+          },
+          "electrolyte": "LiOTf/NO3-FEC (0.8:0.2:8 LiOTf:LiNO3:TMP + 5 wt% FEC)",
+          "test_method": "rate capability test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 50,
+            "unit": "%",
+            "cycle_number": 0,
+            "condition_id": "C001",
+            "source_text": "retaining approximately 50% of its initial capacity at 1000 mA/g"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In evaluating the commercialization potential, the pursuit of highenergy batteries is commonplace. To achieve this, increasing the coating thickness of cathode materials is the most straightforward ap",
+      "conditions": [
+        {
+          "condition_id": "C040",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "electrolyte": "LiOTf/NO3-FEC",
+          "mass_loading": {
+            "value": 8.8,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C041",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "electrolyte": "LiOTf/NO3-FEC",
+          "mass_loading": {
+            "value": 12.0,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Additionally, to verify long-term stability in high-rate applications, a long-term cycling test was conducted on a Li//LMO half-cell at a current density of 500 mA/g Fig. 6h. The cell sustained stable",
+      "conditions": [
+        {
+          "condition_id": "C042",
+          "c_rate_or_current": {
+            "value": 500,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell",
+          "cycle_number": 1800,
+          "reference_electrode": "Li/Li+",
+          "test_method": "long-term cycling test (galvanostatic)",
+          "electrolyte": "Li mathrm / 3 -FEC electrolyte"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Cycle_Life_80"
+      ],
+      "performance_info": {
+        "Cycle_Life_80": [
+          {
+            "value": ">1800",
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "The cell sustained stable performance over 1800 cycles, with capacity consistent with the rate capability test results and no significant rapid decay."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Furthermore, the compatibility of the optimized electrolyte with various electrodes, specifically NCM811 and mathrm 4 LFP, was investigated. As shown in Fig. S11, a pronounced incompatibility was obse",
+      "conditions": [
+        {
+          "condition_id": "C043",
+          "electrolyte": "LiOTf/NO3-FEC (0.8:0.2:8 LiOTf:LiNO3:TMP + 5 wt% FEC)",
+          "cycle_number": 600,
+          "electrode_config": "LFP cell",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 80.5,
+            "unit": "%",
+            "cycle_number": 600,
+            "condition_id": "C001",
+            "source_text": "maintaining approximately 80.5% capacity retention ... over 600 cycles"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 99.7,
+            "unit": "%",
+            "cycle_number": 600,
+            "condition_id": "C001",
+            "source_text": "99.7% Coulombic efficiency over 600 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To validate the practical utility of the mathrm / 3 mathrm - electrolyte, it was incorporated into Lithium / / mathrm 2 O 4 denoted as operatorname / / operatorname halfcells for testing. To determine",
+      "conditions": [
+        {
+          "condition_id": "C044",
+          "electrode_config": "half-cell (LMO/Li)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "LSV",
+          "electrolyte": "LiOTf/NO3-FEC (0.8:0.2:8 LiOTf:LiNO3:TMP + 5 wt% FEC)"
+        },
+        {
+          "condition_id": "C045",
+          "electrode_config": "half-cell (LMO/Li)",
+          "reference_electrode": "Li/Li+",
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "cycle_number": 1900,
+          "test_method": "galvanostatic cycling",
+          "electrolyte": "LiOTf/NO3-FEC (0.8:0.2:8 LiOTf:LiNO3:TMP + 5 wt% FEC)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Anodic_Stability_Onset_Potential",
+        "Electrochemical_Stability_Window",
+        "Capacity_Retention",
+        "Coulombic_Efficiency",
+        "Cycle_Life_80"
+      ],
+      "performance_info": {
+        "Anodic_Stability_Onset_Potential": [
+          {
+            "value": 5.2,
+            "unit": "V vs. Li/Li⁺",
+            "source_text": "exhibit a high anodic decomposition voltage of approximately 5.2 V vs. mathrm / mathrm .",
+            "condition_id": "C001"
+          }
+        ],
+        "Electrochemical_Stability_Window": [
+          {
+            "value": {
+              "max_V": 5.2
+            },
+            "unit": "V vs. Li/Li⁺",
+            "working_electrode": "LMO",
+            "source_text": "This broad electrochemical stability window confirms the electrolytes excellent resistance to oxidative decomposition.",
+            "condition_id": "C001"
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 80,
+            "unit": "%",
+            "cycle_number": 1900,
+            "condition_id": "C002",
+            "source_text": "retaining approximately 80% of its initial capacity"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 99.3,
+            "unit": "%",
+            "cycle_number": 1900,
+            "condition_id": "C002",
+            "source_text": "the average coulombic efficiency reached an impressive 99.3 %"
+          }
+        ],
+        "Cycle_Life_80": [
+          {
+            "value": 1900,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "source_text": "the cell maintained stable cycling for over 1900 cycles, retaining approximately 80% of its initial capacity"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "To further validate scalability, we conducted experiments using pouch cells, as detailed in Fig. S10. In these tests, the mathrm mathrm / mathrm 3 -FEC electrolyte demonstrates superior performance am",
+      "conditions": [
+        {
+          "condition_id": "C046",
+          "electrolyte": "LiOTf/NO3-FEC",
+          "electrode_config": "full_cell",
+          "cycle_number": 100,
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 95.7,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C001",
+            "source_text": "achieving 95.7% capacity retention ... over 100 cycles"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 97.9,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C001",
+            "source_text": "97.9% Coulombic efficiency ... over 100 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To investigate mechanisms affecting cycling performance, electrochemical impedance spectroscopy EIS was used to analyze impedance changes at various cycles Fig. 6b, c. For LiOTf-FEC, solution resistan",
+      "conditions": [
+        {
+          "condition_id": "C047",
+          "electrolyte": "LiOTf-FEC",
+          "cycle_number": 0,
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C048",
+          "electrolyte": "LiOTf-FEC",
+          "cycle_number": 20,
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C049",
+          "electrolyte": "LiOTf/NO3-FEC",
+          "cycle_number": 0,
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C050",
+          "electrolyte": "LiOTf/NO3-FEC",
+          "cycle_number": 1,
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C051",
+          "electrolyte": "LiOTf/NO3-FEC",
+          "cycle_number": 2,
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C052",
+          "electrolyte": "LiOTf/NO3-FEC",
+          "cycle_number": 10,
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C053",
+          "electrolyte": "LiOTf/NO3-FEC",
+          "cycle_number": 50,
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Charge_Transfer_Resistance"
+      ],
+      "performance_info": {
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 308.03,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "charge transfer resistance mathrm R is 308.03 Ω"
+          },
+          {
+            "value": 47.25,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 20,
+            "source_text": "reducing to 47.25 Ω after 20 cycles"
+          },
+          {
+            "value": 88.21,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "cycle_number": 0,
+            "source_text": "88.21 Ω at OCP"
+          },
+          {
+            "value": 114.65,
+            "unit": "Ω",
+            "condition_id": "C004",
+            "cycle_number": 1,
+            "source_text": "1st is 114.65 Ω"
+          },
+          {
+            "value": 129.11,
+            "unit": "Ω",
+            "condition_id": "C005",
+            "cycle_number": 2,
+            "source_text": "2nd, 129.11 Omega"
+          },
+          {
+            "value": 111.33,
+            "unit": "Ω",
+            "condition_id": "C006",
+            "cycle_number": 10,
+            "source_text": "10th is 111.33 Ω"
+          },
+          {
+            "value": 58.36,
+            "unit": "Ω",
+            "condition_id": "C007",
+            "cycle_number": 50,
+            "source_text": "After 50 cycles, R t reach 58.36 Omega"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To further validate the practical applicability of the mathrm mathrm / mathrm 3 . - FEC electrolyte under extreme conditions, supplementary experiments were performed at low temperatures - 20 circ mat",
+      "conditions": [
+        {
+          "condition_id": "C054",
+          "temperature": {
+            "value": -20,
+            "unit": "C"
+          },
+          "electrolyte": "mathrm mathrm / mathrm 3 . - FEC electrolyte"
+        },
+        {
+          "condition_id": "C055",
+          "temperature": {
+            "value": 0,
+            "unit": "C"
+          },
+          "electrolyte": "mathrm mathrm / mathrm 3 . - FEC electrolyte"
+        },
+        {
+          "condition_id": "C056",
+          "temperature": {
+            "value": 45,
+            "unit": "C"
+          },
+          "electrolyte": "mathrm mathrm / mathrm 3 . - FEC electrolyte"
+        },
+        {
+          "condition_id": "C057",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "electrolyte": "mathrm mathrm / mathrm 3 . - FEC electrolyte"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Specifically, the performance of Li//LMO half-cells was evaluated at 45 circ mathbf C left mathbf right. . S13a and 60 ◦C Fig. S13b. Under these conditions, the Li mathrm / 3 -FEC electrolyte exhibite",
+      "conditions": [
+        {
+          "condition_id": "C058",
+          "temperature": {
+            "value": 45,
+            "unit": "C"
+          },
+          "electrode_config": "half-cell (Li//LMO)",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C059",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "electrode_config": "half-cell (Li//LMO)",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To assess the stability of the SEI layer at elevated temperatures, Li// Li symmetric cell tests were conducted on both mathrm mathrm / mathrm 3 and Li mathrm / 3 mathrm - electrolytes Fig. S14a, b. Th",
+      "conditions": [
+        {
+          "condition_id": "C060",
+          "temperature": {
+            "value": 45,
+            "unit": "C"
+          },
+          "electrode_config": "symmetric cell (Li//Li)",
+          "electrolyte": "LiOTf/NO3-FEC",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C061",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "electrode_config": "symmetric cell (Li//Li)",
+          "electrolyte": "LiOTf/NO3-FEC",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C062",
+          "temperature": {
+            "value": 45,
+            "unit": "C"
+          },
+          "electrode_config": "symmetric cell (Li//Li)",
+          "electrolyte": "LiOTf/TMP3",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C063",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "electrode_config": "symmetric cell (Li//Li)",
+          "electrolyte": "LiOTf/TMP3",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "For the evaluation under low-temperature conditions, tests were conducted at − - 20 circ mathrm C , , as the electrolyte without FEC could not cycle normally. Therefore, the performance of LiOTf-FEC a",
+      "conditions": [
+        {
+          "condition_id": "C064",
+          "temperature": {
+            "value": -20,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "unit": "mA/g",
+            "comment": "tested at various current densities: 100, 80, 60, 40, 20 mA/g"
+          },
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "This study demonstrates the successful development of a novel nonflammable TMP-based electrolyte, mathrm / 3 - . , which addresses performance and safety issues in lithium metal batteries through the ",
+      "property_types": [
+        "Viscosity"
+      ],
+      "extracted_info": {
+        "Viscosity": [
+          {
+            "value": 5.577,
+            "unit": "mPa·s",
+            "source_text": "Viscosity and ionic conductivity measurements show mathrm mathrm / 3 mathrm - at 5.577 mathrm and 4.100 mS mathrm - 1"
+          }
+        ]
+      },
+      "performance_types": [
+        "Ionic_Conductivity"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 4.1,
+            "unit": "mS/cm",
+            "source_text": "Viscosity and ionic conductivity measurements show mathrm mathrm / 3 mathrm - at 5.577 mathrm and 4.100 mS mathrm - 1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Furthermore, Tafel plots were utilized to evaluate lithium deposition kinetics and calculate the exchange current density left mathrm i 0 right mathrm / 3 - FEC at different temperatures Fig. S16. At ",
+      "conditions": [
+        {
+          "condition_id": "C065",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "test_method": "Tafel plots"
+        },
+        {
+          "condition_id": "C066",
+          "temperature": {
+            "value": 0,
+            "unit": "C"
+          },
+          "test_method": "Tafel plots"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In Li//LMO half-cells, mathrm mathrm / 3 mathrm - supports over 1800 cycles at 100 mA/g, maintaining 80% discharge capacity, with CE of 99.3% and energy efficiency of 94.3%. EIS indicates that mathrm ",
+      "conditions": [
+        {
+          "condition_id": "C067",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "vs. Li/Li+",
+          "cycle_number": 1800,
+          "electrolyte": "LiOTf/NO3-FEC (0.8:0.2:8 LiOTf:LiNO3:TMP + 5 wt% FEC)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C068",
+          "c_rate_or_current": {
+            "value": 1000,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "vs. Li/Li+",
+          "electrolyte": "LiOTf/NO3-FEC (0.8:0.2:8 LiOTf:LiNO3:TMP + 5 wt% FEC)",
+          "test_method": "rate test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Coulombic_Efficiency",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 80,
+            "unit": "%",
+            "cycle_number": 1800,
+            "condition_id": "C001",
+            "source_text": "maintaining 80% discharge capacity"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 99.3,
+            "unit": "%",
+            "cycle_number": 1800,
+            "condition_id": "C001",
+            "source_text": "CE of 99.3%"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              {
+                "current_density": 1000,
+                "unit": "mA/g",
+                "capacity_retention": 50,
+                "unit_retention": "%"
+              }
+            ],
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "Rate tests can reach 1000 mA/g while retaining 50% discharge capacity"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Electrochemical evaluations in symmetric and asymmetric cells highlight stability. In Li//Li cells, LiOTf/NO3-FEC sustains over 500 h of low-overpotential cycling, far exceeding LiOTf’s 10 h, benefiti",
+      "conditions": [
+        {
+          "condition_id": "C069",
+          "electrode_config": "Li//Li symmetric cell",
+          "electrolyte": "LiOTf/NO3-FEC (0.8:0.2:8 LiOTf:LiNO3:TMP + 5 wt% FEC)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C070",
+          "electrode_config": "Li//Li symmetric cell",
+          "electrolyte": "LiOTf in TMP (1:8 molar ratio)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C071",
+          "electrode_config": "Li//Cu cell",
+          "electrolyte": "LiOTf/NO3-FEC (0.8:0.2:8 LiOTf:LiNO3:TMP + 5 wt% FEC)",
+          "test_method": "voltage profile measurement"
+        },
+        {
+          "condition_id": "C072",
+          "electrode_config": "Li//Cu cell",
+          "electrolyte": "LiOTf in TMP (1:8 molar ratio)",
+          "test_method": "voltage profile measurement"
+        },
+        {
+          "condition_id": "C073",
+          "electrolyte": "LiOTf/NO3-FEC (0.8:0.2:8 LiOTf:LiNO3:TMP + 5 wt% FEC)",
+          "test_method": "Aurbach test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency",
+        "Voltage_Hysteresis"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 90.9,
+            "unit": "%",
+            "cycle_number": 40,
+            "condition_id": "C003",
+            "source_text": "Coulombic efficiency reaches 90.9% over 40 cycles"
+          },
+          {
+            "value": 96.82,
+            "unit": "%",
+            "cycle_number": 55,
+            "condition_id": "C005",
+            "source_text": "Aurbach tests yield an average CE of 96.82% after 55 cycles"
+          }
+        ],
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.05,
+            "unit": "V",
+            "condition_id": "C003",
+            "source_text": "Voltage profiles in Li//Cu cells exhibit an overpotential of 0.05 V for mathrm / 3 -"
+          },
+          {
+            "value": 0.3,
+            "unit": "V",
+            "condition_id": "C004",
+            "source_text": "compared to 0.30 V for Li mathrm / 3"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

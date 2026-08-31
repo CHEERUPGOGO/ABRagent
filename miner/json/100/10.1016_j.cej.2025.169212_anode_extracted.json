@@ -1,0 +1,341 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.cej.2025.169212.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.cej.2025.169212",
+  "doi": "10.1016/j.cej.2025.169212",
+  "material_id": "10.1016_j.cej.2025.169212",
+  "meta": {
+    "meta_title": "Understanding the mechanistic role of reversible Li–Ag alloy interphases in ultr",
+    "meta_authors": "Zhongjiu Yang a , Taesoon Hwang b , Yuhe Mu a , Jin Luo a , Gustavo Felicio Perruci a , Hongbing Lu a , Kyeongjae Cho b , Yue Zhou a,\\*",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "AgF-derived LiF/Li-Ag alloy on carbon fiber composite negative electrode",
+      "short_name": "AgF-CF composite",
+      "formula": "Li/LiF/Li-Ag@CF",
+      "role": "novel",
+      "description": "Carbon fiber coated with AgF and infused with molten Li, leading to in-situ formation of LiF and Li-Ag alloy dual protective layer.",
+      "material_id": "10.1016_j.cej.2025.169212_M001"
+    },
+    {
+      "name": "Ag-coated carbon fiber composite negative electrode",
+      "short_name": "Ag-CF composite",
+      "formula": "Li/Li-Ag@CF",
+      "role": "comparison",
+      "description": "Pure silver sputtered carbon fiber after molten Li infusion, without LiF, used as a comparison to the AgF-derived composite electrode.",
+      "material_id": "10.1016_j.cej.2025.169212_M002"
+    }
+  ],
+  "n_materials": 2,
+  "table_items": [],
+  "n_items": 8,
+  "items": [
+    {
+      "paragraph": "The symmetric coin cell CR2032 was assembled in an argon-filled glovebox with oxygen and water concentrations below 0.1 ppm. Each electrode was a composite negative electrode, and the separator was Ce",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1.0 M LiPF6 in EC:DEC (1:1 v/v)",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 3
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "After absorbing molten lithium, mathbf A mathbf g and F elements remain evenly distributed on the surface of the carbon fiber, as confirmed by EDS Fig. 1e-g, Table S1. XPS analysis was conducted to ex",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "C",
+              "Li",
+              "F",
+              "Ag"
+            ],
+            "method": "XPS, EDS",
+            "source_text": "After absorbing molten lithium, Ag and F elements remain evenly distributed on the surface of the carbon fiber, as confirmed by EDS Fig. 1e-g, Table S1. XPS analysis ... The C 1s spectrum Fig. S4 displays a peak corresponding to C–C at 284.8 eV ... The presence of lithium fluoride LiF is indicated by a peak at 55.8 eV in the Li 1s spectrum Fig. 1h and is further confirmed by the F 1s peak at 685.1 eV in Fig. 1i ... The Ag 3d spectrum displayed in Fig. 1j reveals the presence of Ag element peaks."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Galvanostatic charge-discharge processes were performed using a Neware battery tester at different current densities. Electrochemical impedance spectroscopy EIS measurements were conducted using a GAM",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "c_rate_or_current": {
+            "unit": "mA/cm2"
+          },
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C003",
+          "test_method": "electrochemical impedance spectroscopy (EIS)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Toray 300 spread-tow carbon fiber was first treated to remove the surface sizing epoxy coating by immersing it in a 1:3 mixture of nitric acid and sulfuric acid at 60 circ mathrm C overnight, followed",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 7.6,
+            "unit": "mAh/cm2",
+            "source_text": "Based on the amount of melt Li, the areal capacity can be controlled from 7.6 mAh mathrm - 2 to 18.5 mAh mathrm - 2 ."
+          },
+          {
+            "value": 18.5,
+            "unit": "mAh/cm2",
+            "source_text": "Based on the amount of melt Li, the areal capacity can be controlled from 7.6 mAh mathrm - 2 to 18.5 mAh mathrm - 2 ."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To investigate the interface dynamics during the lithium stripping/ plating process, the composite negative electrode was analyzed using EDS and XPS after 100 cycles at 1 mA mathrm - 2 with a capacity",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 100,
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic charge/discharge cycling"
+        }
+      ],
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "LiF",
+              "Li-Ag alloy"
+            ],
+            "state": "after 100 cycles in symmetric cell",
+            "source_text": "In-depth XPS analysis from 0 to 150 nm Fig. 2e reveals the formation of a lithium-rich Li–Ag alloy on the plating side of the composite negative electrode, evidenced by the Ag peak shift from 373.6 eV before cycling to 371.4 eV... Additionally, the F1s peak at 685 eV in Fig. 2f demonstrates a uniform distribution of LiF in the SEI layer after 100 cycles."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "mathrmE mathrmF mathrmE mathrmB - text model - mathrmn 1 mathrmE mathrmLi - mathrmn 2 mathrmE mathrmAg tag 2 where mathbf E B - , is the total energy of Bulk structures of the materials. The migration",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "LiF",
+            "source_text": "mathrmLiF"
+          },
+          {
+            "value": "AgF",
+            "source_text": "mathrmAgF"
+          },
+          {
+            "value": "Li-Ag alloy",
+            "source_text": "mathrmLi - mathrmAg text alloy"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "For the full cell test, polyvinylidene fluoride PVDF was used as the binder, which was dissolved in 1-methyl-2-pyrrolidone NMP at 60 circ mathrm C and stirred with a magnetic stirrer on a hot plate. A",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "electrolyte": "1.0 M LiPF₆ in a 1:1 volume ratio of EC and DEC",
+          "cycle_number": 3,
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C006",
+          "mass_loading": {
+            "value": 12.5,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1.0 M LiPF₆ in a 1:1 volume ratio of EC and DEC",
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10.4,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1 M LiPF₆ in EC/DEC with 15 wt% FEC and 0.1 M LiDFOB",
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling with 1C discharge and 0.5C CCCV charge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The plating/stripping voltage profile tests were carried out to investigate the electrochemical stability of the composite negative electrode. As shown in Fig. 4a, the voltage profile of plating/strip",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "EC/DEC",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic plating/stripping"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 3.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "EC/DEC",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic plating/stripping"
+        },
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrolyte": "EC/DEC",
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C011",
+          "electrolyte": "EC/DEC",
+          "electrode_config": "full_cell",
+          "test_method": "rate capability test at 0.1C, 0.5C, 1C, 2C, and 5C"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability",
+        "Plateau_Overpotential",
+        "Interfacial_Resistance_RSEI_or_Rct",
+        "Capacity_Retention_at_Nth_Cycle",
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 3000,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "the composite negative electrode-based symmetric cell to cycle for over 3000 h while maintaining a stable voltage profile"
+          },
+          {
+            "value": 250,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "The bare lithium ... short-circuited after around 250 h"
+          }
+        ],
+        "Plateau_Overpotential": [
+          {
+            "value": 23,
+            "unit": "mV",
+            "condition_id": "C001",
+            "source_text": "the composite negative electrode maintains an overpotential of 23 mV, significantly lower than the 60 mV observed for bare lithium at 49–54 h"
+          },
+          {
+            "value": 60,
+            "unit": "mV",
+            "condition_id": "C001",
+            "source_text": "the 60 mV observed for bare lithium at 49–54 h"
+          },
+          {
+            "value": 50,
+            "unit": "mV",
+            "condition_id": "C002",
+            "source_text": "the composite negative electrode-based symmetric cell, with an overpotential of 50 mV for the composite negative electrode"
+          }
+        ],
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 400,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "The symmetrical cell constructed with untreated lithium showed a high resistance of 400 Ω"
+          },
+          {
+            "value": 100,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "for the composite negative electrode symmetric cell, we observed a reduced resistance o mathbf f sim 100 Omega"
+          },
+          {
+            "value": 90,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "After 10 cycles ... the bare lithium reduced to 90 Ω"
+          },
+          {
+            "value": 30,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "After 10 cycles ... the composite negative electrode ‘s resistance reduced to 30 Ω"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 90,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 500,
+            "source_text": "the composite negative electrode exhibits steady and stable performance after 500 cycles, maintaining a capacity retention ratio of over 90 %"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 140,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "After 500 cycles, the specific discharge capacity of the cell with the composite negative electrode remains above 140 mAh g−1"
+          },
+          {
+            "value": 50,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "whereas that of the bare lithium has decreased to less than 50 mAh g−1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

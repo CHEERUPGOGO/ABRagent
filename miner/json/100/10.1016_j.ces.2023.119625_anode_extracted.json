@@ -1,0 +1,416 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.ces.2023.119625.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.ces.2023.119625",
+  "doi": "10.1016/j.ces.2023.119625",
+  "material_id": "10.1016_j.ces.2023.119625",
+  "meta": {
+    "meta_title": "Porous MnO/pitch carbon composite as an anode material for low-cost and high-per",
+    "meta_authors": "Zhen Ge \\* , Xi Chen , Xigui Zhang , Xiaoming Hao , Jiyang Li \\* , Haoran Lai \\*",
+    "meta_year": "2023"
+  },
+  "materials": [
+    {
+      "name": "Pitch-C",
+      "short_name": "pitch-C",
+      "formula": "C",
+      "role": "comparison",
+      "description": "Carbon derived from pre-oxidized and carbonized petroleum asphalt, used as a carbon-only control",
+      "material_id": "10.1016_j.ces.2023.119625_M001"
+    },
+    {
+      "name": "MnO/C-1",
+      "short_name": "MnO/C-1",
+      "formula": "MnO/C composite",
+      "role": "novel",
+      "description": "Porous MnO/C composite with 20.1 wt% MnO, prepared with 0.53 g Mn(NO3)2·4H2O",
+      "material_id": "10.1016_j.ces.2023.119625_M002"
+    },
+    {
+      "name": "MnO/C-2",
+      "short_name": "MnO/C-2",
+      "formula": "MnO/C composite",
+      "role": "novel",
+      "description": "Porous MnO/C composite with 30.9 wt% MnO, prepared with 1.06 g Mn(NO3)2·4H2O",
+      "material_id": "10.1016_j.ces.2023.119625_M003"
+    },
+    {
+      "name": "MnO/C-3",
+      "short_name": "MnO/C-3",
+      "formula": "MnO/C composite",
+      "role": "novel",
+      "description": "Porous MnO/C composite with 42.4 wt% MnO, prepared with 1.59 g Mn(NO3)2·4H2O",
+      "material_id": "10.1016_j.ces.2023.119625_M004"
+    },
+    {
+      "name": "MnO/C-4",
+      "short_name": "MnO/C-4",
+      "formula": "MnO/C composite",
+      "role": "novel",
+      "description": "Porous MnO/C composite with 48.9 wt% MnO, prepared with 2.12 g Mn(NO3)2·4H2O",
+      "material_id": "10.1016_j.ces.2023.119625_M005"
+    },
+    {
+      "name": "X",
+      "short_name": "X",
+      "formula": "MnO",
+      "role": "comparison",
+      "description": "Manganese oxide prepared without pitch-C, control material without carbon matrix",
+      "material_id": "10.1016_j.ces.2023.119625_M006"
+    }
+  ],
+  "n_materials": 6,
+  "table_items": [],
+  "n_items": 8,
+  "items": [
+    {
+      "paragraph": "The porous MnO/C composite was prepared by solvothermal and carbothermal reduction reactions, and the typical preparation process was shown in Fig. 1. First, the petroleum asphalt was pre-oxidized and",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "C",
+            "source_text": "the petroleum asphalt was pre-oxidized and carbonized at high temperature to obtain pitch-C"
+          },
+          {
+            "value": "MnO/C",
+            "source_text": "resulting in porous MnO/C composites"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The electrochemical properties of porous MnO/C composites were investigated by assembling CR2032 cells. The cyclic voltammetry CV of porous MnO/C electrode was investigated in the voltage of 0.01–3.0 ",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "test_method": "CV at 0.2 mV/s",
+          "electrode_config": "half_cell",
+          "cycle_number": 6
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In addition, porous MnO/C samples with different MnO contents were prepared by varying the amount of manganese nitrate added, and the composition of the final products was determined by thermogravimet",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Mn",
+              "O",
+              "C"
+            ],
+            "method": "Thermogravimetric analysis (TGA) under air",
+            "source_text": "the mass contents of MnO in MnO/C-1, MnO/C-2, MnO/C-3 and MnO/C-4 samples are 20.1 %, 30.9 %, 42.4 % and 48.9 %, respectively"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Porous MnO/C samples were blended with PVDF and Super-P in Nmethyl-2-pyrrolidone NMP solvent at a mass ratio of 8:1:1, then the slurry was coated on Cu foil. The electrode was dried in an oven at 100 ",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "1 mathrm 6 in EC: EMC: DMC electrolyte",
+          "mass_loading": {
+            "value": 1.5,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling, cyclic voltammetry"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In Fig. 4b, the voltage profiles of the charge–discharge curves of MnO/C-3 composite in the potential range from 0.01 to 3.0 V at 100 mA mathbf g - 1 are presented and the results are in good agreemen",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 1,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Initial_Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 597,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the initial discharge capacity of the composite electrode is 597 mA h g - 1"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 71.3,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the initial coulombic efficiency reaches 71.3 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To investigate the mathrm storage kinetics of porous MnO/C composites, CV tests at various sweep rates from 0.2 to 10 mV mathsf s - 1 were carried out mathrm . 5 a . The peak current and scan rate fol",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "test_method": "Cyclic voltammetry"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Pseudocapacitive_Contribution_Ratio"
+      ],
+      "performance_info": {
+        "Pseudocapacitive_Contribution_Ratio": [
+          {
+            "value": 17.9,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "capacitive ratio of MnO/C-3 can achieve 17.9 %, 23.2 %, 30.2 %, 35.0 %, 49.5 %, and 67.8 %, respectively at sweep rates from 0.2 to 10 mV s-1"
+          },
+          {
+            "value": 23.2,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "capacitive ratio of MnO/C-3 can achieve 17.9 %, 23.2 %, 30.2 %, 35.0 %, 49.5 %, and 67.8 %, respectively at sweep rates from 0.2 to 10 mV s-1"
+          },
+          {
+            "value": 30.2,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "capacitive ratio of MnO/C-3 can achieve 17.9 %, 23.2 %, 30.2 %, 35.0 %, 49.5 %, and 67.8 %, respectively at sweep rates from 0.2 to 10 mV s-1"
+          },
+          {
+            "value": 35.0,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "capacitive ratio of MnO/C-3 can achieve 17.9 %, 23.2 %, 30.2 %, 35.0 %, 49.5 %, and 67.8 %, respectively at sweep rates from 0.2 to 10 mV s-1"
+          },
+          {
+            "value": 49.5,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "capacitive ratio of MnO/C-3 can achieve 17.9 %, 23.2 %, 30.2 %, 35.0 %, 49.5 %, and 67.8 %, respectively at sweep rates from 0.2 to 10 mV s-1"
+          },
+          {
+            "value": 67.8,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "capacitive ratio of MnO/C-3 can achieve 17.9 %, 23.2 %, 30.2 %, 35.0 %, 49.5 %, and 67.8 %, respectively at sweep rates from 0.2 to 10 mV s-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In summary, a simple solvothermal and carbothermal reduction method was successfully proposed to prepare manganese oxide and pitch carbon composite materials for lithium-ion battery anode. In order to",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "cycle_number": 150
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          }
+        }
+      ],
+      "property_types": [
+        "Theoretical_Specific_Capacity"
+      ],
+      "extracted_info": {
+        "Theoretical_Specific_Capacity": [
+          {
+            "value": 756,
+            "unit": "mAh/g",
+            "n_electrons": 0,
+            "source_text": "the theoretical specific capacity of MnO 756 mA h g⁻¹"
+          }
+        ]
+      },
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 597,
+            "unit": "mAh/g",
+            "source_text": "The initial capacity of MnO/C-3 composite reached 597 mA h g⁻¹"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 250,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "can maintain a stable capacity of more than 250 mA h g⁻¹ under the high current density 1 A g⁻¹"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In addition, we tested the rate performance of MnO/C-3 and pitch-C. As shown in Fig. 4d, the specific capacities of MnO/C-3 can reach 393, 355, 302, 251, and 198 mA h mathbf g - 1 respectively at the ",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "test_method": "rate performance"
+        },
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          },
+          "test_method": "rate performance"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          },
+          "test_method": "rate performance"
+        },
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          },
+          "test_method": "rate performance"
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "A/g"
+          },
+          "test_method": "rate performance"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "test_method": "rate recovery"
+        },
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          },
+          "cycle_number": 450,
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 393,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "MnO/C-3 can reach 393 mA h g-1 at 0.1 A g-1"
+          },
+          {
+            "value": 355,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "at 0.2 A g-1, 355"
+          },
+          {
+            "value": 302,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "at 0.5 A g-1, 302"
+          },
+          {
+            "value": 251,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "at 1 A g-1, 251"
+          },
+          {
+            "value": 198,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "at 2 A g-1, 198"
+          },
+          {
+            "value": 400,
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "when the current density returns to 0.1 A g-1, the specific capacity will also recover and remain above 400 mA h g-1"
+          },
+          {
+            "value": 250,
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "able to maintain a specific capacity of above 250 mA h g-1 at 1 A g-1"
+          }
+        ]
+      }
+    }
+  ]
+}

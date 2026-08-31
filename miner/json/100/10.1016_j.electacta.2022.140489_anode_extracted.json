@@ -1,0 +1,602 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.electacta.2022.140489.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.electacta.2022.140489",
+  "doi": "10.1016/j.electacta.2022.140489",
+  "material_id": "10.1016_j.electacta.2022.140489",
+  "meta": {
+    "meta_title": "Tailoring of a reinforcing and artificial self-assembled alkyl sulfonic acid lay",
+    "meta_authors": "e National Synchrotron Radiation Research Center, Hsin-Chu, Taiwan",
+    "meta_year": "2022"
+  },
+  "materials": [
+    {
+      "name": "Hydroxylated silicon nanoparticles",
+      "short_name": "Si-OH",
+      "formula": "Si-OH",
+      "role": "comparison",
+      "description": "Hydroxylated Si nanoparticles prepared by surface treatment of commercial Si, used as control electrode without SAASA reinforcement",
+      "material_id": "10.1016_j.electacta.2022.140489_M001"
+    },
+    {
+      "name": "Silanized silicon with sulfonic acid artificial SEI",
+      "short_name": "Si-SAASA",
+      "formula": "Si-SAASA",
+      "role": "novel",
+      "description": "Si nanoparticles grafted with sulfonic acid (–SO3H) functional groups via MPTMS silanization and oxidation, serving as a reinforced artificial SEI on the Si anode",
+      "material_id": "10.1016_j.electacta.2022.140489_M002"
+    }
+  ],
+  "n_materials": 2,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: Electrode; Force/ kgf; Average force\nRows:\nRow 1: Electrode = Si-OH; Force/ kgf = 0.2860.2420.2670.232; Average force = 0.257 kgf\nColumn data:\n  Electrode: Si-OH\n  Force/ kgf: 0.2860.2420.2670.232\n  Average force: 0.257 kgf"
+  ],
+  "n_items": 17,
+  "items": [
+    {
+      "paragraph": "Crystalline Si nanoparticle powder APS ≈ 100 nm, 99%, plasma synthesized, Alfa Aesar, MPTMS 95%, Alfa Aesar, mathrm H 2 mathrm O 235%, Showa Chemical Industry Co., Ltd., H2SO495%–98%, HCl 36.5%–38%, F",
+      "property_types": [
+        "Crystallite_Size"
+      ],
+      "extracted_info": {
+        "Crystallite_Size": [
+          {
+            "value": 100,
+            "unit": "nm",
+            "method": "plasma synthesized",
+            "source_text": "Crystalline Si nanoparticle powder APS ≈ 100 nm, 99%, plasma synthesized, Alfa Aesar"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The XRD analysis of the Si-OH and Si-SAASA samples is shown in Fig. 1b. The diffraction peaks at 28.53◦, 47.4◦, 56.2◦, and 69.2 circ correspond to the 111, 220, 311, and 400 planes of the crystalline ",
+      "property_types": [
+        "Lattice_Parameters"
+      ],
+      "extracted_info": {
+        "Lattice_Parameters": [
+          {
+            "value": {
+              "a": 0.312,
+              "b": 0.312,
+              "c": 0.312,
+              "alpha": 90,
+              "beta": 90,
+              "gamma": 90
+            },
+            "unit": "nm",
+            "crystal_system": "cubic",
+            "state": "Si-OH",
+            "method": "XRD",
+            "source_text": "the Si lattice parameter had increased from 0.312 to 0.315 nm"
+          },
+          {
+            "value": {
+              "a": 0.315,
+              "b": 0.315,
+              "c": 0.315,
+              "alpha": 90,
+              "beta": 90,
+              "gamma": 90
+            },
+            "unit": "nm",
+            "crystal_system": "cubic",
+            "state": "Si-SAASA",
+            "method": "XRD",
+            "source_text": "the Si lattice parameter had increased from 0.312 to 0.315 nm"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The obtained powder was analyzed using attenuated total reflection Fourier transform infrared spectroscopy ATR-FTIR FT/IR-6700, JASCO, Osaka, Japan in the region 4000 mathrm - 590 mathrm - 1 . A therm",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "voltage_range": {
+            "min": 0.0,
+            "max": 1.5,
+            "unit": "V",
+            "reference": "vs Li/Li"
+          },
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "cycle_number": 1,
+          "test_method": "operando gas chromatography–mass spectrometry"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The Nu 2 adsorption–desorption isotherms of two samples are displayed in Fig. 1d. The isotherm shows a type IV feature at a p/p0 of 0.80–0.98, indicating mesoporous and microporous structures. The sur",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "test_method": "N2 adsorption-desorption"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Electrodes were prepared using the active materials Si-OH and Si-SAASA, a CMC binder, and SP as a conductive agent in the ratio 60:20:20. Water was used as a solvent for the slurry solution, which was",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "mass_loading": {
+            "value": 0.9,
+            "unit": "mg/cm2"
+          },
+          "electrolyte": "1 M LiPF6 dissolved in a mixture of ethylene carbonate, propylene carbonate, and diethyl carbonate volume percentage 3:2:5, V/V/V without any electrolyte additive",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The morphology of two samples was also characterized using HR-TEM. As shown in Fig. 2a and 2b, the particles of the Si-OH powder were spherical with a size of 100 nm and were covered by a thin oxide l",
+      "property_types": [
+        "Interlayer_Spacing",
+        "Crystallite_Size"
+      ],
+      "extracted_info": {
+        "Interlayer_Spacing": [
+          {
+            "value": 3.1,
+            "unit": "Å",
+            "source_text": "the lattice fringe of Si with a d-spacing of 0.31 nm"
+          }
+        ],
+        "Crystallite_Size": [
+          {
+            "value": 100,
+            "unit": "nm",
+            "method": "TEM",
+            "source_text": "the particles of the Si-OH powder were spherical with a size of 100 nm"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The charge/ discharge profile and incremental capacity dQ/dV measurements for the Si-OH and Si-SAASA electrodes are represented in Fig. 4. The Si-OH electrode operatorname . 4a had an initial charge/ ",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "cycle_number": 1,
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Initial_Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 1869.5,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The Si-OH electrode ... had an initial charge/ discharge capacity of 2783.3/ 1869.5 mAh g-1"
+          },
+          {
+            "value": 2285.7,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the Si-SAASA electrode had higher initial charge/ discharge capacity of 2841.6/ 2285.7 mAh g-1"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 67.2,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "The Si-OH electrode ... had an initial charge/ discharge capacity of 2783.3/ 1869.5 mAh g-1 and ICE of 67.2% in the first cycle."
+          },
+          {
+            "value": 80.7,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the Si-SAASA electrode had higher initial charge/ discharge capacity of 2841.6/ 2285.7 mAh g-1 and ICE of 80.7%."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "CV was performed to investigate the lithiation–delithiation behavior of the two electrodes. The voltammogram of the Si-OH electrode exhibited a reduction peak at 0.5 to 0.7 V Fig. 3a, which was attrib",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The electrochemical reaction of all the cells was tested using the Arbin BAT-750B Battery system in the voltage range 0.005–1.500 V versus mathrm / at 0.2 C and room temperature. The cyclic voltammetr",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.005,
+            "max": 1.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "reference_electrode": "vs. Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C007",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.005,
+            "max": 1.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "reference_electrode": "vs. Li/Li+",
+          "test_method": "cyclic voltammetry (scan rate 0.2 mV/s)"
+        },
+        {
+          "condition_id": "C008",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.005,
+            "max": 1.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "reference_electrode": "vs. Li/Li+",
+          "test_method": "electrochemical impedance spectroscopy (frequency 1 MHz to 10 mHz, AC amplitude 10 mV)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Generally, the major gas evolution occurred only when the Si voltage dropped sharply at the beginning of the lithiation cycle, while the rate decreased gradually during the formation cycle, which indi",
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              {
+                "binding_energy_eV": 532.8,
+                "assignment": "CO or OSO bonds of CMC binder"
+              },
+              {
+                "binding_energy_eV": 534.2,
+                "assignment": "C–O bonds of CMC binder"
+              },
+              {
+                "binding_energy_eV": 168.8,
+                "assignment": "oxidized sulfur in -SO3H species, S 2p3/2 component on SAASA structure"
+              },
+              {
+                "binding_energy_eV": 169.8,
+                "assignment": "oxidized sulfur in -SO3H species, S 2p1/2 component on SAASA structure"
+              }
+            ],
+            "unit": "eV",
+            "state": "Si-SAASA electrode",
+            "source_text": "approximately 532.8 and 534.2 eV were assigned to CO or OSO and C–O bonds of the CMC binder, respectively 45. Notably, the characteristic peaks in the S 2p spectrum of the Si-SAASA electrode at 168.8 and 169.8 eV corresponded to oxidized sulfur in the -SO3H species of the S 2p3/2 and S 2p1/2 components on the SAASA structure tailored to the Si surface."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The rate capability of the Si-OH and Si-SAASA electrodes at different rates was evaluated the results are shown in Fig. 5c. As the rate was increased, the capacity of the Si-OH electrode declined and ",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 4,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 565.6,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "At a high rate 4 C, the Si-SAASA electrode retained an average discharge capacity of 565.6 mAh g-1."
+          },
+          {
+            "value": 2735.8,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "the electrode recovered its original capacity with a discharge capacity of 2735.8 mAh g-1 when it was subsequently discharged at 0.1 C"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The long-term cyclic stability of two electrodes is compared in Fig. 5a. At a rate of 0.2 mathrm C , the Si-SAASA electrode resulted in a discharge capacity of 1820.8 mAh mathbf g - 1 and retention ca",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "cycle_number": 300,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "cycle_number": 400,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 1820.8,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "discharge capacity of 1820.8 mAh g^{-1}"
+          },
+          {
+            "value": 466.0,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "discharge 466 mAh g^{-1}"
+          },
+          {
+            "value": 1507.1,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "discharge capacity of 1507.1 mAh g^{-1}"
+          },
+          {
+            "value": 286.1,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "discharge capacity of the Si-OH electrode had rapidly dropped to 286.1 mAh g^{-1}"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 79.7,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 300,
+            "source_text": "retention capacity of 79.7% after 300 cycles"
+          },
+          {
+            "value": 25.0,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 300,
+            "source_text": "retention capacity of 25% after 300 cycles"
+          },
+          {
+            "value": 74.3,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 400,
+            "source_text": "retention of 74.3% after 400 cycles"
+          },
+          {
+            "value": 14.4,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 400,
+            "source_text": "retention of 14.4% after 400 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The CV curves were employed to determine the lithium-ion diffusion coefficient D for two electrodes at different scanning rates from 0.2 to 1.0 mathrm mathsf s - 1 by using Rundles–Sevcik equation 37.",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Chemical_Diffusion_Coefficient_of_Li_GITT"
+      ],
+      "performance_info": {
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "value": 3.6e-13,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "Randles-Sevcik CV",
+            "source_text": "diffusion coefficient values concerning the anodic reaction of the Si-OH ... 3.6 × 10^{-13} cm2 s-1"
+          },
+          {
+            "value": 2.9e-12,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "Randles-Sevcik CV",
+            "source_text": "Si-SAASA ... 2.9 × 10^{-12} cm2 s-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The electrochemical performance difference between the Si-OH and Si-SAASA electrodes was investigated by using SEM to examine the electrodes’ morphology before and after cycles. The Si-OH electrode ha",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "cycle_number": 1
+        },
+        {
+          "condition_id": "C014",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "D mathrmLi frac R T 22 A 2 n 4 F 4 C mathrmLi 2 sigma 2 tag 1 where R is the gas constant, T is the absolute temperature, A is the electrode surface area, n is the number of electrons transferred in t",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Chemical_Diffusion_Coefficient_of_Li_GITT"
+      ],
+      "performance_info": {
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "value": 2.88e-12,
+            "unit": "cm2/s",
+            "method": "EIS (Warburg impedance)",
+            "source_text": "The D of the Si-SAASA electrode was calculated to be 2.88 times 10 - 12 mathrm 2 mathrm s - 1 , 2 cm 2 s− 1 , considerably higher than that of the Si-OH electrode 4.0 times 10 - 13 mathrm 213 cm2 mathsf s - 1 ."
+          },
+          {
+            "value": 4e-13,
+            "unit": "cm2/s",
+            "method": "EIS (Warburg impedance)",
+            "source_text": "D ... of the Si-OH electrode 4.0 times 10 - 13 mathrm 213 cm2 mathsf s - 1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "After the 1st and 100th cycles Fig. 12b and 12c, the Si 2p spectrum of the Si-OH electrode had low-intensity peaks at 102.7 and 101.1 eV, attributed to mathrm mathrm x mathrm mathrm y and Li Si, respe",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "cycle_number": 1
+        },
+        {
+          "condition_id": "C014",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "Si0 (crystalline Si) at 98.2 eV (Si-SAASA only)",
+              "SiOx at 102.7 eV",
+              "LixSi at 101.1 eV (Si-OH) / 100.6 eV (Si-SAASA)",
+              "C-C at ~285 eV",
+              "C-O at 286.4 eV",
+              "C=O at 287.2 eV",
+              "CO32- at 288.6 eV",
+              "ROCO2Li at 290.1 eV",
+              "SO3 at 169.5 and 170.7 eV (Si-SAASA only)",
+              "LiF at ~685 eV (F 1s) and 55.5 eV (Li 1s)",
+              "PFxOyFz at 688 eV (F 1s)"
+            ],
+            "state": "after 1st and 100th cycles, delithiated state, Si-OH and Si-SAASA electrodes",
+            "source_text": "After the 1st and 100th cycles Fig. 12b and 12c, the Si 2p spectrum of the Si-OH electrode had low-intensity peaks at 102.7 and 101.1 eV, attributed to SiOx and LixSi... The C 1s spectra contained peaks at approximately 285, 286.4, 287.2, 288.6, and 290.1 eV, attributed to C-C, C-O, C=O, CO32-, and ROCO2Li... O 1s spectrum peaks at 533.0 and 531.7 eV (C-O, CO32-). S 2p spectrum of Si-SAASA peaks at 169.5 and 170.7 eV (SO3). F 1s peaks at 685 eV (LiF) and 688 eV (PFxOyFz). Li 1s peak at 55.5 eV (LiF). The intensity of LiF peak was lower for Si-SAASA after 100 cycles."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "3-mercaptopropyltrimethoxysilane MPTMS In summary, new SAASA reinforcement served as an artificial SEI on the surface of Si, was synthesized through an organosilane approach. The SAASA reinforcement g",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "cycle_number": 400,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Si",
+              "O",
+              "C",
+              "S",
+              "H"
+            ],
+            "source_text": "the SAASA reinforcement grafted onto the Si surface through strong siloxane bonds, ... a negatively charged boundary containing -SO3H groups"
+          }
+        ]
+      },
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": {
+          "value": 1511.9,
+          "unit": "mAh/g",
+          "condition_id": "C001",
+          "source_text": "charge/ discharge capacity of 1511.9/ 1507.1 mAh mathbf g - 1 after 400 cycles at a rate of 0.5 mathrm C"
+        },
+        "Capacity_Retention_at_Nth_Cycle": {
+          "value": 74.4,
+          "unit": "%",
+          "condition_id": "C001",
+          "cycle_number": 400,
+          "source_text": "retention capacity of 74.4% at a rate of 0.5 mathrm C"
+        }
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

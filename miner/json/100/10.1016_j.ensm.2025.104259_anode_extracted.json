@@ -1,0 +1,1173 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.ensm.2025.104259.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.ensm.2025.104259",
+  "doi": "10.1016/j.ensm.2025.104259",
+  "material_id": "10.1016_j.ensm.2025.104259",
+  "meta": {
+    "meta_title": "Scalable production of ultrathin Li-Sn-In alloy foil with interpenetrated skelet",
+    "meta_authors": "Xinxin Wang a , Xiangrui Duan b , Qin Chen a , Wanming Li a , Zihan Zhang a , Wen Zhang a , Siwei Gui a , Junhong Wei a , Yanming Cui d , Jiu Lin d,\\* , Huiqiao Li c,\\* , Hui Yang a,",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "LSI-20 composite foil",
+      "short_name": "LSI-20",
+      "formula": "Li-(In₅₂Sn₄₈) composite (20 wt% In₅₂Sn₄₈)",
+      "role": "novel",
+      "description": "Li-rich ternary Li-In-Sn composite anode with 20 wt% In₅₂Sn₄₈ alloy, developed via mechanical kneading; exhibits optimal interfacial stability and cycling performance.",
+      "material_id": "10.1016_j.ensm.2025.104259_M001"
+    },
+    {
+      "name": "LSI-10 composite foil",
+      "short_name": "LSI-10",
+      "formula": "Li-(In₅₂Sn₄₈) composite (10 wt% In₅₂Sn₄₈)",
+      "role": "comparison",
+      "description": "Li-In-Sn composite with 10 wt% In₅₂Sn₄₈ alloy, low lithiophilic site content leading to non-uniform Li deposition and cracks.",
+      "material_id": "10.1016_j.ensm.2025.104259_M002"
+    },
+    {
+      "name": "LSI-30 composite foil",
+      "short_name": "LSI-30",
+      "formula": "Li-(In₅₂Sn₄₈) composite (30 wt% In₅₂Sn₄₈)",
+      "role": "comparison",
+      "description": "Li-In-Sn composite with 30 wt% In₅₂Sn₄₈ alloy, excessive and unevenly distributed lithiophilic sites causing heterogeneous Li plating.",
+      "material_id": "10.1016_j.ensm.2025.104259_M003"
+    }
+  ],
+  "n_materials": 3,
+  "table_items": [],
+  "n_items": 17,
+  "items": [
+    {
+      "paragraph": "As the change of electrode structure can exert a prominent influence on its cycling stability during the Li stripping/plating process, especially with large capacity, the morphological evolutions of t",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 1,
+          "test_method": "galvanostatic stripping to 3 mAh cm-2, then plating to 3 mAh cm-2"
+        },
+        {
+          "condition_id": "C002",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 100,
+          "test_method": "galvanostatic cycling at 2 mAh cm-2 areal capacity"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Based on the assembled symmetrical coin cells, galvanostatic Li stripping/plating cycling tests were conducted to investigate the electrochemical performances of the LSI electrodes. Due to the signifi",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic Li stripping/plating cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "（e （g） To investigate the electrochemical performances of the LSI composite electrodes with thicknesses of 10 μm and 50 μm, symmetrical LSILSI coin cells were assembled. For comparison, LiLi symmetric",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "electrolyte": "60 µL 1 M LiPF in EC/DEC 1:1 in volume with 10 wt % FEC and 1 % VC additives",
+          "electrode_config": "symmetric_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Material phase compositions and the surface electronic state of the LSI composite foils were then characterized. Surface morphologies and elemental distributions of LSI foils were observed and analyze",
+      "property_types": [
+        "Elemental_Composition",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "In",
+              "Sn"
+            ],
+            "method": "XPS, XRD, SEM-EDS, TOF-SIMS",
+            "source_text": "Surface morphologies and elemental distributions of LSI foils were observed and analyzed using scanning electron microscopy SEM and time of flight secondary ion mass spectrometry TOF-SIMS. Fig. 1d and Fig. S4 display the surface morphology and the elemental mapping images of the obtained LSI foils. ... Moreover, the SEM-EDS line scan analysis and the obtained TOF-SIMS images ... further manifest that the In and Sn elements are uniformly scattered in the bulk material ... Besides, the X-ray photoelectron spectroscopy XPS spectra of the LSI-20 composite foil were measured ... The high-resolution XPS spectra in Fig. S6 reveal distinct peaks: three at 54.2, 55.2, and 55.6 eV in the Li 1 s spectrum two at 444.1 and 451.7 eV in the In 3d spectrum and three at 485.4, 487.8, and 494.4 eV in the Sn 3d spectrum."
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "InLiSn",
+            "state": "composite phase",
+            "source_text": "the three diffraction peaks at 23.1◦, 38.1◦, and 68.8◦ can be assigned to the 111, 220, and 422 planes of the InLiSn PDF#65–9300, verifying the formation of the LSI composite."
+          },
+          {
+            "value": "Li",
+            "state": "metallic phase",
+            "source_text": "two obvious diffraction peaks of metallic Li at 36.2◦ and 52.0◦ 2θ PDF#15–0401 still clearly appear in the XRD patterns of different LSI composites"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "As shown in Fig. 1a, compared with the pure Sn and In phases, the finely dispersed Sn-In phases in the In52Sn48 alloy can not only pin down grain growth to refine the initial grain size, but also faci",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "test_method": "nanoindentation"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "Sn",
+              "In"
+            ],
+            "source_text": "Li-(In52Sn48) composite (20 wt% In52Sn48)"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The rate performances of the LSI-20LSI-20 and LiLi symmetrical cells were investigated at different current densities with a fixed capacity of 1 mAh mathrm - 2 . As shown in Fig. 2c and Fig. S14, the ",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 125
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "In",
+              "Sn"
+            ],
+            "source_text": "LSI-20 composite foil (Li-(In52Sn48) composite (20 wt% In52Sn48))"
+          }
+        ]
+      },
+      "performance_types": [
+        "First_Lithiation_Capacity"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 2718,
+            "unit": "mAh/g",
+            "source_text": "LSI-20 composite foil can still present a satisfactory specific capacity of 2718 mAh g-1 ... Fig. 2e"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To disclose the underlying mechanism that leads to the superior performances of the LSI-20 electrode, DFT calculations were conducted using the Vienna Ab initio Simulation Package VASP. By calculating",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Li",
+            "state": "pure",
+            "source_text": "pure Li"
+          },
+          {
+            "value": "Li₁₃In₃",
+            "source_text": "Li₁₃In₃"
+          },
+          {
+            "value": "Li₂₂Sn₅",
+            "source_text": "Li₂₂Sn₅"
+          },
+          {
+            "value": "InLiSn",
+            "source_text": "InLiSn 111 facet terminated by In atoms"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To disclose the superiority of the as-prepared LSI-20 electrodes, the electrochemical performances of 50 μm thick LSI-20 and pure Li electrodes were compared. Fig. 2a shows the time evolution voltage ",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 3.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Li_Nucleation_Overpotential",
+        "Plateau_Overpotential",
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 158,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "substrate": "pure Li",
+            "source_text": "the pure Li electrode displays a nucleation overpotential of 158 mV"
+          },
+          {
+            "value": 78,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "substrate": "LSI-20",
+            "source_text": "the LSI-20 electrode exhibits a much lower nucleation overpotential 78 mV initially"
+          }
+        ],
+        "Plateau_Overpotential": [
+          {
+            "value": 45,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "the overpotential decreases rapidly to 45 mV due to the increment of actual surface area caused by the deposition of Li"
+          },
+          {
+            "value": 26,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "the overpotential of the LSI-20 electrode gradually decreases to 26 mV and then stably maintains there"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 2700,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "stably maintains there during the following over 2700 h cycling"
+          },
+          {
+            "value": 300,
+            "unit": "h",
+            "condition_id": "C002",
+            "source_text": "the one with a 10 μm-thick electrode maintains a stable operation for more than 300 h at a high current density of 3 mA mathrm - 2 mathbf . s 13"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "b） f） h） To evaluate the Li migration kinetics in different electrodes, temperature-dependent electrochemical impedance spectroscopy EIS tests of the LiLi and LSI-20LSI-20 symmetric cells were conduct",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "temperature": {
+            "unit": "K"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C010",
+          "voltage_range": {
+            "min": -0.13,
+            "max": 0.13,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "test_method": "LSV",
+          "electrode_config": "symmetric_cell"
+        },
+        {
+          "condition_id": "C011",
+          "test_method": "EIS",
+          "electrode_config": "symmetric_cell"
+        }
+      ],
+      "property_types": [
+        "Exchange_Current_Density"
+      ],
+      "extracted_info": {
+        "Exchange_Current_Density": [
+          {
+            "value": 0.48,
+            "unit": "mA/cm2",
+            "method": "LSV Tafel",
+            "source_text": "the LSI-20 electrode shows a larger exchange current density 0.480 mA cm⁻²"
+          },
+          {
+            "value": 0.033,
+            "unit": "mA/cm2",
+            "method": "LSV Tafel",
+            "source_text": "pure Li counterpart 0.033 mA cm⁻²"
+          }
+        ]
+      },
+      "performance_types": [
+        "Activation_Energy_for_Li_Transport_through_SEI",
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 42.5,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "R of the LSI-20 electrode at 288 K, 42.5 Ω"
+          },
+          {
+            "value": 354.1,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "R of the LSI-20 electrode at 263 K, 354.1 Ω"
+          },
+          {
+            "value": 118.3,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "R of the pure Li electrode at 288 K, 118.3 Ω"
+          },
+          {
+            "value": 1752.0,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "R of the pure Li electrode at 263 K, 1752.0 Ω"
+          },
+          {
+            "value": 94.8,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": "pure Li electrode R after 8 h resting, 94.8 Ω"
+          },
+          {
+            "value": 187.9,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": "pure Li electrode R after 16 h resting, 187.9 Ω"
+          },
+          {
+            "value": 205.1,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": "pure Li electrode R after 24 h resting, 205.1 Ω"
+          },
+          {
+            "value": 39.8,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": "LSI-20 electrode R after 8 h resting, 39.8 Ω"
+          },
+          {
+            "value": 59.5,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": "LSI-20 electrode R after 16 h resting, 59.5 Ω"
+          },
+          {
+            "value": 92.2,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": "LSI-20 electrode R after 24 h resting, 92.2 Ω"
+          }
+        ],
+        "Activation_Energy_for_Li_Transport_through_SEI": [
+          {
+            "value": 36.1,
+            "unit": "kJ/mol",
+            "method": "EIS Arrhenius fit",
+            "source_text": "the value of E a for the LSI-20 electrode 36.10 kJ mol-1"
+          },
+          {
+            "value": 67.93,
+            "unit": "kJ/mol",
+            "method": "EIS Arrhenius fit",
+            "source_text": "the value of E a ... pure Li anode 67.93 kJ mol-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The LSI composite foils were synthesized via a facile mechanical kneading method utilizing the spontaneous reaction between the In52Sn48 alloy foil Zhengjiang Fan Yada Electronic Technology Co., Ltd. ",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Li-(In52Sn48) composite (10 wt% In52Sn48)",
+            "state": "LSI-10",
+            "source_text": "Based on the weight ratios of the In52Sn48 alloy foil used in the sandwich-structured foil, i.e. 10, 20, and 30 wt %, the obtained LSI composites were denoted as LSI-10, LSI-20, and LSI-30, respectively."
+          },
+          {
+            "value": "Li-(In52Sn48) composite (20 wt% In52Sn48)",
+            "state": "LSI-20",
+            "source_text": "Based on the weight ratios of the In52Sn48 alloy foil used in the sandwich-structured foil, i.e. 10, 20, and 30 wt %, the obtained LSI composites were denoted as LSI-10, LSI-20, and LSI-30, respectively."
+          },
+          {
+            "value": "Li-(In52Sn48) composite (30 wt% In52Sn48)",
+            "state": "LSI-30",
+            "source_text": "Based on the weight ratios of the In52Sn48 alloy foil used in the sandwich-structured foil, i.e. 10, 20, and 30 wt %, the obtained LSI composites were denoted as LSI-10, LSI-20, and LSI-30, respectively."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In addition, Ah-level laminated pouch cells 1 Ah consisting of double-sided cathodes and anodes 6 cm × 10 cm were fabricated. Detailed information regarding the cell configuration is summarized in Tab",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "cycle_number": 1,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle",
+        "Energy_Density_Full_Cell"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 91.74,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "After 100 cycles at 0.2 C, the NCM95LSI-20 pouch cell still exhibits a stable charge/discharge cycling behavior with a high capacity retention of 91.74 %"
+          }
+        ],
+        "Energy_Density_Full_Cell": [
+          {
+            "value": 495.5,
+            "unit": "Wh/kg",
+            "condition_id": "C002",
+            "basis": "based on the mass of the cathode and anode",
+            "source_text": "the NCM95LSI-20 pouch cell with a low N/P ratio of 2.0 offers a high energy density of 495.5 Wh⋅kg-1 at 0.2 C based on the mass of the cathode and anode."
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "In summary, we construct the Li-rich LSI composite electrodes with good mechanical processability via a facile mechanical kneading strategy. As revealed by both experimental characterizations and DFT ",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell"
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 3.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell"
+        },
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": "0.5 C/1 C",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 18.0,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full cell (coin-type)",
+          "cycle_number": 200
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability",
+        "Capacity_Retention_at_Nth_Cycle",
+        "Energy_Density_Full_Cell"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 2700.0,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "long cycle lifespan of 2700 h with negligible overpotential changes at 1 mA cm-2 and 1 mAh cm-2"
+          },
+          {
+            "value": 500.0,
+            "unit": "h",
+            "condition_id": "C002",
+            "source_text": "LSI-20LSI-20 cell still survives over 500 h"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 89.2,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 200,
+            "source_text": "capacity retention of 89.2 % after 200 cycles at 0.5 C 1 C 214 mathrm mathrm g - 1"
+          },
+          {
+            "value": 91.7,
+            "unit": "%",
+            "condition_id": "C004",
+            "cycle_number": 100,
+            "source_text": "high capacity retention of 91.7 % for 100 cycles"
+          }
+        ],
+        "Energy_Density_Full_Cell": [
+          {
+            "value": 495.5,
+            "unit": "Wh/kg",
+            "condition_id": "C004",
+            "basis": "mass of both cathode and anode",
+            "source_text": "deliver an impressive energy density of 495.5 Wh⋅kg-1 at 0.2 C based on the mass of both cathode and anode"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Encouraged by its excellent electrochemical performances, the practical application perspective of the as-fabricated LSI-20 electrode was further probed by pairing it with the mathrm 0.950.020.03 O 2 ",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "mass_loading": {
+            "value": 18,
+            "unit": "mg/cm2"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.4,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "cycle_number": 200,
+          "electrode_config": "full cell (NCM95 cathode || LSI-20 anode)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C020",
+          "mass_loading": {
+            "value": 18,
+            "unit": "mg/cm2"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.4,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrode_config": "full cell (NCM95 || LSI-20)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C021",
+          "mass_loading": {
+            "value": 18,
+            "unit": "mg/cm2"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.4,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "electrode_config": "full cell (NCM95 || LSI-20)",
+          "test_method": "rate capability test"
+        },
+        {
+          "condition_id": "C022",
+          "mass_loading": {
+            "value": 18,
+            "unit": "mg/cm2"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.4,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "electrode_config": "full cell (NCM95 || LSI-20)",
+          "test_method": "rate capability test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity",
+        "Capacity_Retention_at_Nth_Cycle",
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 3.7,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "presents a high initial areal capacity of 3.7 mAh cm-2"
+          },
+          {
+            "value": 3.8,
+            "unit": "mAh/cm2",
+            "condition_id": "C002",
+            "source_text": "discharge capacity could remain at ... 3.8 mAh cm-2 after 100 cycles"
+          },
+          {
+            "value": 3.9,
+            "unit": "mAh/cm2",
+            "condition_id": "C003",
+            "source_text": "At a current density of 0.1 C, ... reveals an areal capacity of 3.9 mAh cm-2"
+          },
+          {
+            "value": 2.2,
+            "unit": "mAh/cm2",
+            "condition_id": "C004",
+            "source_text": "As the current density increases to 2 C, ... deliver a high reversible areal capacity of 2.2 mAh cm-2"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 89.2,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "retains 89.20 % of it after 200 cycles at 0.5 C"
+          },
+          {
+            "value": 96.25,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "with a capacity retention of 96.25 %"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 213.5,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "discharge capacity could remain at 213.5 mAh g-1 ... after 100 cycles, with a capacity retention of 96.25 %"
+          },
+          {
+            "value": 123.7,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "deliver a high reversible ... specific capacity of 123.7 mAh g-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The LiCoO2 electrodes were fabricated by using 90 wt % mathrm 2 , 5 wt % PVDF polyvinylidene fluoride binder, and 5 wt % carbon black. Firstly, mathrm 2 and carbon black were evenly ground in an agate",
+      "conditions": [
+        {
+          "condition_id": "C023",
+          "temperature": {
+            "value": 80,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 16,
+            "unit": "mg/cm2"
+          }
+        },
+        {
+          "condition_id": "C024",
+          "temperature": {
+            "value": 80,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 17,
+            "unit": "mg/cm2"
+          }
+        },
+        {
+          "condition_id": "C025",
+          "mass_loading": {
+            "value": 18,
+            "unit": "mg/cm2"
+          }
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "LiCoO2",
+            "source_text": "The LiCoO2 electrodes were fabricated by using 90 wt % mathrm 2"
+          },
+          {
+            "value": "NCM622",
+            "source_text": "the NCM622 cathodes were also constructed by adopting 90 wt % NCM622"
+          },
+          {
+            "value": "NCM95",
+            "source_text": "The NCM95 cathodes were used as received."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Referring to the superior electrochemical performances of the LSI-20 electrode in half cells, LSI-20 anode-based full cells with different cathodes were constructed to evaluate the potential practical",
+      "conditions": [
+        {
+          "condition_id": "C026",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.5,
+            "unit": "V"
+          },
+          "mass_loading": {
+            "value": 16.0,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C027",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.25,
+            "unit": "V"
+          },
+          "mass_loading": {
+            "value": 17.0,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C028",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.5,
+            "unit": "V"
+          },
+          "mass_loading": {
+            "value": 16.0,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C028",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.5,
+            "unit": "V"
+          },
+          "mass_loading": {
+            "value": 16.0,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "rate test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity",
+        "Capacity_Retention_at_Nth_Cycle",
+        "Rate_Capability_at_Given_C_rate",
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 7.8,
+            "unit": "mAh/cm2",
+            "source_text": "the areal capacities of the LSI-20 and Li electrodes used in the full cells are 7.8 mAh cm - 2 and 10.0 mAh cm-2, respectively"
+          },
+          {
+            "value": 10.0,
+            "unit": "mAh/cm2",
+            "source_text": "the areal capacities of the LSI-20 and Li electrodes used in the full cells are 7.8 mAh cm - 2 and 10.0 mAh cm-2, respectively"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 77.6,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 500,
+            "source_text": "the LiCoO2LSI-20 coin-type full cell exhibits a superior cycling performance with 77.6 % capacity retention ... after 500 cycles"
+          },
+          {
+            "value": 97.7,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 25,
+            "source_text": "the capacity retention of the LiCoO2LSI-20 full cells is 97.7 % discharge capacity25th"
+          },
+          {
+            "value": 40.3,
+            "unit": "%",
+            "condition_id": "C004",
+            "cycle_number": 25,
+            "source_text": "40.3 % discharge capacity25th ... for the LiCoO2Li full cell"
+          },
+          {
+            "value": 80.25,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 400,
+            "source_text": "the NCM622LSI-20 coin-type full cell retains an 80.25 % capacity after 400 cycles"
+          },
+          {
+            "value": 58.75,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 300,
+            "source_text": "the capacity retention of the NCM622Li coin-type full cell is 58.75 % after only 300 cycles"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 134.0,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "voltage_range": "2.8-4.5 V",
+            "source_text": "discharge capacity25th 134.0 mAh mathbf g - 1 ... at 2 C"
+          },
+          {
+            "value": 28.2,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "voltage_range": "2.8-4.5 V",
+            "source_text": "discharge capacity25th 28.2 mAh mathbf g - 1 ... for the LiCoO2Li full cell"
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.7,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "with 77.6 % capacity retention and 99.7 % CE after 500 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "As presented in Fig. S28a, XRD analysis was performed on the LSI-20 anode after 50 cycles in a full cell paired with an NCM95 cathode, which shows that the intermetallic InLiSn phase remains stable th",
+      "conditions": [
+        {
+          "condition_id": "C029",
+          "cycle_number": 50,
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C030",
+          "cycle_number": 0,
+          "electrode_config": "full_cell",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C031",
+          "cycle_number": 5,
+          "electrode_config": "full_cell",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C032",
+          "cycle_number": 50,
+          "electrode_config": "full_cell",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "Sn",
+              "In"
+            ],
+            "source_text": "the Li-Sn-In alloy composite"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "InLiSn",
+            "source_text": "intermetallic InLiSn phase"
+          }
+        ]
+      },
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 97.9,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "The R mathrm of the full cell with LSI-20 electrode 97.9 Ω is lower than that of the pure Li 435.0 Ω electrode before cycling."
+          },
+          {
+            "value": 435.0,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "The R mathrm of the full cell with LSI-20 electrode 97.9 Ω is lower than that of the pure Li 435.0 Ω electrode before cycling."
+          },
+          {
+            "value": 300.1,
+            "unit": "Ω",
+            "condition_id": "C003",
+            "source_text": "After 50 cycles, the R mathrm of the full cell with the pure Li electrode increases from 300.1 to 716.4 Ω"
+          },
+          {
+            "value": 716.4,
+            "unit": "Ω",
+            "condition_id": "C004",
+            "source_text": "After 50 cycles, the R mathrm of the full cell with the pure Li electrode increases from 300.1 to 716.4 Ω"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "Electrochemical performances of the LSI electrode was evaluated based on the assembled CR2032 coin-type and pouch-type cells, in which a polypropylene membrane Celgard 2500 was employed as the separat",
+      "conditions": [
+        {
+          "condition_id": "C033",
+          "electrode_config": "symmetric cell (LSI||LSI)",
+          "electrolyte": "1 M LiPF6 in ethylene carbonate/diethyl carbonate (EC/DEC, 1:1 in volume) with 10 wt% fluoroethylene carbonate (FEC) and 1% vinylene carbonate (VC) additives, ~60 µL per coin cell",
+          "voltage_range": {
+            "min": -0.13,
+            "max": 0.13,
+            "unit": "V",
+            "reference": "cell voltage"
+          },
+          "test_method": "EIS (0.1 Hz to 1.0×10^5 Hz), LSV (0.1 mV·s⁻¹, −0.13 to 0.13 V), galvanostatic cycling under different current densities"
+        },
+        {
+          "condition_id": "C034",
+          "electrode_config": "full-cell (LiCoO2||LSI)",
+          "electrolyte": "1 M LiPF6 in ethylene carbonate/diethyl carbonate (EC/DEC, 1:1 in volume) with 10 wt% fluoroethylene carbonate (FEC) and 1% vinylene carbonate (VC) additives, ~60 µL per coin cell",
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.5,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "cycle_number": 3,
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C035",
+          "electrode_config": "full-cell (LiCoO2||LSI)",
+          "electrolyte": "1 M LiPF6 in ethylene carbonate/diethyl carbonate (EC/DEC, 1:1 in volume) with 10 wt% fluoroethylene carbonate (FEC) and 1% vinylene carbonate (VC) additives, ~60 µL per coin cell",
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.5,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C036",
+          "electrode_config": "full-cell (NCM622||LSI)",
+          "electrolyte": "1 M LiPF6 in ethylene carbonate/diethyl carbonate (EC/DEC, 1:1 in volume) with 10 wt% fluoroethylene carbonate (FEC) and 1% vinylene carbonate (VC) additives, ~60 µL per coin cell",
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.25,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "cycle_number": 3,
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C037",
+          "electrode_config": "full-cell (NCM622||LSI)",
+          "electrolyte": "1 M LiPF6 in ethylene carbonate/diethyl carbonate (EC/DEC, 1:1 in volume) with 10 wt% fluoroethylene carbonate (FEC) and 1% vinylene carbonate (VC) additives, ~60 µL per coin cell",
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.25,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C038",
+          "electrode_config": "full-cell (NCM95||Li)",
+          "electrolyte": "1 M LiPF6 in ethylene carbonate/diethyl carbonate (EC/DEC, 1:1 in volume) with 10 wt% fluoroethylene carbonate (FEC) and 1% vinylene carbonate (VC) additives, ~60 µL per coin cell",
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.4,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "cycle_number": 3,
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C039",
+          "electrode_config": "full-cell (NCM95||Li)",
+          "electrolyte": "1 M LiPF6 in ethylene carbonate/diethyl carbonate (EC/DEC, 1:1 in volume) with 10 wt% fluoroethylene carbonate (FEC) and 1% vinylene carbonate (VC) additives, ~60 µL per coin cell",
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.4,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C040",
+          "electrode_config": "full_cell",
+          "electrolyte": "1 M LiPF6 in FEC/1,1,2,2-tetrafluoroethyl-2′,2′,2′-trifluoroethyl ether (HFE)/3,3,3-fluoroethylmethyl carbonate (FEMC) 2:2:6 by weight with 0.02 M lithium difluorooxalatoborate (LiDFOB) additive"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    }
+  ]
+}

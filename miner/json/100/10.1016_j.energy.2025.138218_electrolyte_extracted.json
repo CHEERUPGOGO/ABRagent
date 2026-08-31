@@ -1,0 +1,99 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.energy.2025.138218.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/J.ENERGY.2023.129279",
+  "doi": "10.1016/J.ENERGY.2023.129279",
+  "material_id": "10.1016_j.energy.2025.138218",
+  "meta": {
+    "meta_title": "Designing fire-retardant polymer-based electrolytes and separators for high-ener",
+    "meta_authors": "Yakubu Sani Wudil a,b,\\* , M.A. Gondal a,c , Mohammed A. Al-Osta b,d",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "electrolyte material",
+      "short_name": "10.1016_j.energy.2025.138218",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.energy.2025.138218"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: Variables; Count; Mean; Std; Min; Max; Skewness; Kurtosis\nRows:\nRow 1: Variables = Density (g/mL); Count = 260; Mean = 1.1964; Std = 0.2021; Min = 0.85; Max = 2.15; Skewness = 2.0219; Kurtosis = 8.3295\nRow 2: Variables = Solubility (MPa $^{1/2}$ ); Count = 260; Mean = 21.04; Std = 3.4835; Min = 12.9; Max = 31.5; Skewness = 0.5758; Kurtosis = 1.0029\nRow 3: Variables = MCE (J/mol); Count = 260; Mean = 65388; Std = 50243.7919; Min = 0; Max = 174100; Skewness = 0.7759; Kurtosis = -0.6151\nRow 4: Variables = GTT (K); Count = 260; Mean = 361.7; Std = 93.9998; Min = 202; Max = 595; Skewness = 0.4651; Kurtosis = -0.1173\nRow 5: Variables = EMW (g/mol); Count = 260; Mean = 6715.2324; Std = 10212.9682; Min = 0; Max = 63000; Skewness = 3.7392; Kurtosis = 16.8705\nRow 6: Variables = THR (KJ/g); Count = 260; Mean = 22.142; Std = 9.2811; Min = 8.7; Max = 44.4; Skewness = 0.5725; Kurtosis = -0.4814\nColumn data:\n  Variables: Density (g/mL); Solubility (MPa $^{1/2}$ ); MCE (J/mol); GTT (K); EMW (g/mol); THR (KJ/g)\n  Count: 260; 260; 260; 260; 260; 260\n  Mean: 1.1964; 21.04; 65388; 361.7; 6715.2324; 22.142\n  Std: 0.2021; 3.4835; 50243.7919; 93.9998; 10212.9682; 9.2811\n  Min: 0.85; 12.9; 0; 202; 0; 8.7\n  Max: 2.15; 31.5; 174100; 595; 63000; 44.4\n  Skewness: 2.0219; 0.5758; 0.7759; 0.4651; 3.7392; 0.5725\n  Kurtosis: 8.3295; 1.0029; -0.6151; -0.1173; 16.8705; -0.4814",
+    "TABLE DATA BLOCK\nHeaders: Quantity; Equation; Range\nRows:\nRow 1: Quantity = MAE; Equation = $=\\frac{1}{N}\\sum_{i=1}^{N}|Y_i-\\overline{Y}_m|$; Range = $0 \\leq MAE < \\infty$\nRow 2: Quantity = NSE; Equation = $=1-\\frac{\\frac{1}{N}\\sum_{i=1}^{N}(Y_i-\\overline{Y}_m)^2}{\\frac{1}{N}\\sum_{i=1}^{N}(Y_i-\\widetilde{Y}_m)^2}$; Range = $-\\infty < NSE < 1$\nRow 3: Quantity = RMSE; Equation = $=\\sqrt{\\frac{1}{N}\\sum_{i=1}^{N}(Y_i-\\overline{Y}_m)^2}$; Range = $0 \\leq MSE < \\infty$\nRow 4: Quantity = CC; Equation = $=\\frac{\\frac{1}{N}\\sum_{i=1}^{N}[Y_i-\\overline{Y}_m][\\widehat{Y}_i-\\widetilde{Y}_m](Y_i-\\overline{Y}_m]^1}{\\sqrt{\\frac{1}{N}\\sum_{i=1}^{N}[Y_i-Y_m]^2[\\widehat{Y}_i-\\widetilde{Y}_m]^2}}$; Range = $0 \\leq CC \\leq 1$\nColumn data:\n  Quantity: MAE; NSE; RMSE; CC\n  Equation: $=\\frac{1}{N}\\sum_{i=1}^{N}|Y_i-\\overline{Y}_m|$; $=1-\\frac{\\frac{1}{N}\\sum_{i=1}^{N}(Y_i-\\overline{Y}_m)^2}{\\frac{1}{N}\\sum_{i=1}^{N}(Y_i-\\widetilde{Y}_m)^2}$; $=\\sqrt{\\frac{1}{N}\\sum_{i=1}^{N}(Y_i-\\overline{Y}_m)^2}$; $=\\frac{\\frac{1}{N}\\sum_{i=1}^{N}[Y_i-\\overline{Y}_m][\\widehat{Y}_i-\\widetilde{Y}_m](Y_i-\\overline{Y}_m]^1}{\\sqrt{\\frac{1}{N}\\sum_{i=1}^{N}[Y_i-Y_m]^2[\\widehat{Y}_i-\\widetilde{Y}_m]^2}}$\n  Range: $0 \\leq MAE < \\infty$; $-\\infty < NSE < 1$; $0 \\leq MSE < \\infty$; $0 \\leq CC \\leq 1$",
+    "TABLE DATA BLOCK\nHeaders: Hyperparameters; SVR; GPR; HGBR\nRows:\nRow 1: Hyperparameters = Kernel; SVR = RBF; GPR = RBF; HGBR = -\nRow 2: Hyperparameters = C; SVR = 250; GPR = -; HGBR = -\nRow 3: Hyperparameters = Epsilon; SVR = 0.01; GPR = -; HGBR = -\nRow 4: Hyperparameters = Gamma; SVR = 0.01; GPR = -; HGBR = -\nRow 5: Hyperparameters = Length scale; SVR = -; GPR = 1.5; HGBR = -\nRow 6: Hyperparameters = No of optimizers; SVR = -; GPR = 20; HGBR = -\nRow 7: Hyperparameters = Learning rate; SVR = -; GPR = -; HGBR = 0.1\nColumn data:\n  Hyperparameters: Kernel; C; Epsilon; Gamma; Length scale; No of optimizers; Learning rate\n  SVR: RBF; 250; 0.01; 0.01; -; -; -\n  GPR: RBF; -; -; -; 1.5; 20; -\n  HGBR: -; -; -; -; -; -; 0.1",
+    "TABLE DATA BLOCK\nHeaders: Output; Combinations; MAE; NSE; RMSE; CC\nRows:\nRow 1: Output = Verification; Combinations = SVR-C1; MAE = 0.5449; NSE = 0.9260; RMSE = 2.4833; CC = 0.9625\nRow 2: Output = Phase; Combinations = SVR-C2; MAE = 0.5398; NSE = 0.9276; RMSE = 2.4555; CC = 0.9633\nRow 3: SVR-C3; 0.5398; 0.9276; 2.4555; 0.9633\nRow 4: GPR-C1; 1.0923; 0.6043; 5.7417; 0.8113\nRow 5: GPR-C2; 0.7822; 0.8268; 3.7984; 0.9132\nRow 6: GPR-C3; 0.8622; 0.7762; 4.3183; 0.8889\nRow 7: HGBR-C1; 0.9015; 0.9753; 1.4357; 0.9881\nRow 8: HGBR-C2; 0.6785; 0.9847; 1.1290; 0.9926\nRow 9: HGBR-C3; 0.6530; 0.9858; 1.0875; 0.9932\nRow 10: Output = Calibration; Combinations = SVR-C1; MAE = 0.1656; NSE = 0.9846; RMSE = 1.0511; CC = 0.9925\nRow 11: Output = Phase; Combinations = SVR-C2; MAE = 0.1655; NSE = 0.9846; RMSE = 1.0512; CC = 0.9925\nRow 12: SVR-C3; 0.1655; 0.9276; 1.0512; 0.9925\nRow 13: GPR-C1; 0.1775; 0.9910; 0.8018; 0.9955\nRow 14: GPR-C2; 0.1761; 0.9914; 0.7865; 0.9957\nRow 15: GPR-C3; 0.1805; 0.7762; 0.8319; 0.9952\nRow 16: HGBR-C1; 0.7826; 0.9746; 1.3495; 0.9875\nRow 17: HGBR-C2; 0.7658; 0.9783; 1.2484; 0.9894\nRow 18: HGBR-C3; 0.6592; 0.9858; 1.1447; \nColumn data:\n  Output: Verification; Phase; SVR-C3; GPR-C1; GPR-C2; GPR-C3; HGBR-C1; HGBR-C2; HGBR-C3; Calibration; Phase; SVR-C3; GPR-C1; GPR-C2; GPR-C3; HGBR-C1; HGBR-C2; HGBR-C3\n  Combinations: SVR-C1; SVR-C2; 0.5398; 1.0923; 0.7822; 0.8622; 0.9015; 0.6785; 0.6530; SVR-C1; SVR-C2; 0.1655; 0.1775; 0.1761; 0.1805; 0.7826; 0.7658; 0.6592\n  MAE: 0.5449; 0.5398; 0.9276; 0.6043; 0.8268; 0.7762; 0.9753; 0.9847; 0.9858; 0.1656; 0.1655; 0.9276; 0.9910; 0.9914; 0.7762; 0.9746; 0.9783; 0.9858\n  NSE: 0.9260; 0.9276; 2.4555; 5.7417; 3.7984; 4.3183; 1.4357; 1.1290; 1.0875; 0.9846; 0.9846; 1.0512; 0.8018; 0.7865; 0.8319; 1.3495; 1.2484; 1.1447\n  RMSE: 2.4833; 2.4555; 0.9633; 0.8113; 0.9132; 0.8889; 0.9881; 0.9926; 0.9932; 1.0511; 1.0512; 0.9925; 0.9955; 0.9957; 0.9952; 0.9875; 0.9894; \n  CC: 0.9625; 0.9633; 0.9925; 0.9925"
+  ],
+  "n_items": 5,
+  "items": [
+    {
+      "paragraph": "These outcomes can directly support battery-safety design by converting predicted Total Heat Release into an actionable screening signal. With the calibrated regressors, particularly the gradient-boos",
+      "property_types": [
+        "Density"
+      ],
+      "extracted_info": {
+        "Density": [
+          {
+            "unit": "g/cm³",
+            "source_text": "higher density and suitable solubility ranges are linked to lower THR"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The data used in this study were sourced from multiple experiments reported in the literature, focusing on the combustion calorimetry of various polymer-based compounds 51,54–58. Specifically, the dat",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "pyrolysis combustion flow calorimetry (PCFC)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To enhance the predictive power of the developed models, a correlation-based feature selection was performed on the dataset. This process involved calculating the correlation coefficients between the ",
+      "property_types": [
+        "Density"
+      ],
+      "extracted_info": {
+        "Density": [
+          {
+            "unit": "g/cm³",
+            "source_text": "For example, density measures the compactness of the polymer materials and thus influences their thermal conductivity and stability 54."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Variables; Count; Mean; Std; Min; Max; Skewness; Kurtosis\nRows:\nRow 1: Variables = Density (g/mL); Count = 260; Mean = 1.1964; Std = 0.2021; Min = 0.85; Max = 2.15; Skewness ",
+      "property_types": [
+        "Density"
+      ],
+      "extracted_info": {
+        "Density": [
+          {
+            "value": 1.1964,
+            "unit": "g/cm³",
+            "source_text": "Row 1: Variables = Density (g/mL); Count = 260; Mean = 1.1964; Std = 0.2021; Min = 0.85; Max = 2.15; Skewness = 2.0219; Kurtosis = 8.3295"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The dataset compiled for this study consists of various descriptors that influence the fire resistance of polymer-based electrolytes and separator membranes. These descriptors include density g/mL, so",
+      "property_types": [
+        "Density"
+      ],
+      "extracted_info": {
+        "Density": [
+          {
+            "unit": "g/mL",
+            "source_text": "density g/mL"
+          }
+        ]
+      }
+    }
+  ]
+}

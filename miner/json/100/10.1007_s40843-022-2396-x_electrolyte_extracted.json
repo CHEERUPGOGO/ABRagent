@@ -1,0 +1,263 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1007_s40843-022-2396-x.md",
+  "component": "electrolyte",
+  "paper_id": "10.1007/s40843-022-2396-x",
+  "doi": "10.1007/s40843-022-2396-x",
+  "material_id": "10.1007_s40843-022-2396-x",
+  "meta": {
+    "meta_title": "2D $\\mathsf { \\mathsf { s p } } ^ { 2 }$ -carbon-linked covalent organic framewo",
+    "meta_authors": "Conghui Zhang, Yongxin Yang, Yongjiang Sun* , Lingyan Duan, Zhiyuan Mei, Qi An, Qi Jing, Genfu Zhao and Hong Guo",
+    "meta_year": null
+  },
+  "materials": [
+    {
+      "name": "electrolyte material",
+      "short_name": "10.1007_s40843-022-2396-x",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1007_s40843-022-2396-x"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 6,
+  "items": [
+    {
+      "paragraph": "To assess the stability of different COFs-modified Li electrodes during the process of mathrm plating/stripping, the in-situ light microscopy was utilized to record Li deposition behavior. Firstly, pr",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "Li||Li symmetric cell",
+          "test_method": "in-situ optical microscopy, galvanostatic plating/stripping",
+          "cycle_number": 0
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To better explain the protective effect of the COF artificial SEI layer on LMA, SEM was operated to analyze Li metal batteries LMBs after cycling. In contrast to bare Li and Py-COFLi, the mathsf 2 mat",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 100,
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The mathrm 7 solid-state nuclear magnetic resonance ssNMR and FT-IR were conducted to detect the mathrm chemical environment of LiTFSI in mathsf 2 mathsf c -COF and Py-COF. As shown in Fig. S4a, the m",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "test_method": "ssNMR and FT-IR"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Density functional theory DFT calculation was carried out to further study the affinity of lithium-ion with solvent and COFs mathsf 2 mathsf c -COF and Py-COF fragments. The majorization geometric con",
+      "property_types": [
+        "Li_Solvent_Binding_Energy"
+      ],
+      "extracted_info": {
+        "Li_Solvent_Binding_Energy": [
+          {
+            "value": -1.97,
+            "unit": "eV",
+            "solvent": "mathsf 2 mathsf c -COF",
+            "method": "DFT",
+            "source_text": "The value of binding energy between mathrm and mathsf 2 mathsf c mathrm - mathsf 2 mathsf c is - 1.97 mathrm mathrm i"
+          },
+          {
+            "value": -1.72,
+            "unit": "eV",
+            "solvent": "Py-COF",
+            "method": "DFT",
+            "source_text": "that between mathrm and Py-COF −1.72 eV"
+          },
+          {
+            "value": -1.11,
+            "unit": "eV",
+            "solvent": "DOL",
+            "method": "DFT",
+            "source_text": "DOL - 1.11 mathrm"
+          },
+          {
+            "value": -0.72,
+            "unit": "eV",
+            "solvent": "DME",
+            "method": "DFT",
+            "source_text": "DME - 0.72 mathrm"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To further estimate the influence of the artificial SEI film prepared by COFs on the electrochemical performance of LMAs, bare Li, operatorname 2 mathsf c mathrm - mathrm , , and Py-COFLi electrodes w",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Voltage_Hysteresis"
+      ],
+      "performance_info": {
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.1,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "overpotential is over 100 mathrm at the first cycle"
+          },
+          {
+            "value": 0.008,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "finally are stabilized at about 8 mathrm"
+          },
+          {
+            "value": 0.013,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "overpotential up to 13 mathrm"
+          },
+          {
+            "value": 0.01,
+            "unit": "V",
+            "condition_id": "C002",
+            "source_text": "overpotentials of mathsf 2 mathsf c -COF-modified symmetric batteries are only 10 mathrm"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The modified electrodes were prepared by coating suspension liquid of COFs on the surface of copper foil to evaluate the interface stability of the COF-modified electrode. Then the modified electrodes",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "LiCu batteries",
+          "test_method": "Coulombic efficiency measurement, voltage hysteresis"
+        },
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "LiCu batteries",
+          "test_method": "Coulombic efficiency measurement, galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency",
+        "Cycle_Life_80",
+        "Voltage_Hysteresis"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 98,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 135,
+            "source_text": "the mathsf 2 mathsf c -COF-modified mathrm mathrm batteries can steadily work for more than 135 cycles and have a high value of CE 98 % ."
+          }
+        ],
+        "Cycle_Life_80": [
+          {
+            "value": 135,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "the mathsf 2 mathsf c -COF-modified mathrm mathrm batteries can steadily work for more than 135 cycles"
+          },
+          {
+            "value": 110,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "for Py-COF-modified LiCu batteries, CE values begin to decline after 110 cycles."
+          },
+          {
+            "value": 70,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "The CE value of bare Cu batteries markedly decreases after 70 cycles."
+          },
+          {
+            "value": 90,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "source_text": "mathsf 2 mathsf c -COF-modified LiCu batteries can also steadily work for 90 cycles at a greater current density of 1 mathrm mathrm - 2 with mathrm 1 h - 2"
+          },
+          {
+            "value": 60,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "source_text": "the performance of Py-COF-modified LiCu batteries 60 cycles ... is poor at the same current density"
+          },
+          {
+            "value": 20,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "source_text": "bare Cu batteries 20 cycles is poor at the same current density"
+          }
+        ],
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.015,
+            "unit": "V",
+            "source_text": "Li nucleation overpotential of mathsf 2 mathsf c -COFmodified LiCu batteries is 15 mathrm"
+          },
+          {
+            "value": 0.024,
+            "unit": "V",
+            "source_text": "Py-COF-modified mathrm mathrm batteries 24 mathrm"
+          },
+          {
+            "value": 0.028,
+            "unit": "V",
+            "source_text": "bare Cu batteries 28 mathrm"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

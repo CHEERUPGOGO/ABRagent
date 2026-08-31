@@ -1,0 +1,1021 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.ensm.2025.104735.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.ensm.2025.104735",
+  "doi": "10.1016/j.ensm.2025.104735",
+  "material_id": "10.1016_j.ensm.2025.104735",
+  "meta": {
+    "meta_title": "AlMnCoNiFe high-entropy alloy nanoparticles-embedded carbon cloth: Structure sta",
+    "meta_authors": "Jinping Xu a,1 , Kaige Liu b,1 , Tang Xue a , Xianfeng Jiang c , Haihui Wang b , Cheng Zhang a , Taiyu Lyu a,\\* , Xin Xiao a , Junjun Yao a , Fenqiang Luo a , Shize Geng a , Meina Huang a Yijun Miao a , Xin Lin a , Jian Lin a , Shuirong Li a,\\* , Dechao Wang a,\\* , Yu Zhuang c,\\* Zhifeng Zheng a,",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "HEA-NPs-CC",
+      "short_name": "HEA-NPs-CC",
+      "formula": "AlMnCoNiFe/CC",
+      "role": "novel",
+      "description": "High-entropy alloy nanoparticles (equiatomic AlMnCoNiFe) uniformly embedded on carbon cloth host for Li metal anode, used as plating substrate and in anode-free configuration.",
+      "material_id": "10.1016_j.ensm.2025.104735_M001"
+    },
+    {
+      "name": "HEA-NPs-CCLi",
+      "short_name": "HEA-NPs-CCLi",
+      "formula": "Li@AlMnCoNiFe/CC",
+      "role": "novel",
+      "description": "Composite anode formed by thermal infusion of Li metal into the HEA-NPs-CC host, used in symmetric cells and full cells with NCM811 cathode.",
+      "material_id": "10.1016_j.ensm.2025.104735_M002"
+    }
+  ],
+  "n_materials": 2,
+  "table_items": [],
+  "n_items": 22,
+  "items": [
+    {
+      "paragraph": "Elemental distribution analysis via EDS mapping Fig. 1i reveals the homogeneous distribution of Al, Mn, Co, Ni, and Fe elements throughout the 3D CC matrix, with no observable elemental segregation. I",
+      "property_types": [
+        "Elemental_Composition",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Al",
+              "Mn",
+              "Co",
+              "Ni",
+              "Fe"
+            ],
+            "method": "EDS mapping, STEM-EDX, ICP-MS",
+            "source_text": "Elemental distribution analysis via EDS mapping Fig. 1i reveals the homogeneous distribution of Al, Mn, Co, Ni, and Fe elements throughout the 3D CC matrix ... The composition of HEA-NPs-CC is determined by inductively coupled plasma-mass spectroscopy ICP-MS, Fig. S6. The result indicates that HEA-NPs-CC is composed of equiatomic composition"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "AlMnCoNiFe",
+            "state": "equiatomic",
+            "source_text": "AlMn-CoNiFe alloy nanoparticle ... HEA-NPs-CC is composed of equiatomic composition"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The activation energy for the reaction Ea—an indicator reflecting the difficulty of the chemical reaction and the mathrm diffusion barrier—confirms that the HEA-NPs-CC substrate has superior mathrm tr",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Activation_Energy_for_Li_Transport_through_SEI"
+      ],
+      "performance_info": {
+        "Activation_Energy_for_Li_Transport_through_SEI": [
+          {
+            "value": 21.26,
+            "unit": "kJ/mol",
+            "source_text": "Based on Formula S2 and the EIS curves collected at different temperatures Fig. S11, the E mathrm a of the HEA-NPs-CC substrate is approximately 21.26 kJ mol− 1 , significantly lower than that of the CC substrate 80.77 kJ mol− 1 Fig. 2e."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To validate the COMSOL Multiphysics simulation results on uniform Li deposition by HEA-NPs-CC, SEM characterization was performed to analyze the surface morphological evolution during Li plating/strip",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "galvanostatic"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 1,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "when the capacity reaches 1 mA h cm− 2"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "As shown in Fig. 1j, the XRD characteristic peaks of HEA-NPs-CC appear at 43.6◦, 50.9◦, and 74.4◦, indexed to the 111, 200, and 220 planes of a face-centered cubic FCC structure, similar to the cubic ",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrolyte": "water",
+          "test_method": "sessile drop contact angle measurement"
+        }
+      ],
+      "property_types": [
+        "Crystal_System",
+        "Elemental_Composition",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Crystal_System": [
+          {
+            "value": "Face-centered cubic",
+            "source_text": "XRD characteristic peaks of HEA-NPs-CC appear at 43.6°, 50.9°, and 74.4°, indexed to the 111, 200, and 220 planes of a face-centered cubic FCC structure"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Al",
+              "Mn",
+              "Co",
+              "Ni",
+              "Fe",
+              "C"
+            ],
+            "method": "XPS",
+            "source_text": "The full spectrum of HEA-NPs-CC shown in Fig. S7a reveals the coexistence of Al 2p, Mn 2p, Co 2p, Ni 2p, Fe 2p, and C 1s signals."
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "AlMnCoNiFe",
+            "state": "pristine",
+            "source_text": "AlMnCoNiFe high-entropy alloy nanoparticles-embedded carbon cloth"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To further investigate the lithiophilic mechanisms and Li diffusion capability of HEAs that promote uniform Li deposition, DFT calculations were performed. As shown in Fig. 3a, the HEAs exhibit a high",
+      "property_types": [
+        "Li_Ion_Migration_Barrier"
+      ],
+      "extracted_info": {
+        "Li_Ion_Migration_Barrier": [
+          {
+            "value": -0.062,
+            "unit": "eV",
+            "path": "HEA surface",
+            "method": "CI-NEB",
+            "source_text": "the HEA exhibits substantially lower diffusion barriers than carbon, with peak values of − 0.062 and 0.173 eV, respectively."
+          },
+          {
+            "value": 0.173,
+            "unit": "eV",
+            "path": "carbon model",
+            "method": "CI-NEB",
+            "source_text": "the HEA exhibits substantially lower diffusion barriers than carbon, with peak values of − 0.062 and 0.173 eV, respectively."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Structural characterization via TEM reveals distinct microstructural features. The TEM image of HEA-NPs-CC reveals a uniform nanoparticle morphology with a radius of approximately 50 nm Fig. S2. It is",
+      "property_types": [
+        "Lattice_Parameters",
+        "Crystal_System"
+      ],
+      "extracted_info": {
+        "Lattice_Parameters": [
+          {
+            "value": {
+              "a": 2.05,
+              "b": 2.05,
+              "c": 2.05,
+              "alpha": 90,
+              "beta": 90,
+              "gamma": 90
+            },
+            "unit": "Å",
+            "crystal_system": "cubic",
+            "state": "pristine",
+            "method": "HRTEM",
+            "source_text": "lattice constants of 2.050 Å"
+          }
+        ],
+        "Crystal_System": [
+          {
+            "value": "cubic",
+            "source_text": "FCC phases"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To investigate the lithiation process of HEA-NPs-CC at the singlenanoparticle level and to elucidate its underlying Li storage mechanism, an in-situ TEM electrochemistry experiment was conducted. A na",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "test_method": "in-situ TEM electrochemistry",
+          "electrode_config": "nanoscale LIB with FeCoNiMnAl nanoparticles as positive electrode and Li metal as negative electrode in an electrochemical in-situ TEM holder"
+        }
+      ],
+      "property_types": [
+        "Interlayer_Spacing",
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Interlayer_Spacing": [
+          {
+            "value": 0.36,
+            "unit": "nm",
+            "plane": "111",
+            "state": "LiAl phase after lithiation",
+            "source_text": "New phase lattice fringes corresponding to LiAl111, Li2O111, etc. with spacings of 0.360 nm, 0.265 nm, etc. appear at the edges of the particles after lithiation"
+          },
+          {
+            "value": 0.265,
+            "unit": "nm",
+            "plane": "111",
+            "state": "Li2O phase after lithiation",
+            "source_text": "New phase lattice fringes corresponding to LiAl111, Li2O111, etc. with spacings of 0.360 nm, 0.265 nm, etc. appear at the edges of the particles after lithiation"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "LiAl",
+            "state": "formed during lithiation via Al-Li alloying reaction",
+            "source_text": "new diffraction rings for LiAl 111... emerge, confirming the occurrence of the Li-Al alloying reaction Al Li → AlLi"
+          },
+          {
+            "value": "Li2O",
+            "state": "formed during lithiation",
+            "source_text": "new diffraction rings for LiAl 111, Li2O111, and Li211 emerge"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Fe",
+              "Co",
+              "Ni",
+              "Mn",
+              "Al"
+            ],
+            "method": "SAED / HRTEM",
+            "source_text": "FeCoNiMnAl nanoparticles... elements such as Co, Ni, Fe, and Mn stabilize the lattice and suppress volume expansion"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Uniform Li deposition critically depends on interfacial stability, as Li dendrite growth remains a primary determinant of battery failure. To characterize the evolution of impedance and Li-ion diffusi",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 19,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "decreasing from 45 to 19 Ω"
+          },
+          {
+            "value": 39,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "increase from 22 to 39 Ω"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In addition, in-situ optical microscopy was employed to observe the evolution of Li dendrite growth and validate the effectiveness of the HEA interface in suppressing Li dendrites. For the CC substrat",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "test_method": "in-situ optical microscopy, galvanostatic discharge/plating"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The time-series in-situ TEM images reveal that the high-entropy alloy HEA nanoparticles maintain their overall morphology without fracture, pulverization, or structural collapse under both normal bias",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "voltage_range": {
+            "min": -1.0,
+            "max": 1.0,
+            "unit": "V"
+          },
+          "test_method": "in-situ TEM"
+        },
+        {
+          "condition_id": "C007",
+          "voltage_range": {
+            "min": -5.0,
+            "max": 5.0,
+            "unit": "V"
+          },
+          "test_method": "in-situ TEM"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To dissect the Li kinetic processes across different time scales, the EIS data were analyzed using DRT methodology. DRT results during discharge revealed four dominant peaks—labeled D1, D2, D3, and D4",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "test_method": "EIS (electrochemical impedance spectroscopy) with DRT analysis"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In the C 1 s spectrum Fig. S24a and Fig. S24b, the peak intensities of CFx 293.5 eV, COOR 288.0 eV, and C–OR 286.6 eV, which are products of electrolyte decomposition, are significantly lower in cycle",
+      "property_types": [
+        "SEI_Chemical_Composition_XPS",
+        "LiF_Content_in_SEI_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "CFx (293.5 eV): 19.61% (CC) → 11.56% (HEA-NPs-CC)",
+              "COOR (288.0 eV): 9.60% (CC) → 5.07% (HEA-NPs-CC)",
+              "C–OR (286.6 eV): 33.78% (CC) → 9.57% (HEA-NPs-CC)",
+              "R-O-R (533.2 eV): 12.59% (CC) → 4.56% (HEA-NPs-CC)",
+              "Li2O (528.7 eV): 4.95% (CC) → 6.68% (HEA-NPs-CC)",
+              "LiF (684.9 eV): 85.09% (CC) → 92.81% (HEA-NPs-CC)"
+            ],
+            "unit": "at%",
+            "state": "cycled (CC vs HEA-NPs-CC)",
+            "source_text": "In the C 1 s spectrum Fig. S24a and Fig. S24b, the peak intensities of CFx 293.5 eV, COOR 288.0 eV, and C–OR 286.6 eV, which are products of electrolyte decomposition, are significantly lower in cycled HEA-NPs-CC than in cycled CC. Specifically, their contents decrease from 19.61 %, 9.60 %, and 33.78 % in CC to 11.56 %, 5.07 %, and 9.57 % in HEA-NPs-CC Table S3, respectively... In the O 1 s spectrum, the content of the organic component R-O-R 533.2 eV decreases significantly from 12.59 % in CC to 4.56 % in HEA-NPs-CC... The content of the inorganic component Li2O 528.7 eV increases from 4.95 % in CC to 6.68 % in HEA-NPs-CC... In the F 1 s spectrum, the content of Li fluoride 684.9 eV in the SEI increases from 85.09 % in CC to 92.81 % in HEA-NPs-CC."
+          }
+        ],
+        "LiF_Content_in_SEI_XPS": [
+          {
+            "value": 92.81,
+            "unit": "at%",
+            "state": "HEA-NPs-CC after cycling",
+            "spectrum": "F 1s",
+            "source_text": "In the F 1 s spectrum, the content of Li fluoride 684.9 eV in the SEI increases from 85.09 % in CC to 92.81 % in HEA-NPs-CC."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To visualize the SEI structure, we constructed schematic diagrams of the HEA - NPs-CCLi Fig. 6i and CCLi Fig. 6j interfaces. The HEA- NPs-CC is enriched with inorganic compounds, including mathrm 2 ma",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "source_text": "The interfacial charge transfer impedance of the HEA-NPs-CC anode is lower Fig. S30"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To gain deeper insights into the spatial correlations among various secondary ion fragments within the SEI layer, we first performed relative correlation matrix analysis on cycled CC anode and HEA-NPs",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "cycle_number": 250
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Although the HEA-NPs-CC substrate exhibits remarkable electrochemical performance in half-cell tests, addressing challenges related to commercial scalability and high energy density remains of critica",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "electrode_config": "half_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Similarly, the peak positions corresponding to surface dynamic processes during charging were analyzed via DRT methodology Figs. 5b, 5d. The anode surface contact resistance C1 remained constant owing",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "cycle_number": 10,
+          "test_method": "X-ray photoelectron spectroscopy (XPS) depth analysis after cycling"
+        }
+      ],
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              {
+                "element": "Li",
+                "percentage": 29.1,
+                "spectrum": "Li 1s",
+                "depth": "surface"
+              },
+              {
+                "element": "N",
+                "percentage": 1.2,
+                "spectrum": "N 1s",
+                "depth": "surface"
+              },
+              {
+                "element": "F",
+                "percentage": 16.4,
+                "spectrum": "F 1s",
+                "depth": "surface"
+              }
+            ],
+            "unit": "at%",
+            "state": "CC electrode, surface",
+            "source_text": "On the CC electrode Fig. 6a, the SEI layer shows rapid depletion of Li Li 1s: surface 29.1 %→18.8 % after 60 s, nitrogen N 1s:1.2 %→4.6 %, and F F 1s:16.4 %→12.3 % accompanied by a continuous signal from organic components C1s/O 1 s."
+          },
+          {
+            "value": [
+              {
+                "element": "Li",
+                "percentage": 18.8,
+                "spectrum": "Li 1s",
+                "depth": "after 60s"
+              },
+              {
+                "element": "N",
+                "percentage": 4.6,
+                "spectrum": "N 1s",
+                "depth": "after 60s"
+              },
+              {
+                "element": "F",
+                "percentage": 12.3,
+                "spectrum": "F 1s",
+                "depth": "after 60s"
+              }
+            ],
+            "unit": "at%",
+            "state": "CC electrode, after 60s sputtering",
+            "source_text": "On the CC electrode Fig. 6a, the SEI layer shows rapid depletion of Li Li 1s: surface 29.1 %→18.8 % after 60 s, nitrogen N 1s:1.2 %→4.6 %, and F F 1s:16.4 %→12.3 % accompanied by a continuous signal from organic components C1s/O 1 s."
+          },
+          {
+            "value": [
+              {
+                "element": "Li",
+                "percentage": 37.4,
+                "spectrum": "Li 1s",
+                "depth": "surface"
+              },
+              {
+                "element": "N",
+                "percentage": 2.8,
+                "spectrum": "N 1s",
+                "depth": "surface"
+              },
+              {
+                "element": "F",
+                "percentage": 24.2,
+                "spectrum": "F 1s",
+                "depth": "surface"
+              }
+            ],
+            "unit": "at%",
+            "state": "HEA-NPs-CC electrode, surface",
+            "source_text": "In contrast, the HEA-NPs-CC electrode Fig. 6b maintains a higher Li Li 1s: surface 37.4 %→12.3 %, nitrogen N 1s:2.8 %→5.4 %, and F F 1s:24.2 %→18.3 % content throughout the SEI layer"
+          },
+          {
+            "value": [
+              {
+                "element": "Li",
+                "percentage": 12.3,
+                "spectrum": "Li 1s",
+                "depth": "after 60s"
+              },
+              {
+                "element": "N",
+                "percentage": 5.4,
+                "spectrum": "N 1s",
+                "depth": "after 60s"
+              },
+              {
+                "element": "F",
+                "percentage": 18.3,
+                "spectrum": "F 1s",
+                "depth": "after 60s"
+              }
+            ],
+            "unit": "at%",
+            "state": "HEA-NPs-CC electrode, after 60s sputtering",
+            "source_text": "the HEA-NPs-CC electrode Fig. 6b maintains a higher Li Li 1s: surface 37.4 %→12.3 %, nitrogen N 1s:2.8 %→5.4 %, and F F 1s:24.2 %→18.3 % content"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In summary, we proposed a facile room-temperature crystallization strategy to fabricate a flexible carbon cloth host uniformly embedded with equimolar AlMnCoNiFe HEA-NPs, leveraging configurational en",
+      "property_types": [
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "AlMnCoNiFe",
+            "source_text": "equimolar AlMnCoNiFe HEA-NPs"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Al",
+              "Mn",
+              "Co",
+              "Ni",
+              "Fe"
+            ],
+            "source_text": "equimolar AlMnCoNiFe HEA-NPs"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Cycle number The unique cocktail effect of AlMnCoNiFe HEA-NPs endows the host with outstanding lithiophilicity and structural robustness. DFT calculations show HEA-NPs provide strong Li⁺ adsorption en",
+      "property_types": [
+        "Li_Ion_Migration_Barrier"
+      ],
+      "extracted_info": {
+        "Li_Ion_Migration_Barrier": [
+          {
+            "value": 0.09,
+            "unit": "eV",
+            "method": "DFT calculations",
+            "source_text": "DFT calculations show HEA-NPs provide strong Li⁺ adsorption energies − 2.63 to − 2.14 eV and an ultralow Li⁺ diffusion barrier 0.09 eV"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Anode-free anodes, characterized by their high energy density, exhibit significant commercial potential. To assess the commercial viability of HEA-NPs-CC, a full cell was assembled using HEA-NPs-CC as",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 178.3,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "This full cell achieved an initial high capacity of 178.3 mA h g - 1 at a rate of 1 C."
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.32,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 180,
+            "source_text": "After 180 cycles, the HEA-NPs-CCNCM811 full cell demonstrated an average Coulombic efficiency of 99.32 % Fig. 7g."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To investigate the cycling reversibility and lifespan of the HEA-NPs-CC substrate, half-cell performance tests were conducted. As shown in Fig. 2a, the CC and Cu substrates exhibit nucleation overpote",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic plating"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 560
+        },
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 160
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 50.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 50.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "rate capability test"
+        }
+      ],
+      "property_types": [
+        "Exchange_Current_Density"
+      ],
+      "extracted_info": {
+        "Exchange_Current_Density": [
+          {
+            "value": 0.119,
+            "unit": "mA/cm2",
+            "method": "Tafel",
+            "source_text": "the HEA-NPs-CCLi exhibits a slower corrosion rate and higher corrosion resistance, with a corrosion current density of 0.119 mA mathrm - 2 ."
+          },
+          {
+            "value": 0.168,
+            "unit": "mA/cm2",
+            "method": "Tafel",
+            "source_text": "unmodified Li metal 0.168 mA mathrm - 2 mathrm i"
+          }
+        ]
+      },
+      "performance_types": [
+        "Li_Nucleation_Overpotential",
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 23.1,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 0.5,
+            "substrate": "CC",
+            "source_text": "CC and Cu substrates exhibit nucleation overpotentials of 23.1 mV and 47.3 mV, respectively, at a current density o bar 0.5 mathbf mathbf - 2"
+          },
+          {
+            "value": 47.3,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 0.5,
+            "substrate": "Cu",
+            "source_text": "CC and Cu substrates exhibit nucleation overpotentials of 23.1 mV and 47.3 mV, respectively, at a current density o bar 0.5 mathbf mathbf - 2"
+          },
+          {
+            "value": 5.8,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 0.5,
+            "substrate": "HEA-NPs-CC",
+            "source_text": "the HEA-NPs-CC substrate demonstrates a significantly reduced nucleation overpotential approximately 5.8 mV"
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.1,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 560,
+            "source_text": "achieves the highest average CE of 99.1 % over 560 cycles under conditions of 1 mA mathrm - 2 and 1 mA h mathrm - 2"
+          },
+          {
+            "value": 99.0,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 160,
+            "source_text": "maintaining an average CE of 99.0% after 160 cycles"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 5400,
+            "unit": "h",
+            "condition_id": "C004",
+            "current_density_mA_cm2": 50,
+            "capacity_mAh_cm2": 1,
+            "source_text": "stably operates for over 5400 h at a high current density of 50 mathrm - 2 and a capacity of 1 mA textrm - 2"
+          },
+          {
+            "value": 4700,
+            "unit": "h",
+            "condition_id": "C005",
+            "current_density_mA_cm2": 50,
+            "capacity_mAh_cm2": 50,
+            "source_text": "maintains stability for 4700 h under extreme conditions of 50 mA mathrm - 2 / 50 mA h mathrm - 2"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "To evaluate the practical application potential of HEA-NPs-CCLi, full cells were assembled using the HEA-NPs-CCLi composite anode and NCM811 cathode, with the NCM811 loading fixed at 12 mg mathrm - 2 ",
+      "conditions": [
+        {
+          "condition_id": "C018",
+          "voltage_range": {
+            "min": 2,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "mass_loading": {
+            "value": 12,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge-discharge, rate test"
+        },
+        {
+          "condition_id": "C019",
+          "voltage_range": {
+            "min": 2,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 12,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "cycle_number": 260,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C020",
+          "voltage_range": {
+            "min": 2,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 5,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 12,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C021",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Rate_Recovery_Percent",
+        "First_Lithiation_Capacity",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 198.3,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2-4.3 V",
+            "source_text": "the HEA-NPs-CCLi NCM811 shows the highest reversible capacities of 198.3 ... at the current rates of 0.1 C"
+          },
+          {
+            "value": 186.2,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2-4.3 V",
+            "source_text": "186.2 mA h g - 1 at 0.2 C"
+          },
+          {
+            "value": 180.3,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2-4.3 V",
+            "source_text": "180.3 mA h g - 1 at 0.5 C"
+          },
+          {
+            "value": 175.4,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2-4.3 V",
+            "source_text": "175.4 mA h g - 1 at 1.0 C"
+          },
+          {
+            "value": 138.6,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2-4.3 V",
+            "source_text": "138.6 mA h g - 1 at 2.0 C"
+          },
+          {
+            "value": 86.8,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2-4.3 V",
+            "source_text": "86.8 mA h g - 1 at 5.0 C"
+          }
+        ],
+        "Rate_Recovery_Percent": [
+          {
+            "value": 96.98,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "when the current returned to 0.1 C, the capacity recovers to 192.3 mA h g - 1"
+          }
+        ],
+        "First_Lithiation_Capacity": [
+          {
+            "value": 177.5,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "exhibits an initial capacity of 177.5 mA h g - 1 at a rate of 1 C"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 85.76,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 260,
+            "source_text": "retaining 152.3 mA h g - 1 ... 85.76 % capacity retention after 260 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Electrochemically, HEA-NPs-CC delivers breakthrough performance across various battery configurations: 1 In half-cells, it achieves stable cycling over 560 cycles at 1 mA cm− 2 /1 mA cdot mathrm - 2 w",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 560,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 50.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 260,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 180,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Symmetric_Cell_Cycling_Stability",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.1,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "1 In half-cells, it achieves stable cycling over 560 cycles at 1 mA cm− 2 /1 mA cdot mathrm - 2 with an average CE of 99.1 %"
+          },
+          {
+            "value": 99.5,
+            "unit": "%",
+            "condition_id": "C006",
+            "source_text": "5 Anode-free full cells HEA-NPs-CCNCM811 maintain an average CE of 99.5 % over 180 cycles at 1C"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 4700,
+            "unit": "h",
+            "condition_id": "C002",
+            "source_text": "2 Symmetric cells based on HEA-NPs-CCLi operate stably for over 4700 h at 50 mA cm− 2 /50 mA h mathrm - 2 ."
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 85.8,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 260,
+            "source_text": "3 When paired with an NCM811 cathode at a low N/P ratio of 1, the full cell retains 85.8 % of its initial capacity after 260 cycles at 1C"
+          },
+          {
+            "value": 80.2,
+            "unit": "%",
+            "condition_id": "C004",
+            "cycle_number": 100,
+            "source_text": "and 80.2 % after 100 cycles at 5C fast-charging"
+          }
+        ]
+      }
+    }
+  ]
+}

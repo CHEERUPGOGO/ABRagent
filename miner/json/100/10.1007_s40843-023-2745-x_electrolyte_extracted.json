@@ -1,0 +1,691 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1007_s40843-023-2745-x.md",
+  "component": "electrolyte",
+  "paper_id": "10.1007/s40843-023-2745-x",
+  "doi": "10.1007/s40843-023-2745-x",
+  "material_id": "10.1007_s40843-023-2745-x",
+  "meta": {
+    "meta_title": "Flame-retardant electrolyte with boosted interfacial stability for practical Li ",
+    "meta_authors": "Xiaohang $\\mathrm { K o u } ^ { 2 \\dagger }$ , Jiaolong Zhang1†, Chaolin $\\mathrm { L i } ^ { 2 }$ , Ruhong $\\mathrm { L i } ^ { 4 }$ , Tingting Ruan3* and Wenhui Wang2 *",
+    "meta_year": null
+  },
+  "materials": [
+    {
+      "name": "0.7M LiPF6 in EMC/FEC/TMP (7:1:3 v/v)",
+      "short_name": "Base",
+      "formula": "0.7M LiPF6 EMC:FEC:TMP (7:1:3)",
+      "role": "baseline",
+      "description": "Base electrolyte without additives, serving as the reference formulation",
+      "material_id": "10.1007_s40843-023-2745-x_M001"
+    },
+    {
+      "name": "0.7M LiPF6 + 0.1M LiBOB in EMC/FEC/TMP (7:1:3 v/v)",
+      "short_name": "PB",
+      "formula": "0.7M LiPF6+0.1M LiBOB EMC:FEC:TMP (7:1:3)",
+      "role": "comparison",
+      "description": "Base electrolyte with 0.1M LiBOB additive for SEI improvement",
+      "material_id": "10.1007_s40843-023-2745-x_M002"
+    },
+    {
+      "name": "0.7M LiPF6 + 0.2M LiNO3 in EMC/FEC/TMP (7:1:3 v/v)",
+      "short_name": "PN",
+      "formula": "0.7M LiPF6+0.2M LiNO3 EMC:FEC:TMP (7:1:3)",
+      "role": "comparison",
+      "description": "Base electrolyte with 0.2M LiNO3 additive for SEI stabilization",
+      "material_id": "10.1007_s40843-023-2745-x_M003"
+    },
+    {
+      "name": "0.7M LiPF6 + 0.1M LiBOB + 0.2M LiNO3 in EMC/FEC/TMP (7:1:3 v/v)",
+      "short_name": "PBN",
+      "formula": "0.7M LiPF6+0.1M LiBOB+0.2M LiNO3 EMC:FEC:TMP (7:1:3)",
+      "role": "novel",
+      "description": "Dual-additive flame-retardant electrolyte with both LiBOB and LiNO3 for synergistic SEI/CEI formation",
+      "material_id": "10.1007_s40843-023-2745-x_M004"
+    },
+    {
+      "name": "Commercial electrolyte (unspecified carbonate-based)",
+      "short_name": "Commercial",
+      "formula": "commercial carbonate electrolyte",
+      "role": "comparison",
+      "description": "Commercial carbonate-based electrolyte used only for flammability SET comparison",
+      "material_id": "10.1007_s40843-023-2745-x_M005"
+    }
+  ],
+  "n_materials": 5,
+  "table_items": [],
+  "n_items": 14,
+  "items": [
+    {
+      "paragraph": "The ab initio MD AIMD simulations were evaluated to elucidate theoretical evidence for decomposition tendency of the electrolytes. Fig. 1f–h display the projected density of states PDOSs of PB, PN and",
+      "property_types": [
+        "HOMO_LUMO_Energy"
+      ],
+      "extracted_info": {
+        "HOMO_LUMO_Energy": [
+          {
+            "value": {},
+            "unit": "eV",
+            "molecule": "FEC",
+            "method": "AIMD/PDOS",
+            "source_text": "LUMO is located at FEC in the PB electrolyte"
+          },
+          {
+            "value": {},
+            "unit": "eV",
+            "molecule": "NO3-",
+            "method": "AIMD/PDOS",
+            "source_text": "LUMO is dominated by mathrm 3 - and mathrm - anions in PN and PBN electrolytes"
+          },
+          {
+            "value": {},
+            "unit": "eV",
+            "molecule": "BOB-",
+            "method": "AIMD/PDOS",
+            "source_text": "LUMO is dominated by mathrm 3 - and mathrm - anions in PN and PBN electrolytes"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In order to balance the viscosity, SEI formation ability, flameretardant property and mathrm 3 solubility of the electrolyte, a mixture of EMC, FEC and TMP with the volume ratio of 7:1:3 was employed ",
+      "property_types": [
+        "HOMO_LUMO_Energy"
+      ],
+      "extracted_info": {
+        "HOMO_LUMO_Energy": [
+          {
+            "value": {},
+            "unit": "eV",
+            "molecule": "FEC",
+            "method": "DFT",
+            "source_text": "FEC exhibits a lower lowest unoccupied molecular orbital LUMO energy than the other solvents"
+          },
+          {
+            "value": {},
+            "unit": "eV",
+            "molecule": "LiPF6",
+            "method": "DFT",
+            "source_text": "the highest occupied molecular orbital HOMO energy of LiPF6 is dramatically lower than that of others"
+          },
+          {
+            "value": {},
+            "unit": "eV",
+            "molecule": "LiBOB",
+            "method": "DFT",
+            "source_text": "LiBOB and LiNO3 exhibit apparently lower LUMO energy than LiPF6 and the solvent components ... relatively higher HOMO energies of LiBOB"
+          },
+          {
+            "value": {},
+            "unit": "eV",
+            "molecule": "LiNO3",
+            "method": "DFT",
+            "source_text": "LiBOB and LiNO3 exhibit apparently lower LUMO energy than LiPF6 and the solvent components ... relatively higher HOMO energies of LiNO3"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Long-term cycling stability of the cells with various electrolytes was also evaluated in LiLi symmetrical cells. As shown in Deposition behavior and interfacial chemistry of Li metal anode Scanning el",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "Li-Li symmetric cell",
+          "test_method": "galvanostatic plating"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The polarization profiles of mathrm mathrm cells were employed to determine the kinetic behavior of Li stripping/plating. As shown in Fig. 2c, d, cells with the base electrolyte and PB electrolyte bot",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrolyte": "0.7M LiPF6 in EMC/FEC/TMP (7:1:3 v/v)",
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic Li stripping/plating",
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C003",
+          "electrolyte": "0.7M LiPF6 + 0.1M LiBOB in EMC/FEC/TMP (7:1:3 v/v)",
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic Li stripping/plating",
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C004",
+          "electrolyte": "0.7M LiPF6 + 0.2M LiNO3 in EMC/FEC/TMP (7:1:3 v/v)",
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic Li stripping/plating",
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C005",
+          "electrolyte": "0.7M LiPF6 + 0.1M LiBOB + 0.2M LiNO3 in EMC/FEC/TMP (7:1:3 v/v)",
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic Li stripping/plating",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Voltage_Hysteresis"
+      ],
+      "performance_info": {
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.0752,
+            "unit": "V",
+            "condition_id": "C003",
+            "source_text": "after the addition of mathrm 3 , the polarization of the charge/discharge profile is dramatically stabilized, experiencing a small increase from 75.2 to 103.2 mathrm after 100 cycles Fig. 2e"
+          },
+          {
+            "value": 0.1032,
+            "unit": "V",
+            "condition_id": "C003",
+            "source_text": "from 75.2 to 103.2 mathrm after 100 cycles"
+          },
+          {
+            "value": 0.0683,
+            "unit": "V",
+            "condition_id": "C004",
+            "source_text": "further addition of LiBOB can lower the voltage overpotential from 75.2 to 68.3 mathrm in the first cycle"
+          },
+          {
+            "value": 0.0904,
+            "unit": "V",
+            "condition_id": "C004",
+            "source_text": "from 103.2 to 90.4 mathrm after 100 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In situ optical microscopy was employed to intuitively observe the dynamic behavior of the Li deposition on Cu substrate. As shown in Fig. 3i, the surface of the Cu substrate in the base electrolyte i",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "electrolyte": "0.7M LiPF6 in EMC/FEC/TMP (7:1:3 v/v)",
+          "electrode_config": "Li plating on Cu substrate",
+          "test_method": "in situ optical microscopy"
+        },
+        {
+          "condition_id": "C007",
+          "electrolyte": "0.7M LiPF6 + 0.1M LiBOB in EMC/FEC/TMP (7:1:3 v/v)",
+          "electrode_config": "Li plating on Cu substrate",
+          "test_method": "in situ optical microscopy"
+        },
+        {
+          "condition_id": "C008",
+          "electrolyte": "0.7M LiPF6 + 0.2M LiNO3 in EMC/FEC/TMP (7:1:3 v/v)",
+          "electrode_config": "Li plating on Cu substrate",
+          "test_method": "in situ optical microscopy"
+        },
+        {
+          "condition_id": "C009",
+          "electrolyte": "0.7M LiPF6 + 0.1M LiBOB + 0.2M LiNO3 in EMC/FEC/TMP (7:1:3 v/v)",
+          "electrode_config": "Li plating on Cu substrate",
+          "test_method": "in situ optical microscopy"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To evaluate the cycling performance of the LiNCM811 cell under more practical conditions, Cu foils pre-deposited with 8 mathrm mathrm h mathrm - 2 metallic Li 3.33 times of the areal capacity of NCM81",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "electrode_config": "full_cell",
+          "cycle_number": 150
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 80,
+            "unit": "%",
+            "cycle_number": 150,
+            "condition_id": "C001",
+            "source_text": "the cell injected with PBN electrolyte exhibits a capacity of sim 140 mathrm mathrm h mathrm g - 1 after 150 cycles, corresponding to a capacity retention of sim 80 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "SEM was employed to investigate the morphology of both lithium anode and cathode surface of LiNCM811 as well as Li LCO cells after certain cycles. As shown in Fig. 6a, b, after 100 cycles of charge/di",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The electrolytes with additives show similar ionic conductivity as compared with the base electrolyte. However, the introduction of mathrm 3 improves the stability of the electrolyte above 5 mathrm V ",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "max": 0.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic plating/stripping"
+        },
+        {
+          "condition_id": "C013",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "Zhang's average CE method"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 80.1,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C001",
+            "source_text": "cell with the base electrolyte exhibits the lowest initial CE of 80.1 %"
+          },
+          {
+            "value": 84.4,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C001",
+            "source_text": "cell with the PB electrolyte shows a higher initial CE of 84.4 %"
+          },
+          {
+            "value": 91.7,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C001",
+            "source_text": "cell with the PBN electrolyte delivers a dramatically higher initial CE of 91.7 %"
+          },
+          {
+            "value": 97,
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C001",
+            "source_text": "can maintain a high CE of ~97 % after 50 cycles"
+          },
+          {
+            "value": 95,
+            "unit": "%",
+            "cycle_number": 150,
+            "condition_id": "C001",
+            "source_text": "~95 % after 150 cycles"
+          },
+          {
+            "value": 98.6,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "the average CE of cells with the PN electrolyte and PBN electrolyte is 98.6 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Dissolution of TMs from the NCM811 cathode is an important reason for the reduction of working voltage and capacity fading of the cell. Therefore, inductively coupled plasma mass spectrometry ICP-MS w",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "electrolyte": "0.7M LiPF6 + 0.1M LiBOB + 0.2M LiNO3 in EMC/FEC/TMP (7:1:3 v/v)",
+          "test_method": "ICP-MS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Transition_Metal_Dissolution_Concentration"
+      ],
+      "performance_info": {
+        "Transition_Metal_Dissolution_Concentration": [
+          {
+            "value": {
+              "Ni": 15.1,
+              "Co": 11.3,
+              "Mn": 12.9
+            },
+            "unit": "mg/L",
+            "method": "ICP-MS",
+            "condition_id": "C001",
+            "source_text": "After integrating these two additives, the metals dissolved in electrolyte are further reduced to 15.1, 11.3 and 12.9 mathrm for Ni, Co and Mn, respectively."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Flammability of PBN electrolyte was evaluated by flame selfextinguishing time SET measurements with commercial electrolyte as a comparison. As depicted by Fig. S23, commercial electrolyte exhibits a l",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "electrolyte": "commercial electrolyte (unspecified carbonate-based); PBN electrolyte (0.7M LiPF6+0.1M LiBOB+0.2M LiNO3 in EMC/FEC/TMP (7:1:3 v/v))",
+          "test_method": "flame self-extinguishing time (SET) measurements"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Structural changes of the NCM811 cathode after charging/ discharging were investigated by X-ray diffraction XRD. As shown in Fig. 7a, the main peaks of all samples can be attributed to a layered hexag",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "electrolyte": "0.7M LiPF6 in EMC/FEC/TMP (7:1:3 v/v)",
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C017",
+          "electrolyte": "0.7M LiPF6 + 0.1M LiBOB in EMC/FEC/TMP (7:1:3 v/v)",
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C018",
+          "electrolyte": "0.7M LiPF6 + 0.2M LiNO3 in EMC/FEC/TMP (7:1:3 v/v)",
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C019",
+          "electrolyte": "0.7M LiPF6 + 0.1M LiBOB + 0.2M LiNO3 in EMC/FEC/TMP (7:1:3 v/v)",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Cycling performances of LiLCO and LiNCM811 cells were measured at 0.5 C 1.2 mathrm mathrm - 2 after two formation cycles at 0.1 mathrm C , and the capacity retention was calculated with respect to the",
+      "conditions": [
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 1.2,
+            "max": 2.0,
+            "unit": "V"
+          },
+          "cycle_number": 300,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 80.2,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C001",
+            "source_text": "LiLCO cell with the PBN electrolyte shows superior electrochemical performance with a capacity of 134.1 mA h g-1 after 300 cycles, corresponding to the capacity retention of 80.2 %."
+          },
+          {
+            "value": 10.4,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C001",
+            "source_text": "After 300 cycles, the capacity retentions are 10.4 % for base electrolyte."
+          },
+          {
+            "value": 36.9,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C001",
+            "source_text": "After 300 cycles, the capacity retentions are 36.9 % for PB electrolyte."
+          },
+          {
+            "value": 68.8,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C001",
+            "source_text": "After 300 cycles, the capacity retentions are 68.8 % for PN electrolyte."
+          },
+          {
+            "value": 85.0,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C001",
+            "source_text": "After 300 cycles, the capacity retentions are 85.0 % for PBN electrolyte."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "寇骁航2†, 张娇龙1†, 李朝林2 , 李如宏4 , 阮挺婷3 , 王文辉2 摘要 开发匹配高电压正极的锂金属电池是实现高能量存储系统的关键. 因此, 研发可以同时为锂金属负极和高电压正极产生稳定界面相的先进电解液非常必要. mathrm 3 作为高效的固体电解质界面相添加剂被广泛应用于醚基电解液中, 然而其在碳酸脂类电解液中的低溶解性严重限制了其在高压锂金属电池中的应用. 本文利用磷酸三甲酯助",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 1.2,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C022",
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 1.2,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "cycle_number": 150
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 80.2,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C001",
+            "source_text": "LiLiCoO2...电池在 1.2 mA cm-2 电流密度下循环300周后的容量保持率分别为 80.2 %"
+          },
+          {
+            "value": 184.2,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C001",
+            "source_text": "NCM811电池在 1.2 mA cm-2 电流密度下循环300周后的容量保持率分别为... 184.2 %"
+          },
+          {
+            "value": 80.0,
+            "unit": "%",
+            "cycle_number": 150,
+            "condition_id": "C002",
+            "source_text": "负/正极容量比为3.33的LiNCM811电池在相同的充放电条件下循环150周后的容量保持率仍高达 ~80 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Rate performance Fig. 5a, b of full batteries paired with highvoltage layered cathodes i.e., LCO and NCM811 with areal capacity of 2.4 mathrm mathrm h mathrm - 2 mathrm - 2 was tested at the current d",
+      "conditions": [
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": "0.1 to 2 C",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "0.7M LiPF6 in EMC/FEC/TMP (7:1:3) (base); 0.7M LiPF6+0.1M LiBOB in EMC/FEC/TMP (7:1:3) (PB); 0.7M LiPF6+0.2M LiNO3 in EMC/FEC/TMP (7:1:3) (PN); 0.7M LiPF6+0.1M LiBOB+0.2M LiNO3 in EMC/FEC/TMP (7:1:3) (PBN)",
+          "electrode_config": "full cell (LCO or NCM811 cathode, Li anode)",
+          "test_method": "galvanostatic rate test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability",
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [
+              {
+                "c_rate": "1.5 C",
+                "electrolyte": "PN",
+                "cathode": "LCO",
+                "capacity": 139.3,
+                "unit": "mAh/g"
+              },
+              {
+                "c_rate": "1.5 C",
+                "electrolyte": "PBN",
+                "cathode": "LCO",
+                "capacity": 159.3,
+                "unit": "mAh/g"
+              },
+              {
+                "c_rate": "2 C",
+                "electrolyte": "PN",
+                "cathode": "LCO",
+                "capacity": 118.2,
+                "unit": "mAh/g"
+              },
+              {
+                "c_rate": "2 C",
+                "electrolyte": "PBN",
+                "cathode": "LCO",
+                "capacity": 137.2,
+                "unit": "mAh/g"
+              },
+              {
+                "c_rate": "0.2 C (after rate test)",
+                "electrolyte": "PN",
+                "cathode": "LCO",
+                "capacity": 163.2,
+                "unit": "mAh/g"
+              },
+              {
+                "c_rate": "0.2 C (after rate test)",
+                "electrolyte": "PBN",
+                "cathode": "LCO",
+                "capacity": 150.1,
+                "unit": "mAh/g"
+              },
+              {
+                "c_rate": "0.2 C (after rate test)",
+                "electrolyte": "base",
+                "cathode": "LCO",
+                "capacity": 123.3,
+                "unit": "mAh/g"
+              },
+              {
+                "c_rate": "0.2 C (after rate test)",
+                "electrolyte": "PB",
+                "cathode": "LCO",
+                "capacity": 128.4,
+                "unit": "mAh/g"
+              },
+              {
+                "c_rate": "2 C",
+                "electrolyte": "PN",
+                "cathode": "NCM811",
+                "capacity": 107.0,
+                "unit": "mAh/g"
+              },
+              {
+                "c_rate": "2 C",
+                "electrolyte": "PBN",
+                "cathode": "NCM811",
+                "capacity": 120.3,
+                "unit": "mAh/g"
+              },
+              {
+                "c_rate": "2 C",
+                "electrolyte": "PB",
+                "cathode": "NCM811",
+                "capacity": 45.9,
+                "unit": "mAh/g"
+              },
+              {
+                "c_rate": "2 C",
+                "electrolyte": "base",
+                "cathode": "NCM811",
+                "capacity": 35.2,
+                "unit": "mAh/g"
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "LiLCO cells with various electrolytes deliver similar specific discharge capacity in the first 20 cycles, after which the cells with base and PB electrolytes drastically drop below 100 mAh g⁻¹ when the current density is enhanced to 1.5 C, and severe deterioration occurs when the current density is further increased to 2 C. In contrast, cells with PN and PBN electrolytes maintain apparently higher capacities of 139.3 and 159.3 mAh g⁻¹ at 1.5 C, and the capacity moderately drops to 118.2 and 137.2 mAh g⁻¹ after raising the current density to 2 C. When the current density is set back to 0.2 C, cells with PN and PBN electrolytes still remain high capacities of 163.2 and 150.1 mA h g⁻¹, which is superior to the cells with the base electrolyte 123.3 mAh g⁻¹ and PB electrolyte 128.4 mAh g⁻¹. Similar results are observed for LiNCM811 cells. The cells with PN and PBN electrolytes exhibit large discharge capacities of 107.0 and 120.3 mAh g⁻¹ at 2 C, which are apparently higher than that of PB electrolyte of 45.9 mA h g⁻¹ and base electrolyte of 35.2 mAh g⁻¹."
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 70.7,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "cells with base electrolyte exhibit low capacity retention of 70.7%"
+          },
+          {
+            "value": 71.3,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "cells with PB electrolyte exhibit low capacity retention of 71.3%"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

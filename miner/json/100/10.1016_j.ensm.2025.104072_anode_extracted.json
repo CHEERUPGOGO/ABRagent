@@ -1,0 +1,1044 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.ensm.2025.104072.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.ensm.2025.104072",
+  "doi": "10.1016/j.ensm.2025.104072",
+  "material_id": "10.1016_j.ensm.2025.104072",
+  "meta": {
+    "meta_title": "Controllable and scalable prelithiation of dry silicon-based anodes for high-ene",
+    "meta_authors": "Haochen Dong a , Tingzhou Yang b,\\* Zhenjia Shi c , Yongguang Zhang a,c,\\*\\* ， Chuangwei Liu c , Dan Luo c , Ning Liu a,\\* , Yunnan Gao c , Zhongwei Chen b,c,\\*\\*",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "DSC (Dry Si-Carbon anode)",
+      "short_name": "DSC",
+      "formula": "Si/C",
+      "role": "comparison",
+      "description": "Dry-processed Si-carbon composite anode without prelithiation",
+      "material_id": "10.1016_j.ensm.2025.104072_M001"
+    },
+    {
+      "name": "LDSC 15 (Lithiated Dry Si-Carbon anode, 15 min prelithiation)",
+      "short_name": "LDSC 15",
+      "formula": "LixSi/C",
+      "role": "novel",
+      "description": "Dry electrode prelithiated for 15 minutes via roll-to-roll contact with Li foil",
+      "material_id": "10.1016_j.ensm.2025.104072_M002"
+    },
+    {
+      "name": "LDSC 30 (Lithiated Dry Si-Carbon anode, 30 min prelithiation)",
+      "short_name": "LDSC 30",
+      "formula": "LixSi/C",
+      "role": "novel",
+      "description": "Dry electrode prelithiated for 30 minutes",
+      "material_id": "10.1016_j.ensm.2025.104072_M003"
+    },
+    {
+      "name": "LDSC 60 (Lithiated Dry Si-Carbon anode, 60 min prelithiation)",
+      "short_name": "LDSC 60",
+      "formula": "LixSi/C",
+      "role": "novel",
+      "description": "Dry electrode prelithiated for 60 minutes",
+      "material_id": "10.1016_j.ensm.2025.104072_M004"
+    },
+    {
+      "name": "LDSC 120 (Lithiated Dry Si-Carbon anode, 120 min prelithiation)",
+      "short_name": "LDSC 120",
+      "formula": "LixSi/C",
+      "role": "novel",
+      "description": "Dry electrode prelithiated for 120 minutes",
+      "material_id": "10.1016_j.ensm.2025.104072_M005"
+    },
+    {
+      "name": "LDSC 300 (Lithiated Dry Si-Carbon anode, 300 min prelithiation)",
+      "short_name": "LDSC 300",
+      "formula": "LixSi/C",
+      "role": "novel",
+      "description": "Dry electrode prelithiated for 300 minutes",
+      "material_id": "10.1016_j.ensm.2025.104072_M006"
+    },
+    {
+      "name": "WSC (Wet Si-Carbon anode)",
+      "short_name": "WSC",
+      "formula": "Si/C",
+      "role": "comparison",
+      "description": "Conventional wet-processed Si-carbon composite anode using PVDF binder, no prelithiation",
+      "material_id": "10.1016_j.ensm.2025.104072_M007"
+    },
+    {
+      "name": "LWSC 25 (Lithiated Wet Si-Carbon anode, 25 min prelithiation)",
+      "short_name": "LWSC 25",
+      "formula": "LixSi/C",
+      "role": "comparison",
+      "description": "Wet-processed electrode prelithiated for 25 minutes",
+      "material_id": "10.1016_j.ensm.2025.104072_M008"
+    }
+  ],
+  "n_materials": 8,
+  "table_items": [],
+  "n_items": 14,
+  "items": [
+    {
+      "paragraph": "Depth profiles XPS analyses and cross-sectioned focused ion beam/ scanning electron microscopy FIB-SEM images were further employed to reveal the influence of our controllable clinging prelithiation s",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "cycle_number": 100,
+          "test_method": "XPS depth profiling; cross-sectioned FIB-SEM"
+        }
+      ],
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "oxygen-containing SEI compounds (peak at 288.8 eV -O-CO)",
+              "organic species indicated by increasing C-C bond strength with depth",
+              "Li-O bond due to pre-generated Li-Si-O bonds during prelithiation"
+            ],
+            "state": "after long-term cycling",
+            "source_text": "From the depth profile XPS analysis of cycled DSC and LDSC 30 Fig. 5 a-f, the new peak located at 288.8 eV -O-CO indicates the formation of oxygen-containing SEI compounds. The strength of the C-C bond gradually increases with increasing depth, indicating the formation of organic species in the inner SEI layer. Compared with DSC, the LDSC 30 anode shows a strong Li-O bond due to the pre-generated Li-Si-O bonds during the prelithiation processes."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "DSC LDSC 15 LDSC 30 LDSC 60 LDSC 120 LDSC 300 To validate that active Li ions react with Si-based active materials, a series of DSC anodes with different processing times 15 min, 30 min, 60 min, 120 m",
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "-Li-O",
+              "-Li-F",
+              "-Li-Si",
+              "-O-CO"
+            ],
+            "state": "LDSC 30 after prelithiation",
+            "source_text": "a new peak located at 55.5 eV for LDSC 30 can be observed attributed to the -Li-O and -Li-F peaks (Fig. 2b). Such a -Li-F peak can also be observed in the F 1s spectrum ... a new peak corresponding to the formation of -Li-Si structure can be observed ... new peak at 288.8 eV -O-CO in the C 1s spectrum"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In summary, a controllable, cost-effective, and industry-adaptable clinging prelithiation strategy was adopted by introducing a contacttype spontaneous lithiated alloy reaction in a dry Si-based anode",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrode_config": "half_cell",
+          "mass_loading": {
+            "value": 16.51,
+            "unit": "mg/cm2"
+          }
+        },
+        {
+          "condition_id": "C003",
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Initial_Coulombic_Efficiency",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": "98.42-100.09",
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "The half cells with lithiated high Si-loaded anode up to 16.51 mg cm-2 deliver an ICE of around 98.42%-100.09%"
+          },
+          {
+            "value": ">98.73",
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "all dry electrode-based full cells show over 98.73% of ICE"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 88.15,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 300,
+            "source_text": "capacity retention of 88.15% for 300 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "It is well known that the lithiation mechanism of Si-based anode is based on the reversible Li alloying/dealloying process, in which a series of alloy phases will be formed corresponding to the phase ",
+      "property_types": [
+        "Elemental_Composition",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Si",
+              "O",
+              "C"
+            ],
+            "method": "EDS",
+            "source_text": "The corresponding energydispersive X-ray spectroscopy EDS images clearly show that Si, O, and C are evenly distributed in the electrode Fig. 1 e."
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Li_xSi",
+            "state": "amorphous",
+            "source_text": "a LixSi phase is spontaneously formed during the roll-to-roll prelithiation process when the crystalline Si reacts with Li ions. As shown in Fig. 1 c, the lithiated Si is formed primarily as an amorphous phase"
+          },
+          {
+            "value": "LiSi",
+            "state": "amorphous",
+            "source_text": "binding energies for LiSi, Li Si, and Li Si phases are -1.24 eV, -2.68 eV, and -3.61 eV Table S1"
+          },
+          {
+            "value": "Li Si",
+            "state": "amorphous",
+            "source_text": "binding energies for LiSi, Li Si, and Li Si phases are -1.24 eV, -2.68 eV, and -3.61 eV Table S1"
+          },
+          {
+            "value": "Li Si",
+            "state": "amorphous",
+            "source_text": "binding energies for LiSi, Li Si, and Li Si phases are -1.24 eV, -2.68 eV, and -3.61 eV Table S1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In addition, X-ray diffraction XRD patterns of LDSC with different processing times are provided in Figs. 2 e, S15, and S16, where the intensity associated with Si is gradually decreased with the incr",
+      "property_types": [
+        "Interlayer_Spacing",
+        "Crystal_System",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Interlayer_Spacing": [
+          {
+            "value": 0.31,
+            "unit": "nm",
+            "plane": "111",
+            "state": "delithiated",
+            "source_text": "the corresponding lattice fringes have a 0.31 nm interplanar spacing, which is consistent with the 111 plane of diamond cubic structure JCPDS no. 27–1402."
+          },
+          {
+            "value": 0.27,
+            "unit": "nm",
+            "state": "lithiated",
+            "source_text": "some new irregular lattice fringes can be observed in the HRTEM image and rings in FFT pattern with different interplanar spacing 0.27 nm and 0.20 nm inside the Si species, corresponding to Li2SiO3020, Li2Si2O517031, and Li-Si alloy species"
+          },
+          {
+            "value": 0.2,
+            "unit": "nm",
+            "state": "lithiated",
+            "source_text": "some new irregular lattice fringes can be observed in the HRTEM image and rings in FFT pattern with different interplanar spacing 0.27 nm and 0.20 nm inside the Si species, corresponding to Li2SiO3020, Li2Si2O517031, and Li-Si alloy species"
+          }
+        ],
+        "Crystal_System": [
+          {
+            "value": "cubic",
+            "source_text": "consistent with the 111 plane of diamond cubic structure JCPDS no. 27–1402"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "LixSi",
+            "state": "lithiated",
+            "source_text": "LixSi alloy phases are formed on the surface"
+          },
+          {
+            "value": "Li2Si2O5",
+            "state": "lithiated",
+            "source_text": "mathrm 2 mathrm 2 mathrm O 5 JCPDS no. 40–0376"
+          },
+          {
+            "value": "Li2SiO3",
+            "state": "lithiated",
+            "source_text": "Li2SiO3020"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "A controllable and efficient prelithiation strategy for dry electrodes is the most convenient way to solve the irreversible capacity loss of highload electrodes, especially for Si-based anode material",
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Si",
+              "C",
+              "F"
+            ],
+            "source_text": "A mixture of Si-carbon composite, conductive additives, and polytetrafluoroethylene PTFE was subjected to a simple fibrillation process including high-temperature fibrosis, extruded film production process, and current collector pasting process to obtain a dry Si-carbon-based anode DSC, Figs. S1 and S2."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The effects of prelithiation processes on the electrochemical performance were investigated by testing Li metal anode-based half-cells using various Si-based electrodes based on the conventional elect",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C005",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 1.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "CV at 0.01 mV s-1"
+        },
+        {
+          "condition_id": "C006",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C007",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "OCV measurement"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Initial_Coulombic_Efficiency",
+        "Open_Circuit_Voltage",
+        "First_Lithiation_Capacity",
+        "Capacity_Retention_at_Nth_Cycle",
+        "Irreversible_Capacity_Loss_First_Cycle"
+      ],
+      "performance_info": {
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 79.99,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "bare WSC exhibits a relatively low ICE of 79.99%"
+          },
+          {
+            "value": 100.09,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "After 25 min of prelithiation time, the LWSC delivers an ICE of 100.09%"
+          },
+          {
+            "value": 113.3,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "with an increasing ICE from 79.99% to 113.30%"
+          }
+        ],
+        "Open_Circuit_Voltage": [
+          {
+            "value": 2.45,
+            "unit": "V",
+            "condition_id": "C004",
+            "source_text": "WSC electrodes with different prelithiation times exhibit a gradually decreasing open circuit voltage OCV from 2.45 V"
+          },
+          {
+            "value": 0.18,
+            "unit": "V",
+            "condition_id": "C004",
+            "source_text": "from 2.45 V to 0.18 V"
+          },
+          {
+            "value": 0.3,
+            "unit": "V",
+            "condition_id": "C004",
+            "source_text": "LWSC delivers ... a low OCV of 0.30 V"
+          }
+        ],
+        "First_Lithiation_Capacity": [
+          {
+            "value": 806.81,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "LWSC 25 anode exhibits ... an initial discharging capacity of 806.81 mAh g - 1"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 73.79,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "LWSC 25 anode exhibits ... capacity retention of 73.79% after 200 cycles"
+          },
+          {
+            "value": 15.18,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "WSC anode only maintains ... a capacity retention of 15.18%"
+          }
+        ],
+        "Irreversible_Capacity_Loss_First_Cycle": [
+          {
+            "value": 202.09,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "bare WSC exhibits ... a Li-ion loss of 202.09 mAh g - 1 in the initial charging/discharging process"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Depth profiles XPS analyses and cross-sectioned focused ion beam/ scanning electron microscopy FIB-SEM images were further employed to reveal the influence of our controllable clinging prelithiation s",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "cycle_number": 100,
+          "test_method": "XPS depth profiling; FIB-SEM imaging"
+        }
+      ],
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "oxygen-containing SEI compounds (-O-CO, peak at 288.8 eV)",
+              "organic species (C-C bond, increasing with depth in inner SEI layer)",
+              "Li-O bond (from pre-generated Li-Si-O bonds during prelithiation)",
+              "thin and stable SEI layer"
+            ],
+            "state": "cycled (after 100 cycles)",
+            "source_text": "the new peak located at 288.8 eV -O-CO indicates the formation of oxygen-containing SEI compounds. The strength of the C-C bond gradually increases with increasing depth, indicating the formation of organic species in the inner SEI layer. Compared with DSC, the LDSC 30 anode shows a strong Li-O bond due to the pre-generated Li-Si-O bonds during the prelithiation processes."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "DSC LDSC 15 LDSC 30 LDSC 60 LDSC 120 LDSC 300 To validate that active Li ions react with Si-based active materials, a series of DSC anodes with different processing times 15 min, 30 min, 60 min, 120 m",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "test_method": "XPS",
+          "prelithiation_time": {
+            "value": 30,
+            "unit": "min"
+          }
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition",
+        "Chemical_Formula",
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "F",
+              "O",
+              "C",
+              "Si"
+            ],
+            "method": "XPS",
+            "source_text": "X-ray photoelectron spectroscopy XPS tests ... Li 1s ... F 1s ... Si 2p ... O 1s ... C 1s"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "LixSi",
+            "state": "amorphous",
+            "source_text": "the DSC anode completely reacted with Li ions to form different amorphous LixSi phases"
+          }
+        ],
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "LiF",
+              "Li2O",
+              "Li2CO3",
+              "Li-Si-O"
+            ],
+            "state": "after prelithiation 30 min",
+            "source_text": "new peak located at 55.5 eV ... attributed to the -Li-O and -Li-F peaks ... -Li-F peak ... -O-CO ... -Li-Si-O"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In addition, X-ray diffraction XRD patterns of LDSC with different processing times are provided in Figs. 2 e, S15, and S16, where the intensity associated with Si is gradually decreased with the incr",
+      "property_types": [
+        "Interlayer_Spacing",
+        "Chemical_Formula",
+        "Crystal_System"
+      ],
+      "extracted_info": {
+        "Interlayer_Spacing": [
+          {
+            "value": 0.31,
+            "unit": "nm",
+            "plane": "(111)",
+            "state": "pristine",
+            "source_text": "the corresponding lattice fringes have a 0.31 nm interplanar spacing, which is consistent with the 111 plane of diamond cubic structure JCPDS no. 27–1402"
+          },
+          {
+            "value": 0.27,
+            "unit": "nm",
+            "plane": "Li2SiO3(020)",
+            "state": "lithiated",
+            "source_text": "some new irregular lattice fringes can be observed in the HRTEM image and rings in FFT pattern with different interplanar spacing 0.27 nm and 0.20 nm inside the Si species, corresponding to Li2SiO3(020), Li2Si2O5(031), and Li-Si alloy species"
+          },
+          {
+            "value": 0.2,
+            "unit": "nm",
+            "plane": "Li2Si2O5(031)",
+            "state": "lithiated",
+            "source_text": "some new irregular lattice fringes can be observed in the HRTEM image and rings in FFT pattern with different interplanar spacing 0.27 nm and 0.20 nm inside the Si species, corresponding to Li2SiO3(020), Li2Si2O5(031), and Li-Si alloy species"
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "LixSi",
+            "state": "lithiated alloy",
+            "source_text": "new peaks corresponding to Li2SiO5 JCPDS no. 40–0376 and Li2Si2O5 JCPDS no. 70–0330 are detected, further demonstrating that the LixSi alloy phases are formed"
+          },
+          {
+            "value": "Li2SiO3",
+            "state": "SEI/phase",
+            "source_text": "corresponding to Li2SiO3(020), Li2Si2O5(031), and Li-Si alloy species"
+          },
+          {
+            "value": "Li2Si2O5",
+            "state": "SEI/phase",
+            "source_text": "corresponding to Li2SiO3(020), Li2Si2O5(031), and Li-Si alloy species"
+          }
+        ],
+        "Crystal_System": [
+          {
+            "value": "diamond cubic",
+            "source_text": "the corresponding lattice fringes have a 0.31 nm interplanar spacing, which is consistent with the 111 plane of diamond cubic structure JCPDS no. 27–1402"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In summary, a controllable, cost-effective, and industry-adaptable clinging prelithiation strategy was adopted by introducing a contacttype spontaneous lithiated alloy reaction in a dry Si-based anode",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "mass_loading": {
+            "value": 16.51,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C010",
+          "electrode_config": "full_cell",
+          "cycle_number": 300
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Initial_Coulombic_Efficiency",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": "98.42-100.09",
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "The half cells with lithiated high Si-loaded anode up to 16.51 mg cm-2 deliver an ICE of around 98.42%-100.09%"
+          },
+          {
+            "value": 98.73,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "all dry electrode-based full cells show over 98.73% of ICE"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 88.15,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 300,
+            "source_text": "all dry electrode-based full cells show over 98.73% of ICE with a capacity retention of 88.15% for 300 cycles"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "Compared with WSC, DSC with elastic fiber binder and sufficient internal space can tolerate huge volume changes during repeated expansion and contraction without shedding active substances, especially",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "mass_loading": {
+            "value": 16.51,
+            "unit": "mg/cm2"
+          },
+          "c_rate_or_current": {
+            "value": 95.0,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic charge/discharge, EIS, OCV measurement"
+        },
+        {
+          "condition_id": "C012",
+          "electrode_config": "full_cell",
+          "n/p_ratio": 1.1,
+          "c_rate_or_current": {
+            "value": 106.5,
+            "unit": "mA/g"
+          },
+          "cathode_material": "mathrm 0.80.10.1 O2 (LiNi0.8Co0.1Mn0.1O2, dry electrode)",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C013",
+          "electrode_config": "full_cell",
+          "electrolyte": "polymer-based solid-state electrolyte",
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Initial_Coulombic_Efficiency",
+        "Open_Circuit_Voltage",
+        "First_Lithiation_Capacity",
+        "Capacity_Retention_at_Nth_Cycle",
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 80.46,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "half cell based on DSC ... exhibits a higher ICE of 98.42% than DSC 80.46%"
+          },
+          {
+            "value": 98.42,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "half cell based on LDSC 30 ... exhibits a higher ICE of 98.42% than DSC 80.46%"
+          },
+          {
+            "value": 64.06,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "full cell based on DSC anode with a lower ICE of 64.06%"
+          },
+          {
+            "value": 98.73,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "full cell based on the LDSC 30 anode shows an improved ICE up to 98.73%"
+          },
+          {
+            "value": 98.57,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "LDSC anode 32 ... exhibits a high ICE of 98.57%"
+          }
+        ],
+        "Open_Circuit_Voltage": [
+          {
+            "value": 2.41,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "OCV decreases from 2.41 V to 0.37 V (DSC before prelithiation)"
+          },
+          {
+            "value": 0.37,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "OCV decreases from 2.41 V to 0.37 V (LDSC 30 after prelithiation)"
+          }
+        ],
+        "First_Lithiation_Capacity": [
+          {
+            "value": 743.0,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "LDSC 30 anode delivers an initial discharging capacity of 743.00 mAh g -1"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 82.17,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "LDSC 30 anode delivers an initial discharging capacity of 743.00 mAh g -1 with a capacity retention rate of 82.17% ... after 100 cycles"
+          },
+          {
+            "value": 38.79,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "DSC only maintains a capacity of 365.42 mAh g -1 with a capacity retention of 38.79% ... after 100 cycles"
+          },
+          {
+            "value": 88.15,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 300,
+            "source_text": "higher capacity retention of 88.15% after 300 cycles, much higher than that of DSC-based full cell 19.53%"
+          },
+          {
+            "value": 19.53,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 300,
+            "source_text": "higher capacity retention of 88.15% after 300 cycles, much higher than that of DSC-based full cell 19.53%"
+          },
+          {
+            "value": 90.85,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "LDSC anode 32 ... exhibits a high ICE of 98.57% with a capacity retention of 90.85% Fig. S28"
+          }
+        ],
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 121.6,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "EIS spectra of cells before cycling shows that the resistance of ... DSC 121.60 Ω"
+          },
+          {
+            "value": 67.78,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "EIS spectra of cells before cycling shows that the resistance of LDSC 3067.78 Ω is much lower than that of DSC 121.60 Ω"
+          },
+          {
+            "value": 28.25,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "Even after 100 cycles, LDSC 30 anode exhibits a resistance of 28.25 Ω"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The effects of prelithiation processes on the electrochemical performance were investigated by testing Li metal anode-based half-cells using various Si-based electrodes based on the conventional elect",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 100.0,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C015",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 1.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "CV"
+        },
+        {
+          "condition_id": "C007",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "OCV measurement"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Initial_Coulombic_Efficiency",
+        "Irreversible_Capacity_Loss_First_Cycle",
+        "First_Lithiation_Capacity",
+        "Capacity_Retention_at_Nth_Cycle",
+        "Open_Circuit_Voltage"
+      ],
+      "performance_info": {
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 79.99,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the bare WSC exhibits a relatively low ICE of 79.99% with a Li-ion loss of 202.09 mAh g - 1 in the initial charging/discharging process."
+          },
+          {
+            "value": 100.09,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "After 25 min of prelithiation time, the LWSC delivers an ICE of 100.09% with a low OCV of 0.30 V"
+          }
+        ],
+        "Irreversible_Capacity_Loss_First_Cycle": [
+          {
+            "value": 202.09,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the bare WSC exhibits a relatively low ICE of 79.99% with a Li-ion loss of 202.09 mAh g - 1 in the initial charging/discharging process."
+          }
+        ],
+        "First_Lithiation_Capacity": [
+          {
+            "value": 806.81,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the LWSC 25 anode exhibits the best cycling performance with an initial discharging capacity of 806.81 mAh g - 1 and capacity retention of 73.79% after 200 cycles."
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 73.79,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "the LWSC 25 anode exhibits the best cycling performance with an initial discharging capacity of 806.81 mAh g - 1 and capacity retention of 73.79% after 200 cycles."
+          },
+          {
+            "value": 15.18,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "the WSC anode only maintains a discharging capacity of 122.87 mAh g - 1 with a capacity retention of 15.18% Fig. S20."
+          }
+        ],
+        "Open_Circuit_Voltage": [
+          {
+            "value": 2.45,
+            "unit": "V",
+            "condition_id": "C003",
+            "source_text": "the WSC electrodes with different prelithiation times exhibit a gradually decreasing open circuit voltage OCV from 2.45 V to 0.18 V"
+          },
+          {
+            "value": 0.3,
+            "unit": "V",
+            "condition_id": "C003",
+            "source_text": "After 25 min of prelithiation time, the LWSC delivers an ICE of 100.09% with a low OCV of 0.30 V"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Compared with WSC, DSC with elastic fiber binder and sufficient internal space can tolerate huge volume changes during repeated expansion and contraction without shedding active substances, especially",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "mass_loading": {
+            "value": 16.51,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "OCV, EIS"
+        },
+        {
+          "condition_id": "C017",
+          "mass_loading": {
+            "value": 16.51,
+            "unit": "mg/cm2"
+          },
+          "c_rate_or_current": {
+            "value": 95.0,
+            "unit": "mA/g"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": 106.5,
+            "unit": "mA/g"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C019",
+          "electrolyte": "polymer-based solid-state electrolyte",
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Initial_Coulombic_Efficiency",
+        "Open_Circuit_Voltage",
+        "First_Lithiation_Capacity",
+        "Capacity_Retention_at_Nth_Cycle",
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 98.42,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the half cell based on LDSC 30 with an active material loading of 16.51 mg cm-2 exhibits a higher ICE of 98.42% than DSC 80.46%"
+          },
+          {
+            "value": 80.46,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the half cell based on LDSC 30 with an active material loading of 16.51 mg cm-2 exhibits a higher ICE of 98.42% than DSC 80.46%"
+          },
+          {
+            "value": 98.73,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "the full cell based on the LDSC 30 anode shows an improved ICE up to 98.73%"
+          },
+          {
+            "value": 64.06,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "full cell based on DSC anode with a lower ICE of 64.06%"
+          },
+          {
+            "value": 98.57,
+            "unit": "%",
+            "condition_id": "C004",
+            "source_text": "the polymerbased solid-state electrolyte ... exhibits a high ICE of 98.57%"
+          }
+        ],
+        "Open_Circuit_Voltage": [
+          {
+            "value": 2.41,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "the OCV decreases from 2.41 V to 0.37 V"
+          },
+          {
+            "value": 0.37,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "the OCV decreases from 2.41 V to 0.37 V"
+          }
+        ],
+        "First_Lithiation_Capacity": [
+          {
+            "value": 743.0,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "At a current density of 95 mA g-1, the LDSC 30 anode delivers an initial discharging capacity of 743.00 mAh g-1"
+          },
+          {
+            "value": 365.42,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "while the DSC only maintains a capacity of 365.42 mAh g-1"
+          },
+          {
+            "value": 175.74,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "delivers a higher reversible capacity of 175.74 mAh g-1 at 106.5 mA g-1"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 82.17,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "the LDSC 30 anode delivers an initial discharging capacity of 743.00 mAh g-1 with a capacity retention rate of 82.17%"
+          },
+          {
+            "value": 38.79,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "the DSC only maintains a capacity of 365.42 mAh g-1 with a capacity retention of 38.79%"
+          },
+          {
+            "value": 88.15,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 300,
+            "source_text": "improved cycling performance in full cells with a higher capacity retention of 88.15% after 300 cycles, much higher than that of DSC-based full cell 19.53%"
+          },
+          {
+            "value": 19.53,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 300,
+            "source_text": "improved cycling performance in full cells with a higher capacity retention of 88.15% after 300 cycles, much higher than that of DSC-based full cell 19.53%"
+          },
+          {
+            "value": 90.85,
+            "unit": "%",
+            "condition_id": "C004",
+            "cycle_number": 0,
+            "source_text": "the polymerbased solid-state electrolyte ... exhibits a high ICE of 98.57% with a capacity retention of 90.85%"
+          }
+        ],
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 67.78,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "The EIS spectra of cells before cycling shows that the resistance of LDSC 30 67.78 Ω is much lower than that of DSC 121.60 Ω"
+          },
+          {
+            "value": 121.6,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "The EIS spectra of cells before cycling shows that the resistance of LDSC 30 67.78 Ω is much lower than that of DSC 121.60 Ω"
+          },
+          {
+            "value": 28.25,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "Even after 100 cycles, LDSC 30 anode exhibits a resistance of 28.25 Ω"
+          }
+        ]
+      }
+    }
+  ]
+}

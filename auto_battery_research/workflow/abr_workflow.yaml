@@ -1,0 +1,123 @@
+# =============================================================================
+# AutoBatteryResearch 6阶段化学电池研究工作流定义 (Mission Workflow)
+# =============================================================================
+
+mission:
+  name: "化学电池全周期研究与设计自动化智能体工作流"
+  version: "1.0.0"
+  description: >
+    面向高比能锂离子与锂金属电池研究，采用配置驱动分阶段工作流，
+    实现文献入库解析、语义向量化、材料电芯数据挖掘、多智能体 RAG 方案设计、
+    PINN 物理仿真验证（默认可 Skip）到最终综合研发报告生成的全闭环生命周期管理。
+
+  system_prompt: |
+    你是一位资深的化学电池领域科研专家与 AI 工作流自主智能体 (AutoBatteryResearch Agent, ABRAgent)。
+    你精通锂离子电池、锂金属电池、固态电池材料体系（高镍正极 NCM/NCA、富锂锰基、硅碳/金属锂负极、高压/局域高浓电解液、功能添加剂），
+    同时精通基于大模型的自动化科学数据挖掘、多智能体 RAG 决策、以及电化学物理仿真（Newman P2D / PINN）。
+
+    **核心工作原则：**
+    1. **分阶段推进与确定性门禁**：
+       - 工作流由 6 个按顺序排列的 Stage 组成，每个阶段都有明确的交付物和质量门禁标准。
+       - 使用工具 `GetCurrentTips` 获取当前阶段的任务指导与验收标准。
+       - 优先使用 `Check` 工具进行阶段产物自检；自检完全通过后，调用 `Complete` 工具正式推进到下一阶段。
+       - 严禁在当前阶段 Checker 未通过前跨阶段操作或凭空捏造数据。
+    2. **阶段日志追踪**：
+       - 在推进下一阶段前，必须调用 `SetStageJournal` 记录当前阶段的发现、指标数据与交付物路径。
+       - 如需回顾前置阶段历史，调用 `AllStageJournal` 或 `GetStatus` 工具。
+    3. **真实性与证据严谨性**：
+       - 数据挖掘与方案设计必须基于文献与物理事实，遵循“有则提取、无则留空、禁止编造”。
+       - 设计方案必须通过 8 大热力学/电化学硬约束（C1-C8）检验。
+    4. **Stage 5 (PINN) 弹性跳过机制**：
+       - Stage 5 (PINN 物理仿真) 默认处于 `skip: true` 状态。如果用户指定 `--with-pinn` 或环境已就绪，可激活并执行 P2D / PINN 数值验证；否则工作流平滑跃迁至 Stage 6。
+
+stages:
+  - id: 1
+    key: "literature_ingestion"
+    name: "文献解析与组件分类"
+    description: "从原始 PDF 提取 DOI、调用 MinerU 转为结构化 Markdown、合并主附录 SI、进行双语清洗并分类到电池体系与组件目录。"
+    skip: false
+    reference_files:
+      - "auto_battery_research/doc/Guide_Doc/stage1_literature_ingestion.md"
+    checkers:
+      - name: "IngestionChecker"
+        class: "auto_battery_research.checkers.ingestion_checker.IngestionChecker"
+        strict: true
+    expected_outputs:
+      - "papers/merged/"
+      - "database/type/Lithium_Ion_Metal_Battery/{cathode,anode,electrolyte}"
+
+  - id: 2
+    key: "semantic_vector_indexing"
+    name: "语义标注与向量入库"
+    description: "提取文献元数据，对清洗后段落打 6 类互斥语义标签，通过 Qwen3-Embedding:8b 向量化持久化至 Chroma 库。"
+    skip: false
+    reference_files:
+      - "auto_battery_research/doc/Guide_Doc/stage2_vector_indexing.md"
+    checkers:
+      - name: "VectorDBChecker"
+        class: "auto_battery_research.checkers.vector_db_checker.VectorDBChecker"
+        strict: true
+    expected_outputs:
+      - "miner/json/metadata/meta_merged.json"
+      - "miner/chroma/paragraphs_q/"
+
+  - id: 3
+    key: "data_mining_cell_assembly"
+    name: "材料挖掘与电芯组装"
+    description: "2000-token 切分挖掘、Phase 0 材料识别、配方/改性/化学式三层归一化、format1 属性校验、Cell 实体组装与 ML 数据集展平导出。"
+    skip: false
+    reference_files:
+      - "auto_battery_research/doc/Guide_Doc/stage3_cell_assembly.md"
+    checkers:
+      - name: "CellAssemblyChecker"
+        class: "auto_battery_research.checkers.cell_assembly_checker.CellAssemblyChecker"
+        strict: true
+    expected_outputs:
+      - "miner/json/*_extracted.json"
+      - "output/auto_battery_research/cell_assembly/"
+
+  - id: 4
+    key: "battery_rag_design"
+    name: "多智能体 RAG 方案设计"
+    description: "接收电池设计目标（如 400 Wh/kg 锂金属），由 Planner->Retrieval->Writer->Reviewer 协同生成包含五段式的可验证材料组合方案，并通过 C1-C8 规则检验。"
+    skip: false
+    reference_files:
+      - "auto_battery_research/doc/Guide_Doc/stage4_battery_design_rag.md"
+    checkers:
+      - name: "RAGDesignChecker"
+        class: "auto_battery_research.checkers.rag_design_checker.RAGDesignChecker"
+        strict: true
+    expected_outputs:
+      - "output/auto_battery_research/design_scheme.json"
+      - "output/auto_battery_research/design_scheme.md"
+
+  - id: 5
+    key: "pinn_physics_simulation"
+    name: "PINN 物理仿真校验"
+    description: "【默认可跳过】将设计方案参数转换为 CellSpec 物理契约，调用 PyBaMM Newman P2D 求解器或 PINN 物理代理模型预测充放电曲线与有效能量密度，与文献锚点比对。"
+    skip: true
+    skip_reason: "PINN/P2D 物理求解器属于深度仿真层，默认跳过以提高研发速度。使用 --with-pinn 或交互指令可随时激活。"
+    reference_files:
+      - "auto_battery_research/doc/Guide_Doc/stage5_pinn_simulation.md"
+    checkers:
+      - name: "PINNPhysicsChecker"
+        class: "auto_battery_research.checkers.pinn_physics_checker.PINNPhysicsChecker"
+        strict: false
+    expected_outputs:
+      - "output/auto_battery_research/simulation_result.json"
+
+  - id: 6
+    key: "synthesis_report_generation"
+    name: "综合研发报告生成"
+    description: "汇总全流程各阶段日志、证据段落、材料与 Cell 配方、RAG 设计结论与物理仿真结果，生成完整的化学电池科研与实验综合报告。"
+    skip: false
+    reference_files:
+      - "auto_battery_research/doc/Guide_Doc/stage6_synthesis_report.md"
+    checkers:
+      - name: "FinalReportChecker"
+        class: "auto_battery_research.checkers.final_report_checker.FinalReportChecker"
+        strict: true
+    expected_outputs:
+      - "output/auto_battery_research/final_research_report.md"
+      - "output/auto_battery_research/abr_agent_journal.json"
+

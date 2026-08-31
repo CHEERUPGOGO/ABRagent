@@ -1,0 +1,4941 @@
+{
+  "n_tasks": 3,
+  "unified_calls": 31,
+  "token_summary": {
+    "tokenizer": "官网字符比例 (zh×0.6 + en×0.3) [transformers 未安装]",
+    "include_model": "deepseek-v4-flash",
+    "extract_model": "deepseek-v4-pro",
+    "total_input_tokens": 607552,
+    "total_output_tokens": 46305,
+    "total_cost_usd": 0.098023,
+    "steps": [
+      {
+        "step": "unified-electrolyte-extract",
+        "model": "deepseek-v4-pro",
+        "input_tokens": 176702,
+        "output_tokens": 13318,
+        "total_tokens": 190020,
+        "calls": 19,
+        "cost_usd": 0.028467
+      },
+      {
+        "step": "include-anode",
+        "model": "deepseek-v4-flash",
+        "input_tokens": 2953,
+        "output_tokens": 11,
+        "total_tokens": 2964,
+        "calls": 11,
+        "cost_usd": 0.000416
+      },
+      {
+        "step": "unified-anode-extract",
+        "model": "deepseek-v4-pro",
+        "input_tokens": 117264,
+        "output_tokens": 8354,
+        "total_tokens": 125618,
+        "calls": 16,
+        "cost_usd": 0.018756
+      },
+      {
+        "step": "unified-cathode-extract",
+        "model": "deepseek-v4-pro",
+        "input_tokens": 304131,
+        "output_tokens": 24604,
+        "total_tokens": 328735,
+        "calls": 31,
+        "cost_usd": 0.049467
+      },
+      {
+        "step": "include-cathode",
+        "model": "deepseek-v4-flash",
+        "input_tokens": 6502,
+        "output_tokens": 18,
+        "total_tokens": 6520,
+        "calls": 18,
+        "cost_usd": 0.000915
+      }
+    ],
+    "warnings": []
+  },
+  "results": [
+    {
+      "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/electrolyte/electrolyte.md",
+      "component": "electrolyte",
+      "paper_id": "electrolyte",
+      "doi": "electrolyte",
+      "material_id": "electrolyte",
+      "meta": {
+        "meta_title": "",
+        "meta_authors": "",
+        "meta_year": ""
+      },
+      "table_items": [],
+      "n_items": 14,
+      "items": [
+        {
+          "paragraph": "To verify the superwettability of the ultralow concentration electrolyte, we first performed contact angle tests. Commercial polyolefin separators possess low wettability with highconcentration electr",
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "electrolyte": "0 M",
+              "test_method": "Contact angle test"
+            },
+            {
+              "condition_id": "C002",
+              "electrolyte": "0.02 M",
+              "test_method": "Contact angle test"
+            },
+            {
+              "condition_id": "C003",
+              "electrolyte": "1 M",
+              "test_method": "Contact angle test"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Contact_Angle"
+          ],
+          "performance_info": {
+            "Contact_Angle": [
+              {
+                "value": 62.1,
+                "unit": "°",
+                "substrate": "PE separator",
+                "condition_id": "C001",
+                "source_text": "initial contact of the different electrolytes to the separator, the contact angles for 0 and 0.02 M electrolytes are 6 2 . 1 circ and 6 2 . 5 circ"
+              },
+              {
+                "value": 27.9,
+                "unit": "°",
+                "substrate": "PE separator",
+                "condition_id": "C001",
+                "source_text": "After 2 min, the 0 and 0.02 M electrolytes exhibit decreased contact angles of 2 7 . 9 circ and 29.2°"
+              },
+              {
+                "value": 62.5,
+                "unit": "°",
+                "substrate": "PE separator",
+                "condition_id": "C002",
+                "source_text": "initial contact of the different electrolytes to the separator, the contact angles for 0 and 0.02 M electrolytes are 6 2 . 1 circ and 6 2 . 5 circ"
+              },
+              {
+                "value": 29.2,
+                "unit": "°",
+                "substrate": "PE separator",
+                "condition_id": "C002",
+                "source_text": "After 2 min, the 0 and 0.02 M electrolytes exhibit decreased contact angles of 2 7 . 9 circ and 29.2°"
+              },
+              {
+                "value": 101.5,
+                "unit": "°",
+                "substrate": "PE separator",
+                "condition_id": "C003",
+                "source_text": "the 1 0 1 . 5 circ observed for 1 M electrolyte"
+              },
+              {
+                "value": 95.3,
+                "unit": "°",
+                "substrate": "PE separator",
+                "condition_id": "C003",
+                "source_text": "contact angle still maintained at a large value of 95.3°"
+              },
+              {
+                "value": 30.5,
+                "unit": "°",
+                "substrate": "graphite pellet",
+                "condition_id": "C001",
+                "source_text": "contact angles for 0 and 0.02 M electrolytes are measured to be 3 0 . 5 circ and 3 1 . 4 circ , respectively, at 0 s"
+              },
+              {
+                "value": 0.0,
+                "unit": "°",
+                "substrate": "graphite pellet",
+                "condition_id": "C001",
+                "source_text": "decrease to 0 circ and 5 . 1 circ , respectively, after 6 s"
+              },
+              {
+                "value": 31.4,
+                "unit": "°",
+                "substrate": "graphite pellet",
+                "condition_id": "C002",
+                "source_text": "contact angles for 0 and 0.02 M electrolytes are measured to be 3 0 . 5 circ and 3 1 . 4 circ , respectively, at 0 s"
+              },
+              {
+                "value": 5.1,
+                "unit": "°",
+                "substrate": "graphite pellet",
+                "condition_id": "C002",
+                "source_text": "decrease to 0 circ and 5 . 1 circ , respectively, after 6 s"
+              },
+              {
+                "value": 33.2,
+                "unit": "°",
+                "substrate": "graphite pellet",
+                "condition_id": "C003",
+                "source_text": "initial contact angle of the 1 M electrolyte is 3 3 . 2 circ"
+              },
+              {
+                "value": 28.7,
+                "unit": "°",
+                "substrate": "graphite pellet",
+                "condition_id": "C003",
+                "source_text": "which decreases to 2 8 . 7 circ after 6 s"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "Superwettability can ensure the uniformity of SEI. But creating preferred inorganic-rich SEI in conventional electrolyte systems with the normal formation process poses a significant challenge. Under ",
+          "conditions": [
+            {
+              "condition_id": "C004",
+              "voltage_range": {
+                "min": 0.8,
+                "max": 0.8,
+                "unit": "V",
+                "reference": "Li/Li+"
+              },
+              "electrolyte": "1 M",
+              "electrode_config": "graphite anode",
+              "reference_electrode": "Li/Li+",
+              "test_method": "formation process"
+            },
+            {
+              "condition_id": "C005",
+              "voltage_range": {
+                "min": 0.0,
+                "max": 0.0,
+                "unit": "V",
+                "reference": "Li/Li+"
+              },
+              "electrolyte": "ultralow concentration",
+              "electrode_config": "graphite anode",
+              "reference_electrode": "Li/Li+",
+              "test_method": "formation process"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Reduction_Onset_Potential"
+          ],
+          "performance_info": {
+            "Reduction_Onset_Potential": [
+              {
+                "value": 0.8,
+                "unit": "V vs. Li/Li+",
+                "source_text": "conventional carbonate solvents, such as ethylene carbonate EC, tend to decompose at a relatively high potential, around 0.8 V vs Li/Li+",
+                "condition_id": "C004"
+              },
+              {
+                "value": 0.0,
+                "unit": "V vs. Li/Li+",
+                "source_text": "near Li plating potentials",
+                "condition_id": "C005"
+              }
+            ]
+          },
+          "condition_id": "C005"
+        },
+        {
+          "paragraph": "To validate our hypothesis of the ultralow electrolyte, we first assembled Ligraphite half-cells using a 1 M concentration electrolyte and lithium-ion-free 0 M electrolyte, respectively. Formation pro",
+          "conditions": [
+            {
+              "condition_id": "C006",
+              "electrolyte": "1 M concentration electrolyte",
+              "electrode_config": "graphite anode",
+              "reference_electrode": "Li/Li+",
+              "test_method": "formation process (CC-CV mode)"
+            },
+            {
+              "condition_id": "C007",
+              "electrolyte": "0 M concentration electrolyte",
+              "electrode_config": "graphite anode",
+              "reference_electrode": "Li/Li+",
+              "test_method": "formation process (CC-CV mode)"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "We then compared the electrochemical performance of graphite anodes using ultralow-concentration electrolytes and conventional electrolytes. First, the graphite half cells are rested for 2 4 mathrm h ",
+          "conditions": [
+            {
+              "condition_id": "C008",
+              "electrolyte": "0 M",
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "formation step"
+            },
+            {
+              "condition_id": "C009",
+              "electrolyte": "0.02 M",
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "formation step"
+            },
+            {
+              "condition_id": "C010",
+              "electrolyte": "1 M",
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "formation step"
+            },
+            {
+              "condition_id": "C011",
+              "electrolyte": "1 M",
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "cyclic voltammetry (CV) and cycling tests"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "Subsequently, we tested the cells for long-term cycling stability at 0.5 C. All cells are subjected to a voltage range of 0.01−1.5 V vs Li/Li . As depicted in Figure 3c, the cells formed with low-conc",
+          "conditions": [
+            {
+              "condition_id": "C012",
+              "c_rate_or_current": {
+                "value": "0.5",
+                "unit": "C"
+              },
+              "voltage_range": {
+                "min": 0.01,
+                "max": 1.5,
+                "unit": "V",
+                "reference": "Li/Li+"
+              },
+              "electrolyte": "0 M",
+              "electrode_config": "graphite anode",
+              "reference_electrode": "Li/Li+",
+              "test_method": "long-term cycling stability test"
+            },
+            {
+              "condition_id": "C013",
+              "c_rate_or_current": {
+                "value": "0.5",
+                "unit": "C"
+              },
+              "voltage_range": {
+                "min": 0.01,
+                "max": 1.5,
+                "unit": "V",
+                "reference": "Li/Li+"
+              },
+              "electrolyte": "0.02 M",
+              "electrode_config": "graphite anode",
+              "reference_electrode": "Li/Li+",
+              "test_method": "long-term cycling stability test"
+            },
+            {
+              "condition_id": "C014",
+              "c_rate_or_current": {
+                "value": "0.5",
+                "unit": "C"
+              },
+              "voltage_range": {
+                "min": 0.01,
+                "max": 1.5,
+                "unit": "V",
+                "reference": "Li/Li+"
+              },
+              "electrolyte": "1 M",
+              "electrode_config": "graphite anode",
+              "reference_electrode": "Li/Li+",
+              "test_method": "long-term cycling stability test"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Capacity_Retention"
+          ],
+          "performance_info": {
+            "Capacity_Retention": [
+              {
+                "value": 77.4,
+                "unit": "%",
+                "cycle_number": 200,
+                "condition_id": "C012",
+                "source_text": "the capacity retentions for the 0 ... electrolyte cells are 77.4%"
+              },
+              {
+                "value": 76.4,
+                "unit": "%",
+                "cycle_number": 200,
+                "condition_id": "C013",
+                "source_text": "the capacity retentions for the ... 0.02 M electrolyte cells are 76.4%"
+              },
+              {
+                "value": 44.7,
+                "unit": "%",
+                "cycle_number": 200,
+                "condition_id": "C014",
+                "source_text": "it decreases to 44.7% at 200 cycles"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "We conducted further investigations into the fast-charging capability of graphite anodes formed with low-concentration electrolytes in half cells by using rate performance tests Figure 3d. Under const",
+          "conditions": [
+            {
+              "condition_id": "C015",
+              "electrolyte": "0 M",
+              "c_rate_or_current": {
+                "value": "0.2",
+                "unit": "C"
+              },
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "rate performance test"
+            },
+            {
+              "condition_id": "C016",
+              "electrolyte": "0 M",
+              "c_rate_or_current": {
+                "value": "1",
+                "unit": "C"
+              },
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "rate performance test"
+            },
+            {
+              "condition_id": "C017",
+              "electrolyte": "0 M",
+              "c_rate_or_current": {
+                "value": "2",
+                "unit": "C"
+              },
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "rate performance test"
+            },
+            {
+              "condition_id": "C018",
+              "electrolyte": "0.02 M",
+              "c_rate_or_current": {
+                "value": "0.2",
+                "unit": "C"
+              },
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "rate performance test"
+            },
+            {
+              "condition_id": "C019",
+              "electrolyte": "0.02 M",
+              "c_rate_or_current": {
+                "value": "1",
+                "unit": "C"
+              },
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "rate performance test"
+            },
+            {
+              "condition_id": "C020",
+              "electrolyte": "0.02 M",
+              "c_rate_or_current": {
+                "value": "2",
+                "unit": "C"
+              },
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "rate performance test"
+            },
+            {
+              "condition_id": "C021",
+              "electrolyte": "1 M",
+              "c_rate_or_current": {
+                "value": "0.2",
+                "unit": "C"
+              },
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "rate performance test"
+            },
+            {
+              "condition_id": "C022",
+              "electrolyte": "1 M",
+              "c_rate_or_current": {
+                "value": "1",
+                "unit": "C"
+              },
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "rate performance test"
+            },
+            {
+              "condition_id": "C023",
+              "electrolyte": "1 M",
+              "c_rate_or_current": {
+                "value": "2",
+                "unit": "C"
+              },
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "rate performance test"
+            },
+            {
+              "condition_id": "C024",
+              "electrolyte": "0 M",
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "EIS",
+              "cycle_number": 0
+            },
+            {
+              "condition_id": "C025",
+              "electrolyte": "0 M",
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "EIS"
+            },
+            {
+              "condition_id": "C026",
+              "electrolyte": "1 M",
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "EIS",
+              "cycle_number": 0
+            },
+            {
+              "condition_id": "C027",
+              "electrolyte": "1 M",
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "EIS"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Rate_Capability",
+            "SEI_Resistance"
+          ],
+          "performance_info": {
+            "Rate_Capability": [
+              {
+                "value": [
+                  370
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C015",
+                "source_text": "at 0.2 C ... approximately 370 mAh g-1"
+              },
+              {
+                "value": [
+                  340
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C016",
+                "source_text": "the cells formed with 0 and 0.02 M electrolytes retain capacities of 340, 250, and 265, 140 mAh g-1 at 1 and 2 C, respectively"
+              },
+              {
+                "value": [
+                  250
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C017",
+                "source_text": "the cells formed with 0 and 0.02 M electrolytes retain capacities of 340, 250, and 265, 140 mAh g-1 at 1 and 2 C, respectively"
+              },
+              {
+                "value": [
+                  370
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C018",
+                "source_text": "at 0.2 C ... approximately 370 mAh g-1"
+              },
+              {
+                "value": [
+                  265
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C019",
+                "source_text": "the cells formed with 0 and 0.02 M electrolytes retain capacities of 340, 250, and 265, 140 mAh g-1 at 1 and 2 C, respectively"
+              },
+              {
+                "value": [
+                  140
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C020",
+                "source_text": "the cells formed with 0 and 0.02 M electrolytes retain capacities of 340, 250, and 265, 140 mAh g-1 at 1 and 2 C, respectively"
+              },
+              {
+                "value": [
+                  370
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C021",
+                "source_text": "at 0.2 C ... approximately 370 mAh g-1"
+              },
+              {
+                "value": [
+                  150
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C022",
+                "source_text": "the cell formed with 1 M electrolyte only retained capacities of 150 and 33 mAh g-1 at the same C-rates."
+              },
+              {
+                "value": [
+                  33
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C023",
+                "source_text": "the cell formed with 1 M electrolyte only retained capacities of 150 and 33 mAh g-1 at the same C-rates."
+              }
+            ],
+            "SEI_Resistance": [
+              {
+                "value": 5.8,
+                "unit": "Ω",
+                "condition_id": "C024",
+                "cycle_number": 0,
+                "source_text": "Prior to cycling, the SEI resistance R of the cell formed using a 0 M electrolyte was only 5.8 Ω."
+              },
+              {
+                "value": 9.1,
+                "unit": "Ω",
+                "condition_id": "C025",
+                "source_text": "After cycling, the impedance increased to 9.1 Ω."
+              },
+              {
+                "value": 13.4,
+                "unit": "Ω",
+                "condition_id": "C026",
+                "cycle_number": 0,
+                "source_text": "In comparison, the R of the battery formed using a normal concentration electrolyte increased from 13.4 to 27.8 Ω."
+              },
+              {
+                "value": 27.8,
+                "unit": "Ω",
+                "condition_id": "C027",
+                "source_text": "In comparison, the R of the battery formed using a normal concentration electrolyte increased from 13.4 to 27.8 Ω."
+              }
+            ]
+          },
+          "condition_id": "C015"
+        },
+        {
+          "paragraph": "We conducted postcycling analysis to understand the diverse cycling performance of Ligraphite cells with different electrolyte concentrations. Optical and scanning electron microscopy SEM images in Fi",
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Inorganic_Organic_Ratio_SEI_CEI"
+          ],
+          "performance_info": {
+            "Inorganic_Organic_Ratio_SEI_CEI": [
+              {
+                "value": 0.446,
+                "interphase": "SEI",
+                "cycle_number": 0,
+                "condition_id": "C008",
+                "source_text": "After Ar etching for 6 min, the inorganic component ratios of SEI formed with 0 and 0.02 M concentrations increased from 44.6% and 34.0% to 71.4% and 68.5%, respectively."
+              },
+              {
+                "value": 0.714,
+                "interphase": "SEI",
+                "cycle_number": 0,
+                "condition_id": "C008",
+                "source_text": "After Ar etching for 6 min, the inorganic component ratios of SEI formed with 0 and 0.02 M concentrations increased from 44.6% and 34.0% to 71.4% and 68.5%, respectively."
+              },
+              {
+                "value": 0.947,
+                "interphase": "SEI",
+                "cycle_number": 0,
+                "condition_id": "C008",
+                "source_text": "After 14 min, these ratios further increased to 94.7% and 96.3%, respectively."
+              },
+              {
+                "value": 0.34,
+                "interphase": "SEI",
+                "cycle_number": 0,
+                "condition_id": "C009",
+                "source_text": "After Ar etching for 6 min, the inorganic component ratios of SEI formed with 0 and 0.02 M concentrations increased from 44.6% and 34.0% to 71.4% and 68.5%, respectively."
+              },
+              {
+                "value": 0.685,
+                "interphase": "SEI",
+                "cycle_number": 0,
+                "condition_id": "C009",
+                "source_text": "After Ar etching for 6 min, the inorganic component ratios of SEI formed with 0 and 0.02 M concentrations increased from 44.6% and 34.0% to 71.4% and 68.5%, respectively."
+              },
+              {
+                "value": 0.963,
+                "interphase": "SEI",
+                "cycle_number": 0,
+                "condition_id": "C009",
+                "source_text": "After 14 min, these ratios further increased to 94.7% and 96.3%, respectively."
+              },
+              {
+                "value": 0.284,
+                "interphase": "SEI",
+                "cycle_number": 0,
+                "condition_id": "C010",
+                "source_text": "the inorganic component ratio of SEI formed under normal formation conditions only increased from 28.4% to 39.0%, and after 14 min, it reached 69.5%."
+              },
+              {
+                "value": 0.39,
+                "interphase": "SEI",
+                "cycle_number": 0,
+                "condition_id": "C010",
+                "source_text": "the inorganic component ratio of SEI formed under normal formation conditions only increased from 28.4% to 39.0%, and after 14 min, it reached 69.5%."
+              },
+              {
+                "value": 0.695,
+                "interphase": "SEI",
+                "cycle_number": 0,
+                "condition_id": "C010",
+                "source_text": "the inorganic component ratio of SEI formed under normal formation conditions only increased from 28.4% to 39.0%, and after 14 min, it reached 69.5%."
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "We then conducted tests on full cells with NCM811 cathode and graphite anode then, the cells were formed using different concentrations of electrolyte. Figure 5a illustrates the formation curves for b",
+          "conditions": [
+            {
+              "condition_id": "C028",
+              "electrolyte": "0 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "formation process"
+            },
+            {
+              "condition_id": "C029",
+              "electrolyte": "0.02 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "formation process"
+            },
+            {
+              "condition_id": "C030",
+              "electrolyte": "1 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "formation process"
+            },
+            {
+              "condition_id": "C031",
+              "electrolyte": "0 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "EIS",
+              "cycle_number": 0
+            },
+            {
+              "condition_id": "C032",
+              "electrolyte": "0.02 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "EIS",
+              "cycle_number": 0
+            },
+            {
+              "condition_id": "C033",
+              "electrolyte": "1 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "EIS",
+              "cycle_number": 0
+            },
+            {
+              "condition_id": "C034",
+              "electrolyte": "0 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "rate performance test"
+            },
+            {
+              "condition_id": "C035",
+              "electrolyte": "0.02 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "rate performance test"
+            },
+            {
+              "condition_id": "C036",
+              "electrolyte": "1 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "rate performance test"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "SEI_Resistance",
+            "Rate_Capability"
+          ],
+          "performance_info": {
+            "SEI_Resistance": [
+              {
+                "value": 7.9,
+                "unit": "Ω",
+                "condition_id": "C031",
+                "cycle_number": 0,
+                "source_text": "initial R mathrm values of cells using 0 M electrolyte during formation are only 7.9 Omega"
+              },
+              {
+                "value": 9.6,
+                "unit": "Ω",
+                "condition_id": "C032",
+                "cycle_number": 0,
+                "source_text": "0.02 M ... 9 . 6 Omega"
+              },
+              {
+                "value": 14.7,
+                "unit": "Ω",
+                "condition_id": "C033",
+                "cycle_number": 0,
+                "source_text": "1 M concentration electrolyte has an R mathrm of 1 4 . 7 Omega"
+              }
+            ],
+            "Rate_Capability": [
+              {
+                "value": [
+                  199,
+                  192,
+                  180,
+                  171,
+                  166
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C034",
+                "source_text": "discharge capacities for the 0 M concentration at 1, 2, 3, 4, and 5 C charging are as follows: 199, 192, 180, 171, and 166 mAh mathbf g - 1"
+              },
+              {
+                "value": [
+                  184,
+                  183,
+                  176,
+                  171,
+                  166
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C035",
+                "source_text": "0.02 M concentration, the discharge capacities are 184, 183, 176, 171, and 166 mAh mathbf g breve - 1"
+              },
+              {
+                "value": [
+                  168,
+                  153,
+                  141,
+                  130,
+                  122
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C036",
+                "source_text": "normal concentration formation yields lower discharge capacities of 168, 153, 141, 130, and 122 mAh mathbf g - 1"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "In addition, we conducted long-term cycling tests on full cells in the voltage range of 2.5−4.25 V at 1C/1C charge/ discharge rate after two precycles at 0.2 C. The results depicted in Figure 5d demon",
+          "conditions": [
+            {
+              "condition_id": "C037",
+              "c_rate_or_current": {
+                "value": 1,
+                "unit": "C"
+              },
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.25,
+                "unit": "V"
+              },
+              "electrolyte": "0 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "long-term cycling test"
+            },
+            {
+              "condition_id": "C038",
+              "c_rate_or_current": {
+                "value": 1,
+                "unit": "C"
+              },
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.25,
+                "unit": "V"
+              },
+              "electrolyte": "0.02 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "long-term cycling test"
+            },
+            {
+              "condition_id": "C039",
+              "c_rate_or_current": {
+                "value": 1,
+                "unit": "C"
+              },
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.25,
+                "unit": "V"
+              },
+              "electrolyte": "1 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "long-term cycling test"
+            },
+            {
+              "condition_id": "C040",
+              "electrolyte": "0 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "EIS",
+              "cycle_number": 100
+            },
+            {
+              "condition_id": "C041",
+              "electrolyte": "0.02 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "EIS",
+              "cycle_number": 100
+            },
+            {
+              "condition_id": "C042",
+              "electrolyte": "1 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "EIS",
+              "cycle_number": 100
+            },
+            {
+              "condition_id": "C043",
+              "c_rate_or_current": {
+                "value": 4,
+                "unit": "C"
+              },
+              "electrolyte": "0 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "fast charging cycle test"
+            },
+            {
+              "condition_id": "C044",
+              "c_rate_or_current": {
+                "value": 4,
+                "unit": "C"
+              },
+              "electrolyte": "1 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "fast charging cycle test"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Capacity_Retention",
+            "Rate_Capability",
+            "SEI_Resistance"
+          ],
+          "performance_info": {
+            "Capacity_Retention": [
+              {
+                "value": 76.6,
+                "unit": "%",
+                "cycle_number": 300,
+                "condition_id": "C037",
+                "source_text": "0 M concentrations yielded higher initial capacities of 201 mAh g-1, with capacity retentions of 76.6% after 300 cycles."
+              },
+              {
+                "value": 75.6,
+                "unit": "%",
+                "cycle_number": 300,
+                "condition_id": "C038",
+                "source_text": "0.02 M concentrations yielded higher initial capacities of 190 mAh g-1, with capacity retentions of 75.6% after 300 cycles."
+              },
+              {
+                "value": 66.1,
+                "unit": "%",
+                "cycle_number": 300,
+                "condition_id": "C039",
+                "source_text": "1 M concentration electrolyte exhibited a lower initial capacity of 175 mAh g-1, with a reduced capacity retention of 66.1% after 300 cycles."
+              },
+              {
+                "value": 89.0,
+                "unit": "%",
+                "cycle_number": 300,
+                "condition_id": "C043",
+                "source_text": "the specific capacity of the cell formed with the 0 M electrolyte still reached 161 mAh g-1 with the retention of 89% after 300 cycles"
+              }
+            ],
+            "Rate_Capability": [
+              {
+                "value": [
+                  201
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C037",
+                "source_text": "0 M concentrations yielded higher initial capacities of 201 mAh g-1"
+              },
+              {
+                "value": [
+                  190
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C038",
+                "source_text": "0.02 M concentrations yielded higher initial capacities of 190 mAh g-1"
+              },
+              {
+                "value": [
+                  175
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C039",
+                "source_text": "1 M concentration electrolyte exhibited a lower initial capacity of 175 mAh g-1"
+              },
+              {
+                "value": [
+                  161
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C043",
+                "source_text": "the specific capacity of the cell formed with the 0 M electrolyte still reached 161 mAh g-1"
+              },
+              {
+                "value": [
+                  128
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C044",
+                "source_text": "the specific capacity of the battery formed with the 1 M electrolyte was only 128 mAh g-1"
+              }
+            ],
+            "SEI_Resistance": [
+              {
+                "value": 15.1,
+                "unit": "Ω",
+                "cycle_number": 100,
+                "condition_id": "C040",
+                "source_text": "0 M transitioning to 15.1 Ω"
+              },
+              {
+                "value": 17.8,
+                "unit": "Ω",
+                "cycle_number": 100,
+                "condition_id": "C041",
+                "source_text": "0.02 M transitioning to 17.8 Ω"
+              },
+              {
+                "value": 23.6,
+                "unit": "Ω",
+                "cycle_number": 100,
+                "condition_id": "C042",
+                "source_text": "1 M concentration electrolyte undergoes a more pronounced change, transitioning to 23.6 Ω"
+              }
+            ]
+          },
+          "condition_id": "C037"
+        },
+        {
+          "paragraph": "To evaluate the cycling performance of the ultralow concentration formation method on commercial LIBs, graphiteNCM811 pouch cells were tested Figure 6a. The cells were charged at 3 C and discharged at",
+          "conditions": [
+            {
+              "condition_id": "C045",
+              "electrolyte": "0 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "cycling performance test (charged at 3C, discharged at 1C, constant current mode)"
+            },
+            {
+              "condition_id": "C046",
+              "electrolyte": "1 M",
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "cycling performance test (charged at 3C, discharged at 1C, constant current mode)"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "In this Letter, we present a novel approach that utilizes a superwettable electrolyte during the formation process of LIBs, in which we have achieved a uniform SEI layer that is rich in inorganic comp",
+          "conditions": [
+            {
+              "condition_id": "C005",
+              "electrolyte": "ultralow concentration",
+              "electrode_config": "graphite anode",
+              "reference_electrode": "Li/Li+",
+              "test_method": "formation process"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "The cathode and anode materials used for cell fabrication in this work were mathrm 0 . 8 0 . 1 0 . 1 O 2 NMC811 and graphite, respectively. The cathode slurry was composed of NCM811 85 wt%, Ningbo Ron",
+          "conditions": [
+            {
+              "condition_id": "C100",
+              "c_rate_or_current": {
+                "value": "0.2",
+                "unit": "C"
+              },
+              "voltage_range": {
+                "min": 0.005,
+                "unit": "V",
+                "reference": "Li/Li+"
+              },
+              "electrolyte": "0 M LiPF6 in EC/DMC (3:7 w/w)",
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "formation process (CC-CV mode)"
+            },
+            {
+              "condition_id": "C101",
+              "c_rate_or_current": {
+                "value": "0.2",
+                "unit": "C"
+              },
+              "voltage_range": {
+                "min": 0.005,
+                "unit": "V",
+                "reference": "Li/Li+"
+              },
+              "electrolyte": "0.02 M LiPF6 in EC/DMC (3:7 w/w)",
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "formation process (CC-CV mode)"
+            },
+            {
+              "condition_id": "C102",
+              "c_rate_or_current": {
+                "value": "0.2",
+                "unit": "C"
+              },
+              "voltage_range": {
+                "min": 0.005,
+                "unit": "V",
+                "reference": "Li/Li+"
+              },
+              "electrolyte": "1 M LiPF6 in EC/DMC (3:7 w/w)",
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "formation process (CC-CV mode)"
+            },
+            {
+              "condition_id": "C103",
+              "c_rate_or_current": {
+                "value": "0.05",
+                "unit": "C"
+              },
+              "voltage_range": {
+                "min": 0.005,
+                "unit": "V",
+                "reference": "Li/Li+"
+              },
+              "electrolyte": "0 M LiPF6 in EC/DMC (3:7 w/w)",
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "formation process (low current)"
+            },
+            {
+              "condition_id": "C104",
+              "c_rate_or_current": {
+                "value": "0.05",
+                "unit": "C"
+              },
+              "voltage_range": {
+                "min": 0.005,
+                "unit": "V",
+                "reference": "Li/Li+"
+              },
+              "electrolyte": "0.02 M LiPF6 in EC/DMC (3:7 w/w)",
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "formation process (low current)"
+            },
+            {
+              "condition_id": "C105",
+              "c_rate_or_current": {
+                "value": "0.05",
+                "unit": "C"
+              },
+              "voltage_range": {
+                "min": 0.005,
+                "unit": "V",
+                "reference": "Li/Li+"
+              },
+              "electrolyte": "1 M LiPF6 in EC/DMC (3:7 w/w)",
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "formation process (low current)"
+            },
+            {
+              "condition_id": "C106",
+              "c_rate_or_current": {
+                "value": "0.2",
+                "unit": "C"
+              },
+              "voltage_range": {
+                "max": 4.25,
+                "unit": "V"
+              },
+              "electrolyte": "0 M LiPF6 in EC/DMC (3:7 w/w)",
+              "electrode_config": "NMC811||graphite full cell",
+              "test_method": "formation process (CC-CV mode)"
+            },
+            {
+              "condition_id": "C107",
+              "c_rate_or_current": {
+                "value": "0.2",
+                "unit": "C"
+              },
+              "voltage_range": {
+                "max": 4.25,
+                "unit": "V"
+              },
+              "electrolyte": "0.02 M LiPF6 in EC/DMC (3:7 w/w)",
+              "electrode_config": "NMC811||graphite full cell",
+              "test_method": "formation process (CC-CV mode)"
+            },
+            {
+              "condition_id": "C108",
+              "c_rate_or_current": {
+                "value": "0.2",
+                "unit": "C"
+              },
+              "voltage_range": {
+                "max": 4.25,
+                "unit": "V"
+              },
+              "electrolyte": "1 M LiPF6 in EC/DMC (3:7 w/w)",
+              "electrode_config": "NMC811||graphite full cell",
+              "test_method": "formation process (CC-CV mode)"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "The cycling performance and rate capability of graphiteNMC811 full cells with an areal capacity of approximately 1.5 mAh cm−2 and a negative/positive N/P ratio of 1.1 in different electrolytes were ex",
+          "conditions": [
+            {
+              "condition_id": "C200",
+              "c_rate_or_current": {
+                "value": "0.2",
+                "unit": "C"
+              },
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.25,
+                "unit": "V"
+              },
+              "cycle_number": 2,
+              "electrode_config": "NCM811||graphite full cell",
+              "test_method": "formation process (pre-cycling)"
+            },
+            {
+              "condition_id": "C201",
+              "voltage_range": {
+                "min": 0.005,
+                "max": 1.5,
+                "unit": "V",
+                "reference": "Li/Li+"
+              },
+              "electrode_config": "graphite half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "cyclic voltammetry"
+            },
+            {
+              "condition_id": "C202",
+              "test_method": "EIS"
+            },
+            {
+              "condition_id": "C203",
+              "c_rate_or_current": {
+                "value": "0.1",
+                "unit": "C"
+              },
+              "test_method": "GITT"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "The density functional theory DFT calculations were performed using the Gaussian16 program 1. The exchange-correlation functional was chosen as B3LYP 2, which is a hybrid functional that combines the ",
+          "conditions": [
+            {
+              "condition_id": "C1000",
+              "temperature": {
+                "value": 300,
+                "unit": "K"
+              },
+              "test_method": "DFT calculations with PCM"
+            }
+          ],
+          "property_types": [
+            "Dielectric_Constant"
+          ],
+          "extracted_info": {
+            "Dielectric_Constant": [
+              {
+                "value": 49.2,
+                "temperature_C": 0.0,
+                "source_text": "The solvent effects were taken into account by using the polarizable continuum model PCM with a dielectric constant of 49.2, which mimics the high polarity of the solvent."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/anode/anode.md",
+      "component": "anode",
+      "paper_id": "anode",
+      "doi": "anode",
+      "material_id": "anode",
+      "meta": {
+        "meta_title": "",
+        "meta_authors": "",
+        "meta_year": ""
+      },
+      "table_items": [
+        "TABLE DATA BLOCK\nNearby text: arrangement\n</details>\n\n（b）  \n![](anodeimages/e71cc9d25ff5b9d0bd1a03bdace5f4505d96b823a9519f4f3757444923f9b3c8.jpg)\n\n<details>\n<summary>chemical</summary>\n\nCrystal structure diagram of a manganate material showing nickel, oxygen, and manganese atoms in a lattice\n</details>\n\n![](anodeimages/0d8072341\nHeaders: Value\nRows:\nRow 1: Value = 0.5\nColumn data:\n  Value: 0.5",
+        "TABLE DATA BLOCK\nHeaders: Sample; BM; HEO Fresh; 25th cycles; 50th cycles; 100th cycles\nRows:\nRow 1: Sample = $R_s$  (Ω); BM = -; HEO Fresh = -; 25th cycles = 1.902; 50th cycles = 1.943; 100th cycles = 1.715\nRow 2: Sample = $R_{ct}$  (Ω); BM = 144; HEO Fresh = 95.77; 25th cycles = 64.25; 50th cycles = 51.22; 100th cycles = 38.67\nRow 3: Sample = Slope value; BM = 245.87; HEO Fresh = 217.11; 25th cycles = 530.28; 50th cycles = 481.5; 100th cycles = 377.92\nRow 4: Sample = $D_{Li}^{+}$  ( cm2 s−1, ×10−15); BM = 36.49; HEO Fresh = 46.8; 25th cycles = 7.85; 50th cycles = 9.53; 100th cycles = 15.5\nColumn data:\n  Sample: $R_s$  (Ω); $R_{ct}$  (Ω); Slope value; $D_{Li}^{+}$  ( cm2 s−1, ×10−15)\n  BM: -; 144; 245.87; 36.49\n  HEO Fresh: -; 95.77; 217.11; 46.8\n  25th cycles: 1.902; 64.25; 530.28; 7.85\n  50th cycles: 1.943; 51.22; 481.5; 9.53\n  100th cycles: 1.715; 38.67; 377.92; 15.5"
+      ],
+      "n_items": 13,
+      "items": [
+        {
+          "paragraph": "The obtained mathrm 3 O 4 HEO were used as active materials for coin cells, and then electrochemical test was carried out. Polyvinylidene fluoride, acetylene black and HEO were mixed at the weight rat",
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "voltage_range": {
+                "min": 0.01,
+                "max": 3.0,
+                "unit": "V"
+              },
+              "test_method": "galvanostatic charge-discharge (LAND CT2001A), CV (Gamry interface 1010, 0.01–3.0 V), EIS (Gamry interface 1010, 0.1–100,000 Hz), GITT"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "To study the crystal structure of mathrm 3 O 4 HEO and FeCo-NiCrMn mathrm , XRD were performed. In Fig. 2a, FeCoNiCrMn HEA powder exhibited a cubic structure Fm-3 m 225 JCPDS No. 71–0852. After heat t",
+          "conditions": [
+            {
+              "condition_id": "C002",
+              "temperature": {
+                "value": 1000,
+                "unit": "C"
+              },
+              "test_method": "heat treatment in air, oxidation"
+            }
+          ],
+          "property_types": [
+            "Lattice_Parameters",
+            "Space_Group",
+            "Crystal_System",
+            "Chemical_Formula"
+          ],
+          "extracted_info": {
+            "Lattice_Parameters": [
+              {
+                "value": {
+                  "a": 8.33673,
+                  "b": 8.33673,
+                  "c": 8.33673,
+                  "alpha": 90.0,
+                  "beta": 90.0,
+                  "gamma": 90.0
+                },
+                "unit": "Å / °",
+                "crystal_system": "cubic",
+                "state": "after heat treatment, spinel phase",
+                "method": "XRD",
+                "source_text": "mathbf a 8 . 3 3 6 7 3 mathring mathrm A , b 8.33673 mathring mathrm A , mathrm c 8 . 3 3 6 7 3 mathring A"
+              }
+            ],
+            "Space_Group": [
+              {
+                "value": "Fd-3m",
+                "source_text": "cubic spinel structure Fd-3 m 227"
+              }
+            ],
+            "Crystal_System": [
+              {
+                "value": "cubic",
+                "source_text": "cubic spinel structure"
+              }
+            ],
+            "Chemical_Formula": [
+              {
+                "value": "3 O 4 HEO",
+                "state": "high-entropy oxide",
+                "source_text": "mathrm 3 O 4 HEO"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "The morphology of FeCoNiCrMn HEA powder and mathrm 3 O 4 HEO were identified by SEM. The FeCoNiCrMn HEA powder was a spherical aggregate with a diameter of approximately 50 µm mathrm . mathrm S 4 a , ",
+          "conditions": [
+            {
+              "condition_id": "C002",
+              "temperature": {
+                "value": 1000,
+                "unit": "C"
+              },
+              "test_method": "heat treatment in air, oxidation"
+            }
+          ],
+          "property_types": [
+            "Elemental_Composition"
+          ],
+          "extracted_info": {
+            "Elemental_Composition": [
+              {
+                "value": [
+                  "Fe",
+                  "Co",
+                  "Ni",
+                  "Cr",
+                  "Mn",
+                  "O"
+                ],
+                "method": "EDS mapping",
+                "source_text": "Fe, Co, Ni, Cr, Mn and O elements are uniformly distributed in mathrm 3 O 4"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "To reveal the chemical states of HEOs, XPS was tested. The spectra Fig. S5 of mathrm 3 O 4 HEO showed mathrm , mathrm , mathrm , mathrm , , Mn and O elements, agreeing with the SEM-EDS mapping results",
+          "property_types": [
+            "Chemical_Formula",
+            "Elemental_Composition"
+          ],
+          "extracted_info": {
+            "Chemical_Formula": [
+              {
+                "value": "FeCoNiCrMn3O4",
+                "source_text": "FeCoNiCrMn3O4 HEO"
+              }
+            ],
+            "Elemental_Composition": [
+              {
+                "value": [
+                  "Fe",
+                  "Co",
+                  "Ni",
+                  "Cr",
+                  "Mn",
+                  "O"
+                ],
+                "method": "XPS and SEM-EDS",
+                "source_text": "The spectra Fig. S5 of mathrm 3 O 4 HEO showed mathrm , mathrm , mathrm , mathrm , , Mn and O elements, agreeing with the SEM-EDS mapping results."
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "The electrochemical performances of mathrm 3 O 4 HEO and mathrm 3 O 4 BM as LIB anodes were tested. Fig. 4a shows the charge-discharge curves of mathrm 3 O 4 HEO at 0.01–3.00 V at various rates 0.1, 0",
+          "conditions": [
+            {
+              "condition_id": "C003",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "voltage_range": {
+                "min": 0.01,
+                "max": 3.0,
+                "unit": "V",
+                "reference": "vs. Li/Li+"
+              },
+              "c_rate_or_current": {
+                "value": 0.1,
+                "unit": "A/g"
+              },
+              "test_method": "galvanostatic charge-discharge",
+              "electrode_config": "half-cell",
+              "reference_electrode": "Li/Li+"
+            },
+            {
+              "condition_id": "C004",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "voltage_range": {
+                "min": 0.01,
+                "max": 3.0,
+                "unit": "V",
+                "reference": "vs. Li/Li+"
+              },
+              "c_rate_or_current": {
+                "value": 0.2,
+                "unit": "A/g"
+              },
+              "test_method": "galvanostatic charge-discharge",
+              "electrode_config": "half-cell",
+              "reference_electrode": "Li/Li+"
+            },
+            {
+              "condition_id": "C005",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "voltage_range": {
+                "min": 0.01,
+                "max": 3.0,
+                "unit": "V",
+                "reference": "vs. Li/Li+"
+              },
+              "c_rate_or_current": {
+                "value": 0.5,
+                "unit": "A/g"
+              },
+              "test_method": "galvanostatic charge-discharge",
+              "electrode_config": "half-cell",
+              "reference_electrode": "Li/Li+"
+            },
+            {
+              "condition_id": "C006",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "voltage_range": {
+                "min": 0.01,
+                "max": 3.0,
+                "unit": "V",
+                "reference": "vs. Li/Li+"
+              },
+              "c_rate_or_current": {
+                "value": 1.0,
+                "unit": "A/g"
+              },
+              "test_method": "galvanostatic charge-discharge",
+              "electrode_config": "half-cell",
+              "reference_electrode": "Li/Li+"
+            },
+            {
+              "condition_id": "C007",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "voltage_range": {
+                "min": 0.01,
+                "max": 3.0,
+                "unit": "V",
+                "reference": "vs. Li/Li+"
+              },
+              "c_rate_or_current": {
+                "value": 2.0,
+                "unit": "A/g"
+              },
+              "test_method": "galvanostatic charge-discharge",
+              "electrode_config": "half-cell",
+              "reference_electrode": "Li/Li+"
+            },
+            {
+              "condition_id": "C008",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "voltage_range": {
+                "min": 0.01,
+                "max": 3.0,
+                "unit": "V",
+                "reference": "vs. Li/Li+"
+              },
+              "c_rate_or_current": {
+                "value": 3.0,
+                "unit": "A/g"
+              },
+              "test_method": "galvanostatic charge-discharge",
+              "electrode_config": "half-cell",
+              "reference_electrode": "Li/Li+"
+            },
+            {
+              "condition_id": "C009",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "voltage_range": {
+                "min": 0.01,
+                "max": 3.0,
+                "unit": "V",
+                "reference": "vs. Li/Li+"
+              },
+              "c_rate_or_current": {
+                "value": 0.5,
+                "unit": "A/g"
+              },
+              "cycle_number": 260,
+              "test_method": "galvanostatic charge-discharge",
+              "electrode_config": "half-cell",
+              "reference_electrode": "Li/Li+"
+            },
+            {
+              "condition_id": "C010",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "voltage_range": {
+                "min": 0.01,
+                "max": 3.0,
+                "unit": "V",
+                "reference": "vs. Li/Li+"
+              },
+              "c_rate_or_current": {
+                "value": 2.0,
+                "unit": "A/g"
+              },
+              "cycle_number": 1200,
+              "test_method": "galvanostatic charge-discharge",
+              "electrode_config": "half-cell",
+              "reference_electrode": "Li/Li+"
+            }
+          ],
+          "property_types": [
+            "Chemical_Formula"
+          ],
+          "extracted_info": {
+            "Chemical_Formula": [
+              {
+                "value": "FeCoNiCrMn3O4",
+                "state": "pristine",
+                "source_text": "FeCoNiCrMn3O4 HEO"
+              }
+            ]
+          },
+          "performance_types": [
+            "First_Lithiation_Capacity",
+            "Initial_Coulombic_Efficiency",
+            "Rate_Capability_at_Given_C_rate",
+            "Rate_Recovery_Percent",
+            "Capacity_Retention_at_Nth_Cycle"
+          ],
+          "performance_info": {
+            "First_Lithiation_Capacity": [
+              {
+                "value": 1645.3,
+                "unit": "mAh/g",
+                "condition_id": "C003",
+                "source_text": "FeCoNiCrMn3O4 HEO could delivered a high discharge capacity 1645.3 mA h bf g - 1 and a discharge efficiency of 63.76% at 0.1 mathbf A Sigma g - 1"
+              },
+              {
+                "value": 1067.1,
+                "unit": "mAh/g",
+                "condition_id": "C003",
+                "source_text": "FeCoNiCrMn3O4 BM achieved a discharge capacity of 1067.1 mA h mathbf g - 1 Fig. S6a"
+              }
+            ],
+            "Initial_Coulombic_Efficiency": [
+              {
+                "value": 63.76,
+                "unit": "%",
+                "condition_id": "C003",
+                "source_text": "discharge efficiency of 63.76% at 0.1 mathbf A Sigma g - 1"
+              }
+            ],
+            "Rate_Capability_at_Given_C_rate": [
+              {
+                "value": 967.3,
+                "unit": "mAh/g",
+                "condition_id": "C003",
+                "source_text": "967.3 mA h g -1 at 0.1 A g -1"
+              },
+              {
+                "value": 828.2,
+                "unit": "mAh/g",
+                "condition_id": "C004",
+                "source_text": "828.2 mA h g -1 at 0.2 A g -1"
+              },
+              {
+                "value": 740.0,
+                "unit": "mAh/g",
+                "condition_id": "C005",
+                "source_text": "740 mA h g -1 at 0.5 A g -1"
+              },
+              {
+                "value": 625.0,
+                "unit": "mAh/g",
+                "condition_id": "C006",
+                "source_text": "625 mA h g -1 at 1.0 A g -1"
+              },
+              {
+                "value": 531.9,
+                "unit": "mAh/g",
+                "condition_id": "C007",
+                "source_text": "531.9 mA h g -1 at 2.0 A g -1"
+              },
+              {
+                "value": 482.5,
+                "unit": "mAh/g",
+                "condition_id": "C008",
+                "source_text": "482.5 mA h g -1 at 3.0 A g -1"
+              }
+            ],
+            "Rate_Recovery_Percent": [
+              {
+                "value": 101.0,
+                "unit": "%",
+                "condition_id": "C004",
+                "source_text": "When it returns to 0.2 A g -1, FeCo... HEO still can deliver a good capacity 836.8 mA h g -1 and good capacity retention 101.0%"
+              }
+            ],
+            "Capacity_Retention_at_Nth_Cycle": [
+              {
+                "value": 97.5,
+                "unit": "%",
+                "condition_id": "C009",
+                "cycle_number": 260,
+                "source_text": "after 260 cycles its reversible capacity still reached up to 692.8 mA h g -1 with a high capacity retention 97.5%"
+              },
+              {
+                "value": 86.2,
+                "unit": "%",
+                "condition_id": "C010",
+                "cycle_number": 1200,
+                "source_text": "after 1200 cycles, ... can still deliver a capacity of 596.5 mA h cdot mathbf g - 1 and a high capacity retention 86.2%"
+              }
+            ]
+          },
+          "condition_id": "C003"
+        },
+        {
+          "paragraph": "To reveal the mechanism of enhanced electrochemical performances, EIS from 0.1 Hz to 100 kHz were tested, as shown in Fig. 4i and Fig. S6c. Nyquist plots were simulated through the equivalent circuit ",
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "voltage_range": {
+                "min": 0.01,
+                "max": 3.0,
+                "unit": "V",
+                "reference": "vs. Li/Li+"
+              },
+              "test_method": "EIS (0.1 Hz to 100 kHz)",
+              "cycle_number": 0
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Interfacial_Resistance_RSEI_or_Rct"
+          ],
+          "performance_info": {
+            "Interfacial_Resistance_RSEI_or_Rct": [
+              {
+                "value": 95.77,
+                "unit": "Ω",
+                "condition_id": "C001",
+                "source_text": "The R of FeCoNiCrMn3O4 HEO in fresh cell shows the value of 95.77 Ω, which is smaller than that of 3O4 BM 144 Ω in Table 1."
+              },
+              {
+                "value": 144,
+                "unit": "Ω",
+                "condition_id": "C001",
+                "source_text": "The R of 3O4 BM ... 144 Ω in Table 1."
+              }
+            ]
+          },
+          "condition_id": "C001"
+        },
+        {
+          "paragraph": "D L i frac R 2 T 22 A 2 n 4 F 4 C 2 sigma omega 2 tag 1 Z prime R e R c t sigma omega omega - 0. 5 tag 2 where R represents the gas constant, T represents the absolute temperature, F represents the Fa",
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "test_method": "EIS (0.1 Hz to 100 kHz)",
+              "cycle_number": 0
+            },
+            {
+              "condition_id": "C011",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "test_method": "EIS (low frequency region)"
+            },
+            {
+              "condition_id": "C012",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "test_method": "EIS (low frequency region)",
+              "cycle_number": 100
+            }
+          ],
+          "property_types": [
+            "Chemical_Formula",
+            "Elemental_Composition"
+          ],
+          "extracted_info": {
+            "Chemical_Formula": [
+              {
+                "value": "FeCoNiCrMn3O4",
+                "state": "HEO",
+                "source_text": "FeCoNiCrMn3O4 HEO"
+              },
+              {
+                "value": "FeCo3O4",
+                "state": "BM",
+                "source_text": "FeCo3O4 BM"
+              }
+            ],
+            "Elemental_Composition": [
+              {
+                "value": [
+                  "Fe",
+                  "Co",
+                  "Ni",
+                  "Cr",
+                  "Mn",
+                  "O"
+                ],
+                "method": "from chemical formula",
+                "source_text": "FeCoNiCrMn3O4 HEO"
+              },
+              {
+                "value": [
+                  "Fe",
+                  "Co",
+                  "O"
+                ],
+                "method": "from chemical formula",
+                "source_text": "FeCo3O4 BM"
+              }
+            ]
+          },
+          "performance_types": [
+            "Chemical_Diffusion_Coefficient_of_Li_GITT"
+          ],
+          "performance_info": {
+            "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+              {
+                "value": 4.68e-15,
+                "unit": "cm2/s",
+                "condition_id": "C001",
+                "source_text": "The D of FeCoNiCrMn3O4 HEO in fresh cell was 46.8×10^-15 cm2 s^-1"
+              },
+              {
+                "value": 3.649e-15,
+                "unit": "cm2/s",
+                "condition_id": "C001",
+                "source_text": "the D of FeCo3O4 BM was 36.49×10^-15 cm2 s^-1"
+              },
+              {
+                "value": 7.85e-15,
+                "unit": "cm2/s",
+                "condition_id": "C011",
+                "source_text": "After electrochemical activation, the D of FeCoNiCrMn3O4 HEO decreased sharply to 7.85×10^-15 cm2 s^-1"
+              },
+              {
+                "value": 1.55e-14,
+                "unit": "cm2/s",
+                "condition_id": "C012",
+                "source_text": "reaching 15.5×10^-15 cm2 s^-1 at 100 cycles"
+              }
+            ]
+          },
+          "condition_id": "C001"
+        },
+        {
+          "paragraph": "To further investigate the enhanced rate and cycle capability of mathrm 3 O 4 HEO, the pseudocapacitive contribution was studied via CV analyses at various scan rates. The CV curves of FeCo-mathrm 3 c",
+          "conditions": [
+            {
+              "condition_id": "C013",
+              "test_method": "CV analyses at various scan rates"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "i b tag 3 where the b value was calculated from the slope of the logi versus log plots. The diffusion-controlled lithium-storage behavior was represented through the b value of 0.5, and the pseudocapa",
+          "conditions": [
+            {
+              "condition_id": "C013",
+              "test_method": "CV analyses at various scan rates"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "i k 1 v k 2 v 1 / 2 tag 4 Where k1v represents pseudocapacitive, and k 2 nu 1 / 2 represents diffusioncontrolled portions. In Fig. 5b and mathrm . . S8a-d, the capacitive contribution increases from 4",
+          "conditions": [
+            {
+              "condition_id": "C013",
+              "test_method": "CV analyses at various scan rates"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Pseudocapacitive_Contribution_Ratio"
+          ],
+          "performance_info": {
+            "Pseudocapacitive_Contribution_Ratio": [
+              {
+                "value": 40.76,
+                "unit": "%",
+                "condition_id": "C013",
+                "scan_rate_mV_s": 0.5,
+                "source_text": "the capacitive contribution increases from 40.76% to 82.02% as the scan rate increases from 0.5 to 2.0 mV prime s - 1"
+              },
+              {
+                "value": 82.02,
+                "unit": "%",
+                "condition_id": "C013",
+                "scan_rate_mV_s": 2.0,
+                "source_text": "the capacitive contribution increases from 40.76% to 82.02% as the scan rate increases from 0.5 to 2.0 mV prime s - 1"
+              }
+            ]
+          },
+          "condition_id": "C013"
+        },
+        {
+          "paragraph": "To further study the lithium storage mechanism of mathrm 3 O 4 HEO, in situ XRD was conducted during the first cycle in Fig. 5e. At the initial state of open-circuit voltage, the mathrm 3 O 4 HEO elec",
+          "conditions": [
+            {
+              "condition_id": "C014",
+              "voltage_range": {
+                "min": 0.01,
+                "max": 3.0,
+                "unit": "V",
+                "reference": "vs. Li/Li+"
+              },
+              "cycle_number": 1,
+              "test_method": "in situ XRD"
+            }
+          ],
+          "property_types": [
+            "Chemical_Formula",
+            "Elemental_Composition"
+          ],
+          "extracted_info": {
+            "Chemical_Formula": [
+              {
+                "value": "(FeCoNiCrMn)3O4",
+                "state": "pristine",
+                "source_text": "M 2 O 3 2 4 rightarrow 3 2 2 O tag 5 2 rightarrow M 2 O tag 6 MFe, Co, Ni, Cr and Mn"
+              }
+            ],
+            "Elemental_Composition": [
+              {
+                "value": [
+                  "Fe",
+                  "Co",
+                  "Ni",
+                  "Cr",
+                  "Mn",
+                  "O"
+                ],
+                "method": "XPS, in-situ XRD, CV",
+                "source_text": "MFe, Co, Ni, Cr and Mn"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "（b） f） In this work, HEA powder was used to synthesize HEOs by a simple oxidation process When used as anode material for LIBs, the as-prepared mathrm 3 O 4 HEO showed much enhanced rate performance a",
+          "conditions": [
+            {
+              "condition_id": "C015",
+              "test_method": "simple oxidation process"
+            },
+            {
+              "condition_id": "C016",
+              "test_method": "EIS, CV, in situ XRD, DFT calculations"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "TABLE DATA BLOCK\nHeaders: Sample; BM; HEO Fresh; 25th cycles; 50th cycles; 100th cycles\nRows:\nRow 1: Sample = $R_s$  (Ω); BM = -; HEO Fresh = -; 25th cycles = 1.902; 50th cycles = 1.943; 100th cycles ",
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "voltage_range": {
+                "min": 0.01,
+                "max": 3.0,
+                "unit": "V",
+                "reference": "vs. Li/Li+"
+              },
+              "test_method": "EIS (0.1–100,000 Hz)",
+              "cycle_number": 0
+            },
+            {
+              "condition_id": "C017",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "test_method": "EIS (low frequency region)",
+              "cycle_number": 25
+            },
+            {
+              "condition_id": "C018",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "test_method": "EIS (low frequency region)",
+              "cycle_number": 50
+            },
+            {
+              "condition_id": "C012",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "electrolyte": "1 M LiPF6 in the mix of ethylene carbonate and dimethyl carbonate (1:1 by volume)",
+              "test_method": "EIS (low frequency region)",
+              "cycle_number": 100
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Interfacial_Resistance_RSEI_or_Rct",
+            "Chemical_Diffusion_Coefficient_of_Li_GITT"
+          ],
+          "performance_info": {
+            "Interfacial_Resistance_RSEI_or_Rct": [
+              {
+                "value": 144,
+                "unit": "Ω",
+                "condition_id": "C001",
+                "source_text": "Sample = $R_{ct}$  (Ω); BM = 144"
+              },
+              {
+                "value": 95.77,
+                "unit": "Ω",
+                "condition_id": "C001",
+                "source_text": "Sample = $R_{ct}$  (Ω); HEO Fresh = 95.77"
+              },
+              {
+                "value": 64.25,
+                "unit": "Ω",
+                "condition_id": "C017",
+                "source_text": "Sample = $R_{ct}$  (Ω); 25th cycles = 64.25"
+              },
+              {
+                "value": 51.22,
+                "unit": "Ω",
+                "condition_id": "C018",
+                "source_text": "Sample = $R_{ct}$  (Ω); 50th cycles = 51.22"
+              },
+              {
+                "value": 38.67,
+                "unit": "Ω",
+                "condition_id": "C012",
+                "source_text": "Sample = $R_{ct}$  (Ω); 100th cycles = 38.67"
+              }
+            ],
+            "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+              {
+                "value": 3.649e-14,
+                "unit": "cm^2/s",
+                "condition_id": "C001",
+                "source_text": "Sample = $D_{Li}^{+}$  ( cm2 s−1, ×10−15); BM = 36.49"
+              },
+              {
+                "value": 4.68e-14,
+                "unit": "cm^2/s",
+                "condition_id": "C001",
+                "source_text": "Sample = $D_{Li}^{+}$  ( cm2 s−1, ×10−15); HEO Fresh = 46.8"
+              },
+              {
+                "value": 7.85e-15,
+                "unit": "cm^2/s",
+                "condition_id": "C017",
+                "source_text": "Sample = $D_{Li}^{+}$  ( cm2 s−1, ×10−15); 25th cycles = 7.85"
+              },
+              {
+                "value": 9.53e-15,
+                "unit": "cm^2/s",
+                "condition_id": "C018",
+                "source_text": "Sample = $D_{Li}^{+}$  ( cm2 s−1, ×10−15); 50th cycles = 9.53"
+              },
+              {
+                "value": 1.55e-14,
+                "unit": "cm^2/s",
+                "condition_id": "C012",
+                "source_text": "Sample = $D_{Li}^{+}$  ( cm2 s−1, ×10−15); 100th cycles = 15.5"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/cathode/cathode.md",
+      "component": "cathode",
+      "paper_id": "cathode",
+      "doi": "cathode",
+      "material_id": "cathode",
+      "meta": {
+        "meta_title": "",
+        "meta_authors": "",
+        "meta_year": ""
+      },
+      "table_items": [
+        "TABLE DATA BLOCK\nHeaders: Sample; Chemical composition (at%)\nRows:\nRow 1: Li; Mn; Ni; Co; Mg; Al\nRow 2: LRMO; 1.417; 0.687; 0.201; 0.112; 0; 0\nRow 3: Mg-LRMO; 1.408; 0.686; 0.200; 0.111; 0.012; 0\nRow 4: Al-LRMO; 1.414; 0.683; 0.197; 0.108; 0; 0.012\nRow 5: Mg/Al-LRMO; 1.403; 0.681; 0.198; 0.109; 0.013; 0.011\nColumn data:\n  Sample: Li; LRMO; Mg-LRMO; Al-LRMO; Mg/Al-LRMO\n  Chemical composition (at%): Mn; 1.417; 1.408; 1.414; 1.403",
+        "TABLE DATA BLOCK\nHeaders: Sample; ; LRMO; Mg-LRMO; Al-LRMO; Mg/Al-LRMO\nRows:\nRow 1: Sample = $R-3m$  phase;  = a (Å); LRMO = 2.83625(3); Mg-LRMO = 2.83731(3); Al-LRMO = 2.83754(3); Mg/Al-LRMO = 2.83976(3)\nRow 2: c (Å); 14.11689(5); 14.16609(9); 14.17785(3); 14.29659(9)\nRow 3: c/a; 4.97731; 4.99279; 4.99653; 5.03443\nRow 4: Sample = $C2/m$  phase;  = a (Å); LRMO = 4.94746(1); Mg-LRMO = 4.94841(6); Al-LRMO = 4.94855(4); Mg/Al-LRMO = 4.94973(1)\nRow 5: b (Å); 8.46204(2); 8.46382(1); 8.46534(0); 8.46625(7)\nRow 6: c (Å); 5.18463(3); 5.22736(1); 5.22749(0); 5.22867(3)\nRow 7: Sample = $I_{(003)}/I_{(104)}$;  = ; LRMO = 1.34; Mg-LRMO = 1.56; Al-LRMO = 1.63; Mg/Al-LRMO = 1.88\nRow 8: Sample = Amount of Ni at Li Sites(%);  = ; LRMO = 9.38; Mg-LRMO = 7.47; Al-LRMO = 7.58; Mg/Al-LRMO = 6.12\nRow 9: Sample = Percentage composition;  = $R-3m$  phase; LRMO = 55.34%; Mg-LRMO = 48.59%; Al-LRMO = 47.75%; Mg/Al-LRMO = 44.38%\nRow 10: $C2/m$  phase; 44.66%; 51.41%; 52.25%; 55.62%\nRow 11: Sample = Li-O(Å);  = $R-3m$  phase; LRMO = 2.1027; Mg-LRMO = 2.1031; Al-LRMO = 2.1033; Mg/Al-LRMO = 2.1036\nRow 12: $C2/m$  phase; 2.0736; 2.0786; 2.0793; 2.0857\nRow 13: Sample = TM-O(Å);  = $R-3m$  phase; LRMO = 2.0137; Mg-LRMO = 2.0135; Al-LRMO = 2.0134; Mg/Al-LRMO = 2.0131\nRow 14: $C2/m$  phase; 1.9571; 1.9568; 1.9561; 1.9756\nRow 15: Sample = $Z_{ox}$;  = ; LRMO = 0.2558(5); Mg-LRMO = 0.2586(2); Al-LRMO = 0.2588(7); Mg/Al-LRMO = 0.2594(3)\nRow 16: Sample = $S_{MO2}$  (Å);  = ; LRMO = 2.1876; Mg-LRMO = 2.1368; Al-LRMO = 2.1215; Mg/Al-LRMO = 2.1131\nRow 17: Sample = $I_{LiO2}$  (Å);  = ; LRMO = 2.5180; Mg-LRMO = 2.6052; Al-LRMO = 2.6145; Mg/Al-LRMO = 2.6524\nRow 18: Sample = Rp (%);  = ; LRMO = 5.02; Mg-LRMO = 3.56; Al-LRMO = 3.57; Mg/Al-LRMO = 3.48\nRow 19: Sample = $R_{wp}$ (%);  = ; LRMO = 6.69; Mg-LRMO = 4.88; Al-LRMO = 5.06; Mg/Al-LRMO = 4.61\nColumn data:\n  Sample: $R-3m$  phase; c (Å); c/a; $C2/m$  phase; b (Å); c (Å); $I_{(003)}/I_{(104)}$; Amount of Ni at Li Sites(%); Percentage composition; $C2/m$  phase; Li-O(Å); $C2/m$  phase; TM-O(Å); $C2/m$  phase; $Z_{ox}$; $S_{MO2}$  (Å); $I_{LiO2}$  (Å); Rp (%); $R_{wp}$ (%)\n  : a (Å); 14.11689(5); 4.97731; a (Å); 8.46204(2); 5.18463(3); ; ; $R-3m$  phase; 44.66%; $R-3m$  phase; 2.0736; $R-3m$  phase; 1.9571; ; ; ; ; \n  LRMO: 2.83625(3); 14.16609(9); 4.99279; 4.94746(1); 8.46382(1); 5.22736(1); 1.34; 9.38; 55.34%; 51.41%; 2.1027; 2.0786; 2.0137; 1.9568; 0.2558(5); 2.1876; 2.5180; 5.02; 6.69\n  Mg-LRMO: 2.83731(3); 14.17785(3); 4.99653; 4.94841(6); 8.46534(0); 5.22749(0); 1.56; 7.47; 48.59%; 52.25%; 2.1031; 2.0793; 2.0135; 1.9561; 0.2586(2); 2.1368; 2.6052; 3.56; 4.88\n  Al-LRMO: 2.83754(3); 14.29659(9); 5.03443; 4.94855(4); 8.46625(7); 5.22867(3); 1.63; 7.58; 47.75%; 55.62%; 2.1033; 2.0857; 2.0134; 1.9756; 0.2588(7); 2.1215; 2.6145; 3.57; 5.06\n  Mg/Al-LRMO: 2.83976(3); 4.94973(1); 1.88; 6.12; 44.38%; 2.1036; 2.0131; 0.2594(3); 2.1131; 2.6524; 3.48; 4.61",
+        "TABLE DATA BLOCK\nHeaders: Sample; Charge capacity (mAh g-1); Discharge capacity (mAh g-1); Coulombic efficiency (%); Sloping region (mAh g-1); Plateau region (mAh g-1)\nRows:\nRow 1: Sample = LRMO; Charge capacity (mAh g-1) = 329.2; Discharge capacity (mAh g-1) = 237.7; Coulombic efficiency (%) = 72.2; Sloping region (mAh g-1) = 110.2; Plateau region (mAh g-1) = 219\nRow 2: Sample = Mg-LRMO; Charge capacity (mAh g-1) = 322.4; Discharge capacity (mAh g-1) = 245.1; Coulombic efficiency (%) = 76.0; Sloping region (mAh g-1) = 113.3; Plateau region (mAh g-1) = 209.1\nRow 3: Sample = Al-LRMO; Charge capacity (mAh g-1) = 317.5; Discharge capacity (mAh g-1) = 263.1; Coulombic efficiency (%) = 82.9; Sloping region (mAh g-1) = 117.0; Plateau region (mAh g-1) = 200.5\nRow 4: Sample = Mg/Al-LRMO; Charge capacity (mAh g-1) = 315.0; Discharge capacity (mAh g-1) = 269.9; Coulombic efficiency (%) = 85.7; Sloping region (mAh g-1) = 120.1; Plateau region (mAh g-1) = 194.9\nColumn data:\n  Sample: LRMO; Mg-LRMO; Al-LRMO; Mg/Al-LRMO\n  Charge capacity (mAh g-1): 329.2; 322.4; 317.5; 315.0\n  Discharge capacity (mAh g-1): 237.7; 245.1; 263.1; 269.9\n  Coulombic efficiency (%): 72.2; 76.0; 82.9; 85.7\n  Sloping region (mAh g-1): 110.2; 113.3; 117.0; 120.1\n  Plateau region (mAh g-1): 219; 209.1; 200.5; 194.9",
+        "TABLE DATA BLOCK\nHeaders: Samples; Mn (%); Ni (%); Co (%); O (%)\nRows:\nRow 1: $Mn^{3+}$; $Mn^{4+}$; $Ni^{2+}$; $Ni^{3+}$; $Co^{2+}$; $Co^{3+}$; $O^{2n-}$; Oxygen Vacancies; Oxygen Lattice\nRow 2: LRMO; 37.99; 62.01; 59.06; 40.94; 48.84; 51.16; 21.08; 22.87; 56.05\nRow 3: Mg-LRMO; 27.45; 72.55; 44.88; 55.12; 42.65; 57.35; 14.94; 26.24; 58.82\nRow 4: Al-LRMO; 22.24; 77.76; 38.12; 61.82; 39.19; 60.81; 12.38; 27.15; 60.47\nRow 5: Mg/Al-LRMO; 20.28; 79.72; 27.77; 72.23; 36.25; 63.75; 6.11; 32.69; 61.20\nColumn data:\n  Samples: $Mn^{3+}$; LRMO; Mg-LRMO; Al-LRMO; Mg/Al-LRMO\n  Mn (%): $Mn^{4+}$; 37.99; 27.45; 22.24; 20.28\n  Ni (%): $Ni^{2+}$; 62.01; 72.55; 77.76; 79.72\n  Co (%): $Ni^{3+}$; 59.06; 44.88; 38.12; 27.77\n  O (%): $Co^{2+}$; 40.94; 55.12; 61.82; 72.23",
+        "TABLE DATA BLOCK\nHeaders: Modification; Voltage (V); Current density (mA g-1); Discharge capacity (mAh g-1); Rate performance (mAh g-1/C); Cycle numbers; Capacity retention (%); Voltage fading (mV/cycle); Ref\nRows:\nRow 1: Modification = Al doping; Voltage (V) = 2.0-4.8; Current density (mA g-1) = 250; Discharge capacity (mAh g-1) = 195/1C; Rate performance (mAh g-1/C) = 120/5C; Cycle numbers = 200(1C); Capacity retention (%) = 92.9; Voltage fading (mV/cycle) = 2.0mV/cycle; Ref = [9]\nRow 2: Modification = Al doping; Voltage (V) = 2.0-4.7; Current density (mA g-1) = 250; Discharge capacity (mAh g-1) = 125/1C; Rate performance (mAh g-1/C) = 77/3C; Cycle numbers = 250(0.2C); Capacity retention (%) = 67.0; Voltage fading (mV/cycle) = 2.3mV/cycle; Ref = [10]\nRow 3: Modification = Al doping; Voltage (V) = 2.0-4.8; Current density (mA g-1) = 250; Discharge capacity (mAh g-1) = 127/1C; Rate performance (mAh g-1/C) = 78/5C; Cycle numbers = 100(0.2C); Capacity retention (%) = 84.5; Voltage fading (mV/cycle) = 2.1mV/cycle; Ref = [11]\nRow 4: Modification = Al doping; Voltage (V) = 2.0-4.8; Current density (mA g-1) = 250; Discharge capacity (mAh g-1) = 173/1C; Rate performance (mAh g-1/C) = 142/5C; Cycle numbers = 150(0.1C); Capacity retention (%) = 92.5; Voltage fading (mV/cycle) = 2.4mV/cycle; Ref = [12]\nRow 5: Modification = Al doping; Voltage (V) = 2.0-4.6; Current density (mA g-1) = 300; Discharge capacity (mAh g-1) = 225/1C; Rate performance (mAh g-1/C) = 130/4C; Cycle numbers = 35(0.1C); Capacity retention (%) = 85.2; Voltage fading (mV/cycle) = 2.4mV/cycle; Ref = [13]\nRow 6: Modification = Al doping; Voltage (V) = 2.0-4.8; Current density (mA g-1) = 250; Discharge capacity (mAh g-1) = 166/1C; Rate performance (mAh g-1/C) = 110/5C; Cycle numbers = 100(0.5C); Capacity retention (%) = 96.4; Voltage fading (mV/cycle) = 5.0mV/cycle; Ref = [14]\nRow 7: Modification = Al doping; Voltage (V) = 2.5-4.6; Current density (mA g-1) = 250; Discharge capacity (mAh g-1) = 203/1C; Rate performance (mAh g-1/C) = 142/5C; Cycle numbers = 200 (1C); Capacity retention (%) = 80.6; Voltage fading (mV/cycle) = 1.0mV/cycle; Ref = This work\nRow 8: Modification = Mg doping; Voltage (V) = 2.7-4.6; Current density (mA g-1) = 180; Discharge capacity (mAh g-1) = 142/1C; Rate performance (mAh g-1/C) = 125/3C; Cycle numbers = 100(0.5C); Capacity retention (%) = 73.5; Voltage fading (mV/cycle) = ---; Ref = [15]\nRow 9: Modification = Mg doping; Voltage (V) = 2.0-4.8; Current density (mA g-1) = 300; Discharge capacity (mAh g-1) = 182/1C; Rate performance (mAh g-1/C) = 119/4C; Cycle numbers = 50(0.5C); Capacity retention (%) = 94.0; Voltage fading (mV/cycle) = ---; Ref = [16]\nRow 10: Modification = Mg doping; Voltage (V) = 2.0-4.8; Current density (mA g-1) = 250; Discharge capacity (mAh g-1) = 221/1C; Rate performance (mAh g-1/C) = 147/3C; Cycle numbers = 100(0.2C); Capacity retention (%) = 76.1; Voltage fading (mV/cycle) = ----; Ref = [4]\nRow 11: Modification = Mg doping; Voltage (V) = 2.0-4.6; Current density (mA g-1) = 200; Discharge capacity (mAh g-1) = 220/1C; Rate performance (mAh g-1/C) = 172/5C; Cycle numbers = 100(5.0C); Capacity retention (%) = 92.6; Voltage fading (mV/cycle) = 0.9mV/cycle; Ref = [17]\nRow 12: Modification = Mg doping; Voltage (V) = 2.0-4.6; Current density (mA g-1) = 200; Discharge capacity (mAh g-1) = 225/1C; Rate performance (mAh g-1/C) = 175/5C; Cycle numbers = 100(0.5C); Capacity retention (%) = 96.4; Voltage fading (mV/cycle) = 2.5mV/cycle; Ref = [18]\nRow 13: Modification = Mg doping; Voltage (V) = 2.5-4.6; Current density (mA g-1) = 250; Discharge capacity (mAh g-1) = 192/0.5C; Rate performance (mAh g-1/C) = 170/1C; Cycle numbers = 100(1C); Capacity retention (%) = 82.6; Voltage fading (mV/cycle) = ----; Ref = [19]\nRow 14: Modification = Mg doping; Voltage (V) = 2.5-4.6; Current density (mA g-1) = 250; Discharge capacity (mAh g-1) = 195/1C; Rate performance (mAh g-1/C) = 116/5C; Cycle numbers = 200 (1C); Capacity retention (%) = 76.3; Voltage fading (mV/cycle) = 0.8mV/cycle; Ref = This work\nRow 15: Modification = Al/F doping; Voltage (V) = 2.0-4.8; Current density (mA g-1) = 250; Discharge capacity (mAh g-1) = 225/1C; Rate performance (mAh g-1/C) = 157/10C; Cycle numbers = 150(0.5C); Capacity retention (%) = 88.2; Voltage fading (mV/cycle) = 4.0mV/cycle; Ref = [20]\nRow 16: Modification = Al/B doping; Voltage (V) = 2.0-4.8; Current density (mA g-1) = 250; Discharge capacity (mAh g-1) = 216/1C; Rate performance (mAh g-1/C) = 200/2C; Cycle numbers = 80(0.1C); Capacity retention (%) = 82.5; Voltage fading (mV/cycle) = 3.5mV/cycle; Ref = [21]\nRow 17: Modification = Al/Nb doping; Voltage (V) = 2.0-4.7; Current density (mA g-1) = 250; Discharge capacity (mAh g-1) = 205/1C; Rate performance (mAh g-1/C) = 168/5C; Cycle numbers = 200(1C); Capacity retention (%) = 82; Voltage fading (mV/cycle) = 3.8mV/cycle; Ref = [22]\nRow 18: Modification = Al/Cr doping; Voltage (V) = 2.0-4.8; Current density (mA g-1) = 240; Discharge capacity (mAh g-1) = 205(1C); Rate performance (mAh g-1/C) = 123/10C; Cycle numbers = 100(0.2C); Capacity retention (%) = 97.3; Voltage fading (mV/cycle) = 3.8mV/cycle; Ref = [23]\nRow 19: Modification = Mg/La doping; Voltage (V) = 2.0-4.8; Current density (mA g-1) = 200; Discharge capacity (mAh g-1) = 204(1C); Rate performance (mAh g-1/C) = 121/5C; Cycle numbers = 150(0.5C); Capacity retention (%) = 86.2; Voltage fading (mV/cycle) = 4.0mV/cycle; Ref = [24]\nRow 20: Modification = Mg/F doping; Voltage (V) = 2.0-4.8; Current density (mA g-1) = 230; Discharge capacity (mAh g-1) = 191(1C); Rate performance (mAh g-1/C) = 151/3C; Cycle numbers = 100(1C); Capacity retention (%) = 88.6; Voltage fading (mV/cycle) = 1.2mV/cycle; Ref = [25]\nRow 21: Modification = Mg/Al doping; Voltage (V) = 2.0-4.8; Current density (mA g-1) = 250; Discharge capacity (mAh g-1) = 182(1C); Rate performance (mAh g-1/C) = 120/5C; Cycle numbers = 100(0.1C); Capacity retention (%) = 81.6; Voltage fading (mV/cycle) = 4.9mV/cycle; Ref = [26]\nRow 22: Modification = Mg/Al doping; Voltage (V) = 2.5-4.6; Current density (mA g-1) = 250; Discharge capacity (mAh g-1) = 210 (1C); Rate performance (mAh g-1/C) = 160/5C; Cycle numbers = 200 (1C); Capacity retention (%) = 90.0; Voltage fading (mV/cycle) = 0.7mV/cycle; Ref = This work\nColumn data:\n  Modification: Al doping; Al doping; Al doping; Al doping; Al doping; Al doping; Al doping; Mg doping; Mg doping; Mg doping; Mg doping; Mg doping; Mg doping; Mg doping; Al/F doping; Al/B doping; Al/Nb doping; Al/Cr doping; Mg/La doping; Mg/F doping; Mg/Al doping; Mg/Al doping\n  Voltage (V): 2.0-4.8; 2.0-4.7; 2.0-4.8; 2.0-4.8; 2.0-4.6; 2.0-4.8; 2.5-4.6; 2.7-4.6; 2.0-4.8; 2.0-4.8; 2.0-4.6; 2.0-4.6; 2.5-4.6; 2.5-4.6; 2.0-4.8; 2.0-4.8; 2.0-4.7; 2.0-4.8; 2.0-4.8; 2.0-4.8; 2.0-4.8; 2.5-4.6\n  Current density (mA g-1): 250; 250; 250; 250; 300; 250; 250; 180; 300; 250; 200; 200; 250; 250; 250; 250; 250; 240; 200; 230; 250; 250\n  Discharge capacity (mAh g-1): 195/1C; 125/1C; 127/1C; 173/1C; 225/1C; 166/1C; 203/1C; 142/1C; 182/1C; 221/1C; 220/1C; 225/1C; 192/0.5C; 195/1C; 225/1C; 216/1C; 205/1C; 205(1C); 204(1C); 191(1C); 182(1C); 210 (1C)\n  Rate performance (mAh g-1/C): 120/5C; 77/3C; 78/5C; 142/5C; 130/4C; 110/5C; 142/5C; 125/3C; 119/4C; 147/3C; 172/5C; 175/5C; 170/1C; 116/5C; 157/10C; 200/2C; 168/5C; 123/10C; 121/5C; 151/3C; 120/5C; 160/5C\n  Cycle numbers: 200(1C); 250(0.2C); 100(0.2C); 150(0.1C); 35(0.1C); 100(0.5C); 200 (1C); 100(0.5C); 50(0.5C); 100(0.2C); 100(5.0C); 100(0.5C); 100(1C); 200 (1C); 150(0.5C); 80(0.1C); 200(1C); 100(0.2C); 150(0.5C); 100(1C); 100(0.1C); 200 (1C)\n  Capacity retention (%): 92.9; 67.0; 84.5; 92.5; 85.2; 96.4; 80.6; 73.5; 94.0; 76.1; 92.6; 96.4; 82.6; 76.3; 88.2; 82.5; 82; 97.3; 86.2; 88.6; 81.6; 90.0\n  Voltage fading (mV/cycle): 2.0mV/cycle; 2.3mV/cycle; 2.1mV/cycle; 2.4mV/cycle; 2.4mV/cycle; 5.0mV/cycle; 1.0mV/cycle; ---; ---; ----; 0.9mV/cycle; 2.5mV/cycle; ----; 0.8mV/cycle; 4.0mV/cycle; 3.5mV/cycle; 3.8mV/cycle; 3.8mV/cycle; 4.0mV/cycle; 1.2mV/cycle; 4.9mV/cycle; 0.7mV/cycle\n  Ref: [9]; [10]; [11]; [12]; [13]; [14]; This work; [15]; [16]; [4]; [17]; [18]; [19]; This work; [20]; [21]; [22]; [23]; [24]; [25]; [26]; This work",
+        "TABLE DATA BLOCK\nHeaders: Samples; $D_{Li}^{+}(cm^2 s^{-1})$  (Deintercalation); $D_{Li}^{+}(cm^2 s^{-1})$  (Intercalation)\nRows:\nRow 1: Samples = LRMO; $D_{Li}^{+}(cm^2 s^{-1})$  (Deintercalation) = $1.06\\times 10^{-14}$; $D_{Li}^{+}(cm^2 s^{-1})$  (Intercalation) = $1.56\\times 10^{-14}$\nRow 2: Samples = Mg-LRMO; $D_{Li}^{+}(cm^2 s^{-1})$  (Deintercalation) = $1.03\\times 10^{-14}$; $D_{Li}^{+}(cm^2 s^{-1})$  (Intercalation) = $1.51\\times 10^{-14}$\nRow 3: Samples = Al-LRMO; $D_{Li}^{+}(cm^2 s^{-1})$  (Deintercalation) = $9.23\\times 10^{-13}$; $D_{Li}^{+}(cm^2 s^{-1})$  (Intercalation) = $1.30\\times 10^{-14}$\nRow 4: Samples = Mg/Al-LRMO; $D_{Li}^{+}(cm^2 s^{-1})$  (Deintercalation) = $8.38\\times 10^{-13}$; $D_{Li}^{+}(cm^2 s^{-1})$  (Intercalation) = $1.29\\times 10^{-13}$\nColumn data:\n  Samples: LRMO; Mg-LRMO; Al-LRMO; Mg/Al-LRMO\n  $D_{Li}^{+}(cm^2 s^{-1})$  (Deintercalation): $1.06\\times 10^{-14}$; $1.03\\times 10^{-14}$; $9.23\\times 10^{-13}$; $8.38\\times 10^{-13}$\n  $D_{Li}^{+}(cm^2 s^{-1})$  (Intercalation): $1.56\\times 10^{-14}$; $1.51\\times 10^{-14}$; $1.30\\times 10^{-14}$; $1.29\\times 10^{-13}$",
+        "TABLE DATA BLOCK\nHeaders: Samples; States; Rs(Ω); $R_{ct}(\\Omega)$; $D_{Li}^{+}(cm^2 s^{-1})$\nRows:\nRow 1: Samples = LRMO; States = before; Rs(Ω) = 3.26; $R_{ct}(\\Omega)$ = 31.09; $D_{Li}^{+}(cm^2 s^{-1})$ = $6.59\\times 10^{-14}$\nRow 2: 20th; 3.78; 42.25; $1.55\\times 10^{-13}$\nRow 3: 100th; 4.07; 63.16; $1.75\\times 10^{-13}$\nRow 4: 200th; 5.36; 106.51; $3.82\\times 10^{-13}$\nRow 5: Samples = Mg/Al-LRMO; States = before; Rs(Ω) = 2.28; $R_{ct}(\\Omega)$ = 24.1; $D_{Li}^{+}(cm^2 s^{-1})$ = $9.34\\times 10^{-14}$\nRow 6: 20th; 2.59; 31.07; $9.78\\times 10^{-14}$\nRow 7: 100th; 3.76; 40.45; $9.56\\times 10^{-14}$\nRow 8: 200th; 4.12; 43.14; $1.05\\times 10^{-13}$\nColumn data:\n  Samples: LRMO; 20th; 100th; 200th; Mg/Al-LRMO; 20th; 100th; 200th\n  States: before; 3.78; 4.07; 5.36; before; 2.59; 3.76; 4.12\n  Rs(Ω): 3.26; 42.25; 63.16; 106.51; 2.28; 31.07; 40.45; 43.14\n  $R_{ct}(\\Omega)$: 31.09; $1.55\\times 10^{-13}$; $1.75\\times 10^{-13}$; $3.82\\times 10^{-13}$; 24.1; $9.78\\times 10^{-14}$; $9.56\\times 10^{-14}$; $1.05\\times 10^{-13}$\n  $D_{Li}^{+}(cm^2 s^{-1})$: $6.59\\times 10^{-14}$; $9.34\\times 10^{-14}$"
+      ],
+      "n_items": 26,
+      "items": [
+        {
+          "paragraph": "Mg and Al were experimentally introduced into LRMO to synthesize Mg-doped Mg-LRMO, Al-doped Al-LRMO, and Mg/Al co-doped Mg/Al-LRMO cathode materials. The oxide compositions, determined by inductively ",
+          "property_types": [
+            "Crystal_Space_Group"
+          ],
+          "extracted_info": {
+            "Crystal_Space_Group": [
+              {
+                "value": "R-3m",
+                "method": "XRD",
+                "source_text": "the main diffraction peaks correspond to the characteristic peaks of the - mathbf cdot 2 structure with space group R-3m"
+              },
+              {
+                "value": "C2/m",
+                "method": "XRD",
+                "source_text": "the weak diffraction peaks between 2 0 circ and 2 bar 5 circ are related to the C2/m monoclinic crystal phases associated with the mathrm 2 mathrm 3 superlattice"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "To obtain more detailed crystal structural information, the XRD patterns were further analyzed using Rietveld refinement, as shown in a–d, with the corresponding lattice parame-Figure 1ters listed in ",
+          "property_types": [
+            "Crystal_Space_Group"
+          ],
+          "extracted_info": {
+            "Crystal_Space_Group": [
+              {
+                "value": "C2/m",
+                "method": "XRD Rietveld refinement",
+                "source_text": "The main peaks for all samples were indexed to the Li2MnO3-like phase space group C2/m and the Li2MO2-like phase space group R-3m."
+              },
+              {
+                "value": "R-3m",
+                "method": "XRD Rietveld refinement",
+                "source_text": "The main peaks for all samples were indexed to the Li2MnO3-like phase space group C2/m and the Li2MO2-like phase space group R-3m."
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "The increase in the c-axis of the C2/m phase indicates an increased spacing of the O─Li─O configuration within the mathrm diffusion channel, significantly lowering the energy barrier of Li migration t",
+          "property_types": [
+            "Interlayer_Spacing_of_TM_Layers"
+          ],
+          "extracted_info": {
+            "Interlayer_Spacing_of_TM_Layers": [
+              {
+                "value": 4.7056,
+                "unit": "Å",
+                "state": "LRMO (pristine)",
+                "source_text": "The slab thickness S2 and I2 value of the LRMO sample were found to be 2.1876 and 2.5180 Å, respectively"
+              },
+              {
+                "value": 4.7655,
+                "unit": "Å",
+                "state": "Mg/Al-LRMO",
+                "source_text": "In the Mg/Al-LRMO sample, the slab thickness S2 further reduced to 2.1131 Å, while the interslab thickness I2 increased to 2.6524 Å"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "All samples exhibit similar capacities in the slope region ≈115 mAh mathbf g - 1 , but the capacities in the plateau region decrease with the mathbf M mathbf g 2 and mathsf 3 doping: 209.1 mAh mathbf ",
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "c_rate_or_current": {
+                "value": 0.1,
+                "unit": "C"
+              },
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "C002",
+              "c_rate_or_current": {
+                "value": 1.0,
+                "unit": "C"
+              },
+              "test_method": "cycling",
+              "cycle_number": 200
+            },
+            {
+              "condition_id": "C003",
+              "c_rate_or_current": {
+                "value": 5.0,
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Discharge_Specific_Capacity_Initial",
+            "Initial_Coulombic_Efficiency",
+            "Capacity_Retention_Ratio",
+            "Rate_Capability_Profile"
+          ],
+          "performance_info": {
+            "Discharge_Specific_Capacity_Initial": [
+              {
+                "value": 269.9,
+                "unit": "mAh/g",
+                "condition_id": "C001",
+                "source_text": "Mg/Al-LRMO outperforms the others with 269.9 mAh g-1"
+              },
+              {
+                "value": 263.1,
+                "unit": "mAh/g",
+                "condition_id": "C001",
+                "source_text": "Al-LRMO deliver 263.1 mAh g-1"
+              },
+              {
+                "value": 245.1,
+                "unit": "mAh/g",
+                "condition_id": "C001",
+                "source_text": "Mg-LRMO deliver 245.1 mAh g-1"
+              },
+              {
+                "value": 237.7,
+                "unit": "mAh/g",
+                "condition_id": "C001",
+                "source_text": "LRMO deliver 237.7 mAh g-1"
+              }
+            ],
+            "Initial_Coulombic_Efficiency": [
+              {
+                "value": 85.7,
+                "unit": "%",
+                "condition_id": "C001",
+                "source_text": "Mg/Al-LRMO 85.7%"
+              },
+              {
+                "value": 82.9,
+                "unit": "%",
+                "condition_id": "C001",
+                "source_text": "Al-LRMO 82.9%"
+              },
+              {
+                "value": 76.0,
+                "unit": "%",
+                "condition_id": "C001",
+                "source_text": "Mg-LRMO 76.0%"
+              },
+              {
+                "value": 72.2,
+                "unit": "%",
+                "condition_id": "C001",
+                "source_text": "LRMO 72.2%"
+              }
+            ],
+            "Capacity_Retention_Ratio": [
+              {
+                "value": 93.3,
+                "unit": "%",
+                "condition_id": "C001",
+                "cycle_number": 200,
+                "source_text": "after 200 cycles, Mg/Al-LRMO retains 93.3% of its capacity"
+              },
+              {
+                "value": 68.3,
+                "unit": "%",
+                "condition_id": "C001",
+                "cycle_number": 200,
+                "source_text": "LRMO 68.3%"
+              },
+              {
+                "value": 82.2,
+                "unit": "%",
+                "condition_id": "C001",
+                "cycle_number": 200,
+                "source_text": "Mg-LRMO 82.2%"
+              },
+              {
+                "value": 85.0,
+                "unit": "%",
+                "condition_id": "C001",
+                "cycle_number": 200,
+                "source_text": "Al-LRMO 85.0%"
+              },
+              {
+                "value": 90.0,
+                "unit": "%",
+                "condition_id": "C002",
+                "cycle_number": 200,
+                "source_text": "Mg/Al-LRMO retains 90.0% of its initial capacity"
+              },
+              {
+                "value": 51.1,
+                "unit": "%",
+                "condition_id": "C002",
+                "cycle_number": 200,
+                "source_text": "LRMO retains only 51.1%"
+              }
+            ],
+            "Rate_Capability_Profile": [
+              {
+                "value": [
+                  160.7
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C003",
+                "source_text": "Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh g-1 even at a high rate of 5.0 C"
+              },
+              {
+                "value": [
+                  99.0
+                ],
+                "unit": "mAh/g",
+                "condition_id": "C003",
+                "source_text": "outperforming LRMO 99.0 mAh g-1"
+              }
+            ]
+          },
+          "condition_id": "C001"
+        },
+        {
+          "paragraph": "To evaluate the performance of synthetic materials in practical applications, we successfully assembled LRMO and Mg/Al-LRMO pouch cells with the commercial graphite as anode, as is shown in Figure 2e ",
+          "conditions": [
+            {
+              "condition_id": "C004",
+              "electrode_config": "pouch full cell",
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "C005",
+              "c_rate_or_current": {
+                "value": 2.0,
+                "unit": "C"
+              },
+              "test_method": "cycling",
+              "cycle_number": 600,
+              "electrode_config": "pouch full cell"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Discharge_Specific_Capacity_Initial",
+            "Initial_Coulombic_Efficiency",
+            "Gravimetric_Energy_Density",
+            "Capacity_Retention_Ratio"
+          ],
+          "performance_info": {
+            "Discharge_Specific_Capacity_Initial": [
+              {
+                "value": 1.359,
+                "unit": "Ah",
+                "condition_id": "C004",
+                "source_text": "The Mg/Al-LRMO pouch cell ... delivering a high charge/discharge capacity of 1.532/1.359 Ah"
+              },
+              {
+                "value": 1.107,
+                "unit": "Ah",
+                "condition_id": "C004",
+                "source_text": "these values are higher than those of the pristine LRMO, which has a charge/discharge capacity of 1.389/1.107 Ah"
+              }
+            ],
+            "Initial_Coulombic_Efficiency": [
+              {
+                "value": 88.7,
+                "unit": "%",
+                "condition_id": "C004",
+                "source_text": "achieving an ICE of 88.7% Figure S8, Supporting information."
+              },
+              {
+                "value": 79.8,
+                "unit": "%",
+                "condition_id": "C004",
+                "source_text": "an ICE of 79.8%"
+              }
+            ],
+            "Gravimetric_Energy_Density": [
+              {
+                "value": 314.2,
+                "unit": "Wh/kg",
+                "condition_id": "C004",
+                "source_text": "Mg/Al-LRMO achieves an energy density of 314.2 Wh kg−1 with a retention of 96.2% after 100 cycles"
+              },
+              {
+                "value": 270.0,
+                "unit": "Wh/kg",
+                "condition_id": "C004",
+                "source_text": "LRMO only delivers an energy density of 270.0 Wh kg−1, with the retention dropping to 89.8% after 100 cycles"
+              }
+            ],
+            "Capacity_Retention_Ratio": [
+              {
+                "value": 96.2,
+                "unit": "%",
+                "condition_id": "C004",
+                "cycle_number": 100,
+                "source_text": "Mg/Al-LRMO achieves an energy density of 314.2 Wh kg−1 with a retention of 96.2% after 100 cycles"
+              },
+              {
+                "value": 89.8,
+                "unit": "%",
+                "condition_id": "C004",
+                "cycle_number": 100,
+                "source_text": "LRMO only delivers an energy density of 270.0 Wh kg−1, with the retention dropping to 89.8% after 100 cycles"
+              },
+              {
+                "value": 86.2,
+                "unit": "%",
+                "condition_id": "C005",
+                "cycle_number": 600,
+                "source_text": "After cycling at 2.0C for 600 cycles, the Mg/Al-LRMO pouch full cell still maintains good cyclic stability with a specific capacity retention of 86.2%"
+              },
+              {
+                "value": 54.1,
+                "unit": "%",
+                "condition_id": "C005",
+                "cycle_number": 600,
+                "source_text": "the pristine LRMO pouch cell only displays a specific capacity retention of 54.1% after the same cycles"
+              }
+            ]
+          },
+          "condition_id": "C004"
+        },
+        {
+          "paragraph": "X-ray photoelectron spectroscopy XPS analysis was conducted on LRMO, Mg-LRMO, Al-LRMO, and Mg/Al-LRMO to investigate elemental species and evaluate the effects of mathrm 2 / 3 doping on the surface ch",
+          "property_types": [
+            "Element_Valence_State"
+          ],
+          "extracted_info": {
+            "Element_Valence_State": [
+              {
+                "value": {
+                  "Mn": {
+                    "3+": 37.99,
+                    "4+": 62.01
+                  }
+                },
+                "unit": "oxidation state",
+                "state": "surface",
+                "method": "XPS",
+                "source_text": "The mathrm 3 / 4 ratios are 37.99/62.01% for LRMO"
+              },
+              {
+                "value": {
+                  "Mn": {
+                    "3+": 27.45,
+                    "4+": 72.55
+                  }
+                },
+                "unit": "oxidation state",
+                "state": "surface",
+                "method": "XPS",
+                "source_text": "The mathrm 3 / 4 ratios are ... 27.45/72.55% for Mg-LRMO"
+              },
+              {
+                "value": {
+                  "Mn": {
+                    "3+": 22.24,
+                    "4+": 77.76
+                  }
+                },
+                "unit": "oxidation state",
+                "state": "surface",
+                "method": "XPS",
+                "source_text": "The mathrm 3 / 4 ratios are ... 22.24/77.76% for Al-LRMO"
+              },
+              {
+                "value": {
+                  "Mn": {
+                    "3+": 20.28,
+                    "4+": 79.72
+                  }
+                },
+                "unit": "oxidation state",
+                "state": "surface",
+                "method": "XPS",
+                "source_text": "The mathrm 3 / 4 ratios are ... 20.28/79.72% for Mg/Al-LRMO"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "The voltage decay is mainly caused by structural evolution during cycling.20 As shown in Figure S17 Supporting Information, the doping of mathrm 2 and mathbb A 1 3 significantly suppresses the voltage",
+          "conditions": [
+            {
+              "condition_id": "C002",
+              "c_rate_or_current": {
+                "value": 1.0,
+                "unit": "C"
+              },
+              "cycle_number": 200,
+              "test_method": "cycling"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "The polarization and redox kinetics of the LRMO cathode materials were evaluated at the intensity, symmetry, and position of the peaks in the cyclic voltammetry CV curves. As shown in Figure S20 Suppo",
+          "conditions": [
+            {
+              "condition_id": "C006",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "test_method": "cyclic voltammetry"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Charge_Discharge_Voltage_Gap"
+          ],
+          "performance_info": {
+            "Charge_Discharge_Voltage_Gap": [
+              {
+                "value": 0.171,
+                "unit": "V",
+                "condition_id": "C006",
+                "source_text": "The Mg/Al-LRMO exhibited the lowest ΔE of 0.171V, implying the electrode polarization is reduced."
+              }
+            ]
+          },
+          "condition_id": "C006"
+        },
+        {
+          "paragraph": "The strong covalency of the TM─O band facilitates the generation of electronic holes in the O 2p band, resulting in the oxidation of lattice oxygen mathrm O 2 - / mathrm O mathrm n - for charge compen",
+          "property_types": [
+            "Bader_Charge"
+          ],
+          "extracted_info": {
+            "Bader_Charge": [
+              {
+                "value": -1.321,
+                "unit": "e",
+                "source_text": "The sample with Mg and Al substituted at the Li sites shows the lowest average atomic charge of O anions −1.321"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "Cyclic voltammetry CV tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 mV ",
+          "conditions": [
+            {
+              "condition_id": "C007",
+              "test_method": "cyclic voltammetry"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Ion_Diffusion_Coefficient",
+            "Charge_Discharge_Voltage_Gap"
+          ],
+          "performance_info": {
+            "Ion_Diffusion_Coefficient": [
+              {
+                "value": 8.38e-13,
+                "unit": "cm2/s",
+                "condition_id": "C007",
+                "method": "Randle-Sevcik equation",
+                "source_text": "The D values for deintercalation/intercalation in Mg/Al-LRMO are 8.38 × 10^-13 and 1.29 × 10^-13 cm^2 s^-1, respectively"
+              },
+              {
+                "value": 1.29e-13,
+                "unit": "cm2/s",
+                "condition_id": "C007",
+                "method": "Randle-Sevcik equation",
+                "source_text": "The D values for deintercalation/intercalation in Mg/Al-LRMO are 8.38 × 10^-13 and 1.29 × 10^-13 cm^2 s^-1, respectively"
+              },
+              {
+                "value": 1.06e-14,
+                "unit": "cm2/s",
+                "condition_id": "C007",
+                "method": "Randle-Sevcik equation",
+                "source_text": "those of LRMO 1.06 × 10^-14 cm^2 s^-1 for deintercalation and 1.56 × 10^-14 cm^2 s^-1 for intercalation as listed in Table S6 Supporting Information"
+              },
+              {
+                "value": 1.56e-14,
+                "unit": "cm2/s",
+                "condition_id": "C007",
+                "method": "Randle-Sevcik equation",
+                "source_text": "those of LRMO 1.06 × 10^-14 cm^2 s^-1 for deintercalation and 1.56 × 10^-14 cm^2 s^-1 for intercalation as listed in Table S6 Supporting Information"
+              }
+            ],
+            "Charge_Discharge_Voltage_Gap": [
+              {
+                "value": 0.14,
+                "unit": "V",
+                "condition_id": "C007",
+                "source_text": "the Mg/Al-LRMO electrode displays the smallest redox peak shift, corresponding to a lower polarization ΔE 0.14 V and faster redox kinetics."
+              }
+            ]
+          },
+          "condition_id": "C007"
+        },
+        {
+          "paragraph": "Electrochemical impedance spectroscopy EIS provides valuable insights into diffusion and reaction kinetics on the cathode surface. The Nyquist plots in Figure 4c and Figure S25a Supporting Information",
+          "conditions": [
+            {
+              "condition_id": "C008_1",
+              "c_rate_or_current": {
+                "value": 0.1,
+                "unit": "C"
+              },
+              "cycle_number": 1,
+              "test_method": "EIS"
+            },
+            {
+              "condition_id": "C008_50",
+              "c_rate_or_current": {
+                "value": 0.1,
+                "unit": "C"
+              },
+              "cycle_number": 50,
+              "test_method": "EIS"
+            },
+            {
+              "condition_id": "C008_100",
+              "c_rate_or_current": {
+                "value": 0.1,
+                "unit": "C"
+              },
+              "cycle_number": 100,
+              "test_method": "EIS"
+            },
+            {
+              "condition_id": "C008_200",
+              "c_rate_or_current": {
+                "value": 0.1,
+                "unit": "C"
+              },
+              "cycle_number": 200,
+              "test_method": "EIS"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "After 200 cycles, the R and solution resistance Rs for Mg/Al-LRMO are 43.14 and 4.12 Ω, respectively, while those for LRMO are 106.51 and 5.36 Ω Table S7, Supporting Information. This suggests that Mg",
+          "conditions": [
+            {
+              "condition_id": "C008_200",
+              "c_rate_or_current": {
+                "value": 0.1,
+                "unit": "C"
+              },
+              "cycle_number": 200,
+              "test_method": "EIS"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Charge_Transfer_Resistance"
+          ],
+          "performance_info": {
+            "Charge_Transfer_Resistance": [
+              {
+                "value": 43.14,
+                "unit": "Ω",
+                "condition_id": "C008_200",
+                "cycle_number": 200,
+                "source_text": "After 200 cycles, the R and solution resistance Rs for Mg/Al-LRMO are 43.14 and 4.12 Ω, respectively"
+              },
+              {
+                "value": 106.51,
+                "unit": "Ω",
+                "condition_id": "C008_200",
+                "cycle_number": 200,
+                "source_text": "while those for LRMO are 106.51 and 5.36 Ω"
+              }
+            ]
+          },
+          "condition_id": "C008_200"
+        },
+        {
+          "paragraph": "The structure and morphology of LMRO and Mg/Al-LRMO after 100 cycles at 0.5C were further characterized by TEM, HRTEM, and FFT images. The results provide crucial insights into the degradation mechani",
+          "conditions": [
+            {
+              "condition_id": "C009",
+              "c_rate_or_current": {
+                "value": 0.5,
+                "unit": "C"
+              },
+              "cycle_number": 100,
+              "test_method": "cycling"
+            }
+          ],
+          "property_types": [
+            "Surface_Spinel_Layer_Thickness",
+            "Interlayer_Spacing_of_TM_Layers"
+          ],
+          "extracted_info": {
+            "Surface_Spinel_Layer_Thickness": [
+              {
+                "value": 8,
+                "unit": "nm",
+                "state": "after 100 cycles at 0.5C",
+                "method": "HRTEM",
+                "source_text": "the surface of LRMO presents a distinct rocksalt-spinel mixed phase with a thickness of ≈8 nm region II."
+              },
+              {
+                "value": 3,
+                "unit": "nm",
+                "state": "after 100 cycles at 0.5C",
+                "method": "HRTEM",
+                "source_text": "the thickness of the mixed phase region region II is significantly reduced, being only ≈3 nm thick"
+              }
+            ],
+            "Interlayer_Spacing_of_TM_Layers": [
+              {
+                "value": 0.471,
+                "unit": "nm",
+                "plane": "003",
+                "state": "after 100 cycles at 0.5C",
+                "source_text": "The interior region I of LRMO retains a layered structure with a lattice spacing of 0.471 nm, corresponding to the 003 planes of the layered structure"
+              },
+              {
+                "value": 0.475,
+                "unit": "nm",
+                "plane": "003",
+                "state": "after 100 cycles at 0.5C",
+                "source_text": "the interior still maintains an intact layered-like structure with a lattice spacing of 0.475nm, corresponding to the 003 planes"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "In summary, we successfully synthesized the mathrm 2 / 3 codoped LRMO cathode material using a combined approach of co-precipitation and calcination approach. DFT calculations uncovered that mathbf M ",
+          "conditions": [
+            {
+              "condition_id": "C002",
+              "c_rate_or_current": {
+                "value": 1.0,
+                "unit": "C"
+              },
+              "cycle_number": 200,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "C003",
+              "c_rate_or_current": {
+                "value": 5.0,
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Capacity_Retention_Ratio",
+            "Discharge_Specific_Capacity_Initial"
+          ],
+          "performance_info": {
+            "Capacity_Retention_Ratio": [
+              {
+                "value": 90.0,
+                "unit": "%",
+                "condition_id": "C002",
+                "cycle_number": 200,
+                "source_text": "90.0% capacity retention after 200 cycles at 1.0C"
+              }
+            ],
+            "Discharge_Specific_Capacity_Initial": [
+              {
+                "value": 160.7,
+                "unit": "mAh/g",
+                "condition_id": "C003",
+                "source_text": "160.7mAh g−1 at 5.0C"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "Synthesis of cathode materials: In this experiment, mathrm 1 . 2 0 . 5 6 0 . 1 6 0 . 0 8 O 2 was prepared by coprecipitation method and high solid-phase sintering process as follow: Stoichiometric amo",
+          "conditions": [
+            {
+              "condition_id": "syn_drying",
+              "temperature": {
+                "value": 100,
+                "unit": "C"
+              },
+              "test_method": "drying"
+            },
+            {
+              "condition_id": "syn_heat_450",
+              "temperature": {
+                "value": 450,
+                "unit": "C"
+              },
+              "test_method": "heat treatment"
+            },
+            {
+              "condition_id": "syn_heat_950",
+              "temperature": {
+                "value": 950,
+                "unit": "C"
+              },
+              "test_method": "heat treatment"
+            },
+            {
+              "condition_id": "syn_ball_milling",
+              "test_method": "ball milling"
+            }
+          ],
+          "property_types": [
+            "Chemical_Composition_Mole_Fractions"
+          ],
+          "extracted_info": {
+            "Chemical_Composition_Mole_Fractions": [
+              {
+                "value": {
+                  "Li": 1.2,
+                  "Mn": 0.56,
+                  "Ni": 0.16,
+                  "Co": 0.08,
+                  "O": 2.0
+                },
+                "unit": "mole fraction",
+                "source_text": "mathrm 1 . 2 0 . 5 6 0 . 1 6 0 . 0 8 O 2"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "Pouch Full Cell Preparation: A high-quality cathode paste was prepared by mixing the active material, conductive agent acetylene black, and binder PVDF in a ball mill tank at a mass ratio of 90:5:5. T",
+          "conditions": [
+            {
+              "condition_id": "syn_ball_milling",
+              "test_method": "ball milling"
+            },
+            {
+              "condition_id": "syn_coating_cathode",
+              "mass_loading": {
+                "value": 24,
+                "unit": "mg/cm2"
+              },
+              "test_method": "coating"
+            },
+            {
+              "condition_id": "syn_vacuum_drying_120_12h",
+              "temperature": {
+                "value": 120,
+                "unit": "C"
+              },
+              "test_method": "drying"
+            },
+            {
+              "condition_id": "syn_drying",
+              "temperature": {
+                "value": 100,
+                "unit": "C"
+              },
+              "test_method": "drying"
+            },
+            {
+              "condition_id": "assembly_pouch_full_cell",
+              "electrode_config": "pouch full cell",
+              "test_method": "assembly"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "The preparation process of the half-cell is as follows: Coin-type cells were constructed in an argon-filled glovebox 0.1 ppm mathrm O 2 and mathrm H 2 mathrm O . The working electrodes were perpared b",
+          "conditions": [
+            {
+              "condition_id": "C010",
+              "electrode_config": "half-cell",
+              "test_method": "electrode preparation",
+              "active_material_mass_fraction": {
+                "value": 0.8,
+                "unit": "weight fraction",
+                "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+              },
+              "conductive_additive_binder_ratio": {
+                "value": 1.0,
+                "unit": "weight ratio",
+                "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+              }
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "The half-cells were assembled with a positive electrode, a separator, a lithium plate, and an electrolyte. The electrolyte was 1.0 M mathrm 6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl ca",
+          "conditions": [
+            {
+              "condition_id": "C_halfcell_assembly",
+              "electrolyte": "1.0 M mathrm 6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+              "mass_loading": {
+                "value": 2.28,
+                "unit": "mg/cm2"
+              },
+              "electrode_config": "half-cell",
+              "reference_electrode": "Li/Li+",
+              "test_method": "assembly"
+            },
+            {
+              "condition_id": "C_fullcell_assembly",
+              "electrode_config": "full-cell",
+              "test_method": "assembly"
+            },
+            {
+              "condition_id": "C_cycling_rate",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V",
+                "reference": "vs Li/Li+"
+              },
+              "c_rate_or_current": {
+                "value": 250,
+                "unit": "mA/g"
+              },
+              "reference_electrode": "Li/Li+",
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "C006",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V",
+                "reference": "vs Li/Li+"
+              },
+              "reference_electrode": "Li/Li+",
+              "test_method": "cyclic voltammetry"
+            },
+            {
+              "condition_id": "C_EIS",
+              "test_method": "EIS"
+            },
+            {
+              "condition_id": "C_room_temp",
+              "temperature": {
+                "value": 25,
+                "unit": "C"
+              },
+              "test_method": "general"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "D L i frac 4pi tau leftfrac mathrmmV mathrmMmathrmMSright 2 leftfrac Delta mathrmEsDelta mathrmE tauright 2 tau ll mathrmL 2 / D L i quad text Equation S4 Based on equation S4 and the GITT test result",
+          "conditions": [
+            {
+              "condition_id": "C_GITT",
+              "test_method": "GITT"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {}
+        },
+        {
+          "paragraph": "TABLE DATA BLOCK\nHeaders: Sample; Chemical composition (at%)\nRows:\nRow 1: Li; Mn; Ni; Co; Mg; Al\nRow 2: LRMO; 1.417; 0.687; 0.201; 0.112; 0; 0\nRow 3: Mg-LRMO; 1.408; 0.686; 0.200; 0.111; 0.012; 0\nRow ",
+          "property_types": [
+            "Chemical_Composition_Mole_Fractions"
+          ],
+          "extracted_info": {
+            "Chemical_Composition_Mole_Fractions": [
+              {
+                "value": {
+                  "Li": 0.01417,
+                  "Mn": 0.00687,
+                  "Ni": 0.00201,
+                  "Co": 0.00112,
+                  "Mg": 0.0,
+                  "Al": 0.0
+                },
+                "unit": "mole fraction",
+                "source_text": "LRMO; 1.417; 0.687; 0.201; 0.112; 0; 0"
+              },
+              {
+                "value": {
+                  "Li": 0.01408,
+                  "Mn": 0.00686,
+                  "Ni": 0.002,
+                  "Co": 0.00111,
+                  "Mg": 0.00012,
+                  "Al": 0.0
+                },
+                "unit": "mole fraction",
+                "source_text": "Mg-LRMO; 1.408; 0.686; 0.200; 0.111; 0.012; 0"
+              },
+              {
+                "value": {
+                  "Li": 0.01414,
+                  "Mn": 0.00683,
+                  "Ni": 0.00197,
+                  "Co": 0.00108,
+                  "Mg": 0.0,
+                  "Al": 0.00012
+                },
+                "unit": "mole fraction",
+                "source_text": "Al-LRMO; 1.414; 0.683; 0.197; 0.108; 0; 0.012"
+              },
+              {
+                "value": {
+                  "Li": 0.01403,
+                  "Mn": 0.00681,
+                  "Ni": 0.00198,
+                  "Co": 0.00109,
+                  "Mg": 0.00013,
+                  "Al": 0.00011
+                },
+                "unit": "mole fraction",
+                "source_text": "Mg/Al-LRMO; 1.403; 0.681; 0.198; 0.109; 0.013; 0.011"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "TABLE DATA BLOCK\nHeaders: Sample; ; LRMO; Mg-LRMO; Al-LRMO; Mg/Al-LRMO\nRows:\nRow 1: Sample = $R-3m$  phase;  = a (Å); LRMO = 2.83625(3); Mg-LRMO = 2.83731(3); Al-LRMO = 2.83754(3); Mg/Al-LRMO = 2.8397",
+          "property_types": [
+            "Lattice_Parameters",
+            "Li_Ni_mixing_ratio",
+            "Interlayer_Spacing_of_TM_Layers"
+          ],
+          "extracted_info": {
+            "Lattice_Parameters": [
+              {
+                "value": {
+                  "a": 2.83625,
+                  "c": 14.11689
+                },
+                "unit": "Å / °",
+                "crystal_system": "trigonal",
+                "state": "R-3m",
+                "method": "XRD Rietveld refinement",
+                "source_text": "LRMO R-3m phase: a = 2.83625(3) Å, c = 14.11689(5) Å"
+              },
+              {
+                "value": {
+                  "a": 4.94746,
+                  "b": 8.46204,
+                  "c": 5.18463
+                },
+                "unit": "Å / °",
+                "crystal_system": "monoclinic",
+                "state": "C2/m",
+                "method": "XRD Rietveld refinement",
+                "source_text": "LRMO C2/m phase: a = 4.94746(1) Å, b = 8.46204(2) Å, c = 5.18463(3) Å"
+              },
+              {
+                "value": {
+                  "a": 2.83731,
+                  "c": 14.17785
+                },
+                "unit": "Å / °",
+                "crystal_system": "trigonal",
+                "state": "R-3m",
+                "method": "XRD Rietveld refinement",
+                "source_text": "Mg-LRMO R-3m phase: a = 2.83731(3) Å, c = 14.17785(3) Å"
+              },
+              {
+                "value": {
+                  "a": 4.94841,
+                  "b": 8.46534,
+                  "c": 5.22749
+                },
+                "unit": "Å / °",
+                "crystal_system": "monoclinic",
+                "state": "C2/m",
+                "method": "XRD Rietveld refinement",
+                "source_text": "Mg-LRMO C2/m phase: a = 4.94841(6) Å, b = 8.46534(0) Å, c = 5.22749(0) Å"
+              },
+              {
+                "value": {
+                  "a": 2.83754,
+                  "c": 14.29659
+                },
+                "unit": "Å / °",
+                "crystal_system": "trigonal",
+                "state": "R-3m",
+                "method": "XRD Rietveld refinement",
+                "source_text": "Al-LRMO R-3m phase: a = 2.83754(3) Å, c = 14.29659(9) Å"
+              },
+              {
+                "value": {
+                  "a": 4.94855,
+                  "b": 8.46525,
+                  "c": 5.22867
+                },
+                "unit": "Å / °",
+                "crystal_system": "monoclinic",
+                "state": "C2/m",
+                "method": "XRD Rietveld refinement",
+                "source_text": "Al-LRMO C2/m phase: a = 4.94855(4) Å, b = 8.46525(7) Å, c = 5.22867(3) Å"
+              },
+              {
+                "value": {
+                  "a": 2.83976,
+                  "c": 4.94973
+                },
+                "unit": "Å / °",
+                "crystal_system": "trigonal",
+                "state": "R-3m",
+                "method": "XRD Rietveld refinement",
+                "source_text": "Mg/Al-LRMO R-3m phase: a = 2.83976(3) Å, c = 4.94973(1) Å"
+              },
+              {
+                "value": {
+                  "a": 4.94973,
+                  "b": 8.46625,
+                  "c": 5.22867
+                },
+                "unit": "Å / °",
+                "crystal_system": "monoclinic",
+                "state": "C2/m",
+                "method": "XRD Rietveld refinement",
+                "source_text": "Mg/Al-LRMO C2/m phase: a = 4.94973(1) Å, b = 8.46625(7) Å, c = 5.22867(3) Å"
+              }
+            ],
+            "Li_Ni_mixing_ratio": [
+              {
+                "value": 9.38,
+                "unit": "%",
+                "method": "XRD Rietveld refinement",
+                "state": "pristine",
+                "source_text": "LRMO Amount of Ni at Li Sites = 9.38%"
+              },
+              {
+                "value": 7.47,
+                "unit": "%",
+                "method": "XRD Rietveld refinement",
+                "state": "pristine",
+                "source_text": "Mg-LRMO Amount of Ni at Li Sites = 7.47%"
+              },
+              {
+                "value": 7.58,
+                "unit": "%",
+                "method": "XRD Rietveld refinement",
+                "state": "pristine",
+                "source_text": "Al-LRMO Amount of Ni at Li Sites = 7.58%"
+              },
+              {
+                "value": 6.12,
+                "unit": "%",
+                "method": "XRD Rietveld refinement",
+                "state": "pristine",
+                "source_text": "Mg/Al-LRMO Amount of Ni at Li Sites = 6.12%"
+              }
+            ],
+            "Interlayer_Spacing_of_TM_Layers": [
+              {
+                "value": 2.1876,
+                "unit": "Å",
+                "plane": "MO2",
+                "state": "pristine",
+                "source_text": "LRMO S_MO2 = 2.1876 Å"
+              },
+              {
+                "value": 2.1368,
+                "unit": "Å",
+                "plane": "MO2",
+                "state": "pristine",
+                "source_text": "Mg-LRMO S_MO2 = 2.1368 Å"
+              },
+              {
+                "value": 2.1215,
+                "unit": "Å",
+                "plane": "MO2",
+                "state": "pristine",
+                "source_text": "Al-LRMO S_MO2 = 2.1215 Å"
+              },
+              {
+                "value": 2.1131,
+                "unit": "Å",
+                "plane": "MO2",
+                "state": "pristine",
+                "source_text": "Mg/Al-LRMO S_MO2 = 2.1131 Å"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "TABLE DATA BLOCK\nHeaders: Sample; Charge capacity (mAh g-1); Discharge capacity (mAh g-1); Coulombic efficiency (%); Sloping region (mAh g-1); Plateau region (mAh g-1)\nRows:\nRow 1: Sample = LRMO; Char",
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Initial_Coulombic_Efficiency",
+            "Discharge_Specific_Capacity_Initial"
+          ],
+          "performance_info": {
+            "Initial_Coulombic_Efficiency": [
+              {
+                "value": 72.2,
+                "unit": "%",
+                "source_text": "Sample = LRMO; Coulombic efficiency (%) = 72.2"
+              },
+              {
+                "value": 76.0,
+                "unit": "%",
+                "source_text": "Sample = Mg-LRMO; Coulombic efficiency (%) = 76.0"
+              },
+              {
+                "value": 82.9,
+                "unit": "%",
+                "source_text": "Sample = Al-LRMO; Coulombic efficiency (%) = 82.9"
+              },
+              {
+                "value": 85.7,
+                "unit": "%",
+                "source_text": "Sample = Mg/Al-LRMO; Coulombic efficiency (%) = 85.7"
+              }
+            ],
+            "Discharge_Specific_Capacity_Initial": [
+              {
+                "value": 237.7,
+                "unit": "mAh/g",
+                "source_text": "Sample = LRMO; Discharge capacity (mAh g-1) = 237.7"
+              },
+              {
+                "value": 245.1,
+                "unit": "mAh/g",
+                "source_text": "Sample = Mg-LRMO; Discharge capacity (mAh g-1) = 245.1"
+              },
+              {
+                "value": 263.1,
+                "unit": "mAh/g",
+                "source_text": "Sample = Al-LRMO; Discharge capacity (mAh g-1) = 263.1"
+              },
+              {
+                "value": 269.9,
+                "unit": "mAh/g",
+                "source_text": "Sample = Mg/Al-LRMO; Discharge capacity (mAh g-1) = 269.9"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "TABLE DATA BLOCK\nHeaders: Samples; Mn (%); Ni (%); Co (%); O (%)\nRows:\nRow 1: $Mn^{3+}$; $Mn^{4+}$; $Ni^{2+}$; $Ni^{3+}$; $Co^{2+}$; $Co^{3+}$; $O^{2n-}$; Oxygen Vacancies; Oxygen Lattice\nRow 2: LRMO;",
+          "property_types": [
+            "Element_Valence_State",
+            "Oxygen_Vacancy_Concentration"
+          ],
+          "extracted_info": {
+            "Element_Valence_State": [
+              {
+                "value": {
+                  "Mn3+": 37.99,
+                  "Mn4+": 62.01,
+                  "Ni2+": 59.06,
+                  "Ni3+": 40.94,
+                  "Co2+": 48.84,
+                  "Co3+": 51.16
+                },
+                "unit": "%",
+                "state": "as-synthesized",
+                "method": "XPS",
+                "source_text": "LRMO; 37.99; 62.01; 59.06; 40.94; 48.84; 51.16; 21.08; 22.87; 56.05"
+              },
+              {
+                "value": {
+                  "Mn3+": 27.45,
+                  "Mn4+": 72.55,
+                  "Ni2+": 44.88,
+                  "Ni3+": 55.12,
+                  "Co2+": 42.65,
+                  "Co3+": 57.35
+                },
+                "unit": "%",
+                "state": "as-synthesized",
+                "method": "XPS",
+                "source_text": "Mg-LRMO; 27.45; 72.55; 44.88; 55.12; 42.65; 57.35; 14.94; 26.24; 58.82"
+              },
+              {
+                "value": {
+                  "Mn3+": 22.24,
+                  "Mn4+": 77.76,
+                  "Ni2+": 38.12,
+                  "Ni3+": 61.82,
+                  "Co2+": 39.19,
+                  "Co3+": 60.81
+                },
+                "unit": "%",
+                "state": "as-synthesized",
+                "method": "XPS",
+                "source_text": "Al-LRMO; 22.24; 77.76; 38.12; 61.82; 39.19; 60.81; 12.38; 27.15; 60.47"
+              },
+              {
+                "value": {
+                  "Mn3+": 20.28,
+                  "Mn4+": 79.72,
+                  "Ni2+": 27.77,
+                  "Ni3+": 72.23,
+                  "Co2+": 36.25,
+                  "Co3+": 63.75
+                },
+                "unit": "%",
+                "state": "as-synthesized",
+                "method": "XPS",
+                "source_text": "Mg/Al-LRMO; 20.28; 79.72; 27.77; 72.23; 36.25; 63.75; 6.11; 32.69; 61.20"
+              }
+            ],
+            "Oxygen_Vacancy_Concentration": [
+              {
+                "value": 0.2287,
+                "unit": "mole fraction",
+                "method": "XPS",
+                "source_text": "LRMO Oxygen Vacancies 22.87"
+              },
+              {
+                "value": 0.2624,
+                "unit": "mole fraction",
+                "method": "XPS",
+                "source_text": "Mg-LRMO Oxygen Vacancies 26.24"
+              },
+              {
+                "value": 0.2715,
+                "unit": "mole fraction",
+                "method": "XPS",
+                "source_text": "Al-LRMO Oxygen Vacancies 27.15"
+              },
+              {
+                "value": 0.3269,
+                "unit": "mole fraction",
+                "method": "XPS",
+                "source_text": "Mg/Al-LRMO Oxygen Vacancies 32.69"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "TABLE DATA BLOCK\nHeaders: Modification; Voltage (V); Current density (mA g-1); Discharge capacity (mAh g-1); Rate performance (mAh g-1/C); Cycle numbers; Capacity retention (%); Voltage fading (mV/cyc",
+          "conditions": [
+            {
+              "condition_id": "row1_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row1_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "5C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row1_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "cycle_number": 200,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row2_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.7,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row2_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.7,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "3C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row2_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.7,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.2C",
+                "unit": "C"
+              },
+              "cycle_number": 250,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row3_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row3_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "5C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row3_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.2C",
+                "unit": "C"
+              },
+              "cycle_number": 100,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row4_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row4_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "5C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row4_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.1C",
+                "unit": "C"
+              },
+              "cycle_number": 150,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row5_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row5_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "4C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row5_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.1C",
+                "unit": "C"
+              },
+              "cycle_number": 35,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row6_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row6_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "5C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row6_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.5C",
+                "unit": "C"
+              },
+              "cycle_number": 100,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row7_init",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row7_rate",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "5C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row7_retent",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "cycle_number": 200,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row8_init",
+              "voltage_range": {
+                "min": 2.7,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row8_rate",
+              "voltage_range": {
+                "min": 2.7,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "3C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row8_retent",
+              "voltage_range": {
+                "min": 2.7,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.5C",
+                "unit": "C"
+              },
+              "cycle_number": 100,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row9_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row9_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "4C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row9_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.5C",
+                "unit": "C"
+              },
+              "cycle_number": 50,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row10_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row10_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "3C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row10_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.2C",
+                "unit": "C"
+              },
+              "cycle_number": 100,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row11_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row11_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "5C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row11_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "5.0C",
+                "unit": "C"
+              },
+              "cycle_number": 100,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row12_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row12_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "5C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row12_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.5C",
+                "unit": "C"
+              },
+              "cycle_number": 100,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row13_init",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.5C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row13_rate",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row13_retent",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "cycle_number": 100,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row14_init",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row14_rate",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "5C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row14_retent",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "cycle_number": 200,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row15_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row15_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "10C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row15_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.5C",
+                "unit": "C"
+              },
+              "cycle_number": 150,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row16_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row16_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "2C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row16_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.1C",
+                "unit": "C"
+              },
+              "cycle_number": 80,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row17_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.7,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row17_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.7,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "5C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row17_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.7,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "cycle_number": 200,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row18_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row18_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "10C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row18_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.2C",
+                "unit": "C"
+              },
+              "cycle_number": 100,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row19_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row19_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "5C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row19_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.5C",
+                "unit": "C"
+              },
+              "cycle_number": 150,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row20_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row20_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "3C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row20_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "cycle_number": 100,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row21_init",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row21_rate",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "5C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row21_retent",
+              "voltage_range": {
+                "min": 2.0,
+                "max": 4.8,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "0.1C",
+                "unit": "C"
+              },
+              "cycle_number": 100,
+              "test_method": "cycling"
+            },
+            {
+              "condition_id": "row22_init",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "test_method": "galvanostatic charge-discharge"
+            },
+            {
+              "condition_id": "row22_rate",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "5C",
+                "unit": "C"
+              },
+              "test_method": "rate test"
+            },
+            {
+              "condition_id": "row22_retent",
+              "voltage_range": {
+                "min": 2.5,
+                "max": 4.6,
+                "unit": "V"
+              },
+              "c_rate_or_current": {
+                "value": "1C",
+                "unit": "C"
+              },
+              "cycle_number": 200,
+              "test_method": "cycling"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Discharge_Specific_Capacity_Initial",
+            "Rate_Performance",
+            "Capacity_Retention_Ratio"
+          ],
+          "performance_info": {
+            "Discharge_Specific_Capacity_Initial": [
+              {
+                "value": 195.0,
+                "unit": "mAh/g",
+                "condition_id": "row1_init",
+                "source_text": "195/1C"
+              },
+              {
+                "value": 125.0,
+                "unit": "mAh/g",
+                "condition_id": "row2_init",
+                "source_text": "125/1C"
+              },
+              {
+                "value": 127.0,
+                "unit": "mAh/g",
+                "condition_id": "row3_init",
+                "source_text": "127/1C"
+              },
+              {
+                "value": 173.0,
+                "unit": "mAh/g",
+                "condition_id": "row4_init",
+                "source_text": "173/1C"
+              },
+              {
+                "value": 225.0,
+                "unit": "mAh/g",
+                "condition_id": "row5_init",
+                "source_text": "225/1C"
+              },
+              {
+                "value": 166.0,
+                "unit": "mAh/g",
+                "condition_id": "row6_init",
+                "source_text": "166/1C"
+              },
+              {
+                "value": 203.0,
+                "unit": "mAh/g",
+                "condition_id": "row7_init",
+                "source_text": "203/1C"
+              },
+              {
+                "value": 142.0,
+                "unit": "mAh/g",
+                "condition_id": "row8_init",
+                "source_text": "142/1C"
+              },
+              {
+                "value": 182.0,
+                "unit": "mAh/g",
+                "condition_id": "row9_init",
+                "source_text": "182/1C"
+              },
+              {
+                "value": 221.0,
+                "unit": "mAh/g",
+                "condition_id": "row10_init",
+                "source_text": "221/1C"
+              },
+              {
+                "value": 220.0,
+                "unit": "mAh/g",
+                "condition_id": "row11_init",
+                "source_text": "220/1C"
+              },
+              {
+                "value": 225.0,
+                "unit": "mAh/g",
+                "condition_id": "row12_init",
+                "source_text": "225/1C"
+              },
+              {
+                "value": 192.0,
+                "unit": "mAh/g",
+                "condition_id": "row13_init",
+                "source_text": "192/0.5C"
+              },
+              {
+                "value": 195.0,
+                "unit": "mAh/g",
+                "condition_id": "row14_init",
+                "source_text": "195/1C"
+              },
+              {
+                "value": 225.0,
+                "unit": "mAh/g",
+                "condition_id": "row15_init",
+                "source_text": "225/1C"
+              },
+              {
+                "value": 216.0,
+                "unit": "mAh/g",
+                "condition_id": "row16_init",
+                "source_text": "216/1C"
+              },
+              {
+                "value": 205.0,
+                "unit": "mAh/g",
+                "condition_id": "row17_init",
+                "source_text": "205/1C"
+              },
+              {
+                "value": 205.0,
+                "unit": "mAh/g",
+                "condition_id": "row18_init",
+                "source_text": "205(1C)"
+              },
+              {
+                "value": 204.0,
+                "unit": "mAh/g",
+                "condition_id": "row19_init",
+                "source_text": "204(1C)"
+              },
+              {
+                "value": 191.0,
+                "unit": "mAh/g",
+                "condition_id": "row20_init",
+                "source_text": "191(1C)"
+              },
+              {
+                "value": 182.0,
+                "unit": "mAh/g",
+                "condition_id": "row21_init",
+                "source_text": "182(1C)"
+              },
+              {
+                "value": 210.0,
+                "unit": "mAh/g",
+                "condition_id": "row22_init",
+                "source_text": "210 (1C)"
+              }
+            ],
+            "Rate_Performance": [
+              {
+                "value": 0.615,
+                "unit": "ratio",
+                "condition_id": "row1_rate",
+                "high_rate": "5C",
+                "low_rate": "1C",
+                "source_text": "120/5C vs 195/1C"
+              },
+              {
+                "value": 0.616,
+                "unit": "ratio",
+                "condition_id": "row2_rate",
+                "high_rate": "3C",
+                "low_rate": "1C",
+                "source_text": "77/3C vs 125/1C"
+              },
+              {
+                "value": 0.614,
+                "unit": "ratio",
+                "condition_id": "row3_rate",
+                "high_rate": "5C",
+                "low_rate": "1C",
+                "source_text": "78/5C vs 127/1C"
+              },
+              {
+                "value": 0.821,
+                "unit": "ratio",
+                "condition_id": "row4_rate",
+                "high_rate": "5C",
+                "low_rate": "1C",
+                "source_text": "142/5C vs 173/1C"
+              },
+              {
+                "value": 0.578,
+                "unit": "ratio",
+                "condition_id": "row5_rate",
+                "high_rate": "4C",
+                "low_rate": "1C",
+                "source_text": "130/4C vs 225/1C"
+              },
+              {
+                "value": 0.663,
+                "unit": "ratio",
+                "condition_id": "row6_rate",
+                "high_rate": "5C",
+                "low_rate": "1C",
+                "source_text": "110/5C vs 166/1C"
+              },
+              {
+                "value": 0.7,
+                "unit": "ratio",
+                "condition_id": "row7_rate",
+                "high_rate": "5C",
+                "low_rate": "1C",
+                "source_text": "142/5C vs 203/1C"
+              },
+              {
+                "value": 0.88,
+                "unit": "ratio",
+                "condition_id": "row8_rate",
+                "high_rate": "3C",
+                "low_rate": "1C",
+                "source_text": "125/3C vs 142/1C"
+              },
+              {
+                "value": 0.654,
+                "unit": "ratio",
+                "condition_id": "row9_rate",
+                "high_rate": "4C",
+                "low_rate": "1C",
+                "source_text": "119/4C vs 182/1C"
+              },
+              {
+                "value": 0.665,
+                "unit": "ratio",
+                "condition_id": "row10_rate",
+                "high_rate": "3C",
+                "low_rate": "1C",
+                "source_text": "147/3C vs 221/1C"
+              },
+              {
+                "value": 0.782,
+                "unit": "ratio",
+                "condition_id": "row11_rate",
+                "high_rate": "5C",
+                "low_rate": "1C",
+                "source_text": "172/5C vs 220/1C"
+              },
+              {
+                "value": 0.778,
+                "unit": "ratio",
+                "condition_id": "row12_rate",
+                "high_rate": "5C",
+                "low_rate": "1C",
+                "source_text": "175/5C vs 225/1C"
+              },
+              {
+                "value": 0.885,
+                "unit": "ratio",
+                "condition_id": "row13_rate",
+                "high_rate": "1C",
+                "low_rate": "0.5C",
+                "source_text": "170/1C vs 192/0.5C"
+              },
+              {
+                "value": 0.595,
+                "unit": "ratio",
+                "condition_id": "row14_rate",
+                "high_rate": "5C",
+                "low_rate": "1C",
+                "source_text": "116/5C vs 195/1C"
+              },
+              {
+                "value": 0.698,
+                "unit": "ratio",
+                "condition_id": "row15_rate",
+                "high_rate": "10C",
+                "low_rate": "1C",
+                "source_text": "157/10C vs 225/1C"
+              },
+              {
+                "value": 0.926,
+                "unit": "ratio",
+                "condition_id": "row16_rate",
+                "high_rate": "2C",
+                "low_rate": "1C",
+                "source_text": "200/2C vs 216/1C"
+              },
+              {
+                "value": 0.82,
+                "unit": "ratio",
+                "condition_id": "row17_rate",
+                "high_rate": "5C",
+                "low_rate": "1C",
+                "source_text": "168/5C vs 205/1C"
+              },
+              {
+                "value": 0.6,
+                "unit": "ratio",
+                "condition_id": "row18_rate",
+                "high_rate": "10C",
+                "low_rate": "1C",
+                "source_text": "123/10C vs 205/1C"
+              },
+              {
+                "value": 0.593,
+                "unit": "ratio",
+                "condition_id": "row19_rate",
+                "high_rate": "5C",
+                "low_rate": "1C",
+                "source_text": "121/5C vs 204/1C"
+              },
+              {
+                "value": 0.791,
+                "unit": "ratio",
+                "condition_id": "row20_rate",
+                "high_rate": "3C",
+                "low_rate": "1C",
+                "source_text": "151/3C vs 191/1C"
+              },
+              {
+                "value": 0.659,
+                "unit": "ratio",
+                "condition_id": "row21_rate",
+                "high_rate": "5C",
+                "low_rate": "1C",
+                "source_text": "120/5C vs 182/1C"
+              },
+              {
+                "value": 0.762,
+                "unit": "ratio",
+                "condition_id": "row22_rate",
+                "high_rate": "5C",
+                "low_rate": "1C",
+                "source_text": "160/5C vs 210/1C"
+              }
+            ],
+            "Capacity_Retention_Ratio": [
+              {
+                "value": 92.9,
+                "unit": "%",
+                "condition_id": "row1_retent",
+                "cycle_number": 200,
+                "source_text": "92.9"
+              },
+              {
+                "value": 67.0,
+                "unit": "%",
+                "condition_id": "row2_retent",
+                "cycle_number": 250,
+                "source_text": "67.0"
+              },
+              {
+                "value": 84.5,
+                "unit": "%",
+                "condition_id": "row3_retent",
+                "cycle_number": 100,
+                "source_text": "84.5"
+              },
+              {
+                "value": 92.5,
+                "unit": "%",
+                "condition_id": "row4_retent",
+                "cycle_number": 150,
+                "source_text": "92.5"
+              },
+              {
+                "value": 85.2,
+                "unit": "%",
+                "condition_id": "row5_retent",
+                "cycle_number": 35,
+                "source_text": "85.2"
+              },
+              {
+                "value": 96.4,
+                "unit": "%",
+                "condition_id": "row6_retent",
+                "cycle_number": 100,
+                "source_text": "96.4"
+              },
+              {
+                "value": 80.6,
+                "unit": "%",
+                "condition_id": "row7_retent",
+                "cycle_number": 200,
+                "source_text": "80.6"
+              },
+              {
+                "value": 73.5,
+                "unit": "%",
+                "condition_id": "row8_retent",
+                "cycle_number": 100,
+                "source_text": "73.5"
+              },
+              {
+                "value": 94.0,
+                "unit": "%",
+                "condition_id": "row9_retent",
+                "cycle_number": 50,
+                "source_text": "94.0"
+              },
+              {
+                "value": 76.1,
+                "unit": "%",
+                "condition_id": "row10_retent",
+                "cycle_number": 100,
+                "source_text": "76.1"
+              },
+              {
+                "value": 92.6,
+                "unit": "%",
+                "condition_id": "row11_retent",
+                "cycle_number": 100,
+                "source_text": "92.6"
+              },
+              {
+                "value": 96.4,
+                "unit": "%",
+                "condition_id": "row12_retent",
+                "cycle_number": 100,
+                "source_text": "96.4"
+              },
+              {
+                "value": 82.6,
+                "unit": "%",
+                "condition_id": "row13_retent",
+                "cycle_number": 100,
+                "source_text": "82.6"
+              },
+              {
+                "value": 76.3,
+                "unit": "%",
+                "condition_id": "row14_retent",
+                "cycle_number": 200,
+                "source_text": "76.3"
+              },
+              {
+                "value": 88.2,
+                "unit": "%",
+                "condition_id": "row15_retent",
+                "cycle_number": 150,
+                "source_text": "88.2"
+              },
+              {
+                "value": 82.5,
+                "unit": "%",
+                "condition_id": "row16_retent",
+                "cycle_number": 80,
+                "source_text": "82.5"
+              },
+              {
+                "value": 82.0,
+                "unit": "%",
+                "condition_id": "row17_retent",
+                "cycle_number": 200,
+                "source_text": "82"
+              },
+              {
+                "value": 97.3,
+                "unit": "%",
+                "condition_id": "row18_retent",
+                "cycle_number": 100,
+                "source_text": "97.3"
+              },
+              {
+                "value": 86.2,
+                "unit": "%",
+                "condition_id": "row19_retent",
+                "cycle_number": 150,
+                "source_text": "86.2"
+              },
+              {
+                "value": 88.6,
+                "unit": "%",
+                "condition_id": "row20_retent",
+                "cycle_number": 100,
+                "source_text": "88.6"
+              },
+              {
+                "value": 81.6,
+                "unit": "%",
+                "condition_id": "row21_retent",
+                "cycle_number": 100,
+                "source_text": "81.6"
+              },
+              {
+                "value": 90.0,
+                "unit": "%",
+                "condition_id": "row22_retent",
+                "cycle_number": 200,
+                "source_text": "90.0"
+              }
+            ]
+          },
+          "condition_id": "row1_init"
+        },
+        {
+          "paragraph": "TABLE DATA BLOCK\nHeaders: Samples; $D_{Li}^{+}(cm^2 s^{-1})$  (Deintercalation); $D_{Li}^{+}(cm^2 s^{-1})$  (Intercalation)\nRows:\nRow 1: Samples = LRMO; $D_{Li}^{+}(cm^2 s^{-1})$  (Deintercalation) = ",
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Ion_Diffusion_Coefficient"
+          ],
+          "performance_info": {
+            "Ion_Diffusion_Coefficient": [
+              {
+                "value": 1.06e-14,
+                "unit": "cm2/s",
+                "source_text": "LRMO, Deintercalation: $1.06\\times 10^{-14}$"
+              },
+              {
+                "value": 1.56e-14,
+                "unit": "cm2/s",
+                "source_text": "LRMO, Intercalation: $1.56\\times 10^{-14}$"
+              },
+              {
+                "value": 1.03e-14,
+                "unit": "cm2/s",
+                "source_text": "Mg-LRMO, Deintercalation: $1.03\\times 10^{-14}$"
+              },
+              {
+                "value": 1.51e-14,
+                "unit": "cm2/s",
+                "source_text": "Mg-LRMO, Intercalation: $1.51\\times 10^{-14}$"
+              },
+              {
+                "value": 9.23e-13,
+                "unit": "cm2/s",
+                "source_text": "Al-LRMO, Deintercalation: $9.23\\times 10^{-13}$"
+              },
+              {
+                "value": 1.3e-14,
+                "unit": "cm2/s",
+                "source_text": "Al-LRMO, Intercalation: $1.30\\times 10^{-14}$"
+              },
+              {
+                "value": 8.38e-13,
+                "unit": "cm2/s",
+                "source_text": "Mg/Al-LRMO, Deintercalation: $8.38\\times 10^{-13}$"
+              },
+              {
+                "value": 1.29e-13,
+                "unit": "cm2/s",
+                "source_text": "Mg/Al-LRMO, Intercalation: $1.29\\times 10^{-13}$"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "TABLE DATA BLOCK\nHeaders: Samples; States; Rs(Ω); $R_{ct}(\\Omega)$; $D_{Li}^{+}(cm^2 s^{-1})$\nRows:\nRow 1: Samples = LRMO; States = before; Rs(Ω) = 3.26; $R_{ct}(\\Omega)$ = 31.09; $D_{Li}^{+}(cm^2 s^{",
+          "conditions": [
+            {
+              "condition_id": "C008_100",
+              "c_rate_or_current": {
+                "value": 0.1,
+                "unit": "C"
+              },
+              "cycle_number": 100,
+              "test_method": "EIS"
+            },
+            {
+              "condition_id": "C008_200",
+              "c_rate_or_current": {
+                "value": 0.1,
+                "unit": "C"
+              },
+              "cycle_number": 200,
+              "test_method": "EIS"
+            },
+            {
+              "condition_id": "EIS_before_01C",
+              "c_rate_or_current": {
+                "value": 0.1,
+                "unit": "C"
+              },
+              "cycle_number": 0,
+              "test_method": "EIS"
+            },
+            {
+              "condition_id": "EIS_20th_01C",
+              "c_rate_or_current": {
+                "value": 0.1,
+                "unit": "C"
+              },
+              "cycle_number": 20,
+              "test_method": "EIS"
+            }
+          ],
+          "property_types": [],
+          "extracted_info": {},
+          "performance_types": [
+            "Charge_Transfer_Resistance",
+            "Ion_Diffusion_Coefficient"
+          ],
+          "performance_info": {
+            "Charge_Transfer_Resistance": [
+              {
+                "value": 31.09,
+                "unit": "Ω",
+                "condition_id": "EIS_before_01C",
+                "cycle_number": 0,
+                "source_text": "LRMO before cycle: Rct=31.09 Ω"
+              },
+              {
+                "value": 42.25,
+                "unit": "Ω",
+                "condition_id": "EIS_20th_01C",
+                "cycle_number": 20,
+                "source_text": "LRMO 20th cycle: Rct=42.25 Ω"
+              },
+              {
+                "value": 63.16,
+                "unit": "Ω",
+                "condition_id": "C008_100",
+                "cycle_number": 100,
+                "source_text": "LRMO 100th cycle: Rct=63.16 Ω"
+              },
+              {
+                "value": 106.51,
+                "unit": "Ω",
+                "condition_id": "C008_200",
+                "cycle_number": 200,
+                "source_text": "LRMO 200th cycle: Rct=106.51 Ω"
+              },
+              {
+                "value": 24.1,
+                "unit": "Ω",
+                "condition_id": "EIS_before_01C",
+                "cycle_number": 0,
+                "source_text": "Mg/Al-LRMO before cycle: Rct=24.1 Ω"
+              },
+              {
+                "value": 31.07,
+                "unit": "Ω",
+                "condition_id": "EIS_20th_01C",
+                "cycle_number": 20,
+                "source_text": "Mg/Al-LRMO 20th cycle: Rct=31.07 Ω"
+              },
+              {
+                "value": 40.45,
+                "unit": "Ω",
+                "condition_id": "C008_100",
+                "cycle_number": 100,
+                "source_text": "Mg/Al-LRMO 100th cycle: Rct=40.45 Ω"
+              },
+              {
+                "value": 43.14,
+                "unit": "Ω",
+                "condition_id": "C008_200",
+                "cycle_number": 200,
+                "source_text": "Mg/Al-LRMO 200th cycle: Rct=43.14 Ω"
+              }
+            ],
+            "Ion_Diffusion_Coefficient": [
+              {
+                "value": 6.59e-14,
+                "unit": "cm2/s",
+                "condition_id": "EIS_before_01C",
+                "method": "EIS",
+                "source_text": "LRMO before cycle: DLi+=6.59×10^-14 cm^2/s"
+              },
+              {
+                "value": 1.55e-13,
+                "unit": "cm2/s",
+                "condition_id": "EIS_20th_01C",
+                "method": "EIS",
+                "source_text": "LRMO 20th cycle: DLi+=1.55×10^-13 cm^2/s"
+              },
+              {
+                "value": 1.75e-13,
+                "unit": "cm2/s",
+                "condition_id": "C008_100",
+                "method": "EIS",
+                "source_text": "LRMO 100th cycle: DLi+=1.75×10^-13 cm^2/s"
+              },
+              {
+                "value": 3.82e-13,
+                "unit": "cm2/s",
+                "condition_id": "C008_200",
+                "method": "EIS",
+                "source_text": "LRMO 200th cycle: DLi+=3.82×10^-13 cm^2/s"
+              },
+              {
+                "value": 9.34e-14,
+                "unit": "cm2/s",
+                "condition_id": "EIS_before_01C",
+                "method": "EIS",
+                "source_text": "Mg/Al-LRMO before cycle: DLi+=9.34×10^-14 cm^2/s"
+              },
+              {
+                "value": 9.78e-14,
+                "unit": "cm2/s",
+                "condition_id": "EIS_20th_01C",
+                "method": "EIS",
+                "source_text": "Mg/Al-LRMO 20th cycle: DLi+=9.78×10^-14 cm^2/s"
+              },
+              {
+                "value": 9.56e-14,
+                "unit": "cm2/s",
+                "condition_id": "C008_100",
+                "method": "EIS",
+                "source_text": "Mg/Al-LRMO 100th cycle: DLi+=9.56×10^-14 cm^2/s"
+              },
+              {
+                "value": 1.05e-13,
+                "unit": "cm2/s",
+                "condition_id": "C008_200",
+                "method": "EIS",
+                "source_text": "Mg/Al-LRMO 200th cycle: DLi+=1.05×10^-13 cm^2/s"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

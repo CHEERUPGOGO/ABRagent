@@ -1,0 +1,264 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.cej.2026.175094.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/j.cej.2026.175094",
+  "doi": "10.1016/j.cej.2026.175094",
+  "material_id": "10.1016_j.cej.2026.175094",
+  "meta": {
+    "meta_title": "Amino-functionalized MOF separators enabling anion-confined and $\\mathrm { L i ^",
+    "meta_authors": "Zhendong Hao a,1 , Wenjie $\\mathrm { L i ^ { a , 1 } }$ , Guanyu Liu a , Sen Qi a , Yingfei Tang a , Yuhong Jin b,\\* , Li Wang c , Chengjie Lu a,d,\\*\\*, Weifeng Huang e,\\* , Shihai Cao f,\\* , Xiangming He c,\\*",
+    "meta_year": "2026"
+  },
+  "materials": [
+    {
+      "name": "electrolyte material",
+      "short_name": "10.1016_j.cej.2026.175094",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.cej.2026.175094"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 7,
+  "items": [
+    {
+      "paragraph": "After the modification of left. mathrm - 2 right. groups, the structure of MOFs was few changed Fig. 2d and e. The electrostatic potential ESP distribution indicated that both ZIF-8 and NH2-ZIF-8 were",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Contact_Angle"
+      ],
+      "performance_info": {
+        "Contact_Angle": [
+          {
+            "value": 44.02,
+            "unit": "°",
+            "substrate": "PP",
+            "source_text": "the contact angels were reduced from 4402 mathrm o for PP to 13.45 circ for NS"
+          },
+          {
+            "value": 13.45,
+            "unit": "°",
+            "substrate": "NS",
+            "source_text": "the contact angels were reduced from 4402 mathrm o for PP to 13.45 circ for NS"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Finally, NS was assembled into Li metal batteries with LiFePO LFP cathode. Firstly, cyclic voltammetry CV was carried out to study the ionic/electron transport properties induced by NS. As shown in Fi",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "electrode_config": "full_cell",
+          "test_method": "CV, EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Voltage_Hysteresis"
+      ],
+      "performance_info": {
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.402,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "the cell with NS demonstrated smaller gap between the oxidation and reduction peaks for LFP based LMBs 0.402 V comparing with that of PP 0.491 V"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Further, linear scan voltammetry LSV tests were carried out to study the effects of separators on electrolytes stabilization. As presented in Fig. 2k, the electrochemical window of PP and NS were abou",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "test_method": "Linear scan voltammetry (LSV)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Electrochemical_Stability_Window"
+      ],
+      "performance_info": {
+        "Electrochemical_Stability_Window": [
+          {
+            "value": {
+              "max_V": 4.5
+            },
+            "unit": "V vs. Li/Li⁺",
+            "working_electrode": "PP separator",
+            "source_text": "As presented in Fig. 2k, the electrochemical window of PP and NS were about 4.5 and 5.0 V, respectively."
+          },
+          {
+            "value": {
+              "max_V": 5.0
+            },
+            "unit": "V vs. Li/Li⁺",
+            "working_electrode": "NS separator",
+            "source_text": "As presented in Fig. 2k, the electrochemical window of PP and NS were about 4.5 and 5.0 V, respectively."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Further, the ionic transport mechanism of NS was studied by molecular dynamics MD simulation Fig. 3d. In the simulated environment, the separator was sandwiched between two mathrm 6 based electrolyte ",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "test_method": "MD simulation",
+          "electrolyte": "LiPF6-based electrolyte"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In summary, we have developed an amino-functionalized MOF composite separator NS for regulating ionic transport in lithium metal batteries. The -NH2 groups effectively anchor anions, leading to a high",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 0.6,
+            "unit": "mS/cm",
+            "source_text": "enhanced Li conductivity 0.60 mS cm− - 1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "mathrmD mathrmR 2 mathrmT 2 / 2 mathrmA 2 mathrmn 4 mathrmF 4 mathrmC 2 sigma 2 mathrmZ text real mathrmR mathrms mathrmR mathrmct sigma omega - 1 / 2 Where R, F, and T were respectively ideal gas con",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": "5.0",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": "5.0",
+            "unit": "C"
+          },
+          "cycle_number": 500,
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability",
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [
+              {
+                "c_rate": "5C",
+                "capacity": 45
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The discharge capacity of cells with NS remained above 45 mAh g-1 at 5.0C, while that of PP dropped to nearly zero."
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 71.9,
+            "unit": "%",
+            "cycle_number": 500,
+            "condition_id": "C002",
+            "source_text": "the cells equipped with NS showed ... its capacity retention could maintain at 71.9% after 500 cycles under 5.0C"
+          },
+          {
+            "value": 43.6,
+            "unit": "%",
+            "cycle_number": 500,
+            "condition_id": "C002",
+            "source_text": "the capacity retention of the cell with ZS and PP were only about 43.6% and 17.2% respectively"
+          },
+          {
+            "value": 17.2,
+            "unit": "%",
+            "cycle_number": 500,
+            "condition_id": "C002",
+            "source_text": "the capacity retention of the cell with ZS and PP were only about 43.6% and 17.2% respectively"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "The mathrm t was tested using Li symmetric cells by the classical Bruce-Vincent method 40–43. As shown in Fig. 3a, the interfacial resistance of for the cell with NS was lower than that of PP before a",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "electrode_config": "Li symmetric cell",
+          "test_method": "Bruce-Vincent method (transference number); ionic conductivity measurement"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 0.36,
+            "unit": "mS/cm",
+            "method": "ionic conductivity measurement",
+            "condition_id": "C001",
+            "source_text": "the σ of PP and NS were about 0.36, 0.68 and 0.83 mS cm⁻¹"
+          },
+          {
+            "value": 0.68,
+            "unit": "mS/cm",
+            "method": "ionic conductivity measurement",
+            "condition_id": "C001",
+            "source_text": "the σ of PP and NS were about 0.36, 0.68 and 0.83 mS cm⁻¹"
+          },
+          {
+            "value": 0.83,
+            "unit": "mS/cm",
+            "method": "ionic conductivity measurement",
+            "condition_id": "C001",
+            "source_text": "the σ of PP and NS were about 0.36, 0.68 and 0.83 mS cm⁻¹"
+          },
+          {
+            "value": 0.18,
+            "unit": "mS/cm",
+            "method": "ionic conductivity measurement (sigma Li+)",
+            "condition_id": "C001",
+            "source_text": "The calculated for sigma mathrm for PP and NS were 0.18 and 0.60 mS cm⁻¹"
+          },
+          {
+            "value": 0.6,
+            "unit": "mS/cm",
+            "method": "ionic conductivity measurement (sigma Li+)",
+            "condition_id": "C001",
+            "source_text": "The calculated for sigma mathrm for PP and NS were 0.18 and 0.60 mS cm⁻¹"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

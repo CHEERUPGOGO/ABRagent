@@ -1,0 +1,411 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.ensm.2022.01.062.md",
+  "component": "cathode",
+  "paper_id": "10.1016/j.ensm.2022.01.062",
+  "doi": "10.1016/j.ensm.2022.01.062",
+  "material_id": "10.1016_j.ensm.2022.01.062",
+  "meta": {
+    "meta_title": "Crocodile skin inspired rigid-supple integrated flexible lithium ion batteries w",
+    "meta_authors": "Guanzhong Liu a , Xing-yu Zhang c , Bo Lu a,b , Yicheng Song a,b , Yun Qiao d , Xufeng Guo d , Shengqi Ao a , Junqian Zhang a,b , Daining Fang a,e,∗ , Yinhua Bao a,b,∗",
+    "meta_year": "2022"
+  },
+  "materials": [
+    {
+      "name": "cathode material",
+      "short_name": "10.1016_j.ensm.2022.01.062",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.ensm.2022.01.062"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 8,
+  "items": [
+    {
+      "paragraph": "Fabrication process of the battery: Customized single coated NCM523 cathode Canrd Corp. and single coated graphite anode Canrd Corp. were utilized. After cutting electrodes and separator CELGARD 12 m ",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "electrolyte": "KLD-1230C",
+          "cycle_number": 2,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Noticeably, the capacity loss rate for the rigid-supple FLIB is only 0.038% per cycle after 200 cycles with over 30,000 times bent load, which is extremely low compared to the previously reported cell",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "cycle_number": 200,
+          "test_method": "galvanostatic cycling with mechanical bending"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_Ratio",
+        "Volumetric_Energy_Density"
+      ],
+      "performance_info": {
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 92.4,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "capacity loss rate for the rigid-supple FLIB is only 0.038% per cycle after 200 cycles with over 30,000 times bent load"
+          }
+        ],
+        "Volumetric_Energy_Density": [
+          {
+            "value": 400.3,
+            "unit": "Wh/L",
+            "condition_id": "C001",
+            "basis": "cell-scale",
+            "source_text": "the rigid-supple FLIB demonstrates high volumetric energy density 400.3 Wh L−1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Electrochemical tests: The rigid-supple integrated batteries were firstly charged to 4.35 V and discharged to 3.0 V at 0.1 C for the battery activation. Then, Galvanostatic charge/discharge measuremen",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.35,
+            "unit": "V",
+            "reference": "Li/Li"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.35,
+            "unit": "V",
+            "reference": "vs. Li/Li"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li",
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Characterization: The micromorphology of inside electrodes was observed by SEM Zeiss Gemini 300. The strain stress curves were obtained by the tensile test with an MFT-100 electronic tensile testing m",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "As shown in Fig. 3d, the galvanostatic charge/discharge curves in flat 5th, 26th cycles and dynamic bending stage 13th, 18th cycles demonstrate very minor affection in overpotential and voltage curve ",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C006",
+          "test_method": "galvanostatic"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "As shown in Fig. 2 mathrm a , an NCM523/graphite full battery with sixteen rigid electroactive parts demonstrates superior deformability. The battery can be readily bent and folded as zigzag configura",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {},
+          "voltage_range": {},
+          "cycle_number": 20,
+          "mass_loading": {},
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge cycling"
+        },
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {},
+          "voltage_range": {},
+          "cycle_number": 20,
+          "mass_loading": {},
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge cycling"
+        },
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {},
+          "voltage_range": {},
+          "cycle_number": 40,
+          "mass_loading": {},
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge cycling"
+        },
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {},
+          "voltage_range": {},
+          "cycle_number": 40,
+          "mass_loading": {},
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge cycling"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {},
+          "voltage_range": {},
+          "cycle_number": 80,
+          "mass_loading": {},
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic charge/discharge cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 164.24,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The discharge capacity in the first cycle is 164.24 mAh g - 1"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 92.5,
+            "unit": "%",
+            "condition_id": "C005",
+            "cycle_number": 200,
+            "source_text": "After over 30,000 times mechanical bend and 200 charge/discharge cycles, the asdesigned battery performs steadily and remains about 92.5% compared to the max discharge capacity with average Coulombic efficiency better than 99.9%"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "During the test, one side of the battery was fixed while the other side was tied to the motional actuator, leading to the cyclic transformation of the battery from the flat configuration to the bent c",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "cycle_number": 10,
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "cycle_number": 10,
+          "test_method": "galvanostatic charge/discharge under dynamic bending"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "cycle_number": 30,
+          "test_method": "galvanostatic charge/discharge with bending and flat cycles"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Capacity_Retention_Ratio",
+        "Initial_Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 161.46,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the average discharge capacity of the battery I ... are about 161.46 mAh g - 1",
+            "note": "battery I, average over first 10 cycles flat state"
+          },
+          {
+            "value": 160.44,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "average discharge capacity of battery II ... 160.44 mAh g - 1",
+            "note": "battery II, average over first 10 cycles flat state"
+          },
+          {
+            "value": 168.16,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "the first discharge specific capacity under dynamic bending increases to 168.16 mAh g - 1",
+            "note": "battery I, first discharge under bending"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 95.9,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 20,
+            "source_text": "capacity retention of 95.9% during the dynamic mechanical test and the average Coulombic efficiency of 99.03% from cycle 11 to cycle 20",
+            "note": "battery I, retention from first bending capacity after 10 bending cycles"
+          },
+          {
+            "value": 93.2,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 30,
+            "source_text": "battery II has a capacity retention of 93.2% with an average Coulombic efficiency of 99.3%",
+            "note": "battery II, whole test 30 cycles"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 99.03,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "average Coulombic efficiency of 99.03% from cycle 11 to cycle 20",
+            "note": "battery I, cycles 11-20 dynamic test"
+          },
+          {
+            "value": 99.3,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "average Coulombic efficiency of 99.3% over 30 cycles",
+            "note": "battery II, 30 cycles"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "To evaluate the rate capability of the designed battery in the bent states 90°, R 5.55 mm, row direction, the capacity remains 94.0%, 77.2% and 66.1% of that in the first 5 cycles at 0.5 C after conti",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "cycle_number": 5,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "test_method": "rate capability test"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "test_method": "rate capability test"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "test_method": "rate capability test"
+        },
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "cycle_number": 5,
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_Ratio",
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 94.0,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "94.0% of that in the first 5 cycles at 0.5 C after continuously cycled at 1 C"
+          },
+          {
+            "value": 77.2,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "77.2% of that in the first 5 cycles at 0.5 C after continuously cycled at 2 C"
+          },
+          {
+            "value": 66.1,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "66.1% of that in the first 5 cycles at 0.5 C after continuously cycled at 3 C"
+          },
+          {
+            "value": 198.66,
+            "unit": "%",
+            "condition_id": "C004",
+            "source_text": "198.66% compared to the 6th cycle"
+          }
+        ],
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 162.75,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "162.75 mAh g - 198.66% compared to the 6th cycle"
+          }
+        ]
+      },
+      "condition_id": "C004"
+    }
+  ]
+}

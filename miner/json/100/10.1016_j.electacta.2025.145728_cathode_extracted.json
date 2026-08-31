@@ -1,0 +1,1043 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.electacta.2025.145728.md",
+  "component": "cathode",
+  "paper_id": "10.1016/j.electacta.2025.145728",
+  "doi": "10.1016/j.electacta.2025.145728",
+  "material_id": "10.1016_j.electacta.2025.145728",
+  "meta": {
+    "meta_title": "High voltage Li-rich Mn-based cathode modified by silica-coated silver nanowires",
+    "meta_authors": "Huihui Gan , Liang Li , Pengyuan Qiu , Mingyu Cui , Jiajun Sun , Ye Xia , Wen Zhu",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "Li1.20Mn0.54Ni0.13Co0.13O2",
+      "short_name": "LRMO",
+      "formula": "Li1.20Mn0.54Ni0.13Co0.13O2",
+      "role": "comparison",
+      "description": "Untreated Li-rich manganese oxide cathode material synthesized via solid-phase sintering.",
+      "material_id": "10.1016_j.electacta.2025.145728_M001"
+    },
+    {
+      "name": "AgNWs-modified Li1.20Mn0.54Ni0.13Co0.13O2",
+      "short_name": "Ag-LRMO",
+      "formula": "Ag/Li1.20Mn0.54Ni0.13Co0.13O2",
+      "role": "comparison",
+      "description": "Ag nanowires modified LRMO (without SiO2 coating) as a control.",
+      "material_id": "10.1016_j.electacta.2025.145728_M002"
+    },
+    {
+      "name": "AgNWs@SiO2 (thin coating) modified Li1.20Mn0.54Ni0.13Co0.13O2",
+      "short_name": "AS21-LRMO",
+      "formula": "AgNWs@SiO2/Li1.20Mn0.54Ni0.13Co0.13O2 (thin SiO2)",
+      "role": "novel",
+      "description": "Ag nanowires with thin SiO2 coating layer (5-20 nm) incorporated into LRMO cathode.",
+      "material_id": "10.1016_j.electacta.2025.145728_M003"
+    },
+    {
+      "name": "AgNWs@SiO2 (thick coating) modified Li1.20Mn0.54Ni0.13Co0.13O2",
+      "short_name": "AS12-LRMO",
+      "formula": "AgNWs@SiO2/Li1.20Mn0.54Ni0.13Co0.13O2 (thick SiO2)",
+      "role": "novel",
+      "description": "Ag nanowires with thick SiO2 coating layer (30-50 nm) incorporated into LRMO cathode.",
+      "material_id": "10.1016_j.electacta.2025.145728_M004"
+    }
+  ],
+  "n_materials": 4,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: Sample; Discharge capacity (cycles, mAh g $^{-1}$ ); Discharge capacity (cycles, mAh g $^{-1}$ ); Discharge capacity (C-rate, mAh g $^{-1}$ ); Ref.\nRows:\nRow 1: Sample = Li//3 wt%AS21-LRMO; Discharge capacity (cycles, mAh g $^{-1}$ ) = 153.5 (1C, 500 cycles); Discharge capacity (cycles, mAh g $^{-1}$ ) = 82.7 (3C, 1000 cycles); Discharge capacity (C-rate, mAh g $^{-1}$ ) = 136.7 (5C); Ref. = This work\nRow 2: Sample = Li//1 %CL@LLO; Discharge capacity (cycles, mAh g $^{-1}$ ) = 194 (1C, 100 cycles); Discharge capacity (cycles, mAh g $^{-1}$ ) = 172 (3C, 100 cycles); Discharge capacity (C-rate, mAh g $^{-1}$ ) = 162 (3C); Ref. = [48]\nRow 3: Sample = Li//3 %AlPO $_{4}$ -Li $_{3}$ PO $_{4}$ @LNMFO; Discharge capacity (cycles, mAh g $^{-1}$ ) = ~170 (0.2C, 200 cycles); Discharge capacity (cycles, mAh g $^{-1}$ ) = -; Discharge capacity (C-rate, mAh g $^{-1}$ ) = ~100 (5C); Ref. = [49]\nRow 4: -; 150 (3C); [50]\nRow 5: Sample = Li//LMNF-2; Discharge capacity (cycles, mAh g $^{-1}$ ) = ~140 (1C, 300 cycles); Discharge capacity (cycles, mAh g $^{-1}$ ) = -; Discharge capacity (C-rate, mAh g $^{-1}$ ) = 103.8 (5C); Ref. = [51]\nRow 6: Sample = Li//LMNA2; Discharge capacity (cycles, mAh g $^{-1}$ ) = ~125 (1C, 300 cycles); Discharge capacity (cycles, mAh g $^{-1}$ ) = -; Discharge capacity (C-rate, mAh g $^{-1}$ ) = 91.5 (5C); Ref. = [52]\nColumn data:\n  Sample: Li//3 wt%AS21-LRMO; Li//1 %CL@LLO; Li//3 %AlPO $_{4}$ -Li $_{3}$ PO $_{4}$ @LNMFO; -; Li//LMNF-2; Li//LMNA2\n  Discharge capacity (cycles, mAh g $^{-1}$ ): 153.5 (1C, 500 cycles); 194 (1C, 100 cycles); ~170 (0.2C, 200 cycles); 150 (3C); ~140 (1C, 300 cycles); ~125 (1C, 300 cycles)\n  Discharge capacity (cycles, mAh g $^{-1}$ ): 82.7 (3C, 1000 cycles); 172 (3C, 100 cycles); -; [50]; -; -\n  Discharge capacity (C-rate, mAh g $^{-1}$ ): 136.7 (5C); 162 (3C); ~100 (5C); 103.8 (5C); 91.5 (5C)\n  Ref.: This work; [48]; [49]; [51]; [52]"
+  ],
+  "n_items": 20,
+  "items": [
+    {
+      "paragraph": "The morphologies and elements distribution were observed by scanning electron microscopy SEM and high-resolution transmission electron microscopy HRTEM, DES mapping. As shown in Figs. 2a-b and mathbf ",
+      "property_types": [
+        "Primary_Particle_Size_Distribution"
+      ],
+      "extracted_info": {
+        "Primary_Particle_Size_Distribution": [
+          {
+            "value": {
+              "D50": 400
+            },
+            "unit": "nm",
+            "method": "SEM",
+            "source_text": "All samples exhibit fine micro-nano particles with a size of 300–500 nm."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "GITT curve was also tested on LAND measurement system by charging or discharging for 10 min at 0.2C 1C 200 mA mathbf g - 1 between 2.0 sim 4.8 mathrm V , followed with a relaxation for 30 min. The val",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V"
+          },
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Electrochemical impedance spectroscopy EIS plots were measured by using CS Studio6 electrochemical workstation with an amplitude of 10 mV from 1 MHz to 0.1 Hz at 25 circ mathrm C . . Cyclic voltammetr",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V",
+            "reference": "Li/Li"
+          },
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Furthermore, the morphological and structural changes of LRMO and 3 wt% AS21-LRMO after 100 cycles at 1C were investigated to evaluate the interfacial stability. As shown in Fig. 5a, the LRMO and 3 wt",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The cathode slurry consisted of 80 wt% LRMO, 10 wt% AB, and 10 wt % PVDF was mixed by an agate mortar and then mechanical stirring in NMP solvent. The formed slurry was casted onto a current collector",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "temperature": {
+            "value": 80,
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": "1.5 ± 0.5",
+            "unit": "mg/cm2"
+          },
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V",
+            "reference": "Li+/Li"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling",
+          "active_material_mass_fraction": {
+            "value": 80,
+            "unit": "wt%"
+          },
+          "conductive_additive_binder_ratio": {
+            "value": {
+              "AB": 10,
+              "PVDF": 10
+            },
+            "unit": "wt%"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The untreated LRMO and mathsf 2 modified LRMO are synthesized via a simple high-temperature solid-phase sintering method at air atmosphere. Fig. 1a illustrates the preparation process of mathsf 2 modi",
+      "property_types": [
+        "Crystal_Space_Group",
+        "Oxygen_Vacancy_Concentration",
+        "Element_Valence_State"
+      ],
+      "extracted_info": {
+        "Crystal_Space_Group": [
+          {
+            "value": "R-3m",
+            "method": "XRD",
+            "source_text": "the major characteristic peaks of all samples correspond to the layered structure of hexagonal scriptstyle mathbf alpha mathbf - 2 with R-3m space group"
+          },
+          {
+            "value": "C2/m",
+            "method": "XRD",
+            "source_text": "the weak peaks are characteristic peaks of the mathrm 23 phase with C2/m space group in the range of 20–25◦ 24,43"
+          }
+        ],
+        "Oxygen_Vacancy_Concentration": [
+          {
+            "unit": "mole fraction",
+            "method": "XPS",
+            "source_text": "Compared with LRMO, the addition of AgNWs, AS21 or AS12 can increase the number of mathrm V mathrm o on the surface of LRMO. The more SiO2 coating layer showed more pronounced mathrm V mathrm o due to two distinct defects mathrm V mathrm o in amorphous mathrm 2 structure, thereby mathrm V mathrm o can be effectively formed in mathsf 2 modified LRMO"
+          }
+        ],
+        "Element_Valence_State": [
+          {
+            "value": {},
+            "unit": "oxidation state",
+            "state": "unchanged",
+            "method": "XPS",
+            "source_text": "the XPS peaks of Mn2p, Ni2p and Co2p are very identical in all samples Fig. S4, suggesting that the valence state of these chemical elements is not significantly altered"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In order to elucidate the fast charge transfer kinetics mechanism on 3 wt% AS21-LRMO sample, the electrochemical impedance spectroscopy EIS is measured. Fig. 4c and d shows the Nyquist plots and the c",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "test_method": "EIS",
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C007",
+          "test_method": "EIS",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Charge_Transfer_Resistance"
+      ],
+      "performance_info": {
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 183.7,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "The 3 wt% AS21- LRMO has a lower operatorname R operatorname value with initial state of 143.2 Ω than 183.7 Ω of LRMO."
+          },
+          {
+            "value": 143.2,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "The 3 wt% AS21- LRMO has a lower operatorname R operatorname value with initial state of 143.2 Ω than 183.7 Ω of LRMO."
+          },
+          {
+            "value": 238.6,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "After 100 cycles, the operatorname R operatorname value of 3 wt% AS21-LRMO is only 144.9 Ω, while the operatorname R operatorname value of LRMO increase to 238.6 Ω"
+          },
+          {
+            "value": 144.9,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "After 100 cycles, the operatorname R operatorname value of 3 wt% AS21-LRMO is only 144.9 Ω, while the operatorname R operatorname value of LRMO increase to 238.6 Ω"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In summary, this work proposed a novel and facile strategy to synthesize mathsf 2 modified LRMO. On the one hand, the mathsf 2 can provide the faster mathrm diffusion kinetics, increase oxygen vacancy",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 500,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C009",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [
+        "Oxygen_Vacancy_Concentration"
+      ],
+      "extracted_info": {
+        "Oxygen_Vacancy_Concentration": [
+          {
+            "unit": "mole fraction",
+            "source_text": "increase oxygen vacancy"
+          }
+        ]
+      },
+      "performance_types": [
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 71.6,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 500,
+            "source_text": "The modified LRMO exhibits a high reversible capacity of 153.5 mAh g - 1 after 500 cycles at 1C with higher capacity retention of 71.6 %."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The AgNWs and mathsf 2 were prepared according to our previous work and the mathsf 2 was synthesized with some modifications 40. The different thickness of coating layer mathrm 2 for mathsf 2 were syn",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The cathode slurry consisted of 80 wt% LRMO, 10 wt% AB, and 10 wt % PVDF was mixed by an agate mortar and then mechanical stirring in NMP solvent. The formed slurry was casted onto a current collector",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "temperature": {
+            "value": 80,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 0.0,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V"
+          },
+          "cycle_number": 0,
+          "mass_loading": {
+            "value": 1.5,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "scan rate of 0.5 mV s - 1 is further carried out to illustrate the voltage hysteresis Fig. S7c-d. The oxygen reduction potential of 3 wt% AS21- LRMO 3.80 V is higher than that of LRMO 3.72 V, suggesti",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "test_method": "CV (0.5 mV/s)"
+        },
+        {
+          "condition_id": "C013",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C014",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Phase_Transition_Voltage",
+        "Capacity_Retention_Ratio",
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Phase_Transition_Voltage": [
+          {
+            "value": 3.8,
+            "unit": "V",
+            "transition_name": "oxygen reduction",
+            "condition_id": "C001",
+            "source_text": "The oxygen reduction potential of 3 wt% AS21- LRMO 3.80 V is higher than that of LRMO 3.72 V"
+          },
+          {
+            "value": 3.72,
+            "unit": "V",
+            "transition_name": "oxygen reduction",
+            "condition_id": "C001",
+            "source_text": "The oxygen reduction potential of 3 wt% AS21- LRMO 3.80 V is higher than that of LRMO 3.72 V"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 50.6,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 1000,
+            "source_text": "3 wt% AS21-LRMO shows remarkable high-rate cycling performance at 3C at 25 ◦C ... capacity retention of 50.6 % vs the 5th value after 1000 cycles"
+          },
+          {
+            "value": 19.3,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 600,
+            "source_text": "which is much higher than that of the 19.3 % after 600 cycles obtained from pure LRMO."
+          },
+          {
+            "value": 158.5,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 200,
+            "source_text": "The discharge specific capacity of 153.1 mAh g - 158.5 % capacity retention at 1C after 200 cycles"
+          },
+          {
+            "value": 137.8,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 110,
+            "source_text": "89.7 mAh g - 137.8 % capacity retention at 1C after 110 cycles obtained from pure LRMO."
+          }
+        ],
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 82.7,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "82.7 mAh g - 1 , , which is much higher than that of the 19.3 % after 600 cycles obtained from pure LRMO."
+          },
+          {
+            "value": 153.1,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "The discharge specific capacity of 153.1 mAh g - 158.5 % capacity retention at 1C after 200 cycles"
+          },
+          {
+            "value": 89.7,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "89.7 mAh g - 137.8 % capacity retention at 1C after 110 cycles obtained from pure LRMO."
+          }
+        ]
+      },
+      "condition_id": "C003"
+    },
+    {
+      "paragraph": "To further valuate the practicability of the resultant composite cathode, the full cell is assembled by using SiC as anode, and its electrochemical performance is tested within the voltage range of 2.",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g",
+            "note": "1C = 200 mA/g"
+          },
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V",
+            "reference": "full cell"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "SiC anode",
+          "test_method": "galvanostatic rate capability test"
+        },
+        {
+          "condition_id": "C016",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g",
+            "note": "1C = 200 mA/g"
+          },
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V",
+            "reference": "full cell"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "SiC anode",
+          "cycle_number": 100,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_Profile",
+        "Capacity_Retention_Ratio",
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Rate_Capability_Profile": [
+          {
+            "value": [
+              206.7,
+              182.1,
+              153.0,
+              132.5,
+              106.7,
+              60.0
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "rates": [
+              "0.5C",
+              "1C",
+              "2C",
+              "3C",
+              "5C",
+              "10C"
+            ],
+            "source_text": "the 3 wt% AS21-LRMO also exhibits much better rate capability than that of LRMO for full cell with the discharge specific capacities of 206.70.5C, 182.11C, 153.02C, 132.53C, 106.75C and 60.010C mAh g - 1 Fig. 4a"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 74.7,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "The discharge capacity of 142.5 mAh g - 1 Fig. 4b after 100 cycles at 1C and the corresponding capacity retention of 74.7 % vs the 5th value suggested the excellent reversibility and structure stability for SiC//3 wt% AS21-LRMO full cell"
+          }
+        ],
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 206.7,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "discharge specific capacities of 206.70.5C, 182.11C, 153.02C, 132.53C, 106.75C and 60.010C mAh g - 1 Fig. 4a"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "GITT curve was also tested on LAND measurement system by charging or discharging for 10 min at 0.2C 1C 200 mA mathbf g - 1 between 2.0 sim 4.8 mathrm V , followed with a relaxation for 30 min. The val",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V"
+          },
+          "test_method": "GITT"
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V"
+          },
+          "test_method": "GITT"
+        },
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V"
+          },
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The untreated LRMO and mathsf 2 modified LRMO are synthesized via a simple high-temperature solid-phase sintering method at air atmosphere. Fig. 1a illustrates the preparation process of mathsf 2 modi",
+      "property_types": [
+        "Crystal_Space_Group"
+      ],
+      "extracted_info": {
+        "Crystal_Space_Group": [
+          {
+            "value": "R-3m",
+            "method": "XRD",
+            "source_text": "the major characteristic peaks of all samples correspond to the layered structure of hexagonal ... with R-3m space group, and the weak peaks are characteristic peaks of the mathrm 23 phase with C2/m space group in the range of 20–25◦"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Furthermore, the morphological and structural changes of LRMO and 3 wt% AS21-LRMO after 100 cycles at 1C were investigated to evaluate the interfacial stability. As shown in Fig. 5a, the LRMO and 3 wt",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In order to elucidate the fast charge transfer kinetics mechanism on 3 wt% AS21-LRMO sample, the electrochemical impedance spectroscopy EIS is measured. Fig. 4c and d shows the Nyquist plots and the c",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "test_method": "EIS",
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C007",
+          "test_method": "EIS",
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Charge_Transfer_Resistance"
+      ],
+      "performance_info": {
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 183.7,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "LRMO initial state: 183.7 Ω"
+          },
+          {
+            "value": 143.2,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 0,
+            "source_text": "3 wt% AS21-LRMO initial state: 143.2 Ω"
+          },
+          {
+            "value": 238.6,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "LRMO after 100 cycles: 238.6 Ω"
+          },
+          {
+            "value": 144.9,
+            "unit": "Ω",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "3 wt% AS21-LRMO after 100 cycles: 144.9 Ω"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To further valuate the practicability of the resultant composite cathode, the full cell is assembled by using SiC as anode, and its electrochemical performance is tested within the voltage range of 2.",
+      "conditions": [
+        {
+          "condition_id": "C020",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V"
+          },
+          "cycle_number": 100,
+          "mass_loading": {
+            "value": 0.0,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C021",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 0.0,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "min": 2.0,
+            "max": 4.8,
+            "unit": "V"
+          },
+          "cycle_number": 0,
+          "mass_loading": {
+            "value": 0.0,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "rate test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_Profile",
+        "Discharge_Specific_Capacity_Initial",
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Rate_Capability_Profile": {
+          "value": [
+            206.7,
+            182.1,
+            153.0,
+            132.5,
+            106.7,
+            60.0
+          ],
+          "unit": "mAh/g",
+          "condition_id": "C002",
+          "source_text": "discharge specific capacities of 206.70.5C, 182.11C, 153.02C, 132.53C, 106.75C and 60.010C mAh g - 1"
+        },
+        "Discharge_Specific_Capacity_Initial": {
+          "value": 206.7,
+          "unit": "mAh/g",
+          "condition_id": "C002",
+          "source_text": "206.70.5C mAh g - 1"
+        },
+        "Capacity_Retention_Ratio": {
+          "value": 74.7,
+          "unit": "%",
+          "condition_id": "C001",
+          "cycle_number": 100,
+          "source_text": "capacity retention of 74.7 % vs the 5th value after 100 cycles at 1C"
+        }
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "scan rate of 0.5 mV s - 1 is further carried out to illustrate the voltage hysteresis Fig. S7c-d. The oxygen reduction potential of 3 wt% AS21- LRMO 3.80 V is higher than that of LRMO 3.72 V, suggesti",
+      "conditions": [
+        {
+          "condition_id": "C022",
+          "test_method": "Cyclic Voltammetry at 0.5 mV/s"
+        },
+        {
+          "condition_id": "C023",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "3C",
+            "unit": "C"
+          },
+          "test_method": "Galvanostatic cycling",
+          "cycle_number": 1000
+        },
+        {
+          "condition_id": "C024",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "1C",
+            "unit": "C"
+          },
+          "test_method": "Galvanostatic cycling",
+          "cycle_number": 200
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Phase_Transition_Voltage",
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Phase_Transition_Voltage": [
+          {
+            "value": 3.8,
+            "unit": "V",
+            "transition_name": "oxygen reduction",
+            "condition_id": "C001",
+            "source_text": "The oxygen reduction potential of 3 wt% AS21- LRMO 3.80 V is higher than that of LRMO 3.72 V"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 50.6,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 1000,
+            "source_text": "capacity retention of 50.6 % vs the 5th value after 1000 cycles"
+          },
+          {
+            "value": 158.5,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 200,
+            "source_text": "discharge specific capacity of 153.1 mAh g - 158.5 % capacity retention at 1C after 200 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In summary, this work proposed a novel and facile strategy to synthesize mathsf 2 modified LRMO. On the one hand, the mathsf 2 can provide the faster mathrm diffusion kinetics, increase oxygen vacancy",
+      "conditions": [
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "cycle_number": 500
+        },
+        {
+          "condition_id": "C026",
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C027",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 71.6,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 500,
+            "source_text": "high reversible capacity of 153.5 mAh g - 1 after 500 cycles at 1C with higher capacity retention of 71.6 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Sample; Discharge capacity (cycles, mAh g $^{-1}$ ); Discharge capacity (cycles, mAh g $^{-1}$ ); Discharge capacity (C-rate, mAh g $^{-1}$ ); Ref.\nRows:\nRow 1: Sample = Li//",
+      "conditions": [
+        {
+          "condition_id": "C028",
+          "c_rate_or_current": {
+            "value": "1C",
+            "unit": "C"
+          },
+          "cycle_number": 500,
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C029",
+          "c_rate_or_current": {
+            "value": "3C",
+            "unit": "C"
+          },
+          "cycle_number": 1000,
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C030",
+          "c_rate_or_current": {
+            "value": "5C",
+            "unit": "C"
+          },
+          "cycle_number": 0,
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C031",
+          "c_rate_or_current": {
+            "value": "0.2C",
+            "unit": "C"
+          },
+          "cycle_number": 200,
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C032",
+          "c_rate_or_current": {
+            "value": "1C",
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C033",
+          "c_rate_or_current": {
+            "value": "3C",
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C034",
+          "c_rate_or_current": {
+            "value": "3C",
+            "unit": "C"
+          },
+          "cycle_number": 0,
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C035",
+          "c_rate_or_current": {
+            "value": "1C",
+            "unit": "C"
+          },
+          "cycle_number": 300,
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 153.5,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Li//3 wt%AS21-LRMO: 153.5 (1C, 500 cycles)"
+          },
+          {
+            "value": 82.7,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "Li//3 wt%AS21-LRMO: 82.7 (3C, 1000 cycles)"
+          },
+          {
+            "value": 136.7,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "Li//3 wt%AS21-LRMO: 136.7 (5C)"
+          },
+          {
+            "value": 194,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "Li//1 %CL@LLO: 194 (1C, 100 cycles)"
+          },
+          {
+            "value": 172,
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "Li//1 %CL@LLO: 172 (3C, 100 cycles)"
+          },
+          {
+            "value": 162,
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "Li//1 %CL@LLO: 162 (3C)"
+          },
+          {
+            "value": 170,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "Li//3 %AlPO4-Li3PO4@LNMFO: ~170 (0.2C, 200 cycles)"
+          },
+          {
+            "value": 100,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "Li//3 %AlPO4-Li3PO4@LNMFO: ~100 (5C)"
+          },
+          {
+            "value": 140,
+            "unit": "mAh/g",
+            "condition_id": "C008",
+            "source_text": "Li//LMNF-2: ~140 (1C, 300 cycles)"
+          },
+          {
+            "value": 103.8,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "Li//LMNF-2: 103.8 (5C)"
+          },
+          {
+            "value": 125,
+            "unit": "mAh/g",
+            "condition_id": "C008",
+            "source_text": "Li//LMNA2: ~125 (1C, 300 cycles)"
+          },
+          {
+            "value": 91.5,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "Li//LMNA2: 91.5 (5C)"
+          }
+        ]
+      }
+    }
+  ]
+}

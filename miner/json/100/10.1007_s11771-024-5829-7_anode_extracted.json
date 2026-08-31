@@ -1,0 +1,481 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s11771-024-5829-7.md",
+  "component": "anode",
+  "paper_id": "10.1007/s11771-024-5829-7",
+  "doi": "10.1007/s11771-024-5829-7",
+  "material_id": "10.1007_s11771-024-5829-7",
+  "meta": {
+    "meta_title": "Hetero-metallic lithiophilic sites to assist sustained diffusion-deposition of L",
+    "meta_authors": "HUANG Shao-zhen(黄绍祯) 1, 2 , HE Pan(贺盼) 1 , YU Hua-ming(于铧铭) 1 , LI Hui-miao(李卉淼) 1 , CHEN Li-bao(陈立宝) 1, 2 *",
+    "meta_year": "2024"
+  },
+  "materials": [
+    {
+      "name": "Li-B-In composite anode",
+      "short_name": "Li-B-In",
+      "formula": "Li-B-In",
+      "role": "novel",
+      "description": "3D composite anode with LiB fiber skeleton and Li-In alloy phases, containing 10 wt% B and 10 wt% In, synthesized by vacuum melting",
+      "material_id": "10.1007_s11771-024-5829-7_M001"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 11,
+  "items": [
+    {
+      "paragraph": "The Li-B-In composite anode was synthesized by vacuum melting method. The melting points of Li and In are close 180.5 circ mathrm C for Li vs 156.5 circ mathrm C for In. During the heating process of ",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "unit": "C"
+          },
+          "test_method": "vacuum melting"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The Li-B-In composite was fabricated by the vacuum melting reaction. In brief, a certain proportion of Li, B and In containing 10 % B and 10 % In was mixed in an iron crucible, raising the temperature",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrode_config": "half_cell"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "B",
+              "In"
+            ],
+            "method": "vacuum melting",
+            "source_text": "a certain proportion of Li, B and In containing 10 % B and 10 % In"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To prove the structure stability of the prepared composite anode with hetero-metallic lithiophilic sites, the thickness change after varying degrees of free-Li electrochemical stripping were recorded ",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "test_method": "ex-situ SEM thickness measurement after 50% free-Li stripping"
+        },
+        {
+          "condition_id": "C004",
+          "test_method": "ex-situ SEM thickness measurement after 75% free-Li stripping"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The lithiophilicity and mathrm ions transport kinetics of Li-B-In composite anode were investigated and the results are shown in Figure 3. Firstly, the nucleation overpotential of pure Li, LiB and Li-",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "vs. Li/Li+",
+          "test_method": "galvanostatic nucleation overpotential measurement"
+        },
+        {
+          "condition_id": "C006",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "vs. Li/Li+",
+          "test_method": "EIS",
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C007",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "vs. Li/Li+",
+          "test_method": "EIS",
+          "cycle_number": 1
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Li_Nucleation_Overpotential"
+      ],
+      "performance_info": {
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 108.8,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "source_text": "The nucleation overpotential of Li-B-In composite anode is only 108.8 mV, which is much lower than that of LiB anode 166.1 mV and pure Li anode 206.1 mV"
+          },
+          {
+            "value": 166.1,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "source_text": "nucleation overpotential ... of LiB anode 166.1 mV"
+          },
+          {
+            "value": 206.1,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "source_text": "nucleation overpotential ... of pure Li anode 206.1 mV"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "After cycling, the R mathrm values of all batteries decreased, with the Li-B-In composite anode still having the smallest R mathrm and the most significant change. This indicates that the Li-B-In comp",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 4.0,
+            "unit": "mA/cm2"
+          },
+          "areal_capacity": {
+            "value": 1.0,
+            "unit": "mAh/cm2"
+          },
+          "electrode_config": "symmetric cells",
+          "test_method": "rate performance test (galvanostatic cycling)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 73,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 4.0,
+            "source_text": "the polarization voltage is only 73 mV with no significant voltage fluctuations."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Due to the effectiveness of the hetero-metallic lithiophilic sites, the Li-B-In composite anode exhibits significantly enhanced electrochemical stability. The cycle performance was evaluated by using ",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C010",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability",
+        "Plateau_Overpotential"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 670,
+            "unit": "h",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "areal_capacity_mAh_cm2": 1.0,
+            "source_text": "At a regular evaluation condition of 2 mA/cm2 and 1 mAh/cm2, the Li-B-In//Li-B-In symmetric cell could cycle about 670 h, demonstrating stable cycling performance"
+          },
+          {
+            "value": 1300,
+            "unit": "h",
+            "condition_id": "C002",
+            "areal_capacity_mAh_cm2": 5.0,
+            "source_text": "The cells were further tested at a high capacity of 5 mAh/cm2, demonstrating excellent cycling stability for 1300 h with Li-B-In composite anode"
+          },
+          {
+            "value": 220,
+            "unit": "h",
+            "condition_id": "C003",
+            "current_density_mA_cm2": 1.0,
+            "areal_capacity_mAh_cm2": 1.0,
+            "source_text": "when the symmetric cell based on Li-B-In was tested at a conventional condition of 1 mA/cm2 and 1 mAh/cm2, it could stably cycle for more than 220 h"
+          }
+        ],
+        "Plateau_Overpotential": [
+          {
+            "value": 62,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "the symmetric cell with Li-B-In composite anode displays a stable and much lower polarization 62 mV for 1st cycle"
+          },
+          {
+            "value": 67.2,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "67.2 mV for 100th cycle"
+          },
+          {
+            "value": 79,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 2.0,
+            "capacity_mAh_cm2": 1.0,
+            "source_text": "79 mV for 200th cycle"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The mathrm 4 mathrm : , a conducting additive AB and a binder PVDF were mixed with a mass ratio of 8:1: 1 in NMP solution. The electrolyte used for full cells testing is 1 mathrm / L lithium hexafluor",
+      "conditions": [
+        {
+          "condition_id": "C012"
+        },
+        {
+          "condition_id": "C013",
+          "temperature": {},
+          "c_rate_or_current": {},
+          "voltage_range": {
+            "min": 2.4,
+            "max": 4.0,
+            "unit": "V"
+          },
+          "electrolyte": "1 M LiPF6 in EC:EMC:FEC (3:7:1 v/v)",
+          "cycle_number": 0,
+          "mass_loading": {},
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling, EIS"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Li-B-In",
+            "source_text": "The mathrm 4 mathrm : , a conducting additive AB and a binder PVDF were mixed with a mass ratio of 8:1: 1 in NMP solution."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "X-ray diffraction XRD pattern confirms the successful preparation of Li-B-In composite electrode Figure 1a. Specifically, the peaks located at 36.19 circ , 51.97 circ and 64.98 circ belonging to the L",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "min": 0,
+            "max": 1,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "asymmetric cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition",
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "B",
+              "In"
+            ],
+            "method": "XRD",
+            "source_text": "the coexisting XRD peaks of Li-B-In composite electrode demonstrate the prepared anode is composed of free-Li, LiB compound and Li-In intermetallic phase."
+          }
+        ],
+        "Chemical_Formula": [
+          {
+            "value": "Li (free) + LiB + Li3In13",
+            "state": "composite",
+            "source_text": "the prepared anode is composed of free-Li, LiB compound and Li-In intermetallic phase (PDF #33-0615)."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Further evaluate the performance of soft pack batteries assembled with S as the cathode and different anodes materials in practical applications Figure S5. The initial capacity of the Li-B-In//S pouch",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 62.0,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 30,
+            "source_text": "The capacity retention rates of the bare Li and Li-B-In anode after 30 cycles are 52.5 % and 62.0 % , respectively."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To demonstrate the practicality of Li-B-In composite anode, full cells with mathrm 4 as the cathode materials were assembled for evaluation. At a current density of 1C mathrm 1 C 170 / g , the initial",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "cycle_number": 300,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "rate test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle",
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 87.2,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 300,
+            "source_text": "highcapacity retention rate of 87.2 % after 300 cycles"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 128.47,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "Li-B-In//LiFePO4 in the rate test can still release a high specific capacity of 128.47 mathrm cdot mathrm h / mathrm g at 5C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In conclusion, a hetero-metallic lithiophilic alloy was introduced as a nucleation site into the LiB fiber electrode to construct a Li-B-In composite anode by a simple melting method. A large amount o",
+      "conditions": [
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "symmetric cell cycling"
+        },
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "symmetric cell cycling"
+        },
+        {
+          "condition_id": "C020",
+          "electrode_config": "full_cell",
+          "cycle_number": 300,
+          "test_method": "full-cell cycling"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "B",
+              "In"
+            ],
+            "source_text": "Li-B-In composite anode"
+          }
+        ]
+      },
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 87.2,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 300,
+            "source_text": "the full cell matched with Li-B-In composite anode and the mathrm 4 cathode demonstrates superior capacity retention of 87.2 % after 300 cycles"
+          }
+        ]
+      },
+      "condition_id": "C003"
+    }
+  ]
+}

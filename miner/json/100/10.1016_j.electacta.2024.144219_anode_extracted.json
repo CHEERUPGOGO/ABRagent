@@ -1,0 +1,720 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.electacta.2024.144219.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.electacta.2024.144219",
+  "doi": "10.1016/j.electacta.2024.144219",
+  "material_id": "10.1016_j.electacta.2024.144219",
+  "meta": {
+    "meta_title": "Controlled graphene interfacial carbon nitride preparation for carbon negative e",
+    "meta_authors": "Kun Liu a , Xiaobo Xiong b , Jiangchun Li b , Mengfan Liu a , Zhentao Wu a , Fei Li a,\\*",
+    "meta_year": "2024"
+  },
+  "materials": [
+    {
+      "name": "Reduced graphene oxide",
+      "short_name": "rGO",
+      "formula": "C",
+      "role": "comparison",
+      "description": "Synthesized by hydrothermal and annealing, used as a negative electrode for comparison.",
+      "material_id": "10.1016_j.electacta.2024.144219_M001"
+    },
+    {
+      "name": "Graphitic carbon nitride",
+      "short_name": "g-C3N4",
+      "formula": "C3N4",
+      "role": "comparison",
+      "description": "Pure graphitic carbon nitride synthesized for comparison as an anode material.",
+      "material_id": "10.1016_j.electacta.2024.144219_M002"
+    },
+    {
+      "name": "rGO/g-C3N4 composite (0.5:1 melamine:GO ratio)",
+      "short_name": "rGO-g-C3N4-0.5",
+      "formula": "rGO/g-C3N4",
+      "role": "novel",
+      "description": "Composite with mass ratio of melamine to graphene oxide of 0.5, lower g-C3N4 loading.",
+      "material_id": "10.1016_j.electacta.2024.144219_M003"
+    },
+    {
+      "name": "rGO/g-C3N4 composite (1:1 melamine:GO ratio)",
+      "short_name": "rGO-g-C3N4-1",
+      "formula": "rGO/g-C3N4",
+      "role": "novel",
+      "description": "Composite with equal mass ratio of melamine to graphene oxide, showing optimal lithium storage performance.",
+      "material_id": "10.1016_j.electacta.2024.144219_M004"
+    },
+    {
+      "name": "rGO/g-C3N4 composite (2:1 melamine:GO ratio)",
+      "short_name": "rGO-g-C3N4-2",
+      "formula": "rGO/g-C3N4",
+      "role": "novel",
+      "description": "Composite with double melamine amount relative to graphene oxide, higher g-C3N4 loading.",
+      "material_id": "10.1016_j.electacta.2024.144219_M005"
+    }
+  ],
+  "n_materials": 5,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: Materials; BET specific surface area (m2/g); Average pore size (nm)\nRows:\nRow 1: Materials = rGO; BET specific surface area (m2/g) = 197.54; Average pore size (nm) = 1.24\nRow 2: Materials = rGO-g-C3N4-0.5; BET specific surface area (m2/g) = 109.76; Average pore size (nm) = 11.57\nRow 3: Materials = rGO-g-C3N4-1; BET specific surface area (m2/g) = 327.36; Average pore size (nm) = 33.63\nRow 4: Materials = rGO-g-C3N4-2; BET specific surface area (m2/g) = 265.39; Average pore size (nm) = 18.04\nRow 5: Materials = g-C3N4; BET specific surface area (m2/g) = 3.70; Average pore size (nm) = 53.75\nColumn data:\n  Materials: rGO; rGO-g-C3N4-0.5; rGO-g-C3N4-1; rGO-g-C3N4-2; g-C3N4\n  BET specific surface area (m2/g): 197.54; 109.76; 327.36; 265.39; 3.70\n  Average pore size (nm): 1.24; 11.57; 33.63; 18.04; 53.75",
+    "TABLE DATA BLOCK\nHeaders: Sample name; Lithiation (cm2/s); De-lithiation (cm2/s)\nRows:\nRow 1: Sample name = rGO-g-C3N4-0.5; Lithiation (cm2/s) = $5.1 \\times 10^{-7} - 2.3 \\times 10^{-6}$; De-lithiation (cm2/s) = $1.9 \\times 10^{-7} - 3.1 \\times 10^{-6}$\nRow 2: Sample name = rGO-g-C3N4-1; Lithiation (cm2/s) = $3.9 \\times 10^{-7} - 2.4 \\times 10^{-6}$; De-lithiation (cm2/s) = $1.5 \\times 10^{-7} - 3.5 \\times 10^{-6}$\nRow 3: Sample name = rGO-g-C3N4-2; Lithiation (cm2/s) = $4.8 \\times 10^{-7} - 1.7 \\times 10^{-6}$; De-lithiation (cm2/s) = $1.6 \\times 10^{-7} - 3.1 \\times 10^{-6}$\nColumn data:\n  Sample name: rGO-g-C3N4-0.5; rGO-g-C3N4-1; rGO-g-C3N4-2\n  Lithiation (cm2/s): $5.1 \\times 10^{-7} - 2.3 \\times 10^{-6}$; $3.9 \\times 10^{-7} - 2.4 \\times 10^{-6}$; $4.8 \\times 10^{-7} - 1.7 \\times 10^{-6}$\n  De-lithiation (cm2/s): $1.9 \\times 10^{-7} - 3.1 \\times 10^{-6}$; $1.5 \\times 10^{-7} - 3.5 \\times 10^{-6}$; $1.6 \\times 10^{-7} - 3.1 \\times 10^{-6}$"
+  ],
+  "n_items": 20,
+  "items": [
+    {
+      "paragraph": "SEM, TEM and EDX mapping of g mathrm - mathrm C 3 mathrm N 4 , rGO and mathrm r bf G bf O - bf g - bf C 3 bf N 4 are demonstrated in Fig.S1 and Fig. 2. Observation of the SEM images of g-mathrm C 3 N ",
+      "property_types": [
+        "Elemental_Composition",
+        "Crystal_System",
+        "Interlayer_Spacing"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "C",
+              "N"
+            ],
+            "method": "EDX mapping",
+            "source_text": "The mapping diagrams of Fig. S1 j-l and Fig. 2 d-f show that the C and N elements are uniformly distributed in the structure of the material."
+          }
+        ],
+        "Crystal_System": [
+          {
+            "value": "amorphous",
+            "source_text": "The TEM images of mathrm r cal G cal O - g - cal C 3 mathrm N 4 shown in Fig. 2a-c show that the surface of rGO with amorphous structure is covered with a layer of flaky g mathrm - mathrm C 3 mathrm N 4"
+          }
+        ],
+        "Interlayer_Spacing": [
+          {
+            "unit": "Å",
+            "state": "rGO/g-C3N4 composite",
+            "source_text": "Fig. S1h also illustrates that the composite of the two contributes to the increase of the layer spacing."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The electrochemical behavior of the negative electrode of the rGO-mathrm 3 N 4 composite was investigated by various electrochemical measurements and this was used to evaluate its lithium storage perf",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In order to study the specific surface area and pore size distribution of rGO, g mathrm - mathrm C 3 mathrm N 4 and mathbf r mathbf - g - C 3 N 4 - x 0.5 , 1 , 2 composites, the specific surface area ",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "test_method": "nitrogen adsorption desorption method"
+        }
+      ],
+      "property_types": [
+        "Interlayer_Spacing"
+      ],
+      "extracted_info": {
+        "Interlayer_Spacing": [
+          {
+            "unit": "Å",
+            "source_text": "the presence of g-C3N4 is favorable to the expansion of the interlayer spacing of the graphene oxide, which leads to the increase of the specific surface area."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In addition, the CV curves of mathbf r mathbf - g - C 3 N 4 - x 0.5 , 1 , 2 composite negative electrode were obtained at different scanning rates to study the dependence of the charge storage mechani",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "（c） To further verify the successful synthesis of g mathrm - C 3 mathrm N 4 on the surface of rGO, TG tests were conducted. The TG tests were performed in air with a ramp rate of 10 ◦C/min from room t",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "unit": "C"
+          },
+          "test_method": "TG"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "A 60 ml graphene oxide suspension with a concentration of 1 mg/mL was prepared with ultrapure water. After ultrasonic stripping for half an hour, 30 mg, 60 mg and 120 mg melamine were added. The label",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 180,
+            "unit": "C"
+          },
+          "test_method": "hydrothermal reaction in polytetrafluoroethylene kettle"
+        },
+        {
+          "condition_id": "C005",
+          "temperature": {
+            "value": 550,
+            "unit": "C"
+          },
+          "test_method": "annealing in nitrogen atmosphere"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "i nu a nu b tag 1 log i b log v log a tag 2 Eq.2 is a variant form of Eq.1, where the value of i represents the peak current of the oxidation or reduction peak, v represents the scan rate, and the val",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "temperature": {},
+          "c_rate_or_current": {},
+          "voltage_range": {},
+          "cycle_number": 0,
+          "mass_loading": {},
+          "electrode_config": "half_cell",
+          "test_method": "CV b-value analysis (log i vs log v fitting from oxidation/reduction peaks)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Surface_Diffusion_Controlled_Contribution"
+      ],
+      "performance_info": {
+        "Surface_Diffusion_Controlled_Contribution": [
+          {
+            "condition_id": "C001",
+            "source_text": "The b-values obtained from fitting the oxidation and reduction peaks of the r-GO-g-C3N4-x (0.5, 1, 2) composite negative electrode are in the range of 0.5 to 1, which indicates that there are two different charge storing mechanisms in the negative electrode of the rGO/g-C3N4-X (0.5,1,2) composite (both surface capacitance processes and diffusion-controlled processes)."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In addition, the lithium ion mobility of mathbf r mathbf - g - C 3 N 4 - x 0.5 , 1 , 2 negative material was evaluated by GITT technique in this study. rGO-g-mathsf C 3 mathbf N 4 mathbf - x 0.5 , 1 ,",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Past studies have shown that the lithium ion diffusion coefficients are in the range of 10 - 5 – 10 - 8 mathrm 2 / s . The lithium ion diffusion coefficients of the negative electrode of the mathbf r ",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Chemical_Diffusion_Coefficient_of_Li_GITT"
+      ],
+      "performance_info": {
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "value": "10^{-7} - 10^{-6}",
+            "unit": "cm2/s",
+            "source_text": "The lithium ion diffusion coefficients of the negative electrode of the rGO-g-C3N4-x 0.5, 1, 2 composites negative are all in the range of 10^{-7} - 10^{-6} cm2/s, which is a high level."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "i k 1 v 0.5 k 2 v tag 3 i / v k 1 v - 0.5 k 2 tag 4 In Eqs 3 , 4 , i represents the peak current, v represents the scanning rate, k1 represents the diffusion control process mathbf k 1 can only be cal",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "CV"
+        },
+        {
+          "condition_id": "C001",
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Pseudocapacitive_Contribution_Ratio"
+      ],
+      "performance_info": {
+        "Pseudocapacitive_Contribution_Ratio": [
+          {
+            "value": 16,
+            "unit": "%",
+            "condition_id": "C001",
+            "scan_rate_mV_s": 0.1,
+            "source_text": "surface capacitive process share of the negative electrode of rGO-g-C3N4-X 0.5 ... at 0.1 mV/s ... 16 %"
+          },
+          {
+            "value": 51,
+            "unit": "%",
+            "condition_id": "C001",
+            "scan_rate_mV_s": 0.1,
+            "source_text": "rGO-g-C3N4-X 1 ... 51 %"
+          },
+          {
+            "value": 47,
+            "unit": "%",
+            "condition_id": "C001",
+            "scan_rate_mV_s": 0.1,
+            "source_text": "rGO-g-C3N4-X 2 ... 47 %"
+          },
+          {
+            "value": 42,
+            "unit": "%",
+            "condition_id": "C002",
+            "scan_rate_mV_s": 2,
+            "source_text": "After the scan rate was increased to 2 mV/s, the percentage of surface capacitive processes ... 42 % (for rGO-g-C3N4-0.5)"
+          },
+          {
+            "value": 81,
+            "unit": "%",
+            "condition_id": "C002",
+            "scan_rate_mV_s": 2,
+            "source_text": "81 % (for rGO-g-C3N4-1)"
+          },
+          {
+            "value": 81,
+            "unit": "%",
+            "condition_id": "C002",
+            "scan_rate_mV_s": 2,
+            "source_text": "81 % (for rGO-g-C3N4-2)"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The prepared active material, polyvinylidene fluoride binder and conductive carbon black were transferred to the agate mortar at a ratio of 7:2:1 for dry grinding for 15 min, and the total material am",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in EC:DMC:DEC (1:1:1)",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "cyclic voltammetry (CV), electrochemical impedance spectroscopy (EIS), galvanostatic charge-discharge (GCD)",
+          "eis_frequency_range": {
+            "min": 0.01,
+            "max": 8000000,
+            "unit": "Hz"
+          },
+          "eis_amplitude": {
+            "value": 10,
+            "unit": "mV"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "g） As shown in Table S1, the charge transfer resistances of mathrm r , g - C 3 N 4 , , and mathbf r mathbf - g - C 3 N 4 - x 0.5 , 1 , 2 negative electrodes are 1083.06 Ω, 673.52 Omega , 79.17 Omega ,",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 1083.06,
+            "unit": "Ω",
+            "material": "Reduced graphene oxide (C)"
+          },
+          {
+            "value": 673.52,
+            "unit": "Ω",
+            "material": "Graphitic carbon nitride (C3N4)"
+          },
+          {
+            "value": 79.17,
+            "unit": "Ω",
+            "material": "rGO/g-C3N4 composite (0.5:1 melamine:GO ratio)"
+          },
+          {
+            "value": 35.12,
+            "unit": "Ω",
+            "material": "rGO/g-C3N4 composite (1:1 melamine:GO ratio)"
+          },
+          {
+            "value": 140.6,
+            "unit": "Ω",
+            "material": "rGO/g-C3N4 composite (2:1 melamine:GO ratio)"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In summary, the reason for the capacity rise can be attributed to three points. First, by comparing the charge transfer impedance of a new cell and a cell after 300 cycles, it can be found that the ac",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "cycle_number": 300,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C010",
+          "cycle_number": 10000,
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [
+        "Interlayer_Spacing"
+      ],
+      "extracted_info": {
+        "Interlayer_Spacing": [
+          {
+            "unit": "Å",
+            "source_text": "the larger layer spacing leads to deeper electrolyte infiltration, and more active sites are involved in the mathrm detachment/embedding process"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The lithium storage performance of rGO-g cdot - mathbf C 3 mathbf N 4 - mathbf X 0.5 , 1 , 2 composites, rGO and g mathrm - C 3 mathrm N 4 negative electrodes was investigated using constant current c",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "A/g"
+          },
+          "test_method": "GCD"
+        },
+        {
+          "condition_id": "C012",
+          "voltage_range": {
+            "min": 0.01,
+            "max": 3.0,
+            "unit": "V"
+          },
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          },
+          "test_method": "GCD"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 114.5,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial discharge capacity of the g C3N4 negative electrode was 114.5 mAh/g"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Subsequently, in order to verify the relationship between the gradually rising capacity and charge transfer resistance of the negative electrode of mathrm - g - C 3 N 4 - X 0.5 , 1 , 2 , an EIS test w",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          },
+          "cycle_number": 300,
+          "test_method": "EIS (after cycling)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Interfacial_Resistance_RSEI_or_Rct"
+      ],
+      "performance_info": {
+        "Interfacial_Resistance_RSEI_or_Rct": [
+          {
+            "value": 3.85,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "resistance_type": "Rct",
+            "material": "rGO/g-C3N4-0.5",
+            "source_text": "Table S2 shows that after 300 cycles, the overall charge transfer resistance decreases to 3.85 Ω, 6.99 Ω, and 5.26 Ω, respectively, and the SEI membrane resistance is 15.28 Ω, 11.38 Ω, and 24.71 Ω, respectively."
+          },
+          {
+            "value": 6.99,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "resistance_type": "Rct",
+            "material": "rGO/g-C3N4-1",
+            "source_text": "Table S2 shows that after 300 cycles, the overall charge transfer resistance decreases to 3.85 Ω, 6.99 Ω, and 5.26 Ω, respectively, and the SEI membrane resistance is 15.28 Ω, 11.38 Ω, and 24.71 Ω, respectively."
+          },
+          {
+            "value": 5.26,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "resistance_type": "Rct",
+            "material": "rGO/g-C3N4-2",
+            "source_text": "Table S2 shows that after 300 cycles, the overall charge transfer resistance decreases to 3.85 Ω, 6.99 Ω, and 5.26 Ω, respectively, and the SEI membrane resistance is 15.28 Ω, 11.38 Ω, and 24.71 Ω, respectively."
+          },
+          {
+            "value": 15.28,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "resistance_type": "R_SEI",
+            "material": "rGO/g-C3N4-0.5",
+            "source_text": "Table S2 shows that after 300 cycles, the overall charge transfer resistance decreases to 3.85 Ω, 6.99 Ω, and 5.26 Ω, respectively, and the SEI membrane resistance is 15.28 Ω, 11.38 Ω, and 24.71 Ω, respectively."
+          },
+          {
+            "value": 11.38,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "resistance_type": "R_SEI",
+            "material": "rGO/g-C3N4-1",
+            "source_text": "Table S2 shows that after 300 cycles, the overall charge transfer resistance decreases to 3.85 Ω, 6.99 Ω, and 5.26 Ω, respectively, and the SEI membrane resistance is 15.28 Ω, 11.38 Ω, and 24.71 Ω, respectively."
+          },
+          {
+            "value": 24.71,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "resistance_type": "R_SEI",
+            "material": "rGO/g-C3N4-2",
+            "source_text": "Table S2 shows that after 300 cycles, the overall charge transfer resistance decreases to 3.85 Ω, 6.99 Ω, and 5.26 Ω, respectively, and the SEI membrane resistance is 15.28 Ω, 11.38 Ω, and 24.71 Ω, respectively."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "As shown in Fig. 7 mathrm d mathrm - mathrm i and Table 2, the lithium ion diffusion coefficients of the mathrm - g - C 3 N 4 - 0.5 negative electrode are 5.1 times 10 - 7 - 2.3 times 10 - 6 mathrm 2 ",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Chemical_Diffusion_Coefficient_of_Li_GITT"
+      ],
+      "performance_info": {
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "state": "lithiation",
+            "source_text": "the lithium ion diffusion coefficients of the mathrm - g - C 3 N 4 - 0.5 negative electrode are 5.1 times 10 - 7 - 2.3 times 10 - 6 mathrm 2 / s lithiation process"
+          },
+          {
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "state": "delithiation",
+            "source_text": "1.9 times 10 - 7 cdot 3.1 times 10 - 6 mathrm 2 / s delithiation process"
+          },
+          {
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "state": "lithiation",
+            "source_text": "the mathrm - g - C 3 N 4 - 2 negative electrode have a lithium ion diffusion coefficients are 4.8 times 10 - 7 cdot 1.7 times 10 - 6 mathrm 2 / s lithiation process"
+          },
+          {
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "state": "delithiation",
+            "source_text": "1.6 times 10 - 7 cdot 3.2 times 10 - 6 cm2 /s de-lithiation process"
+          },
+          {
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "state": "lithiation",
+            "source_text": "the mathrm - g - C 3 N 4 - 1 negative electrode is significantly superior to them with 3.9 times 10 - 7 cdot 2.4 times 10 - 6 mathrm 2 / s lithiation process"
+          },
+          {
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "state": "delithiation",
+            "source_text": "1.5 times 10 - 7 cdot 3.5 times 10 - 6 cm2 /s de-lithiation process"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In order to better understand the excellent lithium storage performance of mathbf r mathbf - g - C 3 N 4 - x 0.5 , 1 , 2 negative electrodes, a new cell and a cell after 300 cycles the same cell were ",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "cycle_number": 0,
+          "test_method": "Electrochemical Impedance Spectroscopy (EIS)"
+        },
+        {
+          "condition_id": "C015",
+          "cycle_number": 300,
+          "test_method": "Electrochemical Impedance Spectroscopy (EIS)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The negative electrode of mathtt - g - C 3 N 4 - x 0.5 , 1 , 2 composites forms a SEI film during the initial cycle, and a large amount of mathrm is retained in the negative electrode and cannot be ex",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          },
+          "cycle_number": 295,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "First_Lithiation_Capacity",
+        "Rate_Capability_at_Given_C_rate"
+      ],
+      "performance_info": {
+        "First_Lithiation_Capacity": [
+          {
+            "value": 463.5,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "which was boosted from 463.5 mAh/g to 708.6 mAh/g by cycling for 295 cycles at a current density of 1 A/g"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 708.6,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "boosted from 463.5 mAh/g to 708.6 mAh/g by cycling for 295 cycles at a current density of 1 A/g"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Sample name; Lithiation (cm2/s); De-lithiation (cm2/s)\nRows:\nRow 1: Sample name = rGO-g-C3N4-0.5; Lithiation (cm2/s) = $5.1 \\times 10^{-7} - 2.3 \\times 10^{-6}$; De-lithiatio",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Chemical_Diffusion_Coefficient_of_Li_GITT"
+      ],
+      "performance_info": {
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "value": "5.1 × 10^{-7} - 2.3 × 10^{-6}",
+            "unit": "cm2/s",
+            "state": "lithiation",
+            "method": "GITT",
+            "source_text": "Row 1: Sample name = rGO-g-C3N4-0.5; Lithiation (cm2/s) = $5.1 \\times 10^{-7} - 2.3 \\times 10^{-6}$"
+          },
+          {
+            "value": "1.9 × 10^{-7} - 3.1 × 10^{-6}",
+            "unit": "cm2/s",
+            "state": "delithiation",
+            "method": "GITT",
+            "source_text": "Row 1: Sample name = rGO-g-C3N4-0.5; De-lithiation (cm2/s) = $1.9 \\times 10^{-7} - 3.1 \\times 10^{-6}$"
+          },
+          {
+            "value": "3.9 × 10^{-7} - 2.4 × 10^{-6}",
+            "unit": "cm2/s",
+            "state": "lithiation",
+            "method": "GITT",
+            "source_text": "Row 2: Sample name = rGO-g-C3N4-1; Lithiation (cm2/s) = $3.9 \\times 10^{-7} - 2.4 \\times 10^{-6}$"
+          },
+          {
+            "value": "1.5 × 10^{-7} - 3.5 × 10^{-6}",
+            "unit": "cm2/s",
+            "state": "delithiation",
+            "method": "GITT",
+            "source_text": "Row 2: Sample name = rGO-g-C3N4-1; De-lithiation (cm2/s) = $1.5 \\times 10^{-7} - 3.5 \\times 10^{-6}$"
+          },
+          {
+            "value": "4.8 × 10^{-7} - 1.7 × 10^{-6}",
+            "unit": "cm2/s",
+            "state": "lithiation",
+            "method": "GITT",
+            "source_text": "Row 3: Sample name = rGO-g-C3N4-2; Lithiation (cm2/s) = $4.8 \\times 10^{-7} - 1.7 \\times 10^{-6}$"
+          },
+          {
+            "value": "1.6 × 10^{-7} - 3.1 × 10^{-6}",
+            "unit": "cm2/s",
+            "state": "delithiation",
+            "method": "GITT",
+            "source_text": "Row 3: Sample name = rGO-g-C3N4-2; De-lithiation (cm2/s) = $1.6 \\times 10^{-7} - 3.1 \\times 10^{-6}$"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In summary, the present study uses the synergistic effect of g mathrm - C 3 mathrm N 4 and rGO to prepare a lithium-ion battery negative electrode material with excellent electrochemical performance a",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 15,
+            "unit": "A/g"
+          },
+          "cycle_number": 10000,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C018"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle",
+        "First_Lithiation_Capacity"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 72.4,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 10000,
+            "source_text": "306.8 mAh/g after 10,000 cycles at 15 A/g current density, with a maximum lithium storage capacity of 423.6 mAh/g"
+          }
+        ],
+        "First_Lithiation_Capacity": [
+          {
+            "value": 423.6,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "maximum lithium storage capacity of 423.6 mAh/g"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

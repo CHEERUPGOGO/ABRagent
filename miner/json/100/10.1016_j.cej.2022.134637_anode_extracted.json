@@ -1,0 +1,287 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.cej.2022.134637.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.cej.2022.134637",
+  "doi": "10.1016/j.cej.2022.134637",
+  "material_id": "10.1016_j.cej.2022.134637",
+  "meta": {
+    "meta_title": "A dual lithiated alloy interphase layer for high-energy–density lithium metal ba",
+    "meta_authors": "Chengwei Ma a , Chengcai Liu a , Yuanxing Zhang a , Xinyu Zhang a , Zhikun Zhao a , Tinglu Song c , Borong Wu a,b,\\* , Daobin Mu a,",
+    "meta_year": "2022"
+  },
+  "materials": [
+    {
+      "name": "TGD/AlMMP3-modified lithium metal anode",
+      "short_name": "TGD/AlMMP-Li",
+      "formula": "Li metal with TGD/AlMMP3 hybrid film",
+      "role": "novel",
+      "description": "Lithium metal surface coated via in situ polymerization with a TGD fluoropolymer film containing AlMMP3 coordination compound particles, forming a hybrid organic‑inorganic interphase layer.",
+      "material_id": "10.1016_j.cej.2022.134637_M001"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [],
+  "n_items": 7,
+  "items": [
+    {
+      "paragraph": "To further investigate the mechanism governing the TGD/AlMMP3- modified interphase’s excellent electrochemical properties, the HOMO–LUMO energy levels were computed from density functional theory DFT ",
+      "property_types": [
+        "Band_Gap"
+      ],
+      "extracted_info": {
+        "Band_Gap": [
+          {
+            "value": 7.25,
+            "unit": "eV",
+            "type": "HOMO-LUMO",
+            "method": "DFT (B3LYP)",
+            "source_text": "the TGD polymer had a larger gap HOMO–LUMO energy gap 7.25 eV than the electrolyte-derived SEI"
+          }
+        ]
+      },
+      "performance_types": [
+        "Ionic_Conductivity_of_SEI"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity_of_SEI": [
+          {
+            "value": 0.0001,
+            "unit": "S/cm",
+            "source_text": "because of its high mathrm conductivity sim 10 - 4 mathrm S - 135"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The performance of the TGD/AlMMP -modified lithium metal anode was evaluated Fig. 4a, and LiLi symmetrical cells with TGD/Al mathrm 3 – mathrm i exhibited stable voltage profiles Figures S5-S6 over 20",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential",
+        "Symmetric_Cell_Cycling_Stability"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 20,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 1.0,
+            "source_text": "a small overpotential 20 mV when the current density was 1 mA mathrm - 2"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 2000,
+            "unit": "h",
+            "condition_id": "C001",
+            "source_text": "exhibited stable voltage profiles Figures S5-S6 over 2000 h"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The TGD/AlMMP3 hybrid film was formed via in situ polymerization on the surface of a lithium metal anode details provided in the Experimental Section in the Supporting Information. As shown in Fig. 1a",
+      "property_types": [
+        "Elemental_Composition",
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "C",
+              "O",
+              "F",
+              "Al",
+              "P"
+            ],
+            "method": "XPS, FTIR, NMR",
+            "source_text": "The TGD polymer film contains the ... moieties ... The Al–O 74.9 eV and Al–O 73.4 eV observed in the Al 2p XPS results and the P–O 133.8 eV and P–O 132.4 eV observed in the P 2p XPS spectrum were attributed to the chemical bonds in AlMMP3. ... TFEMA (a fluoroacrylate monomer) is a component of the polymer backbone."
+          }
+        ],
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "Al-O",
+              "P-O"
+            ],
+            "source_text": "The Al–O 74.9 eV and Al–O 73.4 eV observed in the Al 2p X-ray photoelectron spectroscopy XPS results and the P–O 133.8 eV and P–O 132.4 eV observed in the P 2p XPS spectrum were attributed to the chemical bonds in AlMMP3"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "When the hybrid film comes in contact with lithium metal, the inorganic phase comprising LiF, Al, and mathrm / mathrm 3 mathrm P is formed in the interphase layer. As shown in Fig. 2a-c, after mathbf ",
+      "property_types": [
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "LiF",
+              "Al",
+              "LiP",
+              "Li3P"
+            ],
+            "state": "interphase layer after Ar sputtering for 60 s",
+            "source_text": "As shown in Fig. 2a-c, after Ar sputtering for 60 s, the intensity of C-F3 is weakened compared with that in the surface layer, but the LiF peak 684.8 eV is detected. The peaks at 72.5 and 71.4 eV were attributed to Al, those at 129.7 and 128.6 eV were attributed to LiP, and those at 127.2 and 126.1 eV correspond to Li P."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The conversion of an aluminum coordination compound i.e., Al MMP3 at the interface of a lithium metal anode enabled the construction of a polymer/dual alloy of mathbf mathbf x mathbf - mathbf x mathbf",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C003",
+          "electrode_config": "full_cell",
+          "test_method": "cycling test",
+          "cycle_number": 500
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "unit": "mV or h",
+            "condition_id": "C001",
+            "stable_duration_h": 2000,
+            "overpotential_mV": 20,
+            "source_text": "The LiLi symmetrical cell exhibited ultralow overpotential 20 mV over 2000 h."
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 70,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 500,
+            "source_text": "the LiNCM811 cell demonstrated outstanding capacity retention 70% after 500 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "c） d） Discharge state: （m The LiNMC811cell was used to further evaluate the electrochemical performance of TGD/AlMMP -modified lithium metal anodes. The LiNMC811cell with a pristine Li metal anode exh",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 180,
+            "unit": "mA/g"
+          },
+          "cycle_number": 500,
+          "electrode_config": "full cell Li||NMC811",
+          "test_method": "cycling stability test"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": "0.1-15",
+            "unit": "C"
+          },
+          "electrode_config": "full cell Li||NMC811",
+          "test_method": "rate capability test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 70,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 500,
+            "source_text": "the LiNMC811cell with the mathrm / 3 -modified Li delivered excellent cycle stability over 500 cycles at 1C 70% capacity retention after 500 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In the carbonate electrolyte system, the cell exhibits smaller and more stable overpotential than a pristine-LiLi symmetrical cell over 800 h Figure S8, which indicates that the mathrm / 3 hybrid film",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "electrolyte": "carbonate electrolyte",
+          "electrode_config": "symmetric cell (Li||Li)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C007",
+          "areal_capacity": {
+            "value": 5.0,
+            "unit": "mAh/cm2"
+          },
+          "electrolyte": "carbonate electrolyte",
+          "electrode_config": "symmetric cell (Li||Li)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C008",
+          "electrolyte": "carbonate electrolyte",
+          "electrode_config": "half-cell (Li||Cu)",
+          "reference_electrode": "vs. Li/Li+",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 300
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Plateau_Overpotential",
+        "Li_Nucleation_Overpotential"
+      ],
+      "performance_info": {
+        "Average_Coulombic_Efficiency_Stable_Cycling": {
+          "value": 98.5,
+          "unit": "%",
+          "condition_id": "C003",
+          "source_text": "98.5% average CE over 300 cycles for the hybrid film"
+        },
+        "Plateau_Overpotential": {
+          "value": 90.0,
+          "unit": "mV",
+          "condition_id": "C003",
+          "source_text": "A higher overpotential 90 mV was observed during the first cycle"
+        },
+        "Li_Nucleation_Overpotential": {
+          "value": 6.0,
+          "unit": "mV",
+          "condition_id": "C003",
+          "source_text": "much lower nucleation overpotential 6 mV on TGD/AlMMP3-modified Cu relative to that on bare Cu foil 12 mV"
+        }
+      },
+      "condition_id": "C003"
+    }
+  ]
+}

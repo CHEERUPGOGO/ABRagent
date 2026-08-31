@@ -1,0 +1,635 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s40843-022-2458-y.md",
+  "component": "anode",
+  "paper_id": "10.1007/s40843-022-2458-y",
+  "doi": "10.1007/s40843-022-2458-y",
+  "material_id": "10.1007_s40843-022-2458-y",
+  "meta": {
+    "meta_title": "Nanofiber-interlocked holey graphene composite aerogel with selfadapting mechani",
+    "meta_authors": "Zhixin Feng1 , Lulu Mo1 , Kai Chen1 , Yushan Qian1 , Leiqian Zhang2 , Shengyuan Yang1 , Roohollah Bagherzadeh3 , Feili Lai4 , Wei Fan2 , Chao Zhang1 , Yue-E Miao1* and Tianxi Liu1 ,2*",
+    "meta_year": null
+  },
+  "materials": [
+    {
+      "name": "PI-HGCA (main)",
+      "short_name": "PI-HGCA",
+      "formula": "HGO/GO/PI",
+      "role": "novel",
+      "description": "Main holey graphene oxide/graphene oxide/polyimide nanofiber composite aerogel with HGO:GO mass ratio 2:1 (approx. 67% HGO), used as Li metal host",
+      "material_id": "10.1007_s40843-022-2458-y_M001"
+    },
+    {
+      "name": "PI-GCA",
+      "short_name": "PI-GCA",
+      "formula": "GO/PI",
+      "role": "comparison",
+      "description": "0% HGO composite aerogel made with only GO and PI nanofibers",
+      "material_id": "10.1007_s40843-022-2458-y_M002"
+    },
+    {
+      "name": "PI-HGCA 33%",
+      "short_name": "PI-HGCA 33%",
+      "formula": "HGO/GO/PI (33% HGO)",
+      "role": "comparison",
+      "description": "Composite aerogel with 33% HGO mass ratio in the HGO+GO component, with PI nanofibers",
+      "material_id": "10.1007_s40843-022-2458-y_M003"
+    },
+    {
+      "name": "PI-HGCA 50%",
+      "short_name": "PI-HGCA 50%",
+      "formula": "HGO/GO/PI (50% HGO)",
+      "role": "comparison",
+      "description": "Composite aerogel with 50% HGO mass ratio in the carbon component, with PI nanofibers",
+      "material_id": "10.1007_s40843-022-2458-y_M004"
+    },
+    {
+      "name": "PI-HGCA 100%",
+      "short_name": "PI-HGCA 100%",
+      "formula": "HGO/PI",
+      "role": "comparison",
+      "description": "Composite aerogel with 100% HGO (no GO) in the carbon component, with PI nanofibers",
+      "material_id": "10.1007_s40843-022-2458-y_M005"
+    },
+    {
+      "name": "HGCA",
+      "short_name": "HGCA",
+      "formula": "HGO/GO",
+      "role": "comparison",
+      "description": "Control aerogel made with HGO and GO (2:1 ratio) without PI nanofibers",
+      "material_id": "10.1007_s40843-022-2458-y_M006"
+    }
+  ],
+  "n_materials": 6,
+  "table_items": [],
+  "n_items": 13,
+  "items": [
+    {
+      "paragraph": "The Li deposition processes of the experimental sample PI-HGCA and the control sample PI-GCA were simulated in a 2D model using finite element simulation. Based on the tertiary current distribution in",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": 10.2,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1 M",
+          "test_method": "galvanostatic (simulated)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "LiCu cells were assembled by employing the host as the working electrode and a Li plate as the counter electrode. LiLi symmetric cells were assembled with two hosts that were pre-plated with 10 mathrm",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C003",
+          "electrode_config": "symmetric_cell",
+          "mass_loading": {
+            "value": 10,
+            "unit": "mAh/cm2"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "CE was calculated as the ratio of stripping to plating capacity. To prepare the LFP electrode, LFP, carbon black, and PVDF were mixed in NMP at a weight ratio of 8:1:1 to form a uniform coating on the",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrode_config": "full cell (LFP cathode, Li foil or PI-HGCALi anode)",
+          "electrolyte": "30 μL of unspecified electrolyte",
+          "test_method": "galvanostatic cycling (LAND CT 2001A) and CHI660C electrochemistry workstation"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Kelvin probe force microscopy KPFM was then used to characterize the topographic spatial mappings and the corresponding surface potentials of HG and graphene nanosheets. The surface potential differen",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Li_Nucleation_Overpotential"
+      ],
+      "performance_info": {
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 10,
+            "unit": "mV",
+            "source_text": "A much lower nucleation overpotential is observed for PI-HGCA with an optimized loading amount of HG 10 mathrm compared with that of HGCA 30 mathrm"
+          },
+          {
+            "value": 30,
+            "unit": "mV",
+            "source_text": "A much lower nucleation overpotential is observed for PI-HGCA with an optimized loading amount of HG 10 mathrm compared with that of HGCA 30 mathrm"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In a typical synthesis procedure, 10 mathrm of HGO, 5 mg of GO, and 3 mathrm of PI nanofibers were added to 5 mL deionized water under stirring mathrm 1000 r - 1 , IKA T25 homogenizer for 12 mathrm h ",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "temperature": {
+            "value": -40,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C006",
+          "temperature": {
+            "value": 450,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The in-plane micropores of HGO were examined using transmission electron microscopy TEM, JEM-2100F. The surface and cross-sectional morphology of the samples were obtained using scanning electron micr",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "test_method": "compression testing (universal testing machine)"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [],
+            "method": "XPS (Al Kα source), Raman (532 nm radiation)",
+            "source_text": "The chemical composition was determined using X-ray photoelectron spectroscopy XPS, Thermo Scientific ESCALAB 250Xi equipped with an Al Kα source and Raman spectroscopy Renishaw in Via-Reflex, 532 mathrm radiation."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The stress and geometric deformation of the experimental sample PI-HGCA and the control sample HGCA in the electrochemical deposition process were simulated in a 2D model using finite element simulati",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "youngs_modulus": [
+            {
+              "material": "PI",
+              "value": 4.5,
+              "Poisson_ratio": 0.34,
+              "source_text": "Young’s modulus in the elastic deformation PI region was set as 4.5 : mathrm , and Poisson’s ratio was 0.34."
+            },
+            {
+              "material": "graphene",
+              "value": 1.05,
+              "Poisson_ratio": 0.186,
+              "source_text": "Young’s modulus of graphene was set as 1.05 mathrm , and Poisson’s ratio was 0.186."
+            }
+          ]
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To inspect the interfacial properties of different hosts using alternating current AC impendence tests, symmetric cells of PI-GCALi, HGCALi, and PI-HGCALi were assembled Fig. 3g. Compared with the HGC",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "test_method": "electrochemical impedance spectroscopy (EIS)",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C010",
+          "test_method": "contact angle measurement (sessile drop)",
+          "electrode_config": "anode"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Chemical_Diffusion_Coefficient_of_Li_GITT"
+      ],
+      "performance_info": {
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "value": 4.85e-20,
+            "unit": "cm^2/s",
+            "condition_id": "C001",
+            "material": "PI-HGCA",
+            "source_text": "PI-HGCA has a higher Li-ion diffusion coefficient beginarray 4.85 times 10 - 20 : mathrm 2 : s - 1 endarray"
+          },
+          {
+            "value": 2.17e-20,
+            "unit": "cm^2/s",
+            "condition_id": "C001",
+            "material": "PI-GCA",
+            "source_text": "PI-GCA 2.17 times 10 - 20 thinspace mathrm 2 thinspace mathrm s - 1"
+          },
+          {
+            "value": 4.37e-21,
+            "unit": "cm^2/s",
+            "condition_id": "C001",
+            "material": "HGCA",
+            "source_text": "HGCA 4.37 times 10 - 21 mathsf 2 mathsf s - 1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "CE, defined as the proportion of discharge capacity to charge capacity in each cycle, is a vital parameter for evaluating the reversibility of Li metal plating/stripping. The half cells with different",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": 3.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 98.4,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 350,
+            "source_text": "PI-HGCA exhibited a more stable and higher average CE of 98.4 % for 350 cycles"
+          },
+          {
+            "value": 97.5,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "PI-GCA 97.5 % for 100 cycles"
+          },
+          {
+            "value": 98.0,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 120,
+            "source_text": "PI-HGCA hosts with a lower mass ratio of HG nanosheets of 33 % 98.0 % for 120 cycles"
+          },
+          {
+            "value": 94.2,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "50 % 94.2 % for 200 cycles at 1 mA cm-2 for 1 mAh cm-2"
+          },
+          {
+            "value": 97.0,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "HGCA 97.0 % for 100 cycles"
+          },
+          {
+            "value": 95.0,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 102,
+            "source_text": "PI-HGCA still demonstrates the highest and most stable CE of 95.0 % for 102 cycles among various hosts"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In conclusion, we have proposed a 3D hierarchically porous aerogel host with self-adapting mechanical resilience features through a bidirectional freeze-drying strategy to accommodate the uniform depo",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "cycle_number": 800,
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 98.4,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "relatively high CE of 98.4 % at 1 mathrm mathrm - 2 in half cells"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 87.4,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 800,
+            "source_text": "approximately 87.4 % capacity retention for 800 cycles under 1 C coupled with an LFP cathode in full cells"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "冯之欣1 , 莫璐璐1 , 陈开1 , 钱雨姗1 , 张镭骞2 , 杨升元1 ,Roohollah Bagherzadeh3 , 赖飞立4 , 樊玮2 , 张超1 , 缪月娥1 ,刘天西1,2 摘要 具有最高理论容量的锂金属被认为是下一代高能量密度电池中最有前景的负极, 但长循环过程中的锂枝晶生长和负极的体积膨胀阻碍着其实际应用. 尽管已有研究使用石墨烯气凝胶等三维主体用于容纳锂金属, 但单一的石",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "cycle_number": 1300
+        },
+        {
+          "condition_id": "C016",
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "cycle_number": 800
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Plateau_Overpotential",
+        "Symmetric_Cell_Cycling_Stability",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Plateau_Overpotential": [
+          {
+            "value": 46,
+            "unit": "mV",
+            "condition_id": "C001",
+            "source_text": "预锂化的PI-HGCA负极在对称电池中显示出极低的过电势 46 mathrm"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 1300,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "并具有1300次的长循环寿命"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 81.2,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 800,
+            "source_text": "全电池在1 C下经过800次循环后仍然显示出 81.2 % 的超高容量保持率"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "The full cells with LFP as the cathode and different lithiated electrodes as the anodes were also assembled. As illustrated in Fig. 5d, e, the initial capacity of LFP/PI-HGCALi was recorded to be 135 ",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": "3",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": "8",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle",
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 135,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial capacity of LFP/PI-HGCALi was recorded to be 135 mAh g−1"
+          },
+          {
+            "value": 122,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "LFP/PI-GCALi with an initial capacity of 122 mAh g−1"
+          },
+          {
+            "value": 146,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "areal capacities of LFP/PI-HGCALi range from 146 to 69 mAh g−1 at 0.5 to 8 C"
+          },
+          {
+            "value": 69,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "areal capacities of LFP/PI-HGCALi range from 146 to 69 mAh g−1 at 0.5 to 8 C"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 87.4,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 800,
+            "source_text": "LFP/PI-HGCALi and LFP/PI-GCALi hold a capacity retention of 87.4 % and 40.7 %, respectively"
+          },
+          {
+            "value": 40.7,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 800,
+            "source_text": "LFP/PI-HGCALi and LFP/PI-GCALi hold a capacity retention of ... 40.7 %"
+          },
+          {
+            "value": 34.7,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 300,
+            "source_text": "full cell with an HGCA host could run for only 300 cycles with a capacity retention of 34.7 %"
+          },
+          {
+            "value": 81.2,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "LFP/PI-HGCALi maintains ... the highest capacity retention 81.2 %"
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.6,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "LFP/PI-HGCALi maintains the steadiest long-cycle performance 99.6 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To judge the practical applications of the CA hosts in sym- metrical and full cells, different hosts were deposited with Li metal for 10 mathrm h at 1 mathrm mathrm - 2 , which are denoted as PI-GCALi",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "Li metal deposition on host",
+          "test_method": "electrodeposition"
+        },
+        {
+          "condition_id": "C022",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": 2,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C024",
+          "electrode_config": "symmetric_cell",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 50,
+          "electrode_config": "symmetric_cell",
+          "test_method": "SEM post-cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Symmetric_Cell_Cycling_Stability",
+        "Plateau_Overpotential"
+      ],
+      "performance_info": {
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 1300,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "source_text": "The symmetrical cell with a PI-HGCALi electrode showed an ultra-stable cycling performance during 1300 cycles Fig. 5a at 1 mA cm-2"
+          },
+          {
+            "value": 750,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "source_text": "while PI-GCALi exhibited a stable voltage profile for 750 cycles"
+          },
+          {
+            "value": 380,
+            "unit": "cycles",
+            "condition_id": "C002",
+            "source_text": "and mathrm could run for only approximately 380 cycles before fluctuation"
+          },
+          {
+            "value": 600,
+            "unit": "cycles",
+            "condition_id": "C003",
+            "source_text": "the PI-HGCALi electrode displays a smooth voltage profile over 600 cycles at 2 mA cm-2"
+          }
+        ],
+        "Plateau_Overpotential": [
+          {
+            "value": 46,
+            "unit": "mV",
+            "condition_id": "C002",
+            "source_text": "The low overpotential 46 mV and preeminent voltage polarization reflect the beneficial Li+ migration ability within the PI-HGCALi electrode Fig. 5b."
+          }
+        ]
+      },
+      "condition_id": "C002"
+    }
+  ]
+}

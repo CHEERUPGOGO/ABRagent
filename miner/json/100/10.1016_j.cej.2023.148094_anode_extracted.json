@@ -1,0 +1,1530 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.cej.2023.148094.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.cej.2023.148094",
+  "doi": "10.1016/j.cej.2023.148094",
+  "material_id": "10.1016_j.cej.2023.148094",
+  "meta": {
+    "meta_title": "A novel strategy for designing the lithium powder anode stabilized by electrospu",
+    "meta_authors": "Huihui Gan , Ye Xia , Jiajun Sun , Pengyuan Qiu , Liang Li , Wen Zhu",
+    "meta_year": "2023"
+  },
+  "materials": [
+    {
+      "name": "Lithium powder-electrospun membrane composite anode",
+      "short_name": "LPEM LPA",
+      "formula": "Li (powder) / PVDF-PEO electrospun membrane",
+      "role": "novel",
+      "description": "Lithium powder embedded in a PVDF/PEO electrospun membrane, pressed into a pellet; optimal loading 0.04 g LP in the EM membrane",
+      "material_id": "10.1016_j.cej.2023.148094_M001"
+    },
+    {
+      "name": "Pure lithium powder anode",
+      "short_name": "LPA",
+      "formula": "Li (powder)",
+      "role": "comparison",
+      "description": "Lithium powder pressed into a pellet without any electrospun membrane, used as a control to assess the effect of the EM scaffold",
+      "material_id": "10.1016_j.cej.2023.148094_M002"
+    }
+  ],
+  "n_materials": 2,
+  "table_items": [],
+  "n_items": 17,
+  "items": [
+    {
+      "paragraph": "To study the interfacial stability of LMAs, the Li//Li symmetric cells were assbembled. In comparison with the Li foil anode, the LPEM LPA exhibits a stable voltage with smaller polarization during cy",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric cell Li//Li",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C002",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric cell Li//Li",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The cathode was prepared by mixing of LCO or NCM811, KB and PVDF binder in NMP at a mass ratio of 8:1:1. The mass loading of cathode was about 1.5 mg mathrm - 2 . All the CR-2032 type coin cells were ",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "mass_loading": {
+            "value": 1.5,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "CR-2032 coin cell with cathode (LCO or NCM811) and lithium powder anode",
+          "reference_electrode": "vs. Li/Li+ (lithium powder anode)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The overpotential of Li deposition is an important parameter for studying the nucleation barrier of mathrm on various substrates of LMAs. As shown in Fig. 4a, 4b, the overpotential of LPEM LPA in the ",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "Li//Cu asymmetric cell"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "Li//Cu asymmetric cell"
+        }
+      ],
+      "property_types": [
+        "Exchange_Current_Density"
+      ],
+      "extracted_info": {
+        "Exchange_Current_Density": [
+          {
+            "value": 1.288,
+            "unit": "mA/cm2",
+            "method": "Tafel equation fitting",
+            "source_text": "For LPEM LPA, j0=1.288 mA cm-2"
+          },
+          {
+            "value": 0.052,
+            "unit": "mA/cm2",
+            "method": "Tafel equation fitting",
+            "source_text": "for Li foil anode, j0=0.052 mA cm-2"
+          }
+        ]
+      },
+      "performance_types": [
+        "Li_Nucleation_Overpotential"
+      ],
+      "performance_info": {
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 26,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 0.1,
+            "substrate": "Cu",
+            "source_text": "overpotential of LPEM LPA in the Li//Cu asymmetric cells is 26 mV 0.1 mA cm-2"
+          },
+          {
+            "value": 28,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 0.2,
+            "substrate": "Cu",
+            "source_text": "and 28 mV 0.2 mA cm-2"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Meanwhile, various weight of LP was embedded into the EM to prepared LPEM LPAs. As shown in Fig. S12, the LPEM LPA with 0.04 g LP displays the best electrochemical performance, which is also the lowes",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "mass_loading": {
+            "value": 19.9,
+            "unit": "mg/cm2"
+          }
+        }
+      ],
+      "property_types": [
+        "Theoretical_Specific_Capacity"
+      ],
+      "extracted_info": {
+        "Theoretical_Specific_Capacity": [
+          {
+            "value": 3860,
+            "unit": "mAh/g",
+            "n_electrons": 0,
+            "source_text": "Li metal has a theoretic specific capacity of 3860 mAh/ g"
+          }
+        ]
+      },
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 76.8,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "The optimal loading of 0.04 g in this work gave a specific capacity and areal capacity of ... 76.8 mAh/cm2 ... respectively, in LPEM LPA sample with a diameter of 16 mm."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The interfacial stability was studied by using a “Li//Li” symmetric cell with a constant current density of 0.2 and 0.5 mA mathrm - 2 during Li stripping/plating cycling experiment. The stripping and ",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling (Li stripping/plating), 1 h per half-cycle"
+        },
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling (Li stripping/plating), 1 h per half-cycle"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "min": 0.0,
+            "max": 1.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "asymmetric cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic plating/stripping (predeposition to 0.2 mAh cm⁻², then stripping)"
+        },
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "min": 0.0,
+            "max": 1.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "asymmetric cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic plating/stripping (charge to 0.4 mAh cm⁻², then stripping)"
+        },
+        {
+          "condition_id": "C011",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "cyclic voltammetry (CV) at 0.1 mV s⁻¹, Tafel analysis"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The cathode was prepared by mixing of LCO or NCM811, KB and PVDF binder in NMP at a mass ratio of 8:1:1. The mass loading of cathode was about 1.5 mg mathrm - 2 . All the CR-2032 type coin cells were ",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "mass_loading": {
+            "value": 1.5,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "coin cell (CR-2032) with LCO/NCM811 cathode and lithium powder anode"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To further verify that LPEM LPA can match high energy density and higher working voltages, the layered NCM811 cathode material is used. The Li//NCM811 asymmetric cells assembled with LPEM LPA or Li fo",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 190,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V"
+          },
+          "cycle_number": 0,
+          "mass_loading": {},
+          "electrode_config": "Li//NCM811 asymmetric cell",
+          "test_method": "galvanostatic charge/discharge rate test and cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 198.2,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2.5-4.25 V",
+            "source_text": "discharge specific capacities of LPEM LPA are 198.20.5C"
+          },
+          {
+            "value": 184.2,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2.5-4.25 V",
+            "source_text": "184.21C"
+          },
+          {
+            "value": 166.7,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2.5-4.25 V",
+            "source_text": "166.72C"
+          },
+          {
+            "value": 132.8,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2.5-4.25 V",
+            "source_text": "132.85C"
+          },
+          {
+            "value": 93.5,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2.5-4.25 V",
+            "source_text": "93.510C"
+          },
+          {
+            "value": 190.2,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2.5-4.25 V",
+            "source_text": "discharge specific capacities of Li foil anode are 190.20.5C"
+          },
+          {
+            "value": 177.8,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2.5-4.25 V",
+            "source_text": "177.81C"
+          },
+          {
+            "value": 154.6,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2.5-4.25 V",
+            "source_text": "154.62C"
+          },
+          {
+            "value": 118.3,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2.5-4.25 V",
+            "source_text": "118.35C"
+          },
+          {
+            "value": 62.3,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2.5-4.25 V",
+            "source_text": "62.3 left 10 mathrm C right"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 71.6,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 300,
+            "source_text": "capacity retention rate of 71.6% 0.5C ... after 300 cycles for LPEM LPA"
+          },
+          {
+            "value": 64.8,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 300,
+            "source_text": "64.8% 1C ... after 300 cycles for LPEM LPA"
+          },
+          {
+            "value": 42.4,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 300,
+            "source_text": "capacity retention rate of 42.4% 0.5C ... after 300 cycles for Li foil anode"
+          },
+          {
+            "value": 31.4,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 300,
+            "source_text": "31.4% 1C ... after 300 cycles for Li foil anode"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To study the interfacial stability of LMAs, the Li//Li symmetric cells were assbembled. In comparison with the Li foil anode, the LPEM LPA exhibits a stable voltage with smaller polarization during cy",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "Li//Li symmetric cell",
+          "test_method": "galvanostatic cycling (lithium plating/stripping)"
+        },
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "Li//Li symmetric cell",
+          "test_method": "galvanostatic cycling (lithium plating/stripping)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The electrospun membrane EM was prepared as follow. 0.96 g PVDF and 0.24 g PEO was dissolved in acetone and DMF w/w, 5:5 and the total concentration of two polymers was 12 wt%. After that, the solutio",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "voltage_range": {
+            "min": 13,
+            "max": 13,
+            "unit": "kV"
+          },
+          "electrolyte": "0.96 g PVDF and 0.24 g PEO dissolved in acetone and DMF w/w, 5:5, total polymer concentration 12 wt%",
+          "test_method": "electrospinning and pressing",
+          "electrode_porosity": {
+            "value": 80,
+            "unit": "%"
+          },
+          "electrolyte_uptake": {
+            "value": 280,
+            "unit": "%"
+          },
+          "artificial_sei_thickness": {
+            "value": 4060,
+            "unit": "μm"
+          },
+          "coating_thickness": {
+            "value": 350,
+            "unit": "μm"
+          }
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Li",
+              "O",
+              "C",
+              "F",
+              "H"
+            ],
+            "method": "EDS mapping",
+            "source_text": "Fig. S2 show that the LP has a darker color of O element than Li foil, which indicate that the LP is relatively easy to be oxidized because of its higher surface area exposed to air than Li foil during the energy-dispersive X-ray spectroscopy EDS mapping test. Meanwhile, Fig. S3a, 3b display that EM side of LPEM LPA almost has the same element distribution as the pure EM. Besides, the LP side of LPEM LPA also shows the same element distribution as LP."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The interfacial stability was studied by using a “Li//Li” symmetric cell with a constant current density of 0.2 and 0.5 mA mathrm - 2 during Li stripping/plating cycling experiment. The stripping and ",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric cell (Li//Li)",
+          "test_method": "Li stripping/plating cycling"
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric cell (Li//Li)",
+          "test_method": "Li stripping/plating cycling"
+        },
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "max": 1.0,
+            "unit": "V",
+            "reference": "vs. Li/Li"
+          },
+          "electrode_config": "asymmetric cell",
+          "test_method": "predeposition and stripping"
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "max": 1.0,
+            "unit": "V",
+            "reference": "vs. Li/Li"
+          },
+          "electrode_config": "asymmetric cell",
+          "test_method": "charging and stripping"
+        },
+        {
+          "condition_id": "C021",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "CV (cyclic voltammetry)",
+          "electrode_config": "asymmetric cell (presumed to be the same for Tafel measurement)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The electrospun membrane EM was prepared as follow. 0.96 g PVDF and 0.24 g PEO was dissolved in acetone and DMF w/w, 5:5 and the total concentration of two polymers was 12 wt%. After that, the solutio",
+      "conditions": [
+        {
+          "condition_id": "C022"
+        },
+        {
+          "condition_id": "C022"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Fig. S13. These results indicate that the stable three-dimensional nanofiber network structure provided by the LPEM LPA is beneficial for uniform deposition of Li to prevent the formation of dendrites",
+      "conditions": [
+        {
+          "condition_id": "C023",
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The overpotential of Li deposition is an important parameter for studying the nucleation barrier of mathrm on various substrates of LMAs. As shown in Fig. 4a, 4b, the overpotential of LPEM LPA in the ",
+      "conditions": [
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "Li//Cu asymmetric cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic Li deposition overpotential measurement"
+        },
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "Li//Cu asymmetric cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic Li deposition overpotential measurement"
+        }
+      ],
+      "property_types": [
+        "Exchange_Current_Density"
+      ],
+      "extracted_info": {
+        "Exchange_Current_Density": [
+          {
+            "value": 1.288,
+            "unit": "mA/cm2",
+            "method": "calculated from Tafel equation (η = a + b log j)",
+            "source_text": "For LPEM LPA, j0 = 1.288 mA cm-2, which is 24.7 times higher than the value of j0 = 0.052 mA cm-2 for Li foil anode"
+          },
+          {
+            "value": 0.052,
+            "unit": "mA/cm2",
+            "method": "calculated from Tafel equation (η = a + b log j)",
+            "source_text": "For Li foil anode, j0 = 0.052 mA cm-2"
+          }
+        ]
+      },
+      "performance_types": [
+        "Li_Nucleation_Overpotential"
+      ],
+      "performance_info": {
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 26,
+            "unit": "mV",
+            "condition_id": "C001",
+            "current_density_mA_cm2": 0.1,
+            "substrate": "Cu",
+            "source_text": "the overpotential of LPEM LPA in the Li//Cu asymmetric cells is 26 mV 0.1 mA cm - 2"
+          },
+          {
+            "value": 28,
+            "unit": "mV",
+            "condition_id": "C002",
+            "current_density_mA_cm2": 0.2,
+            "substrate": "Cu",
+            "source_text": "the overpotential of LPEM LPA in the Li//Cu asymmetric cells is 28 mV 0.2 mA cm - 2"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To investigate the practical application of LPEM LPA, the electrochemical performance of Li//LCO or Li//NCM811 asymmetric cells was prepared. The galvanostatic rate capability of Li//LCO asymmetric ce",
+      "conditions": [
+        {
+          "condition_id": "C026",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "electrode_config": "asymmetric cell (Li//LCO)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic rate capability"
+        },
+        {
+          "condition_id": "C027",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "asymmetric cell (Li//LCO)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic rate capability"
+        },
+        {
+          "condition_id": "C028",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "electrode_config": "asymmetric cell (Li//LCO)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic rate capability"
+        },
+        {
+          "condition_id": "C029",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "electrode_config": "asymmetric cell (Li//LCO)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic rate capability"
+        },
+        {
+          "condition_id": "C030",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "10",
+            "unit": "C"
+          },
+          "electrode_config": "asymmetric cell (Li//LCO)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic rate capability"
+        },
+        {
+          "condition_id": "C031",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "20",
+            "unit": "C"
+          },
+          "electrode_config": "asymmetric cell (Li//LCO)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic rate capability"
+        },
+        {
+          "condition_id": "C032",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "electrode_config": "asymmetric cell (Li//LCO)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C033",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "electrode_config": "asymmetric cell (Li//LCO)",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Initial_Coulombic_Efficiency",
+        "First_Lithiation_Capacity",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 162.1,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "LPEM LPA discharge specific capacity at 0.5C: 162.1 mAh g-1"
+          },
+          {
+            "value": 145.3,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Li foil discharge specific capacity at 0.5C: 145.3 mAh g-1"
+          },
+          {
+            "value": 158.0,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "LPEM LPA discharge specific capacity at 1C: 158.0 mAh g-1"
+          },
+          {
+            "value": 141.7,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "Li foil discharge specific capacity at 1C: 141.7 mAh g-1"
+          },
+          {
+            "value": 151.3,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "LPEM LPA discharge specific capacity at 2C: 151.3 mAh g-1"
+          },
+          {
+            "value": 134.7,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "Li foil discharge specific capacity at 2C: 134.7 mAh g-1"
+          },
+          {
+            "value": 138.3,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "LPEM LPA discharge specific capacity at 5C: 138.3 mAh g-1"
+          },
+          {
+            "value": 122.4,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "Li foil discharge specific capacity at 5C: 122.4 mAh g-1"
+          },
+          {
+            "value": 122.2,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "LPEM LPA discharge specific capacity at 10C: 122.2 mAh g-1"
+          },
+          {
+            "value": 108.2,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "Li foil discharge specific capacity at 10C: 108.2 mAh g-1"
+          },
+          {
+            "value": 92.8,
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "LPEM LPA discharge specific capacity at 20C: 92.8 mAh g-1"
+          },
+          {
+            "value": 83.4,
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "Li foil discharge specific capacity at 20C: 83.4 mAh g-1"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 95.1,
+            "unit": "%",
+            "condition_id": "C007",
+            "source_text": "LPEM LPA initial CE at 0.5C: 95.1%"
+          },
+          {
+            "value": 92.1,
+            "unit": "%",
+            "condition_id": "C007",
+            "source_text": "Li foil initial CE at 0.5C: 92.1%"
+          }
+        ],
+        "First_Lithiation_Capacity": [
+          {
+            "value": 162.8,
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "LPEM LPA initial discharge specific capacity at 0.5C: 162.8 mAh g-1"
+          },
+          {
+            "value": 145.0,
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "Li foil initial discharge specific capacity at 0.5C: 145.0 mAh g-1"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 87.5,
+            "unit": "%",
+            "condition_id": "C007",
+            "cycle_number": 300,
+            "source_text": "LPEM LPA capacity retention after 300 cycles at 0.5C: 87.5%"
+          },
+          {
+            "value": 87.0,
+            "unit": "%",
+            "condition_id": "C007",
+            "cycle_number": 300,
+            "source_text": "Li foil capacity retention after 300 cycles at 0.5C: 87.0%"
+          },
+          {
+            "value": 74.9,
+            "unit": "%",
+            "condition_id": "C008",
+            "cycle_number": 1000,
+            "source_text": "LPEM LPA capacity retention after 1000 cycles at 2C: 74.9%"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Meanwhile, various weight of LP was embedded into the EM to prepared LPEM LPAs. As shown in Fig. S12, the LPEM LPA with 0.04 g LP displays the best electrochemical performance, which is also the lowes",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "mass_loading": {
+            "value": 19.9,
+            "unit": "mg/cm2"
+          }
+        }
+      ],
+      "property_types": [
+        "Theoretical_Specific_Capacity"
+      ],
+      "extracted_info": {
+        "Theoretical_Specific_Capacity": [
+          {
+            "value": 3860,
+            "unit": "mAh/g",
+            "n_electrons": 0,
+            "source_text": "Li metal has a theoretic specific capacity of 3860 mAh/ g"
+          }
+        ]
+      },
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 76.8,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "154.4 mAh ... and 76.8 mAh/cm2, respectively, in LPEM LPA sample with a diameter of 16 mm."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To investigate the practical application of LPEM LPA, the electrochemical performance of Li//LCO or Li//NCM811 asymmetric cells was prepared. The galvanostatic rate capability of Li//LCO asymmetric ce",
+      "conditions": [
+        {
+          "condition_id": "C034",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "electrode_config": "Li//LCO asymmetric cell",
+          "test_method": "galvanostatic rate capability"
+        },
+        {
+          "condition_id": "C035",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "Li//LCO asymmetric cell",
+          "test_method": "galvanostatic rate capability"
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "electrode_config": "Li//LCO asymmetric cell",
+          "test_method": "galvanostatic rate capability"
+        },
+        {
+          "condition_id": "C037",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "electrode_config": "Li//LCO asymmetric cell",
+          "test_method": "galvanostatic rate capability"
+        },
+        {
+          "condition_id": "C038",
+          "c_rate_or_current": {
+            "value": "10",
+            "unit": "C"
+          },
+          "electrode_config": "Li//LCO asymmetric cell",
+          "test_method": "galvanostatic rate capability"
+        },
+        {
+          "condition_id": "C039",
+          "c_rate_or_current": {
+            "value": "20",
+            "unit": "C"
+          },
+          "electrode_config": "Li//LCO asymmetric cell",
+          "test_method": "galvanostatic rate capability"
+        },
+        {
+          "condition_id": "C040",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "electrode_config": "Li//LCO asymmetric cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C041",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "electrode_config": "Li//LCO asymmetric cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Initial_Coulombic_Efficiency",
+        "First_Lithiation_Capacity",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 162.1,
+            "unit": "mAh/g",
+            "condition_id": "RC_05C",
+            "source_text": "For LPEM LPA, the discharge specific capacities are 162.10.5C, 158.01C, 151.32C, 138.35C, 122.210C and 92.820C mAh g-1"
+          },
+          {
+            "value": 158.0,
+            "unit": "mAh/g",
+            "condition_id": "RC_1C",
+            "source_text": "For LPEM LPA, the discharge specific capacities are 162.10.5C, 158.01C, 151.32C, 138.35C, 122.210C and 92.820C mAh g-1"
+          },
+          {
+            "value": 151.3,
+            "unit": "mAh/g",
+            "condition_id": "RC_2C",
+            "source_text": "For LPEM LPA, the discharge specific capacities are 162.10.5C, 158.01C, 151.32C, 138.35C, 122.210C and 92.820C mAh g-1"
+          },
+          {
+            "value": 138.3,
+            "unit": "mAh/g",
+            "condition_id": "RC_5C",
+            "source_text": "For LPEM LPA, the discharge specific capacities are 162.10.5C, 158.01C, 151.32C, 138.35C, 122.210C and 92.820C mAh g-1"
+          },
+          {
+            "value": 122.2,
+            "unit": "mAh/g",
+            "condition_id": "RC_10C",
+            "source_text": "For LPEM LPA, the discharge specific capacities are 162.10.5C, 158.01C, 151.32C, 138.35C, 122.210C and 92.820C mAh g-1"
+          },
+          {
+            "value": 92.8,
+            "unit": "mAh/g",
+            "condition_id": "RC_20C",
+            "source_text": "For LPEM LPA, the discharge specific capacities are 162.10.5C, 158.01C, 151.32C, 138.35C, 122.210C and 92.820C mAh g-1"
+          },
+          {
+            "value": 145.3,
+            "unit": "mAh/g",
+            "condition_id": "RC_05C",
+            "source_text": "by using Li foil anode, the discharge specific capacities of Li//LCO asymmetric cells are 145.30.5C, 141.71C, 134.72C, 122.45C, 108.210C and 83.420C mAh g-1"
+          },
+          {
+            "value": 141.7,
+            "unit": "mAh/g",
+            "condition_id": "RC_1C",
+            "source_text": "by using Li foil anode, the discharge specific capacities of Li//LCO asymmetric cells are 145.30.5C, 141.71C, 134.72C, 122.45C, 108.210C and 83.420C mAh g-1"
+          },
+          {
+            "value": 134.7,
+            "unit": "mAh/g",
+            "condition_id": "RC_2C",
+            "source_text": "by using Li foil anode, the discharge specific capacities of Li//LCO asymmetric cells are 145.30.5C, 141.71C, 134.72C, 122.45C, 108.210C and 83.420C mAh g-1"
+          },
+          {
+            "value": 122.4,
+            "unit": "mAh/g",
+            "condition_id": "RC_5C",
+            "source_text": "by using Li foil anode, the discharge specific capacities of Li//LCO asymmetric cells are 145.30.5C, 141.71C, 134.72C, 122.45C, 108.210C and 83.420C mAh g-1"
+          },
+          {
+            "value": 108.2,
+            "unit": "mAh/g",
+            "condition_id": "RC_10C",
+            "source_text": "by using Li foil anode, the discharge specific capacities of Li//LCO asymmetric cells are 145.30.5C, 141.71C, 134.72C, 122.45C, 108.210C and 83.420C mAh g-1"
+          },
+          {
+            "value": 83.4,
+            "unit": "mAh/g",
+            "condition_id": "RC_20C",
+            "source_text": "by using Li foil anode, the discharge specific capacities of Li//LCO asymmetric cells are 145.30.5C, 141.71C, 134.72C, 122.45C, 108.210C and 83.420C mAh g-1"
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 91.8,
+            "unit": "%",
+            "condition_id": "RC_05C",
+            "source_text": "for LPEM LPA, the corresponding CE are 91.8 %, 97.4 %, 99.1 %, 99.6 %, 99.9 % and 100 %, respectively Fig. 5b"
+          },
+          {
+            "value": 97.4,
+            "unit": "%",
+            "condition_id": "RC_1C",
+            "source_text": "for LPEM LPA, the corresponding CE are 91.8 %, 97.4 %, 99.1 %, 99.6 %, 99.9 % and 100 %, respectively Fig. 5b"
+          },
+          {
+            "value": 99.1,
+            "unit": "%",
+            "condition_id": "RC_2C",
+            "source_text": "for LPEM LPA, the corresponding CE are 91.8 %, 97.4 %, 99.1 %, 99.6 %, 99.9 % and 100 %, respectively Fig. 5b"
+          },
+          {
+            "value": 99.6,
+            "unit": "%",
+            "condition_id": "RC_5C",
+            "source_text": "for LPEM LPA, the corresponding CE are 91.8 %, 97.4 %, 99.1 %, 99.6 %, 99.9 % and 100 %, respectively Fig. 5b"
+          },
+          {
+            "value": 99.9,
+            "unit": "%",
+            "condition_id": "RC_10C",
+            "source_text": "for LPEM LPA, the corresponding CE are 91.8 %, 97.4 %, 99.1 %, 99.6 %, 99.9 % and 100 %, respectively Fig. 5b"
+          },
+          {
+            "value": 100.0,
+            "unit": "%",
+            "condition_id": "RC_20C",
+            "source_text": "for LPEM LPA, the corresponding CE are 91.8 %, 97.4 %, 99.1 %, 99.6 %, 99.9 % and 100 %, respectively Fig. 5b"
+          },
+          {
+            "value": 94.4,
+            "unit": "%",
+            "condition_id": "RC_05C",
+            "source_text": "for Li foil anode, the corresponding CE are 94.4 %, 98.2 %, 99.4 %, 99.7 %, 99.8 % and 99.9 %, respectively Fig. S8"
+          },
+          {
+            "value": 98.2,
+            "unit": "%",
+            "condition_id": "RC_1C",
+            "source_text": "for Li foil anode, the corresponding CE are 94.4 %, 98.2 %, 99.4 %, 99.7 %, 99.8 % and 99.9 %, respectively Fig. S8"
+          },
+          {
+            "value": 99.4,
+            "unit": "%",
+            "condition_id": "RC_2C",
+            "source_text": "for Li foil anode, the corresponding CE are 94.4 %, 98.2 %, 99.4 %, 99.7 %, 99.8 % and 99.9 %, respectively Fig. S8"
+          },
+          {
+            "value": 99.7,
+            "unit": "%",
+            "condition_id": "RC_5C",
+            "source_text": "for Li foil anode, the corresponding CE are 94.4 %, 98.2 %, 99.4 %, 99.7 %, 99.8 % and 99.9 %, respectively Fig. S8"
+          },
+          {
+            "value": 99.8,
+            "unit": "%",
+            "condition_id": "RC_10C",
+            "source_text": "for Li foil anode, the corresponding CE are 94.4 %, 98.2 %, 99.4 %, 99.7 %, 99.8 % and 99.9 %, respectively Fig. S8"
+          },
+          {
+            "value": 99.9,
+            "unit": "%",
+            "condition_id": "RC_20C",
+            "source_text": "for Li foil anode, the corresponding CE are 94.4 %, 98.2 %, 99.4 %, 99.7 %, 99.8 % and 99.9 %, respectively Fig. S8"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 95.1,
+            "unit": "%",
+            "condition_id": "Cyc_05C_25C",
+            "source_text": "The initial discharge specific capacity and CE of LPEM LPA are 162.8 mAh g-1 and 95.1 %, respectively"
+          },
+          {
+            "value": 92.1,
+            "unit": "%",
+            "condition_id": "Cyc_05C_25C",
+            "source_text": "which are higher than that of Li foil anode 145.0 mAh g-1 and 92.1 % at 0.5C"
+          }
+        ],
+        "First_Lithiation_Capacity": [
+          {
+            "value": 162.8,
+            "unit": "mAh/g",
+            "condition_id": "Cyc_05C_25C",
+            "source_text": "The initial discharge specific capacity and CE of LPEM LPA are 162.8 mAh g-1 and 95.1 %, respectively"
+          },
+          {
+            "value": 145.0,
+            "unit": "mAh/g",
+            "condition_id": "Cyc_05C_25C",
+            "source_text": "which are higher than that of Li foil anode 145.0 mAh g-1 and 92.1 % at 0.5C"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 87.5,
+            "unit": "%",
+            "condition_id": "Cyc_05C_25C",
+            "cycle_number": 300,
+            "source_text": "After 300 cycles, the discharge specific capacity and capacity retention of LPEM LPA are 142.5 mAh g-1 and 87.5 %, respectively"
+          },
+          {
+            "value": 87.0,
+            "unit": "%",
+            "condition_id": "Cyc_05C_25C",
+            "cycle_number": 300,
+            "source_text": "which still remain higher than that of Li foil anode 126.2 mAh g-1 and 87.0 % at 0.5C"
+          },
+          {
+            "value": 74.9,
+            "unit": "%",
+            "condition_id": "Cyc_2C_25C",
+            "cycle_number": 1000,
+            "source_text": "after 1000 cycles at 2C, the discharge specific capacity and capacity retention of LPEM LPA are 112.0 mAh g-1 and 74.9 %, respectively"
+          }
+        ]
+      },
+      "condition_id": "Cyc_05C_25C"
+    },
+    {
+      "paragraph": "To further verify that LPEM LPA can match high energy density and higher working voltages, the layered NCM811 cathode material is used. The Li//NCM811 asymmetric cells assembled with LPEM LPA or Li fo",
+      "conditions": [
+        {
+          "condition_id": "C042",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 95,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C043",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 190,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C044",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 380,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C045",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 950,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C046",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 1900,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic charge/discharge"
+        },
+        {
+          "condition_id": "C047",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 95,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 300,
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C048",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 190,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 300,
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Capacity_Retention_at_Nth_Cycle"
+      ],
+      "performance_info": {
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 198.2,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2.5–4.25 V",
+            "source_text": "the discharge specific capacities of LPEM LPA are 198.2 0.5C, 184.2 1C, 166.7 2C, 132.8 5C and 93.5 10C mAh g⁻¹"
+          },
+          {
+            "value": 184.2,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "voltage_range": "2.5–4.25 V",
+            "source_text": "the discharge specific capacities of LPEM LPA are 198.2 0.5C, 184.2 1C, 166.7 2C, 132.8 5C and 93.5 10C mAh g⁻¹"
+          },
+          {
+            "value": 166.7,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "voltage_range": "2.5–4.25 V",
+            "source_text": "the discharge specific capacities of LPEM LPA are 198.2 0.5C, 184.2 1C, 166.7 2C, 132.8 5C and 93.5 10C mAh g⁻¹"
+          },
+          {
+            "value": 132.8,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "voltage_range": "2.5–4.25 V",
+            "source_text": "the discharge specific capacities of LPEM LPA are 198.2 0.5C, 184.2 1C, 166.7 2C, 132.8 5C and 93.5 10C mAh g⁻¹"
+          },
+          {
+            "value": 93.5,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "voltage_range": "2.5–4.25 V",
+            "source_text": "the discharge specific capacities of LPEM LPA are 198.2 0.5C, 184.2 1C, 166.7 2C, 132.8 5C and 93.5 10C mAh g⁻¹"
+          },
+          {
+            "value": 190.2,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "voltage_range": "2.5–4.25 V",
+            "source_text": "the discharge specific capacities of Li foil anode are 190.2 0.5C, 177.8 1C, 154.6 2C, 118.3 5C and 62.3 10C mAh g⁻¹"
+          },
+          {
+            "value": 177.8,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "voltage_range": "2.5–4.25 V",
+            "source_text": "the discharge specific capacities of Li foil anode are 190.2 0.5C, 177.8 1C, 154.6 2C, 118.3 5C and 62.3 10C mAh g⁻¹"
+          },
+          {
+            "value": 154.6,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "voltage_range": "2.5–4.25 V",
+            "source_text": "the discharge specific capacities of Li foil anode are 190.2 0.5C, 177.8 1C, 154.6 2C, 118.3 5C and 62.3 10C mAh g⁻¹"
+          },
+          {
+            "value": 118.3,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "voltage_range": "2.5–4.25 V",
+            "source_text": "the discharge specific capacities of Li foil anode are 190.2 0.5C, 177.8 1C, 154.6 2C, 118.3 5C and 62.3 10C mAh g⁻¹"
+          },
+          {
+            "value": 62.3,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "voltage_range": "2.5–4.25 V",
+            "source_text": "the discharge specific capacities of Li foil anode are 190.2 0.5C, 177.8 1C, 154.6 2C, 118.3 5C and 62.3 10C mAh g⁻¹"
+          }
+        ],
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.4,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the corresponding CE are 99.4 %, 99.6 %, 99.9 %, 99.9 % and 99.9 % for LPEM LPA"
+          },
+          {
+            "value": 99.6,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "the corresponding CE are 99.4 %, 99.6 %, 99.9 %, 99.9 % and 99.9 % for LPEM LPA"
+          },
+          {
+            "value": 99.9,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "the corresponding CE are 99.4 %, 99.6 %, 99.9 %, 99.9 % and 99.9 % for LPEM LPA"
+          },
+          {
+            "value": 99.9,
+            "unit": "%",
+            "condition_id": "C004",
+            "source_text": "the corresponding CE are 99.4 %, 99.6 %, 99.9 %, 99.9 % and 99.9 % for LPEM LPA"
+          },
+          {
+            "value": 99.9,
+            "unit": "%",
+            "condition_id": "C005",
+            "source_text": "the corresponding CE are 99.4 %, 99.6 %, 99.9 %, 99.9 % and 99.9 % for LPEM LPA"
+          },
+          {
+            "value": 97.9,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the corresponding CE are 97.9 %, 99.0 %, 99.5 %, 99.7 % and 99.7 % for Li foil anode"
+          },
+          {
+            "value": 99.0,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "the corresponding CE are 97.9 %, 99.0 %, 99.5 %, 99.7 % and 99.7 % for Li foil anode"
+          },
+          {
+            "value": 99.5,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "the corresponding CE are 97.9 %, 99.0 %, 99.5 %, 99.7 % and 99.7 % for Li foil anode"
+          },
+          {
+            "value": 99.7,
+            "unit": "%",
+            "condition_id": "C004",
+            "source_text": "the corresponding CE are 97.9 %, 99.0 %, 99.5 %, 99.7 % and 99.7 % for Li foil anode"
+          },
+          {
+            "value": 99.7,
+            "unit": "%",
+            "condition_id": "C005",
+            "source_text": "the corresponding CE are 97.9 %, 99.0 %, 99.5 %, 99.7 % and 99.7 % for Li foil anode"
+          }
+        ],
+        "Capacity_Retention_at_Nth_Cycle": [
+          {
+            "value": 71.6,
+            "unit": "%",
+            "condition_id": "C006",
+            "cycle_number": 300,
+            "source_text": "high discharge specific capacities of 142.7 0.5C and 120.3 1C with a capacity retention rate of 71.6 % 0.5C and 64.8 % 1C are maintained after 300 cycles for LPEM LPA"
+          },
+          {
+            "value": 64.8,
+            "unit": "%",
+            "condition_id": "C007",
+            "cycle_number": 300,
+            "source_text": "high discharge specific capacities of 142.7 0.5C and 120.3 1C with a capacity retention rate of 71.6 % 0.5C and 64.8 % 1C are maintained after 300 cycles for LPEM LPA"
+          },
+          {
+            "value": 42.4,
+            "unit": "%",
+            "condition_id": "C006",
+            "cycle_number": 300,
+            "source_text": "for commercial Li foil anode, the discharge specific capacities are only 83.6 0.5C and 57.7 1C with a capacity retention rate of 42.4 % 0.5C and 31.4 % 1C, respectively, after 300 cycles"
+          },
+          {
+            "value": 31.4,
+            "unit": "%",
+            "condition_id": "C007",
+            "cycle_number": 300,
+            "source_text": "for commercial Li foil anode, the discharge specific capacities are only 83.6 0.5C and 57.7 1C with a capacity retention rate of 42.4 % 0.5C and 31.4 % 1C, respectively, after 300 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

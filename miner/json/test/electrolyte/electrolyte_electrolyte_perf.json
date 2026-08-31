@@ -1,0 +1,67 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/electrolyte/electrolyte.md",
+  "doi": "electrolyte",
+  "title": "Superwettable Electrolyte Engineering for Fast Charging Li-Ion Batteries",
+  "agent_mode": "electrolyte-perf",
+  "materials": [
+    {
+      "name": "1M LiPF6 in EC/DMC (3:7 by weight)",
+      "short_name": "1M LiPF6 EC/DMC",
+      "formula": "1M LiPF6 EC/DMC (3:7)",
+      "role": "baseline",
+      "description": "Standard concentration electrolyte with 1M LiPF6 salt",
+      "material_id": "electrolyte_M001"
+    },
+    {
+      "name": "0.02M LiPF6 in EC/DMC (3:7 by weight)",
+      "short_name": "0.02M LiPF6 EC/DMC",
+      "formula": "0.02M LiPF6 EC/DMC (3:7)",
+      "role": "comparison",
+      "description": "Low concentration electrolyte with 0.02M LiPF6 salt",
+      "material_id": "electrolyte_M002"
+    },
+    {
+      "name": "0M LiPF6 in EC/DMC (3:7 by weight)",
+      "short_name": "0M LiPF6 EC/DMC",
+      "formula": "0M LiPF6 EC/DMC (3:7)",
+      "role": "comparison",
+      "description": "Pure solvent electrolyte with no LiPF6 salt",
+      "material_id": "electrolyte_M003"
+    }
+  ],
+  "results": [
+    {
+      "material_id": "electrolyte_M003",
+      "material_name": "0M LiPF6 in EC/DMC (3:7 by weight)",
+      "material_context": "comparison: 0M LiPF6 in EC/DMC (3:7 by weight) (0M LiPF6 EC/DMC (3:7))",
+      "condition_id_used": "C001",
+      "performance_items": []
+    },
+    {
+      "material_id": "electrolyte_M002",
+      "material_name": "0.02M LiPF6 in EC/DMC (3:7 by weight)",
+      "material_context": "comparison: 0.02M LiPF6 in EC/DMC (3:7 by weight) (0.02M LiPF6 EC/DMC (3:7))",
+      "condition_id_used": "C001",
+      "performance_items": []
+    },
+    {
+      "material_id": "electrolyte_M001",
+      "material_name": "1M LiPF6 in EC/DMC (3:7 by weight)",
+      "material_context": "baseline: 1M LiPF6 in EC/DMC (3:7 by weight) (1M LiPF6 EC/DMC (3:7))",
+      "condition_id_used": "C001",
+      "performance_items": [
+        {
+          "paragraph": "# Characterization  The cycling performance and rate capability of graphite||NMC811 full cells with an areal capacity of approximately 1.5 mAh cm−2 and a negative/positive (N/P) ratio of \\~1.1 in diff",
+          "include_result": {
+            "property_types": [
+              "[]"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        }
+      ]
+    }
+  ]
+}

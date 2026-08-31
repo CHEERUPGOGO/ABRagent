@@ -1,0 +1,1468 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1002_slct.202204575.md",
+  "component": "cathode",
+  "paper_id": "10.1002/slct.202204575",
+  "doi": "10.1002/slct.202204575",
+  "material_id": "10.1002_slct.202204575",
+  "meta": {
+    "meta_title": "Research Progress of Cathode Materials for Rechargeable Aluminum Batteries in $\\",
+    "meta_authors": "Boya Zhang, $^{[a]}$ Wenyang Zhang, $^{*[b]}$ Huixin Jin, $^{[c]}$ and Jiaqi Wan $^{*[a]}$",
+    "meta_year": "2023"
+  },
+  "materials": [
+    {
+      "name": "cathode material",
+      "short_name": "10.1002_slct.202204575",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1002_slct.202204575"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [
+    "TABLE DATA BLOCK\nRows:\nRow 1: Electrolytes; Cathode Materials; Current Density [mA g-1]; Initial Specific Capacity [mAh g-1]; Specific capacity after stabilization [mAh g-1]; Ref.\nRow 2: AICI3/DMPrICI; Graphite; 1; ×; 40; [35]\nRow 3: AICI3/BPC; Polyaniline; 0.1; ×; 68; [40]\nRow 4: AICI3/[bim][Br]; Fluorinated natural graphite; 60; ×; 225; [21]\nRow 5: AICI3/dipropyl sulfone and toluene; Amorphous V2O5/C com- posite; ×; 150 (In C/20); 100 (In C/20); [31]\nRow 6: AICI3/[BMIm]Cl; V2O5nanowires; ×; 288; 130; [41]\nRow 7: Ni-V2O5; ×; 239; ×; [42]\nRow 8: AICI3/[EMIm]Cl; 3D foam graphite; 4000; 60; 60; [34]\nRow 9: Commercial carbon pa- per; 50; ×; 84.55; [37]\nRow 10: pyrolytic graphite; 12000; ×; 60; [52]\nRow 11: graphene aerogel; 100; ×; 116; [53]\nRow 12: MOF-derived carbon; 5000; ×; 98; [54]\nRow 13: Ultrasonic graphite flakes; 100; ×; 140; [55]\nRow 14: AEG; 4000; ×; 88; [56]\nRow 15: BEG; 4000; ×; 110; [56]\nRow 16: PM-CuO; 200; ×; 112; [58]\nRow 17: Co3O4@MWCNTs; 100; 266; 125; [59]\nRow 18: Ni3S2@graphene; 100; 350; 60; [61]\nRow 19: NiS; 200; ×; 140; [62]\nRow 20: G-SnS2; 100; ×; 112; [63]\nRow 21: Co9S8@CNT-CNF; 100; 315; 297; [64]\nRow 22: ; 6000; ×; 87; \nRow 23: S/Co@CNFs; 200; ×; 80; [65]\nRow 24: ; 500; ×; 74; \nRow 25: SnSe; 300; 582; 107; [66]\nRow 26: Sb2Se3@N-RGO; 500; 343; 120; [67]\nRow 27: 3DOM CoSe2@C-190; 1000; 400; ×; \nRow 28: ; 2000; ×; 125; [68]\nRow 29: CoTe2@N-PC; 200; 635.8; 168.6; [69]\nRow 30: NiTe; 200; 570; ×; [70]\nRow 31: ; 500; ×; 307; \nRow 32: Bi2Te3/Sb2Te3; 1000; ×; 203; [71]\nRow 33: ; 5000; ×; 101; \nRow 34: CuPc@G; 320; ×; 110; [72]\nRow 35: PAHs; 100; ×; ×; [73]\nRow 36: Co3Sn2@GO; 200; 130; ×; [75]"
+  ],
+  "n_items": 32,
+  "items": [
+    {
+      "paragraph": "Rani et al.21 found that the ionic liquid electrolyte with 0.5 to 1 molar ratio of mathrmAlCl3 / mathrmbimmathrmBr had an effective electrochemical insertion and dissolution of aluminum. During the di",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "electrolyte": "ionic liquid electrolyte with 0.5 to 1 molar ratio of AlCl3 / bimBr"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The cyclic voltammogram at a sweep rate of 10mathrmmVs-1 shows that the battery had a high degree of reversibility from 0 - 1.5mathrmV at room temperature. In Figure 1a, the CV presented three cathodi",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0,
+            "max": 1.5,
+            "unit": "V"
+          },
+          "cycle_number": 20,
+          "test_method": "Cyclic Voltammetry at 10 mV/s"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "As seen in Figure 1b, the constant current charge/discharge test of the battery at a current of 60mathrmmAmathrmg-1 and a voltage of 0.2 - 1.5mathrmV , indicating the intermediate potential is about 0",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": 60,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 0.2,
+            "max": 1.5,
+            "unit": "V"
+          },
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Initial_Coulombic_Efficiency",
+        "Nominal_Discharge_Voltage"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 225,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "capacity after stabilization is 225 mAh g-1"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 75,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "with a Coulombic efficiency of 75%"
+          }
+        ],
+        "Nominal_Discharge_Voltage": [
+          {
+            "value": 0.65,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "indicating the intermediate potential is about 0.65 V"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In 1985, Gifford et al.35 reported the discovery of a 1,2-dimethyl-3-propylimidazolium chloride DMPrICI and mathrmAlCl3 molten salt electrolyte. The research reported that DMPrICI and mathrmAlCl3 ioni",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "electrolyte": "1,2-dimethyl-3-propylimidazolium chloride (DMPrICI) and AlCl3 molten salt, molar ratio 1.5:1",
+          "electrode_config": "full_cell",
+          "test_method": "cycling, 100% depth-of-discharge",
+          "cycle_number": 195
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Average_Discharge_Voltage"
+      ],
+      "performance_info": {
+        "Average_Discharge_Voltage": [
+          {
+            "value": 1.7,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "average discharge voltage of 1.7mathrmV"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Wang et al.41 studied the use of halogenated aluminate-containing ionic liquids prepared from halogenated imidazole salts and aluminum trichloride in 1.1:1 molar ratio for aluminum-ion battery. Throug",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "electrolyte": "AlCl3/BMImCl ionic liquid, 1.1:1 molar ratio",
+          "electrode_config": "aluminum battery (full cell with V2O5 nanowires cathode and Al anode)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 288,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "Literature studies have shown that aluminum batteries with mathrmV2mathrmO5 nanowires cathode and mathrmAlCl3 / mathrmBMImmathrmCl ionic liquid as the electrolyte have an initial capacity of 288mathrmmAhg-1, exhibiting a very competitive electrochemical performance."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "A binder-free and self-supporting material was designed by Wang et al.30 using nickel foam as the current collector and mathrmV2mathrmO5 , which was directly deposited on nickel foam, as cathode mater",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Nominal_Discharge_Voltage"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 239,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial discharge capacity is as high as 239mathrmmAhg-1"
+          }
+        ],
+        "Nominal_Discharge_Voltage": [
+          {
+            "value": 0.6,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "voltage plateau at 0.6mathrmV"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In 1993, Koura et al.40 studied a battery with polyaniline as positive and negative electrodes in an mathrmAlCl3/mathrmBPC electrolyte system. The cyclic voltammogram of mathrmAlCl3/mathrmBPC conclude",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "electrolyte": "AlCl3/BPC",
+          "test_method": "Cyclic voltammetry",
+          "cycle_number": 10,
+          "electrode_config": "symmetric_cell"
+        },
+        {
+          "condition_id": "C008",
+          "electrolyte": "AlCl3/BPC",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "mA/g"
+          },
+          "test_method": "Galvanostatic charge/discharge",
+          "electrode_config": "Al/PAnts battery"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Nominal_Discharge_Voltage",
+        "Discharge_Specific_Capacity_Initial",
+        "Initial_Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Nominal_Discharge_Voltage": [
+          {
+            "value": 1.6,
+            "unit": "V",
+            "condition_id": "C002",
+            "source_text": "open circuit voltage of 1.6 V"
+          }
+        ],
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 68,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "discharge capacity of 68 mAh g-1"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 99,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "charge/discharge efficiency of 99%"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "A detailed study of the reversible storage of mathrmAl3 in mathrmV2mathrmO5 has been published by Gu et al.42 in 2016. The article mentioned that the morphological characterization indicates the embed",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "electrolyte": "AlCl3:BMImCl 1.5:1"
+        }
+      ],
+      "property_types": [
+        "Theoretical_Specific_Capacity"
+      ],
+      "extracted_info": {
+        "Theoretical_Specific_Capacity": [
+          {
+            "value": 193,
+            "unit": "mAh/g",
+            "n_electrons": 0,
+            "source_text": "theoretical specific capacity reached 193mathrmmAhg-1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In 2015, Chiku et al.31 from Osaka Prefectural University reported a rechargeable aluminum battery with mixing mathrmAlCl3 , dipropyl sulfone and toluene molar ratio of 1:10:5 as the electrolyte, moly",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": "C/40",
+            "unit": "C"
+          },
+          "electrolyte": "AlCl3 + dipropyl sulfone + toluene (molar ratio 1:10:5)",
+          "electrode_config": "Al-ion cell with amorphous V2O5/C positive electrode and Mo current collector; Al electrodeposited on Mo as negative electrode",
+          "test_method": "galvanostatic charge-discharge cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": {
+          "value": ">200",
+          "unit": "mAh/g",
+          "condition_id": "C001",
+          "source_text": "maximum discharge capacity of the rechargeable aluminum battery with the amorphous vanadium oxide/carbon composite as the positive electrode exceeded 200 mAh g-1 at the discharge rate of C/40"
+        }
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In 2011, Archer and Jayaprakash et al.33 reported a new aluminum ion battery system, which has formally established the research system and direction of aluminum ion batteries in recent years. Appropr",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "electrolyte": "AlCl3/EMImCl molar ratio 1:1:1",
+          "cycle_number": 20,
+          "electrode_config": "full_cell",
+          "test_method": "constant current cycling and cyclic voltammetry"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Nominal_Discharge_Voltage"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 305,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial specific capacity of 305 mAhg-1"
+          }
+        ],
+        "Nominal_Discharge_Voltage": [
+          {
+            "value": 1.8,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "open circuit voltage of 1.8 V"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In the same period, Jiaos group37 reported similar scientific results. They assembled a battery by using commercial carbon paper as cathode, aluminum foil as anode and an mathrmAlCl3/ EMImCl molar rat",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "electrolyte": "AlCl3/EMImCl molar ratio 1.3:1 ionic liquid",
+          "electrode_config": "full-cell (carbon paper cathode, Al foil anode)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Nominal_Discharge_Voltage",
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Nominal_Discharge_Voltage": [
+          {
+            "value": 1.8,
+            "unit": "V",
+            "condition_id": "C001",
+            "reference": "vs. Al/Al3+",
+            "source_text": "operating voltage of 1.8mathrmV"
+          }
+        ],
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 90,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "a capacity of 90mathrmmAhg-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In 2015, Dai et al.34 developed an aluminum ion battery with three-dimensional foam graphite and aluminum as electrode material and mathrmAlCl3 / mathrmEMImmathrmCl as electrolyte. This electrolyte is",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 4,
+            "unit": "A/g"
+          },
+          "electrolyte": "AlCl3/EMImCl",
+          "cycle_number": 7500,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Nominal_Discharge_Voltage",
+        "Capacity_Retention_Ratio",
+        "Gravimetric_Energy_Density"
+      ],
+      "performance_info": {
+        "Nominal_Discharge_Voltage": [
+          {
+            "value": 2,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "This battery demonstrated a high discharge voltage plateau of about 2mathrmV"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 100,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 7500,
+            "source_text": "cycling stability that kept the capacity unchanged after nearly 7500 cycles"
+          }
+        ],
+        "Gravimetric_Energy_Density": [
+          {
+            "value": 40,
+            "unit": "Wh/kg",
+            "condition_id": "C001",
+            "source_text": "At the high current density of 4mathrmAg-1 , the energy density can reach 40mathrmWhkg-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Also targeting graphite material modification are Liu et al.55 They prepared a binder-free cathode by dripping ultrasonic graphite flakes onto carbon fiber cloth, and improved the electrochemical prop",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 3000,
+            "unit": "mA/g"
+          },
+          "cycle_number": 300
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 140,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "high discharge capacity of 140 mAh g-1 at 100 mA g-1"
+          },
+          {
+            "value": 60,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "even at 3000 mA g-1, it can still maintain 60 mAh g-1 after 300 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "DFT calculation results showed that gradient doping of nitrogen and phosphorus can change the electronic structure of MOF-derived carbon in the study by Li et al.53 The experimental research method is",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 5,
+            "unit": "A/g"
+          },
+          "cycle_number": 2500,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_Profile"
+      ],
+      "performance_info": {
+        "Rate_Capability_Profile": [
+          {
+            "value": [
+              98
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "specific capacity of 98 mAh g-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Zhang et al.58 successfully prepared porous microspherical CuO PM-CuO, and this study demonstrated the potential of CuO as a cathode material for AlBs. As seen in Figure 2d, 2e, 2f, the porous structu",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          },
+          "cycle_number": 1
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g"
+          },
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 250,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "first discharge specific capacity of 250 mAh g-1 at 50 mA g-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "As shown in Figure 1c, Dai et al.52 investigated the use of pyrolytic graphite as a cathode material for aluminum ion battery by embedding mathrmAlCl4- between the layers of the material, and then cal",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 12000,
+            "unit": "mA/g"
+          },
+          "cycle_number": 4000
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 60,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the specific capacity was almost stable around 60 mAh g−1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Xiao et al.59 published a study in 2019 using mathrmCo3mathrmO4 as a cathode material for aluminum ion battery. mathrmCo3mathrmO4mathrmMWCNTs were prepared by calcination of precursor ZIF-67 and multi",
+      "conditions": [
+        {
+          "condition_id": "C020",
+          "cycle_number": 150
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 266,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The initial discharge-specific capacity was 266 mAh g-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Graphene is one of the carbon materials, which was prepared to be graphene aerogel as the cathode in the study by Gao et al.54 They designed the battery which had a specific capacity of 100mathrmmAhg-",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "cycle_number": 25000
+        },
+        {
+          "condition_id": "C022",
+          "temperature": {
+            "value": 100,
+            "unit": "C"
+          },
+          "cycle_number": 45000
+        },
+        {
+          "condition_id": "C023",
+          "temperature": {
+            "value": -40,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C024",
+          "temperature": {
+            "value": -30,
+            "unit": "C"
+          },
+          "cycle_number": 1000,
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "A/g"
+          }
+        },
+        {
+          "condition_id": "C025",
+          "temperature": {
+            "value": -30,
+            "unit": "C"
+          },
+          "cycle_number": 1000,
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Nominal_Discharge_Voltage",
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 100,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "specific capacity of 100 mAh g⁻¹"
+          }
+        ],
+        "Nominal_Discharge_Voltage": [
+          {
+            "value": 1.95,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "discharge voltage plateau of 1.95 V"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 97,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 25000,
+            "source_text": "a high-capacity retention rate of 97% after 25,000 cycles"
+          },
+          {
+            "value": 55,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 0,
+            "source_text": "maintaining more than 55% capacity even at −40°C"
+          },
+          {
+            "value": 100,
+            "unit": "%",
+            "condition_id": "C004",
+            "cycle_number": 1000,
+            "source_text": "has a capacity retention rate of 100% after 1000 cycles at 0.2 A g⁻¹"
+          },
+          {
+            "value": 100,
+            "unit": "%",
+            "condition_id": "C005",
+            "cycle_number": 1000,
+            "source_text": "has a capacity retention rate of 100% after 1000 cycles at 0.5 A g⁻¹"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Graphite was also used as a modification target in the study by Kim et al.56 They studied both acid-treated expanded graphite and substrate-etched graphite for rechargeable aluminum ion battery and fo",
+      "conditions": [
+        {
+          "condition_id": "C026",
+          "c_rate_or_current": {
+            "value": 4.0,
+            "unit": "A/g"
+          },
+          "electrolyte": "chloroaluminate-based",
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C027",
+          "c_rate_or_current": {
+            "value": 10.0,
+            "unit": "A/g"
+          },
+          "cycle_number": 10000,
+          "electrolyte": "chloroaluminate-based",
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Initial_Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 88,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "acid-treated expanded graphite exhibited a specific capacity of 88 mAh/g at current density of 4 A/g"
+          },
+          {
+            "value": 80,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "even at a high current density of 10 A/g, the battery cycles 10,000 times stably and maintains a specific capacity of 80 mAh/g"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 99.1,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "maintains a specific capacity of 80 mAh/g with a Coulombic efficiency of 99.1%"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Zhang et al.66 applied single-crystal SnSe for the first time as cathode material in aluminum ion battery, and the initial discharge ratio capacity was 582mathrmmAhg-1 at 0.3mathrmAg-1 , and retain at",
+      "conditions": [
+        {
+          "condition_id": "C028",
+          "c_rate_or_current": {
+            "value": 0.3,
+            "unit": "A/g"
+          },
+          "cycle_number": 100
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 582,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "the initial discharge ratio capacity was 582mAhg-1 at 0.3Ag-1"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 18.38,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "retain at 107mAhg-1 after 100 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In 2016, Wang et al.61 reported the preparation of nickel-based sulfides mathrmNi3mathrmS2 and graphene into composites for use as cathode materials for aluminum ion batteries. The mathrmNi3mathrmS2 -",
+      "conditions": [
+        {
+          "condition_id": "C029",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 0.1,
+            "max": 2.0,
+            "unit": "V",
+            "reference": "Al/Al3+"
+          },
+          "electrolyte": "EMImCl/AlCl3",
+          "cycle_number": 100,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Al/Al3+",
+          "test_method": "galvanostatic charge-discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 350,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The battery delivered an initial discharge-specific capacity of 350mathrmmAhg-1 at 100mathrmmAg-1 in the voltage range of 0.1 - 2.0mathrmV ."
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 17.14,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "the capacity retention rate is low, leaving only 60mathrmmAhg-1 discharge specific capacity after one hundred cycles."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Guan et al.67 successfully prepared composites of mathrmSb2mathrmSe3 nanorods with nitrogen-doped reduced graphene oxide for aluminum ion battery cathode materials by a hydrothermal method with first ",
+      "conditions": [
+        {
+          "condition_id": "C030",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "A/g"
+          }
+        },
+        {
+          "condition_id": "C031",
+          "cycle_number": 500
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Nominal_Discharge_Voltage"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 343,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "first discharge specific capacity of 343 mAh g-1 at 0.5 A g-1"
+          }
+        ],
+        "Nominal_Discharge_Voltage": [
+          {
+            "value": 1.8,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "discharge plateau of 1.8 V"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Yu et al.62 also investigated the effect of NiS nanoribbons on the electrochemical performance in aluminum ion battery. Compared with mathrmNi3mathrmS2 -graphene composites, NiS nanoribbons still have",
+      "conditions": [
+        {
+          "condition_id": "C032",
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g"
+          },
+          "cycle_number": 100,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [
+        "Chemical_Composition_Mole_Fractions"
+      ],
+      "extracted_info": {
+        "Chemical_Composition_Mole_Fractions": [
+          {
+            "value": {
+              "Ni": 0.5,
+              "S": 0.5
+            },
+            "unit": "mole fraction",
+            "method": "deduced from formula",
+            "source_text": "NiS nanoribbons"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Hu et al.63 designed a composite material of mathrmSnS2 supported by reduced graphene oxide to use as cathode material. Nanoscale mathrmSnS2 with a layered structure, its uniform distribution on the r",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C033",
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g"
+          },
+          "cycle_number": 500
+        },
+        {
+          "condition_id": "C034",
+          "c_rate_or_current": {
+            "value": 500,
+            "unit": "mA/g"
+          },
+          "cycle_number": 1200
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 112,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "discharge-specific capacity reaches 112 mAh g-1 at 100 mA g-1"
+          },
+          {
+            "value": 80,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "its specific capacity remains 80 mAh g-1 after 500 cycles"
+          },
+          {
+            "value": 74,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "it can still maintain 74 mAh g-1 after 1200 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Hong et al.68 synthesized three-dimensionally ordered and microporous cobalt diselenide carbon by using a two-solvent approach to induce nucleation, filling saturated precursor solutions in the templa",
+      "conditions": [
+        {
+          "condition_id": "C035",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          },
+          "test_method": "galvanostatic discharge"
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "A/g"
+          },
+          "cycle_number": 1000,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Nominal_Discharge_Voltage"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 400,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "At a current density of 1 A g-1, the first discharge has a specific capacity of 400 mAh g-1 and a discharge plateau of 1.8 V."
+          }
+        ],
+        "Nominal_Discharge_Voltage": [
+          {
+            "value": 1.8,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "discharge plateau of 1.8 V"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Similarly, for the study of expanding the voltage window of aluminum ion batteries, Bian et al.72 proposed the use of copper phthalocyanine, an organic substance, in combination with natural graphite ",
+      "conditions": [
+        {
+          "condition_id": "C037",
+          "voltage_range": {
+            "min": 0.0,
+            "max": 2.82,
+            "unit": "V"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Yu et al.70 have improved and extended the lifespan of high-capacity aluminum ion battery by modifying the cathode material and diaphragm. They prepared NiTe nanorods with excellent electrical conduct",
+      "conditions": [
+        {
+          "condition_id": "C038",
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g"
+          },
+          "cycle_number": 1,
+          "test_method": "galvanostatic"
+        },
+        {
+          "condition_id": "C039",
+          "c_rate_or_current": {
+            "value": 500,
+            "unit": "mA/g"
+          },
+          "cycle_number": 100,
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 570,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial discharge specific capacity up to 570 mAh g-1 at 200 mA g-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Zhang et al.69 used the in-situ growth technique for the preparation of composites of nitrogen-doped polyhedral porous carbon from metal-organic frameworks with mathrmCoTe2 nanoparticles and used the ",
+      "conditions": [
+        {
+          "condition_id": "C040",
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g"
+          },
+          "cycle_number": 200,
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Capacity_Retention_Ratio",
+        "Initial_Coulombic_Efficiency",
+        "Nominal_Discharge_Voltage"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 635.8,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial capacity up to 635.8mAhg-1 at 200mAg-1"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 26.52,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 200,
+            "source_text": "its discharge-specific capacity remains 168.6mAhg-1 even after 200 cycles"
+          }
+        ],
+        "Initial_Coulombic_Efficiency": [
+          {
+            "value": 90,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "Coulombic efficiency more than 90% throughout the charge/discharge cycle during complete period"
+          }
+        ],
+        "Nominal_Discharge_Voltage": [
+          {
+            "value": 1.4,
+            "unit": "V",
+            "condition_id": "C001",
+            "reference": "Al/Al3+",
+            "source_text": "distinct voltage plateau of 1.4V"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Du et al.71 prepared mathrmBi2mathrmTe3 / mathrmSb2mathrmTe3 nanosheet materials with heterogeneous structures by interface engineering to achieve rapid charge transfer and ion diffusion by virtue of ",
+      "conditions": [
+        {
+          "condition_id": "C041",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "A/g"
+          },
+          "cycle_number": 300,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C042",
+          "c_rate_or_current": {
+            "value": 5.0,
+            "unit": "A/g"
+          },
+          "cycle_number": 3000,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 203,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "After 300 cycles at 1 A g⁻¹, the battery still has a discharge capacity of 203 mAh g⁻¹"
+          },
+          {
+            "value": 101,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "even at a high current density of 5 A g⁻¹, it can still be cycled 3000 times and retain a capacity of 101 mAh g⁻¹"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Liu et al.75 recently proposed a novel bimetallic activation center alloying reaction for rechargeable aluminum ion batteries by compounding mathrmCo3mathrmSn2 with graphene oxide as the cathode mater",
+      "conditions": [
+        {
+          "condition_id": "C043",
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g"
+          },
+          "electrolyte": "AlCl3/EMImCl ionic liquid"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 130,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "initial specific capacity of 130mathrmmAhg-1 at 200mathrmmAg-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Furthermore, organic compounds as rechargeable aluminum battery cathode materials, which study proposed by Kong et al.73 is also valuable. Using polycyclic aromatic hydrocarbons, its conjugated pi -bo",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C044",
+          "c_rate_or_current": {
+            "value": 500,
+            "unit": "mA/g"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 157,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "achieve an ultrahigh discharge specific capacity of 157mathrmmAhg-1 at 100mathrmmAg-1"
+          },
+          {
+            "value": 82,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "maintain a discharge-specific capacity of 82mathrmmAhg-1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nRows:\nRow 1: Electrolytes; Cathode Materials; Current Density [mA g-1]; Initial Specific Capacity [mAh g-1]; Specific capacity after stabilization [mAh g-1]; Ref.\nRow 2: AICI3/DMPrICI",
+      "conditions": [
+        {
+          "condition_id": "C045",
+          "electrolyte": "AICI3/DMPrICI",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C046",
+          "electrolyte": "AICI3/BPC",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C047",
+          "electrolyte": "AICI3/[bim][Br]",
+          "c_rate_or_current": {
+            "value": 60,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C048",
+          "electrolyte": "AICI3/dipropyl sulfone and toluene",
+          "c_rate_or_current": {
+            "value": "C/20",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C049",
+          "electrolyte": "AICI3/[BMIm]Cl"
+        },
+        {
+          "condition_id": "C050"
+        },
+        {
+          "condition_id": "C051",
+          "electrolyte": "AICI3/[EMIm]Cl",
+          "c_rate_or_current": {
+            "value": 4000,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C052",
+          "c_rate_or_current": {
+            "value": 50,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C053",
+          "c_rate_or_current": {
+            "value": 12000,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": 100,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C054",
+          "c_rate_or_current": {
+            "value": 5000,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C055",
+          "c_rate_or_current": {
+            "value": 4000,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C056",
+          "c_rate_or_current": {
+            "value": 200,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C057",
+          "c_rate_or_current": {
+            "value": 6000,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C044",
+          "c_rate_or_current": {
+            "value": 500,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C058",
+          "c_rate_or_current": {
+            "value": 300,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C059",
+          "c_rate_or_current": {
+            "value": 1000,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C060",
+          "c_rate_or_current": {
+            "value": 2000,
+            "unit": "mA/g"
+          }
+        },
+        {
+          "condition_id": "C061",
+          "c_rate_or_current": {
+            "value": 320,
+            "unit": "mA/g"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 150,
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "AICI3/dipropyl sulfone and toluene; Amorphous V2O5/C com- posite; ×; 150 (In C/20); 100 (In C/20); [31]"
+          },
+          {
+            "value": 288,
+            "unit": "mAh/g",
+            "condition_id": "C005",
+            "source_text": "AICI3/[BMIm]Cl; V2O5nanowires; ×; 288; 130; [41]"
+          },
+          {
+            "value": 239,
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "Ni-V2O5; ×; 239; ×; [42]"
+          },
+          {
+            "value": 60,
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "AICI3/[EMIm]Cl; 3D foam graphite; 4000; 60; 60; [34]"
+          },
+          {
+            "value": 266,
+            "unit": "mAh/g",
+            "condition_id": "C010",
+            "source_text": "Co3O4@MWCNTs; 100; 266; 125; [59]"
+          },
+          {
+            "value": 350,
+            "unit": "mAh/g",
+            "condition_id": "C010",
+            "source_text": "Ni3S2@graphene; 100; 350; 60; [61]"
+          },
+          {
+            "value": 315,
+            "unit": "mAh/g",
+            "condition_id": "C010",
+            "source_text": "Co9S8@CNT-CNF; 100; 315; 297; [64]"
+          },
+          {
+            "value": 582,
+            "unit": "mAh/g",
+            "condition_id": "C016",
+            "source_text": "SnSe; 300; 582; 107; [66]"
+          },
+          {
+            "value": 343,
+            "unit": "mAh/g",
+            "condition_id": "C015",
+            "source_text": "Sb2Se3@N-RGO; 500; 343; 120; [67]"
+          },
+          {
+            "value": 400,
+            "unit": "mAh/g",
+            "condition_id": "C017",
+            "source_text": "3DOM CoSe2@C-190; 1000; 400; ×; "
+          },
+          {
+            "value": 635.8,
+            "unit": "mAh/g",
+            "condition_id": "C013",
+            "source_text": "CoTe2@N-PC; 200; 635.8; 168.6; [69]"
+          },
+          {
+            "value": 570,
+            "unit": "mAh/g",
+            "condition_id": "C013",
+            "source_text": "NiTe; 200; 570; ×; [70]"
+          },
+          {
+            "value": 130,
+            "unit": "mAh/g",
+            "condition_id": "C013",
+            "source_text": "Co3Sn2@GO; 200; 130; ×; [75]"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,565 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1007_s40843-021-2036-x.md",
+  "component": "anode",
+  "paper_id": "10.1007/s40843-021-2036-x",
+  "doi": "10.1007/s40843-021-2036-x",
+  "material_id": "10.1007_s40843-021-2036-x",
+  "meta": {
+    "meta_title": "Improving the cycling stability of lithium metal anodes using Cu3N-modified Cu f",
+    "meta_authors": "Danlei Tang, Lixia Yuan* , Yaqi Liao, Wenxuan Jin, Jie Chen, Zexiao Cheng, Xiang Li, Bin He, Zhen Li and Yunhui Huang*",
+    "meta_year": "2036"
+  },
+  "materials": [
+    {
+      "name": "Cu3N NWs/Cu",
+      "short_name": "Cu3N NWs/Cu",
+      "formula": "Cu3N on Cu",
+      "role": "novel",
+      "description": "3D Cu3N nanowire arrays in-situ grown on commercial Cu foil by nitridation of Cu(OH)2 NWs, used as current collector for Li metal anode.",
+      "material_id": "10.1007_s40843-021-2036-x_M001"
+    },
+    {
+      "name": "Cu NWs/Cu",
+      "short_name": "Cu NWs/Cu",
+      "formula": "Cu on Cu",
+      "role": "comparison",
+      "description": "3D Cu nanowire arrays obtained by reduction of Cu(OH)2 NWs on Cu foil under Ar/H2, used as control current collector.",
+      "material_id": "10.1007_s40843-021-2036-x_M002"
+    }
+  ],
+  "n_materials": 2,
+  "table_items": [],
+  "n_items": 10,
+  "items": [
+    {
+      "paragraph": "A Cu film 10 mu mathrm m was submerged in a mixed solution of 2 mathrm mathrm L - 1 mathrm and 0.1 mol L−1 mathrm 42 S 2 O 8 for 30 min to form the 3D mathrm 2 NW structure mathrm 2 / 35. After rinsin",
+      "property_types": [
+        "Chemical_Formula"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Cu3N",
+            "state": "pristine",
+            "source_text": "3D mathrm 3 mathrm N NWs/Cu current collector was obtained"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To confirm the reaction between mathrm 3 mathrm N and Li, XPS was used to investigate the surface compositions of the mathrm 3 mathrm N NWs/Cu and Cu NWs/Cu anodes after Li plating Fig. 4a–c and Fig. ",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "CV",
+          "reference_electrode": "Li/Li+",
+          "cycle_number": 1
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The obtained mathrm 2 / mathrm was placed in a tube furnace and heated under an mathrm / H 2 gas flow at 180 circ mathrm C for 2 mathrm h . The temperature was then increased to 300 circ mathrm C and ",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "temperature": {
+            "value": 180,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "value": 300,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "As shown in Fig. 2, mathrm 2 NWs were grown in situ on the surface of a Cu foil precursor that was soaked in a mixed solution of NaOH 2 mathrm mathrm L - 1 and mathrm 42 mathrm S 2 mathrm O 80.1 mathr",
+      "property_types": [
+        "Chemical_Formula",
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Cu3N",
+            "state": "final anode material",
+            "source_text": "blue Cu(OH)2 transformed into brown Cu3N Fig. 2d, e and corresponded with the PDF#47-1088 of Cu3N Fig. 2b"
+          }
+        ],
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Cu",
+              "N"
+            ],
+            "method": "EDS mapping",
+            "source_text": "The elemental distribution maps in Fig. 2f demonstrate the homogeneous distribution of N and Cu."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "1 - 10 operatorname mathrm h mathrm - 2 on different matrices. Both the homogeneity and compactness of the Li deposition improved from the Cu foil and Cu NWs/Cu to the mathrm 3 mathrm N NWs/Cu. On the",
+      "conditions": [
+        {
+          "condition_id": "C004"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 1,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "The thickness of the Li deposition on Cu N NWs/Cu was 10, 38, and 63 mu mathrm m at 1, 6, and 10 mathrm mathrm - 2 , respectively."
+          },
+          {
+            "value": 6,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "The thickness of the Li deposition on Cu N NWs/Cu was 10, 38, and 63 mu mathrm m at 1, 6, and 10 mathrm mathrm - 2 , respectively."
+          },
+          {
+            "value": 10,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "The thickness of the Li deposition on Cu N NWs/Cu was 10, 38, and 63 mu mathrm m at 1, 6, and 10 mathrm mathrm - 2 , respectively."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Standard CR2032 coin cells were assembled with mathrm 3 mathrm N mathrm s / mathrm or Cu NWs/Cu foils varphi 12 mathrm as the working electrodes and the Li foil as the counter electrode in an Ar-fille",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "min": 0,
+            "max": 1,
+            "unit": "V",
+            "reference": "vs Li/Li+"
+          },
+          "electrolyte": "1 M LiTFSI in DOL/DME (1:1 v/v) + 2% LiNO3",
+          "cycle_number": 3,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1 M LiTFSI in DOL/DME (1:1 v/v) + 2% LiNO3",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling (CE measurement)"
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1 M LiTFSI in DOL/DME (1:1 v/v) + 2% LiNO3",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling (CE measurement)"
+        },
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1 M LiTFSI in DOL/DME (1:1 v/v) + 2% LiNO3",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C008",
+          "electrolyte": "1 M LiTFSI in DOL/DME (1:1 v/v) + 2% LiNO3",
+          "mass_loading": {
+            "value": 10.0,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "full cell testing"
+        },
+        {
+          "condition_id": "C009",
+          "electrolyte": "1 M LiTFSI in DOL/DME (1:1 v/v) + 2% LiNO3",
+          "cycle_number": 0,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C010",
+          "electrolyte": "1 M LiTFSI in DOL/DME (1:1 v/v) + 2% LiNO3",
+          "cycle_number": 50,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C011",
+          "electrolyte": "1 M LiTFSI in DOL/DME (1:1 v/v) + 2% LiNO3",
+          "cycle_number": 100,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C012",
+          "electrolyte": "1 M LiTFSI in DOL/DME (1:1 v/v) + 2% LiNO3",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "CV"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The Li plating/stripping performances of the mathrm 3 mathrm N NWs/Cu and Cu NWs/Cu current collectors are shown in Fig. 5. The mathrm 3 mathrm N NWs/CuLi half-cell was stable for 260 cycles at 1 math",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C014",
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C015",
+          "electrode_config": "symmetric_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Average_Coulombic_Efficiency_Stable_Cycling",
+        "Li_Nucleation_Overpotential",
+        "Symmetric_Cell_Cycling_Stability",
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 98.9,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "After the initial activation, the average CE of the mathrm 3 mathrm N NWs/CuLi half-cell reached 98.9% ."
+          }
+        ],
+        "Li_Nucleation_Overpotential": [
+          {
+            "value": 29,
+            "unit": "mV",
+            "condition_id": "C001",
+            "source_text": "As shown in Fig. 5c and Fig. S7c, the mathrm 3 mathrm N NWs/Cu–Li anode had a plating overpotential of 29 mathrm"
+          }
+        ],
+        "Symmetric_Cell_Cycling_Stability": [
+          {
+            "value": 1000,
+            "unit": "h",
+            "condition_id": "C003",
+            "source_text": "the mathrm 3 mathrm N NWs/Cu anode had the most stable cycle performance with a low polarization over a long cycling time of 1000 mathrm h"
+          }
+        ],
+        "Areal_Capacity": [
+          {
+            "value": 1,
+            "unit": "mAh/cm2",
+            "condition_id": "C001",
+            "source_text": "with Li capacities of 1 mA h cm−2"
+          },
+          {
+            "value": 4,
+            "unit": "mAh/cm2",
+            "condition_id": "C002",
+            "source_text": "with Li capacities of 4 mA h cm−2"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To further explore the practicality of the mathrm 3 mathrm N NWs/Cu hybrid as a current collector in Li batteries, full cells were assembled with Li pre-deposited mathrm 3 mathrm N NWs/Cu, Cu NWs/Cu, ",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 400
+        },
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "mass_loading": {
+            "value": 10,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "rate test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_at_Given_C_rate",
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 99.7,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "CE as high as 99.7 %"
+          }
+        ],
+        "Rate_Capability_at_Given_C_rate": [
+          {
+            "value": 152,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "The LFP Cu3N NWs/Cu–Li cell demonstrated a high reversible specific capacity of 152 mA h g-1"
+          },
+          {
+            "value": 142,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "LFPCu3N NWs/Cu–Li cell achieved the best rate performances of 142 mA h g-1 at 1 C"
+          },
+          {
+            "value": 76,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "76 mA h g-1 at 5 C for Cu3N NWs/Cu–Li cell"
+          },
+          {
+            "value": 140,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "LFPCu NWs/Cu–Li cell 140 mA h g-1 at 1 C"
+          },
+          {
+            "value": 71,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "71 mA h g-1 at 5 C for Cu NWs/Cu–Li cell"
+          },
+          {
+            "value": 139,
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "LFPCu–Li cell 139 mA h g-1 at 1 C"
+          },
+          {
+            "value": 65,
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "65 mA h g-1 at 5 C for Cu–Li cell"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "唐丹雷, 袁利霞 , 廖亚祺, 靳文轩, 陈杰, 程泽晓, 李想, 何斌, 李真,黄云辉 摘要 在二次电池的所有固态负极中, 锂金属负极因其极高的理论比容量和极低的还原电位对促进二次电池的进一步发展具有很大的潜力. 然而, 锂负极在不断脱锂/嵌锂的过程中因锂枝晶的生长导致低库伦效率并存在安全隐患, 严重阻碍了锂金属负极的实际应用. 该研究通过化学方法在商业化的铜箔集流体表面原位修饰 mathrm ",
+      "conditions": [
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "cycle_number": 270,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C020",
+          "cycle_number": 430,
+          "mass_loading": {
+            "value": 10.0,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula",
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Cu3N",
+            "state": "as-synthesized",
+            "source_text": "通过化学方法在商业化的铜箔集流体表面原位修饰 mathrm 3 mathrm N 纳米线得到复合微结构型集流体 mathrm 3 mathrm N NWs/Cu"
+          }
+        ],
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "Li3N"
+            ],
+            "state": "formed after initial Li deposition",
+            "source_text": "首次锂沉积的过程中, mathrm 3 mathrm N 与锂金属反应生成 mathrm 3 mathrm N 3 mathrm mathrm 3 mathrm N mathrm 3 mathrm N 3 mathrm ,可以促进稳定的富含 mathrm 3 mathrm N 的固态电解质膜SEI形成"
+          }
+        ]
+      },
+      "performance_types": [
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 98.6,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "平均库伦效率为98.6 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Using simple chemical processes, a commercial Cu foil was successfully modified in situ by mathrm 3 mathrm N NWs. During the initial Li plating process, mathrm 3 mathrm N was converted to mathrm 3 mat",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "mA/cm2"
+          }
+        },
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "mA/cm2"
+          }
+        },
+        {
+          "condition_id": "C022",
+          "mass_loading": {
+            "value": 10,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C004"
+        }
+      ],
+      "property_types": [
+        "Chemical_Formula",
+        "SEI_Chemical_Composition_XPS"
+      ],
+      "extracted_info": {
+        "Chemical_Formula": [
+          {
+            "value": "Cu3N",
+            "source_text": "Cu3N NWs/Cu"
+          },
+          {
+            "value": "Li3N",
+            "source_text": "Cu3N was converted to Li3N . . During the repeated Li plating/stripping cycles"
+          }
+        ],
+        "SEI_Chemical_Composition_XPS": [
+          {
+            "value": [
+              "Li3N-rich"
+            ],
+            "source_text": "formation of a Li3N-rich SEI"
+          }
+        ]
+      },
+      "performance_types": [
+        "Average_Coulombic_Efficiency_Stable_Cycling"
+      ],
+      "performance_info": {
+        "Average_Coulombic_Efficiency_Stable_Cycling": [
+          {
+            "value": 98.6,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "The Cu3N NWs/Cu anode achieved a stable cycling performance with high average CEs of 98.6 % for over 270 cycles at 1 mA cm-2 and 1 mA h cm-2"
+          },
+          {
+            "value": 98.9,
+            "unit": "%",
+            "condition_id": "C002",
+            "source_text": "and 98.9 % for over 100 cycles at 1 mA cm-2 and 4 mA h cm-2"
+          },
+          {
+            "value": 99.7,
+            "unit": "%",
+            "condition_id": "C003",
+            "source_text": "The LFP full cell with a high mass loading of 10 mg cm-2 achieved a stable CE of 99.7 %"
+          }
+        ]
+      }
+    }
+  ]
+}

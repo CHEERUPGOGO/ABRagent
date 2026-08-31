@@ -1,0 +1,100 @@
+{
+  "updated": "2026-08-18T03:32:42+00:00",
+  "electrolyte_note": "electrolyte 为溶剂/盐体系，无 MP 晶体结构，不参与结构稳定性校验",
+  "materials": {
+    "NCM811": {
+      "chemsys": "Li-Ni-Co-Mn-O",
+      "n_records": 11,
+      "energy_above_hull": {
+        "n": 11,
+        "min": 0.0195,
+        "median": 0.0867,
+        "max": 0.1444
+      },
+      "assessment": "存在稳定插层相"
+    },
+    "LRMO": {
+      "chemsys": "Li-Ni-Mn-O",
+      "n_records": 68,
+      "energy_above_hull": {
+        "n": 68,
+        "min": 0.0,
+        "median": 0.045,
+        "max": 3.1769
+      },
+      "assessment": "存在稳定插层相"
+    },
+    "LNMO": {
+      "chemsys": "Li-Ni-Mn-O",
+      "n_records": 68,
+      "energy_above_hull": {
+        "n": 68,
+        "min": 0.0,
+        "median": 0.045,
+        "max": 3.1769
+      },
+      "assessment": "存在稳定插层相"
+    },
+    "graphite": {
+      "chemsys": "C",
+      "n_records": 64,
+      "energy_above_hull": {
+        "n": 64,
+        "min": 0.0,
+        "median": 0.3869,
+        "max": 2.7567
+      },
+      "assessment": "存在稳定基态"
+    },
+    "si_base": {
+      "chemsys": "Si",
+      "n_records": 43,
+      "energy_above_hull": {
+        "n": 43,
+        "min": 0.0,
+        "median": 0.3103,
+        "max": 1.9596
+      },
+      "assessment": "存在稳定基态"
+    },
+    "li_metal": {
+      "chemsys": "Li",
+      "n_records": 9,
+      "energy_above_hull": {
+        "n": 9,
+        "min": 0.0,
+        "median": 0.0088,
+        "max": 0.2618
+      },
+      "assessment": "存在稳定基态"
+    },
+    "carbonate_ec": {
+      "chemsys": null,
+      "note": "electrolyte 为溶剂/盐体系，无 MP 晶体结构，不参与结构稳定性校验"
+    },
+    "fluorinated": {
+      "chemsys": null,
+      "note": "electrolyte 为溶剂/盐体系，无 MP 晶体结构，不参与结构稳定性校验"
+    },
+    "high_concentration": {
+      "chemsys": null,
+      "note": "electrolyte 为溶剂/盐体系，无 MP 晶体结构，不参与结构稳定性校验"
+    },
+    "lhce": {
+      "chemsys": null,
+      "note": "electrolyte 为溶剂/盐体系，无 MP 晶体结构，不参与结构稳定性校验"
+    },
+    "FEC": {
+      "chemsys": null,
+      "note": "添加剂/无 MP 对应"
+    },
+    "VC": {
+      "chemsys": null,
+      "note": "添加剂/无 MP 对应"
+    },
+    "LiPO2F2": {
+      "chemsys": null,
+      "note": "添加剂/无 MP 对应"
+    }
+  }
+}

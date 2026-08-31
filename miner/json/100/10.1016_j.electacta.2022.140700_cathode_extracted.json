@@ -1,0 +1,1035 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.electacta.2022.140700.md",
+  "component": "cathode",
+  "paper_id": "10.5281/zenodo.5171874",
+  "doi": "10.5281/zenodo.5171874",
+  "material_id": "10.1016_j.electacta.2022.140700",
+  "meta": {
+    "meta_title": "Thermal-electrochemical parameters of a high energy lithium-ion cylindrical batt",
+    "meta_authors": "Kieran O’Regan a,c,\\* , Ferran Brosa Planella b,c , W. Dhammika Widanage b,c , Emma Kendrick a,c,\\*",
+    "meta_year": "2022"
+  },
+  "materials": [
+    {
+      "name": "cathode material",
+      "short_name": "10.1016_j.electacta.2022.140700",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.electacta.2022.140700"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: ; Technique; Parameter(s); Details\nRows:\nRow 1:  = Thermo-physicalcharacterisation; Technique = Differentialscanningcalorimetry; Parameter(s) = Specific heatcapacity; Details = 25 °C and 100°C(continuous)at SoC 0%\nRow 2: Laser flash analysis; Thermaldiffusivity; -5 °C to 55 °C(15 °C step)at SoC 0%\nRow 3:  = Thermal-electrochemicalcharacterisation; Technique = Galvanostaticintermittenttitration technique; Parameter(s) = Diffusivity andactivationenergy; Details = 5 °C to 45 °C(10 °C step)at SoC 0 to100%\nRow 4: Potentiostaticmethod; Entropic term; -5 °C to 25 °C(10 °C step)at SoC 0 to100%\nRow 5: Electrochemicalimpedancespectroscopy; Exchangecurrent densityand activationenergy; 15 °C to 45 °C(10 °C step)at SoC 0 to100%\nRow 6: Four-point probe; Electronicconductivity andactivationenergy; 15 °C to 35 °C(5 °C step)at SoC 0%\nColumn data:\n  : Thermo-physicalcharacterisation; Laser flash analysis; Thermal-electrochemicalcharacterisation; Potentiostaticmethod; Electrochemicalimpedancespectroscopy; Four-point probe\n  Technique: Differentialscanningcalorimetry; Thermaldiffusivity; Galvanostaticintermittenttitration technique; Entropic term; Exchangecurrent densityand activationenergy; Electronicconductivity andactivationenergy\n  Parameter(s): Specific heatcapacity; -5 °C to 55 °C(15 °C step)at SoC 0%; Diffusivity andactivationenergy; -5 °C to 25 °C(10 °C step)at SoC 0 to100%; 15 °C to 45 °C(10 °C step)at SoC 0 to100%; 15 °C to 35 °C(5 °C step)at SoC 0%\n  Details: 25 °C and 100°C(continuous)at SoC 0%; 5 °C to 45 °C(10 °C step)at SoC 0 to100%",
+    "TABLE DATA BLOCK\nHeaders: Paper; PropertiesCell Type; Wh/kg; Chemistry; ElectrochemicalDFN; Thermal0D; 1D; 2D; 3D\nRows:\nRow 1: Paper = O’Regan 2022(this work); PropertiesCell Type = 5 Ah LG cylindrical 21700; Wh/kg = 267; Chemistry = NMC811graphite -SiO $_y$; ElectrochemicalDFN = ☑; Thermal0D = ☑; 1D = ☑; 2D = ☑; 3D = ☑\nRow 2: Paper = Chen 2020[23]; PropertiesCell Type = 5 Ah LG cylindrical 21700; Wh/kg = 267; Chemistry = NMC811graphite -SiO $_y$; ElectrochemicalDFN = ☑; Thermal0D = ; 1D = ; 2D = ; 3D = \nRow 3: Paper = Ecker 2015[16]; PropertiesCell Type = 7.5 Ah Kokam pouch; Wh/kg = 173; Chemistry = NMC111Gr; ElectrochemicalDFN = ☑; Thermal0D = ; 1D = ; 2D = ; 3D = \nRow 4: Paper = Schmalstieg 2018[17]; PropertiesCell Type = 28 Ah prismatic; Wh/kg = -; Chemistry = NMC111graphite; ElectrochemicalDFN = ☑; Thermal0D = ☑; 1D = ; 2D = ; 3D = \nRow 5: Paper = Liebig 2019[18]; PropertiesCell Type = 40 Ah prismatic; Wh/kg = -; Chemistry = NMC111graphite; ElectrochemicalDFN = ☑; Thermal0D = ☑; 1D = ; 2D = ; 3D = \nRow 6: Paper = Sturm 2019[22]; PropertiesCell Type = 3.35 Ah LG cylindrical 18650; Wh/kg = 211; Chemistry = NMC811graphite -SiO $_y$; ElectrochemicalDFN = ☑; Thermal0D = ☑; 1D = ; 2D = ; 3D = \nRow 7: Paper = Zulke 2021[24]; PropertiesCell Type = 4.8 Ah cylindrical 21700; Wh/kg = 256; Chemistry = NCAgraphite -SiO $_y$; ElectrochemicalDFN = ☑; Thermal0D = ; 1D = ; 2D = ; 3D = \nColumn data:\n  Paper: O’Regan 2022(this work); Chen 2020[23]; Ecker 2015[16]; Schmalstieg 2018[17]; Liebig 2019[18]; Sturm 2019[22]; Zulke 2021[24]\n  PropertiesCell Type: 5 Ah LG cylindrical 21700; 5 Ah LG cylindrical 21700; 7.5 Ah Kokam pouch; 28 Ah prismatic; 40 Ah prismatic; 3.35 Ah LG cylindrical 18650; 4.8 Ah cylindrical 21700\n  Wh/kg: 267; 267; 173; -; -; 211; 256\n  Chemistry: NMC811graphite -SiO $_y$; NMC811graphite -SiO $_y$; NMC111Gr; NMC111graphite; NMC111graphite; NMC811graphite -SiO $_y$; NCAgraphite -SiO $_y$\n  ElectrochemicalDFN: ☑; ☑; ☑; ☑; ☑; ☑; ☑\n  Thermal0D: ☑; ; ; ☑; ☑; ☑; \n  1D: ☑; ; ; ; ; ; \n  2D: ☑; ; ; ; ; ; \n  3D: ☑; ; ; ; ; ; ",
+    "TABLE DATA BLOCK\nHeaders: Property; Unit; Value\nRows:\nRow 1: Property = Volumetric energy density; Unit = $Wh\\ L^{-1}$; Value = 752\nRow 2: Property = Specific energy density; Unit = $Wh\\ kg^{-1}$; Value = 267\nRow 3: Property = Jelly roll width/height; Unit = m; Value = $2.03\\cdot10^{-2}/6.58\\cdot10^{-2}$\nRow 4: Property = Jelly roll volume; Unit = $m^{3}$; Value = $2.13\\cdot10^{-5}$\nRow 5: Property = Jelly roll surface area**; Unit = $m^{2}$; Value = $4.84\\cdot10^{-3}$\nRow 6: Property = Cell width / length; Unit = m; Value = $2.1\\cdot10^{-2}/71\\cdot10^{-2}$\nRow 7: Property = Casing thickness; Unit = m; Value = $3.4\\cdot10^{-4}$\nRow 8: Property = Cell volume; Unit = $m^{3}$; Value = $2.43\\cdot10^{-5}$\nRow 9: Property = Negative tab width / length / thickness; Unit = m; Value = $4.00\\cdot10^{-3}/5\\cdot10^{-2}/1\\cdot10^{-4}$\nRow 10: Property = Negative tab position; Unit = -; Value = Fig. S1\nRow 11: Property = Positive tab width / length / thickness; Unit = m; Value = $3.5\\cdot10^{-3}/7\\cdot10^{-2}/1\\cdot10^{-4}$\nRow 12: Property = Positive tab position; Unit = -; Value = Fig. S1\nRow 13: Property = Mass of cell; Unit = kg; Value = $6.83\\cdot10^{-2}$\nRow 14: Property = Mass of jellyroll*; Unit = kg; Value = $5.71\\cdot10^{-2}$\nColumn data:\n  Property: Volumetric energy density; Specific energy density; Jelly roll width/height; Jelly roll volume; Jelly roll surface area**; Cell width / length; Casing thickness; Cell volume; Negative tab width / length / thickness; Negative tab position; Positive tab width / length / thickness; Positive tab position; Mass of cell; Mass of jellyroll*\n  Unit: $Wh\\ L^{-1}$; $Wh\\ kg^{-1}$; m; $m^{3}$; $m^{2}$; m; m; $m^{3}$; m; -; m; -; kg; kg\n  Value: 752; 267; $2.03\\cdot10^{-2}/6.58\\cdot10^{-2}$; $2.13\\cdot10^{-5}$; $4.84\\cdot10^{-3}$; $2.1\\cdot10^{-2}/71\\cdot10^{-2}$; $3.4\\cdot10^{-4}$; $2.43\\cdot10^{-5}$; $4.00\\cdot10^{-3}/5\\cdot10^{-2}/1\\cdot10^{-4}$; Fig. S1; $3.5\\cdot10^{-3}/7\\cdot10^{-2}/1\\cdot10^{-4}$; Fig. S1; $6.83\\cdot10^{-2}$; $5.71\\cdot10^{-2}$",
+    "TABLE DATA BLOCK\nHeaders: Component; Weight / g; Volume / cm3\nRows:\nRow 1: Component = Negative electrode coating; Weight / g = 16.51 (24.2%); Volume / cm3 = 9.49 (41.2%)\nRow 2: Component = Copper foil; Weight / g = 5.85 (8.6%); Volume / cm3 = 0.66 (2.9%)\nRow 3: Component = Positive electrode coating; Weight / g = 26.09 (38.3%); Volume / cm3 = 7.98 (35.1%)\nRow 4: Component = Aluminium foil; Weight / g = 2.87 (4.2%); Volume / cm3 = 1.06 (4.7%)\nRow 5: Component = Separator; Weight / g = 1.96 (2.9%); Volume / cm3 = 2.07 (9.1%)\nRow 6: Component = Electrolyte (incl. LiPF6); Weight / g = 3.80 (5.6%); Volume / cm3 = 3.12*\nRow 7: Component = Casing; Weight / g = 10.64 (15.6%); Volume / cm3 = 1.35 (5.9%)\nRow 8: Component = Other; Weight / g = 0.39 (0.6%); Volume / cm3 = 0.10 (0.4%)\nRow 9: Component = Jellyroll; Weight / g = 57.08; Volume / cm3 = 21.3\nRow 10: Component = Cell; Weight / g = 67.25; Volume / cm3 = 24.2\nColumn data:\n  Component: Negative electrode coating; Copper foil; Positive electrode coating; Aluminium foil; Separator; Electrolyte (incl. LiPF6); Casing; Other; Jellyroll; Cell\n  Weight / g: 16.51 (24.2%); 5.85 (8.6%); 26.09 (38.3%); 2.87 (4.2%); 1.96 (2.9%); 3.80 (5.6%); 10.64 (15.6%); 0.39 (0.6%); 57.08; 67.25\n  Volume / cm3: 9.49 (41.2%); 0.66 (2.9%); 7.98 (35.1%); 1.06 (4.7%); 2.07 (9.1%); 3.12*; 1.35 (5.9%); 0.10 (0.4%); 21.3; 24.2",
+    "TABLE DATA BLOCK\nHeaders: Parameter; Positive electrode coating; Negative electrode coating; Separator\nRows:\nRow 1: Parameter = Density of porous material ( $\\rho_s$ ) / kg m $^{-3}$; Positive electrode coating = 3270; Negative electrode coating = 1740; Separator = 946\nRow 2: Parameter = Heat capacity of bulk material ( $C_{p,s}$ ) / kg m $^{-3}$; Positive electrode coating = Eq. (S1); Negative electrode coating = Eq. (S2); Separator = Eq. (S3)\nRow 3: Parameter = Density of electrolyte ( $\\rho_l$ ) / kg m $^{-3}$; Positive electrode coating = 1280; Negative electrode coating = 1280; Separator = 1280\nRow 4: Parameter = Heat capacity of electrolyte ( $C_{p,l}$ ) / J K $^{-1}$  kg $^{-3}$; Positive electrode coating = 229; Negative electrode coating = 229; Separator = 229\nRow 5: Parameter = Elecrolyte volume fraction ( $\\varepsilon_l$ ); Positive electrode coating = 0.335; Negative electrode coating = 0.25; Separator = 0.47\nRow 6: Parameter = Density of wetted material ( $\\rho_{s+l}$ ) / kg m $^{-3}$; Positive electrode coating = 3700; Negative electrode coating = 2060; Separator = 1620\nColumn data:\n  Parameter: Density of porous material ( $\\rho_s$ ) / kg m $^{-3}$; Heat capacity of bulk material ( $C_{p,s}$ ) / kg m $^{-3}$; Density of electrolyte ( $\\rho_l$ ) / kg m $^{-3}$; Heat capacity of electrolyte ( $C_{p,l}$ ) / J K $^{-1}$  kg $^{-3}$; Elecrolyte volume fraction ( $\\varepsilon_l$ ); Density of wetted material ( $\\rho_{s+l}$ ) / kg m $^{-3}$\n  Positive electrode coating: 3270; Eq. (S1); 1280; 229; 0.335; 3700\n  Negative electrode coating: 1740; Eq. (S2); 1280; 229; 0.25; 2060\n  Separator: 946; Eq. (S3); 1280; 229; 0.47; 1620",
+    "TABLE DATA BLOCK\nHeaders: ; Thermal Diffusivity /  $\\alpha$  / mm $^{2}$  s $^{-1}$\nRows:\nRow 1: Temperature / K; 268.15; 283.15; 298.15; 313.15; 328.15\nRow 2: Positive electrode (2-sided); 0.305; 0.292; 0.282; 0.27; 0.259\nRow 3: Negative electrode (2-sided); 2.508; 2.355; 2.266; 2.148; 2.028\nRow 4:  = ; Thermal Diffusivity /  $\\alpha$  / mm $^{2}$  s $^{-1}$ = Specific Heat Capacity / Cp / J kg $^{-1}$  K $^{-1}$\nRow 5: Temperature / K; 268.15; 283.15; 298.15; 313.15; 328.15\nRow 6: Positive electrode (2-sided); 897; 925; 983; 1057; 1130\nRow 7: Negative electrode (2-sided); 585; 709; 809; 892; 967\nRow 8:  = ; Thermal Diffusivity /  $\\alpha$  / mm $^{2}$  s $^{-1}$ = Thermal Conductivity / W m $^{-1}$  K $^{-1}$\nRow 9: Temperature / K; 268.15; 283.15; 298.15; 313.15; 328.15\nRow 10: Positive electrode (2-sided); 0.880; 0.868; 0.892; 0.918; 0.941\nRow 11: Positive electrode coating(wetted porous); 0.796; 0.785; 0.807; 0.830; 0.851\nRow 12: Negative electrode (2-sided); 3.249; 3.696; 4.058; 4.243; 4.339\nRow 13: Negative electrode coating(wetted porous); 3.037; 3.455; 3.793; 3.967; 4.056\nColumn data:\n  : Temperature / K; Positive electrode (2-sided); Negative electrode (2-sided); ; Temperature / K; Positive electrode (2-sided); Negative electrode (2-sided); ; Temperature / K; Positive electrode (2-sided); Positive electrode coating(wetted porous); Negative electrode (2-sided); Negative electrode coating(wetted porous)\n  Thermal Diffusivity /  $\\alpha$  / mm $^{2}$  s $^{-1}$: 268.15; 0.305; 2.508; Specific Heat Capacity / Cp / J kg $^{-1}$  K $^{-1}$; 268.15; 897; 585; Thermal Conductivity / W m $^{-1}$  K $^{-1}$; 268.15; 0.880; 0.796; 3.249; 3.037",
+    "TABLE DATA BLOCK\nHeaders: Material; Thickness / μm; ρ / kg m-3; Cp / J kg-1K-1; Θ / J m-3K-1; α mm2s-1; λ / W m-1K-1\nRows:\nRow 1: Material = Positive electrode coating (dry porous); Thickness / μm = 75.6m; ρ / kg m-3 = 3270m; Cp / J kg-1K-1 = 990c; Θ / J m-3K-1 = 3237300c; α mm2s-1 = 0.249c; λ / W m-1K-1 = 0.807c\nRow 2: Material = Positive electrode coating (dry bulk); Thickness / μm = 75.6m; ρ / kg m-3 = 4918c; Cp / J kg-1K-1 = 990m; Θ / J m-3K-1 = 4868120c; α mm2s-1 = -; λ / W m-1K-1 = -\nRow 3: Material = Positive electrode coating (wetted porous); Thickness / μm = 75.6m; ρ / kg m-3 = 3699c; Cp / J kg-1K-1 = 902c; Θ / J m-3K-1 = 3335495c; α mm2s-1 = 0.242; λ / W m-1K-1 = 0.807c\nRow 4: Material = Positive electrode (2-sided); Thickness / μm = 167.2m; ρ / kg m-3 = 3216c; Cp / J kg-1K-1 = 983c; Θ / J m-3K-1 = 3162202c; α mm2s-1 = 0.282m; λ / W m-1K-1 = 0.892c\nRow 5: Material = Negative electrode coating (dry porous); Thickness / μm = 85.2m; ρ / kg m-3 = 1740m; Cp / J kg-1K-1 = 960c; Θ / J m-3K-1 = 1670400c; α mm2s-1 = 2.271c; λ / W m-1K-1 = 3.793c\nRow 6: Material = Negative electrode coating (dry bulk); Thickness / μm = 85.2m; ρ / kg m-3 = 2320c; Cp / J kg-1K-1 = 960m; Θ / J m-3K-1 = 2227200c; α mm2s-1 = -; λ / W m-1K-1 = -\nRow 7: Material = Negative electrode coating (wetted porous); Thickness / μm = 85.2m; ρ / kg m-3 = 2060c; Cp / J kg-1K-1 = 846c; Θ / J m-3K-1 = 1743680c; α mm2s-1 = 2.175c; λ / W m-1K-1 = 3.793c\nRow 8: Material = Negative electrode (2-sided); Thickness / μm = 182.4m; ρ / kg m-3 = 2213c; Cp / J kg-1K-1 = 809c; Θ / J m-3K-1 = 1790697c; α mm2s-1 = 2.266m; λ / W m-1K-1 = 4.058c\nRow 9: Material = Aluminium foil[34]; Thickness / μm = 16m; ρ / kg m-3 = 2702l; Cp / J kg-1K-1 = 876l; Θ / J m-3K-1 = 2366952l; α mm2s-1 = 100l; λ / W m-1K-1 = 237l\nRow 10: Material = Copper foil[34]; Thickness / μm = 12m; ρ / kg m-3 = 8933l; Cp / J kg-1K-1 = 383l; Θ / J m-3K-1 = 3421339l; α mm2s-1 = 117l; λ / W m-1K-1 = 401l\nRow 11: Material = Separator (dry porous)[43]; Thickness / μm = 12m; ρ / kg m-3 = 946m; Cp / J kg-1K-1 = 1700m; Θ / J m-3K-1 = 1608200c; α mm2s-1 = 0.208c; λ / W m-1K-1 = 0.3344l\nRow 12: Material = Separator (wetted porous); Thickness / μm = 12m; ρ / kg m-3 = 1548c; Cp / J kg-1K-1 = 1128c; Θ / J m-3K-1 = 1745966c; α mm2s-1 = 0.192c; λ / W m-1K-1 = 0.3344c\nRow 13: Material = Electrolyte(EC:EMC:DMC, 1:1:1)[35]; Thickness / μm = -; ρ / kg m-3 = 1280l; Cp / J kg-1K-1 = 229l; Θ / J m-3K-1 = 293120l; α mm2s-1 = 0.1l; λ / W m-1K-1 = 0.03l\nRow 14: Material = Jellyroll; Thickness / μm = -; ρ / kg m-3 = 2682c; Cp / J kg-1K-1 = 887c; Θ / J m-3K-1 = -; α mm2s-1 = -; λ / W m-1K-1 = -\nRow 15: Material = Casing (SS Type 304)[34]; Thickness / μm = 340m; ρ / kg m-3 = 7900l; Cp / J kg-1K-1 = 477l; Θ / J m-3K-1 = -; α mm2s-1 = 3.87l; λ / W m-1K-1 = 15lMeasuredmCalculatedcLiteraturel\nColumn data:\n  Material: Positive electrode coating (dry porous); Positive electrode coating (dry bulk); Positive electrode coating (wetted porous); Positive electrode (2-sided); Negative electrode coating (dry porous); Negative electrode coating (dry bulk); Negative electrode coating (wetted porous); Negative electrode (2-sided); Aluminium foil[34]; Copper foil[34]; Separator (dry porous)[43]; Separator (wetted porous); Electrolyte(EC:EMC:DMC, 1:1:1)[35]; Jellyroll; Casing (SS Type 304)[34]\n  Thickness / μm: 75.6m; 75.6m; 75.6m; 167.2m; 85.2m; 85.2m; 85.2m; 182.4m; 16m; 12m; 12m; 12m; -; -; 340m\n  ρ / kg m-3: 3270m; 4918c; 3699c; 3216c; 1740m; 2320c; 2060c; 2213c; 2702l; 8933l; 946m; 1548c; 1280l; 2682c; 7900l\n  Cp / J kg-1K-1: 990c; 990m; 902c; 983c; 960c; 960m; 846c; 809c; 876l; 383l; 1700m; 1128c; 229l; 887c; 477l\n  Θ / J m-3K-1: 3237300c; 4868120c; 3335495c; 3162202c; 1670400c; 2227200c; 1743680c; 1790697c; 2366952l; 3421339l; 1608200c; 1745966c; 293120l; -; -\n  α mm2s-1: 0.249c; -; 0.242; 0.282m; 2.271c; -; 2.175c; 2.266m; 100l; 117l; 0.208c; 0.192c; 0.1l; -; 3.87l\n  λ / W m-1K-1: 0.807c; -; 0.807c; 0.892c; 3.793c; -; 3.793c; 4.058c; 237l; 401l; 0.3344l; 0.3344c; 0.03l; -; 15lMeasuredmCalculatedcLiteraturel",
+    "TABLE DATA BLOCK\nHeaders: ; Parameter; Unit; Positive electrode(k = p); Separator(k = s); Negative electrode(k = n)\nRows:\nRow 1:  = Electrode; Parameter = Active material type; Unit = ; Positive electrode(k = p) = $LiNi_{1-x-y}Mn_xCo_yO_2$; Separator(k = s) = Ceramic coated polyolefin; Negative electrode(k = n) = Graphite +  $SiO_y$\nRow 2: Current collector thickness; m; $16·10^{-6}$; -; $12·10^{-6}$\nRow 3: Electrode thickness ( $L_k$ ); m; $75.6·10^{-6}$; $12·10^{-6}$; $85.2·10^{-6}$\nRow 4: Mean particle radius ( $R_k$ ); m; $5.22·10^{-6}$; -; $5.86·10^{-6}$\nRow 5: Electrolyte volume fraction ( $e_k$ ); %; 33.5; 47; 25\nRow 6: Active material volume fraction ( $\\varepsilon_{act,k}$ ); %; 66.5; -; 75\nRow 7: Bruggeman exponent (b); -; 1.5; 1.5; 1.5\nRow 8: Solid-phase lithium diffusivity ( $D_{s,k}$ ); m[2]  $s^{-1}$; Eq. (10); -; Eq. (10)\nRow 9: Exchange current density ( $j_0$ ); A  $cm^{-2}$; Eq. (14); -; Eq. (14)\nRow 10: Maximum concentration ( $c_{s,k}^{\\max}$ ); mol  $m^{-3}$; 51765 [23]; -; 29583 [23]\nRow 11: Density ( $\\rho_s$ )*; kg  $m^{-3}$; 625; 1620; 1740\nRow 12: Current collector density; kg  $m^{-3}$; 2702; -; 8933\nRow 13: Specific heat capacity ( $C_p$ )*; J  $kg^{-1}$   $K^{-1}$; Eq. (1); Eq. (1); Eq. (1)\nRow 14: Current collector specific heat capacity; J  $kg^{-1}$   $K^{-1}$; Eq. (S4); -; Eq. (S5)\nRow 15: Thermal conductivity ( $\\lambda$ )*; W  $m^{-1}$   $K^{-1}$; Table 6; 0.334[43]; Table 6\nRow 16: Current collector thermal conductivity; W  $m^{-1}$   $K^{-1}$; 237; -; Eq. (S6)\nRow 17: Open Circuit Voltages ( $U_k$ ); V; Eq. (S7) [23]; -; Eq. (S8) [23]\nRow 18: Entropic term ( $\\frac{dU}{dT}$ ); V  $K^{-1}$; Eq. (16); -; Eq. (17)\nRow 19: Solid-phase electronic conductivity ( $\\sigma_{s,k}$ ); S  $m^{-1}$; 0.847; -; 215[23]\nRow 20: Electronic conductivity activation energy; kJ  $mol^{-1}$; 3.5; -; -\nRow 21:  = Cell; Parameter = Effective heat transfer area of jellyroll; Unit = $m^2$; Positive electrode(k = p) = $4.84·10^{-3}$; Separator(k = s) = ; Negative electrode(k = n) = \nRow 22: Effective heat transfer area of cell; $m^2$; $5.31·10^{-3}$; ; \nRow 23: Jellyroll volume; $m^3$; $2.13·10^{-5}$; ; \nRow 24: Cell volume; $m^3$; $2.42·10^{-5}$; ; \nRow 25: Jellyroll effective heat capacity; J  $kg^{-1}$   $K^{-1}$; 866; ; \nRow 26:  = Electrolyte; Parameter = Ionic diffusivity ( $D_e$ ); Unit = $m^2$   $s^{-1}$; Positive electrode(k = p) = Eq. (19) [80]; Separator(k = s) = ; Negative electrode(k = n) = \nRow 27: Ionic conductivity ( $\\kappa$ ); S  $m^{-1}$; Eq. (18) [80]; ; \nRow 28: Transference number ( $t^+$ ); -; Eq. (20) [80]; ; \nRow 29: Thermodynamic factor (TDF); -; Eq. (21) [80]; ; \nRow 30: Density ( $\\rho_l$ ); kg  $m^{-3}$; 1280[35]; ; \nRow 31: Specific heat capacity; J  $kg^{-1}$   $K^{-1}$; 229[35]; ; \nRow 32: Thermal conductivity; W  $m^{-1}$   $K^{-1}$; 0.03[35]; ; \nColumn data:\n  : Electrode; Current collector thickness; Electrode thickness ( $L_k$ ); Mean particle radius ( $R_k$ ); Electrolyte volume fraction ( $e_k$ ); Active material volume fraction ( $\\varepsilon_{act,k}$ ); Bruggeman exponent (b); Solid-phase lithium diffusivity ( $D_{s,k}$ ); Exchange current density ( $j_0$ ); Maximum concentration ( $c_{s,k}^{\\max}$ ); Density ( $\\rho_s$ )*; Current collector density; Specific heat capacity ( $C_p$ )*; Current collector specific heat capacity; Thermal conductivity ( $\\lambda$ )*; Current collector thermal conductivity; Open Circuit Voltages ( $U_k$ ); Entropic term ( $\\frac{dU}{dT}$ ); Solid-phase electronic conductivity ( $\\sigma_{s,k}$ ); Electronic conductivity activation energy; Cell; Effective heat transfer area of cell; Jellyroll volume; Cell volume; Jellyroll effective heat capacity; Electrolyte; Ionic conductivity ( $\\kappa$ ); Transference number ( $t^+$ ); Thermodynamic factor (TDF); Density ( $\\rho_l$ ); Specific heat capacity; Thermal conductivity\n  Parameter: Active material type; m; m; m; %; %; -; m[2]  $s^{-1}$; A  $cm^{-2}$; mol  $m^{-3}$; kg  $m^{-3}$; kg  $m^{-3}$; J  $kg^{-1}$   $K^{-1}$; J  $kg^{-1}$   $K^{-1}$; W  $m^{-1}$   $K^{-1}$; W  $m^{-1}$   $K^{-1}$; V; V  $K^{-1}$; S  $m^{-1}$; kJ  $mol^{-1}$; Effective heat transfer area of jellyroll; $m^2$; $m^3$; $m^3$; J  $kg^{-1}$   $K^{-1}$; Ionic diffusivity ( $D_e$ ); S  $m^{-1}$; -; -; kg  $m^{-3}$; J  $kg^{-1}$   $K^{-1}$; W  $m^{-1}$   $K^{-1}$\n  Unit: ; $16·10^{-6}$; $75.6·10^{-6}$; $5.22·10^{-6}$; 33.5; 66.5; 1.5; Eq. (10); Eq. (14); 51765 [23]; 625; 2702; Eq. (1); Eq. (S4); Table 6; 237; Eq. (S7) [23]; Eq. (16); 0.847; 3.5; $m^2$; $5.31·10^{-3}$; $2.13·10^{-5}$; $2.42·10^{-5}$; 866; $m^2$   $s^{-1}$; Eq. (18) [80]; Eq. (20) [80]; Eq. (21) [80]; 1280[35]; 229[35]; 0.03[35]\n  Positive electrode(k = p): $LiNi_{1-x-y}Mn_xCo_yO_2$; -; $12·10^{-6}$; -; 47; -; 1.5; -; -; -; 1620; -; Eq. (1); -; 0.334[43]; -; -; -; -; -; $4.84·10^{-3}$; ; ; ; ; Eq. (19) [80]; ; ; ; ; ; \n  Separator(k = s): Ceramic coated polyolefin; $12·10^{-6}$; $85.2·10^{-6}$; $5.86·10^{-6}$; 25; 75; 1.5; Eq. (10); Eq. (14); 29583 [23]; 1740; 8933; Eq. (1); Eq. (S5); Table 6; Eq. (S6); Eq. (S8) [23]; Eq. (17); 215[23]; -; ; ; ; ; ; ; ; ; ; ; ; \n  Negative electrode(k = n): Graphite +  $SiO_y$; ; "
+  ],
+  "n_items": 27,
+  "items": [
+    {
+      "paragraph": "The through-plane thermal diffusivity was measured for the electrodes using laser flash analysis LFA 467 HyperFlash, Netzsch. This measurement was carried out at temperatures of − 5, 10, 25, 40, and 5",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "temperature": {
+            "value": -5,
+            "unit": "C"
+          },
+          "test_method": "laser flash analysis LFA 467 HyperFlash, Netzsch"
+        },
+        {
+          "condition_id": "C002",
+          "temperature": {
+            "value": 10,
+            "unit": "C"
+          },
+          "test_method": "laser flash analysis LFA 467 HyperFlash, Netzsch"
+        },
+        {
+          "condition_id": "C003",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "laser flash analysis LFA 467 HyperFlash, Netzsch"
+        },
+        {
+          "condition_id": "C004",
+          "temperature": {
+            "value": 40,
+            "unit": "C"
+          },
+          "test_method": "laser flash analysis LFA 467 HyperFlash, Netzsch"
+        },
+        {
+          "condition_id": "C005",
+          "temperature": {
+            "value": 55,
+            "unit": "C"
+          },
+          "test_method": "laser flash analysis LFA 467 HyperFlash, Netzsch"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "PEIS measurements were conducted at SoCs between 10 and 100% for temperatures 15, 25, 35, and 45 circ mathrm C in a Swagelok half-cell. The sinusoidal current applied had an amplitude of 10 mV and a 1",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "temperature": {
+            "value": 15,
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "PEIS"
+        },
+        {
+          "condition_id": "C007",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "PEIS"
+        },
+        {
+          "condition_id": "C008",
+          "temperature": {
+            "value": 35,
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "PEIS"
+        },
+        {
+          "condition_id": "C009",
+          "temperature": {
+            "value": 45,
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "test_method": "PEIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The electronic conductivity of the positive electrode was evaluated at temperatures 15, 20, 25, 30, and 35 circ mathrm C using a four-point probe Ossila Instruments. The positive electrode coating was",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "temperature": {
+            "value": 15,
+            "unit": "C"
+          },
+          "test_method": "four-point probe (Ossila Instruments), target current 100 μA, voltage stepped by 0.1 V"
+        },
+        {
+          "condition_id": "C011",
+          "temperature": {
+            "value": 20,
+            "unit": "C"
+          },
+          "test_method": "four-point probe (Ossila Instruments), target current 100 μA, voltage stepped by 0.1 V"
+        },
+        {
+          "condition_id": "C012",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "four-point probe (Ossila Instruments), target current 100 μA, voltage stepped by 0.1 V"
+        },
+        {
+          "condition_id": "C013",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "test_method": "four-point probe (Ossila Instruments), target current 100 μA, voltage stepped by 0.1 V"
+        },
+        {
+          "condition_id": "C014",
+          "temperature": {
+            "value": 35,
+            "unit": "C"
+          },
+          "test_method": "four-point probe (Ossila Instruments), target current 100 μA, voltage stepped by 0.1 V"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "GITT was conducted at temperatures of 5, 15, 25, 35, and 45 circ mathrm C in a three-electrode cell between 2.5 and 4.2 V. Transients were C/10 CC for 150 s and the relaxation period was limited to a ",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "temperature": {
+            "value": 5,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "three-electrode cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "GITT"
+        },
+        {
+          "condition_id": "C016",
+          "temperature": {
+            "value": 15,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "three-electrode cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "GITT"
+        },
+        {
+          "condition_id": "C017",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "three-electrode cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "GITT"
+        },
+        {
+          "condition_id": "C018",
+          "temperature": {
+            "value": 35,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "three-electrode cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "GITT"
+        },
+        {
+          "condition_id": "C019",
+          "temperature": {
+            "value": 45,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "three-electrode cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The thermal diffusivity and the specific heat capacity of the doublesided electrodes are used to calculate the overall thermal conductivity for the positive and negative electrode, respectively. As th",
+      "conditions": [
+        {
+          "condition_id": "C020",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {},
+          "voltage_range": {},
+          "cycle_number": 0,
+          "mass_loading": {}
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To deconvolute the behaviours of the negative and positive electrode a three-electrode configured PAT-Cell EL-Cell and a perfluoroalkoxy alkane SwagelokTM half-cell using lithium metal as the counter ",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "electrode_config": "half_cell",
+          "electrolyte": "1 mol dm−3 LiPF6 in ethylene carbonate: ethylmethylcarbonate 3:7, v:v, Soulbrain",
+          "c_rate_or_current": {
+            "value": "C/20",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 2,
+          "reference_electrode": "Li/Li+",
+          "test_method": "CC-CV charge with CV cut-off C/50 and CC discharge"
+        },
+        {
+          "condition_id": "C022",
+          "electrode_config": "three_electrode",
+          "electrolyte": "1 mol dm−3 LiPF6 in ethylene carbonate: ethylmethylcarbonate 3:7, v:v, Soulbrain",
+          "c_rate_or_current": {
+            "value": "C/20",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.2,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 2,
+          "reference_electrode": "Li/Li+",
+          "test_method": "CC-CV charge with CV cut-off C/50 and CC discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "An Arrhenius relationship Eq. 6 can be used to find the activation energies across the stoichiometric range of each electrode Fig. 7. Similarly to the solid-phase diffusivity, the activation energies ",
+      "property_types": [
+        "Lithium_Ion_Diffusion_Activation_Energy"
+      ],
+      "extracted_info": {
+        "Lithium_Ion_Diffusion_Activation_Energy": [
+          {
+            "value": "10-20 kJ/mol (0.104-0.207 eV)",
+            "unit": "kJ/mol",
+            "method": "Arrhenius relationship",
+            "soc": "across stoichiometric range",
+            "source_text": "For the positive electrode active material the activation energy is in the range of 10 kJ mol−1 − 20 kJ mol−1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The properties are mapped as a function of lithium concentration, the stoichiometric ranges were mapped previously using half-cells 23. For the positive electrode this corresponds to crystal lattice l",
+      "conditions": [
+        {
+          "condition_id": "C023",
+          "voltage_range": {
+            "max": 4.4,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "OCV measurement"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Previously the exchange current density and its activation energy were evaluated at a single stoichiometry 23. Here, the exchange current density and its dependency were mapped on temperature and lith",
+      "conditions": [
+        {
+          "condition_id": "C024",
+          "electrode_config": "half_cell",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The solid-phase diffusion coefficients were measured using GITT in a three-electrode cell comprising of the NMC811 positive electrode and the graphite bf cdot bf cal S i bf 0 y negative electrode Fig.",
+      "conditions": [
+        {
+          "condition_id": "C025",
+          "electrode_config": "three-electrode cell (NMC811 positive electrode, graphite negative electrode)",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ion_Diffusion_Coefficient"
+      ],
+      "performance_info": {
+        "Ion_Diffusion_Coefficient": [
+          {
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "source_text": "For the temperature range 5 °C to 45 °C, the diffusivity of the positive electrode active material was approximately 10-10 cm2 s-1 to 10-11 cm2 s-1"
+          },
+          {
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "method": "GITT",
+            "source_text": "for the negative electrode active material it was 10-14 cm2 s-1 to 10-10 cm2 s-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The diffusion coefficient of NMC has been reported in the range of 10 - 10 - 10 - 8 mathrm 2 s - 1 previously, corroborating fairy well with the results here 56 , 57 . However, the diffusion values fo",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ion_Diffusion_Coefficient"
+      ],
+      "performance_info": {
+        "Ion_Diffusion_Coefficient": [
+          {
+            "unit": "cm2/s",
+            "source_text": "The diffusion coefficient of NMC has been reported in the range of 10 - 10 - 10 - 8 mathrm 2 s - 1 previously, corroborating fairy well with the results here 56 , 57 . However, the diffusion values for mathrm y and graphite have had values reported much higher than observed here, between 10 - 11 mathrm 2 s - 1 t circ 10 - 82 s - 1 and 10 - 10 mathrm 2 s - 1 to 10 - 8 mathrm 2 s - 1 for the materials, respectively 51,58,59. Diffusion coefficients are often reported over several orders of magnitude due to differences in experimental set-ups and analysis. The solid-phase diffusivity often has to be tuned to a higher value for to provide reasonable simulation values as if the low diffusivity values are included in the fits, the simulations either do not converge or provide unrealistic results. This tuning was carried out here and the fitted profiles are illustrated in Fig. 6."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The effect of the electrolyte is included by calculating the volumetric heat capacity for the wetted electrode from the volumetric heat capacities of each bulk material as shown in Eq. 1: bar theta rh",
+      "conditions": [
+        {
+          "condition_id": "C026",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrode_porosity": {
+            "value": 33.5,
+            "unit": "%"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "• Temperature case: Parameters tuned to 0.5 mathrm C 25 circ mathrm C dataset and then the same parameters used for the 0.5C0◦C or 0.5 mathrm C 10 circ mathrm C . .",
+      "conditions": [
+        {
+          "condition_id": "C027",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C028",
+          "temperature": {
+            "value": 0,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C029",
+          "temperature": {
+            "value": 10,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Previously reported values for this cell was 17.8 kJ mathrm - 1 and 35 kJ mol− 1 for NMC111 and graphite, respectively 23. However, these activation energies are appreciably lower than the values repo",
+      "property_types": [
+        "Lithium_Ion_Diffusion_Activation_Energy"
+      ],
+      "extracted_info": {
+        "Lithium_Ion_Diffusion_Activation_Energy": [
+          {
+            "value": 0.1845,
+            "unit": "eV",
+            "source_text": "Previously reported values for this cell was 17.8 kJ mol− 1 and 35 kJ mol− 1 for NMC111 and graphite, respectively"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The exchange current density demonstrates a dependency on lithium concentration that can be described by a form of the Butler-Volmer equation see Fig. 9:16 j 0 k 0 cdot left1 - frac c sc s , xright 1 ",
+      "conditions": [
+        {
+          "condition_id": "C030",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [
+        "Chemical_Composition_Mole_Fractions"
+      ],
+      "extracted_info": {
+        "Chemical_Composition_Mole_Fractions": [
+          {
+            "value": {
+              "Ni": 0.8,
+              "Mn": 0.1,
+              "Co": 0.1,
+              "Li": 1.0
+            },
+            "unit": "mole fraction",
+            "source_text": "LixNi0.8Mn0.1- mathrm 0.1 mathrm O 2"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The quality of tuning was confirmed by comparing agreement of the different C-rates a 25 circ mathrm C , see Fig. 15. Since the parameters were tuned based on the 1C dataset there is excellent agreeme",
+      "conditions": [
+        {
+          "condition_id": "C031",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C027",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C032",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C033",
+          "temperature": {
+            "value": 10,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C034",
+          "temperature": {
+            "value": 0,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To verify the improvement in simulations accounting for the parameter-dependencies and thermal behaviour for the M50, the simulations were compared to a C-rate discharge that the parameters were not t",
+      "conditions": [
+        {
+          "condition_id": "C035",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "test_method": "C-rate discharge"
+        },
+        {
+          "condition_id": "C036",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "test_method": "C-rate discharge"
+        },
+        {
+          "condition_id": "C037",
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The initial concentrations for the positive and negative electrodes were set to 13975 mol mathbf m - 3 and 28866 mol mathbf m - 3 , respectively, which correspond to stoichiometries of 0.27 and 0.98. ",
+      "conditions": [
+        {
+          "condition_id": "C038",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "test_method": "simulation fitting"
+        },
+        {
+          "condition_id": "C039",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "test_method": "simulation fitting"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The positive electrode was extracted from a cell that was discharged to 2.5 V. This relates to a lithium content of approximately x 0.9. At this state of lithiation, the solid-phase electronic conduct",
+      "conditions": [
+        {
+          "condition_id": "C040",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "max": 2.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "lithium_content": {
+            "value": 0.9,
+            "unit": "x in Li_xMO2"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Electronic_Conductivity_Bulk"
+      ],
+      "performance_info": {
+        "Electronic_Conductivity_Bulk": [
+          {
+            "value": 0.84,
+            "unit": "S/m",
+            "condition_id": "C001",
+            "method": "not specified",
+            "source_text": "the solid-phase electronic conductivity was evaluated to be 0.84 S m-1 at 25°C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Property; Unit; Value\nRows:\nRow 1: Property = Volumetric energy density; Unit = $Wh\\ L^{-1}$; Value = 752\nRow 2: Property = Specific energy density; Unit = $Wh\\ kg^{-1}$; Val",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Volumetric_Energy_Density",
+        "Gravimetric_Energy_Density"
+      ],
+      "performance_info": {
+        "Volumetric_Energy_Density": [
+          {
+            "value": 752,
+            "unit": "Wh/L",
+            "source_text": "Volumetric energy density; Unit = $Wh\\ L^{-1}$; Value = 752"
+          }
+        ],
+        "Gravimetric_Energy_Density": [
+          {
+            "value": 267,
+            "unit": "Wh/kg",
+            "source_text": "Specific energy density; Unit = $Wh\\ kg^{-1}$; Value = 267"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The physical parameters of the negative and positive electrode are very similar, the positive electrode had slightly lower thickness, at 76 µm rather than 84 mu mathrm m , , a higher pore volume of 33",
+      "conditions": [
+        {
+          "condition_id": "C041",
+          "electrode_thickness": {
+            "value": 76,
+            "unit": "µm"
+          },
+          "electrode_porosity": {
+            "value": 33.5,
+            "unit": "%"
+          },
+          "electronic_conductivity_electrode": {
+            "value": 215,
+            "unit": "S/cm"
+          }
+        }
+      ],
+      "property_types": [
+        "Secondary_Particle_Size_Distribution"
+      ],
+      "extracted_info": {
+        "Secondary_Particle_Size_Distribution": [
+          {
+            "value": {
+              "D50": 5.2
+            },
+            "unit": "μm",
+            "source_text": "a slightly lower mean particle radius of 5.2 µm rather than 5.9 µm"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The negative electrode likely limits the maximum power observed by the cell, as observed from the lower diffusion coefficient and current exchange density compared to the positive electrode over the f",
+      "conditions": [
+        {
+          "condition_id": "C042",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          }
+        },
+        {
+          "condition_id": "C043",
+          "temperature": {
+            "value": 45,
+            "unit": "C"
+          }
+        }
+      ],
+      "property_types": [
+        "Lithium_Ion_Diffusion_Activation_Energy"
+      ],
+      "extracted_info": {
+        "Lithium_Ion_Diffusion_Activation_Energy": [
+          {
+            "value": 0.249,
+            "unit": "eV",
+            "soc": "x > 0.8",
+            "source_text": "above stoichiometry of x 0.8 the activation energy also doubled to 24 mathrm - 1"
+          }
+        ]
+      },
+      "performance_types": [
+        "Ion_Diffusion_Coefficient"
+      ],
+      "performance_info": {
+        "Ion_Diffusion_Coefficient": [
+          {
+            "value": 7e-12,
+            "unit": "cm2/s",
+            "condition_id": "C001",
+            "source_text": "7 times mathrm dot 10 - 12 - dot 2 s - 1 was obtained at room temperature"
+          },
+          {
+            "value": 2e-11,
+            "unit": "cm2/s",
+            "condition_id": "C002",
+            "source_text": "increased to 2 × 10 - 11 at 45◦C"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Paper; PropertiesCell Type; Wh/kg; Chemistry; ElectrochemicalDFN; Thermal0D; 1D; 2D; 3D\nRows:\nRow 1: Paper = O’Regan 2022(this work); PropertiesCell Type = 5 Ah LG cylindrica",
+      "conditions": [
+        {
+          "condition_id": "C044",
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Gravimetric_Energy_Density"
+      ],
+      "performance_info": {
+        "Gravimetric_Energy_Density": [
+          {
+            "value": 267,
+            "unit": "Wh/kg",
+            "condition_id": "C001",
+            "basis": "full-cell",
+            "source_text": "Wh/kg = 267; Chemistry = NMC811graphite -SiO $_y$"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: ; Parameter; Unit; Positive electrode(k = p); Separator(k = s); Negative electrode(k = n)\nRows:\nRow 1:  = Electrode; Parameter = Active material type; Unit = ; Positive elect",
+      "conditions": [
+        {
+          "condition_id": "C045",
+          "electrode_config": "full_cell",
+          "electrode_thickness": {
+            "value": 75.6,
+            "unit": "μm"
+          },
+          "electrode_porosity": {
+            "value": 33.5,
+            "unit": "%"
+          }
+        }
+      ],
+      "property_types": [
+        "Secondary_Particle_Size_Distribution"
+      ],
+      "extracted_info": {
+        "Secondary_Particle_Size_Distribution": [
+          {
+            "value": {
+              "D50": 5.22
+            },
+            "unit": "μm",
+            "source_text": "Mean particle radius ( R_k ); m; 5.22·10^{-6}"
+          }
+        ]
+      },
+      "performance_types": [
+        "Electronic_Conductivity_Bulk"
+      ],
+      "performance_info": {
+        "Electronic_Conductivity_Bulk": [
+          {
+            "value": 0.00847,
+            "unit": "S/cm",
+            "condition_id": "C001",
+            "source_text": "Solid-phase electronic conductivity ( σ_{s,k} ); S m^{-1}; 0.847"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: ; Technique; Parameter(s); Details\nRows:\nRow 1:  = Thermo-physicalcharacterisation; Technique = Differentialscanningcalorimetry; Parameter(s) = Specific heatcapacity; Details",
+      "conditions": [
+        {
+          "condition_id": "C046",
+          "test_method": "Differential scanning calorimetry"
+        },
+        {
+          "condition_id": "C047",
+          "test_method": "Laser flash analysis"
+        },
+        {
+          "condition_id": "C048",
+          "test_method": "Galvanostatic intermittent titration technique"
+        },
+        {
+          "condition_id": "C049",
+          "test_method": "Potentiostatic method"
+        },
+        {
+          "condition_id": "C050",
+          "test_method": "Electrochemical impedance spectroscopy"
+        },
+        {
+          "condition_id": "C051",
+          "test_method": "Four-point probe"
+        }
+      ],
+      "property_types": [
+        "Lithium_Ion_Diffusion_Activation_Energy"
+      ],
+      "extracted_info": {
+        "Lithium_Ion_Diffusion_Activation_Energy": [
+          {
+            "unit": "eV",
+            "method": "GITT",
+            "soc": "0 to 100%",
+            "source_text": "Diffusivity and activation energy, 5 °C to 45 °C(10 °C step)at SoC 0 to100%"
+          }
+        ]
+      },
+      "performance_types": [
+        "Ion_Diffusion_Coefficient",
+        "Electronic_Conductivity_Bulk"
+      ],
+      "performance_info": {
+        "Ion_Diffusion_Coefficient": [
+          {
+            "unit": "cm2/s",
+            "condition_id": "C003",
+            "method": "GITT",
+            "source_text": "Diffusivity and activation energy, 5 °C to 45 °C(10 °C step)at SoC 0 to100%"
+          }
+        ],
+        "Electronic_Conductivity_Bulk": [
+          {
+            "unit": "S/cm",
+            "condition_id": "C006",
+            "method": "Four-point probe",
+            "source_text": "Electronic conductivity and activation energy, 15 °C to 35 °C(5 °C step)at SoC 0%"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: ; Thermal Diffusivity /  $\\alpha$  / mm $^{2}$  s $^{-1}$\nRows:\nRow 1: Temperature / K; 268.15; 283.15; 298.15; 313.15; 328.15\nRow 2: Positive electrode (2-sided); 0.305; 0.2",
+      "conditions": [
+        {
+          "condition_id": "C052",
+          "temperature": {
+            "value": 268.15,
+            "unit": "K"
+          }
+        },
+        {
+          "condition_id": "C053",
+          "temperature": {
+            "value": 283.15,
+            "unit": "K"
+          }
+        },
+        {
+          "condition_id": "C054",
+          "temperature": {
+            "value": 298.15,
+            "unit": "K"
+          }
+        },
+        {
+          "condition_id": "C055",
+          "temperature": {
+            "value": 313.15,
+            "unit": "K"
+          }
+        },
+        {
+          "condition_id": "C056",
+          "temperature": {
+            "value": 328.15,
+            "unit": "K"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Material; Thickness / μm; ρ / kg m-3; Cp / J kg-1K-1; Θ / J m-3K-1; α mm2s-1; λ / W m-1K-1\nRows:\nRow 1: Material = Positive electrode coating (dry porous); Thickness / μm = 7",
+      "conditions": [
+        {
+          "condition_id": "C057",
+          "electrode_thickness": {
+            "value": 75.6,
+            "unit": "μm"
+          },
+          "compacted_density": {
+            "value": 3270,
+            "unit": "kg/m3"
+          }
+        },
+        {
+          "condition_id": "C058",
+          "electrode_thickness": {
+            "value": 75.6,
+            "unit": "μm"
+          },
+          "compacted_density": {
+            "value": 4918,
+            "unit": "kg/m3"
+          }
+        },
+        {
+          "condition_id": "C059",
+          "electrode_thickness": {
+            "value": 75.6,
+            "unit": "μm"
+          },
+          "compacted_density": {
+            "value": 3699,
+            "unit": "kg/m3"
+          }
+        },
+        {
+          "condition_id": "C060",
+          "electrode_thickness": {
+            "value": 167.2,
+            "unit": "μm"
+          },
+          "compacted_density": {
+            "value": 3216,
+            "unit": "kg/m3"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    }
+  ]
+}

@@ -1,0 +1,359 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/anode/10.1016_j.ensm.2025.104841.md",
+  "component": "anode",
+  "paper_id": "10.1016/j.ensm.2025.104841",
+  "doi": "10.1016/j.ensm.2025.104841",
+  "material_id": "10.1016_j.ensm.2025.104841",
+  "meta": {
+    "meta_title": "Insights into the coupled thermal behavior of silicon/graphite composite anodes ",
+    "meta_authors": "Wei Zeng a , Wenxin Mei a , Xiaofang He a , Junjie Wang a , Zheng Fang a , Jiang Zhou b Tao Zheng b , Qiangling Duan a,\\* , Jinhua Sun a , Qingsong Wang a",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "anode material",
+      "short_name": "10.1016_j.ensm.2025.104841",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.ensm.2025.104841"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: Device; Type; Accuracy\nRows:\nRow 1: Device = Battery tester; Type = NEWARE, 5 V,50A; Accuracy = 0.1 %\nRow 2: NEWARE, 10 V,5mA; 0.05 %\nRow 3: Device = Data collector; Type = THM240K; Accuracy = 0.2 %\nRow 4: Device = Thermocouples; Type = K-type; Accuracy = 0.75 %\nRow 5: Device = Multi-model calorimetric; Type = NETZSCH, MMC 274 Nexus; Accuracy = 0.01 K\nRow 6: Device = Accelerating rate calorimetry; Type = THT, EV-ARC; Accuracy = 0.001 K\nColumn data:\n  Device: Battery tester; NEWARE, 10 V,5mA; Data collector; Thermocouples; Multi-model calorimetric; Accelerating rate calorimetry\n  Type: NEWARE, 5 V,50A; 0.05 %; THM240K; K-type; NETZSCH, MMC 274 Nexus; THT, EV-ARC\n  Accuracy: 0.1 %; 0.2 %; 0.75 %; 0.01 K; 0.001 K",
+    "TABLE DATA BLOCK\nHeaders: Symbol; Description; Value; Ref.\nRows:\nRow 1: Symbol = $L_{neg}$; Description = Length of anode; Value = 62 (um); Ref. = [exp]\nRow 2: Symbol = $L_{sep}$; Description = Length of separator; Value = 23 (um); Ref. = [exp]\nRow 3: Symbol = $L_{pos}$; Description = Length of cathode; Value = 80 (um); Ref. = [exp]\nRow 4: Symbol = $D_c$; Description = Diffusivity of cathode; Value = $2 \\times 10^{-13}$ (m2/s); Ref. = [39]\nRow 5: Symbol = $D_{gr}$; Description = Diffusivity of graphite; Value = $1.45 \\times 10^{-13}$ (m2/s); Ref. = [39]\nRow 6: Symbol = $D_{si}$; Description = Diffusivity of silicon; Value = $1.5 \\times 10^{-14}$ (m2/s); Ref. = [35]\nRow 7: Symbol = $R_c$; Description = Radius of cathode; Value = 2.6 (um); Ref. = [exp]\nRow 8: Symbol = $R_{gr}$; Description = Radius of graphite; Value = 5 (um); Ref. = [exp]\nRow 9: Symbol = $R_{si}$; Description = Radius of silicon; Value = 3 (um); Ref. = [exp]\nRow 10: Symbol = $\\alpha_a, \\alpha_c$; Description = Transfer coefficient; Value = 0.5; Ref. = [45]\nRow 11: Symbol = $i_{0,ca}$; Description = Exchange current density of cathode; Value = 0.73 (A/m2); Ref. = [45]\nRow 12: Symbol = $i_{0,gr}$; Description = Exchange current density of graphite; Value = 0.96 (A/m2); Ref. = [46]\nRow 13: Symbol = $i_{0,si}$; Description = Exchange current density of silicon; Value = 0.19 (A/m2); Ref. = [47]\nRow 14: Symbol = $\\xi_{Li}$; Description = Molar volume of Li; Value = $9 \\times 10^{-6}$ (m3/mol); Ref. = [45]\nRow 15: Symbol = $\\xi_{gr}$; Description = Molar volume of graphite; Value = $5.3 \\times 10^{-6}$ (m3/mol); Ref. = [45]\nRow 16: Symbol = $\\xi_{si}$; Description = Molar volume of silicon; Value = $1.2 \\times 10^{-5}$ (m3/mol); Ref. = [45]\nRow 17: Symbol = $\\rho_b$; Description = Density of battery; Value = 2252.75 (kg·m3); Ref. = [exp]\nRow 18: Symbol = $C_b$; Description = Heat capacity of battery; Value = 1003.64 (J/(kg·K)); Ref. = [exp]\nRow 19: Symbol = k; Description = Heat conduction; Value = x, y, z,31.58, 31.58, 0.6933 (W/(m·K)); Ref. = [exp]\nColumn data:\n  Symbol: $L_{neg}$; $L_{sep}$; $L_{pos}$; $D_c$; $D_{gr}$; $D_{si}$; $R_c$; $R_{gr}$; $R_{si}$; $\\alpha_a, \\alpha_c$; $i_{0,ca}$; $i_{0,gr}$; $i_{0,si}$; $\\xi_{Li}$; $\\xi_{gr}$; $\\xi_{si}$; $\\rho_b$; $C_b$; k\n  Description: Length of anode; Length of separator; Length of cathode; Diffusivity of cathode; Diffusivity of graphite; Diffusivity of silicon; Radius of cathode; Radius of graphite; Radius of silicon; Transfer coefficient; Exchange current density of cathode; Exchange current density of graphite; Exchange current density of silicon; Molar volume of Li; Molar volume of graphite; Molar volume of silicon; Density of battery; Heat capacity of battery; Heat conduction\n  Value: 62 (um); 23 (um); 80 (um); $2 \\times 10^{-13}$ (m2/s); $1.45 \\times 10^{-13}$ (m2/s); $1.5 \\times 10^{-14}$ (m2/s); 2.6 (um); 5 (um); 3 (um); 0.5; 0.73 (A/m2); 0.96 (A/m2); 0.19 (A/m2); $9 \\times 10^{-6}$ (m3/mol); $5.3 \\times 10^{-6}$ (m3/mol); $1.2 \\times 10^{-5}$ (m3/mol); 2252.75 (kg·m3); 1003.64 (J/(kg·K)); x, y, z,31.58, 31.58, 0.6933 (W/(m·K))\n  Ref.: [exp]; [exp]; [exp]; [39]; [39]; [35]; [exp]; [exp]; [exp]; [45]; [45]; [46]; [47]; [45]; [45]; [45]; [exp]; [exp]; [exp]"
+  ],
+  "n_items": 8,
+  "items": [
+    {
+      "paragraph": "The morphology, particle size, and elemental distribution of the electrode materials were characterized using scanning electron microscopy SEM, Gemini SEM 500, Germany and energy-dispersive X-ray spec",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "cycle_number": 3,
+          "test_method": "galvanostatic"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To elucidate the origin of heat generation in silicon-graphite composite HELIBs, we conducted multilevel experiments, including pouchcell temperature measurements and coin-cell calorimetry. Fig. 3a sh",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "electrode_config": "pouch cell (full-cell)",
+          "test_method": "temperature measurement during galvanostatic discharge"
+        },
+        {
+          "condition_id": "C003",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "electrode_config": "pouch cell (full-cell)",
+          "test_method": "temperature measurement during galvanostatic discharge"
+        },
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "electrode_config": "pouch cell (full-cell)",
+          "test_method": "temperature measurement during galvanostatic discharge"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "pouch cell (full-cell)",
+          "test_method": "temperature measurement during galvanostatic discharge"
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "electrode_config": "coin cell (half-cell)",
+          "test_method": "calorimetry"
+        },
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "electrode_config": "coin cell (full-cell)",
+          "test_method": "calorimetry"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "3. ARC tests reveal that increasing silicon content lowers the onset temperature of self-heating and markedly intensifies thermal runaway severity. As the silicon fraction increases from 0 to 30 %, th",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "test_method": "ARC"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Si",
+              "C"
+            ],
+            "source_text": "As the silicon fraction increases from 0 to 30 %, the maximum thermal runaway temperature rises from 513.1 ◦C to 787.4 circ mathrm C , , accompanied by a substantial increase in temperature rise rate, indicating more exothermic and kinetically aggressive reactions in silicon-rich anodes."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The heat generation of HELIBs during cycling and thermal runaway was experimentally investigated. The experiment setup is presented in Fig. 1. In this work, the temperature rise of the 69 Ah pouch cel",
+      "conditions": [
+        {
+          "condition_id": "C009",
+          "voltage_range": {
+            "min": 2.6,
+            "max": 4.4,
+            "unit": "V"
+          },
+          "cycle_number": 0,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic discharge"
+        },
+        {
+          "condition_id": "C009",
+          "voltage_range": {
+            "min": 2.6,
+            "max": 4.4,
+            "unit": "V"
+          },
+          "cycle_number": 0,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic discharge"
+        },
+        {
+          "condition_id": "C009",
+          "voltage_range": {
+            "min": 2.6,
+            "max": 4.4,
+            "unit": "V"
+          },
+          "cycle_number": 0,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic discharge"
+        },
+        {
+          "condition_id": "C010",
+          "temperature": {
+            "value": 35,
+            "unit": "C"
+          },
+          "cycle_number": 0,
+          "electrode_config": "half_cell",
+          "test_method": "MMC discharge calorimetry"
+        },
+        {
+          "condition_id": "C011",
+          "cycle_number": 0,
+          "electrode_config": "full_cell",
+          "test_method": "EV-ARC thermal runaway calorimetry"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To investigate the influence of silicon content on the thermal runaway behavior of high-energy-density batteries, Ah-level pouch cells with different silicon contents were fabricated and subjected to ",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "electrode_config": "full_cell",
+          "test_method": "accelerating rate calorimetry (ARC)"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Si",
+              "C"
+            ],
+            "method": "EDS",
+            "source_text": "the only difference lay in the silicon fraction of the anode active materials. ... The morphology and EDS mappings of the anode materials are shown in Fig. 7c and Fig. S6, respectively."
+          }
+        ]
+      },
+      "performance_types": [
+        "Areal_Capacity"
+      ],
+      "performance_info": {
+        "Areal_Capacity": [
+          {
+            "value": 32,
+            "unit": "mAh/cm2",
+            "source_text": "The capacities of the silicon-graphite composite anode cells are all around 2.6 Ah, whereas the graphite-only cell delivers a lower capacity of 2.24 Ah. The prepared pouch cells ... with electrode dimensions of 12.5 cm × 5.6 cm."
+          },
+          {
+            "value": 37,
+            "unit": "mAh/cm2",
+            "source_text": "The capacities of the silicon-graphite composite anode cells are all around 2.6 Ah, whereas the graphite-only cell delivers a lower capacity of 2.24 Ah. The prepared pouch cells ... with electrode dimensions of 12.5 cm × 5.6 cm."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "A higher discharge rate requires larger currents and, consequently, faster electron and ion transfer between electrodes. In this study, we simulated the rate-dependent performance of a LIB using an el",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": "0.4",
+            "unit": "C"
+          },
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [
+        "Elemental_Composition"
+      ],
+      "extracted_info": {
+        "Elemental_Composition": [
+          {
+            "value": [
+              "Si",
+              "C"
+            ],
+            "source_text": "silicon/graphite composite anodes ... keeping the silicon fraction constant at 20 %"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Symbol; Description; Value; Ref.\nRows:\nRow 1: Symbol = $L_{neg}$; Description = Length of anode; Value = 62 (um); Ref. = [exp]\nRow 2: Symbol = $L_{sep}$; Description = Length",
+      "property_types": [
+        "Exchange_Current_Density"
+      ],
+      "extracted_info": {
+        "Exchange_Current_Density": [
+          {
+            "value": 0.096,
+            "unit": "mA/cm2",
+            "source_text": "Symbol = $i_{0,gr}$; Description = Exchange current density of graphite; Value = 0.96 (A/m2); Ref. = [46]"
+          },
+          {
+            "value": 0.019,
+            "unit": "mA/cm2",
+            "source_text": "Symbol = $i_{0,si}$; Description = Exchange current density of silicon; Value = 0.19 (A/m2); Ref. = [47]"
+          }
+        ]
+      },
+      "performance_types": [
+        "Chemical_Diffusion_Coefficient_of_Li_GITT"
+      ],
+      "performance_info": {
+        "Chemical_Diffusion_Coefficient_of_Li_GITT": [
+          {
+            "value": 1.45e-09,
+            "unit": "cm2/s",
+            "source_text": "Symbol = $D_{gr}$; Description = Diffusivity of graphite; Value = $1.45 \\times 10^{-13}$ (m2/s); Ref. = [39]"
+          },
+          {
+            "value": 1.5e-10,
+            "unit": "cm2/s",
+            "source_text": "Symbol = $D_{si}$; Description = Diffusivity of silicon; Value = $1.5 \\times 10^{-14}$ (m2/s); Ref. = [35]"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In addition to electrode composition, the overcharging rate plays a decisive role in triggering thermal runaway by modulating electrochemical polarization and heat generation. The temperature and volt",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "overcharging"
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 0.3,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "overcharging"
+        },
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "overcharging"
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": 0.7,
+            "unit": "C"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "overcharging"
+        },
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "overcharging"
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 0.3,
+            "unit": "C"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "overcharging"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    }
+  ]
+}

@@ -1,0 +1,1220 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/electrolyte/electrolyte.md",
+  "component": "electrolyte",
+  "paper_id": "electrolyte",
+  "doi": "electrolyte",
+  "material_id": "electrolyte",
+  "meta": {
+    "meta_title": "",
+    "meta_authors": "",
+    "meta_year": ""
+  },
+  "table_items": [],
+  "n_items": 14,
+  "items": [
+    {
+      "paragraph": "To verify the superwettability of the ultralow concentration electrolyte, we first performed contact angle tests. Commercial polyolefin separators possess low wettability with highconcentration electr",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "electrolyte": "0 M",
+          "test_method": "Contact angle test"
+        },
+        {
+          "condition_id": "C002",
+          "electrolyte": "0.02 M",
+          "test_method": "Contact angle test"
+        },
+        {
+          "condition_id": "C003",
+          "electrolyte": "1 M",
+          "test_method": "Contact angle test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Contact_Angle"
+      ],
+      "performance_info": {
+        "Contact_Angle": [
+          {
+            "value": 62.1,
+            "unit": "°",
+            "substrate": "PE separator",
+            "condition_id": "C001",
+            "source_text": "initial contact of the different electrolytes to the separator, the contact angles for 0 and 0.02 M electrolytes are 6 2 . 1 circ and 6 2 . 5 circ"
+          },
+          {
+            "value": 27.9,
+            "unit": "°",
+            "substrate": "PE separator",
+            "condition_id": "C001",
+            "source_text": "After 2 min, the 0 and 0.02 M electrolytes exhibit decreased contact angles of 2 7 . 9 circ and 29.2°"
+          },
+          {
+            "value": 62.5,
+            "unit": "°",
+            "substrate": "PE separator",
+            "condition_id": "C002",
+            "source_text": "initial contact of the different electrolytes to the separator, the contact angles for 0 and 0.02 M electrolytes are 6 2 . 1 circ and 6 2 . 5 circ"
+          },
+          {
+            "value": 29.2,
+            "unit": "°",
+            "substrate": "PE separator",
+            "condition_id": "C002",
+            "source_text": "After 2 min, the 0 and 0.02 M electrolytes exhibit decreased contact angles of 2 7 . 9 circ and 29.2°"
+          },
+          {
+            "value": 101.5,
+            "unit": "°",
+            "substrate": "PE separator",
+            "condition_id": "C003",
+            "source_text": "the 1 0 1 . 5 circ observed for 1 M electrolyte"
+          },
+          {
+            "value": 95.3,
+            "unit": "°",
+            "substrate": "PE separator",
+            "condition_id": "C003",
+            "source_text": "contact angle still maintained at a large value of 95.3°"
+          },
+          {
+            "value": 30.5,
+            "unit": "°",
+            "substrate": "graphite pellet",
+            "condition_id": "C001",
+            "source_text": "contact angles for 0 and 0.02 M electrolytes are measured to be 3 0 . 5 circ and 3 1 . 4 circ , respectively, at 0 s"
+          },
+          {
+            "value": 0.0,
+            "unit": "°",
+            "substrate": "graphite pellet",
+            "condition_id": "C001",
+            "source_text": "decrease to 0 circ and 5 . 1 circ , respectively, after 6 s"
+          },
+          {
+            "value": 31.4,
+            "unit": "°",
+            "substrate": "graphite pellet",
+            "condition_id": "C002",
+            "source_text": "contact angles for 0 and 0.02 M electrolytes are measured to be 3 0 . 5 circ and 3 1 . 4 circ , respectively, at 0 s"
+          },
+          {
+            "value": 5.1,
+            "unit": "°",
+            "substrate": "graphite pellet",
+            "condition_id": "C002",
+            "source_text": "decrease to 0 circ and 5 . 1 circ , respectively, after 6 s"
+          },
+          {
+            "value": 33.2,
+            "unit": "°",
+            "substrate": "graphite pellet",
+            "condition_id": "C003",
+            "source_text": "initial contact angle of the 1 M electrolyte is 3 3 . 2 circ"
+          },
+          {
+            "value": 28.7,
+            "unit": "°",
+            "substrate": "graphite pellet",
+            "condition_id": "C003",
+            "source_text": "which decreases to 2 8 . 7 circ after 6 s"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Superwettability can ensure the uniformity of SEI. But creating preferred inorganic-rich SEI in conventional electrolyte systems with the normal formation process poses a significant challenge. Under ",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "voltage_range": {
+            "min": 0.8,
+            "max": 0.8,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1 M",
+          "electrode_config": "graphite anode",
+          "reference_electrode": "Li/Li+",
+          "test_method": "formation process"
+        },
+        {
+          "condition_id": "C005",
+          "voltage_range": {
+            "min": 0.0,
+            "max": 0.0,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "ultralow concentration",
+          "electrode_config": "graphite anode",
+          "reference_electrode": "Li/Li+",
+          "test_method": "formation process"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Reduction_Onset_Potential"
+      ],
+      "performance_info": {
+        "Reduction_Onset_Potential": [
+          {
+            "value": 0.8,
+            "unit": "V vs. Li/Li+",
+            "source_text": "conventional carbonate solvents, such as ethylene carbonate EC, tend to decompose at a relatively high potential, around 0.8 V vs Li/Li+",
+            "condition_id": "C004"
+          },
+          {
+            "value": 0.0,
+            "unit": "V vs. Li/Li+",
+            "source_text": "near Li plating potentials",
+            "condition_id": "C005"
+          }
+        ]
+      },
+      "condition_id": "C005"
+    },
+    {
+      "paragraph": "To validate our hypothesis of the ultralow electrolyte, we first assembled Ligraphite half-cells using a 1 M concentration electrolyte and lithium-ion-free 0 M electrolyte, respectively. Formation pro",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "electrolyte": "1 M concentration electrolyte",
+          "electrode_config": "graphite anode",
+          "reference_electrode": "Li/Li+",
+          "test_method": "formation process (CC-CV mode)"
+        },
+        {
+          "condition_id": "C007",
+          "electrolyte": "0 M concentration electrolyte",
+          "electrode_config": "graphite anode",
+          "reference_electrode": "Li/Li+",
+          "test_method": "formation process (CC-CV mode)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "We then compared the electrochemical performance of graphite anodes using ultralow-concentration electrolytes and conventional electrolytes. First, the graphite half cells are rested for 2 4 mathrm h ",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "electrolyte": "0 M",
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "formation step"
+        },
+        {
+          "condition_id": "C009",
+          "electrolyte": "0.02 M",
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "formation step"
+        },
+        {
+          "condition_id": "C010",
+          "electrolyte": "1 M",
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "formation step"
+        },
+        {
+          "condition_id": "C011",
+          "electrolyte": "1 M",
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "cyclic voltammetry (CV) and cycling tests"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Subsequently, we tested the cells for long-term cycling stability at 0.5 C. All cells are subjected to a voltage range of 0.01−1.5 V vs Li/Li . As depicted in Figure 3c, the cells formed with low-conc",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.01,
+            "max": 1.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "0 M",
+          "electrode_config": "graphite anode",
+          "reference_electrode": "Li/Li+",
+          "test_method": "long-term cycling stability test"
+        },
+        {
+          "condition_id": "C013",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.01,
+            "max": 1.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "0.02 M",
+          "electrode_config": "graphite anode",
+          "reference_electrode": "Li/Li+",
+          "test_method": "long-term cycling stability test"
+        },
+        {
+          "condition_id": "C014",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.01,
+            "max": 1.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1 M",
+          "electrode_config": "graphite anode",
+          "reference_electrode": "Li/Li+",
+          "test_method": "long-term cycling stability test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 77.4,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C012",
+            "source_text": "the capacity retentions for the 0 ... electrolyte cells are 77.4%"
+          },
+          {
+            "value": 76.4,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C013",
+            "source_text": "the capacity retentions for the ... 0.02 M electrolyte cells are 76.4%"
+          },
+          {
+            "value": 44.7,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C014",
+            "source_text": "it decreases to 44.7% at 200 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "We conducted further investigations into the fast-charging capability of graphite anodes formed with low-concentration electrolytes in half cells by using rate performance tests Figure 3d. Under const",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "electrolyte": "0 M",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C016",
+          "electrolyte": "0 M",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C017",
+          "electrolyte": "0 M",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C018",
+          "electrolyte": "0.02 M",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C019",
+          "electrolyte": "0.02 M",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C020",
+          "electrolyte": "0.02 M",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C021",
+          "electrolyte": "1 M",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C022",
+          "electrolyte": "1 M",
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C023",
+          "electrolyte": "1 M",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C024",
+          "electrolyte": "0 M",
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS",
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C025",
+          "electrolyte": "0 M",
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C026",
+          "electrolyte": "1 M",
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS",
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C027",
+          "electrolyte": "1 M",
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability",
+        "SEI_Resistance"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [
+              370
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C015",
+            "source_text": "at 0.2 C ... approximately 370 mAh g-1"
+          },
+          {
+            "value": [
+              340
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C016",
+            "source_text": "the cells formed with 0 and 0.02 M electrolytes retain capacities of 340, 250, and 265, 140 mAh g-1 at 1 and 2 C, respectively"
+          },
+          {
+            "value": [
+              250
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C017",
+            "source_text": "the cells formed with 0 and 0.02 M electrolytes retain capacities of 340, 250, and 265, 140 mAh g-1 at 1 and 2 C, respectively"
+          },
+          {
+            "value": [
+              370
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C018",
+            "source_text": "at 0.2 C ... approximately 370 mAh g-1"
+          },
+          {
+            "value": [
+              265
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C019",
+            "source_text": "the cells formed with 0 and 0.02 M electrolytes retain capacities of 340, 250, and 265, 140 mAh g-1 at 1 and 2 C, respectively"
+          },
+          {
+            "value": [
+              140
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C020",
+            "source_text": "the cells formed with 0 and 0.02 M electrolytes retain capacities of 340, 250, and 265, 140 mAh g-1 at 1 and 2 C, respectively"
+          },
+          {
+            "value": [
+              370
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C021",
+            "source_text": "at 0.2 C ... approximately 370 mAh g-1"
+          },
+          {
+            "value": [
+              150
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C022",
+            "source_text": "the cell formed with 1 M electrolyte only retained capacities of 150 and 33 mAh g-1 at the same C-rates."
+          },
+          {
+            "value": [
+              33
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C023",
+            "source_text": "the cell formed with 1 M electrolyte only retained capacities of 150 and 33 mAh g-1 at the same C-rates."
+          }
+        ],
+        "SEI_Resistance": [
+          {
+            "value": 5.8,
+            "unit": "Ω",
+            "condition_id": "C024",
+            "cycle_number": 0,
+            "source_text": "Prior to cycling, the SEI resistance R of the cell formed using a 0 M electrolyte was only 5.8 Ω."
+          },
+          {
+            "value": 9.1,
+            "unit": "Ω",
+            "condition_id": "C025",
+            "source_text": "After cycling, the impedance increased to 9.1 Ω."
+          },
+          {
+            "value": 13.4,
+            "unit": "Ω",
+            "condition_id": "C026",
+            "cycle_number": 0,
+            "source_text": "In comparison, the R of the battery formed using a normal concentration electrolyte increased from 13.4 to 27.8 Ω."
+          },
+          {
+            "value": 27.8,
+            "unit": "Ω",
+            "condition_id": "C027",
+            "source_text": "In comparison, the R of the battery formed using a normal concentration electrolyte increased from 13.4 to 27.8 Ω."
+          }
+        ]
+      },
+      "condition_id": "C015"
+    },
+    {
+      "paragraph": "We conducted postcycling analysis to understand the diverse cycling performance of Ligraphite cells with different electrolyte concentrations. Optical and scanning electron microscopy SEM images in Fi",
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Inorganic_Organic_Ratio_SEI_CEI"
+      ],
+      "performance_info": {
+        "Inorganic_Organic_Ratio_SEI_CEI": [
+          {
+            "value": 0.446,
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "condition_id": "C008",
+            "source_text": "After Ar etching for 6 min, the inorganic component ratios of SEI formed with 0 and 0.02 M concentrations increased from 44.6% and 34.0% to 71.4% and 68.5%, respectively."
+          },
+          {
+            "value": 0.714,
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "condition_id": "C008",
+            "source_text": "After Ar etching for 6 min, the inorganic component ratios of SEI formed with 0 and 0.02 M concentrations increased from 44.6% and 34.0% to 71.4% and 68.5%, respectively."
+          },
+          {
+            "value": 0.947,
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "condition_id": "C008",
+            "source_text": "After 14 min, these ratios further increased to 94.7% and 96.3%, respectively."
+          },
+          {
+            "value": 0.34,
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "condition_id": "C009",
+            "source_text": "After Ar etching for 6 min, the inorganic component ratios of SEI formed with 0 and 0.02 M concentrations increased from 44.6% and 34.0% to 71.4% and 68.5%, respectively."
+          },
+          {
+            "value": 0.685,
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "condition_id": "C009",
+            "source_text": "After Ar etching for 6 min, the inorganic component ratios of SEI formed with 0 and 0.02 M concentrations increased from 44.6% and 34.0% to 71.4% and 68.5%, respectively."
+          },
+          {
+            "value": 0.963,
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "condition_id": "C009",
+            "source_text": "After 14 min, these ratios further increased to 94.7% and 96.3%, respectively."
+          },
+          {
+            "value": 0.284,
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "condition_id": "C010",
+            "source_text": "the inorganic component ratio of SEI formed under normal formation conditions only increased from 28.4% to 39.0%, and after 14 min, it reached 69.5%."
+          },
+          {
+            "value": 0.39,
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "condition_id": "C010",
+            "source_text": "the inorganic component ratio of SEI formed under normal formation conditions only increased from 28.4% to 39.0%, and after 14 min, it reached 69.5%."
+          },
+          {
+            "value": 0.695,
+            "interphase": "SEI",
+            "cycle_number": 0,
+            "condition_id": "C010",
+            "source_text": "the inorganic component ratio of SEI formed under normal formation conditions only increased from 28.4% to 39.0%, and after 14 min, it reached 69.5%."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "We then conducted tests on full cells with NCM811 cathode and graphite anode then, the cells were formed using different concentrations of electrolyte. Figure 5a illustrates the formation curves for b",
+      "conditions": [
+        {
+          "condition_id": "C028",
+          "electrolyte": "0 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "formation process"
+        },
+        {
+          "condition_id": "C029",
+          "electrolyte": "0.02 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "formation process"
+        },
+        {
+          "condition_id": "C030",
+          "electrolyte": "1 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "formation process"
+        },
+        {
+          "condition_id": "C031",
+          "electrolyte": "0 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "EIS",
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C032",
+          "electrolyte": "0.02 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "EIS",
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C033",
+          "electrolyte": "1 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "EIS",
+          "cycle_number": 0
+        },
+        {
+          "condition_id": "C034",
+          "electrolyte": "0 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C035",
+          "electrolyte": "0.02 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C036",
+          "electrolyte": "1 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "rate performance test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "SEI_Resistance",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "SEI_Resistance": [
+          {
+            "value": 7.9,
+            "unit": "Ω",
+            "condition_id": "C031",
+            "cycle_number": 0,
+            "source_text": "initial R mathrm values of cells using 0 M electrolyte during formation are only 7.9 Omega"
+          },
+          {
+            "value": 9.6,
+            "unit": "Ω",
+            "condition_id": "C032",
+            "cycle_number": 0,
+            "source_text": "0.02 M ... 9 . 6 Omega"
+          },
+          {
+            "value": 14.7,
+            "unit": "Ω",
+            "condition_id": "C033",
+            "cycle_number": 0,
+            "source_text": "1 M concentration electrolyte has an R mathrm of 1 4 . 7 Omega"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              199,
+              192,
+              180,
+              171,
+              166
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C034",
+            "source_text": "discharge capacities for the 0 M concentration at 1, 2, 3, 4, and 5 C charging are as follows: 199, 192, 180, 171, and 166 mAh mathbf g - 1"
+          },
+          {
+            "value": [
+              184,
+              183,
+              176,
+              171,
+              166
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C035",
+            "source_text": "0.02 M concentration, the discharge capacities are 184, 183, 176, 171, and 166 mAh mathbf g breve - 1"
+          },
+          {
+            "value": [
+              168,
+              153,
+              141,
+              130,
+              122
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C036",
+            "source_text": "normal concentration formation yields lower discharge capacities of 168, 153, 141, 130, and 122 mAh mathbf g - 1"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "In addition, we conducted long-term cycling tests on full cells in the voltage range of 2.5−4.25 V at 1C/1C charge/ discharge rate after two precycles at 0.2 C. The results depicted in Figure 5d demon",
+      "conditions": [
+        {
+          "condition_id": "C037",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V"
+          },
+          "electrolyte": "0 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "long-term cycling test"
+        },
+        {
+          "condition_id": "C038",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V"
+          },
+          "electrolyte": "0.02 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "long-term cycling test"
+        },
+        {
+          "condition_id": "C039",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V"
+          },
+          "electrolyte": "1 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "long-term cycling test"
+        },
+        {
+          "condition_id": "C040",
+          "electrolyte": "0 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "EIS",
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C041",
+          "electrolyte": "0.02 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "EIS",
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C042",
+          "electrolyte": "1 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "EIS",
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C043",
+          "c_rate_or_current": {
+            "value": 4,
+            "unit": "C"
+          },
+          "electrolyte": "0 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "fast charging cycle test"
+        },
+        {
+          "condition_id": "C044",
+          "c_rate_or_current": {
+            "value": 4,
+            "unit": "C"
+          },
+          "electrolyte": "1 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "fast charging cycle test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Rate_Capability",
+        "SEI_Resistance"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 76.6,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C037",
+            "source_text": "0 M concentrations yielded higher initial capacities of 201 mAh g-1, with capacity retentions of 76.6% after 300 cycles."
+          },
+          {
+            "value": 75.6,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C038",
+            "source_text": "0.02 M concentrations yielded higher initial capacities of 190 mAh g-1, with capacity retentions of 75.6% after 300 cycles."
+          },
+          {
+            "value": 66.1,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C039",
+            "source_text": "1 M concentration electrolyte exhibited a lower initial capacity of 175 mAh g-1, with a reduced capacity retention of 66.1% after 300 cycles."
+          },
+          {
+            "value": 89.0,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C043",
+            "source_text": "the specific capacity of the cell formed with the 0 M electrolyte still reached 161 mAh g-1 with the retention of 89% after 300 cycles"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              201
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C037",
+            "source_text": "0 M concentrations yielded higher initial capacities of 201 mAh g-1"
+          },
+          {
+            "value": [
+              190
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C038",
+            "source_text": "0.02 M concentrations yielded higher initial capacities of 190 mAh g-1"
+          },
+          {
+            "value": [
+              175
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C039",
+            "source_text": "1 M concentration electrolyte exhibited a lower initial capacity of 175 mAh g-1"
+          },
+          {
+            "value": [
+              161
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C043",
+            "source_text": "the specific capacity of the cell formed with the 0 M electrolyte still reached 161 mAh g-1"
+          },
+          {
+            "value": [
+              128
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C044",
+            "source_text": "the specific capacity of the battery formed with the 1 M electrolyte was only 128 mAh g-1"
+          }
+        ],
+        "SEI_Resistance": [
+          {
+            "value": 15.1,
+            "unit": "Ω",
+            "cycle_number": 100,
+            "condition_id": "C040",
+            "source_text": "0 M transitioning to 15.1 Ω"
+          },
+          {
+            "value": 17.8,
+            "unit": "Ω",
+            "cycle_number": 100,
+            "condition_id": "C041",
+            "source_text": "0.02 M transitioning to 17.8 Ω"
+          },
+          {
+            "value": 23.6,
+            "unit": "Ω",
+            "cycle_number": 100,
+            "condition_id": "C042",
+            "source_text": "1 M concentration electrolyte undergoes a more pronounced change, transitioning to 23.6 Ω"
+          }
+        ]
+      },
+      "condition_id": "C037"
+    },
+    {
+      "paragraph": "To evaluate the cycling performance of the ultralow concentration formation method on commercial LIBs, graphiteNCM811 pouch cells were tested Figure 6a. The cells were charged at 3 C and discharged at",
+      "conditions": [
+        {
+          "condition_id": "C045",
+          "electrolyte": "0 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "cycling performance test (charged at 3C, discharged at 1C, constant current mode)"
+        },
+        {
+          "condition_id": "C046",
+          "electrolyte": "1 M",
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "cycling performance test (charged at 3C, discharged at 1C, constant current mode)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "In this Letter, we present a novel approach that utilizes a superwettable electrolyte during the formation process of LIBs, in which we have achieved a uniform SEI layer that is rich in inorganic comp",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "electrolyte": "ultralow concentration",
+          "electrode_config": "graphite anode",
+          "reference_electrode": "Li/Li+",
+          "test_method": "formation process"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The cathode and anode materials used for cell fabrication in this work were mathrm 0 . 8 0 . 1 0 . 1 O 2 NMC811 and graphite, respectively. The cathode slurry was composed of NCM811 85 wt%, Ningbo Ron",
+      "conditions": [
+        {
+          "condition_id": "C100",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.005,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "0 M LiPF6 in EC/DMC (3:7 w/w)",
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "formation process (CC-CV mode)"
+        },
+        {
+          "condition_id": "C101",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.005,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "0.02 M LiPF6 in EC/DMC (3:7 w/w)",
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "formation process (CC-CV mode)"
+        },
+        {
+          "condition_id": "C102",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.005,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in EC/DMC (3:7 w/w)",
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "formation process (CC-CV mode)"
+        },
+        {
+          "condition_id": "C103",
+          "c_rate_or_current": {
+            "value": "0.05",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.005,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "0 M LiPF6 in EC/DMC (3:7 w/w)",
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "formation process (low current)"
+        },
+        {
+          "condition_id": "C104",
+          "c_rate_or_current": {
+            "value": "0.05",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.005,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "0.02 M LiPF6 in EC/DMC (3:7 w/w)",
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "formation process (low current)"
+        },
+        {
+          "condition_id": "C105",
+          "c_rate_or_current": {
+            "value": "0.05",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.005,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrolyte": "1 M LiPF6 in EC/DMC (3:7 w/w)",
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "formation process (low current)"
+        },
+        {
+          "condition_id": "C106",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "max": 4.25,
+            "unit": "V"
+          },
+          "electrolyte": "0 M LiPF6 in EC/DMC (3:7 w/w)",
+          "electrode_config": "NMC811||graphite full cell",
+          "test_method": "formation process (CC-CV mode)"
+        },
+        {
+          "condition_id": "C107",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "max": 4.25,
+            "unit": "V"
+          },
+          "electrolyte": "0.02 M LiPF6 in EC/DMC (3:7 w/w)",
+          "electrode_config": "NMC811||graphite full cell",
+          "test_method": "formation process (CC-CV mode)"
+        },
+        {
+          "condition_id": "C108",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "max": 4.25,
+            "unit": "V"
+          },
+          "electrolyte": "1 M LiPF6 in EC/DMC (3:7 w/w)",
+          "electrode_config": "NMC811||graphite full cell",
+          "test_method": "formation process (CC-CV mode)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The cycling performance and rate capability of graphiteNMC811 full cells with an areal capacity of approximately 1.5 mAh cm−2 and a negative/positive N/P ratio of 1.1 in different electrolytes were ex",
+      "conditions": [
+        {
+          "condition_id": "C200",
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.25,
+            "unit": "V"
+          },
+          "cycle_number": 2,
+          "electrode_config": "NCM811||graphite full cell",
+          "test_method": "formation process (pre-cycling)"
+        },
+        {
+          "condition_id": "C201",
+          "voltage_range": {
+            "min": 0.005,
+            "max": 1.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "graphite half-cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "cyclic voltammetry"
+        },
+        {
+          "condition_id": "C202",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C203",
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "test_method": "GITT"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The density functional theory DFT calculations were performed using the Gaussian16 program 1. The exchange-correlation functional was chosen as B3LYP 2, which is a hybrid functional that combines the ",
+      "conditions": [
+        {
+          "condition_id": "C1000",
+          "temperature": {
+            "value": 300,
+            "unit": "K"
+          },
+          "test_method": "DFT calculations with PCM"
+        }
+      ],
+      "property_types": [
+        "Dielectric_Constant"
+      ],
+      "extracted_info": {
+        "Dielectric_Constant": [
+          {
+            "value": 49.2,
+            "temperature_C": 0.0,
+            "source_text": "The solvent effects were taken into account by using the polarizable continuum model PCM with a dielectric constant of 49.2, which mimics the high polarity of the solvent."
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,573 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.ensm.2025.104855.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/j.ensm.2025.104855",
+  "doi": "10.1016/j.ensm.2025.104855",
+  "material_id": "10.1016_j.ensm.2025.104855",
+  "meta": {
+    "meta_title": "LiBxOy/LiF-rich cathode electrolyte interphase enables high-temperature/ voltage",
+    "meta_authors": "Xinhong Hu , Jiandong Liu , Zhongsheng Wang , Xi Tang , Zhimeng Hao \\* , Jianmin Ma D",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v)",
+      "short_name": "Baseline",
+      "formula": "1M LiPF6 EC/EMC/FEC (2:7:1 v/v)",
+      "role": "baseline",
+      "description": "Standard EC-based carbonate electrolyte used as reference",
+      "material_id": "10.1016_j.ensm.2025.104855_M001"
+    },
+    {
+      "name": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) with 2 wt% TFMBA additive",
+      "short_name": "TFMBA-2%",
+      "formula": "1M LiPF6 EC/EMC/FEC (2:7:1 v/v) + 2 wt% TFMBA",
+      "role": "novel",
+      "description": "Baseline electrolyte modified with 2 wt% 3,5-bis(trifluoromethyl)benzoic acid additive to achieve anion-enriched solvation",
+      "material_id": "10.1016_j.ensm.2025.104855_M002"
+    }
+  ],
+  "n_materials": 2,
+  "table_items": [],
+  "n_items": 9,
+  "items": [
+    {
+      "paragraph": "LiNCM811 batteries are usually paired with typical EC-based electrolyte composed of 1 M mathrm 6 in a mixture solvent of EC, ethyl methyl carbonate EMC and fluoroethylene carbonate FEC 2:7:1 by volume",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) (baseline); 1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) with 2 wt% TFMBA additive"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Density functional theory DFT calculations were used to assess how different solvents tend to break down when oxidized. As indicated in Figure S5 Supporting Information, the examination of the frontie",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) with 2 wt% TFMBA additive",
+          "test_method": "LSV"
+        }
+      ],
+      "property_types": [
+        "HOMO_LUMO_Energy"
+      ],
+      "extracted_info": {
+        "HOMO_LUMO_Energy": [
+          {
+            "value": {
+              "HOMO": -8.0436
+            },
+            "unit": "eV",
+            "molecule": "TFMBA",
+            "method": "DFT",
+            "source_text": "TFMBA has the highest HOMO energy level − 8.0436 eV"
+          }
+        ]
+      },
+      "performance_types": [
+        "Anodic_Stability_Onset_Potential"
+      ],
+      "performance_info": {
+        "Anodic_Stability_Onset_Potential": [
+          {
+            "value": 3.16,
+            "unit": "V vs. Li/Li⁺",
+            "source_text": "oxidative decomposition triggered by TFMBA at a low potential 3.16 V",
+            "condition_id": "C001"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To investigate the effect of TFMBA additive on the high-voltage Li NCM811 cells dynamic behavior, galvanostatic intermittent titration technique GITT and electrochemical impedance spectroscopy EIS wer",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "test_method": "galvanostatic intermittent titration technique (GITT), electrochemical impedance spectroscopy (EIS)",
+          "cycle_number": 100,
+          "electrode_config": "half-cell (Li metal anode with NCM811 cathode)",
+          "reference_electrode": "Li/Li+",
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) (baseline) and 1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) with 2 wt% TFMBA additive"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "X-ray diffraction XRD was conducted to further reveal the structural degradation of the NCM811 cathode Figure S18, Supporting Information. Interfacial instability, predominantly triggered by the disso",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "cycle_number": 200,
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) [baseline]; 1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) with 2 wt% TFMBA additive [TFMBA-based]",
+          "test_method": "XRD, ICP-MS, TOF-SIMS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The outstanding rate performance and long cycle stability mentioned earlier render the advanced 2% TFMBA electrolyte promising for practical LMBs at harsh conditions. To meet rising energy demands, it",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) with 2 wt% TFMBA additive",
+          "cycle_number": 150,
+          "electrode_config": "full-cell pouch cell: Li foil anode (50 μm) | NCM811 cathode (5.11 mAh cm−2)",
+          "test_method": "galvanostatic charge/discharge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Energy_Density",
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Energy_Density": [
+          {
+            "value": {
+              "gravimetric": 498
+            },
+            "unit": "Wh/kg",
+            "basis": "total weight of the pouch cell",
+            "condition_id": "C001",
+            "source_text": "achieving an initial specific energy density of 498 Wh kg-1, calculated based on the total weight of the pouch cell."
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 83,
+            "unit": "%",
+            "cycle_number": 150,
+            "condition_id": "C001",
+            "source_text": "capacity retention rate of over 83% after 150 cycles at 0.5 C charge/discharge"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To thoroughly investigate the complex interfacial changes in batteries during cycling with various electrolytes, operando electrochemical impedance spectroscopy EIS tests were performed. Additionally,",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v)",
+          "electrode_config": "LiNCM811 cell",
+          "test_method": "EIS, DRT, temperature-dependent EIS"
+        },
+        {
+          "condition_id": "C007",
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) with 2 wt% TFMBA",
+          "electrode_config": "LiNCM811 cell",
+          "test_method": "EIS, DRT, temperature-dependent EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "CEI_Resistance",
+        "Charge_Transfer_Resistance",
+        "Li_Desolvation_Activation_Energy",
+        "Li_Transport_Activation_Energy_CEI"
+      ],
+      "performance_info": {
+        "CEI_Resistance": [
+          {
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "Compared to baseline electrolyte, the battery cycled with TFMBA-containing electrolyte exhibits lower R_CEI"
+          },
+          {
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "battery cycled with TFMBA-containing electrolyte exhibits lower R_CEI"
+          }
+        ],
+        "Charge_Transfer_Resistance": [
+          {
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "more stable R_ct (baseline) compared to TFMBA-containing electrolyte"
+          },
+          {
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "more stable R_ct in TFMBA-containing electrolyte"
+          }
+        ],
+        "Li_Desolvation_Activation_Energy": [
+          {
+            "unit": "eV",
+            "method": "temperature-dependent EIS",
+            "electrode": "LiNCM811",
+            "condition_id": "C001",
+            "source_text": "The activation energy for Li+ in both processes is significantly reduced in TFMBA-containing electrolyte compared to that in the baseline electrolyte"
+          },
+          {
+            "unit": "eV",
+            "method": "temperature-dependent EIS",
+            "electrode": "LiNCM811",
+            "condition_id": "C002",
+            "source_text": "The activation energy for Li+ in both processes is significantly reduced in TFMBA-containing electrolyte compared to that in the baseline electrolyte"
+          }
+        ],
+        "Li_Transport_Activation_Energy_CEI": [
+          {
+            "unit": "eV",
+            "condition_id": "C001",
+            "source_text": "E_a represents the processes of Li+ desolvation at the electrolyte/electrode interface and Li+ transport through the CEI"
+          },
+          {
+            "unit": "eV",
+            "condition_id": "C002",
+            "source_text": "E_a represents the processes of Li+ desolvation at the electrolyte/electrode interface and Li+ transport through the CEI"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "To elucidate the reasons for the enhanced electrochemical performance, the morphological and structural evolution of NCM811 cathodes cycled in different electrolytes at 25◦C for 300 cycles was compare",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "cycle_number": 300,
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v)",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C009",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "cycle_number": 300,
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) with 2 wt% TFMBA",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C010",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "cycle_number": 150,
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v)",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C011",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "cycle_number": 150,
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) with 2 wt% TFMBA",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "CEI_Thickness"
+      ],
+      "performance_info": {
+        "CEI_Thickness": [
+          {
+            "value": 3,
+            "unit": "nm",
+            "cycle_number": 300,
+            "method": "HR-TEM",
+            "source_text": "uniform and dense CEI layer 3 nm"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "In summary, we reported an anion-enriched solvation strategy to construct a stable anion-derived CEI for high-voltage LMBs. The strong dipole-dipole interaction between TFMBA and EC weakens the bindin",
+      "conditions": [
+        {
+          "condition_id": "C012",
+          "voltage_range": {
+            "max": 4.6,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "cycle_number": 300,
+          "electrode_config": "Li||NCM811",
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) with 2 wt% TFMBA",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C013",
+          "voltage_range": {
+            "max": 4.7,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "cycle_number": 150,
+          "electrode_config": "Li||NCM811",
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) with 2 wt% TFMBA",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C014",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "cycle_number": 150,
+          "electrode_config": "Li||NCM811",
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) with 2 wt% TFMBA",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C015",
+          "electrode_config": "pouch cell (Li||NCM811)",
+          "electrolyte": "1M LiPF6 in EC/EMC/FEC (2:7:1 v/v) with 2 wt% TFMBA",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Energy_Density"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 80,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C001",
+            "source_text": "capacity retention rate of 80% after 300 cycles at 4.6 V"
+          },
+          {
+            "value": 76.9,
+            "unit": "%",
+            "cycle_number": 150,
+            "condition_id": "C002",
+            "source_text": "76.9% after 150 cycles at 4.7 V"
+          },
+          {
+            "value": 71.8,
+            "unit": "%",
+            "cycle_number": 150,
+            "condition_id": "C003",
+            "source_text": "capacity retention of 71.8% after 150 cycles"
+          }
+        ],
+        "Energy_Density": [
+          {
+            "value": {
+              "gravimetric": 498
+            },
+            "unit": "Wh/kg / Wh/L",
+            "basis": "pouch cell",
+            "condition_id": "C004",
+            "source_text": "the practical pouch cell based on the anion-enriched solvation structure achieved an ultrahigh energy density of 498 Wh kg^-1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The influence of different concentrations of TFMBA additive on Li NCM811 cells was tested at 25 ◦C and within a voltage range of 3-4.6 V. The electrolyte containing 2 wt% TFMBA showed the best cycling",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": 180,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.6,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 300,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C017",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.7,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 150,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C018",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.6,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 150,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C019",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "10",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.6,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C020",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.6,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 1,
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Coulombic_Efficiency",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 80.05,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C001",
+            "source_text": "the capacity retention rate of the Li NCM811 cells using TFMBA-containing electrolyte is 80.05% at 0.5 C 1 C 180 g -1 after 300 cycles"
+          },
+          {
+            "value": 36.66,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C001",
+            "source_text": "whereas it is merely 36.66% for those cycled in the baseline electrolyte"
+          },
+          {
+            "value": 76.9,
+            "unit": "%",
+            "cycle_number": 150,
+            "condition_id": "C002",
+            "source_text": "Even at the higher cut-off voltage of 4.7 V, the cells with TFMBA-containing electrolyte exhibits great cycling stability retaining 76.9% capacity after 150 cycles at 0.5 C under 25 °C"
+          },
+          {
+            "value": 71.8,
+            "unit": "%",
+            "cycle_number": 150,
+            "condition_id": "C003",
+            "source_text": "the cells cycled in TFMBA-containing electrolyte maintains 71.8% of its capacity after 150 cycles"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 81.67,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C005",
+            "source_text": "the initial discharge capacity and coulombic efficiency ICE of LiNCM811 cells using the baseline ... are 206.26 mAh g -1 / 81.67%"
+          },
+          {
+            "value": 74.61,
+            "unit": "%",
+            "cycle_number": 1,
+            "condition_id": "C005",
+            "source_text": "and 212.03 mAh g -1 / 74.61%"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              152.8
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "Especially at 10 C, the discharge capacities reach 152.8 mAh g -1"
+          },
+          {
+            "value": [
+              64.9
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "than that in baseline electrolyte only remains 64.9 mAh g -1"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

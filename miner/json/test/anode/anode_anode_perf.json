@@ -1,0 +1,293 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/anode/anode.md",
+  "doi": "anode",
+  "title": "High-entropy oxides as advanced anode materials for long-life lithium-ion Batteries",
+  "agent_mode": "anode-perf",
+  "materials": [
+    {
+      "name": "(FeCoNiCrMn)3O4 HEO",
+      "short_name": "(FeCoNiCrMn)3O4 HEO",
+      "formula": "(FeCoNiCrMn)3O4",
+      "role": "novel",
+      "description": "Prepared by oxidation of FeCoNiCrMn high-entropy alloy powder at 1000°C in oxygen atmosphere.",
+      "material_id": "anode_M001"
+    },
+    {
+      "name": "(FeCoNiCrMn)3O4 BM",
+      "short_name": "(FeCoNiCrMn)3O4 BM",
+      "formula": "(FeCoNiCrMn)3O4",
+      "role": "comparison",
+      "description": "Prepared by ball milling of oxide precursors (Fe2O3, NiO, Cr2O3, MnO2, Co3O4) followed by same heat treatment as HEO.",
+      "material_id": "anode_M002"
+    }
+  ],
+  "results": [
+    {
+      "material_id": "anode_M001",
+      "material_name": "(FeCoNiCrMn)3O4 HEO",
+      "material_context": "novel: (FeCoNiCrMn)3O4 HEO ((FeCoNiCrMn)3O4)",
+      "condition_id_used": "C001",
+      "performance_items": [
+        {
+          "paragraph": "# High-entropy oxides as advanced anode materials for long-life lithium-ion Batteries  Bin Xiao a , Gang Wu a , Tongde Wang a , Zhengang Wei a , Yanwei Sui a,\\* , Baolong Shen a , Jiqiu Qi a , Fuxiang",
+          "include_result": {
+            "property_types": [
+              "Capacity_Retention_at_Nth_Cycle",
+              "Rate_Capability_at_Given_C_rate"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Capacity_Retention_at_Nth_Cycle": [
+                {
+                  "value": 86.2,
+                  "unit": "%",
+                  "condition_id": "C001",
+                  "cycle_number": 1200,
+                  "source_text": "The asprepared $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO exhibited excellent cycle stability, and achieved a high reversible capacity of 596.5 mA h $\\boldsymbol { \\cdot } \\boldsymbol { g } ^ { - 1 }$ and a good capacity retention of 86.2% after 1200 cycles at $2 . 0 \\mathrm { ~ A ~ g ~ } ^ { - 1 }$ ."
+                }
+              ],
+              "Rate_Capability_at_Given_C_rate": []
+            }
+          }
+        },
+        {
+          "paragraph": "<details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>l",
+          "include_result": {
+            "property_types": [
+              "Capacity_Retention_at_Nth_Cycle",
+              "Initial_Coulombic_Efficiency",
+              "Rate_Recovery_Percent",
+              "First_Lithiation_Capacity",
+              "Rate_Capability_at_Given_C_rate"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Capacity_Retention_at_Nth_Cycle": [
+                {
+                  "value": 97.5,
+                  "unit": "%",
+                  "condition_id": "C001",
+                  "cycle_number": 260,
+                  "source_text": "even after 260 cycles its reversible capacity still reached up to 692.8 mA h g^-1 with a high capacity retention (97.5%)"
+                },
+                {
+                  "value": 86.2,
+                  "unit": "%",
+                  "condition_id": "C001",
+                  "cycle_number": 1200,
+                  "source_text": "Even after 1200 cycles, (FeCoNiCrMn)3O4 HEO can still deliver a capacity of 596.5 mA h g^-1 and a high capacity retention (86.2%)"
+                }
+              ],
+              "Initial_Coulombic_Efficiency": [
+                {
+                  "value": 63.76,
+                  "unit": "%",
+                  "condition_id": "C001",
+                  "source_text": "(FeCoNiCrMn)3O4 HEO could delivered a high discharge capacity (1645.3 mA h g^-1) and a discharge efficiency of 63.76% at 0.1 A g^-1"
+                }
+              ],
+              "First_Lithiation_Capacity": [
+                {
+                  "value": 1645.3,
+                  "unit": "mAh/g",
+                  "condition_id": "C001",
+                  "source_text": "(FeCoNiCrMn)3O4 HEO could delivered a high discharge capacity (1645.3 mA h g^-1) and a discharge efficiency of 63.76% at 0.1 A g^-1"
+                }
+              ],
+              "Rate_Capability_at_Given_C_rate": [
+                {
+                  "value": 967.3,
+                  "unit": "mAh/g",
+                  "condition_id": "C001",
+                  "voltage_range": "0.01-3.00 V",
+                  "source_text": "For rate performance, (FeCoNiCrMn)3O4 HEO delivered a high reversible capacity of 967.3, 828.2, 740, 625, 531.9, and 482.5 mA h g^-1 at 0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g^-1 respectively"
+                },
+                {
+                  "value": 828.2,
+                  "unit": "mAh/g",
+                  "condition_id": "C001",
+                  "voltage_range": "0.01-3.00 V",
+                  "source_text": "For rate performance, (FeCoNiCrMn)3O4 HEO delivered a high reversible capacity of 967.3, 828.2, 740, 625, 531.9, and 482.5 mA h g^-1 at 0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g^-1 respectively"
+                },
+                {
+                  "value": 740,
+                  "unit": "mAh/g",
+                  "condition_id": "C001",
+                  "voltage_range": "0.01-3.00 V",
+                  "source_text": "For rate performance, (FeCoNiCrMn)3O4 HEO delivered a high reversible capacity of 967.3, 828.2, 740, 625, 531.9, and 482.5 mA h g^-1 at 0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g^-1 respectively"
+                },
+                {
+                  "value": 625,
+                  "unit": "mAh/g",
+                  "condition_id": "C001",
+                  "voltage_range": "0.01-3.00 V",
+                  "source_text": "For rate performance, (FeCoNiCrMn)3O4 HEO delivered a high reversible capacity of 967.3, 828.2, 740, 625, 531.9, and 482.5 mA h g^-1 at 0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g^-1 respectively"
+                },
+                {
+                  "value": 531.9,
+                  "unit": "mAh/g",
+                  "condition_id": "C001",
+                  "voltage_range": "0.01-3.00 V",
+                  "source_text": "For rate performance, (FeCoNiCrMn)3O4 HEO delivered a high reversible capacity of 967.3, 828.2, 740, 625, 531.9, and 482.5 mA h g^-1 at 0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g^-1 respectively"
+                },
+                {
+                  "value": 482.5,
+                  "unit": "mAh/g",
+                  "condition_id": "C001",
+                  "voltage_range": "0.01-3.00 V",
+                  "source_text": "For rate performance, (FeCoNiCrMn)3O4 HEO delivered a high reversible capacity of 967.3, 828.2, 740, 625, 531.9, and 482.5 mA h g^-1 at 0.1, 0.2, 0.5, 1.0, 2.0 and 3.0 A g^-1 respectively"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "To reveal the mechanism of enhanced electrochemical performances, EIS from 0.1 Hz to 100 kHz were tested, as shown in Fig. 4i and Fig. S6c. Nyquist plots were simulated through the equivalent circuit ",
+          "include_result": {
+            "property_types": [
+              "Interfacial_Resistance_RSEI_or_Rct",
+              "Chemical_Diffusion_Coefficient_of_Li_GITT"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "$$ D _ {L i ^ {+}} = \\frac {R ^ {2} T ^ {2}}{2 A ^ {2} n ^ {4} F ^ {4} C ^ {2} \\sigma_ {\\omega} {} ^ {2}} \\tag {1} $$ $$ Z ^ {\\prime} = R _ {e} + R _ {c t} + \\sigma_ {\\omega} \\omega^ {- 0. 5} \\tag {2}",
+          "include_result": {
+            "property_types": [
+              "Chemical_Diffusion_Coefficient_of_Li_GITT"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "$$ i = ^ {b} \\tag {3} $$ where the b value was calculated from the slope of the log(i) versus log plots. The diffusion-controlled lithium-storage behavior was represented through the b value of 0.5, a",
+          "include_result": {
+            "property_types": [
+              "Initial_Coulombic_Efficiency",
+              "Capacity_Retention_at_Nth_Cycle"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Initial_Coulombic_Efficiency": [],
+              "Capacity_Retention_at_Nth_Cycle": []
+            }
+          }
+        },
+        {
+          "paragraph": "$$ i = k _ {1} v + k _ {2} v ^ {1 / 2} \\tag {4} $$ Where k1v represents pseudocapacitive, and $k _ { 2 } \\nu ^ { 1 / 2 }$ represents diffusioncontrolled portions. In Fig. 5b and ${ \\mathrm { } } .$ . ",
+          "include_result": {
+            "property_types": [
+              "Initial_Coulombic_Efficiency",
+              "Capacity_Retention_at_Nth_Cycle"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Initial_Coulombic_Efficiency": [],
+              "Capacity_Retention_at_Nth_Cycle": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "material_id": "anode_M002",
+      "material_name": "(FeCoNiCrMn)3O4 BM",
+      "material_context": "comparison: (FeCoNiCrMn)3O4 BM ((FeCoNiCrMn)3O4)",
+      "condition_id_used": "C001",
+      "performance_items": [
+        {
+          "paragraph": "# High-entropy oxides as advanced anode materials for long-life lithium-ion Batteries  Bin Xiao a , Gang Wu a , Tongde Wang a , Zhengang Wei a , Yanwei Sui a,\\* , Baolong Shen a , Jiqiu Qi a , Fuxiang",
+          "include_result": {
+            "property_types": [
+              "Capacity_Retention_at_Nth_Cycle"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": [
+              {
+                "value": 86.2,
+                "unit": "%",
+                "condition_id": "C001",
+                "cycle_number": 1200,
+                "source_text": "a good capacity retention of 86.2% after 1200 cycles at $2 . 0 \\mathrm { ~ A ~ g ~ } ^ { - 1 }$"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "<details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>l",
+          "include_result": {
+            "property_types": [
+              "BM_First_Lithiation_Capacity",
+              "HEO_Rate_Recovery_Percent",
+              "HEO_Capacity_Retention_at_Nth_Cycle",
+              "HEO_First_Lithiation_Capacity",
+              "HEO_Rate_Capability_at_Given_C_rate",
+              "HEO_Initial_Coulombic_Efficiency"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "To reveal the mechanism of enhanced electrochemical performances, EIS from 0.1 Hz to 100 kHz were tested, as shown in Fig. 4i and Fig. S6c. Nyquist plots were simulated through the equivalent circuit ",
+          "include_result": {
+            "property_types": [
+              "Interfacial_Resistance_RSEI_or_Rct"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "$$ D _ {L i ^ {+}} = \\frac {R ^ {2} T ^ {2}}{2 A ^ {2} n ^ {4} F ^ {4} C ^ {2} \\sigma_ {\\omega} {} ^ {2}} \\tag {1} $$ $$ Z ^ {\\prime} = R _ {e} + R _ {c t} + \\sigma_ {\\omega} \\omega^ {- 0. 5} \\tag {2}",
+          "include_result": {
+            "property_types": [
+              "Chemical_Diffusion_Coefficient_of_Li_GITT"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "$$ i = k _ {1} v + k _ {2} v ^ {1 / 2} \\tag {4} $$ Where k1v represents pseudocapacitive, and $k _ { 2 } \\nu ^ { 1 / 2 }$ represents diffusioncontrolled portions. In Fig. 5b and ${ \\mathrm { } } .$ . ",
+          "include_result": {
+            "property_types": [
+              "Pseudocapacitive_Contribution_Ratio"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": [
+              {
+                "value": 40.76,
+                "unit": "%",
+                "condition_id": "C001",
+                "scan_rate_mV_s": 0.5,
+                "source_text": "the capacitive contribution increases from 40.76% to 82.02% as the scan rate increases from 0.5 to 2.0 mV $^ \\prime s ^ { - 1 }$"
+              },
+              {
+                "value": 82.02,
+                "unit": "%",
+                "condition_id": "C001",
+                "scan_rate_mV_s": 2.0,
+                "source_text": "the capacitive contribution increases from 40.76% to 82.02% as the scan rate increases from 0.5 to 2.0 mV $^ \\prime s ^ { - 1 }$"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

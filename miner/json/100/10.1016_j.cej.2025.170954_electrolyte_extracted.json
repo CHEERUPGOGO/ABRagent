@@ -1,0 +1,636 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.cej.2025.170954.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/j.cej.2025.170954",
+  "doi": "10.1016/j.cej.2025.170954",
+  "material_id": "10.1016_j.cej.2025.170954",
+  "meta": {
+    "meta_title": "A sulfonamide-based electrolyte for high-temperature and high-voltage lithium me",
+    "meta_authors": "Zhen $\\mathrm { L i ^ { a , 1 } }$ , Zichun Xia o a,b,1 , Wei Tang a ,\\* , Renyi Shi a,\\*",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "1 M LiFSI in EC/DMC",
+      "short_name": "1M LiFSI-EC/DMC",
+      "formula": "1M LiFSI EC/DMC",
+      "role": "baseline",
+      "description": "conventional carbonate electrolyte used for solvation structure comparison via Raman spectroscopy",
+      "material_id": "10.1016_j.cej.2025.170954_M001"
+    },
+    {
+      "name": "2 M LiPF6 in EC/DMC (3:7 v/v)",
+      "short_name": "2M LiPF6-EC/DMC (3:7)",
+      "formula": "2M LiPF6 EC/DMC (3:7)",
+      "role": "baseline",
+      "description": "reference carbonate electrolyte for cycling tests, selected due to instability of 2M LiFSI EC/DMC at high voltage",
+      "material_id": "10.1016_j.cej.2025.170954_M002"
+    },
+    {
+      "name": "1 M LiFSI in TFSPY",
+      "short_name": "1M LiFSI-TFSPY",
+      "formula": "1M LiFSI TFSPY",
+      "role": "novel",
+      "description": "TFSPY-based electrolyte with 1 M LiFSI, initial evaluation of lithium metal compatibility",
+      "material_id": "10.1016_j.cej.2025.170954_M003"
+    },
+    {
+      "name": "2 M LiFSI in TFSPY",
+      "short_name": "2M LiFSI-TFSPY",
+      "formula": "2M LiFSI TFSPY",
+      "role": "novel",
+      "description": "optimized high-concentration TFSPY-based electrolyte enabling stable cycling at high voltage and high temperature",
+      "material_id": "10.1016_j.cej.2025.170954_M004"
+    }
+  ],
+  "n_materials": 4,
+  "table_items": [],
+  "n_items": 9,
+  "items": [
+    {
+      "paragraph": "In this work, we synthesized a solvent, TFSPY, as a high-temperature and high-voltage electrolyte. The electrolyte composed of this solvent and 2 M LiFSI salt successfully supports the long-term cycle",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "voltage_range": {
+            "max": 4.5,
+            "unit": "V"
+          },
+          "mass_loading": {
+            "value": 10.8,
+            "unit": "mg/cm2"
+          },
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "cycle_number": 200,
+          "electrolyte": "2 M LiFSI in TFSPY"
+        },
+        {
+          "condition_id": "C002",
+          "voltage_range": {
+            "max": 4.5,
+            "unit": "V"
+          },
+          "mass_loading": {
+            "value": 10.8,
+            "unit": "mg/cm2"
+          },
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrolyte_config": "2 M LiFSI in TFSPY"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 90,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C001",
+            "source_text": "Commercial LCO cathodes retain 90 % after 200 cycles."
+          },
+          {
+            "value": 89.1,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C002",
+            "source_text": "Under the high temperature of 60 circ mathrm C , , the capacity retention can be maintained at 89.1 % even after 100 cycles."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "To elucidate the mathrm coordination environment, we analyzed the electrostatic potential distributions of the solvents Fig. 2a-c. While EC and DMC exhibit localized negative potentials solely at carb",
+      "property_types": [
+        "Li_Solvent_Binding_Energy",
+        "Li_Anion_Coordination_Number_MD"
+      ],
+      "extracted_info": {
+        "Li_Solvent_Binding_Energy": [
+          {
+            "value": -1.713,
+            "unit": "eV",
+            "solvent": "EC",
+            "method": "electrostatic potential minimum",
+            "source_text": "EC exhibits localized negative potentials solely at carbonyl CO oxygen atoms, with a significantly higher electrostatic potential − 39.5 kcal/mol"
+          },
+          {
+            "value": -1.254,
+            "unit": "eV",
+            "solvent": "DMC",
+            "method": "electrostatic potential minimum",
+            "source_text": "DMC exhibits localized negative potentials solely at carbonyl CO oxygen atoms, with electrostatic potential − 28.92 kcal/mol"
+          },
+          {
+            "value": -0.906,
+            "unit": "eV",
+            "solvent": "TFSPY",
+            "method": "electrostatic potential minimum",
+            "source_text": "TFSPY demonstrates negative potential regions at sulfonyl SO oxygen atoms, with a significantly higher electrostatic potential − 20.9 kcal/mol than that of EC − 39.5 kcal/mol and DMC − 28.92 kcal/mol, facilitates weaker mathrm coordination"
+          }
+        ],
+        "Li_Anion_Coordination_Number_MD": [
+          {
+            "value": 1.2,
+            "simulation_conditions": "1M LiFSI in EC/DMC",
+            "source_text": "The coordination number CN of anion is about 1.2 Fig. S2."
+          },
+          {
+            "value": 1.8,
+            "simulation_conditions": "LiFSI in TFSPY electrolyte",
+            "source_text": "The CN of FSI− oxygen atoms in TFSPY electrolytes is about 1.8 Fig. 2e."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Disassemble the circulating LiLi and LiCu batteries in a glove box filled with argon, recover the Li electrode Cu electrode, and then wash it with DMC solvent for three times to remove the residual so",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "cycle_number": 20,
+          "electrode_config": "LCO||Li coin cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The charge-discharge test is carried out on a multi-channel battery test system CT-4008 T. The LiCu cells were cycled at current densities 1.0 mA cm− 2 . In each cycle, the cells were first discharged",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "voltage_range": {
+            "max": 0.5,
+            "unit": "V"
+          },
+          "electrode_config": "LiCu",
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "LiLi symmetric",
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C006",
+          "c_rate_or_current": {
+            "value": "0.5C/1C",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "vs Li/Li"
+          },
+          "electrode_config": "NCM811||Li",
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": "0.5C/1C",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.8,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs Li/Li"
+          },
+          "electrode_config": "LCO||Li",
+          "test_method": "galvanostatic charge-discharge"
+        },
+        {
+          "condition_id": "C008",
+          "electrode_config": "LiAl",
+          "test_method": "LSV"
+        },
+        {
+          "condition_id": "C009",
+          "voltage_range": {
+            "min": 2.7,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs Li/Li"
+          },
+          "electrode_config": "LiAl (assumed)",
+          "test_method": "Chronoamperometry"
+        },
+        {
+          "condition_id": "C010",
+          "electrode_config": "LiLi",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Experiments were conducted to validate the aforementioned theo retical insight. The electrochemical compatibility and reversibility of lithium metal with TFSPY was evaluated by testing of 1 M LiFSI TF",
+      "conditions": [
+        {
+          "condition_id": "C011",
+          "electrolyte": "1 M LiFSI in TFSPY",
+          "electrode_config": "LiCu",
+          "cycle_number": 350,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C012",
+          "electrolyte": "2 M LiPF6 in EC/DMC (3:7 v/v)",
+          "electrode_config": "LiCu",
+          "cycle_number": 100,
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C013",
+          "electrolyte": "2 M LiFSI in TFSPY",
+          "electrode_config": "LiCu",
+          "cycle_number": 400,
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Coulombic_Efficiency"
+      ],
+      "performance_info": {
+        "Coulombic_Efficiency": [
+          {
+            "value": 98.7,
+            "unit": "%",
+            "cycle_number": 350,
+            "condition_id": "C001",
+            "source_text": "The TFSPY-based electrolyte exhibits an average Coulombic efficiency CE of 98.7 % after 350 cycles."
+          },
+          {
+            "value": 89.8,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C002",
+            "source_text": "the average CE of a cell using 2 M EC/DMC-based electrolyte is only 89.8 % after 100 cycles"
+          },
+          {
+            "value": 99.1,
+            "unit": "%",
+            "cycle_number": 400,
+            "condition_id": "C003",
+            "source_text": "LiCu cell with 2 M TFSPY-based electrolytes exhibits significant cycling stability, approaching 400 cycles at 1 mAh cm-2 with an average CE up to 99.1 %."
+          }
+        ]
+      },
+      "condition_id": "C003"
+    },
+    {
+      "paragraph": "Battery-grade carbonate solvents such as ethylene carbonate EC and dimethyl carbonate DMC are provided by Suzhou Duoduo Chemical Technology Co., Ltd., and lithium hexafluorophosphate left mathrm 6 rig",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "electrolyte": "2 M LiPF in EC/DMC (3:7 v/v)",
+          "mass_loading": {
+            "value": 10.8,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C015",
+          "electrolyte": "2 M LiFSI in TFSPY",
+          "mass_loading": {
+            "value": 10.8,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The solvent’s oxidation resistance governs the electrochemical stability of the electrolyte at high voltages, and a wide electrochemical window is a fundamental prerequisite for its application. Simul",
+      "conditions": [
+        {
+          "condition_id": "C016",
+          "electrolyte": "2 M LiPF6 in EC/DMC (3:7 v/v)",
+          "test_method": "LSV"
+        },
+        {
+          "condition_id": "C017",
+          "electrolyte": "2 M LiFSI in TFSPY",
+          "test_method": "LSV"
+        }
+      ],
+      "property_types": [
+        "Li_Solvent_Binding_Energy"
+      ],
+      "extracted_info": {
+        "Li_Solvent_Binding_Energy": [
+          {
+            "value": -17.7,
+            "unit": "kcal mol⁻¹",
+            "solvent": "TFSPY",
+            "method": "DFT",
+            "source_text": "The weaker Li⁺-TFSPY interaction -17.7 kcal mol⁻¹ relative to EC and DMC"
+          }
+        ]
+      },
+      "performance_types": [
+        "Anodic_Stability_Onset_Potential"
+      ],
+      "performance_info": {
+        "Anodic_Stability_Onset_Potential": [
+          {
+            "value": 4.3,
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C001",
+            "source_text": "oxidation current of 2 M EC/DMC-based electrolyte initiates at approximately 4.3 V"
+          },
+          {
+            "value": 5.0,
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C002",
+            "source_text": "initial oxidation reaction of the 2 M TFSPY-based electrolyte occurred at 5 V"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "The electrochemical performance of Li-metal full cells, configured with Li metal anodes paired with high-loading NCM811 cathodes 9.5 mg mathrm - 2 and cycled at 0.5C, demonstrates the critical role of",
+      "conditions": [
+        {
+          "condition_id": "C018",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.0,
+            "max": 0.0,
+            "unit": "V",
+            "reference": "vs. Li/Li⁺"
+          },
+          "electrolyte": "2 M LiPF6 in EC/DMC (3:7 v/v); 2 M LiFSI in TFSPY",
+          "cycle_number": 300,
+          "mass_loading": {
+            "value": 9.5,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "reference_electrode": "vs. Li/Li⁺",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C019",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.0,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li⁺"
+          },
+          "electrolyte": "2 M LiPF6 in EC/DMC (3:7 v/v); 2 M LiFSI in TFSPY",
+          "cycle_number": 200,
+          "electrode_config": "full_cell",
+          "reference_electrode": "vs. Li/Li⁺",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C020",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.0,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li⁺"
+          },
+          "electrolyte": "2 M LiPF6 in EC/DMC (3:7 v/v); 2 M LiFSI in TFSPY",
+          "electrode_config": "full_cell",
+          "reference_electrode": "vs. Li/Li⁺",
+          "test_method": "float test"
+        },
+        {
+          "condition_id": "C021",
+          "temperature": {
+            "value": 60,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.0,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li⁺"
+          },
+          "electrolyte": "2 M LiPF6 in EC/DMC (3:7 v/v); 2 M LiFSI in TFSPY",
+          "cycle_number": 100,
+          "electrode_config": "full_cell",
+          "reference_electrode": "vs. Li/Li⁺",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C022",
+          "test_method": "DSC",
+          "electrolyte": "EC electrolyte; TFSPY electrolyte"
+        },
+        {
+          "condition_id": "C023",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrolyte": "2 M LiPF6 in EC/DMC (3:7 v/v); 2 M LiFSI in TFSPY",
+          "electrode_config": "full_cell",
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C024",
+          "c_rate_or_current": {
+            "value": "0.1-5",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 0.0,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li⁺"
+          },
+          "electrolyte": "2 M LiPF6 in EC/DMC (3:7 v/v); 2 M LiFSI in TFSPY",
+          "electrode_config": "full_cell",
+          "reference_electrode": "vs. Li/Li⁺",
+          "test_method": "rate test"
+        }
+      ],
+      "property_types": [
+        "Melting_Point",
+        "Boiling_Point"
+      ],
+      "extracted_info": {
+        "Melting_Point": [
+          {
+            "value": 34,
+            "unit": "°C",
+            "source_text": "The EC electrolyte exhibits an endothermic peak at approximately 34 °C, corresponding to the melting process of the EC electrolyte."
+          }
+        ],
+        "Boiling_Point": [
+          {
+            "value": 242,
+            "unit": "°C",
+            "source_text": "the TFSPY electrolyte demonstrates a broad endothermic platform 30-167 °C, with an endothermic peak observed at 242 °C, corresponding to the solvent vaporization process."
+          }
+        ]
+      },
+      "performance_types": [
+        "Capacity_Retention",
+        "Coulombic_Efficiency",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Capacity_Retention": [
+          {
+            "value": 96,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C001",
+            "source_text": "TFSPY-based electrolytes lead to an impressive high-capacity retention of 96 % after 300 cycles"
+          },
+          {
+            "value": 90.5,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C002",
+            "source_text": "the capacity retention of the 2 M TFSPY-based electrolyte remains as high as 90.5 % even after 200 cycles"
+          },
+          {
+            "value": 89.1,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C004",
+            "source_text": "at high temperatures 60 °C and high voltages 4.5 V, the capacity retention of cell with 2 M TFSPY-based electrolyte is still as high as 89.1 % after 100 cycles"
+          },
+          {
+            "value": 87.5,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C006",
+            "source_text": "cell with 2 M TFSPY-based electrolyte shows better rate capability, with a capacity retention rate of 87.5 % after 100 cycles at 2C"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 99.98,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C001",
+            "source_text": "TFSPY-based electrolytes lead to an impressive high-capacity retention of 96 % after 300 cycles, coupled with a high average CE of 99.98 %"
+          },
+          {
+            "value": 99.5,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C002",
+            "source_text": "the capacity retention of the 2 M TFSPY-based electrolyte remains as high as 90.5 % even after 200 cycles with an average CE of 99.5 %"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [],
+            "unit": "mAh/g",
+            "condition_id": "C006",
+            "source_text": "cell with 2 M TFSPY-based electrolyte shows better rate capability, with a capacity retention rate of 87.5 % after 100 cycles at 2C"
+          },
+          {
+            "value": [],
+            "unit": "mAh/g",
+            "condition_id": "C007",
+            "source_text": "The LiLCO cell using the TFSPY-based electrolyte exhibits higher reversible capacities compared to that of reference electrolyte at current density of 0.1C to 5C, respectively."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "（f （f） Comparative examination of the voltage profiles reveals significantly lower polarization increase in TFSPY systems, with only a marginal increase between the 10th and 50th cycles, whereas the 2",
+      "conditions": [
+        {
+          "condition_id": "C025",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "2 M LiFSI in TFSPY",
+          "electrode_config": "Li||Li symmetrical cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C026",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "2 M LiPF6 in EC/DMC (3:7 v/v)",
+          "electrode_config": "Li||Li symmetrical cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C027",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "2 M LiFSI in TFSPY",
+          "electrode_config": "Li||Li symmetrical cell",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 10
+        },
+        {
+          "condition_id": "C028",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "2 M LiPF6 in EC/DMC (3:7 v/v)",
+          "electrode_config": "Li||Li symmetrical cell",
+          "test_method": "galvanostatic cycling",
+          "cycle_number": 10
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    }
+  ]
+}

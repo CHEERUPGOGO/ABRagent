@@ -1,0 +1,2406 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/cathode/cathode.md",
+  "doi": "cathode",
+  "title": "$\\ M g ^ { 2 + } / \\mathsf { A } ^ { | 3 + }$ Co-doped Li-Rich Manganese-Based Oxides for Boosting Rate Performance and Stability of Lithium-Ion Batteries",
+  "agent_mode": "cathode-cond",
+  "materials": [
+    {
+      "name": "Li1.2Mn0.56Ni0.16Co0.08O2",
+      "short_name": "LRMO",
+      "formula": "Li1.2Mn0.56Ni0.16Co0.08O2",
+      "role": "comparison",
+      "description": "Pristine lithium-rich manganese oxide cathode synthesized by co-precipitation and calcination.",
+      "material_id": "cathode_M001"
+    },
+    {
+      "name": "Mg-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "short_name": "Mg-LRMO",
+      "formula": "Li1.2Mn0.56Ni0.16Co0.08O2:Mg",
+      "role": "novel",
+      "description": "LRMO doped with Mg, with Mg occupying Li sites in the Li layer to expand lattice and facilitate Li-ion diffusion.",
+      "material_id": "cathode_M002"
+    },
+    {
+      "name": "Al-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "short_name": "Al-LRMO",
+      "formula": "Li1.2Mn0.56Ni0.16Co0.08O2:Al",
+      "role": "novel",
+      "description": "LRMO doped with Al, with Al occupying Li sites in the TM slab forming stronger Li–O–Al bonds to stabilize oxygen lattice.",
+      "material_id": "cathode_M003"
+    },
+    {
+      "name": "Mg/Al co-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "short_name": "Mg/Al-LRMO",
+      "formula": "Li1.2Mn0.56Ni0.16Co0.08O2:Mg,Al",
+      "role": "novel",
+      "description": "LRMO co-doped with Mg and Al, combining benefits of expanded Li layer and stabilized oxygen framework for enhanced cycling stability and rate performance.",
+      "material_id": "cathode_M004"
+    }
+  ],
+  "results": [
+    {
+      "material_id": "cathode_M002",
+      "material_name": "Mg-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "material_context": "novel: Mg-doped Li1.2Mn0.56Ni0.16Co0.08O2 (Li1.2Mn0.56Ni0.16Co0.08O2:Mg)",
+      "condition_items": [
+        {
+          "paragraph": "# 2. Results and Discussion Mg and Al were experimentally introduced into LRMO to synthesize Mg-doped (Mg-LRMO), Al-doped (Al-LRMO), and Mg/Al co-doped (Mg/Al-LRMO) cathode materials. The oxide compos",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "To obtain more detailed crystal structural information, the XRD patterns were further analyzed using Rietveld refinement, as shown in a–d, with the corresponding lattice parame-Figure 1ters listed in ",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# 2.2. Electrochemical Performance  All samples exhibit similar capacities in the slope region (≈115 mAh $\\mathbf { g } ^ { - 1 } )$ , but the capacities in the plateau region decrease with the $\\math",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.1C",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "reference_electrode": "Li/Li+",
+                "source_text": "The prolonged cycling performance at 0.1C (Figure 2b) shows that after 200 cycles, Mg/Al-LRMO retains 93.3% of its capacity, significantly better than LRMO (68.3%), Mg-LRMO (82.2%), and Al-LRMO (85.0%)."
+              }
+            },
+            {
+              "condition_id": "C002",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "1.0C",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "reference_electrode": "Li/Li+",
+                "source_text": "The cycling performance of all samples at 1.0C after 200th cycles (Figure 2c) shows that Mg/Al-LRMO retains 90.0% of its initial capacity with a discharge capacity of 188.1 mAh g−1, while LRMO retains only 51.1% with a discharge capacity of 96.4 mAh g−1."
+              }
+            },
+            {
+              "condition_id": "C003",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "5.0C",
+                "test_method": "galvanostatic",
+                "reference_electrode": "Li/Li+",
+                "source_text": "Notably, Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh g−1 even at a high rate of 5.0C, outperforming LRMO (99.0 mAh g−1)."
+              }
+            },
+            {
+              "condition_id": "C004",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "full-cell",
+                "c_rate": "2.0C",
+                "test_method": "galvanostatic",
+                "cycle_number": 600,
+                "source_text": "After cycling at 2.0C for 600 cycles, the Mg/Al-LRMO pouch full cell still maintains good cyclic stability with a specific capacity retention of 86.2%, while the pristine LRMO pouch cell only displays a specific capacity retention of 54.1% after the same cycles, implying the outstanding cycling stability of the Mg/Al-LRMO pouch cell."
+              },
+              "cell_assembly_conditions": {
+                "cell_type": "pouch cell"
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "The characteristic Mg 1s XPS peaks (Figure S15, Supporting Information) were clearly observed at ≈1303.3 eV for Mg-LRMO and Mg/Al-LRMO, confirming the presence of $\\mathrm { } ^ { 2 + }$ ions.[26] Sim",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "reference_electrode": "Li/Li+",
+                "test_method": "CV",
+                "voltage_min_V": 2.5,
+                "voltage_max_V": 4.6,
+                "scan_rate_mV_s": 0.1,
+                "source_text": "the CV curves of LRMO, Mg-LRMO, Al-LRMO, and Mg/Al-LRMO were measured between 2.5 and 4.6 V at 0.1 mV S − 1"
+              }
+            },
+            {
+              "condition_id": "C006",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "reference_electrode": "Li/Li+",
+                "test_method": "galvanostatic",
+                "c_rate": "1C",
+                "cycle_number": 200,
+                "source_text": "The discharge profiles at 1.0C for the four samples (Figure 3c,d, and Figure S18, Supporting Information) show notable differences in voltage behavior. The percentage of discharge capacity between 3.0 and 2.5 V displayed a significant change during cycling. For LRMO, this percentage increased from 12.78% (1st cycle) to 32.49% (200th cycle)."
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 m",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C007",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "CV",
+                "source_text": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 mV s^{-1} were employed to analyze the Li+ diffusion coefficient."
+              }
+            },
+            {
+              "condition_id": "C001",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "c_rate": "0.1C",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "source_text": "The Nyquist plots in Figure 4c and Figure S25a illustrate the characteristics of four LRMO samples after the 1st, 50th, 100th, and 200th cycles at a rate of 0.1C."
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "The structure and morphology of LMRO and Mg/Al-LRMO after 100 cycles at 0.5C were further characterized by TEM, HRTEM, and FFT images. The results provide crucial insights into the degradation mechani",
+          "has_condition": true,
+          "conditions": []
+        },
+        {
+          "paragraph": "In summary, we successfully synthesized the $\\mathrm { ^ { 2 + } / ^ { 3 + } }$ codoped LRMO cathode material using a combined approach of co-precipitation and calcination approach. DFT calculations u",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C002",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "temperature_C": 0.0,
+                "c_rate": "1.0C",
+                "current_density_mA_g": 0.0,
+                "current_density_mA_cm2": 0.0,
+                "voltage_min_V": 0.0,
+                "voltage_max_V": 0.0,
+                "reference_electrode": "",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "cycle_range": [],
+                "scan_rate_mV_s": 0.0,
+                "soc_percent": 0.0,
+                "charge_discharge_mode": "",
+                "pulse_time_min": 0
+              }
+            },
+            {
+              "condition_id": "C003",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "temperature_C": 0.0,
+                "c_rate": "5.0C",
+                "current_density_mA_g": 0.0,
+                "current_density_mA_cm2": 0.0,
+                "voltage_min_V": 0.0,
+                "voltage_max_V": 0.0,
+                "reference_electrode": "",
+                "test_method": "galvanostatic",
+                "cycle_number": 0,
+                "cycle_range": [],
+                "scan_rate_mV_s": 0.0,
+                "soc_percent": 0.0,
+                "charge_discharge_mode": "",
+                "pulse_time_min": 0
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "# Supporting Information  Supporting Information is available from the Wiley Online Library or from the author.",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# Supporting Information Junxia Meng a , Wenzhuan Hu a , Quanxin Ma b,c\\*1 , Zhenzhen Wu d , Lishuang Xua, Jie Huanga, Chen Xiao a , Junru Wang a , Lina Zhang a , Feng Liu a , Xing Zhie,f\\*2 , Shanqin",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# 1.1 Materials synthesis  Synthesis of cathode materials: In this experiment, $\\mathrm { _ { 1 . 2 } _ { 0 . 5 6 } _ { 0 . 1 6 } _ { 0 . 0 8 } O _ { 2 } }$ was prepared by coprecipitation method and ",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C008",
+              "material_id": "global",
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "commercial electrolyte",
+                "mass_loading_mg_cm2": 24.0,
+                "current_collector": "Al foil",
+                "cell_type": "pouch cell",
+                "assembly_environment": "argon-filled glovebox"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "active material: acetylene black: PVDF = 90:5:5",
+                    "unit": "mass ratio",
+                    "method": "",
+                    "source_text": "mixing the active material, conductive agent (acetylene black), and binder (PVDF) in a ball mill tank at a mass ratio of 90:5:5"
+                  }
+                ],
+                "Mass_Loading": [
+                  {
+                    "value": 24.0,
+                    "unit": "mg/cm2",
+                    "method": "",
+                    "source_text": "coated onto an aluminum foil collector with a surface density of approximately 24 mg cm-2"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "# 1.2 Material Characterization  An inductively coupled plasma optical emission spectrometer (ICP-OES, Perkin Elmer Optima 5300 DV) is used to explore the metal content. X-ray diffractometer (XRD) was",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# 1.3 Electrochemical Measurements  The preparation process of the half-cell is as follows: Coin-type cells were constructed in an argon-filled glovebox (<0.1 ppm $\\mathrm { O } _ { 2 }$ and $_ { \\mat",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "c_rate": "0.1-5.0C",
+                "voltage_min_V": 2.5,
+                "voltage_max_V": 4.6,
+                "reference_electrode": "Li/Li+",
+                "test_method": "galvanostatic",
+                "source_text": "The cycling and rate performances were measured by a galvanostatical charge-discharge test (Neware, China). The test voltage range was 2.5-4.6 V vs Li/Li+. The rate performance was evaluated at 0.1-5.0 C (1 C = 250 mA g⁻¹)."
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+                "mass_loading_mg_cm2": 2.28,
+                "cell_type": "coin cell",
+                "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+                "li_counter_reference": "Li metal"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "8:1:1",
+                    "unit": "weight ratio",
+                    "method": "",
+                    "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+                  }
+                ]
+              }
+            },
+            {
+              "condition_id": "C009",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "EIS",
+                "source_text": "Electrochemical impedance spectroscopy (EIS) ... were tested on an electrochemical workstation (VMP3) in the frequency range of 0.01 Hz to 100 kHz"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+                "mass_loading_mg_cm2": 2.28,
+                "cell_type": "coin cell",
+                "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+                "li_counter_reference": "Li metal"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "8:1:1",
+                    "unit": "weight ratio",
+                    "method": "",
+                    "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+                  }
+                ]
+              }
+            },
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "voltage_min_V": 2.5,
+                "voltage_max_V": 4.6,
+                "reference_electrode": "Li/Li+",
+                "test_method": "CV",
+                "source_text": "Cyclic voltammetry (CV) measurement were tested ... at a scan rate from 0.2 to 1.0 mV s-1 between 2.5 and 4.6 V."
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+                "mass_loading_mg_cm2": 2.28,
+                "cell_type": "coin cell",
+                "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+                "li_counter_reference": "Li metal"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "8:1:1",
+                    "unit": "weight ratio",
+                    "method": "",
+                    "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "# 2. Supplementary methods All calculations were performed using spin-polarised density functional theory (DFT) implemented in the Vienna ab initio simulation package (VASP) code. [1] The generalized ",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "The diffusion coefficient of $\\mathrm { } ^ { + } \\left( D _ { } ^ { + } \\right)$ can be calculated by the following formula:[5] $$ D _ {L i} ^ {+} = 0 \\cdot 5 \\mathrm{R} ^ {2} \\mathrm{T} ^ {2} / \\mat",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "Galvanostatic intermittent titration technique (GITT), an effective electrochemical method to calculate the $D _ { } { } ^ { + }$ is employed in this work. By measuring various voltage increases or dr",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "The refined lattice parameters were further employed to calculate the thickness of the Li slab. The slab thickness (SMO2) and interslab thickness (ILiO2) can be calculated based on the following formu",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "The energy density can be calculated by the following formula: $$ W = \\frac {C U}{G} \\quad \\text { Equation S7 } $$ where W refers to practical energy density, C represents the battery discharge capac",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# Supplementary Figures  <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>text_image</summary> ",
+          "has_condition": true,
+          "conditions": []
+        }
+      ],
+      "all_conditions": [
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.1C",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "reference_electrode": "Li/Li+",
+            "source_text": "The prolonged cycling performance at 0.1C (Figure 2b) shows that after 200 cycles, Mg/Al-LRMO retains 93.3% of its capacity, significantly better than LRMO (68.3%), Mg-LRMO (82.2%), and Al-LRMO (85.0%)."
+          }
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "1.0C",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "reference_electrode": "Li/Li+",
+            "source_text": "The cycling performance of all samples at 1.0C after 200th cycles (Figure 2c) shows that Mg/Al-LRMO retains 90.0% of its initial capacity with a discharge capacity of 188.1 mAh g−1, while LRMO retains only 51.1% with a discharge capacity of 96.4 mAh g−1."
+          }
+        },
+        {
+          "condition_id": "C003",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "5.0C",
+            "test_method": "galvanostatic",
+            "reference_electrode": "Li/Li+",
+            "source_text": "Notably, Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh g−1 even at a high rate of 5.0C, outperforming LRMO (99.0 mAh g−1)."
+          }
+        },
+        {
+          "condition_id": "C004",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "full-cell",
+            "c_rate": "2.0C",
+            "test_method": "galvanostatic",
+            "cycle_number": 600,
+            "source_text": "After cycling at 2.0C for 600 cycles, the Mg/Al-LRMO pouch full cell still maintains good cyclic stability with a specific capacity retention of 86.2%, while the pristine LRMO pouch cell only displays a specific capacity retention of 54.1% after the same cycles, implying the outstanding cycling stability of the Mg/Al-LRMO pouch cell."
+          },
+          "cell_assembly_conditions": {
+            "cell_type": "pouch cell"
+          }
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "reference_electrode": "Li/Li+",
+            "test_method": "CV",
+            "voltage_min_V": 2.5,
+            "voltage_max_V": 4.6,
+            "scan_rate_mV_s": 0.1,
+            "source_text": "the CV curves of LRMO, Mg-LRMO, Al-LRMO, and Mg/Al-LRMO were measured between 2.5 and 4.6 V at 0.1 mV S − 1"
+          }
+        },
+        {
+          "condition_id": "C006",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "c_rate": "1C",
+            "cycle_number": 200,
+            "source_text": "The discharge profiles at 1.0C for the four samples (Figure 3c,d, and Figure S18, Supporting Information) show notable differences in voltage behavior. The percentage of discharge capacity between 3.0 and 2.5 V displayed a significant change during cycling. For LRMO, this percentage increased from 12.78% (1st cycle) to 32.49% (200th cycle)."
+          }
+        },
+        {
+          "condition_id": "C007",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "CV",
+            "source_text": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 mV s^{-1} were employed to analyze the Li+ diffusion coefficient."
+          }
+        },
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "c_rate": "0.1C",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "source_text": "The Nyquist plots in Figure 4c and Figure S25a illustrate the characteristics of four LRMO samples after the 1st, 50th, 100th, and 200th cycles at a rate of 0.1C."
+          }
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "temperature_C": 0.0,
+            "c_rate": "1.0C",
+            "current_density_mA_g": 0.0,
+            "current_density_mA_cm2": 0.0,
+            "voltage_min_V": 0.0,
+            "voltage_max_V": 0.0,
+            "reference_electrode": "",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "cycle_range": [],
+            "scan_rate_mV_s": 0.0,
+            "soc_percent": 0.0,
+            "charge_discharge_mode": "",
+            "pulse_time_min": 0
+          }
+        },
+        {
+          "condition_id": "C003",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "temperature_C": 0.0,
+            "c_rate": "5.0C",
+            "current_density_mA_g": 0.0,
+            "current_density_mA_cm2": 0.0,
+            "voltage_min_V": 0.0,
+            "voltage_max_V": 0.0,
+            "reference_electrode": "",
+            "test_method": "galvanostatic",
+            "cycle_number": 0,
+            "cycle_range": [],
+            "scan_rate_mV_s": 0.0,
+            "soc_percent": 0.0,
+            "charge_discharge_mode": "",
+            "pulse_time_min": 0
+          }
+        },
+        {
+          "condition_id": "C008",
+          "material_id": "global",
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "commercial electrolyte",
+            "mass_loading_mg_cm2": 24.0,
+            "current_collector": "Al foil",
+            "cell_type": "pouch cell",
+            "assembly_environment": "argon-filled glovebox"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "active material: acetylene black: PVDF = 90:5:5",
+                "unit": "mass ratio",
+                "method": "",
+                "source_text": "mixing the active material, conductive agent (acetylene black), and binder (PVDF) in a ball mill tank at a mass ratio of 90:5:5"
+              }
+            ],
+            "Mass_Loading": [
+              {
+                "value": 24.0,
+                "unit": "mg/cm2",
+                "method": "",
+                "source_text": "coated onto an aluminum foil collector with a surface density of approximately 24 mg cm-2"
+              }
+            ]
+          }
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "c_rate": "0.1-5.0C",
+            "voltage_min_V": 2.5,
+            "voltage_max_V": 4.6,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "The cycling and rate performances were measured by a galvanostatical charge-discharge test (Neware, China). The test voltage range was 2.5-4.6 V vs Li/Li+. The rate performance was evaluated at 0.1-5.0 C (1 C = 250 mA g⁻¹)."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+            "mass_loading_mg_cm2": 2.28,
+            "cell_type": "coin cell",
+            "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+            "li_counter_reference": "Li metal"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "8:1:1",
+                "unit": "weight ratio",
+                "method": "",
+                "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+              }
+            ]
+          }
+        },
+        {
+          "condition_id": "C009",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "EIS",
+            "source_text": "Electrochemical impedance spectroscopy (EIS) ... were tested on an electrochemical workstation (VMP3) in the frequency range of 0.01 Hz to 100 kHz"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+            "mass_loading_mg_cm2": 2.28,
+            "cell_type": "coin cell",
+            "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+            "li_counter_reference": "Li metal"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "8:1:1",
+                "unit": "weight ratio",
+                "method": "",
+                "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+              }
+            ]
+          }
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "voltage_min_V": 2.5,
+            "voltage_max_V": 4.6,
+            "reference_electrode": "Li/Li+",
+            "test_method": "CV",
+            "source_text": "Cyclic voltammetry (CV) measurement were tested ... at a scan rate from 0.2 to 1.0 mV s-1 between 2.5 and 4.6 V."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+            "mass_loading_mg_cm2": 2.28,
+            "cell_type": "coin cell",
+            "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+            "li_counter_reference": "Li metal"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "8:1:1",
+                "unit": "weight ratio",
+                "method": "",
+                "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "material_id": "cathode_M004",
+      "material_name": "Mg/Al co-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "material_context": "novel: Mg/Al co-doped Li1.2Mn0.56Ni0.16Co0.08O2 (Li1.2Mn0.56Ni0.16Co0.08O2:Mg,Al)",
+      "condition_items": [
+        {
+          "paragraph": "# 2. Results and Discussion Mg and Al were experimentally introduced into LRMO to synthesize Mg-doped (Mg-LRMO), Al-doped (Al-LRMO), and Mg/Al co-doped (Mg/Al-LRMO) cathode materials. The oxide compos",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "To obtain more detailed crystal structural information, the XRD patterns were further analyzed using Rietveld refinement, as shown in a–d, with the corresponding lattice parame-Figure 1ters listed in ",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# 2.2. Electrochemical Performance  All samples exhibit similar capacities in the slope region (≈115 mAh $\\mathbf { g } ^ { - 1 } )$ , but the capacities in the plateau region decrease with the $\\math",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.1C",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "reference_electrode": "Li/Li+",
+                "source_text": "The prolonged cycling performance at 0.1C (Figure 2b) shows that after 200 cycles, Mg/Al-LRMO retains 93.3% of its capacity, significantly better than LRMO (68.3%), Mg-LRMO (82.2%), and Al-LRMO (85.0%)."
+              }
+            },
+            {
+              "condition_id": "C002",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "1.0C",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "reference_electrode": "Li/Li+",
+                "source_text": "The cycling performance of all samples at 1.0C after 200th cycles (Figure 2c) shows that Mg/Al-LRMO retains 90.0% of its initial capacity with a discharge capacity of 188.1 mAh g−1, while LRMO retains only 51.1% with a discharge capacity of 96.4 mAh g−1."
+              }
+            },
+            {
+              "condition_id": "C003",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "5.0C",
+                "test_method": "galvanostatic",
+                "reference_electrode": "Li/Li+",
+                "source_text": "Notably, Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh g−1 even at a high rate of 5.0C, outperforming LRMO (99.0 mAh g−1)."
+              }
+            },
+            {
+              "condition_id": "C004",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "full-cell",
+                "c_rate": "2.0C",
+                "test_method": "galvanostatic",
+                "cycle_number": 600,
+                "source_text": "After cycling at 2.0C for 600 cycles, the Mg/Al-LRMO pouch full cell still maintains good cyclic stability with a specific capacity retention of 86.2%, while the pristine LRMO pouch cell only displays a specific capacity retention of 54.1% after the same cycles, implying the outstanding cycling stability of the Mg/Al-LRMO pouch cell."
+              },
+              "cell_assembly_conditions": {
+                "cell_type": "pouch cell"
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "The characteristic Mg 1s XPS peaks (Figure S15, Supporting Information) were clearly observed at ≈1303.3 eV for Mg-LRMO and Mg/Al-LRMO, confirming the presence of $\\mathrm { } ^ { 2 + }$ ions.[26] Sim",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "reference_electrode": "Li/Li+",
+                "test_method": "CV",
+                "voltage_min_V": 2.5,
+                "voltage_max_V": 4.6,
+                "scan_rate_mV_s": 0.1,
+                "source_text": "the CV curves of LRMO, Mg-LRMO, Al-LRMO, and Mg/Al-LRMO were measured between 2.5 and 4.6 V at 0.1 mV S − 1"
+              }
+            },
+            {
+              "condition_id": "C006",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "reference_electrode": "Li/Li+",
+                "test_method": "galvanostatic",
+                "c_rate": "1C",
+                "cycle_number": 200,
+                "source_text": "The discharge profiles at 1.0C for the four samples (Figure 3c,d, and Figure S18, Supporting Information) show notable differences in voltage behavior. The percentage of discharge capacity between 3.0 and 2.5 V displayed a significant change during cycling. For LRMO, this percentage increased from 12.78% (1st cycle) to 32.49% (200th cycle)."
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 m",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C007",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "CV",
+                "source_text": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 mV s^{-1} were employed to analyze the Li+ diffusion coefficient."
+              }
+            },
+            {
+              "condition_id": "C001",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "c_rate": "0.1C",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "source_text": "The Nyquist plots in Figure 4c and Figure S25a illustrate the characteristics of four LRMO samples after the 1st, 50th, 100th, and 200th cycles at a rate of 0.1C."
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "The structure and morphology of LMRO and Mg/Al-LRMO after 100 cycles at 0.5C were further characterized by TEM, HRTEM, and FFT images. The results provide crucial insights into the degradation mechani",
+          "has_condition": true,
+          "conditions": []
+        },
+        {
+          "paragraph": "In summary, we successfully synthesized the $\\mathrm { ^ { 2 + } / ^ { 3 + } }$ codoped LRMO cathode material using a combined approach of co-precipitation and calcination approach. DFT calculations u",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C002",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "temperature_C": 0.0,
+                "c_rate": "1.0C",
+                "current_density_mA_g": 0.0,
+                "current_density_mA_cm2": 0.0,
+                "voltage_min_V": 0.0,
+                "voltage_max_V": 0.0,
+                "reference_electrode": "",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "cycle_range": [],
+                "scan_rate_mV_s": 0.0,
+                "soc_percent": 0.0,
+                "charge_discharge_mode": "",
+                "pulse_time_min": 0
+              }
+            },
+            {
+              "condition_id": "C003",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "temperature_C": 0.0,
+                "c_rate": "5.0C",
+                "current_density_mA_g": 0.0,
+                "current_density_mA_cm2": 0.0,
+                "voltage_min_V": 0.0,
+                "voltage_max_V": 0.0,
+                "reference_electrode": "",
+                "test_method": "galvanostatic",
+                "cycle_number": 0,
+                "cycle_range": [],
+                "scan_rate_mV_s": 0.0,
+                "soc_percent": 0.0,
+                "charge_discharge_mode": "",
+                "pulse_time_min": 0
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "# Supporting Information  Supporting Information is available from the Wiley Online Library or from the author.",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# Supporting Information Junxia Meng a , Wenzhuan Hu a , Quanxin Ma b,c\\*1 , Zhenzhen Wu d , Lishuang Xua, Jie Huanga, Chen Xiao a , Junru Wang a , Lina Zhang a , Feng Liu a , Xing Zhie,f\\*2 , Shanqin",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# 1.1 Materials synthesis  Synthesis of cathode materials: In this experiment, $\\mathrm { _ { 1 . 2 } _ { 0 . 5 6 } _ { 0 . 1 6 } _ { 0 . 0 8 } O _ { 2 } }$ was prepared by coprecipitation method and ",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C008",
+              "material_id": "global",
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "commercial electrolyte",
+                "mass_loading_mg_cm2": 24.0,
+                "current_collector": "Al foil",
+                "cell_type": "pouch cell",
+                "assembly_environment": "argon-filled glovebox"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "active material: acetylene black: PVDF = 90:5:5",
+                    "unit": "mass ratio",
+                    "method": "",
+                    "source_text": "mixing the active material, conductive agent (acetylene black), and binder (PVDF) in a ball mill tank at a mass ratio of 90:5:5"
+                  }
+                ],
+                "Mass_Loading": [
+                  {
+                    "value": 24.0,
+                    "unit": "mg/cm2",
+                    "method": "",
+                    "source_text": "coated onto an aluminum foil collector with a surface density of approximately 24 mg cm-2"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "# 1.2 Material Characterization  An inductively coupled plasma optical emission spectrometer (ICP-OES, Perkin Elmer Optima 5300 DV) is used to explore the metal content. X-ray diffractometer (XRD) was",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# 1.3 Electrochemical Measurements  The preparation process of the half-cell is as follows: Coin-type cells were constructed in an argon-filled glovebox (<0.1 ppm $\\mathrm { O } _ { 2 }$ and $_ { \\mat",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "c_rate": "0.1-5.0C",
+                "voltage_min_V": 2.5,
+                "voltage_max_V": 4.6,
+                "reference_electrode": "Li/Li+",
+                "test_method": "galvanostatic",
+                "source_text": "The cycling and rate performances were measured by a galvanostatical charge-discharge test (Neware, China). The test voltage range was 2.5-4.6 V vs Li/Li+. The rate performance was evaluated at 0.1-5.0 C (1 C = 250 mA g⁻¹)."
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+                "mass_loading_mg_cm2": 2.28,
+                "cell_type": "coin cell",
+                "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+                "li_counter_reference": "Li metal"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "8:1:1",
+                    "unit": "weight ratio",
+                    "method": "",
+                    "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+                  }
+                ]
+              }
+            },
+            {
+              "condition_id": "C009",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "EIS",
+                "source_text": "Electrochemical impedance spectroscopy (EIS) ... were tested on an electrochemical workstation (VMP3) in the frequency range of 0.01 Hz to 100 kHz"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+                "mass_loading_mg_cm2": 2.28,
+                "cell_type": "coin cell",
+                "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+                "li_counter_reference": "Li metal"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "8:1:1",
+                    "unit": "weight ratio",
+                    "method": "",
+                    "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+                  }
+                ]
+              }
+            },
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "voltage_min_V": 2.5,
+                "voltage_max_V": 4.6,
+                "reference_electrode": "Li/Li+",
+                "test_method": "CV",
+                "source_text": "Cyclic voltammetry (CV) measurement were tested ... at a scan rate from 0.2 to 1.0 mV s-1 between 2.5 and 4.6 V."
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+                "mass_loading_mg_cm2": 2.28,
+                "cell_type": "coin cell",
+                "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+                "li_counter_reference": "Li metal"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "8:1:1",
+                    "unit": "weight ratio",
+                    "method": "",
+                    "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "# 2. Supplementary methods All calculations were performed using spin-polarised density functional theory (DFT) implemented in the Vienna ab initio simulation package (VASP) code. [1] The generalized ",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "The diffusion coefficient of $\\mathrm { } ^ { + } \\left( D _ { } ^ { + } \\right)$ can be calculated by the following formula:[5] $$ D _ {L i} ^ {+} = 0 \\cdot 5 \\mathrm{R} ^ {2} \\mathrm{T} ^ {2} / \\mat",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "Galvanostatic intermittent titration technique (GITT), an effective electrochemical method to calculate the $D _ { } { } ^ { + }$ is employed in this work. By measuring various voltage increases or dr",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "The refined lattice parameters were further employed to calculate the thickness of the Li slab. The slab thickness (SMO2) and interslab thickness (ILiO2) can be calculated based on the following formu",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "The energy density can be calculated by the following formula: $$ W = \\frac {C U}{G} \\quad \\text { Equation S7 } $$ where W refers to practical energy density, C represents the battery discharge capac",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# Supplementary Figures  <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>text_image</summary> ",
+          "has_condition": true,
+          "conditions": []
+        }
+      ],
+      "all_conditions": [
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.1C",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "reference_electrode": "Li/Li+",
+            "source_text": "The prolonged cycling performance at 0.1C (Figure 2b) shows that after 200 cycles, Mg/Al-LRMO retains 93.3% of its capacity, significantly better than LRMO (68.3%), Mg-LRMO (82.2%), and Al-LRMO (85.0%)."
+          }
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "1.0C",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "reference_electrode": "Li/Li+",
+            "source_text": "The cycling performance of all samples at 1.0C after 200th cycles (Figure 2c) shows that Mg/Al-LRMO retains 90.0% of its initial capacity with a discharge capacity of 188.1 mAh g−1, while LRMO retains only 51.1% with a discharge capacity of 96.4 mAh g−1."
+          }
+        },
+        {
+          "condition_id": "C003",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "5.0C",
+            "test_method": "galvanostatic",
+            "reference_electrode": "Li/Li+",
+            "source_text": "Notably, Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh g−1 even at a high rate of 5.0C, outperforming LRMO (99.0 mAh g−1)."
+          }
+        },
+        {
+          "condition_id": "C004",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "full-cell",
+            "c_rate": "2.0C",
+            "test_method": "galvanostatic",
+            "cycle_number": 600,
+            "source_text": "After cycling at 2.0C for 600 cycles, the Mg/Al-LRMO pouch full cell still maintains good cyclic stability with a specific capacity retention of 86.2%, while the pristine LRMO pouch cell only displays a specific capacity retention of 54.1% after the same cycles, implying the outstanding cycling stability of the Mg/Al-LRMO pouch cell."
+          },
+          "cell_assembly_conditions": {
+            "cell_type": "pouch cell"
+          }
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "reference_electrode": "Li/Li+",
+            "test_method": "CV",
+            "voltage_min_V": 2.5,
+            "voltage_max_V": 4.6,
+            "scan_rate_mV_s": 0.1,
+            "source_text": "the CV curves of LRMO, Mg-LRMO, Al-LRMO, and Mg/Al-LRMO were measured between 2.5 and 4.6 V at 0.1 mV S − 1"
+          }
+        },
+        {
+          "condition_id": "C006",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "c_rate": "1C",
+            "cycle_number": 200,
+            "source_text": "The discharge profiles at 1.0C for the four samples (Figure 3c,d, and Figure S18, Supporting Information) show notable differences in voltage behavior. The percentage of discharge capacity between 3.0 and 2.5 V displayed a significant change during cycling. For LRMO, this percentage increased from 12.78% (1st cycle) to 32.49% (200th cycle)."
+          }
+        },
+        {
+          "condition_id": "C007",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "CV",
+            "source_text": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 mV s^{-1} were employed to analyze the Li+ diffusion coefficient."
+          }
+        },
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "c_rate": "0.1C",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "source_text": "The Nyquist plots in Figure 4c and Figure S25a illustrate the characteristics of four LRMO samples after the 1st, 50th, 100th, and 200th cycles at a rate of 0.1C."
+          }
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "temperature_C": 0.0,
+            "c_rate": "1.0C",
+            "current_density_mA_g": 0.0,
+            "current_density_mA_cm2": 0.0,
+            "voltage_min_V": 0.0,
+            "voltage_max_V": 0.0,
+            "reference_electrode": "",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "cycle_range": [],
+            "scan_rate_mV_s": 0.0,
+            "soc_percent": 0.0,
+            "charge_discharge_mode": "",
+            "pulse_time_min": 0
+          }
+        },
+        {
+          "condition_id": "C003",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "temperature_C": 0.0,
+            "c_rate": "5.0C",
+            "current_density_mA_g": 0.0,
+            "current_density_mA_cm2": 0.0,
+            "voltage_min_V": 0.0,
+            "voltage_max_V": 0.0,
+            "reference_electrode": "",
+            "test_method": "galvanostatic",
+            "cycle_number": 0,
+            "cycle_range": [],
+            "scan_rate_mV_s": 0.0,
+            "soc_percent": 0.0,
+            "charge_discharge_mode": "",
+            "pulse_time_min": 0
+          }
+        },
+        {
+          "condition_id": "C008",
+          "material_id": "global",
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "commercial electrolyte",
+            "mass_loading_mg_cm2": 24.0,
+            "current_collector": "Al foil",
+            "cell_type": "pouch cell",
+            "assembly_environment": "argon-filled glovebox"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "active material: acetylene black: PVDF = 90:5:5",
+                "unit": "mass ratio",
+                "method": "",
+                "source_text": "mixing the active material, conductive agent (acetylene black), and binder (PVDF) in a ball mill tank at a mass ratio of 90:5:5"
+              }
+            ],
+            "Mass_Loading": [
+              {
+                "value": 24.0,
+                "unit": "mg/cm2",
+                "method": "",
+                "source_text": "coated onto an aluminum foil collector with a surface density of approximately 24 mg cm-2"
+              }
+            ]
+          }
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "c_rate": "0.1-5.0C",
+            "voltage_min_V": 2.5,
+            "voltage_max_V": 4.6,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "The cycling and rate performances were measured by a galvanostatical charge-discharge test (Neware, China). The test voltage range was 2.5-4.6 V vs Li/Li+. The rate performance was evaluated at 0.1-5.0 C (1 C = 250 mA g⁻¹)."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+            "mass_loading_mg_cm2": 2.28,
+            "cell_type": "coin cell",
+            "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+            "li_counter_reference": "Li metal"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "8:1:1",
+                "unit": "weight ratio",
+                "method": "",
+                "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+              }
+            ]
+          }
+        },
+        {
+          "condition_id": "C009",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "EIS",
+            "source_text": "Electrochemical impedance spectroscopy (EIS) ... were tested on an electrochemical workstation (VMP3) in the frequency range of 0.01 Hz to 100 kHz"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+            "mass_loading_mg_cm2": 2.28,
+            "cell_type": "coin cell",
+            "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+            "li_counter_reference": "Li metal"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "8:1:1",
+                "unit": "weight ratio",
+                "method": "",
+                "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+              }
+            ]
+          }
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "voltage_min_V": 2.5,
+            "voltage_max_V": 4.6,
+            "reference_electrode": "Li/Li+",
+            "test_method": "CV",
+            "source_text": "Cyclic voltammetry (CV) measurement were tested ... at a scan rate from 0.2 to 1.0 mV s-1 between 2.5 and 4.6 V."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+            "mass_loading_mg_cm2": 2.28,
+            "cell_type": "coin cell",
+            "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+            "li_counter_reference": "Li metal"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "8:1:1",
+                "unit": "weight ratio",
+                "method": "",
+                "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "material_id": "cathode_M003",
+      "material_name": "Al-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "material_context": "novel: Al-doped Li1.2Mn0.56Ni0.16Co0.08O2 (Li1.2Mn0.56Ni0.16Co0.08O2:Al)",
+      "condition_items": [
+        {
+          "paragraph": "# 2. Results and Discussion Mg and Al were experimentally introduced into LRMO to synthesize Mg-doped (Mg-LRMO), Al-doped (Al-LRMO), and Mg/Al co-doped (Mg/Al-LRMO) cathode materials. The oxide compos",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "To obtain more detailed crystal structural information, the XRD patterns were further analyzed using Rietveld refinement, as shown in a–d, with the corresponding lattice parame-Figure 1ters listed in ",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# 2.2. Electrochemical Performance  All samples exhibit similar capacities in the slope region (≈115 mAh $\\mathbf { g } ^ { - 1 } )$ , but the capacities in the plateau region decrease with the $\\math",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.1C",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "reference_electrode": "Li/Li+",
+                "source_text": "The prolonged cycling performance at 0.1C (Figure 2b) shows that after 200 cycles, Mg/Al-LRMO retains 93.3% of its capacity, significantly better than LRMO (68.3%), Mg-LRMO (82.2%), and Al-LRMO (85.0%)."
+              }
+            },
+            {
+              "condition_id": "C002",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "1.0C",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "reference_electrode": "Li/Li+",
+                "source_text": "The cycling performance of all samples at 1.0C after 200th cycles (Figure 2c) shows that Mg/Al-LRMO retains 90.0% of its initial capacity with a discharge capacity of 188.1 mAh g−1, while LRMO retains only 51.1% with a discharge capacity of 96.4 mAh g−1."
+              }
+            },
+            {
+              "condition_id": "C003",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "5.0C",
+                "test_method": "galvanostatic",
+                "reference_electrode": "Li/Li+",
+                "source_text": "Notably, Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh g−1 even at a high rate of 5.0C, outperforming LRMO (99.0 mAh g−1)."
+              }
+            },
+            {
+              "condition_id": "C004",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "full-cell",
+                "c_rate": "2.0C",
+                "test_method": "galvanostatic",
+                "cycle_number": 600,
+                "source_text": "After cycling at 2.0C for 600 cycles, the Mg/Al-LRMO pouch full cell still maintains good cyclic stability with a specific capacity retention of 86.2%, while the pristine LRMO pouch cell only displays a specific capacity retention of 54.1% after the same cycles, implying the outstanding cycling stability of the Mg/Al-LRMO pouch cell."
+              },
+              "cell_assembly_conditions": {
+                "cell_type": "pouch cell"
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "The characteristic Mg 1s XPS peaks (Figure S15, Supporting Information) were clearly observed at ≈1303.3 eV for Mg-LRMO and Mg/Al-LRMO, confirming the presence of $\\mathrm { } ^ { 2 + }$ ions.[26] Sim",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "reference_electrode": "Li/Li+",
+                "test_method": "CV",
+                "voltage_min_V": 2.5,
+                "voltage_max_V": 4.6,
+                "scan_rate_mV_s": 0.1,
+                "source_text": "the CV curves of LRMO, Mg-LRMO, Al-LRMO, and Mg/Al-LRMO were measured between 2.5 and 4.6 V at 0.1 mV S − 1"
+              }
+            },
+            {
+              "condition_id": "C006",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "reference_electrode": "Li/Li+",
+                "test_method": "galvanostatic",
+                "c_rate": "1C",
+                "cycle_number": 200,
+                "source_text": "The discharge profiles at 1.0C for the four samples (Figure 3c,d, and Figure S18, Supporting Information) show notable differences in voltage behavior. The percentage of discharge capacity between 3.0 and 2.5 V displayed a significant change during cycling. For LRMO, this percentage increased from 12.78% (1st cycle) to 32.49% (200th cycle)."
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 m",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C007",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "CV",
+                "source_text": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 mV s^{-1} were employed to analyze the Li+ diffusion coefficient."
+              }
+            },
+            {
+              "condition_id": "C001",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "c_rate": "0.1C",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "source_text": "The Nyquist plots in Figure 4c and Figure S25a illustrate the characteristics of four LRMO samples after the 1st, 50th, 100th, and 200th cycles at a rate of 0.1C."
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "The structure and morphology of LMRO and Mg/Al-LRMO after 100 cycles at 0.5C were further characterized by TEM, HRTEM, and FFT images. The results provide crucial insights into the degradation mechani",
+          "has_condition": true,
+          "conditions": []
+        },
+        {
+          "paragraph": "In summary, we successfully synthesized the $\\mathrm { ^ { 2 + } / ^ { 3 + } }$ codoped LRMO cathode material using a combined approach of co-precipitation and calcination approach. DFT calculations u",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C002",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "temperature_C": 0.0,
+                "c_rate": "1.0C",
+                "current_density_mA_g": 0.0,
+                "current_density_mA_cm2": 0.0,
+                "voltage_min_V": 0.0,
+                "voltage_max_V": 0.0,
+                "reference_electrode": "",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "cycle_range": [],
+                "scan_rate_mV_s": 0.0,
+                "soc_percent": 0.0,
+                "charge_discharge_mode": "",
+                "pulse_time_min": 0
+              }
+            },
+            {
+              "condition_id": "C003",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "temperature_C": 0.0,
+                "c_rate": "5.0C",
+                "current_density_mA_g": 0.0,
+                "current_density_mA_cm2": 0.0,
+                "voltage_min_V": 0.0,
+                "voltage_max_V": 0.0,
+                "reference_electrode": "",
+                "test_method": "galvanostatic",
+                "cycle_number": 0,
+                "cycle_range": [],
+                "scan_rate_mV_s": 0.0,
+                "soc_percent": 0.0,
+                "charge_discharge_mode": "",
+                "pulse_time_min": 0
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "# Supporting Information  Supporting Information is available from the Wiley Online Library or from the author.",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# Supporting Information Junxia Meng a , Wenzhuan Hu a , Quanxin Ma b,c\\*1 , Zhenzhen Wu d , Lishuang Xua, Jie Huanga, Chen Xiao a , Junru Wang a , Lina Zhang a , Feng Liu a , Xing Zhie,f\\*2 , Shanqin",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# 1.1 Materials synthesis  Synthesis of cathode materials: In this experiment, $\\mathrm { _ { 1 . 2 } _ { 0 . 5 6 } _ { 0 . 1 6 } _ { 0 . 0 8 } O _ { 2 } }$ was prepared by coprecipitation method and ",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C008",
+              "material_id": "global",
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "commercial electrolyte",
+                "mass_loading_mg_cm2": 24.0,
+                "current_collector": "Al foil",
+                "cell_type": "pouch cell",
+                "assembly_environment": "argon-filled glovebox"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "active material: acetylene black: PVDF = 90:5:5",
+                    "unit": "mass ratio",
+                    "method": "",
+                    "source_text": "mixing the active material, conductive agent (acetylene black), and binder (PVDF) in a ball mill tank at a mass ratio of 90:5:5"
+                  }
+                ],
+                "Mass_Loading": [
+                  {
+                    "value": 24.0,
+                    "unit": "mg/cm2",
+                    "method": "",
+                    "source_text": "coated onto an aluminum foil collector with a surface density of approximately 24 mg cm-2"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "# 1.2 Material Characterization  An inductively coupled plasma optical emission spectrometer (ICP-OES, Perkin Elmer Optima 5300 DV) is used to explore the metal content. X-ray diffractometer (XRD) was",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# 1.3 Electrochemical Measurements  The preparation process of the half-cell is as follows: Coin-type cells were constructed in an argon-filled glovebox (<0.1 ppm $\\mathrm { O } _ { 2 }$ and $_ { \\mat",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "c_rate": "0.1-5.0C",
+                "voltage_min_V": 2.5,
+                "voltage_max_V": 4.6,
+                "reference_electrode": "Li/Li+",
+                "test_method": "galvanostatic",
+                "source_text": "The cycling and rate performances were measured by a galvanostatical charge-discharge test (Neware, China). The test voltage range was 2.5-4.6 V vs Li/Li+. The rate performance was evaluated at 0.1-5.0 C (1 C = 250 mA g⁻¹)."
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+                "mass_loading_mg_cm2": 2.28,
+                "cell_type": "coin cell",
+                "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+                "li_counter_reference": "Li metal"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "8:1:1",
+                    "unit": "weight ratio",
+                    "method": "",
+                    "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+                  }
+                ]
+              }
+            },
+            {
+              "condition_id": "C009",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "EIS",
+                "source_text": "Electrochemical impedance spectroscopy (EIS) ... were tested on an electrochemical workstation (VMP3) in the frequency range of 0.01 Hz to 100 kHz"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+                "mass_loading_mg_cm2": 2.28,
+                "cell_type": "coin cell",
+                "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+                "li_counter_reference": "Li metal"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "8:1:1",
+                    "unit": "weight ratio",
+                    "method": "",
+                    "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+                  }
+                ]
+              }
+            },
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "voltage_min_V": 2.5,
+                "voltage_max_V": 4.6,
+                "reference_electrode": "Li/Li+",
+                "test_method": "CV",
+                "source_text": "Cyclic voltammetry (CV) measurement were tested ... at a scan rate from 0.2 to 1.0 mV s-1 between 2.5 and 4.6 V."
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+                "mass_loading_mg_cm2": 2.28,
+                "cell_type": "coin cell",
+                "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+                "li_counter_reference": "Li metal"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "8:1:1",
+                    "unit": "weight ratio",
+                    "method": "",
+                    "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "# 2. Supplementary methods All calculations were performed using spin-polarised density functional theory (DFT) implemented in the Vienna ab initio simulation package (VASP) code. [1] The generalized ",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "The diffusion coefficient of $\\mathrm { } ^ { + } \\left( D _ { } ^ { + } \\right)$ can be calculated by the following formula:[5] $$ D _ {L i} ^ {+} = 0 \\cdot 5 \\mathrm{R} ^ {2} \\mathrm{T} ^ {2} / \\mat",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "Galvanostatic intermittent titration technique (GITT), an effective electrochemical method to calculate the $D _ { } { } ^ { + }$ is employed in this work. By measuring various voltage increases or dr",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "The refined lattice parameters were further employed to calculate the thickness of the Li slab. The slab thickness (SMO2) and interslab thickness (ILiO2) can be calculated based on the following formu",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "The energy density can be calculated by the following formula: $$ W = \\frac {C U}{G} \\quad \\text { Equation S7 } $$ where W refers to practical energy density, C represents the battery discharge capac",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# Supplementary Figures  <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>text_image</summary> ",
+          "has_condition": true,
+          "conditions": []
+        }
+      ],
+      "all_conditions": [
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.1C",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "reference_electrode": "Li/Li+",
+            "source_text": "The prolonged cycling performance at 0.1C (Figure 2b) shows that after 200 cycles, Mg/Al-LRMO retains 93.3% of its capacity, significantly better than LRMO (68.3%), Mg-LRMO (82.2%), and Al-LRMO (85.0%)."
+          }
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "1.0C",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "reference_electrode": "Li/Li+",
+            "source_text": "The cycling performance of all samples at 1.0C after 200th cycles (Figure 2c) shows that Mg/Al-LRMO retains 90.0% of its initial capacity with a discharge capacity of 188.1 mAh g−1, while LRMO retains only 51.1% with a discharge capacity of 96.4 mAh g−1."
+          }
+        },
+        {
+          "condition_id": "C003",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "5.0C",
+            "test_method": "galvanostatic",
+            "reference_electrode": "Li/Li+",
+            "source_text": "Notably, Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh g−1 even at a high rate of 5.0C, outperforming LRMO (99.0 mAh g−1)."
+          }
+        },
+        {
+          "condition_id": "C004",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "full-cell",
+            "c_rate": "2.0C",
+            "test_method": "galvanostatic",
+            "cycle_number": 600,
+            "source_text": "After cycling at 2.0C for 600 cycles, the Mg/Al-LRMO pouch full cell still maintains good cyclic stability with a specific capacity retention of 86.2%, while the pristine LRMO pouch cell only displays a specific capacity retention of 54.1% after the same cycles, implying the outstanding cycling stability of the Mg/Al-LRMO pouch cell."
+          },
+          "cell_assembly_conditions": {
+            "cell_type": "pouch cell"
+          }
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "reference_electrode": "Li/Li+",
+            "test_method": "CV",
+            "voltage_min_V": 2.5,
+            "voltage_max_V": 4.6,
+            "scan_rate_mV_s": 0.1,
+            "source_text": "the CV curves of LRMO, Mg-LRMO, Al-LRMO, and Mg/Al-LRMO were measured between 2.5 and 4.6 V at 0.1 mV S − 1"
+          }
+        },
+        {
+          "condition_id": "C006",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "c_rate": "1C",
+            "cycle_number": 200,
+            "source_text": "The discharge profiles at 1.0C for the four samples (Figure 3c,d, and Figure S18, Supporting Information) show notable differences in voltage behavior. The percentage of discharge capacity between 3.0 and 2.5 V displayed a significant change during cycling. For LRMO, this percentage increased from 12.78% (1st cycle) to 32.49% (200th cycle)."
+          }
+        },
+        {
+          "condition_id": "C007",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "CV",
+            "source_text": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 mV s^{-1} were employed to analyze the Li+ diffusion coefficient."
+          }
+        },
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "c_rate": "0.1C",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "source_text": "The Nyquist plots in Figure 4c and Figure S25a illustrate the characteristics of four LRMO samples after the 1st, 50th, 100th, and 200th cycles at a rate of 0.1C."
+          }
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "temperature_C": 0.0,
+            "c_rate": "1.0C",
+            "current_density_mA_g": 0.0,
+            "current_density_mA_cm2": 0.0,
+            "voltage_min_V": 0.0,
+            "voltage_max_V": 0.0,
+            "reference_electrode": "",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "cycle_range": [],
+            "scan_rate_mV_s": 0.0,
+            "soc_percent": 0.0,
+            "charge_discharge_mode": "",
+            "pulse_time_min": 0
+          }
+        },
+        {
+          "condition_id": "C003",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "temperature_C": 0.0,
+            "c_rate": "5.0C",
+            "current_density_mA_g": 0.0,
+            "current_density_mA_cm2": 0.0,
+            "voltage_min_V": 0.0,
+            "voltage_max_V": 0.0,
+            "reference_electrode": "",
+            "test_method": "galvanostatic",
+            "cycle_number": 0,
+            "cycle_range": [],
+            "scan_rate_mV_s": 0.0,
+            "soc_percent": 0.0,
+            "charge_discharge_mode": "",
+            "pulse_time_min": 0
+          }
+        },
+        {
+          "condition_id": "C008",
+          "material_id": "global",
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "commercial electrolyte",
+            "mass_loading_mg_cm2": 24.0,
+            "current_collector": "Al foil",
+            "cell_type": "pouch cell",
+            "assembly_environment": "argon-filled glovebox"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "active material: acetylene black: PVDF = 90:5:5",
+                "unit": "mass ratio",
+                "method": "",
+                "source_text": "mixing the active material, conductive agent (acetylene black), and binder (PVDF) in a ball mill tank at a mass ratio of 90:5:5"
+              }
+            ],
+            "Mass_Loading": [
+              {
+                "value": 24.0,
+                "unit": "mg/cm2",
+                "method": "",
+                "source_text": "coated onto an aluminum foil collector with a surface density of approximately 24 mg cm-2"
+              }
+            ]
+          }
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "c_rate": "0.1-5.0C",
+            "voltage_min_V": 2.5,
+            "voltage_max_V": 4.6,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "The cycling and rate performances were measured by a galvanostatical charge-discharge test (Neware, China). The test voltage range was 2.5-4.6 V vs Li/Li+. The rate performance was evaluated at 0.1-5.0 C (1 C = 250 mA g⁻¹)."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+            "mass_loading_mg_cm2": 2.28,
+            "cell_type": "coin cell",
+            "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+            "li_counter_reference": "Li metal"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "8:1:1",
+                "unit": "weight ratio",
+                "method": "",
+                "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+              }
+            ]
+          }
+        },
+        {
+          "condition_id": "C009",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "EIS",
+            "source_text": "Electrochemical impedance spectroscopy (EIS) ... were tested on an electrochemical workstation (VMP3) in the frequency range of 0.01 Hz to 100 kHz"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+            "mass_loading_mg_cm2": 2.28,
+            "cell_type": "coin cell",
+            "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+            "li_counter_reference": "Li metal"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "8:1:1",
+                "unit": "weight ratio",
+                "method": "",
+                "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+              }
+            ]
+          }
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "voltage_min_V": 2.5,
+            "voltage_max_V": 4.6,
+            "reference_electrode": "Li/Li+",
+            "test_method": "CV",
+            "source_text": "Cyclic voltammetry (CV) measurement were tested ... at a scan rate from 0.2 to 1.0 mV s-1 between 2.5 and 4.6 V."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+            "mass_loading_mg_cm2": 2.28,
+            "cell_type": "coin cell",
+            "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+            "li_counter_reference": "Li metal"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "8:1:1",
+                "unit": "weight ratio",
+                "method": "",
+                "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "material_id": "cathode_M001",
+      "material_name": "Li1.2Mn0.56Ni0.16Co0.08O2",
+      "material_context": "comparison: Li1.2Mn0.56Ni0.16Co0.08O2 (Li1.2Mn0.56Ni0.16Co0.08O2)",
+      "condition_items": [
+        {
+          "paragraph": "# 2. Results and Discussion Mg and Al were experimentally introduced into LRMO to synthesize Mg-doped (Mg-LRMO), Al-doped (Al-LRMO), and Mg/Al co-doped (Mg/Al-LRMO) cathode materials. The oxide compos",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "To obtain more detailed crystal structural information, the XRD patterns were further analyzed using Rietveld refinement, as shown in a–d, with the corresponding lattice parame-Figure 1ters listed in ",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# 2.2. Electrochemical Performance  All samples exhibit similar capacities in the slope region (≈115 mAh $\\mathbf { g } ^ { - 1 } )$ , but the capacities in the plateau region decrease with the $\\math",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.1C",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "reference_electrode": "Li/Li+",
+                "source_text": "The prolonged cycling performance at 0.1C (Figure 2b) shows that after 200 cycles, Mg/Al-LRMO retains 93.3% of its capacity, significantly better than LRMO (68.3%), Mg-LRMO (82.2%), and Al-LRMO (85.0%)."
+              }
+            },
+            {
+              "condition_id": "C002",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "1.0C",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "reference_electrode": "Li/Li+",
+                "source_text": "The cycling performance of all samples at 1.0C after 200th cycles (Figure 2c) shows that Mg/Al-LRMO retains 90.0% of its initial capacity with a discharge capacity of 188.1 mAh g−1, while LRMO retains only 51.1% with a discharge capacity of 96.4 mAh g−1."
+              }
+            },
+            {
+              "condition_id": "C003",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "5.0C",
+                "test_method": "galvanostatic",
+                "reference_electrode": "Li/Li+",
+                "source_text": "Notably, Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh g−1 even at a high rate of 5.0C, outperforming LRMO (99.0 mAh g−1)."
+              }
+            },
+            {
+              "condition_id": "C004",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "full-cell",
+                "c_rate": "2.0C",
+                "test_method": "galvanostatic",
+                "cycle_number": 600,
+                "source_text": "After cycling at 2.0C for 600 cycles, the Mg/Al-LRMO pouch full cell still maintains good cyclic stability with a specific capacity retention of 86.2%, while the pristine LRMO pouch cell only displays a specific capacity retention of 54.1% after the same cycles, implying the outstanding cycling stability of the Mg/Al-LRMO pouch cell."
+              },
+              "cell_assembly_conditions": {
+                "cell_type": "pouch cell"
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "The characteristic Mg 1s XPS peaks (Figure S15, Supporting Information) were clearly observed at ≈1303.3 eV for Mg-LRMO and Mg/Al-LRMO, confirming the presence of $\\mathrm { } ^ { 2 + }$ ions.[26] Sim",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "reference_electrode": "Li/Li+",
+                "test_method": "CV",
+                "voltage_min_V": 2.5,
+                "voltage_max_V": 4.6,
+                "scan_rate_mV_s": 0.1,
+                "source_text": "the CV curves of LRMO, Mg-LRMO, Al-LRMO, and Mg/Al-LRMO were measured between 2.5 and 4.6 V at 0.1 mV S − 1"
+              }
+            },
+            {
+              "condition_id": "C006",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "reference_electrode": "Li/Li+",
+                "test_method": "galvanostatic",
+                "c_rate": "1C",
+                "cycle_number": 200,
+                "source_text": "The discharge profiles at 1.0C for the four samples (Figure 3c,d, and Figure S18, Supporting Information) show notable differences in voltage behavior. The percentage of discharge capacity between 3.0 and 2.5 V displayed a significant change during cycling. For LRMO, this percentage increased from 12.78% (1st cycle) to 32.49% (200th cycle)."
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 m",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C007",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "CV",
+                "source_text": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 mV s^{-1} were employed to analyze the Li+ diffusion coefficient."
+              }
+            },
+            {
+              "condition_id": "C001",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "c_rate": "0.1C",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "source_text": "The Nyquist plots in Figure 4c and Figure S25a illustrate the characteristics of four LRMO samples after the 1st, 50th, 100th, and 200th cycles at a rate of 0.1C."
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "The structure and morphology of LMRO and Mg/Al-LRMO after 100 cycles at 0.5C were further characterized by TEM, HRTEM, and FFT images. The results provide crucial insights into the degradation mechani",
+          "has_condition": true,
+          "conditions": []
+        },
+        {
+          "paragraph": "In summary, we successfully synthesized the $\\mathrm { ^ { 2 + } / ^ { 3 + } }$ codoped LRMO cathode material using a combined approach of co-precipitation and calcination approach. DFT calculations u",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C002",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "temperature_C": 0.0,
+                "c_rate": "1.0C",
+                "current_density_mA_g": 0.0,
+                "current_density_mA_cm2": 0.0,
+                "voltage_min_V": 0.0,
+                "voltage_max_V": 0.0,
+                "reference_electrode": "",
+                "test_method": "galvanostatic",
+                "cycle_number": 200,
+                "cycle_range": [],
+                "scan_rate_mV_s": 0.0,
+                "soc_percent": 0.0,
+                "charge_discharge_mode": "",
+                "pulse_time_min": 0
+              }
+            },
+            {
+              "condition_id": "C003",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "temperature_C": 0.0,
+                "c_rate": "5.0C",
+                "current_density_mA_g": 0.0,
+                "current_density_mA_cm2": 0.0,
+                "voltage_min_V": 0.0,
+                "voltage_max_V": 0.0,
+                "reference_electrode": "",
+                "test_method": "galvanostatic",
+                "cycle_number": 0,
+                "cycle_range": [],
+                "scan_rate_mV_s": 0.0,
+                "soc_percent": 0.0,
+                "charge_discharge_mode": "",
+                "pulse_time_min": 0
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "# Supporting Information  Supporting Information is available from the Wiley Online Library or from the author.",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# Supporting Information Junxia Meng a , Wenzhuan Hu a , Quanxin Ma b,c\\*1 , Zhenzhen Wu d , Lishuang Xua, Jie Huanga, Chen Xiao a , Junru Wang a , Lina Zhang a , Feng Liu a , Xing Zhie,f\\*2 , Shanqin",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# 1.1 Materials synthesis  Synthesis of cathode materials: In this experiment, $\\mathrm { _ { 1 . 2 } _ { 0 . 5 6 } _ { 0 . 1 6 } _ { 0 . 0 8 } O _ { 2 } }$ was prepared by coprecipitation method and ",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C008",
+              "material_id": "global",
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "commercial electrolyte",
+                "mass_loading_mg_cm2": 24.0,
+                "current_collector": "Al foil",
+                "cell_type": "pouch cell",
+                "assembly_environment": "argon-filled glovebox"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "active material: acetylene black: PVDF = 90:5:5",
+                    "unit": "mass ratio",
+                    "method": "",
+                    "source_text": "mixing the active material, conductive agent (acetylene black), and binder (PVDF) in a ball mill tank at a mass ratio of 90:5:5"
+                  }
+                ],
+                "Mass_Loading": [
+                  {
+                    "value": 24.0,
+                    "unit": "mg/cm2",
+                    "method": "",
+                    "source_text": "coated onto an aluminum foil collector with a surface density of approximately 24 mg cm-2"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "# 1.2 Material Characterization  An inductively coupled plasma optical emission spectrometer (ICP-OES, Perkin Elmer Optima 5300 DV) is used to explore the metal content. X-ray diffractometer (XRD) was",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# 1.3 Electrochemical Measurements  The preparation process of the half-cell is as follows: Coin-type cells were constructed in an argon-filled glovebox (<0.1 ppm $\\mathrm { O } _ { 2 }$ and $_ { \\mat",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "c_rate": "0.1-5.0C",
+                "voltage_min_V": 2.5,
+                "voltage_max_V": 4.6,
+                "reference_electrode": "Li/Li+",
+                "test_method": "galvanostatic",
+                "source_text": "The cycling and rate performances were measured by a galvanostatical charge-discharge test (Neware, China). The test voltage range was 2.5-4.6 V vs Li/Li+. The rate performance was evaluated at 0.1-5.0 C (1 C = 250 mA g⁻¹)."
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+                "mass_loading_mg_cm2": 2.28,
+                "cell_type": "coin cell",
+                "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+                "li_counter_reference": "Li metal"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "8:1:1",
+                    "unit": "weight ratio",
+                    "method": "",
+                    "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+                  }
+                ]
+              }
+            },
+            {
+              "condition_id": "C009",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "EIS",
+                "source_text": "Electrochemical impedance spectroscopy (EIS) ... were tested on an electrochemical workstation (VMP3) in the frequency range of 0.01 Hz to 100 kHz"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+                "mass_loading_mg_cm2": 2.28,
+                "cell_type": "coin cell",
+                "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+                "li_counter_reference": "Li metal"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "8:1:1",
+                    "unit": "weight ratio",
+                    "method": "",
+                    "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+                  }
+                ]
+              }
+            },
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "voltage_min_V": 2.5,
+                "voltage_max_V": 4.6,
+                "reference_electrode": "Li/Li+",
+                "test_method": "CV",
+                "source_text": "Cyclic voltammetry (CV) measurement were tested ... at a scan rate from 0.2 to 1.0 mV s-1 between 2.5 and 4.6 V."
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+                "mass_loading_mg_cm2": 2.28,
+                "cell_type": "coin cell",
+                "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+                "li_counter_reference": "Li metal"
+              },
+              "electrode_fabrication_params": {
+                "Coating_Composition": [
+                  {
+                    "value": "8:1:1",
+                    "unit": "weight ratio",
+                    "method": "",
+                    "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "paragraph": "# 2. Supplementary methods All calculations were performed using spin-polarised density functional theory (DFT) implemented in the Vienna ab initio simulation package (VASP) code. [1] The generalized ",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "The diffusion coefficient of $\\mathrm { } ^ { + } \\left( D _ { } ^ { + } \\right)$ can be calculated by the following formula:[5] $$ D _ {L i} ^ {+} = 0 \\cdot 5 \\mathrm{R} ^ {2} \\mathrm{T} ^ {2} / \\mat",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "Galvanostatic intermittent titration technique (GITT), an effective electrochemical method to calculate the $D _ { } { } ^ { + }$ is employed in this work. By measuring various voltage increases or dr",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "The refined lattice parameters were further employed to calculate the thickness of the Li slab. The slab thickness (SMO2) and interslab thickness (ILiO2) can be calculated based on the following formu",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "The energy density can be calculated by the following formula: $$ W = \\frac {C U}{G} \\quad \\text { Equation S7 } $$ where W refers to practical energy density, C represents the battery discharge capac",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# Supplementary Figures  <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>text_image</summary> ",
+          "has_condition": true,
+          "conditions": []
+        }
+      ],
+      "all_conditions": [
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.1C",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "reference_electrode": "Li/Li+",
+            "source_text": "The prolonged cycling performance at 0.1C (Figure 2b) shows that after 200 cycles, Mg/Al-LRMO retains 93.3% of its capacity, significantly better than LRMO (68.3%), Mg-LRMO (82.2%), and Al-LRMO (85.0%)."
+          }
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "1.0C",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "reference_electrode": "Li/Li+",
+            "source_text": "The cycling performance of all samples at 1.0C after 200th cycles (Figure 2c) shows that Mg/Al-LRMO retains 90.0% of its initial capacity with a discharge capacity of 188.1 mAh g−1, while LRMO retains only 51.1% with a discharge capacity of 96.4 mAh g−1."
+          }
+        },
+        {
+          "condition_id": "C003",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "5.0C",
+            "test_method": "galvanostatic",
+            "reference_electrode": "Li/Li+",
+            "source_text": "Notably, Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh g−1 even at a high rate of 5.0C, outperforming LRMO (99.0 mAh g−1)."
+          }
+        },
+        {
+          "condition_id": "C004",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "full-cell",
+            "c_rate": "2.0C",
+            "test_method": "galvanostatic",
+            "cycle_number": 600,
+            "source_text": "After cycling at 2.0C for 600 cycles, the Mg/Al-LRMO pouch full cell still maintains good cyclic stability with a specific capacity retention of 86.2%, while the pristine LRMO pouch cell only displays a specific capacity retention of 54.1% after the same cycles, implying the outstanding cycling stability of the Mg/Al-LRMO pouch cell."
+          },
+          "cell_assembly_conditions": {
+            "cell_type": "pouch cell"
+          }
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "reference_electrode": "Li/Li+",
+            "test_method": "CV",
+            "voltage_min_V": 2.5,
+            "voltage_max_V": 4.6,
+            "scan_rate_mV_s": 0.1,
+            "source_text": "the CV curves of LRMO, Mg-LRMO, Al-LRMO, and Mg/Al-LRMO were measured between 2.5 and 4.6 V at 0.1 mV S − 1"
+          }
+        },
+        {
+          "condition_id": "C006",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "c_rate": "1C",
+            "cycle_number": 200,
+            "source_text": "The discharge profiles at 1.0C for the four samples (Figure 3c,d, and Figure S18, Supporting Information) show notable differences in voltage behavior. The percentage of discharge capacity between 3.0 and 2.5 V displayed a significant change during cycling. For LRMO, this percentage increased from 12.78% (1st cycle) to 32.49% (200th cycle)."
+          }
+        },
+        {
+          "condition_id": "C007",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "CV",
+            "source_text": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 mV s^{-1} were employed to analyze the Li+ diffusion coefficient."
+          }
+        },
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "c_rate": "0.1C",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "source_text": "The Nyquist plots in Figure 4c and Figure S25a illustrate the characteristics of four LRMO samples after the 1st, 50th, 100th, and 200th cycles at a rate of 0.1C."
+          }
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "temperature_C": 0.0,
+            "c_rate": "1.0C",
+            "current_density_mA_g": 0.0,
+            "current_density_mA_cm2": 0.0,
+            "voltage_min_V": 0.0,
+            "voltage_max_V": 0.0,
+            "reference_electrode": "",
+            "test_method": "galvanostatic",
+            "cycle_number": 200,
+            "cycle_range": [],
+            "scan_rate_mV_s": 0.0,
+            "soc_percent": 0.0,
+            "charge_discharge_mode": "",
+            "pulse_time_min": 0
+          }
+        },
+        {
+          "condition_id": "C003",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "temperature_C": 0.0,
+            "c_rate": "5.0C",
+            "current_density_mA_g": 0.0,
+            "current_density_mA_cm2": 0.0,
+            "voltage_min_V": 0.0,
+            "voltage_max_V": 0.0,
+            "reference_electrode": "",
+            "test_method": "galvanostatic",
+            "cycle_number": 0,
+            "cycle_range": [],
+            "scan_rate_mV_s": 0.0,
+            "soc_percent": 0.0,
+            "charge_discharge_mode": "",
+            "pulse_time_min": 0
+          }
+        },
+        {
+          "condition_id": "C008",
+          "material_id": "global",
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "commercial electrolyte",
+            "mass_loading_mg_cm2": 24.0,
+            "current_collector": "Al foil",
+            "cell_type": "pouch cell",
+            "assembly_environment": "argon-filled glovebox"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "active material: acetylene black: PVDF = 90:5:5",
+                "unit": "mass ratio",
+                "method": "",
+                "source_text": "mixing the active material, conductive agent (acetylene black), and binder (PVDF) in a ball mill tank at a mass ratio of 90:5:5"
+              }
+            ],
+            "Mass_Loading": [
+              {
+                "value": 24.0,
+                "unit": "mg/cm2",
+                "method": "",
+                "source_text": "coated onto an aluminum foil collector with a surface density of approximately 24 mg cm-2"
+              }
+            ]
+          }
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "c_rate": "0.1-5.0C",
+            "voltage_min_V": 2.5,
+            "voltage_max_V": 4.6,
+            "reference_electrode": "Li/Li+",
+            "test_method": "galvanostatic",
+            "source_text": "The cycling and rate performances were measured by a galvanostatical charge-discharge test (Neware, China). The test voltage range was 2.5-4.6 V vs Li/Li+. The rate performance was evaluated at 0.1-5.0 C (1 C = 250 mA g⁻¹)."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+            "mass_loading_mg_cm2": 2.28,
+            "cell_type": "coin cell",
+            "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+            "li_counter_reference": "Li metal"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "8:1:1",
+                "unit": "weight ratio",
+                "method": "",
+                "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+              }
+            ]
+          }
+        },
+        {
+          "condition_id": "C009",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "EIS",
+            "source_text": "Electrochemical impedance spectroscopy (EIS) ... were tested on an electrochemical workstation (VMP3) in the frequency range of 0.01 Hz to 100 kHz"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+            "mass_loading_mg_cm2": 2.28,
+            "cell_type": "coin cell",
+            "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+            "li_counter_reference": "Li metal"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "8:1:1",
+                "unit": "weight ratio",
+                "method": "",
+                "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+              }
+            ]
+          }
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "voltage_min_V": 2.5,
+            "voltage_max_V": 4.6,
+            "reference_electrode": "Li/Li+",
+            "test_method": "CV",
+            "source_text": "Cyclic voltammetry (CV) measurement were tested ... at a scan rate from 0.2 to 1.0 mV s-1 between 2.5 and 4.6 V."
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1.0 M LiPF6 dissolved in ethyl carbonate/dimethyl carbonate/diethyl carbonate by volume 1:1:1",
+            "mass_loading_mg_cm2": 2.28,
+            "cell_type": "coin cell",
+            "assembly_environment": "Ar glovebox, O2<0.1 ppm, H2O<0.1 ppm",
+            "li_counter_reference": "Li metal"
+          },
+          "electrode_fabrication_params": {
+            "Coating_Composition": [
+              {
+                "value": "8:1:1",
+                "unit": "weight ratio",
+                "method": "",
+                "source_text": "mixing the active materials, acetylene black, and polyvinylidene difluoride binder with a weight ratio of 8:1:1"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1450 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/electrolyte/electrolyte.md",
+  "doi": "electrolyte",
+  "title": "Superwettable Electrolyte Engineering for Fast Charging Li-Ion Batteries",
+  "agent_mode": "electrolyte-cond",
+  "materials": [
+    {
+      "name": "1M LiPF6 in EC/DMC (3:7 by weight)",
+      "short_name": "1M LiPF6 EC/DMC",
+      "formula": "1M LiPF6 EC/DMC (3:7)",
+      "role": "baseline",
+      "description": "Standard concentration electrolyte with 1M LiPF6 salt",
+      "material_id": "electrolyte_M001"
+    },
+    {
+      "name": "0.02M LiPF6 in EC/DMC (3:7 by weight)",
+      "short_name": "0.02M LiPF6 EC/DMC",
+      "formula": "0.02M LiPF6 EC/DMC (3:7)",
+      "role": "comparison",
+      "description": "Low concentration electrolyte with 0.02M LiPF6 salt",
+      "material_id": "electrolyte_M002"
+    },
+    {
+      "name": "0M LiPF6 in EC/DMC (3:7 by weight)",
+      "short_name": "0M LiPF6 EC/DMC",
+      "formula": "0M LiPF6 EC/DMC (3:7)",
+      "role": "comparison",
+      "description": "Pure solvent electrolyte with no LiPF6 salt",
+      "material_id": "electrolyte_M003"
+    }
+  ],
+  "results": [
+    {
+      "material_id": "electrolyte_M003",
+      "material_name": "0M LiPF6 in EC/DMC (3:7 by weight)",
+      "material_context": "comparison: 0M LiPF6 in EC/DMC (3:7 by weight) (0M LiPF6 EC/DMC (3:7))",
+      "condition_items": [
+        {
+          "paragraph": "# \\*sı Supporting Information  The Supporting Information is available free of charge at Experimental details, calculation models, formation curves, cycling curves, equivalent circuit, XPS data, and S",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# Cell materials and fabrication  The cathode and anode materials used for cell fabrication in this work were $\\mathrm { _ { 0 . 8 } _ { 0 . 1 } _ { 0 . 1 } O _ { 2 } }$ (NMC811) and graphite, respect",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.2 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C002",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.05 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C003",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "full-cell",
+                "c_rate": "0.2 C",
+                "voltage_max_V": 4.25,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "charge"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type full-cell",
+                "assembly_environment": "argon-filled glove box"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C004",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.2 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.05 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C006",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "full-cell",
+                "c_rate": "0.2 C",
+                "voltage_max_V": 4.25,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "charge"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type full-cell",
+                "assembly_environment": "argon-filled glove box"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C007",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.2 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C008",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.05 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C009",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "full-cell",
+                "c_rate": "0.2 C",
+                "voltage_max_V": 4.25,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "charge"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type full-cell",
+                "assembly_environment": "argon-filled glove box"
+              },
+              "electrode_fabrication_params": {}
+            }
+          ]
+        },
+        {
+          "paragraph": "# Characterization  The cycling performance and rate capability of graphite||NMC811 full cells with an areal capacity of approximately 1.5 mAh cm−2 and a negative/positive (N/P) ratio of \\~1.1 in diff",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "CV",
+                "voltage_min_V": 0.005,
+                "voltage_max_V": 1.5,
+                "reference_electrode": "Li/Li+",
+                "source_text": "The cyclic voltammetry experiments were performed on the Ivium electrochemical workstation within the potential range from 0.005 V to 1.5 V versus Li/Li+."
+              },
+              "cell_assembly_conditions": {},
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C010",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "EIS",
+                "source_text": "Electrochemical impedance spectra (EIS) measurement was also conducted on the Ivium electrochemical workstation with a frequency ranging from 100 kHz to 0.1 Hz and an amplitude of 10 mV."
+              },
+              "cell_assembly_conditions": {},
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C011",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "galvanostatic",
+                "c_rate": "0.1C",
+                "pulse_time_min": 30,
+                "source_text": "Galvanostatic intermittent titration technique (GITT) test was measured at a pulse current of 0.1C for 30 min between 2 h rest intervals"
+              },
+              "cell_assembly_conditions": {},
+              "electrode_fabrication_params": {}
+            }
+          ]
+        },
+        {
+          "paragraph": "Lyophilicity of the samples were measured the surface by the sessile drop technique, which involves placing a droplet of electrolyte on a pressed powder plate or separators and observing the contact a",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# Computational Method  The density functional theory (DFT) calculations were performed using the Gaussian16 program [1]. The exchange-correlation functional was chosen as B3LYP [2], which is a hybrid",
+          "has_condition": false,
+          "conditions": []
+        }
+      ],
+      "all_conditions": [
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.2 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.05 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C003",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "full-cell",
+            "c_rate": "0.2 C",
+            "voltage_max_V": 4.25,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "charge"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type full-cell",
+            "assembly_environment": "argon-filled glove box"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C004",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.2 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.05 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C006",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "full-cell",
+            "c_rate": "0.2 C",
+            "voltage_max_V": 4.25,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "charge"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type full-cell",
+            "assembly_environment": "argon-filled glove box"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C007",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.2 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C008",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.05 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C009",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "full-cell",
+            "c_rate": "0.2 C",
+            "voltage_max_V": 4.25,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "charge"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type full-cell",
+            "assembly_environment": "argon-filled glove box"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "CV",
+            "voltage_min_V": 0.005,
+            "voltage_max_V": 1.5,
+            "reference_electrode": "Li/Li+",
+            "source_text": "The cyclic voltammetry experiments were performed on the Ivium electrochemical workstation within the potential range from 0.005 V to 1.5 V versus Li/Li+."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C010",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "EIS",
+            "source_text": "Electrochemical impedance spectra (EIS) measurement was also conducted on the Ivium electrochemical workstation with a frequency ranging from 100 kHz to 0.1 Hz and an amplitude of 10 mV."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C011",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "galvanostatic",
+            "c_rate": "0.1C",
+            "pulse_time_min": 30,
+            "source_text": "Galvanostatic intermittent titration technique (GITT) test was measured at a pulse current of 0.1C for 30 min between 2 h rest intervals"
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        }
+      ]
+    },
+    {
+      "material_id": "electrolyte_M002",
+      "material_name": "0.02M LiPF6 in EC/DMC (3:7 by weight)",
+      "material_context": "comparison: 0.02M LiPF6 in EC/DMC (3:7 by weight) (0.02M LiPF6 EC/DMC (3:7))",
+      "condition_items": [
+        {
+          "paragraph": "# \\*sı Supporting Information  The Supporting Information is available free of charge at Experimental details, calculation models, formation curves, cycling curves, equivalent circuit, XPS data, and S",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# Cell materials and fabrication  The cathode and anode materials used for cell fabrication in this work were $\\mathrm { _ { 0 . 8 } _ { 0 . 1 } _ { 0 . 1 } O _ { 2 } }$ (NMC811) and graphite, respect",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.2 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C002",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.05 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C003",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "full-cell",
+                "c_rate": "0.2 C",
+                "voltage_max_V": 4.25,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "charge"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type full-cell",
+                "assembly_environment": "argon-filled glove box"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C004",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.2 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.05 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C006",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "full-cell",
+                "c_rate": "0.2 C",
+                "voltage_max_V": 4.25,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "charge"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type full-cell",
+                "assembly_environment": "argon-filled glove box"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C007",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.2 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C008",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.05 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C009",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "full-cell",
+                "c_rate": "0.2 C",
+                "voltage_max_V": 4.25,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "charge"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type full-cell",
+                "assembly_environment": "argon-filled glove box"
+              },
+              "electrode_fabrication_params": {}
+            }
+          ]
+        },
+        {
+          "paragraph": "# Characterization  The cycling performance and rate capability of graphite||NMC811 full cells with an areal capacity of approximately 1.5 mAh cm−2 and a negative/positive (N/P) ratio of \\~1.1 in diff",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "CV",
+                "voltage_min_V": 0.005,
+                "voltage_max_V": 1.5,
+                "reference_electrode": "Li/Li+",
+                "source_text": "The cyclic voltammetry experiments were performed on the Ivium electrochemical workstation within the potential range from 0.005 V to 1.5 V versus Li/Li+."
+              },
+              "cell_assembly_conditions": {},
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C010",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "EIS",
+                "source_text": "Electrochemical impedance spectra (EIS) measurement was also conducted on the Ivium electrochemical workstation with a frequency ranging from 100 kHz to 0.1 Hz and an amplitude of 10 mV."
+              },
+              "cell_assembly_conditions": {},
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C011",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "galvanostatic",
+                "c_rate": "0.1C",
+                "pulse_time_min": 30,
+                "source_text": "Galvanostatic intermittent titration technique (GITT) test was measured at a pulse current of 0.1C for 30 min between 2 h rest intervals"
+              },
+              "cell_assembly_conditions": {},
+              "electrode_fabrication_params": {}
+            }
+          ]
+        },
+        {
+          "paragraph": "Lyophilicity of the samples were measured the surface by the sessile drop technique, which involves placing a droplet of electrolyte on a pressed powder plate or separators and observing the contact a",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# Computational Method  The density functional theory (DFT) calculations were performed using the Gaussian16 program [1]. The exchange-correlation functional was chosen as B3LYP [2], which is a hybrid",
+          "has_condition": false,
+          "conditions": []
+        }
+      ],
+      "all_conditions": [
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.2 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.05 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C003",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "full-cell",
+            "c_rate": "0.2 C",
+            "voltage_max_V": 4.25,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "charge"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type full-cell",
+            "assembly_environment": "argon-filled glove box"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C004",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.2 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.05 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C006",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "full-cell",
+            "c_rate": "0.2 C",
+            "voltage_max_V": 4.25,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "charge"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type full-cell",
+            "assembly_environment": "argon-filled glove box"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C007",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.2 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C008",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.05 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C009",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "full-cell",
+            "c_rate": "0.2 C",
+            "voltage_max_V": 4.25,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "charge"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type full-cell",
+            "assembly_environment": "argon-filled glove box"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "CV",
+            "voltage_min_V": 0.005,
+            "voltage_max_V": 1.5,
+            "reference_electrode": "Li/Li+",
+            "source_text": "The cyclic voltammetry experiments were performed on the Ivium electrochemical workstation within the potential range from 0.005 V to 1.5 V versus Li/Li+."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C010",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "EIS",
+            "source_text": "Electrochemical impedance spectra (EIS) measurement was also conducted on the Ivium electrochemical workstation with a frequency ranging from 100 kHz to 0.1 Hz and an amplitude of 10 mV."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C011",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "galvanostatic",
+            "c_rate": "0.1C",
+            "pulse_time_min": 30,
+            "source_text": "Galvanostatic intermittent titration technique (GITT) test was measured at a pulse current of 0.1C for 30 min between 2 h rest intervals"
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        }
+      ]
+    },
+    {
+      "material_id": "electrolyte_M001",
+      "material_name": "1M LiPF6 in EC/DMC (3:7 by weight)",
+      "material_context": "baseline: 1M LiPF6 in EC/DMC (3:7 by weight) (1M LiPF6 EC/DMC (3:7))",
+      "condition_items": [
+        {
+          "paragraph": "# \\*sı Supporting Information  The Supporting Information is available free of charge at Experimental details, calculation models, formation curves, cycling curves, equivalent circuit, XPS data, and S",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# Cell materials and fabrication  The cathode and anode materials used for cell fabrication in this work were $\\mathrm { _ { 0 . 8 } _ { 0 . 1 } _ { 0 . 1 } O _ { 2 } }$ (NMC811) and graphite, respect",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.2 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C002",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.05 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C003",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "full-cell",
+                "c_rate": "0.2 C",
+                "voltage_max_V": 4.25,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "charge"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type full-cell",
+                "assembly_environment": "argon-filled glove box"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C004",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.2 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C005",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.05 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C006",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "full-cell",
+                "c_rate": "0.2 C",
+                "voltage_max_V": 4.25,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "charge"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type full-cell",
+                "assembly_environment": "argon-filled glove box"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C007",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.2 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C008",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "half-cell",
+                "c_rate": "0.05 C",
+                "voltage_min_V": 0.005,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "discharge",
+                "reference_electrode": "Li/Li+"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type half-cell",
+                "assembly_environment": "argon-filled glove box",
+                "li_counter_reference": "Li"
+              },
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C009",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "cell_config": "full-cell",
+                "c_rate": "0.2 C",
+                "voltage_max_V": 4.25,
+                "test_method": "galvanostatic",
+                "cycle_number": 1,
+                "charge_discharge_mode": "charge"
+              },
+              "cell_assembly_conditions": {
+                "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+                "separator_type": "microporous polyethylene membrane (16 μm)",
+                "cell_type": "CR2025 coin-type full-cell",
+                "assembly_environment": "argon-filled glove box"
+              },
+              "electrode_fabrication_params": {}
+            }
+          ]
+        },
+        {
+          "paragraph": "# Characterization  The cycling performance and rate capability of graphite||NMC811 full cells with an areal capacity of approximately 1.5 mAh cm−2 and a negative/positive (N/P) ratio of \\~1.1 in diff",
+          "has_condition": true,
+          "conditions": [
+            {
+              "condition_id": "C001",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "CV",
+                "voltage_min_V": 0.005,
+                "voltage_max_V": 1.5,
+                "reference_electrode": "Li/Li+",
+                "source_text": "The cyclic voltammetry experiments were performed on the Ivium electrochemical workstation within the potential range from 0.005 V to 1.5 V versus Li/Li+."
+              },
+              "cell_assembly_conditions": {},
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C010",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "EIS",
+                "source_text": "Electrochemical impedance spectra (EIS) measurement was also conducted on the Ivium electrochemical workstation with a frequency ranging from 100 kHz to 0.1 Hz and an amplitude of 10 mV."
+              },
+              "cell_assembly_conditions": {},
+              "electrode_fabrication_params": {}
+            },
+            {
+              "condition_id": "C011",
+              "material_id": "global",
+              "electrochemical_test_conditions": {
+                "test_method": "galvanostatic",
+                "c_rate": "0.1C",
+                "pulse_time_min": 30,
+                "source_text": "Galvanostatic intermittent titration technique (GITT) test was measured at a pulse current of 0.1C for 30 min between 2 h rest intervals"
+              },
+              "cell_assembly_conditions": {},
+              "electrode_fabrication_params": {}
+            }
+          ]
+        },
+        {
+          "paragraph": "Lyophilicity of the samples were measured the surface by the sessile drop technique, which involves placing a droplet of electrolyte on a pressed powder plate or separators and observing the contact a",
+          "has_condition": false,
+          "conditions": []
+        },
+        {
+          "paragraph": "# Computational Method  The density functional theory (DFT) calculations were performed using the Gaussian16 program [1]. The exchange-correlation functional was chosen as B3LYP [2], which is a hybrid",
+          "has_condition": false,
+          "conditions": []
+        }
+      ],
+      "all_conditions": [
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.2 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C002",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.05 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C003",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "full-cell",
+            "c_rate": "0.2 C",
+            "voltage_max_V": 4.25,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "charge"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type full-cell",
+            "assembly_environment": "argon-filled glove box"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C004",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.2 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C005",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.05 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C006",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "full-cell",
+            "c_rate": "0.2 C",
+            "voltage_max_V": 4.25,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "charge"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "0.02 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type full-cell",
+            "assembly_environment": "argon-filled glove box"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C007",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.2 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C008",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "half-cell",
+            "c_rate": "0.05 C",
+            "voltage_min_V": 0.005,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "discharge",
+            "reference_electrode": "Li/Li+"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type half-cell",
+            "assembly_environment": "argon-filled glove box",
+            "li_counter_reference": "Li"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C009",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "cell_config": "full-cell",
+            "c_rate": "0.2 C",
+            "voltage_max_V": 4.25,
+            "test_method": "galvanostatic",
+            "cycle_number": 1,
+            "charge_discharge_mode": "charge"
+          },
+          "cell_assembly_conditions": {
+            "electrolyte_composition": "1 M LiPF6 in EC/DMC (3:7 by weight)",
+            "separator_type": "microporous polyethylene membrane (16 μm)",
+            "cell_type": "CR2025 coin-type full-cell",
+            "assembly_environment": "argon-filled glove box"
+          },
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C001",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "CV",
+            "voltage_min_V": 0.005,
+            "voltage_max_V": 1.5,
+            "reference_electrode": "Li/Li+",
+            "source_text": "The cyclic voltammetry experiments were performed on the Ivium electrochemical workstation within the potential range from 0.005 V to 1.5 V versus Li/Li+."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C010",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "EIS",
+            "source_text": "Electrochemical impedance spectra (EIS) measurement was also conducted on the Ivium electrochemical workstation with a frequency ranging from 100 kHz to 0.1 Hz and an amplitude of 10 mV."
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        },
+        {
+          "condition_id": "C011",
+          "material_id": "global",
+          "electrochemical_test_conditions": {
+            "test_method": "galvanostatic",
+            "c_rate": "0.1C",
+            "pulse_time_min": 30,
+            "source_text": "Galvanostatic intermittent titration technique (GITT) test was measured at a pulse current of 0.1C for 30 min between 2 h rest intervals"
+          },
+          "cell_assembly_conditions": {},
+          "electrode_fabrication_params": {}
+        }
+      ]
+    }
+  ]
+}

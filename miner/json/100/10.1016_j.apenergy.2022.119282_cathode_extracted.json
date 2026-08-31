@@ -1,0 +1,1037 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/cathode/10.1016_j.apenergy.2022.119282.md",
+  "component": "cathode",
+  "paper_id": "10.1016/j.apenergy.2022.119282",
+  "doi": "10.1016/j.apenergy.2022.119282",
+  "material_id": "10.1016_j.apenergy.2022.119282",
+  "meta": {
+    "meta_title": "Novel polyimide binders integrated with soft and hard functional segments ensuri",
+    "meta_authors": "Kexin Qi a,c,1 , Yali Wang a,c,1 , Nanxi Dong a , Bingxue Liu b , Guofeng Tian a,c , Shengli Qi a,c,\\* , Dezhen Wu a,c",
+    "meta_year": "2022"
+  },
+  "materials": [
+    {
+      "name": "cathode material",
+      "short_name": "10.1016_j.apenergy.2022.119282",
+      "formula": "",
+      "role": "novel",
+      "material_id": "10.1016_j.apenergy.2022.119282"
+    }
+  ],
+  "n_materials": 1,
+  "table_items": [
+    "TABLE DATA BLOCK\nHeaders: Materials; Average force (N); Peel strength (kN m-1)\nRows:\nRow 1: Materials = PVDF-NCM811; Average force (N) = 2.29; Peel strength (kN m-1) = 0.158\nRow 2: Materials = PI(BBP)-NCM811; Average force (N) = 10.50; Peel strength (kN m-1) = 0.525\nRow 3: Materials = PI(OBO)-NCM811; Average force (N) = 12.87; Peel strength (kN m-1) = 0.644\nColumn data:\n  Materials: PVDF-NCM811; PI(BBP)-NCM811; PI(OBO)-NCM811\n  Average force (N): 2.29; 10.50; 12.87\n  Peel strength (kN m-1): 0.158; 0.525; 0.644"
+  ],
+  "n_items": 20,
+  "items": [
+    {
+      "paragraph": "The JSM-7800F thermal field emission scanning electron microscope SEM, JEOL was used to observe the overall morphology of the cathode surface, and studied the dispersion of NCM811 active particles. An",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C002",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.5,
+            "unit": "V"
+          },
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "CR2032 coin cells with the cathodes as-prepared, metallic lithium metal as anode, Celgard 2400 as the separator, and mathrm 61 M in ethyl carbonate/ dimethyl carbonate/ methyl ethyl carbonate EC/DMC/ ",
+      "conditions": [
+        {
+          "condition_id": "C003",
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "electrolyte": "1 M in EC/DMC/EMC (1/1/1 vol%)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "NCM811 cathode preparation: NCM811 cathodes with PAA binder were prepared by coating mixture containing NCM811, super-P, and PAA 94:3:3, wt% in NMP solvent onto Al current collector foil, then heated ",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "mass_loading": {
+            "value": 9,
+            "unit": "mg/cm2"
+          },
+          "compacted_density": {
+            "value": 3.0,
+            "unit": "g/cm3"
+          },
+          "active_material_mass_fraction": {
+            "value": 94,
+            "unit": "%"
+          },
+          "conductive_additive_binder_ratio": {
+            "conductive_additive": 3,
+            "binder": 3,
+            "unit": "wt%"
+          }
+        }
+      ],
+      "property_types": [
+        "Secondary_Particle_Size_Distribution",
+        "Chemical_Composition_Mole_Fractions"
+      ],
+      "extracted_info": {
+        "Secondary_Particle_Size_Distribution": [
+          {
+            "value": {
+              "D50": 12.7
+            },
+            "unit": "μm",
+            "method": "laser particle size analyzer",
+            "source_text": "The particle size of the NCM811 particle was tested by laser particle size analyzer Bettersizer 2600, Bettersize Instruments Ltd.. ... D 5012.70 μm, see Fig. S1"
+          }
+        ],
+        "Chemical_Composition_Mole_Fractions": [
+          {
+            "value": {
+              "Li": 1.0,
+              "Ni": 0.8,
+              "Co": 0.1,
+              "Mn": 0.1
+            },
+            "unit": "mole fraction",
+            "method": "inferred from NCM811 stoichiometry",
+            "source_text": "mathrm 0.80.10.1 O 2 NCM811"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Additionally, long-term cycling performances of the PIOBO- NCM811, PIBBP-NCM811 and PVDF-NCM811 cathodes at 0.2C 40 mA bf g - 1 in the voltage range of 2.5–4.3 V are presented in Fig. 2e The PIOBO-NCM",
+      "conditions": [
+        {
+          "condition_id": "C005",
+          "c_rate_or_current": {
+            "value": 40,
+            "unit": "mA/g"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "cycle_number": 100,
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 86,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "The PIOBO-NCM811 and PIBBP-NCM811 cells display 86% and 88% capacity retention after 100 cycles, respectively."
+          },
+          {
+            "value": 88,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "The PIOBO-NCM811 and PIBBP-NCM811 cells display 86% and 88% capacity retention after 100 cycles, respectively."
+          },
+          {
+            "value": 70,
+            "unit": "%",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "Contrarily, the PVDF-NCM811 cathode shows rapid capacity fading 70% capacity retention with a fading rate of 0.32% per cycle within 100 cycles."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The preparation process of PI binder samples used for the thermal stability tests is as follows, coating PAA glue precursor of PI evenly on the flat glass plate and treating them in high-temperature o",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "temperature": {
+            "value": 300,
+            "unit": "°C"
+          },
+          "time": "2 h"
+        },
+        {
+          "condition_id": "C007",
+          "temperature": {
+            "value": 80,
+            "unit": "°C"
+          },
+          "time": "4 h"
+        },
+        {
+          "condition_id": "C008",
+          "heating_rate": {
+            "value": 5,
+            "unit": "°C/min"
+          },
+          "temperature": {
+            "min": 25,
+            "max": 800,
+            "unit": "°C"
+          },
+          "atmosphere": "nitrogen",
+          "test_method": "TGA"
+        },
+        {
+          "condition_id": "C009",
+          "heating_rate": {
+            "value": 2,
+            "unit": "°C/min"
+          },
+          "temperature": {
+            "min": 25,
+            "max": 300,
+            "unit": "°C"
+          },
+          "atmosphere": "nitrogen",
+          "test_method": "DSC"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Battery properties including charge/discharge capacity and rate performance were evaluated at 25 circ mathrm C using the cell test instrument LANDdt V7.0, Wuhan Landian Electronics Co., Ltd.. Their ch",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "test_method": "galvanostatic charge/discharge cycling"
+        },
+        {
+          "condition_id": "C011",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.5,
+            "unit": "V"
+          },
+          "test_method": "galvanostatic charge/discharge cycling"
+        },
+        {
+          "condition_id": "C012",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C013",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C014",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C015",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "1",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C016",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C017",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.3,
+            "unit": "V"
+          },
+          "test_method": "rate performance test"
+        },
+        {
+          "condition_id": "C018",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C019",
+          "test_method": "CV",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.6,
+            "unit": "V"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The binding strength between the cathode composite and the current collector was measured using an electronic tensile testing machine LD, Sinter. In this analysis, 3 M double-sided tape was attached t",
+      "conditions": [
+        {
+          "condition_id": "C020",
+          "test_method": "peel test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Thermal stability of binder-dependence NCM811 cathode and binders themselves were tested by measuring the calorific value using differential scanning calorimeter DSC, Q20. The NCM81 cathodes with PIOB",
+      "conditions": [
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": 0.1,
+            "unit": "C"
+          },
+          "voltage_range": {
+            "max": 4.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 2,
+          "electrode_config": "half_cell",
+          "test_method": "galvanostatic cycling",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C022",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "DSC (differential scanning calorimeter, Q20)"
+        },
+        {
+          "condition_id": "C023",
+          "test_method": "fire torch ignition test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The charged NCM811 cathodes were taken from the cells and washed with dimethyl carbonate DMC in an argon-filled glove box for transition metal dissolution measurement by inductively coupled plasma mas",
+      "conditions": [
+        {
+          "condition_id": "C024",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 100
+        },
+        {
+          "condition_id": "C025",
+          "temperature": {
+            "value": 700,
+            "unit": "C"
+          },
+          "test_method": "ashing"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The electrochemical performances of the NCM811cathodes with different binders were evaluated using a CR2032 type coin half-cells. Fig. 2a–d show the charge/discharge voltage profiles and corresponding",
+      "conditions": [
+        {
+          "condition_id": "C026",
+          "electrode_config": "half_cell",
+          "c_rate_or_current": {
+            "value": "0.1-5",
+            "unit": "C"
+          },
+          "test_method": "galvanostatic rate test"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_Profile",
+        "Discharge_Specific_Capacity_Initial"
+      ],
+      "performance_info": {
+        "Rate_Capability_Profile": [
+          {
+            "value": [
+              202.9,
+              192.4,
+              176.8,
+              161.0,
+              153.0,
+              138.0
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "202.9 vs 202.2 vs 199.1 mA 1 tt g - 10.1 C ... 138.0, 127.7 mA h mathbf g - 1 at C rate of 5 C, respectively"
+          },
+          {
+            "value": [
+              202.2,
+              189.3,
+              171.8,
+              155.5,
+              145.6,
+              127.7
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "202.2 vs 202.2 vs 199.1 ... 127.7 mA h mathbf g - 1 at C rate of 5 C"
+          },
+          {
+            "value": [
+              199.1,
+              189.3,
+              174.1,
+              156.2,
+              146.2,
+              115.1
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "199.1 vs ... 115.1 mA h bf g - 1"
+          }
+        ],
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 202.9,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "202.9 mA 1 tt g - 10.1 C"
+          },
+          {
+            "value": 202.2,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "202.2 mA 1 tt g - 10.1 C"
+          },
+          {
+            "value": 199.1,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "199.1 mA 1 tt g - 10.1 C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "High-resolution TEM HR-TEM and fast Fourier transformation FFT studies were performed to estimate the situation of the phase transformation occurred after long-term cycling in the voltage rang of 2.5–",
+      "conditions": [
+        {
+          "condition_id": "C027",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "test_method": "HR-TEM, FFT",
+          "electrode_config": "half_cell"
+        }
+      ],
+      "property_types": [
+        "Surface_Spinel_Layer_Thickness"
+      ],
+      "extracted_info": {
+        "Surface_Spinel_Layer_Thickness": [
+          {
+            "unit": "nm",
+            "state": "cycled",
+            "method": "HR-TEM, FFT",
+            "source_text": "From the FFT results, it can be found that the surface phase transition of the cycled PIOBO-NCM811 and PIBBP-NCM811 particles Fig. 8b-c, region 2,3 is slighter from less layer to spinel, while the bulk region remains in the typical layered structure region 4. However, the phase transition of the cycled PVDF-NCM811 particles is from the typical layered to the rock-salt in the region 2 and 3 Fig. 8a, and the bulk region also turns to the electrochemically inactive spinel structure 54."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The stable electrochemical performance of NCM811 with PIOBO, PIBBP and PVDF binders is also closely related to the interfacial properties between the NCM811 and electrolyte. Herein, the fitting result",
+      "conditions": [
+        {
+          "condition_id": "C028",
+          "cycle_number": 100,
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Charge_Transfer_Resistance"
+      ],
+      "performance_info": {
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 847.7,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "the R and operatorname R operatorname of the PVDF-NCM811 cell exhibit the resistances i.e., 280.8 and 847.7 Ω"
+          },
+          {
+            "value": 621.4,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "those of the PIBBP-NCM811 i.e., 196.2 and 621.4 Ω"
+          },
+          {
+            "value": 466.3,
+            "unit": "Ω",
+            "condition_id": "C001",
+            "cycle_number": 100,
+            "source_text": "PI OBO-NCM811 mathrm i . e . , 121.9 and 466.3 Ω"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The initial and cycled cathodes were further analyzed with XPS to understand the specific role of the PIOBO and PIBBP binders Fig. 9 d-f. In the C1s core-level spectra, common chemical functional grou",
+      "conditions": [
+        {
+          "condition_id": "C029",
+          "cycle_number": 100,
+          "test_method": "XPS"
+        }
+      ],
+      "property_types": [
+        "XPS_C_O_Peak",
+        "Element_Valence_State",
+        "Li_Ni_mixing_ratio"
+      ],
+      "extracted_info": {
+        "XPS_C_O_Peak": [
+          {
+            "unit": "at%",
+            "state": "C-O peaks at 285.0 and 285.7 eV; CO peak at 288.7 eV; C-C peak at 284.7 eV",
+            "source_text": "In the C1s core-level spectra, common chemical functional groups of PI binders are found at 285.0 and 285.7 eV for C-O, 288.7 eV for CO and 284.7 eV for C-C Fig. 9d"
+          }
+        ],
+        "Element_Valence_State": [
+          {
+            "value": {
+              "Ni": [
+                "+2",
+                "+3"
+              ],
+              "Mn": [
+                "+2",
+                "+4"
+              ]
+            },
+            "unit": "oxidation state",
+            "state": "after 100 cycles",
+            "method": "XPS",
+            "source_text": "The Ni 2p3/2 peaks appearing at 854.6 and 856.0 eV are attributed to Ni²⁺ and Ni³⁺, respectively... The Mn 2p core-level spectra of PIOBO-NCM811 and PIBBP-NCM811 cathodes is divided into two peaks coinciding with Mn 641.7 eV and Mn 642.7 eV, while the spectra is divided into two peaks coinciding with Mn²⁺ 641.0 eV and Mn⁴⁺ 642.7 eV in PVDF-NCM811"
+          }
+        ],
+        "Li_Ni_mixing_ratio": [
+          {
+            "unit": "%",
+            "method": "XPS",
+            "state": "after 100 cycles",
+            "source_text": "The content of Ni²⁺ in PIOBO-NCM811 and PIBBP-NCM811 cathodes are lower than that of PVDF-NCM811 after 100 cycles, demonstrating that the PIOBO and PIBBP binders are the advantageous material to inhibit the degree of Li/Ni cation mixing"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "Cyclic voltammetry CV studies were conducted with working cathodes consisting of polyimide binders and carbon black Super-P on Al foils. As shown in Fig. S9 Supporting information, the CV curves of PI",
+      "conditions": [
+        {
+          "condition_id": "C030",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.6,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "Cyclic Voltammetry"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Phase_Transition_Voltage"
+      ],
+      "performance_info": {
+        "Phase_Transition_Voltage": [
+          {
+            "value": 3.7,
+            "unit": "V",
+            "transition_name": "H1 to M (Ni2+/Ni3+ redox)",
+            "condition_id": "C001",
+            "source_text": "the peaks at 3.7, 4.0, and 4.3 V are corresponding to the redox reaction of Ni2+/Ni3+, Ni3+/Ni4+ and Co3+/Co4+, respectively. ... phase transitions are occurring from hexagonal to monoclinic H1 to M at 3.7 V"
+          },
+          {
+            "value": 4.0,
+            "unit": "V",
+            "transition_name": "M to H2 (Ni3+/Ni4+ redox)",
+            "condition_id": "C001",
+            "source_text": "from monoclinic to hexagonal M to H2 at 4.0 V"
+          },
+          {
+            "value": 4.3,
+            "unit": "V",
+            "transition_name": "H2 to H3 (Co3+/Co4+ redox)",
+            "condition_id": "C001",
+            "source_text": "from hexagonal to hexagonal H2 to H3 at 4.3 V"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The XRD patterns of PVDF-NCM811, PIOBO-NCM811 and PIBBP- NCM811 materials are displayed in Fig. 9a-c. On account for using NCM811 cathode containing aluminum current collector foil as the test samples",
+      "conditions": [
+        {
+          "condition_id": "C031",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "cycle_number": 100,
+          "test_method": "galvanostatic cycling (long-term cycling)"
+        }
+      ],
+      "property_types": [
+        "Crystal_Space_Group",
+        "Lattice_Parameters"
+      ],
+      "extracted_info": {
+        "Crystal_Space_Group": [
+          {
+            "value": "R-3m",
+            "method": "XRD",
+            "source_text": "all the diffraction peaks can be exactly matched with the hexagonal alpha mathrm - 2 structure without any impurity peaks apart from the diffraction peak of aluminum in the XRD patterns"
+          }
+        ],
+        "Lattice_Parameters": [
+          {
+            "value": {},
+            "unit": "Å / °",
+            "crystal_system": "hexagonal",
+            "state": "after 100 cycles, 003 peak left shift: PVDF-NCM811 0.30°, PIOBO-NCM811 0.24°, PIBBP-NCM811 0.08°",
+            "method": "XRD",
+            "source_text": "The left shift of 003 peak appeared on NCM811 cathodes with PIOBO, PIBBP and PVDF binders after 100 cycles, and the left shift degree of 003 peak in PVDF-NCM811, PIOBO-NCM811 and PIBBP-NCM811 was 0.30°, 0.24° and 0.08°, respectively"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "TABLE DATA BLOCK\nHeaders: Materials; Average force (N); Peel strength (kN m-1)\nRows:\nRow 1: Materials = PVDF-NCM811; Average force (N) = 2.29; Peel strength (kN m-1) = 0.158\nRow 2: Materials = PI(BBP)",
+      "conditions": [
+        {
+          "condition_id": "C032",
+          "test_method": "Peel test",
+          "peel_strength": {
+            "value": 0.158,
+            "unit": "kN/m"
+          }
+        },
+        {
+          "condition_id": "C033",
+          "test_method": "Peel test",
+          "peel_strength": {
+            "value": 0.525,
+            "unit": "kN/m"
+          }
+        },
+        {
+          "condition_id": "C034",
+          "test_method": "Peel test",
+          "peel_strength": {
+            "value": 0.644,
+            "unit": "kN/m"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "Aiming at verifying the structural destruction of the 100th-cycle NCM811 cathodes with different binders, the images disassembled from the cycled half-cell are shown in Fig. 7a-c. The amount of metal ",
+      "conditions": [
+        {
+          "condition_id": "C035",
+          "electrode_config": "half_cell",
+          "cycle_number": 100,
+          "test_method": "ICP-MS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "It is well known that the thermal stability of binder directly affects the safety of LIBs. The poor thermal stability of high-Ni cathode materials NCM811 in particular is a crucial hurdle to improving",
+      "conditions": [
+        {
+          "condition_id": "C036",
+          "voltage_range": {
+            "max": 4.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "reference_electrode": "Li/Li+",
+          "test_method": "DSC"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Thermal_Runaway_Onset_Temperature"
+      ],
+      "performance_info": {
+        "Thermal_Runaway_Onset_Temperature": [
+          {
+            "value": 207.22,
+            "unit": "°C",
+            "method": "DSC",
+            "soc_percent": 100,
+            "condition_id": "C001",
+            "source_text": "exothermic peak temperature of PI BBP-NCM811 and PIOBO-NCM811 cathodes is 207.22 and 206.47 °C"
+          },
+          {
+            "value": 206.47,
+            "unit": "°C",
+            "method": "DSC",
+            "soc_percent": 100,
+            "condition_id": "C001",
+            "source_text": "exothermic peak temperature of PI BBP-NCM811 and PIOBO-NCM811 cathodes is 207.22 and 206.47 °C"
+          },
+          {
+            "value": 203.98,
+            "unit": "°C",
+            "method": "DSC",
+            "soc_percent": 100,
+            "condition_id": "C001",
+            "source_text": "PVDF-NCM811 cathode 203.98 °C"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "The long-term cycling performances at the high voltage 2.5–4.5 V of the three identical NCM811 cathode with PIOBO, PIBBP and PVDF binders were further investigated. As observed in Fig. 2f, the dischar",
+      "conditions": [
+        {
+          "condition_id": "C037",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "half_cell",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C038",
+          "test_method": "180° peel test using 3M tape",
+          "peel_strength": {
+            "PIBBP-NCM811": {
+              "value": 0.525,
+              "unit": "kN/m"
+            },
+            "PIOBO-NCM811": {
+              "value": 0.644,
+              "unit": "kN/m"
+            },
+            "PVDF-NCM811": {
+              "value": 0.158,
+              "unit": "kN/m"
+            }
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Discharge_Specific_Capacity_Initial",
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Discharge_Specific_Capacity_Initial": [
+          {
+            "value": 195.4,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "PIBBP-NCM811 from 195.4 to 121.9 mA h 1 g - 1"
+          },
+          {
+            "value": 200.8,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "PIOBO-NCM811 from 200.8 to 79.1 mA mathbf h g - 1"
+          },
+          {
+            "value": 215.5,
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "PVDF-NCM811 from 215.5 to 53.8 mA h bf g - 1"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 62.0,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the final capacity retention and per cycle capacity fading rate follow the order of 62 % 39 % 25 %"
+          },
+          {
+            "value": 39.0,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the final capacity retention and per cycle capacity fading rate follow the order of 62 % 39 % 25 %"
+          },
+          {
+            "value": 25.0,
+            "unit": "%",
+            "condition_id": "C001",
+            "source_text": "the final capacity retention and per cycle capacity fading rate follow the order of 62 % 39 % 25 %"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In conclusion, two kinds of novel PIs, i.e., PIOBO and PIBBP, have been synthesized and employed as binders for LIBs, which not only promote the electrochemical performance of LIBs charged to 4.3 and ",
+      "conditions": [
+        {
+          "condition_id": "C039",
+          "c_rate_or_current": {
+            "value": "5",
+            "unit": "C"
+          },
+          "test_method": "rate test"
+        },
+        {
+          "condition_id": "C040",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 100,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C041",
+          "voltage_range": {
+            "min": 2.5,
+            "max": 4.5,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "cycle_number": 100,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C042",
+          "temperature": {
+            "value": 300,
+            "unit": "C"
+          },
+          "test_method": "synthesis"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Rate_Capability_Profile",
+        "Capacity_Retention_Ratio"
+      ],
+      "performance_info": {
+        "Rate_Capability_Profile": [
+          {
+            "value": [
+              138.0
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "NCM811 cathodes with PIOBO ... display excellent rate capability 138.0 ... mA h mathbf g - 1 at 5C"
+          },
+          {
+            "value": [
+              127.7
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "NCM811 cathodes with ... PIBBP binders display excellent rate capability ... 127.7 mA h mathbf g - 1 at 5C"
+          },
+          {
+            "value": [
+              115.1
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "NCM811 cathode using PVDF binder 115.1 mA h cdot mathbf g - 1 at 5C"
+          }
+        ],
+        "Capacity_Retention_Ratio": [
+          {
+            "value": 86,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "PIOBO-NCM811 ... capacity retention rates after 100 cycles within 2.5–4.3 V i.e., 86%"
+          },
+          {
+            "value": 88,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "PIBBP-NCM811 ... capacity retention rates after 100 cycles within 2.5–4.3 V i.e., ... 88%"
+          },
+          {
+            "value": 70,
+            "unit": "%",
+            "condition_id": "C002",
+            "cycle_number": 100,
+            "source_text": "PVDF-NCM811 cathode 70% within 2.5–4.3 V"
+          },
+          {
+            "value": 39,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 100,
+            "source_text": "PIOBO-NCM811 ... 2.5–4.5 V i.e., 39%"
+          },
+          {
+            "value": 62,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 100,
+            "source_text": "PIBBP-NCM811 ... 2.5–4.5 V i.e., ... 62%"
+          },
+          {
+            "value": 25,
+            "unit": "%",
+            "condition_id": "C003",
+            "cycle_number": 100,
+            "source_text": "PVDF-NCM811 cathode ... 25% within 2.5–4.5 V"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    }
+  ]
+}

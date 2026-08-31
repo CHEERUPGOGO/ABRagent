@@ -1,0 +1,569 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/cathode/cathode.md",
+  "doi": "cathode",
+  "title": "$\\ M g ^ { 2 + } / \\mathsf { A } ^ { | 3 + }$ Co-doped Li-Rich Manganese-Based Oxides for Boosting Rate Performance and Stability of Lithium-Ion Batteries",
+  "agent_mode": "cathode-perf",
+  "materials": [
+    {
+      "name": "Li1.2Mn0.56Ni0.16Co0.08O2",
+      "short_name": "LRMO",
+      "formula": "Li1.2Mn0.56Ni0.16Co0.08O2",
+      "role": "comparison",
+      "description": "Pristine lithium-rich manganese oxide cathode synthesized by co-precipitation and calcination.",
+      "material_id": "cathode_M001"
+    },
+    {
+      "name": "Mg-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "short_name": "Mg-LRMO",
+      "formula": "Li1.2Mn0.56Ni0.16Co0.08O2:Mg",
+      "role": "novel",
+      "description": "LRMO doped with Mg, with Mg occupying Li sites in the Li layer to expand lattice and facilitate Li-ion diffusion.",
+      "material_id": "cathode_M002"
+    },
+    {
+      "name": "Al-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "short_name": "Al-LRMO",
+      "formula": "Li1.2Mn0.56Ni0.16Co0.08O2:Al",
+      "role": "novel",
+      "description": "LRMO doped with Al, with Al occupying Li sites in the TM slab forming stronger Li–O–Al bonds to stabilize oxygen lattice.",
+      "material_id": "cathode_M003"
+    },
+    {
+      "name": "Mg/Al co-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "short_name": "Mg/Al-LRMO",
+      "formula": "Li1.2Mn0.56Ni0.16Co0.08O2:Mg,Al",
+      "role": "novel",
+      "description": "LRMO co-doped with Mg and Al, combining benefits of expanded Li layer and stabilized oxygen framework for enhanced cycling stability and rate performance.",
+      "material_id": "cathode_M004"
+    }
+  ],
+  "results": [
+    {
+      "material_id": "cathode_M002",
+      "material_name": "Mg-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "material_context": "novel: Mg-doped Li1.2Mn0.56Ni0.16Co0.08O2 (Li1.2Mn0.56Ni0.16Co0.08O2:Mg)",
+      "condition_id_used": "C001",
+      "performance_items": [
+        {
+          "paragraph": "# 2.2. Electrochemical Performance  All samples exhibit similar capacities in the slope region (≈115 mAh $\\mathbf { g } ^ { - 1 } )$ , but the capacities in the plateau region decrease with the $\\math",
+          "include_result": {
+            "property_types": [
+              "Initial_Coulombic_Efficiency",
+              "Capacity_Retention_Ratio",
+              "Rate_Capability_Profile",
+              "Gravimetric_Energy_Density"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Initial_Coulombic_Efficiency": [
+                {
+                  "value": 76.0,
+                  "unit": "%",
+                  "condition_id": "C001",
+                  "source_text": "the initial Coulombic efficiency (ICE) in Table S3 (Supporting Information) is notably higher for Mg/Al-LRMO (85.7%) compared to Al-LRMO (82.9%), Mg-LRMO (76.0%) and LRMO (72.2%)"
+                }
+              ],
+              "Capacity_Retention_Ratio": [
+                {
+                  "value": 82.2,
+                  "unit": "%",
+                  "condition_id": "C001",
+                  "cycle_number": 200,
+                  "source_text": "The prolonged cycling performance at 0.1C (Figure 2b) shows that after 200 cycles, Mg/Al-LRMO retains 93.3% of its capacity, significantly better than LRMO (68.3%), Mg-LRMO (82.2%), and Al-LRMO (85.0%)."
+                }
+              ],
+              "Rate_Capability_Profile": [],
+              "Gravimetric_Energy_Density": []
+            }
+          }
+        },
+        {
+          "paragraph": "The characteristic Mg 1s XPS peaks (Figure S15, Supporting Information) were clearly observed at ≈1303.3 eV for Mg-LRMO and Mg/Al-LRMO, confirming the presence of $\\mathrm { } ^ { 2 + }$ ions.[26] Sim",
+          "include_result": {
+            "property_types": [
+              "Charge_Discharge_Voltage_Gap"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": [
+              {
+                "value": 0.171,
+                "unit": "V",
+                "condition_id": "C001",
+                "soc": 0.0,
+                "source_text": "The Mg/Al-LRMO exhibited the lowest ΔE of 0.171V, implying the electrode polarization is reduced."
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 m",
+          "include_result": {
+            "property_types": [
+              "Charge_Discharge_Voltage_Gap",
+              "Charge_Transfer_Resistance",
+              "Ion_Diffusion_Coefficient"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Charge_Discharge_Voltage_Gap": [
+                {
+                  "value": 0.14,
+                  "unit": "V",
+                  "condition_id": "C001",
+                  "soc": null,
+                  "source_text": "the Mg/Al-LRMO electrode displays the smallest redox peak shift, corresponding to a lower polarization (ΔE = 0.14 V) and faster redox kinetics"
+                }
+              ],
+              "Charge_Transfer_Resistance": [
+                {
+                  "value": 43.14,
+                  "unit": "Ω",
+                  "condition_id": "C001",
+                  "cycle_number": 200,
+                  "soc_percent": null,
+                  "source_text": "After 200 cycles, the R and solution resistance (Rs) for Mg/Al-LRMO are 43.14 and 4.12 Ω"
+                }
+              ],
+              "Ion_Diffusion_Coefficient": [
+                {
+                  "value": "8.38e-13",
+                  "unit": "cm2/s",
+                  "condition_id": "C001",
+                  "method": "CV",
+                  "voltage_V": null,
+                  "source_text": "The D_{ }^{+} values for deintercalation/intercalation in Mg/Al-LRMO are 8.38 × 10^{-13} and 1.29 × 10^{-13} cm^2 s^{-1}, respectively"
+                },
+                {
+                  "value": "1.29e-13",
+                  "unit": "cm2/s",
+                  "condition_id": "C001",
+                  "method": "CV",
+                  "voltage_V": null,
+                  "source_text": "The D_{ }^{+} values for deintercalation/intercalation in Mg/Al-LRMO are 8.38 × 10^{-13} and 1.29 × 10^{-13} cm^2 s^{-1}, respectively"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "In summary, we successfully synthesized the $\\mathrm { ^ { 2 + } / ^ { 3 + } }$ codoped LRMO cathode material using a combined approach of co-precipitation and calcination approach. DFT calculations u",
+          "include_result": {
+            "property_types": [
+              "Capacity_Retention_Ratio",
+              "Rate_Capability_Profile"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": [
+              {
+                "Capacity_Retention_Ratio": [
+                  {
+                    "value": 90.0,
+                    "unit": "%",
+                    "condition_id": "C001",
+                    "cycle_number": 200,
+                    "source_text": "90.0% capacity retention after 200 cycles at 1.0C"
+                  }
+                ],
+                "Rate_Capability_Profile": [
+                  {
+                    "value": [
+                      {
+                        "rate": "5.0C",
+                        "capacity": 160.7
+                      }
+                    ],
+                    "unit": "mAh/g",
+                    "condition_id": "C001",
+                    "source_text": "160.7mAh g-1 at 5.0C"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "material_id": "cathode_M004",
+      "material_name": "Mg/Al co-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "material_context": "novel: Mg/Al co-doped Li1.2Mn0.56Ni0.16Co0.08O2 (Li1.2Mn0.56Ni0.16Co0.08O2:Mg,Al)",
+      "condition_id_used": "C001",
+      "performance_items": [
+        {
+          "paragraph": "The characteristic Mg 1s XPS peaks (Figure S15, Supporting Information) were clearly observed at ≈1303.3 eV for Mg-LRMO and Mg/Al-LRMO, confirming the presence of $\\mathrm { } ^ { 2 + }$ ions.[26] Sim",
+          "include_result": {
+            "property_types": [
+              "Charge_Discharge_Voltage_Gap"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": []
+          }
+        },
+        {
+          "paragraph": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 m",
+          "include_result": {
+            "property_types": [
+              "Charge_Discharge_Voltage_Gap",
+              "Charge_Transfer_Resistance",
+              "Ion_Diffusion_Coefficient"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Charge_Discharge_Voltage_Gap": [],
+              "Charge_Transfer_Resistance": [
+                {
+                  "value": 43.14,
+                  "unit": "Ω",
+                  "condition_id": "C001",
+                  "cycle_number": 200,
+                  "soc_percent": 0.0,
+                  "source_text": "After 200 cycles, the $R _ { }$ and solution resistance (Rs) for Mg/Al-LRMO are 43.14 and 4.12 Ω, respectively, while those for LRMO are 106.51 and 5.36 Ω (Table S7, Supporting Information)."
+                }
+              ],
+              "Ion_Diffusion_Coefficient": [
+                {
+                  "value": "8.38e-13",
+                  "unit": "cm2/s",
+                  "condition_id": "C001",
+                  "method": "CV (Randles-Sevcik)",
+                  "voltage_V": 0.0,
+                  "source_text": "The ${ D _ { } } ^ { + }$ values for deintercalation/intercalation in Mg/Al-LRMO are $\\bar { 8 } . 3 8 \\times 1 0 ^ { - 1 3 }$ and 1.29 $\\times 1 0 ^ { - 1 3 } \\mathrm { } ^ { 2 } \\mathrm { s } ^ { - 1 }$ , respectively"
+                },
+                {
+                  "value": "1.29e-13",
+                  "unit": "cm2/s",
+                  "condition_id": "C001",
+                  "method": "CV (Randles-Sevcik)",
+                  "voltage_V": 0.0,
+                  "source_text": "The ${ D _ { } } ^ { + }$ values for deintercalation/intercalation in Mg/Al-LRMO are $\\bar { 8 } . 3 8 \\times 1 0 ^ { - 1 3 }$ and 1.29 $\\times 1 0 ^ { - 1 3 } \\mathrm { } ^ { 2 } \\mathrm { s } ^ { - 1 }$ , respectively"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "In summary, we successfully synthesized the $\\mathrm { ^ { 2 + } / ^ { 3 + } }$ codoped LRMO cathode material using a combined approach of co-precipitation and calcination approach. DFT calculations u",
+          "include_result": {
+            "property_types": [
+              "Capacity_Retention_Ratio",
+              "Rate_Capability_Profile"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Capacity_Retention_Ratio": [
+                {
+                  "value": 90.0,
+                  "unit": "%",
+                  "condition_id": "C001",
+                  "cycle_number": 200,
+                  "source_text": "90.0% capacity retention after 200 cycles at 1.0C"
+                }
+              ],
+              "Rate_Capability_Profile": [
+                {
+                  "value": [
+                    {
+                      "rate": "5.0C",
+                      "capacity": 160.7
+                    }
+                  ],
+                  "unit": "mAh/g",
+                  "condition_id": "C001",
+                  "source_text": "160.7mAh $\\mathbf { g } ^ { - 1 }$ at 5.0C"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "material_id": "cathode_M003",
+      "material_name": "Al-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "material_context": "novel: Al-doped Li1.2Mn0.56Ni0.16Co0.08O2 (Li1.2Mn0.56Ni0.16Co0.08O2:Al)",
+      "condition_id_used": "C001",
+      "performance_items": [
+        {
+          "paragraph": "# 2.2. Electrochemical Performance  All samples exhibit similar capacities in the slope region (≈115 mAh $\\mathbf { g } ^ { - 1 } )$ , but the capacities in the plateau region decrease with the $\\math",
+          "include_result": {
+            "property_types": [
+              "Rate_Capability_Profile",
+              "Gravimetric_Energy_Density",
+              "Initial_Coulombic_Efficiency",
+              "Discharge_Specific_Capacity_Initial",
+              "Capacity_Retention_Ratio"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Rate_Capability_Profile": [],
+              "Gravimetric_Energy_Density": [],
+              "Initial_Coulombic_Efficiency": [
+                {
+                  "value": 82.9,
+                  "unit": "%",
+                  "condition_id": "C001",
+                  "source_text": "Furthermore, the initial Coulombic efficiency (ICE) in Table S3 (Supporting Information) is notably higher for Mg/Al-LRMO (85.7%) compared to Al-LRMO (82.9%), Mg-LRMO (76.0%) and LRMO (72.2%)"
+                }
+              ],
+              "Discharge_Specific_Capacity_Initial": [
+                {
+                  "value": 263.1,
+                  "unit": "mAh/g",
+                  "condition_id": "C001",
+                  "source_text": "In terms of discharge capacity, Mg/Al-LRMO outperforms the others with 269.9 mAh g−1, while Al-LRMO, Mg-LRMO and LRMO deliver 263.1, 245.1, 237.7 mAh g−1, respectively."
+                }
+              ],
+              "Capacity_Retention_Ratio": [
+                {
+                  "value": 85.0,
+                  "unit": "%",
+                  "condition_id": "C001",
+                  "cycle_number": 200,
+                  "source_text": "The prolonged cycling performance at 0.1C (Figure 2b) shows that after 200 cycles, Mg/Al-LRMO retains 93.3% of its capacity, significantly better than LRMO (68.3%), Mg-LRMO (82.2%), and Al-LRMO (85.0%)."
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 m",
+          "include_result": {
+            "property_types": [
+              "Charge_Discharge_Voltage_Gap",
+              "Charge_Transfer_Resistance",
+              "Ion_Diffusion_Coefficient"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Charge_Discharge_Voltage_Gap": [],
+              "Charge_Transfer_Resistance": [],
+              "Ion_Diffusion_Coefficient": []
+            }
+          }
+        },
+        {
+          "paragraph": "In summary, we successfully synthesized the $\\mathrm { ^ { 2 + } / ^ { 3 + } }$ codoped LRMO cathode material using a combined approach of co-precipitation and calcination approach. DFT calculations u",
+          "include_result": {
+            "property_types": [
+              "Capacity_Retention_Ratio",
+              "Rate_Capability_Profile"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": [
+              {
+                "Capacity_Retention_Ratio": [
+                  {
+                    "value": 90.0,
+                    "unit": "%",
+                    "condition_id": "C001",
+                    "cycle_number": 200,
+                    "source_text": "90.0% capacity retention after 200 cycles at 1.0C"
+                  }
+                ],
+                "Rate_Capability_Profile": [
+                  {
+                    "value": [
+                      {
+                        "rate": "5.0C",
+                        "capacity": 160.7
+                      }
+                    ],
+                    "unit": "mAh/g",
+                    "condition_id": "C001",
+                    "source_text": "160.7mAh $\\mathbf { g } ^ { - 1 }$ at 5.0C"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "material_id": "cathode_M001",
+      "material_name": "Li1.2Mn0.56Ni0.16Co0.08O2",
+      "material_context": "comparison: Li1.2Mn0.56Ni0.16Co0.08O2 (Li1.2Mn0.56Ni0.16Co0.08O2)",
+      "condition_id_used": "C001",
+      "performance_items": [
+        {
+          "paragraph": "# 2.2. Electrochemical Performance  All samples exhibit similar capacities in the slope region (≈115 mAh $\\mathbf { g } ^ { - 1 } )$ , but the capacities in the plateau region decrease with the $\\math",
+          "include_result": {
+            "property_types": [
+              "Rate_Capability_Profile",
+              "Gravimetric_Energy_Density",
+              "Initial_Coulombic_Efficiency",
+              "Discharge_Specific_Capacity_Initial",
+              "Capacity_Retention_Ratio"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Rate_Capability_Profile": [
+                {
+                  "value": [
+                    {
+                      "rate": "5.0C",
+                      "capacity": 99.0
+                    }
+                  ],
+                  "unit": "mAh/g",
+                  "condition_id": "C001",
+                  "source_text": "Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh g^-1 even at a high rate of 5.0 C, outperforming LRMO (99.0 mAh g^-1)"
+                }
+              ],
+              "Gravimetric_Energy_Density": [
+                {
+                  "value": 270.0,
+                  "unit": "Wh/kg",
+                  "condition_id": "C001",
+                  "basis": "full_cell",
+                  "source_text": "LRMO only delivers an energy density of 270.0 Wh kg−1"
+                }
+              ],
+              "Initial_Coulombic_Efficiency": [
+                {
+                  "value": 72.2,
+                  "unit": "%",
+                  "condition_id": "C001",
+                  "source_text": "LRMO (72.2%)"
+                }
+              ],
+              "Discharge_Specific_Capacity_Initial": [
+                {
+                  "value": 237.7,
+                  "unit": "mAh/g",
+                  "condition_id": "C001",
+                  "source_text": "In terms of discharge capacity, Mg/Al-LRMO outperforms the others with 269.9 mAh g^-1, while Al-LRMO, Mg-LRMO and LRMO deliver 263.1, 245.1, 237.7 mAh g^-1, respectively."
+                }
+              ],
+              "Capacity_Retention_Ratio": [
+                {
+                  "value": 68.3,
+                  "unit": "%",
+                  "condition_id": "C001",
+                  "cycle_number": 200,
+                  "source_text": "LRMO (68.3%)"
+                },
+                {
+                  "value": 51.1,
+                  "unit": "%",
+                  "condition_id": "C001",
+                  "cycle_number": 200,
+                  "source_text": "LRMO retains only 51.1%"
+                },
+                {
+                  "value": 54.1,
+                  "unit": "%",
+                  "condition_id": "C001",
+                  "cycle_number": 600,
+                  "source_text": "the pristine LRMO pouch cell only displays a specific capacity retention of 54.1%"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 m",
+          "include_result": {
+            "property_types": [
+              "Charge_Transfer_Resistance",
+              "Ion_Diffusion_Coefficient"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Charge_Transfer_Resistance": [
+                {
+                  "value": 106.51,
+                  "unit": "Ω",
+                  "condition_id": "C001",
+                  "cycle_number": 200,
+                  "soc_percent": null,
+                  "source_text": "After 200 cycles, the $R _ { }$ and solution resistance (Rs) for Mg/Al-LRMO are 43.14 and 4.12 Ω, respectively, while those for LRMO are 106.51 and 5.36 Ω (Table S7, Supporting Information)."
+                }
+              ],
+              "Ion_Diffusion_Coefficient": [
+                {
+                  "value": "1.06e-14",
+                  "unit": "cm2/s",
+                  "condition_id": "C001",
+                  "method": "CV",
+                  "voltage_V": null,
+                  "source_text": "The ${ D _ { } } ^ { + }$ values for deintercalation/intercalation in Mg/Al-LRMO are $\\bar { 8 } . 3 8 \\times 1 0 ^ { - 1 3 }$ and 1.29 $\\times 1 0 ^ { - 1 3 } \\mathrm { } ^ { 2 } \\mathrm { s } ^ { - 1 }$ , respectively, which are significantly higher than those of LRMO $( 1 . 0 6 \\times 1 0 ^ { - 1 4 } \\mathrm { } ^ { 2 } \\mathrm { s } ^ { - 1 }$ for deintercalation and 1.56 $\\times 1 0 ^ { - 1 4 } \\mathrm { } ^ { 2 } \\mathrm { s } ^ { - 1 }$ for intercalation) as listed in Table S6 (Supporting Information)."
+                },
+                {
+                  "value": "1.56e-14",
+                  "unit": "cm2/s",
+                  "condition_id": "C001",
+                  "method": "CV",
+                  "voltage_V": null,
+                  "source_text": "The ${ D _ { } } ^ { + }$ values for deintercalation/intercalation in Mg/Al-LRMO are $\\bar { 8 } . 3 8 \\times 1 0 ^ { - 1 3 }$ and 1.29 $\\times 1 0 ^ { - 1 3 } \\mathrm { } ^ { 2 } \\mathrm { s } ^ { - 1 }$ , respectively, which are significantly higher than those of LRMO $( 1 . 0 6 \\times 1 0 ^ { - 1 4 } \\mathrm { } ^ { 2 } \\mathrm { s } ^ { - 1 }$ for deintercalation and 1.56 $\\times 1 0 ^ { - 1 4 } \\mathrm { } ^ { 2 } \\mathrm { s } ^ { - 1 }$ for intercalation) as listed in Table S6 (Supporting Information)."
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "In summary, we successfully synthesized the $\\mathrm { ^ { 2 + } / ^ { 3 + } }$ codoped LRMO cathode material using a combined approach of co-precipitation and calcination approach. DFT calculations u",
+          "include_result": {
+            "property_types": [
+              "Capacity_Retention_Ratio",
+              "Rate_Capability_Profile"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Capacity_Retention_Ratio": [
+                {
+                  "value": 90.0,
+                  "unit": "%",
+                  "condition_id": "C001",
+                  "cycle_number": 200,
+                  "source_text": "excellent cycling stability (90.0% capacity retention after 200 cycles at 1.0C)"
+                }
+              ],
+              "Rate_Capability_Profile": [
+                {
+                  "value": [
+                    {
+                      "rate": "5.0C",
+                      "capacity": 160.7
+                    }
+                  ],
+                  "unit": "mAh/g",
+                  "condition_id": "C001",
+                  "source_text": "high rate performance (160.7mAh g^{-1} at 5.0C)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "The refined lattice parameters were further employed to calculate the thickness of the Li slab. The slab thickness (SMO2) and interslab thickness (ILiO2) can be calculated based on the following formu",
+          "include_result": {
+            "property_types": [
+              "Initial_Coulombic_Efficiency",
+              "Discharge_Specific_Capacity_Initial"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Initial_Coulombic_Efficiency": [],
+              "Discharge_Specific_Capacity_Initial": []
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

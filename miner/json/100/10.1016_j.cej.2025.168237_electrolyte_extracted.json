@@ -1,0 +1,573 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.cej.2025.168237.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/j.cej.2025.168237",
+  "doi": "10.1016/j.cej.2025.168237",
+  "material_id": "10.1016_j.cej.2025.168237",
+  "meta": {
+    "meta_title": "Dual-functional bilayer composite solid electrolyte for enhanced interfacial com",
+    "meta_authors": "Libin Hu a , Yejing Li a , Chuang Kang a , Zhengwei Fan a , Yaru Shi a,\\* , Xiaoyu Liu b,\\* , Bing Zhao a , Jiujun Zhang b , Yong Jiang",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "PLLPP composite polymer electrolyte with 5 wt% LLZTO",
+      "short_name": "PLLPP-5%",
+      "formula": "LiTFSI/PVDF/PPC with 5 wt% LLZTO",
+      "role": "novel",
+      "description": "Li anode-facing layer variant with low LLZTO filler loading",
+      "material_id": "10.1016_j.cej.2025.168237_M001"
+    },
+    {
+      "name": "PLLPP composite polymer electrolyte with 10 wt% LLZTO",
+      "short_name": "PLLPP-10%",
+      "formula": "LiTFSI/PVDF/PPC with 10 wt% LLZTO",
+      "role": "novel",
+      "description": "Li anode-facing layer variant with 10% LLZTO",
+      "material_id": "10.1016_j.cej.2025.168237_M002"
+    },
+    {
+      "name": "PLLPP composite polymer electrolyte with 15 wt% LLZTO",
+      "short_name": "PLLPP-15%",
+      "formula": "LiTFSI/PVDF/PPC with 15 wt% LLZTO",
+      "role": "novel",
+      "description": "Optimized PLLPP with highest ionic conductivity, used as anode layer in BCSE",
+      "material_id": "10.1016_j.cej.2025.168237_M003"
+    },
+    {
+      "name": "PLLPP composite polymer electrolyte with 20 wt% LLZTO",
+      "short_name": "PLLPP-20%",
+      "formula": "LiTFSI/PVDF/PPC with 20 wt% LLZTO",
+      "role": "novel",
+      "description": "Li anode-facing layer variant with 20% LLZTO",
+      "material_id": "10.1016_j.cej.2025.168237_M004"
+    },
+    {
+      "name": "PLLPP composite polymer electrolyte with 25 wt% LLZTO",
+      "short_name": "PLLPP-25%",
+      "formula": "LiTFSI/PVDF/PPC with 25 wt% LLZTO",
+      "role": "novel",
+      "description": "Li anode-facing layer variant with 25% LLZTO, excess causing agglomeration and lower conductivity",
+      "material_id": "10.1016_j.cej.2025.168237_M005"
+    },
+    {
+      "name": "PC-plasticized PLLPP composite polymer electrolyte",
+      "short_name": "PC-PLLPP",
+      "formula": "LiTFSI/PVDF/PC/LLZTO",
+      "role": "comparison",
+      "description": "PLLPP with liquid PC plasticizer instead of PPC, showing poor cycling stability in Li symmetric cells",
+      "material_id": "10.1016_j.cej.2025.168237_M006"
+    },
+    {
+      "name": "PPLLP composite polymer electrolyte (35 wt% LLZTO, 1.5 mL PC)",
+      "short_name": "PPLLP-35%",
+      "formula": "LiTFSI/PVDF/PC with 35 wt% LLZTO, 1.5 mL PC",
+      "role": "novel",
+      "description": "Cathode-facing layer with high ionic conductivity and in-situ polymerization to form oxidation-resistant PPC",
+      "material_id": "10.1016_j.cej.2025.168237_M007"
+    },
+    {
+      "name": "Quasi bilayer composite solid electrolyte (BCSE)",
+      "short_name": "BCSE",
+      "formula": "PLLPP(15% LLZTO) | PPLLP(35% LLZTO, 1.5 mL PC) bilayer",
+      "role": "novel",
+      "description": "Dual-layer quasi-solid electrolyte combining dendrite-suppressing PLLPP and oxidation-resistant PPLLP for wide electrochemical stability",
+      "material_id": "10.1016_j.cej.2025.168237_M008"
+    }
+  ],
+  "n_materials": 8,
+  "table_items": [],
+  "n_items": 9,
+  "items": [
+    {
+      "paragraph": "Density functional theory DFT calculations were employed to determine the highest occupied molecular orbital HOMO and lowest unoccupied molecular orbital LUMO energies of various electrolyte component",
+      "property_types": [
+        "HOMO_LUMO_Energy"
+      ],
+      "extracted_info": {
+        "HOMO_LUMO_Energy": [
+          {
+            "value": {},
+            "unit": "eV",
+            "molecule": "PC, PPC components",
+            "method": "DFT",
+            "source_text": "As illustrated in Fig. 2e, the PC exhibits a relatively elevated LUMO energy, implying its capability against reduction, while a depressed HOMO of PPC indicates its ability to resist oxidation."
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "XPS analysis was conducted to investigate the chemical composition of the PLLPP/Li interface. Fig. 3f–g displays the C 1s and F 1s spectra of the solid electrolyte interphase SEI formed on the lithium",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "test_method": "galvanostatic testing",
+          "electrode_config": "symmetric cell (Li|PLLPP|Li)"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The FTIR spectrum and density functional theory DFT calculations were utilized to obtain a deeper understanding of the intermolecular interactions within the electrolyte. As depicted in the FTIR spect",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "test_method": "LSV"
+        },
+        {
+          "condition_id": "C003",
+          "test_method": "CV",
+          "electrode_config": "Li/PPLLP/PLLPP/Fe cells"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Anodic_Stability_Onset_Potential"
+      ],
+      "performance_info": {
+        "Anodic_Stability_Onset_Potential": [
+          {
+            "value": 4.6,
+            "unit": "V vs. Li/Li+",
+            "source_text": "BCSE exhibits no significant oxidation currents below 4.6 V"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To address the issues of suboptimal ionic conductivity and poor contact with the cathode in PLLPP electrolytes, a composite membrane PPLLP was fabricated using LLZTO and PC. Fig. 4a illustrates the in",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "electrolyte": "PPLLP (35 wt% LLZTO relative to PVDF and 1.5 mL PC)",
+          "electrode_config": "blocking cell (assumed)",
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C005",
+          "electrolyte": "PPLLP (various compositions)",
+          "electrode_config": "unknown",
+          "test_method": "LSV"
+        },
+        {
+          "condition_id": "C006",
+          "electrolyte": "PPLLP (35 wt% LLZTO, 1.5 mL PC)",
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Electrochemical_Stability_Window",
+        "CEI_Thickness"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 1.38,
+            "unit": "mS/cm",
+            "method": "EIS",
+            "condition_id": "C001",
+            "source_text": "achieving a maximum of 1.38 mS mathrm - 1 in the optimized PPLLP electrolyte with 35 wt% LLZTO relative to PVDF and 1.5 mL PC addition"
+          }
+        ],
+        "Electrochemical_Stability_Window": [
+          {
+            "value": {
+              "max_V": 4.5
+            },
+            "unit": "V vs. Li/Li⁺",
+            "condition_id": "C002",
+            "source_text": "electrochemical windows exceeding 4.5 V for all PPLLP samples"
+          }
+        ],
+        "CEI_Thickness": [
+          {
+            "value": 32,
+            "unit": "nm",
+            "method": "HRTEM",
+            "condition_id": "C003",
+            "source_text": "formation of a 32 nm-thick LiF-rich cathode electrolyte interphase CEI on the NCM811 surface"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "In summary, the bilayer-structured electrolyte, with PLLPP as the dendrite-suppressing layer and PPLLP as the interfacial buffer layer, has ensured the stability of both the lithium anode and the high",
+      "conditions": [
+        {
+          "condition_id": "C007",
+          "c_rate_or_current": {
+            "value": "2",
+            "unit": "C"
+          },
+          "electrode_config": "full cell (NCM811 cathode, Li anode)",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Rate_Capability",
+        "Cycle_Life_80"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 0.739,
+            "unit": "mS/cm",
+            "source_text": "7.39 × 10−4 S cm−1"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              {
+                "c_rate": "2C",
+                "capacity": 133
+              }
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "delivered a discharge capacity of 133 mAh g− 1 at 2C"
+          }
+        ],
+        "Cycle_Life_80": [
+          {
+            "value": 1500,
+            "unit": "cycles",
+            "condition_id": "C001",
+            "source_text": "cycling lifespan of 1500 cycles"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To validate the practical advantages of the quasi BCSE, three types of full cells were assembled for comparison. As shown in Fig. 6a, the NCM811PPLLPLi battery exhibits a polarization voltage of 150 m",
+      "conditions": [
+        {
+          "condition_id": "C008",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "C"
+          },
+          "cycle_number": 100,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C009",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "cycle_number": 430,
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C010",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "C"
+          },
+          "cycle_number": 1000,
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C011",
+          "c_rate_or_current": {
+            "value": 2.0,
+            "unit": "C"
+          },
+          "cycle_number": 1500,
+          "electrode_config": "full_cell",
+          "test_method": "cycling"
+        },
+        {
+          "condition_id": "C012",
+          "electrode_config": "full_cell",
+          "test_method": "first cycle"
+        },
+        {
+          "condition_id": "C012",
+          "electrode_config": "full_cell",
+          "test_method": "first cycle"
+        },
+        {
+          "condition_id": "C012",
+          "electrode_config": "full_cell",
+          "test_method": "first cycle"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Voltage_Hysteresis",
+        "Rate_Capability",
+        "Coulombic_Efficiency",
+        "Capacity_Retention"
+      ],
+      "performance_info": {
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.15,
+            "unit": "V",
+            "condition_id": "C005",
+            "source_text": "NCM811|PPLLP|Li battery exhibits a polarization voltage of 150 mV during the first cycle"
+          },
+          {
+            "value": 0.142,
+            "unit": "V",
+            "condition_id": "C006",
+            "source_text": "the NCM811|PLLPP|Li full cell... result in a large polarization voltage 142 mV"
+          },
+          {
+            "value": 0.12,
+            "unit": "V",
+            "condition_id": "C007",
+            "source_text": "The quasi BCSE full cell exhibits the lowest polarization voltage 120 mV"
+          }
+        ],
+        "Rate_Capability": [
+          {
+            "value": [
+              148.6
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C001",
+            "source_text": "retained a discharge capacity of 148.6 mAh g^{-1} after 100 cycles"
+          },
+          {
+            "value": [
+              169.0
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "the discharge capacity of the quasi BCSE full cell at 0.5C is 169.0 mAh g^{-1}"
+          },
+          {
+            "value": [
+              133.2
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "133.2 mAh g^{-1} is still remained after 430 cycles"
+          },
+          {
+            "value": [
+              160.8
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C003",
+            "source_text": "initial specific capacity of 160.8 mAh g^{-1}"
+          },
+          {
+            "value": [
+              133
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C004",
+            "source_text": "initial capacity of 133 mAh g^{-1} at the current density of 2C"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 96.56,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C001",
+            "source_text": "average coulombic efficiency retention of 96.56 %"
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 84.15,
+            "unit": "%",
+            "cycle_number": 1000,
+            "condition_id": "C003",
+            "source_text": "capacity retention rate of 84.15 % after 1000 cycles"
+          }
+        ]
+      }
+    },
+    {
+      "paragraph": "The structure and functional mechanisms of the quasi BCSEs are illustrated in Fig. 1a. The anti-oxidation layer and the anti-reduction layer were constructed by a simple tape-casting method, correspon",
+      "conditions": [
+        {
+          "condition_id": "C013",
+          "electrode_config": "Li metal anode (PLLPP layer)",
+          "test_method": "galvanostatic cycling (800 h)"
+        },
+        {
+          "condition_id": "C014",
+          "electrode_config": "NCM811 cathode (PPLLP layer)",
+          "test_method": "cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To demonstrate the advantages of dual-functional bilayer quasi-solid composite electrolyte, the performance of PPLLP, PLLPP, and BCSE were evaluated. The PPLLP layer constructed continuous mathrm cond",
+      "conditions": [
+        {
+          "condition_id": "C015",
+          "temperature": {
+            "value": 25,
+            "unit": "C"
+          },
+          "test_method": "EIS"
+        },
+        {
+          "condition_id": "C016",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric cell (Li|BCSE|Li)",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C017",
+          "electrode_config": "symmetric cell (Li|BCSE|Li)",
+          "test_method": "galvanostatic"
+        }
+      ],
+      "property_types": [
+        "Li_Solvent_Binding_Energy",
+        "Li_Anion_Binding_Energy"
+      ],
+      "extracted_info": {
+        "Li_Solvent_Binding_Energy": [
+          {
+            "value": -1.03,
+            "unit": "eV",
+            "solvent": "PPC",
+            "source_text": "binding energy − 1.03 eV"
+          }
+        ],
+        "Li_Anion_Binding_Energy": [
+          {
+            "value": -0.55,
+            "unit": "eV",
+            "anion": "TFSI-",
+            "source_text": "strong interaction between mathrm and mathrm - - 0.55 mathrm"
+          }
+        ]
+      },
+      "performance_types": [
+        "Ionic_Conductivity",
+        "SEI_Resistance"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 1.38,
+            "unit": "mS/cm",
+            "temperature_C": 25,
+            "method": "EIS",
+            "source_text": "R.T. conductivity of 1.38 mS cm^{-1}"
+          },
+          {
+            "value": 0.739,
+            "unit": "mS/cm",
+            "temperature_C": 25,
+            "method": "EIS",
+            "source_text": "ionic conductivity of the quasi BCSE 7.39 times 10^{-4} S cm^{-1}"
+          }
+        ],
+        "SEI_Resistance": [
+          {
+            "value": 335.83,
+            "unit": "Ω cm^2",
+            "condition_id": "C002",
+            "source_text": "interfacial impedance value gradually decreased from 335.83 to 80.91 Ω cm^{2} after cycling with Li"
+          },
+          {
+            "value": 80.91,
+            "unit": "Ω cm^2",
+            "condition_id": "C002",
+            "source_text": "interfacial impedance value gradually decreased from 335.83 to 80.91 Ω cm^{2} after cycling with Li"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    },
+    {
+      "paragraph": "The electrolyte in contact with the lithium anode should concurrently inhibit lithium dendrite growth and ensure good interfacial contact. Inspired by the fact that PPC can slowly release trace amount",
+      "conditions": [
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": 0.2,
+            "unit": "mA/cm2"
+          },
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "electrolyte": "PLLPP composite polymer electrolyte with 15 wt% LLZTO",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C019",
+          "electrode_config": "symmetric_cell",
+          "reference_electrode": "Li/Li+",
+          "electrolyte": "PLLPP composite polymer electrolyte with 15 wt% LLZTO",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Ionic_Conductivity",
+        "Voltage_Hysteresis",
+        "Charge_Transfer_Resistance",
+        "Electrochemical_Stability_Window"
+      ],
+      "performance_info": {
+        "Ionic_Conductivity": [
+          {
+            "value": 0.234,
+            "unit": "mS/cm",
+            "source_text": "When the LLZTO content reaches 15 wt%, the PLLPP electrolyte exhibits the highest ionic conductivity 2.34 times 10 - 4 mathrm - 1 Fig. 3b."
+          }
+        ],
+        "Voltage_Hysteresis": [
+          {
+            "value": 0.035,
+            "unit": "V",
+            "condition_id": "C001",
+            "source_text": "maintaining a consistently low overpotential of 35 mV"
+          }
+        ],
+        "Charge_Transfer_Resistance": [
+          {
+            "value": 220,
+            "unit": "Ω cm²",
+            "condition_id": "C002",
+            "cycle_number": 0,
+            "source_text": "the initial interfacial resistance sharply decreased from approximately 350 Ω mathrm 2 to approximately 220 Ω mathrm 2 within 48 h and remained stable for 800 h"
+          }
+        ],
+        "Electrochemical_Stability_Window": [
+          {
+            "value": {
+              "max_V": 4.6
+            },
+            "unit": "V vs. Li/Li⁺",
+            "source_text": "Inspired by the fact that PPC can slowly release trace amounts of PC upon contact with lithium as well as a wide electrochemical window 4.6 V"
+          }
+        ]
+      }
+    }
+  ]
+}

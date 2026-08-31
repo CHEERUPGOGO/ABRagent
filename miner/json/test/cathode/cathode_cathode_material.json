@@ -1,0 +1,1169 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/test/Lithium_Ion_Metal_Battery/cathode/cathode.md",
+  "doi": "cathode",
+  "title": "$\\ M g ^ { 2 + } / \\mathsf { A } ^ { | 3 + }$ Co-doped Li-Rich Manganese-Based Oxides for Boosting Rate Performance and Stability of Lithium-Ion Batteries",
+  "agent_mode": "cathode-material",
+  "materials": [
+    {
+      "name": "Li1.2Mn0.56Ni0.16Co0.08O2",
+      "short_name": "LRMO",
+      "formula": "Li1.2Mn0.56Ni0.16Co0.08O2",
+      "role": "comparison",
+      "description": "Pristine lithium-rich manganese oxide cathode synthesized by co-precipitation and calcination.",
+      "material_id": "cathode_M001"
+    },
+    {
+      "name": "Mg-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "short_name": "Mg-LRMO",
+      "formula": "Li1.2Mn0.56Ni0.16Co0.08O2:Mg",
+      "role": "novel",
+      "description": "LRMO doped with Mg, with Mg occupying Li sites in the Li layer to expand lattice and facilitate Li-ion diffusion.",
+      "material_id": "cathode_M002"
+    },
+    {
+      "name": "Al-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "short_name": "Al-LRMO",
+      "formula": "Li1.2Mn0.56Ni0.16Co0.08O2:Al",
+      "role": "novel",
+      "description": "LRMO doped with Al, with Al occupying Li sites in the TM slab forming stronger Li–O–Al bonds to stabilize oxygen lattice.",
+      "material_id": "cathode_M003"
+    },
+    {
+      "name": "Mg/Al co-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "short_name": "Mg/Al-LRMO",
+      "formula": "Li1.2Mn0.56Ni0.16Co0.08O2:Mg,Al",
+      "role": "novel",
+      "description": "LRMO co-doped with Mg and Al, combining benefits of expanded Li layer and stabilized oxygen framework for enhanced cycling stability and rate performance.",
+      "material_id": "cathode_M004"
+    }
+  ],
+  "results": [
+    {
+      "material_id": "cathode_M002",
+      "material_name": "Mg-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "material_context": "novel: Mg-doped Li1.2Mn0.56Ni0.16Co0.08O2 (Li1.2Mn0.56Ni0.16Co0.08O2:Mg)",
+      "material_items": [
+        {
+          "paragraph": "# 2. Results and Discussion Mg and Al were experimentally introduced into LRMO to synthesize Mg-doped (Mg-LRMO), Al-doped (Al-LRMO), and Mg/Al co-doped (Mg/Al-LRMO) cathode materials. The oxide compos",
+          "include_result": {
+            "property_types": [
+              "Crystal_Space_Group"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Crystal_Space_Group": [
+                {
+                  "value": "R-3m",
+                  "unit": "",
+                  "method": "XRD",
+                  "source_text": "the main diffraction peaks correspond to the characteristic peaks of the ??- $\\mathbf { \\cdot } _ { 2 }$ structure with space group R-3m"
+                },
+                {
+                  "value": "C2/m",
+                  "unit": "",
+                  "method": "XRD",
+                  "source_text": "the weak diffraction peaks between $2 0 ^ { \\circ }$ and $2 { \\bar { 5 } } ^ { \\circ }$ are related to the C2/m monoclinic crystal phases associated with the $\\mathrm { } _ { 2 } \\mathrm { } _ { 3 }$ superlattice"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "To obtain more detailed crystal structural information, the XRD patterns were further analyzed using Rietveld refinement, as shown in a–d, with the corresponding lattice parame-Figure 1ters listed in ",
+          "include_result": {
+            "property_types": [
+              "Crystal_Space_Group",
+              "Interlayer_Spacing_of_TM_Layers"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Crystal_Space_Group": [
+                {
+                  "value": "C2/m",
+                  "unit": "",
+                  "method": "XRD",
+                  "source_text": "The main peaks for all samples were indexed to the $\\mathrm { } _ { 2 } \\mathrm { } _ { 3 }$ -like phase (space group C2/m) and the $\\mathrm { } _ { 2 }$ -like phase (space group R-3m)."
+                },
+                {
+                  "value": "R-3m",
+                  "unit": "",
+                  "method": "XRD",
+                  "source_text": "The main peaks for all samples were indexed to the $\\mathrm { } _ { 2 } \\mathrm { } _ { 3 }$ -like phase (space group C2/m) and the $\\mathrm { } _ { 2 }$ -like phase (space group R-3m)."
+                }
+              ],
+              "Interlayer_Spacing_of_TM_Layers": [
+                {
+                  "value": 4.7,
+                  "unit": "Å",
+                  "plane": "003",
+                  "state": "pristine",
+                  "source_text": "TEM images at high magnification and fast Fourier transform (FFT) analysis revealed that the interplanar spacing for LRMO is 0.470 nm (Figure $\\mathrm { 1 f _ { 1 } \\mathrm { - f _ { 3 } } ) }$ , corresponding to the $( 0 0 1 ) _ { \\mathrm { M } } / ( 0 0 3 ) _ { \\mathrm { R } }$ plane of the $\\mathrm { } _ { 2 }$ layered phase.[22]"
+                },
+                {
+                  "value": 4.72,
+                  "unit": "Å",
+                  "plane": "003",
+                  "state": "pristine",
+                  "source_text": "After doping, the interplanar spacing slightly increases to ≈0.472 nm for Mg/Al-LRMO (Figure $\\mathrm { } _ { 1 } { - } \\mathrm { i } _ { 3 } )$ , indicating an expanded unit cell volume consistent with the XRD results."
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "# 2.2. Electrochemical Performance  All samples exhibit similar capacities in the slope region (≈115 mAh $\\mathbf { g } ^ { - 1 } )$ , but the capacities in the plateau region decrease with the $\\math",
+          "include_result": {
+            "property_types": [
+              "Jahn_Teller_Active_Ion_Content",
+              "Element_Valence_State"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Jahn_Teller_Active_Ion_Content": [
+                {
+                  "value": 0.192,
+                  "unit": "mole fraction",
+                  "derived": true,
+                  "source_text": "The Mn³⁺/Mn⁴⁺ ratios are 37.99/62.01% for LRMO, 27.45/72.55% for Mg-LRMO, 22.24/77.76% for Al-LRMO and 20.28/79.72% for Mg/Al-LRMO."
+                }
+              ],
+              "Element_Valence_State": [
+                {
+                  "value": {
+                    "Mn": "+3/+4"
+                  },
+                  "unit": "oxidation state",
+                  "state": "as-synthesized",
+                  "method": "XPS",
+                  "source_text": "The Mn³⁺/Mn⁴⁺ ratios are 37.99/62.01% for LRMO, 27.45/72.55% for Mg-LRMO, 22.24/77.76% for Al-LRMO and 20.28/79.72% for Mg/Al-LRMO."
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "The characteristic Mg 1s XPS peaks (Figure S15, Supporting Information) were clearly observed at ≈1303.3 eV for Mg-LRMO and Mg/Al-LRMO, confirming the presence of $\\mathrm { } ^ { 2 + }$ ions.[26] Sim",
+          "include_result": {
+            "property_types": [
+              "Bader_Charge"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Bader_Charge": []
+            }
+          }
+        },
+        {
+          "paragraph": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 m",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The structure and morphology of LMRO and Mg/Al-LRMO after 100 cycles at 0.5C were further characterized by TEM, HRTEM, and FFT images. The results provide crucial insights into the degradation mechani",
+          "include_result": {
+            "property_types": [
+              "Interlayer_Spacing_of_TM_Layers",
+              "Surface_Spinel_Layer_Thickness"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Interlayer_Spacing_of_TM_Layers": [
+                {
+                  "value": 4.75,
+                  "unit": "Å",
+                  "plane": "003",
+                  "state": "after 100 cycles at 0.5C",
+                  "source_text": "For the Mg/Al-LRMO sample (Figure 5d), the interior still maintains an intact layered-like structure with a lattice spacing of 0.475nm, corresponding to the (003) planes of the $\\mathrm { } _ { 2 } \\mathrm { } _ { 3 }$ phase"
+                }
+              ],
+              "Surface_Spinel_Layer_Thickness": [
+                {
+                  "value": 3,
+                  "unit": "nm",
+                  "state": "after 100 cycles at 0.5C",
+                  "method": "HRTEM",
+                  "source_text": "Notably, the thickness of the mixed phase region (region II) is significantly reduced, being only ≈3 nm thick"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "In summary, we successfully synthesized the $\\mathrm { ^ { 2 + } / ^ { 3 + } }$ codoped LRMO cathode material using a combined approach of co-precipitation and calcination approach. DFT calculations u",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# Supporting Information  Supporting Information is available from the Wiley Online Library or from the author.",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# Supporting Information Junxia Meng a , Wenzhuan Hu a , Quanxin Ma b,c\\*1 , Zhenzhen Wu d , Lishuang Xua, Jie Huanga, Chen Xiao a , Junru Wang a , Lina Zhang a , Feng Liu a , Xing Zhie,f\\*2 , Shanqin",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 1.1 Materials synthesis  Synthesis of cathode materials: In this experiment, $\\mathrm { _ { 1 . 2 } _ { 0 . 5 6 } _ { 0 . 1 6 } _ { 0 . 0 8 } O _ { 2 } }$ was prepared by coprecipitation method and ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 1.2 Material Characterization  An inductively coupled plasma optical emission spectrometer (ICP-OES, Perkin Elmer Optima 5300 DV) is used to explore the metal content. X-ray diffractometer (XRD) was",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 1.3 Electrochemical Measurements  The preparation process of the half-cell is as follows: Coin-type cells were constructed in an argon-filled glovebox (<0.1 ppm $\\mathrm { O } _ { 2 }$ and $_ { \\mat",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 2. Supplementary methods All calculations were performed using spin-polarised density functional theory (DFT) implemented in the Vienna ab initio simulation package (VASP) code. [1] The generalized ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The diffusion coefficient of $\\mathrm { } ^ { + } \\left( D _ { } ^ { + } \\right)$ can be calculated by the following formula:[5] $$ D _ {L i} ^ {+} = 0 \\cdot 5 \\mathrm{R} ^ {2} \\mathrm{T} ^ {2} / \\mat",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "Galvanostatic intermittent titration technique (GITT), an effective electrochemical method to calculate the $D _ { } { } ^ { + }$ is employed in this work. By measuring various voltage increases or dr",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The refined lattice parameters were further employed to calculate the thickness of the Li slab. The slab thickness (SMO2) and interslab thickness (ILiO2) can be calculated based on the following formu",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The energy density can be calculated by the following formula: $$ W = \\frac {C U}{G} \\quad \\text { Equation S7 } $$ where W refers to practical energy density, C represents the battery discharge capac",
+          "include_result": {
+            "property_types": [
+              "Crystal_Space_Group",
+              "Lattice_Parameters"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Crystal_Space_Group": [],
+              "Lattice_Parameters": []
+            }
+          }
+        },
+        {
+          "paragraph": "# Supplementary Figures  <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>text_image</summary> ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        }
+      ]
+    },
+    {
+      "material_id": "cathode_M004",
+      "material_name": "Mg/Al co-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "material_context": "novel: Mg/Al co-doped Li1.2Mn0.56Ni0.16Co0.08O2 (Li1.2Mn0.56Ni0.16Co0.08O2:Mg,Al)",
+      "material_items": [
+        {
+          "paragraph": "# 2. Results and Discussion Mg and Al were experimentally introduced into LRMO to synthesize Mg-doped (Mg-LRMO), Al-doped (Al-LRMO), and Mg/Al co-doped (Mg/Al-LRMO) cathode materials. The oxide compos",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "To obtain more detailed crystal structural information, the XRD patterns were further analyzed using Rietveld refinement, as shown in a–d, with the corresponding lattice parame-Figure 1ters listed in ",
+          "include_result": {
+            "property_types": [
+              "Crystal_Space_Group",
+              "Interlayer_Spacing_of_TM_Layers"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Crystal_Space_Group": [
+                {
+                  "value": "C2/m",
+                  "unit": "",
+                  "method": "XRD Rietveld refinement",
+                  "source_text": "the $\\mathrm { } _ { 2 } \\mathrm { } _ { 3 }$ -like phase (space group C2/m)"
+                },
+                {
+                  "value": "R-3m",
+                  "unit": "",
+                  "method": "XRD Rietveld refinement",
+                  "source_text": "the $\\mathrm { } _ { 2 }$ -like phase (space group R-3m)"
+                }
+              ],
+              "Interlayer_Spacing_of_TM_Layers": [
+                {
+                  "value": 4.7,
+                  "unit": "Å",
+                  "plane": "(001)M/(003)R",
+                  "state": "pristine",
+                  "source_text": "TEM images at high magnification and fast Fourier transform (FFT) analysis revealed that the interplanar spacing for LRMO is 0.470 nm (Figure $\\mathrm { 1 f _ { 1 } \\mathrm { - f _ { 3 } } ) }$ , corresponding to the $( 0 0 1 ) _ { \\mathrm { M } } / ( 0 0 3 ) _ { \\mathrm { R } }$ plane of the $\\mathrm { } _ { 2 }$ layered phase."
+                },
+                {
+                  "value": 4.72,
+                  "unit": "Å",
+                  "plane": "(001)M/(003)R",
+                  "state": "pristine",
+                  "source_text": "After doping, the interplanar spacing slightly increases to ≈0.472 nm for Mg/Al-LRMO (Figure $\\mathrm { } _ { 1 } { - } \\mathrm { i } _ { 3 } )$ , indicating an expanded unit cell volume consistent with the XRD results."
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "# 2.2. Electrochemical Performance  All samples exhibit similar capacities in the slope region (≈115 mAh $\\mathbf { g } ^ { - 1 } )$ , but the capacities in the plateau region decrease with the $\\math",
+          "include_result": {
+            "property_types": [
+              "Jahn_Teller_Active_Ion_Content",
+              "Element_Valence_State"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Jahn_Teller_Active_Ion_Content": [
+                {
+                  "value": 0.142,
+                  "unit": "mole fraction",
+                  "derived": true,
+                  "source_text": "The Mn3+/Mn4+ ratios are 37.99/62.01% for LRMO, 27.45/72.55% for Mg-LRMO, 22.24/77.76% for Al-LRMO and 20.28/79.72% for Mg/Al-LRMO."
+                }
+              ],
+              "Element_Valence_State": [
+                {
+                  "value": {
+                    "Mn": "+3/+4"
+                  },
+                  "unit": "oxidation state",
+                  "state": "as-synthesized",
+                  "method": "XPS",
+                  "source_text": "In the Mn 2p spectrum (Figure 3a), peaks at 642.5 and 654.3 eV correspond to Mn 2p3/2 and Mn 2p1/2, respectively. The Mn 2p3/2 peak is split into two, with the higher binding energy peak attributed to Mn4+ and the lower energy peak to Mn3+. The Mn3+/Mn4+ ratios were determined from the deconvolution results and are presented in Table S4 (Supporting Information). The Mn3+/Mn4+ ratios are 37.99/62.01% for LRMO, 27.45/72.55% for Mg-LRMO, 22.24/77.76% for Al-LRMO and 20.28/79.72% for Mg/Al-LRMO."
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "The characteristic Mg 1s XPS peaks (Figure S15, Supporting Information) were clearly observed at ≈1303.3 eV for Mg-LRMO and Mg/Al-LRMO, confirming the presence of $\\mathrm { } ^ { 2 + }$ ions.[26] Sim",
+          "include_result": {
+            "property_types": [
+              "Crystal_Space_Group",
+              "Lattice_Parameters"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Crystal_Space_Group": [],
+              "Lattice_Parameters": []
+            }
+          }
+        },
+        {
+          "paragraph": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 m",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The structure and morphology of LMRO and Mg/Al-LRMO after 100 cycles at 0.5C were further characterized by TEM, HRTEM, and FFT images. The results provide crucial insights into the degradation mechani",
+          "include_result": {
+            "property_types": [
+              "Interlayer_Spacing_of_TM_Layers",
+              "Surface_Spinel_Layer_Thickness"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Interlayer_Spacing_of_TM_Layers": [
+                {
+                  "value": 4.71,
+                  "unit": "Å",
+                  "plane": "003",
+                  "state": "after 100 cycles at 0.5C",
+                  "source_text": "the interior (region I) of LRMO retains a layered structure with a lattice spacing of 0.471 nm, corresponding to the (003) planes of the layered structure"
+                },
+                {
+                  "value": 4.75,
+                  "unit": "Å",
+                  "plane": "003",
+                  "state": "after 100 cycles at 0.5C",
+                  "source_text": "For the Mg/Al-LRMO sample (Figure 5d), the interior still maintains an intact layered-like structure with a lattice spacing of 0.475nm, corresponding to the (003) planes"
+                }
+              ],
+              "Surface_Spinel_Layer_Thickness": [
+                {
+                  "value": 8.0,
+                  "unit": "nm",
+                  "state": "after 100 cycles at 0.5C",
+                  "method": "HRTEM",
+                  "source_text": "HRTEM analysis in Figure 5b reveals that the surface of LRMO presents a distinct rocksalt-spinel mixed phase with a thickness of ≈8 nm (region II)."
+                },
+                {
+                  "value": 3.0,
+                  "unit": "nm",
+                  "state": "after 100 cycles at 0.5C",
+                  "method": "HRTEM",
+                  "source_text": "Notably, the thickness of the mixed phase region (region II) is significantly reduced, being only ≈3 nm thick"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "In summary, we successfully synthesized the $\\mathrm { ^ { 2 + } / ^ { 3 + } }$ codoped LRMO cathode material using a combined approach of co-precipitation and calcination approach. DFT calculations u",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# Supporting Information  Supporting Information is available from the Wiley Online Library or from the author.",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# Supporting Information Junxia Meng a , Wenzhuan Hu a , Quanxin Ma b,c\\*1 , Zhenzhen Wu d , Lishuang Xua, Jie Huanga, Chen Xiao a , Junru Wang a , Lina Zhang a , Feng Liu a , Xing Zhie,f\\*2 , Shanqin",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 1.1 Materials synthesis  Synthesis of cathode materials: In this experiment, $\\mathrm { _ { 1 . 2 } _ { 0 . 5 6 } _ { 0 . 1 6 } _ { 0 . 0 8 } O _ { 2 } }$ was prepared by coprecipitation method and ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 1.2 Material Characterization  An inductively coupled plasma optical emission spectrometer (ICP-OES, Perkin Elmer Optima 5300 DV) is used to explore the metal content. X-ray diffractometer (XRD) was",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 1.3 Electrochemical Measurements  The preparation process of the half-cell is as follows: Coin-type cells were constructed in an argon-filled glovebox (<0.1 ppm $\\mathrm { O } _ { 2 }$ and $_ { \\mat",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 2. Supplementary methods All calculations were performed using spin-polarised density functional theory (DFT) implemented in the Vienna ab initio simulation package (VASP) code. [1] The generalized ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The diffusion coefficient of $\\mathrm { } ^ { + } \\left( D _ { } ^ { + } \\right)$ can be calculated by the following formula:[5] $$ D _ {L i} ^ {+} = 0 \\cdot 5 \\mathrm{R} ^ {2} \\mathrm{T} ^ {2} / \\mat",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "Galvanostatic intermittent titration technique (GITT), an effective electrochemical method to calculate the $D _ { } { } ^ { + }$ is employed in this work. By measuring various voltage increases or dr",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The refined lattice parameters were further employed to calculate the thickness of the Li slab. The slab thickness (SMO2) and interslab thickness (ILiO2) can be calculated based on the following formu",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The energy density can be calculated by the following formula: $$ W = \\frac {C U}{G} \\quad \\text { Equation S7 } $$ where W refers to practical energy density, C represents the battery discharge capac",
+          "include_result": {
+            "property_types": [
+              "Crystal_Space_Group",
+              "Lattice_Parameters"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Crystal_Space_Group": [],
+              "Lattice_Parameters": []
+            }
+          }
+        },
+        {
+          "paragraph": "# Supplementary Figures  <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>text_image</summary> ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        }
+      ]
+    },
+    {
+      "material_id": "cathode_M003",
+      "material_name": "Al-doped Li1.2Mn0.56Ni0.16Co0.08O2",
+      "material_context": "novel: Al-doped Li1.2Mn0.56Ni0.16Co0.08O2 (Li1.2Mn0.56Ni0.16Co0.08O2:Al)",
+      "material_items": [
+        {
+          "paragraph": "# 2. Results and Discussion Mg and Al were experimentally introduced into LRMO to synthesize Mg-doped (Mg-LRMO), Al-doped (Al-LRMO), and Mg/Al co-doped (Mg/Al-LRMO) cathode materials. The oxide compos",
+          "include_result": {
+            "property_types": [
+              "Crystal_Space_Group"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": [
+              {
+                "value": "R-3m",
+                "unit": "",
+                "method": "XRD",
+                "source_text": "the main diffraction peaks correspond to the characteristic peaks of the ??- $\\mathbf { \\cdot } _ { 2 }$ structure with space group R-3m"
+              },
+              {
+                "value": "C2/m",
+                "unit": "",
+                "method": "XRD",
+                "source_text": "the weak diffraction peaks between $2 0 ^ { \\circ }$ and $2 { \\bar { 5 } } ^ { \\circ }$ are related to the C2/m monoclinic crystal phases associated with the $\\mathrm { } _ { 2 } \\mathrm { } _ { 3 }$ superlattice"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "To obtain more detailed crystal structural information, the XRD patterns were further analyzed using Rietveld refinement, as shown in a–d, with the corresponding lattice parame-Figure 1ters listed in ",
+          "include_result": {
+            "property_types": [
+              "Crystal_Space_Group",
+              "Interlayer_Spacing_of_TM_Layers"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Crystal_Space_Group": [
+                {
+                  "value": "C2/m",
+                  "unit": "",
+                  "method": "XRD",
+                  "source_text": "The main peaks for all samples were indexed to the $\\mathrm { } _ { 2 } \\mathrm { } _ { 3 }$ -like phase (space group C2/m) and the $\\mathrm { } _ { 2 }$ -like phase (space group R-3m)."
+                },
+                {
+                  "value": "R-3m",
+                  "unit": "",
+                  "method": "XRD",
+                  "source_text": "The main peaks for all samples were indexed to the $\\mathrm { } _ { 2 } \\mathrm { } _ { 3 }$ -like phase (space group C2/m) and the $\\mathrm { } _ { 2 }$ -like phase (space group R-3m)."
+                }
+              ],
+              "Interlayer_Spacing_of_TM_Layers": []
+            }
+          }
+        },
+        {
+          "paragraph": "# 2.2. Electrochemical Performance  All samples exhibit similar capacities in the slope region (≈115 mAh $\\mathbf { g } ^ { - 1 } )$ , but the capacities in the plateau region decrease with the $\\math",
+          "include_result": {
+            "property_types": [
+              "Jahn_Teller_Active_Ion_Content",
+              "Crystal_Space_Group",
+              "Lattice_Parameters"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Jahn_Teller_Active_Ion_Content": [
+                {
+                  "value": 0.2224,
+                  "unit": "mole fraction",
+                  "derived": false,
+                  "source_text": "The Mn3+/Mn4+ ratios are 37.99/62.01% for LRMO, 27.45/72.55% for Mg-LRMO, 22.24/77.76% for Al-LRMO and 20.28/79.72% for Mg/Al-LRMO."
+                }
+              ],
+              "Crystal_Space_Group": [],
+              "Lattice_Parameters": []
+            }
+          }
+        },
+        {
+          "paragraph": "The characteristic Mg 1s XPS peaks (Figure S15, Supporting Information) were clearly observed at ≈1303.3 eV for Mg-LRMO and Mg/Al-LRMO, confirming the presence of $\\mathrm { } ^ { 2 + }$ ions.[26] Sim",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 m",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The structure and morphology of LMRO and Mg/Al-LRMO after 100 cycles at 0.5C were further characterized by TEM, HRTEM, and FFT images. The results provide crucial insights into the degradation mechani",
+          "include_result": {
+            "property_types": [
+              "Interlayer_Spacing_of_TM_Layers",
+              "Surface_Spinel_Layer_Thickness"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Interlayer_Spacing_of_TM_Layers": [
+                {
+                  "value": 4.71,
+                  "unit": "Å",
+                  "plane": "003",
+                  "state": "after 100 cycles at 0.5C",
+                  "source_text": "The interior (region I) of LRMO retains a layered structure with a lattice spacing of 0.471 nm, corresponding to the (003) planes of the layered structure"
+                },
+                {
+                  "value": 4.75,
+                  "unit": "Å",
+                  "plane": "003",
+                  "state": "after 100 cycles at 0.5C",
+                  "source_text": "For the Mg/Al-LRMO sample (Figure 5d), the interior still maintains an intact layered-like structure with a lattice spacing of 0.475nm, corresponding to the (003) planes of the ... phase"
+                }
+              ],
+              "Surface_Spinel_Layer_Thickness": [
+                {
+                  "value": 8,
+                  "unit": "nm",
+                  "state": "after 100 cycles at 0.5C",
+                  "method": "HRTEM",
+                  "source_text": "HRTEM analysis in Figure 5b reveals that the surface of LRMO presents a distinct rocksalt-spinel mixed phase with a thickness of ≈8 nm (region II)."
+                },
+                {
+                  "value": 3,
+                  "unit": "nm",
+                  "state": "after 100 cycles at 0.5C",
+                  "method": "HRTEM",
+                  "source_text": "Notably, the thickness of the mixed phase region (region II) is significantly reduced, being only ≈3 nm thick"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "In summary, we successfully synthesized the $\\mathrm { ^ { 2 + } / ^ { 3 + } }$ codoped LRMO cathode material using a combined approach of co-precipitation and calcination approach. DFT calculations u",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# Supporting Information  Supporting Information is available from the Wiley Online Library or from the author.",
+          "include_result": {
+            "property_types": [
+              "Crystal_Space_Group",
+              "Lattice_Parameters"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Crystal_Space_Group": [],
+              "Lattice_Parameters": []
+            }
+          }
+        },
+        {
+          "paragraph": "# Supporting Information Junxia Meng a , Wenzhuan Hu a , Quanxin Ma b,c\\*1 , Zhenzhen Wu d , Lishuang Xua, Jie Huanga, Chen Xiao a , Junru Wang a , Lina Zhang a , Feng Liu a , Xing Zhie,f\\*2 , Shanqin",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 1.1 Materials synthesis  Synthesis of cathode materials: In this experiment, $\\mathrm { _ { 1 . 2 } _ { 0 . 5 6 } _ { 0 . 1 6 } _ { 0 . 0 8 } O _ { 2 } }$ was prepared by coprecipitation method and ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 1.2 Material Characterization  An inductively coupled plasma optical emission spectrometer (ICP-OES, Perkin Elmer Optima 5300 DV) is used to explore the metal content. X-ray diffractometer (XRD) was",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 1.3 Electrochemical Measurements  The preparation process of the half-cell is as follows: Coin-type cells were constructed in an argon-filled glovebox (<0.1 ppm $\\mathrm { O } _ { 2 }$ and $_ { \\mat",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 2. Supplementary methods All calculations were performed using spin-polarised density functional theory (DFT) implemented in the Vienna ab initio simulation package (VASP) code. [1] The generalized ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The diffusion coefficient of $\\mathrm { } ^ { + } \\left( D _ { } ^ { + } \\right)$ can be calculated by the following formula:[5] $$ D _ {L i} ^ {+} = 0 \\cdot 5 \\mathrm{R} ^ {2} \\mathrm{T} ^ {2} / \\mat",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "Galvanostatic intermittent titration technique (GITT), an effective electrochemical method to calculate the $D _ { } { } ^ { + }$ is employed in this work. By measuring various voltage increases or dr",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The refined lattice parameters were further employed to calculate the thickness of the Li slab. The slab thickness (SMO2) and interslab thickness (ILiO2) can be calculated based on the following formu",
+          "include_result": {
+            "property_types": [
+              "Crystal_Space_Group"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": [
+              {
+                "value": "R-3m",
+                "unit": "",
+                "method": "",
+                "source_text": "In Equation S5 and S6, $\\mathrm { \\Delta } Z _ { \\mathrm { } }$ is the coordinated 6c lattice position occupied by ${ \\mathrm { O } } ^ { 2 \\cdot }$ in the c-direction and C is the lattice constant in R-3m structure."
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "The energy density can be calculated by the following formula: $$ W = \\frac {C U}{G} \\quad \\text { Equation S7 } $$ where W refers to practical energy density, C represents the battery discharge capac",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# Supplementary Figures  <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>text_image</summary> ",
+          "include_result": {
+            "property_types": [
+              "Interlayer_Spacing_of_TM_Layers",
+              "Chemical_Composition_Mole_Fractions"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Interlayer_Spacing_of_TM_Layers": [],
+              "Chemical_Composition_Mole_Fractions": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "material_id": "cathode_M001",
+      "material_name": "Li1.2Mn0.56Ni0.16Co0.08O2",
+      "material_context": "comparison: Li1.2Mn0.56Ni0.16Co0.08O2 (Li1.2Mn0.56Ni0.16Co0.08O2)",
+      "material_items": [
+        {
+          "paragraph": "# 2. Results and Discussion Mg and Al were experimentally introduced into LRMO to synthesize Mg-doped (Mg-LRMO), Al-doped (Al-LRMO), and Mg/Al co-doped (Mg/Al-LRMO) cathode materials. The oxide compos",
+          "include_result": {
+            "property_types": [
+              "Crystal_Space_Group"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": [
+              {
+                "value": "R-3m",
+                "unit": "",
+                "method": "XRD",
+                "source_text": "As shown in Figure S1a (Supporting Information), the main diffraction peaks correspond to the characteristic peaks of the ??- $\\mathbf { \\cdot } _ { 2 }$ structure with space group R-3m, while the weak diffraction peaks between $2 0 ^ { \\circ }$ and $2 { \\bar { 5 } } ^ { \\circ }$ are related to the C2/m monoclinic crystal phases associated with the $\\mathrm { } _ { 2 } \\mathrm { } _ { 3 }$ superlattice."
+              },
+              {
+                "value": "C2/m",
+                "unit": "",
+                "method": "XRD",
+                "source_text": "As shown in Figure S1a (Supporting Information), the main diffraction peaks correspond to the characteristic peaks of the ??- $\\mathbf { \\cdot } _ { 2 }$ structure with space group R-3m, while the weak diffraction peaks between $2 0 ^ { \\circ }$ and $2 { \\bar { 5 } } ^ { \\circ }$ are related to the C2/m monoclinic crystal phases associated with the $\\mathrm { } _ { 2 } \\mathrm { } _ { 3 }$ superlattice."
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "To obtain more detailed crystal structural information, the XRD patterns were further analyzed using Rietveld refinement, as shown in a–d, with the corresponding lattice parame-Figure 1ters listed in ",
+          "include_result": {
+            "property_types": [
+              "Crystal_Space_Group",
+              "Interlayer_Spacing_of_TM_Layers"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Crystal_Space_Group": [
+                {
+                  "value": "C2/m",
+                  "unit": "",
+                  "method": "XRD Rietveld refinement",
+                  "source_text": "The main peaks for all samples were indexed to the $\\mathrm { } _ { 2 } \\mathrm { } _ { 3 }$ -like phase (space group C2/m) and the $\\mathrm { } _ { 2 }$ -like phase (space group R-3m)."
+                },
+                {
+                  "value": "R-3m",
+                  "unit": "",
+                  "method": "XRD Rietveld refinement",
+                  "source_text": "The main peaks for all samples were indexed to the $\\mathrm { } _ { 2 } \\mathrm { } _ { 3 }$ -like phase (space group C2/m) and the $\\mathrm { } _ { 2 }$ -like phase (space group R-3m)."
+                }
+              ],
+              "Interlayer_Spacing_of_TM_Layers": [
+                {
+                  "value": 4.7,
+                  "unit": "Å",
+                  "plane": "003",
+                  "state": "pristine",
+                  "source_text": "TEM images at high magnification and fast Fourier transform (FFT) analysis revealed that the interplanar spacing for LRMO is 0.470 nm (Figure $\\mathrm { 1 f _ { 1 } \\mathrm { - f _ { 3 } } ) }$ , corresponding to the $( 0 0 1 ) _ { \\mathrm { M } } / ( 0 0 3 ) _ { \\mathrm { R } }$ plane of the $\\mathrm { } _ { 2 }$ layered phase."
+                },
+                {
+                  "value": 4.72,
+                  "unit": "Å",
+                  "plane": "003",
+                  "state": "pristine",
+                  "source_text": "After doping, the interplanar spacing slightly increases to ≈0.472 nm for Mg/Al-LRMO (Figure $\\mathrm { } _ { 1 } { - } \\mathrm { i } _ { 3 } )$ , indicating an expanded unit cell volume consistent with the XRD results."
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "# 2.2. Electrochemical Performance  All samples exhibit similar capacities in the slope region (≈115 mAh $\\mathbf { g } ^ { - 1 } )$ , but the capacities in the plateau region decrease with the $\\math",
+          "include_result": {
+            "property_types": [
+              "Jahn_Teller_Active_Ion_Content",
+              "Element_Valence_State"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": [
+              {
+                "value": 0.266,
+                "unit": "mole fraction",
+                "derived": true,
+                "source_text": "The Mn3+/Mn4+ ratios are 37.99/62.01% for LRMO, 27.45/72.55% for Mg-LRMO, 22.24/77.76% for Al-LRMO and 20.28/79.72% for Mg/Al-LRMO."
+              },
+              {
+                "value": {
+                  "Mn": "+3/+4",
+                  "Ni": "+2/+3",
+                  "Co": "+2/+3"
+                },
+                "unit": "oxidation state",
+                "state": "as-synthesized",
+                "method": "XPS",
+                "source_text": "The Mn 2p3/2 peak is split into two, with the higher binding energy peak attributed to Mn4+ and the lower energy peak to Mn3+. As shown in Figure S13 (Supporting Information), the Ni 2p3/2 peaks correspond to Ni2+ and Ni3+. Mg2+ and Al3+ doping promoted the transition from Ni2+ to Ni3+ and Co2+ to Co3+."
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "The characteristic Mg 1s XPS peaks (Figure S15, Supporting Information) were clearly observed at ≈1303.3 eV for Mg-LRMO and Mg/Al-LRMO, confirming the presence of $\\mathrm { } ^ { 2 + }$ ions.[26] Sim",
+          "include_result": {
+            "property_types": [
+              "Element_Valence_State"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": [
+              {
+                "value": {
+                  "Mg": "+2",
+                  "Al": "+3"
+                },
+                "unit": "oxidation state",
+                "state": "as-synthesized",
+                "method": "XPS",
+                "source_text": "The characteristic Mg 1s XPS peaks (Figure S15, Supporting Information) were clearly observed at ≈1303.3 eV for Mg-LRMO and Mg/Al-LRMO, confirming the presence of $\\mathrm { } ^ { 2 + }$ ions.[26] Similarly, the Al 2p peak (Figure S16, Supporting Information) was detected at ≈67.2 and 72.6 eV for Al-LRMO and $\\mathrm { / } \\cdot$ - LRMO, corresponding to the + 3 oxidation states of $\\mathrm { . } ^ { \\left[ 2 7 \\right] }$"
+              }
+            ]
+          }
+        },
+        {
+          "paragraph": "Cyclic voltammetry (CV) tests were performed to detect the polarization caused by side reactions between the cathode materials and electrolytes. The CV curves at different scan rates from 0.2 to 2.0 m",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The structure and morphology of LMRO and Mg/Al-LRMO after 100 cycles at 0.5C were further characterized by TEM, HRTEM, and FFT images. The results provide crucial insights into the degradation mechani",
+          "include_result": {
+            "property_types": [
+              "Interlayer_Spacing_of_TM_Layers",
+              "Crystal_Space_Group",
+              "Surface_Spinel_Layer_Thickness"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Interlayer_Spacing_of_TM_Layers": [
+                {
+                  "value": 4.71,
+                  "unit": "Å",
+                  "plane": "003",
+                  "state": "after 100 cycles at 0.5C",
+                  "source_text": "The interior (region I) of LRMO retains a layered structure with a lattice spacing of 0.471 nm, corresponding to the (003) planes of the layered structure"
+                },
+                {
+                  "value": 4.75,
+                  "unit": "Å",
+                  "plane": "003",
+                  "state": "after 100 cycles at 0.5C",
+                  "source_text": "the interior still maintains an intact layered-like structure with a lattice spacing of 0.475nm, corresponding to the (003) planes of the $\\mathrm { } _ { 2 } \\mathrm { } _ { 3 }$ phase"
+                }
+              ],
+              "Crystal_Space_Group": [
+                {
+                  "value": "·3m",
+                  "unit": "",
+                  "method": "FFT",
+                  "source_text": "The diffraction spot (200) and (022—) in the FFT image (Figure $\\mathrm { 5 b } _ { 3 } , \\mathrm { b } _ { 4 } )$ confirm the presence of a rocksalt phase $( \\mathrm { } { \\cdot } 3 \\mathrm { m } ) . ^ { \\left[ 3 6 \\right] }$"
+                }
+              ],
+              "Surface_Spinel_Layer_Thickness": [
+                {
+                  "value": 8.0,
+                  "unit": "nm",
+                  "state": "after 100 cycles at 0.5C",
+                  "method": "HRTEM",
+                  "source_text": "HRTEM analysis in Figure 5b reveals that the surface of LRMO presents a distinct rocksalt-spinel mixed phase with a thickness of ≈8 nm (region II)."
+                },
+                {
+                  "value": 3.0,
+                  "unit": "nm",
+                  "state": "after 100 cycles at 0.5C",
+                  "method": "HRTEM",
+                  "source_text": "the thickness of the mixed phase region (region II) is significantly reduced, being only ≈3 nm thick"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "paragraph": "In summary, we successfully synthesized the $\\mathrm { ^ { 2 + } / ^ { 3 + } }$ codoped LRMO cathode material using a combined approach of co-precipitation and calcination approach. DFT calculations u",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# Supporting Information  Supporting Information is available from the Wiley Online Library or from the author.",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# Supporting Information Junxia Meng a , Wenzhuan Hu a , Quanxin Ma b,c\\*1 , Zhenzhen Wu d , Lishuang Xua, Jie Huanga, Chen Xiao a , Junru Wang a , Lina Zhang a , Feng Liu a , Xing Zhie,f\\*2 , Shanqin",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 1.1 Materials synthesis  Synthesis of cathode materials: In this experiment, $\\mathrm { _ { 1 . 2 } _ { 0 . 5 6 } _ { 0 . 1 6 } _ { 0 . 0 8 } O _ { 2 } }$ was prepared by coprecipitation method and ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 1.2 Material Characterization  An inductively coupled plasma optical emission spectrometer (ICP-OES, Perkin Elmer Optima 5300 DV) is used to explore the metal content. X-ray diffractometer (XRD) was",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 1.3 Electrochemical Measurements  The preparation process of the half-cell is as follows: Coin-type cells were constructed in an argon-filled glovebox (<0.1 ppm $\\mathrm { O } _ { 2 }$ and $_ { \\mat",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# 2. Supplementary methods All calculations were performed using spin-polarised density functional theory (DFT) implemented in the Vienna ab initio simulation package (VASP) code. [1] The generalized ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The diffusion coefficient of $\\mathrm { } ^ { + } \\left( D _ { } ^ { + } \\right)$ can be calculated by the following formula:[5] $$ D _ {L i} ^ {+} = 0 \\cdot 5 \\mathrm{R} ^ {2} \\mathrm{T} ^ {2} / \\mat",
+          "include_result": {
+            "property_types": [
+              "Crystal_Space_Group",
+              "Lattice_Parameters"
+            ]
+          },
+          "extract_result": {
+            "extracted_info": {
+              "Crystal_Space_Group": [],
+              "Lattice_Parameters": []
+            }
+          }
+        },
+        {
+          "paragraph": "Galvanostatic intermittent titration technique (GITT), an effective electrochemical method to calculate the $D _ { } { } ^ { + }$ is employed in this work. By measuring various voltage increases or dr",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The refined lattice parameters were further employed to calculate the thickness of the Li slab. The slab thickness (SMO2) and interslab thickness (ILiO2) can be calculated based on the following formu",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "The energy density can be calculated by the following formula: $$ W = \\frac {C U}{G} \\quad \\text { Equation S7 } $$ where W refers to practical energy density, C represents the battery discharge capac",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        },
+        {
+          "paragraph": "# Supplementary Figures  <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>line</summary> </details> <details> <summary>text_image</summary> ",
+          "include_result": {
+            "property_types": []
+          },
+          "extract_result": {
+            "extracted_info": {}
+          }
+        }
+      ]
+    }
+  ]
+}

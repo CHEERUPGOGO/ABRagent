@@ -1,0 +1,579 @@
+{
+  "file": "/home/ls/xiaoyue/LLM2/LMLLM/database/type/100/Lithium_Ion_Metal_Battery/electrolyte/10.1016_j.ensm.2025.104514.md",
+  "component": "electrolyte",
+  "paper_id": "10.1016/j.ensm.2025.104514",
+  "doi": "10.1016/j.ensm.2025.104514",
+  "material_id": "10.1016_j.ensm.2025.104514",
+  "meta": {
+    "meta_title": "Modulating the electrode–electrolyte interphases for high–energy lithium–metal b",
+    "meta_authors": "Jae-Min Kim a,1 , Hun Kim a,1 , Yeon-Ji Ahn b , Yo-Han Yang b , Yang-Kook Sun a,b,\\*",
+    "meta_year": "2025"
+  },
+  "materials": [
+    {
+      "name": "1M LiPF6 in EMC:FEC (5:1 v/v) (Baseline)",
+      "short_name": "Baseline",
+      "formula": "1M LiPF6 EMC:FEC (5:1)",
+      "role": "baseline",
+      "description": "Standard carbonate reference electrolyte without additives.",
+      "material_id": "10.1016_j.ensm.2025.104514_M001"
+    },
+    {
+      "name": "1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP",
+      "short_name": "LiDFP",
+      "formula": "1M LiPF6 EMC:FEC (5:1) + 0.1M LiDFP",
+      "role": "comparison",
+      "description": "Baseline electrolyte with 0.1 M LiDFP additive.",
+      "material_id": "10.1016_j.ensm.2025.104514_M002"
+    },
+    {
+      "name": "1M LiPF6 in EMC:FEC (5:1 v/v) with 0.02M LiNO3 and trace EC",
+      "short_name": "LiNO3",
+      "formula": "1M LiPF6 EMC:FEC (5:1) + 0.02M LiNO3 + EC (trace)",
+      "role": "comparison",
+      "description": "Baseline electrolyte with 0.02 M LiNO3 dissolved using EC co-solvent.",
+      "material_id": "10.1016_j.ensm.2025.104514_M003"
+    },
+    {
+      "name": "1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP and 0.02M LiNO3 and trace EC",
+      "short_name": "LiDFP/LiNO3",
+      "formula": "1M LiPF6 EMC:FEC (5:1) + 0.1M LiDFP + 0.02M LiNO3 + EC (trace)",
+      "role": "novel",
+      "description": "Dual-additive electrolyte with 0.1 M LiDFP and 0.02 M LiNO3 for synergistic SEI/CEI formation.",
+      "material_id": "10.1016_j.ensm.2025.104514_M004"
+    }
+  ],
+  "n_materials": 4,
+  "table_items": [],
+  "n_items": 7,
+  "items": [
+    {
+      "paragraph": "All samples were prepared in an Ar-filled glovebox to prevent contamination. The cathode and anode were washed with dimethyl carbonate DMC, Daejung, geq 99.5 % , which had been dried using molecular s",
+      "conditions": [
+        {
+          "condition_id": "C001",
+          "atmosphere": "Ar-filled glovebox",
+          "electrolyte": "dimethyl carbonate (DMC)",
+          "test_method": "XPS depth profiling",
+          "c_rate_or_current": {
+            "value": 1.0,
+            "unit": "keV"
+          }
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Transition_Metal_Dissolution_Concentration"
+      ],
+      "performance_info": {
+        "Transition_Metal_Dissolution_Concentration": [
+          {
+            "unit": "mg/L",
+            "cycle_number": 0,
+            "method": "ICP-MS (NexION 350D, PerkinElmer)",
+            "source_text": "The degree of TM dissolution from the cathode was analyzed using ICP-MS NexION 350D, PerkinElmer."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "To directly observe the impact of electrolyte-dependent CEI layer composition on the structural degradation of the cathode, transmission electron microscopy TEM analysis was conducted. For this purpos",
+      "conditions": [
+        {
+          "condition_id": "C002",
+          "voltage_range": {
+            "max": 4.3,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) (Baseline)",
+          "cycle_number": 150,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C003",
+          "voltage_range": {
+            "max": 4.3,
+            "unit": "V",
+            "reference": "vs. Li/Li+"
+          },
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP and 0.02M LiNO3 and trace EC (novel)",
+          "cycle_number": 200,
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "The byproducts accumulated from side reactions and the formation of an inhomogeneous EEI layer contribute to an increased interfacial resistance between the electrode and electrolyte, ultimately leadi",
+      "conditions": [
+        {
+          "condition_id": "C004",
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) (Baseline); 1M LiPF6 EMC:FEC (5:1) + 0.1M LiDFP; 1M LiPF6 EMC:FEC (5:1) + 0.02M LiNO3 + trace EC; 1M LiPF6 EMC:FEC (5:1) + 0.1M LiDFP + 0.02M LiNO3 + trace EC",
+          "mass_loading": {
+            "value": 4,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "EIS",
+          "cycle_number": "1-300, every 50 cycles",
+          "reference_electrode": "Li/Li+"
+        },
+        {
+          "condition_id": "C005",
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) (Baseline); 1M LiPF6 EMC:FEC (5:1) + 0.1M LiDFP; 1M LiPF6 EMC:FEC (5:1) + 0.02M LiNO3 + trace EC; 1M LiPF6 EMC:FEC (5:1) + 0.1M LiDFP + 0.02M LiNO3 + trace EC",
+          "mass_loading": {
+            "value": 20,
+            "unit": "mg/cm2"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "EIS",
+          "cycle_number": "1-300, every 50 cycles",
+          "reference_electrode": "Li/Li+"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Charge_Transfer_Resistance",
+        "SEI_Resistance"
+      ],
+      "performance_info": {
+        "Charge_Transfer_Resistance": [
+          {
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "the mathrm / 3 electrolyte solution consistently exhibited the lowest charge transfer resistance mathrm R between the 1st and 300th cycles"
+          },
+          {
+            "unit": "Ω",
+            "condition_id": "C001",
+            "source_text": "the mathrm 3 electrolyte solution exhibited the highest mathrm R among the four electrolyte solutions"
+          },
+          {
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "the operatorname R operatorname values in the baseline and LiDFP electrolyte solutions sharply increased after 10 cycles, whereas moderate increases were observed for the mathrm 3 and mathrm / 3 solutions"
+          }
+        ],
+        "SEI_Resistance": [
+          {
+            "unit": "Ω",
+            "condition_id": "C002",
+            "source_text": "in the high-loading cathode cells using mathrm 3 and LiDF-mathrm P / 3 electrolyte solutions, mathrm R mathrm was found to be slightly higher than mathrm R mathrm , and this difference became more pronounced with continued cycling. This suggest that SEI layer resistance increases under high-loading conditions"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Inductively coupled plasma–mass spectroscopy ICP-MS analyses revealed that the extent of Ni dissolution was suppressed by the CEI layers formed from each electrolyte solution Fig. S19. The cathode cha",
+      "conditions": [
+        {
+          "condition_id": "C006",
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) (Baseline)",
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C007",
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP",
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C008",
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) with 0.02M LiNO3 and trace EC",
+          "electrode_config": "full_cell"
+        },
+        {
+          "condition_id": "C009",
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP and 0.02M LiNO3 and trace EC",
+          "electrode_config": "full_cell"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Transition_Metal_Dissolution_Concentration"
+      ],
+      "performance_info": {
+        "Transition_Metal_Dissolution_Concentration": [
+          {
+            "value": {
+              "Ni": 1078
+            },
+            "unit": "ppb",
+            "cycle_number": 0,
+            "method": "ICP-MS",
+            "condition_id": "C001",
+            "source_text": "The cathode charged with the baseline electrolyte solution exhibited a Ni concentration of 1078 ppb"
+          },
+          {
+            "value": {
+              "Ni": 348.4
+            },
+            "unit": "ppb",
+            "cycle_number": 0,
+            "method": "ICP-MS",
+            "condition_id": "C002",
+            "source_text": "the LiDFP- and mathrm 3 . - electrolyte solutions showed moderately reduced levels of Ni dissolution, which concentrations of 348.4 and 438.3 ppb, respectively."
+          },
+          {
+            "value": {
+              "Ni": 438.3
+            },
+            "unit": "ppb",
+            "cycle_number": 0,
+            "method": "ICP-MS",
+            "condition_id": "C003",
+            "source_text": "the LiDFP- and mathrm 3 . - electrolyte solutions showed moderately reduced levels of Ni dissolution, which concentrations of 348.4 and 438.3 ppb, respectively."
+          },
+          {
+            "value": {
+              "Ni": 166.7
+            },
+            "unit": "ppb",
+            "cycle_number": 0,
+            "method": "ICP-MS",
+            "condition_id": "C004",
+            "source_text": "the mathrm / 3 electrolyte solution exhibited the lowest degree of Ni dissolution mathrm i . e . , 166.7 ppb."
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Following the activation and subsequent charging to 4.3 V at 1 mathrm C , the cathodes were recovered from the LiNCM90 Li-metal full cells for XPS analysis. In the C 1 s spectra, the additional C–F 29",
+      "conditions": [
+        {
+          "condition_id": "C010",
+          "voltage_range": {
+            "min": 0.0,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) (Baseline)",
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic charge"
+        },
+        {
+          "condition_id": "C011",
+          "voltage_range": {
+            "min": 0.0,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP",
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic charge"
+        },
+        {
+          "condition_id": "C012",
+          "voltage_range": {
+            "min": 0.0,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) with 0.02M LiNO3 and trace EC",
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic charge"
+        },
+        {
+          "condition_id": "C013",
+          "voltage_range": {
+            "min": 0.0,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP and 0.02M LiNO3 and trace EC",
+          "electrode_config": "full_cell",
+          "reference_electrode": "Li/Li+",
+          "test_method": "galvanostatic charge"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Inorganic_Organic_Ratio_SEI_CEI"
+      ],
+      "performance_info": {
+        "Inorganic_Organic_Ratio_SEI_CEI": [
+          {
+            "value": 56.52,
+            "unit": "%",
+            "interphase": "CEI",
+            "cycle_number": 0,
+            "condition_id": "C001",
+            "source_text": "Quantitative analysis of the C 1 s spectra for the baseline, LiDFP, LiNO3, LiDFP+LiNO3 solutions showed that 56.52, 41.88, 55.09, and 32.15 % of the total peak areas, respectively, corresponded to organic compounds"
+          },
+          {
+            "value": 41.88,
+            "unit": "%",
+            "interphase": "CEI",
+            "cycle_number": 0,
+            "condition_id": "C002",
+            "source_text": "Quantitative analysis of the C 1 s spectra for the baseline, LiDFP, LiNO3, LiDFP+LiNO3 solutions showed that 56.52, 41.88, 55.09, and 32.15 % of the total peak areas, respectively, corresponded to organic compounds"
+          },
+          {
+            "value": 55.09,
+            "unit": "%",
+            "interphase": "CEI",
+            "cycle_number": 0,
+            "condition_id": "C003",
+            "source_text": "Quantitative analysis of the C 1 s spectra for the baseline, LiDFP, LiNO3, LiDFP+LiNO3 solutions showed that 56.52, 41.88, 55.09, and 32.15 % of the total peak areas, respectively, corresponded to organic compounds"
+          },
+          {
+            "value": 32.15,
+            "unit": "%",
+            "interphase": "CEI",
+            "cycle_number": 0,
+            "condition_id": "C004",
+            "source_text": "Quantitative analysis of the C 1 s spectra for the baseline, LiDFP, LiNO3, LiDFP+LiNO3 solutions showed that 56.52, 41.88, 55.09, and 32.15 % of the total peak areas, respectively, corresponded to organic compounds"
+          }
+        ]
+      },
+      "condition_id": "C001"
+    },
+    {
+      "paragraph": "Coin cells were assembled in an Ar-filled glovebox using 2032-type cell components Hoshen. The cathodes were punched to a diameter of 10 mm, and a 200 μm-thick Li-metal Honjo Metal disc with a diamete",
+      "conditions": [
+        {
+          "condition_id": "C014",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.1",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "full_cell",
+          "cycle_number": 5,
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C015",
+          "temperature": {
+            "value": 30,
+            "unit": "C"
+          },
+          "c_rate_or_current": {
+            "value": "0.5",
+            "unit": "C"
+          },
+          "voltage_range": {
+            "min": 3.0,
+            "max": 4.3,
+            "unit": "V",
+            "reference": "Li/Li+"
+          },
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C016",
+          "test_method": "EIS"
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {}
+    },
+    {
+      "paragraph": "To investigate the effects of dual additives on the electrochemical performance of a high areal capacity LMB containing a Ni-rich cathode, LiNCM90 Li-metal full cell using a high-loading cathode ≈4.6 ",
+      "conditions": [
+        {
+          "condition_id": "C017",
+          "c_rate_or_current": {
+            "value": 4.6,
+            "unit": "mA/cm2"
+          },
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) (Baseline); 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP; 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.02M LiNO3 and trace EC; 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP and 0.02M LiNO3 and trace EC",
+          "electrode_config": "Li-metal full cell (LiNCM90)",
+          "test_method": "galvanostatic preparation"
+        },
+        {
+          "condition_id": "C018",
+          "c_rate_or_current": {
+            "value": 1,
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) (Baseline); 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP; 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.02M LiNO3 and trace EC; 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP and 0.02M LiNO3 and trace EC",
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C019",
+          "c_rate_or_current": {
+            "value": "0.5 C (charge) / 1 C (discharge)",
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) (Baseline); 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP; 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.02M LiNO3 and trace EC; 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP and 0.02M LiNO3 and trace EC",
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C020",
+          "c_rate_or_current": {
+            "value": 0.5,
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) (Baseline); 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP; 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.02M LiNO3 and trace EC; 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP and 0.02M LiNO3 and trace EC",
+          "electrode_config": "full_cell",
+          "test_method": "galvanostatic cycling"
+        },
+        {
+          "condition_id": "C021",
+          "c_rate_or_current": {
+            "value": "0.2 C discharge/charge (base)",
+            "unit": "C"
+          },
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) (Baseline); 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP; 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.02M LiNO3 and trace EC; 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP and 0.02M LiNO3 and trace EC",
+          "electrode_config": "full_cell",
+          "test_method": "rate capability test"
+        },
+        {
+          "condition_id": "C022",
+          "test_method": "GITT",
+          "electrode_config": "full_cell",
+          "electrolyte": "1M LiPF6 in EMC:FEC (5:1 v/v) (Baseline); 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP; 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.02M LiNO3 and trace EC; 1M LiPF6 in EMC:FEC (5:1 v/v) with 0.1M LiDFP and 0.02M LiNO3 and trace EC",
+          "cycle_number": 1
+        }
+      ],
+      "property_types": [],
+      "extracted_info": {},
+      "performance_types": [
+        "Capacity_Retention",
+        "Coulombic_Efficiency",
+        "Rate_Capability"
+      ],
+      "performance_info": {
+        "Rate_Capability": [
+          {
+            "value": [
+              198.8,
+              204.8
+            ],
+            "unit": "mAh/g",
+            "condition_id": "C002",
+            "source_text": "All Li-metal full cells delivered similar initial discharge capacities of 198.8–204.8 mAh g–1 at 1 C"
+          }
+        ],
+        "Coulombic_Efficiency": [
+          {
+            "value": 99.87,
+            "unit": "%",
+            "cycle_number": 300,
+            "condition_id": "C002",
+            "source_text": "the cell incorporating the LiDFP/LiNO3 solution exhibited a significantly enhanced cycle life, maintaining a CE ≥99.87 % over 300 cycles"
+          }
+        ],
+        "Capacity_Retention": [
+          {
+            "value": 93.8,
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C003",
+            "source_text": "the Li-metal full cell using the baseline solution retained 93.8 % after 50 cycles (lean electrolyte, 0.5C charge/1C discharge)"
+          },
+          {
+            "value": 95.9,
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C003",
+            "source_text": "the Li-metal full cell using the LiDFP solution retained 95.9 % after 50 cycles (lean electrolyte, 0.5C charge/1C discharge)"
+          },
+          {
+            "value": 94.2,
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C003",
+            "source_text": "the Li-metal full cell using the LiNO3 solution retained 94.2 % after 50 cycles (lean electrolyte, 0.5C charge/1C discharge)"
+          },
+          {
+            "value": 97.2,
+            "unit": "%",
+            "cycle_number": 50,
+            "condition_id": "C003",
+            "source_text": "the Li-metal full cell using the LiDFP/LiNO3 solution retained 97.2 % after 50 cycles (lean electrolyte, 0.5C charge/1C discharge)"
+          },
+          {
+            "value": 76.1,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C003",
+            "source_text": "the cell employing the LiNO3 solution retained 76.1 % of its initial capacity after 200 cycles (lean electrolyte, 0.5C charge/1C discharge)"
+          },
+          {
+            "value": 84.4,
+            "unit": "%",
+            "cycle_number": 200,
+            "condition_id": "C003",
+            "source_text": "the cell employing the LiDFP/LiNO3 solution retained 84.4 % of its initial capacity after 200 cycles (lean electrolyte, 0.5C charge/1C discharge)"
+          },
+          {
+            "value": 88.4,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C004",
+            "source_text": "the Li-metal full cell using baseline solution exhibited retention of 88.4 % after 100 cycles at 0.5 C charge/discharge"
+          },
+          {
+            "value": 88.7,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C004",
+            "source_text": "the Li-metal full cell using LiDFP solution exhibited retention of 88.7 % after 100 cycles at 0.5 C charge/discharge"
+          },
+          {
+            "value": 93.6,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C004",
+            "source_text": "the Li-metal full cell using LiNO3 solution exhibited retention of 93.6 % after 100 cycles at 0.5 C charge/discharge"
+          },
+          {
+            "value": 95.1,
+            "unit": "%",
+            "cycle_number": 100,
+            "condition_id": "C004",
+            "source_text": "the Li-metal full cell using LiDFP/LiNO3 solution exhibited retention of 95.1 % after 100 cycles at 0.5 C charge/discharge"
+          }
+        ]
+      },
+      "condition_id": "C002"
+    }
+  ]
+}

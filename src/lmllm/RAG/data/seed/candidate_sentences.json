@@ -1,0 +1,148 @@
+{
+  "doping": [
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "Electrochemical Performance All samples exhibit similar capacities in the slope region (≈115 mAh $\\mathbf { g } ^ { - 1 } )$ , but the capacities in the plateau region decrease with the $\\mathbf { M } \\mathbf { g } ^ { 2 + }$ and $\\mathsf { } ^ { 3 + }$ doping: 209.1 mAh $\\mathbf { g } ^ { - 1 }$ for Mg-LRMO, 200.5 mAh $\\mathsf { g } ^ { - 1 }$ for Al-LRMO and 194.9 mAh $\\mathbf { g } ^ { - 1 }$ for Mg/Al-LRMO ( a)."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "This improvement in capacity retention can be attributed to the stabilizing effects of M $\\mathsf { } ^ { 2 + }$ and $\\mathsf { } ^ { 3 + }$ co-doping in the lattice structure."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "This result clearly demonstrates that co-doping with Mg and Al enhances structural stability and facilitates the rapid insertion and extraction of Li+ during charge–discharge cycles."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "</details> <details> <summary>line</summary> </details> <details> <summary>bar</summary> </details> X-ray photoelectron spectroscopy (XPS) analysis was conducted on LRMO, Mg-LRMO, Al-LRMO, and Mg/Al-LRMO to investigate elemental species and evaluate the effects of $\\mathrm { ^ { 2 + } / ^ { 3 + } }$ doping on the surface chemical states of the materials."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "In contrast, the Mg/Al-LRMO displayed a much more controlled increase, from 10.86% (1st cycle) to 25.68% (200th cycle), suggesting that the co-doping of Mg and Al effectively inhibited the voltage decay and maintained a more stable performance."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "Compared to the LRMO electrode, the Mg and Aldoped electrodes exhibit significantly mitigated redox peak shifts as the scan rate increased."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "These results indicate that Mg/Al co-doping can reduce the polarization and accelerate the $\\mathrm { ^ { + } }$ diffusion, thereby improving the reaction kinetics of the cathode material."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "This indicates that the Mg and Al co-doping has effectively limited the extent of the phase transition."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "In summary, we successfully synthesized the $\\mathrm { ^ { 2 + } / ^ { 3 + } }$ codoped LRMO cathode material using a combined approach of co-precipitation and calcination approach."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "This co-doping approach alleviated structural instability by suppressing changes in the O 2p band and reducing oxygen release during cycling."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "Compared to pristine LRMO and single-element doped counterparts (Mg-LRMO and Al-LRMO), the co-doped Mg/Al-LRMO showcased significantly enhanced electrochemical performance, including excellent cycling stability (90.0% capacity retention after 200 cycles at 1.0C) and high rate performance (160.7mAh $\\mathbf { g } ^ { - 1 }$ at 5.0C)."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "The co-doping strategy also suppressed the $\\mathrm { O } ^ { 2 \\mathrm { n - } }$ redox activity and minimized CEI film formation, further improving cycling stability."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "This proposed codoping strategy could effectively address the challenges associated with LRMO cathode materials, providing a promising pathway for the development of high energy density and resilient cathode materials in the next-generation lithium-ion batteries."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Al-doped Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "[1] The generalized gradient approximation of Perdew, a spin-polarized version of generalized gradient approximation (GGA) with Perdew-Burke-Ernzerhof (PBE) functional was adopted to treat the exchange and correlation functional."
+    }
+  ],
+  "compatibility": [
+    {
+      "doi": "10.1016/j.nanoen.2022.106962",
+      "material": "(FeCoNiCrMn)3O4 HEO",
+      "sentence": "In this work, $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO was prepared successfully by the oxidation of highentropy FeCoNiCrMn alloy powders, and was applied as a new advanced anode material for LIBs."
+    }
+  ],
+  "performance": [
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "Notably, Mg/Al-LRMO achieves a higher discharge capacity of 160.7 mAh $\\mathbf { g } ^ { - 1 }$ even at a high rate of $5."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "These values are higher than those of the pristine LRMO, which has a charge/discharge capacity of 1.389/1.107 Ah and an ICE of 79.8%."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "In contrast, LRMO only delivers an energy density of 270.0 Wh kg−1, with the retention dropping to 89.8% after 100 cycles."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "After cycling at 2.0C for 600 cycles, the Mg/Al-LRMO pouch full cell still maintains good cyclic stability with a specific capacity retention of 86.2%, while the pristine LRMO pouch cell only displays a specific capacity retention of 54.1% after the same cycles, implying the outstanding cycling stability of the Mg/Al-LRMO pouch cell."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "<details> <summary>chemical</summary> Crystal structure diagrams of LRMO, Mg-LRMO, Al-LRMO, and Mg/Al-LRMO layers with legend for metal ions (TM, Li, Mg, O, Li) </details> <details> <summary>text_image</summary> Thick CEI Reduced CEI O₂ release Cycled LRMO Reduced O₂ release Cycled Mg-LRMO Reduced CEI Thin CEI Reduced O₂ release Prohibited O₂ release Cycled Al-LRMO Cycled Mg/Al-LRMO </details> Furthermore, Mg/Al-LRMO displayed significantly reduced voltage fading and capacity decay, attributed to increased structural stability and enhanced ionic conductivity."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Mg-doped Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "This suggests that Mg/Al-LRMO exhibits a more stable electrode interface and higher conductivity, contributing to better electrochemical performance."
+    },
+    {
+      "doi": "10.1002/adfm.202501762",
+      "material": "Mg-doped Li1.2Ni0.56Co0.16Mn0.08O2",
+      "sentence": "Even though a large polarization occurs after 100 cycles, Mg/Al-LRMO retains good $\\mathrm { ^ { + } }$ diffusion ability."
+    },
+    {
+      "doi": "10.1016/j.nanoen.2022.106962",
+      "material": "(FeCoNiCrMn)3O4 HEO",
+      "sentence": "The asprepared $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO exhibited excellent cycle stability, and achieved a high reversible capacity of 596.5 mA h $\\boldsymbol { \\cdot } \\boldsymbol { g } ^ { - 1 }$ and a good capacity retention of 86.2% after 1200 cycles at $2 ."
+    },
+    {
+      "doi": "10.1016/j.nanoen.2022.106962",
+      "material": "(FeCoNiCrMn)3O4 HEO",
+      "sentence": "For rate performance, (FeCoNiCrMn)3O4 HEO delivered a high reversible capacity of 967.3, 828.2, 740, 625, 531.9, and 482.5 mA h $\\mathbf { g } ^ { - 1 }$ at 0.1, $0."
+    },
+    {
+      "doi": "10.1016/j.nanoen.2022.106962",
+      "material": "(FeCoNiCrMn)3O4 HEO",
+      "sentence": "$\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO showed a good reversible capacity, and even after 260 cycles its reversible capacity still reached up to 692.8 mA h $\\mathbf { g } ^ { - 1 }$ with a high capacity retention (97.5%)."
+    },
+    {
+      "doi": "10.1016/j.nanoen.2022.106962",
+      "material": "(FeCoNiCrMn)3O4 HEO",
+      "sentence": "During cycling, the capacity of $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ HEO first decreased, then stabilized, and increased after 150 cycles."
+    },
+    {
+      "doi": "10.1016/j.nanoen.2022.106962",
+      "material": "(FeCoNiCrMn)3O4 HEO",
+      "sentence": "On the contrary, the reversible capacity of $\\mathrm { ( ) _ { 3 } O _ { 4 } }$ BM was fading after each cycle."
+    },
+    {
+      "doi": "10.1021/acsenergylett.3c02572",
+      "material": "0 M LiPF6 in EC/DMC (3:7 by weight)",
+      "sentence": "# Characterization The cycling performance and rate capability of graphite||NMC811 full cells with an areal capacity of approximately 1.5 mAh cm−2 and a negative/positive (N/P) ratio of \\~1.1 in different electrolytes were examined in the voltage range of 2.5–4.25 V."
+    }
+  ]
+}

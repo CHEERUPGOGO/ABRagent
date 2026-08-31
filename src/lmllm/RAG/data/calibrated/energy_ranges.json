@@ -1,0 +1,31 @@
+{
+  "source": "betterbat CellDatabase_v6",
+  "note": "电芯级 grav. Energy Density (Wh/kg) 经验区间，默认石墨负极体系；min/max 为观测极值，median 为体系典型值。",
+  "ranges": {
+    "Lithium Cobalt Oxide": {
+      "min": 87.0,
+      "median": 87.0,
+      "max": 87.0,
+      "n": 1
+    },
+    "Lithium Iron Phosphate": {
+      "min": 54.0,
+      "median": 131.5,
+      "max": 160.0,
+      "n": 10
+    },
+    "Lithium Titanate": {
+      "min": 61.0,
+      "median": 76.0,
+      "max": 81.0,
+      "n": 7
+    },
+    "Nickel rich": {
+      "min": 50.0,
+      "median": 175.0,
+      "max": 350.0,
+      "n": 123
+    }
+  },
+  "n_cells": 141
+}
