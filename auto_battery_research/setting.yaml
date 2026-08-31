@@ -27,7 +27,7 @@ paths:
 openai:
   model_name: "$(OPENAI_MODEL: MiniMax-M2.7-highspeed)"
   openai_api_base: "$(OPENAI_API_BASE: https://api.minimaxi.com/v1)"
-  openai_api_key: "$(OPENAI_API_KEY:sk-cp--cx85xZFHpyrY6ki1DVdSLoQBEa-Wc5d4iuwO02MGawPblUiFIGH0fjdQ7kmdb2g7S3T-wp2xv1_b338ggwwpMp_zBOk-SPD90SmGF0DkvuJ-msghTMUnWI)"
+  openai_api_key: "$(OPENAI_API_KEY:)"
 
 llm:
   backend: "openai"
