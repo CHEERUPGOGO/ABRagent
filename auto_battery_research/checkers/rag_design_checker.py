@@ -21,23 +21,32 @@ class RAGDesignChecker(BaseChecker):
         import re
         paths = self.config.get("paths", {})
         output_agent_dir = self.resolve_path(paths.get("output_dir", "output/auto_battery_research"))
-        scheme_json_file = output_agent_dir / "design_scheme.json"
-        scheme_md_file = output_agent_dir / "design_scheme.md"
 
-        if self.stage_manager:
+        # 新哈希课题: 仅认课题目录内产物，缺失即失败 —— 全局目录与
+        # src/lmllm/RAG/output 共享目录 (取最新 md，跨课题泄漏通道) 仅对
+        # 历史存量课题 (is_legacy_task) / Checker 独立使用场景保留回退
+        if self.stage_manager and not self.allow_global_legacy_fallback:
             task_dir = self.stage_manager.get_task_output_dir()
-            candidate_md = task_dir / "design_scheme.md"
-            candidate_json = task_dir / "design_scheme.json"
-            if candidate_md.exists():
-                scheme_md_file = candidate_md
-            if candidate_json.exists():
-                scheme_json_file = candidate_json
+            scheme_json_file = task_dir / "design_scheme.json"
+            scheme_md_file = task_dir / "design_scheme.md"
+        else:
+            scheme_json_file = output_agent_dir / "design_scheme.json"
+            scheme_md_file = output_agent_dir / "design_scheme.md"
 
-        rag_output_dir = self.resolve_path("src/lmllm/RAG/output")
-        if not scheme_md_file.exists() and rag_output_dir.exists():
-            rag_mds = sorted(list(rag_output_dir.glob("*.md")), key=lambda x: x.stat().st_mtime, reverse=True)
-            if rag_mds:
-                scheme_md_file = rag_mds[0]
+            if self.stage_manager:
+                task_dir = self.stage_manager.get_task_output_dir()
+                candidate_md = task_dir / "design_scheme.md"
+                candidate_json = task_dir / "design_scheme.json"
+                if candidate_md.exists():
+                    scheme_md_file = candidate_md
+                if candidate_json.exists():
+                    scheme_json_file = candidate_json
+
+            rag_output_dir = self.resolve_path("src/lmllm/RAG/output")
+            if not scheme_md_file.exists() and rag_output_dir.exists():
+                rag_mds = sorted(list(rag_output_dir.glob("*.md")), key=lambda x: x.stat().st_mtime, reverse=True)
+                if rag_mds:
+                    scheme_md_file = rag_mds[0]
 
         # 1. 存在性检查
         if not scheme_json_file.exists() and not scheme_md_file.exists():

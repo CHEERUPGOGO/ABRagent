@@ -74,7 +74,7 @@ stages:
         strict: true
     expected_outputs:
       - "miner/json/*_extracted.json"
-      - "output/auto_battery_research/cell_assembly/"
+      - "output/tasks/<goal>/cell_assembly/"   # 课题专属目录 (全局 output/auto_battery_research/ 仅历史课题可读)
 
   - id: 4
     key: "battery_rag_design"
@@ -88,8 +88,8 @@ stages:
         class: "auto_battery_research.checkers.rag_design_checker.RAGDesignChecker"
         strict: true
     expected_outputs:
-      - "output/auto_battery_research/design_scheme.json"
-      - "output/auto_battery_research/design_scheme.md"
+      - "output/tasks/<goal>/design_scheme.json"   # 课题专属目录 (全局 output/auto_battery_research/ 仅历史课题可读)
+      - "output/tasks/<goal>/design_scheme.md"
 
   - id: 5
     key: "pinn_physics_simulation"
@@ -104,7 +104,7 @@ stages:
         class: "auto_battery_research.checkers.pinn_physics_checker.PINNPhysicsChecker"
         strict: false
     expected_outputs:
-      - "output/auto_battery_research/simulation_result.json"
+      - "output/tasks/<goal>/simulation_result.json"   # 课题专属目录 (全局 output/auto_battery_research/ 仅历史课题可读)
 
   - id: 6
     key: "synthesis_report_generation"
@@ -118,6 +118,6 @@ stages:
         class: "auto_battery_research.checkers.final_report_checker.FinalReportChecker"
         strict: true
     expected_outputs:
-      - "output/auto_battery_research/final_research_report.md"
-      - "output/auto_battery_research/abr_agent_journal.json"
+      - "output/tasks/<goal>/final_research_report.md"   # 课题专属目录 (全局 output/auto_battery_research/ 仅历史课题可读)
+      - "output/tasks/<goal>/stage_journals.json"
 

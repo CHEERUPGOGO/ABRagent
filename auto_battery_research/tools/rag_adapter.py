@@ -28,8 +28,14 @@ ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 class AbrRagAdapter:
     """AutoBatteryResearch RAG 适配器."""
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, config: Optional[Dict[str, Any]] = None, pipeline: Optional[Any] = None):
         self.config = config or {}
+        if pipeline is not None:
+            # 显式注入管线 (测试/复现场景): 跳过真实 Chroma/LLM 初始化，
+            # 直接复用调用方构造好的 RAGPipeline 实例
+            self.pipeline = pipeline
+            self._init_error = None
+            return
         self._init_pipeline()
 
     def _init_pipeline(self) -> None:

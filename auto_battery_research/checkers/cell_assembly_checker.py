@@ -22,11 +22,15 @@ class CellAssemblyChecker(BaseChecker):
                 # 课题目录存在即权威：不再聚合全局 legacy 目录，
                 # 防止其他课题遗留的组装产物通过本课题的门禁
                 candidate_dirs = [task_cell_dir]
+            if not self.allow_global_legacy_fallback:
+                # 新哈希课题: 仅认课题目录 (即使为空也不回退全局)
+                candidate_dirs = [task_cell_dir]
 
         if not candidate_dirs and cell_output_dir.exists():
             candidate_dirs.append(cell_output_dir)
 
         # 仅当特定输出目录均不存在时，作为 fallback 探测默认全局候选目录
+        # (仅历史存量课题 / Checker 独立使用；新课题课题目录始终存在，不会走到这里)
         if not candidate_dirs:
             candidate_dirs = [
                 cell_output_dir,

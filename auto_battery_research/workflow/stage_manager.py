@@ -32,12 +32,17 @@ class StageManager:
         skip_pinn: Optional[bool] = None,
         target_goal: str = "设计400Wh/kg高比能液态锂金属电池方案",
         overrides: Optional[Dict[str, Any]] = None,
+        workspace_root: Optional[str] = None,
     ):
-        self.root_dir = Path(__file__).resolve().parent.parent.parent
-        self.setting_file = Path(setting_file) if setting_file else self.root_dir / "auto_battery_research" / "setting.yaml"
-        self.workflow_file = Path(workflow_file) if workflow_file else self.root_dir / "auto_battery_research" / "workflow" / "abr_workflow.yaml"
+        # 双根拆分: 包根 (配置文件所在) 与工作区根 (产物/状态落盘位置)。
+        # 生产环境二者同为一个仓库根；测试注入 workspace_root 即可将全部产物
+        # 隔离到临时目录，实现完全 hermetic 的状态机/门禁回归测试。
+        self._package_dir = Path(__file__).resolve().parent.parent  # <repo>/auto_battery_research
+        self.root_dir = Path(workspace_root).resolve() if workspace_root else self._package_dir.parent
+        self.setting_file = Path(setting_file) if setting_file else self._package_dir / "setting.yaml"
+        self.workflow_file = Path(workflow_file) if workflow_file else self._package_dir / "workflow" / "abr_workflow.yaml"
         self.target_goal = target_goal
-        
+
         self.config: Dict[str, Any] = {}
         self.mission_info: Dict[str, Any] = {}
         self.stages: List[BaseStage] = []
@@ -45,6 +50,7 @@ class StageManager:
         self.start_time: datetime = datetime.now()
         self._lock = threading.RLock()
         self._task_dir_cache: Dict[str, Path] = {}  # target -> 已解析任务目录 (含存量目录认领结果)
+        self._task_dir_legacy: Dict[str, bool] = {}  # target -> 是否为被认领的无哈希历史课题目录
         
         # 1. 使用 ABRConfigLoader 执行分层加载与模板渲染
         self.config_loader = ABRConfigLoader(
@@ -59,9 +65,10 @@ class StageManager:
         # 2. 构建 Stages 与 Checkers
         self._build_stages()
         
-        # 3. 应用默认 skip 设置
+        # 3. 应用默认 skip 设置 (persist=False: 初始化期禁止落盘，
+        #    否则会在 _load_state() 之前覆盖持久化进度，导致恢复永远失效)
         default_skip_pinn = self.config.get("runtime_options", {}).get("skip_pinn_default", True)
-        self.set_stage_skip(5, skip=default_skip_pinn, reason="默认快速模式跳过" if default_skip_pinn else "")
+        self.set_stage_skip(5, skip=default_skip_pinn, reason="默认快速模式跳过" if default_skip_pinn else "", persist=False)
 
         # 4. 恢复已有状态
         self._load_state()
@@ -74,22 +81,39 @@ class StageManager:
         self.auto_detect_existing_progress()
 
     def auto_detect_existing_progress(self) -> int:
-        """根据已有数据资产自动预检并更新阶段状态 (Stage 1~6)."""
+        """根据已有数据资产自动预检并更新阶段状态 (Stage 1~6)。
+
+        严格"连续前缀验收"语义: 沿阶段顺序扫描，一旦某个阶段无法定论
+        (门禁失败 / 恢复出 FAILED、IN_PROGRESS)，其后的下游阶段一律
+        保持 PENDING、禁止因残留文件被自动认领 —— 杜绝"中间阶段失败、
+        下游阶段凭旧产物提前 PASSED"的跳步漏洞。已由持久化状态确认的
+        PASSED/SKIPPED/FALLBACK 前缀保持连续，从首个未定论阶段续扫。
+        """
         detected_passed = 0
+        TERMINAL_OK = ("PASSED", "SKIPPED", "FALLBACK")
         for s in self.stages:
-            if s.status == "PENDING" and not s.skip:
-                passed, diag = self.check_stage(s.id, is_complete=False)
-                if passed:
-                    # 检查是否有 Checker 报告了 FALLBACK 终态
-                    is_fallback = False
-                    for d in diag.get("diagnostics", []):
-                        obs = d.get("observed", {})
-                        if isinstance(obs, dict) and (obs.get("simulation_status") == "FALLBACK" or obs.get("is_fallback") is True):
-                            is_fallback = True
-                            break
-                    s.status = "FALLBACK" if is_fallback else "PASSED"
-                    s.duration_seconds = 1.0
-                    detected_passed += 1
+            if s.status in TERMINAL_OK:
+                continue  # 已确认的前缀保持连续 (含 _load_state 恢复的终态)
+            if s.skip:
+                s.status = "SKIPPED"
+                continue
+            if s.status != "PENDING":
+                break  # 恢复出的 FAILED/IN_PROGRESS 即当前活跃阶段，前缀到此为止
+
+            passed, diag = self.check_stage(s.id, is_complete=False)
+            if not passed:
+                break  # 上游门禁未过：下游禁止自动认领 (check_stage 已将其置为 FAILED)
+
+            # 检查是否有 Checker 报告了 FALLBACK 终态
+            is_fallback = False
+            for d in diag.get("diagnostics", []):
+                obs = d.get("observed", {})
+                if isinstance(obs, dict) and (obs.get("simulation_status") == "FALLBACK" or obs.get("is_fallback") is True):
+                    is_fallback = True
+                    break
+            s.status = "FALLBACK" if is_fallback else "PASSED"
+            s.duration_seconds = 1.0
+            detected_passed += 1
 
         # 将当前指针指向首个未完成的阶段；若全部完成则归位至最后一个 Stage
         pointer_moved = False
@@ -189,6 +213,7 @@ class StageManager:
                 "agent": "AutoBatteryResearch Agent",
                 "target_goal": self.target_goal,
                 "target_goal_hash": goal_hash,
+                "task_dir_schema": "legacy" if self.is_legacy_task else "hashed",
                 "updated_at": datetime.now().isoformat(),
                 "current_stage_idx": self.current_stage_idx,
                 "stages": [s.to_dict() for s in self.stages],
@@ -291,8 +316,13 @@ class StageManager:
         """获取当前阶段的 Task 与 Tips."""
         return self.get_current_stage().get_tips()
 
-    def set_stage_skip(self, stage_id_or_key: Any, skip: bool = True, reason: str = "") -> bool:
-        """动态设置阶段跳过状态 (严格限制：仅允许跳过支持 skip 的阶段，如 Stage 5 PINN)."""
+    def set_stage_skip(self, stage_id_or_key: Any, skip: bool = True, reason: str = "", persist: bool = True) -> bool:
+        """动态设置阶段跳过状态 (严格限制：仅允许跳过支持 skip 的阶段，如 Stage 5 PINN).
+
+        persist=False 供 __init__ 初始化阶段使用: 初始化期的默认 skip 设定
+        只是内存态准备，绝不允许先于 _load_state() 落盘 —— 否则构造器会把
+        持久化进度覆盖为全新状态再读回自己，导致跨进程恢复永远失效。
+        """
         for s in self.stages:
             if s.id == stage_id_or_key or s.key == str(stage_id_or_key):
                 if skip and not getattr(s, "allow_skip", s.id == 5):
@@ -306,7 +336,8 @@ class StageManager:
                     s.skip_reason = ""
                     if s.status == "SKIPPED":
                         s.status = "PENDING"
-                self._save_state()
+                if persist:
+                    self._save_state()
                 return True
         return False
 
@@ -437,6 +468,9 @@ class StageManager:
         存量目录认领: 旧命名 (纯截断 slug) 的已有目录若确属本课题
         (其 .stage_state.json 的 target_goal 一致，或无状态文件但存在产物)，
         则继续沿用旧目录 —— 保证升级后已有课题的工作流状态连续、不被静默重置。
+        被认领的无哈希目录视为"历史存量课题" (is_legacy_task=True)：
+        其交付物合法位于全局 output/auto_battery_research/，Checker 仅对
+        这类课题保留全局产物读取回退；新哈希课题必须自包含课题目录产物。
         """
         import re
         import hashlib
@@ -452,31 +486,53 @@ class StageManager:
         hashed_slug = f"{safe_slug}_{hashlib.md5(target.encode('utf-8')).hexdigest()[:8]}"
         tasks_root = self.root_dir / "output" / "tasks"
         task_dir = tasks_root / hashed_slug
+        is_legacy = False
 
         if not task_dir.exists():
             legacy_dir = tasks_root / safe_slug
             if legacy_dir.is_dir():
                 legacy_state = legacy_dir / ".stage_state.json"
                 if legacy_state.exists():
-                    # 状态文件里的目标与本课题一致才认领；不一致说明是前缀撞名了他课题状态
+                    # 状态文件里的目标与本课题一致才认领；不一致或状态损坏
+                    # (读不出 target_goal) 都不认领 —— Fail-Closed，防止前缀
+                    # 撞名的他课题目录被误并入本课题
                     try:
                         with open(legacy_state, "r", encoding="utf-8") as f:
                             legacy_goal = json.load(f).get("target_goal")
                     except Exception:
                         legacy_goal = None
-                    if legacy_goal is None or legacy_goal == target:
+                    if legacy_goal is not None and legacy_goal == target:
                         task_dir = legacy_dir
+                        is_legacy = True
                 else:
+                    # 已知局限: 无状态但有产物时认领，避免既有产物孤儿化
+                    # (slug 前缀撞名的他课题空状态目录理论上可能被误领)
                     try:
                         has_artifacts = any(legacy_dir.iterdir())
                     except OSError:
                         has_artifacts = False
                     if has_artifacts:
-                        task_dir = legacy_dir  # 无状态但有产物: 认领，避免既有产物孤儿化
+                        task_dir = legacy_dir
+                        is_legacy = True
 
         task_dir.mkdir(parents=True, exist_ok=True)
         self._task_dir_cache[target] = task_dir
+        self._task_dir_legacy[target] = is_legacy
         return task_dir
+
+    def is_legacy_goal(self, goal: Optional[str] = None) -> bool:
+        """指定课题是否为历史存量课题 (需先经 get_task_output_dir 解析过该课题)."""
+        target = goal or getattr(self, "target_goal", "")
+        return bool(self._task_dir_legacy.get(target, False))
+
+    @property
+    def is_legacy_task(self) -> bool:
+        """本课题是否为历史存量课题 (任务目录为被认领的无哈希旧目录).
+
+        仅这类课题的交付物允许保留在全局 output/auto_battery_research/，
+        Checker 的全局 legacy 读取回退以此属性为唯一开关。
+        """
+        return self.is_legacy_goal()
 
     def set_stage_journal(
         self,

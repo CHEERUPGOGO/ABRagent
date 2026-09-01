@@ -40,6 +40,22 @@ class BaseChecker(ABC):
             return p
         return (self.workspace_root / p).resolve()
 
+    @property
+    def allow_global_legacy_fallback(self) -> bool:
+        """是否允许回退读取全局 legacy 产物目录 (output/auto_battery_research/ 等).
+
+        仅两类场景允许:
+        1. Checker 独立使用 (无 stage_manager，显式 config 路径，如单测/调试);
+        2. 历史存量课题 —— 任务目录为被认领的无哈希旧目录，其交付物
+           合法保留在全局目录 (StageManager.is_legacy_task)。
+
+        新哈希课题必须自包含课题目录产物，杜绝其他课题/全局陈旧产物
+        穿透本课题门禁。
+        """
+        if self.stage_manager is None:
+            return True
+        return bool(getattr(self.stage_manager, "is_legacy_task", False))
+
     @abstractmethod
     def do_check(self, is_complete: bool = False, **kwargs) -> Tuple[bool, Dict[str, Any]]:
         """执行检查.

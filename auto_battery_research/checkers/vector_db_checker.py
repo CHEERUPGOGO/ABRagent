@@ -19,7 +19,11 @@ PRIMARY_LABELS = {
 
 
 class VectorDBChecker(BaseChecker):
-    """验证元数据绑定、段落语义标签及 Chroma/JSON 向量库入库状态."""
+    """验证元数据绑定、段落语义标签及 Chroma/JSON 向量库入库状态.
+
+    注: 段落语料库 (miner/) 为全部课题共享的全局知识资产，不做课题隔离 ——
+    这与 Stage 3/4/6 的课题专属交付物不同，属设计内行为。
+    """
 
     def do_check(self, is_complete: bool = False, **kwargs) -> Tuple[bool, Dict[str, Any]]:
         paths = self.config.get("paths", {})

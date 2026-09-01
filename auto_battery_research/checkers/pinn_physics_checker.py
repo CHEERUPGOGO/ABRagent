@@ -33,7 +33,7 @@ class PINNPhysicsChecker(BaseChecker):
         # 2. 如果开启了仿真，验证仿真结果文件
         paths = self.config.get("paths", {})
         output_agent_dir = self.resolve_path(paths.get("output_dir", "output/auto_battery_research"))
-        
+
         candidates = []
         if self.stage_manager:
             task_dir = self.stage_manager.get_task_output_dir()
@@ -41,12 +41,15 @@ class PINNPhysicsChecker(BaseChecker):
                 task_dir / "simulation_result.json",
                 task_dir / "pinn_simulation_report.json",
             ])
-            
-        candidates.extend([
-            output_agent_dir / "simulation_result.json",
-            output_agent_dir / "pinn_simulation_report.json",
-            self.resolve_path("pinn/output/simulation_result.json"),
-        ])
+
+        # 全局 legacy 候选 (含 pinn/output) 仅对历史存量课题 / Checker 独立使用保留；
+        # 新哈希课题仅认课题目录产物
+        if not self.stage_manager or self.allow_global_legacy_fallback:
+            candidates.extend([
+                output_agent_dir / "simulation_result.json",
+                output_agent_dir / "pinn_simulation_report.json",
+                self.resolve_path("pinn/output/simulation_result.json"),
+            ])
 
         found_sim_file = next((p for p in candidates if p.exists() and p.stat().st_size > 10), None)
 

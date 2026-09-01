@@ -20,17 +20,20 @@ class FinalReportChecker(BaseChecker):
         import re
         paths = self.config.get("paths", {})
         output_agent_dir = self.resolve_path(paths.get("output_dir", "output/auto_battery_research"))
-        # 课题专属目录优先：全局 legacy 路径只作为旧产物的读取回退，
-        # 避免多课题场景下校验到其他课题的陈旧研报
         explicit_report = paths.get("final_report_file")
+        # 课题专属目录优先：全局 legacy 路径仅对历史存量课题 (is_legacy_task)
+        # 保留读取回退；新哈希课题必须自包含研报，防止其他课题/全局陈旧研报
+        # 穿透本课题门禁 (Stage 6 假通过)
         if self.stage_manager:
             task_report = self.stage_manager.get_task_output_dir() / "final_research_report.md"
             if task_report.exists():
                 report_file = task_report
-            elif explicit_report:
+            elif self.allow_global_legacy_fallback and explicit_report:
                 report_file = self.resolve_path(explicit_report)
-            else:
+            elif self.allow_global_legacy_fallback:
                 report_file = output_agent_dir / "final_research_report.md"
+            else:
+                report_file = task_report  # 新课题: 仅认课题目录，缺失即失败并给出明确路径
         elif explicit_report:
             report_file = self.resolve_path(explicit_report)
         else:
@@ -41,6 +44,10 @@ class FinalReportChecker(BaseChecker):
             task_journal = self.stage_manager.get_task_output_dir() / "stage_journals.json"
             if task_journal.exists():
                 journal_file = task_journal
+            elif not self.allow_global_legacy_fallback:
+                journal_file = task_journal  # 新课题: 仅认课题目录日志
+            elif (output_agent_dir / "stage_journals.json").exists():
+                journal_file = output_agent_dir / "stage_journals.json"
         elif (output_agent_dir / "stage_journals.json").exists():
             journal_file = output_agent_dir / "stage_journals.json"
 

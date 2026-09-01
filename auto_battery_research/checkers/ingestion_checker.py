@@ -6,7 +6,11 @@ from .base_checker import BaseChecker
 
 
 class IngestionChecker(BaseChecker):
-    """验证文献解析与组件分类产物."""
+    """验证文献解析与组件分类产物.
+
+    注: 文献语料 (papers/merged、database/type) 为全部课题共享的全局知识资产，
+    不做课题隔离 —— 这与 Stage 3/4/6 的课题专属交付物不同，属设计内行为。
+    """
 
     def do_check(self, is_complete: bool = False, **kwargs) -> Tuple[bool, Dict[str, Any]]:
         paths = self.config.get("paths", {})

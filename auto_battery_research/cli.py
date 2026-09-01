@@ -34,15 +34,20 @@ from auto_battery_research.tools.mcp_server import start_stdio_server
 
 def print_report_in_terminal(manager: StageManager, goal: str = None):
     """在终端格式化高亮渲染综合研报."""
-    task_dir = manager.get_task_output_dir(goal or manager.target_goal)
+    resolved_goal = goal or manager.target_goal
+    task_dir = manager.get_task_output_dir(resolved_goal)
     cand_reports = [
         task_dir / "final_research_report.md",
         task_dir / "final_report.md",
         task_dir / "battery_research_synthesis_report.md",
-        Path("output/auto_battery_research/final_research_report.md"),
-        Path("output/auto_battery_research/final_report.md"),
-        Path("output/auto_battery_research/battery_research_synthesis_report.md"),
     ]
+    # 全局 legacy 报告仅对历史存量课题回退展示；新课题绝不把全局旧研报冒充本课题产物
+    if manager.is_legacy_goal(resolved_goal):
+        cand_reports.extend([
+            Path("output/auto_battery_research/final_research_report.md"),
+            Path("output/auto_battery_research/final_report.md"),
+            Path("output/auto_battery_research/battery_research_synthesis_report.md"),
+        ])
     found_rf = next((p for p in cand_reports if p.exists()), None)
     if not found_rf:
         print("\n⚠️ 未找到已生成的综合研发报告。请先执行：python auto_battery_research_cli.py --run 生成研报。\n")

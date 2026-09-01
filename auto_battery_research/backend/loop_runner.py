@@ -33,6 +33,24 @@ from auto_battery_research.tools.stage_tools import (
 L = logging.getLogger("AutoBatteryResearch.LoopRunner")
 
 
+def _find_final_report(manager: StageManager, goal: str) -> Optional[Path]:
+    """定位课题最终研报文件: 课题目录优先；全局 legacy 目录仅对历史存量课题回退，
+    防止新课题把全局旧研报冒充本课题产物展示给用户。"""
+    task_dir = manager.get_task_output_dir(goal)
+    cand_reports = [
+        task_dir / "final_research_report.md",
+        task_dir / "final_report.md",
+        task_dir / "battery_research_synthesis_report.md",
+    ]
+    if manager.is_legacy_goal(goal):
+        cand_reports.extend([
+            Path("output/auto_battery_research/final_research_report.md"),
+            Path("output/auto_battery_research/final_report.md"),
+            Path("output/auto_battery_research/battery_research_synthesis_report.md"),
+        ])
+    return next((p for p in cand_reports if p.exists()), None)
+
+
 class AutonomousLoopRunner:
     """全自动工作流自主执行器."""
 
@@ -251,16 +269,7 @@ class AutonomousLoopRunner:
         append_log("\n" + "=" * 70)
         append_log(f"[{'DONE' if all_done else 'INCOMPLETE'}] AutoBatteryResearch loop finished: {'Completed successfully' if all_done else 'Partially completed'}")
         append_log(f"Total Elapsed: {total_elapsed:.1f}s")
-        task_dir = self.manager.get_task_output_dir(self.goal)
-        cand_reports = [
-            task_dir / "final_research_report.md",
-            task_dir / "final_report.md",
-            task_dir / "battery_research_synthesis_report.md",
-            Path("output/auto_battery_research/final_research_report.md"),
-            Path("output/auto_battery_research/final_report.md"),
-            Path("output/auto_battery_research/battery_research_synthesis_report.md"),
-        ]
-        found_rf = next((p for p in cand_reports if p.exists()), None)
+        found_rf = _find_final_report(self.manager, self.goal)
         report_text = "*未找到研报*"
         if found_rf:
             with open(found_rf, "r", encoding="utf-8") as f:
@@ -287,15 +296,7 @@ class AutonomousLoopRunner:
             last_step = step
 
         task_dir = self.manager.get_task_output_dir(self.goal)
-        cand_reports = [
-            task_dir / "final_research_report.md",
-            task_dir / "final_report.md",
-            task_dir / "battery_research_synthesis_report.md",
-            Path("output/auto_battery_research/final_research_report.md"),
-            Path("output/auto_battery_research/final_report.md"),
-            Path("output/auto_battery_research/battery_research_synthesis_report.md"),
-        ]
-        found_rf = next((p for p in cand_reports if p.exists()), None)
+        found_rf = _find_final_report(self.manager, self.goal)
 
         return {
             "success": self.manager.is_all_completed(),

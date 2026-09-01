@@ -293,7 +293,7 @@ pytest auto_battery_research/tests/test_checkers.py::test_pinn_checker_skip_logi
 pytest -m "unit"
 ```
 
-当前基线：**41 passed, 1 deselected, 0 warnings**。单测通过注入 dummy key 保持零外部依赖；确定性 Checker 对空数据、编造数据、异质体系文献均有严格拦截用例。
+当前基线：**51 passed, 2 deselected, 0 warnings**（含课题隔离回归 `test_task_isolation.py` 与 Stage 4 离线 golden `test_stage4_golden.py`）。单测通过注入 dummy key 保持零外部依赖；确定性 Checker 对空数据、编造数据、异质体系文献均有严格拦截用例。注：Python 3.14 环境可能出现 Pydantic v1 兼容 warning 与依赖缺省导致的 skip，建议 CI 固定 Python 3.12。
 
 ---
 
