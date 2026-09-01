@@ -420,8 +420,10 @@ class ABRAgent:
             task_dir / "final_research_report.md",
             task_dir / "final_report.md",
             task_dir / "battery_research_synthesis_report.md",
-            ROOT_DIR / "output" / "auto_battery_research" / "final_research_report.md",
         ]
+        if getattr(self.manager, "is_legacy_task", False):
+            cand_reports.append(ROOT_DIR / "output" / "auto_battery_research" / "final_research_report.md")
+
         found_rf = next((p for p in cand_reports if p.exists()), None)
         final_report_text = ""
         if found_rf:
@@ -429,6 +431,12 @@ class ABRAgent:
                 with open(found_rf, "r", encoding="utf-8") as rf:
                     final_report_text = rf.read()
                 append_log(f"最终研发报告已生成: {found_rf.resolve()}")
+            except Exception:
+                pass
+        elif (task_dir / "design_scheme.md").exists():
+            try:
+                with open(task_dir / "design_scheme.md", "r", encoding="utf-8") as sf:
+                    final_report_text = sf.read()
             except Exception:
                 pass
 

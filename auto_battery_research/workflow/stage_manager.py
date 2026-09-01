@@ -396,10 +396,15 @@ class StageManager:
         if not target_stage:
             return False, {"complete": False, "error": f"找不到指定阶段: {stage_id}"}
 
-        # 严格阶段顺序门禁：不能在当前阶段未完成时越级完成未来的阶段
+        # 严格单阶段推进：只允许完成当前活跃阶段；历史阶段不可重复推进状态机，未来阶段禁止越级
         if target_stage.id != current_stage.id:
             target_idx = next((i for i, s in enumerate(self.stages) if s.id == target_stage.id), -1)
-            if target_idx > self.current_stage_idx:
+            if target_idx < self.current_stage_idx:
+                return False, {
+                    "complete": False,
+                    "error": f"历史阶段已完成 (Stage {target_stage.id} 状态: {target_stage.status})，无法重复调用 Complete 推进状态机指针。当前活跃阶段为 Stage {current_stage.id} ({current_stage.name})。",
+                }
+            else:
                 return False, {
                     "complete": False,
                     "error": f"无法跨阶段推进：当前活跃阶段为 Stage {current_stage.id} ({current_stage.name})，前置阶段未完成，禁止越级推进到 Stage {target_stage.id}。",

@@ -128,15 +128,19 @@ def create_web_app(manager: Optional[StageManager] = None):
                     )
 
                 def get_current_report_content(goal: str = "") -> str:
-                    task_dir = mgr.get_task_output_dir(goal or mgr.target_goal)
+                    target = (goal or mgr.target_goal).strip()
+                    task_dir = mgr.get_task_output_dir(target)
                     cand_reports = [
                         task_dir / "final_research_report.md",
                         task_dir / "final_report.md",
                         task_dir / "battery_research_synthesis_report.md",
-                        ROOT_DIR / "output" / "auto_battery_research" / "final_research_report.md",
-                        ROOT_DIR / "output" / "auto_battery_research" / "final_report.md",
-                        ROOT_DIR / "output" / "auto_battery_research" / "battery_research_synthesis_report.md",
                     ]
+                    if mgr.is_legacy_goal(target):
+                        cand_reports.extend([
+                            ROOT_DIR / "output" / "auto_battery_research" / "final_research_report.md",
+                            ROOT_DIR / "output" / "auto_battery_research" / "final_report.md",
+                            ROOT_DIR / "output" / "auto_battery_research" / "battery_research_synthesis_report.md",
+                        ])
                     for p in cand_reports:
                         if p.exists():
                             try:
@@ -146,6 +150,14 @@ def create_web_app(manager: Optional[StageManager] = None):
                                     return text
                             except Exception:
                                 pass
+                    if (task_dir / "design_scheme.md").exists():
+                        try:
+                            with open(task_dir / "design_scheme.md", "r", encoding="utf-8") as f:
+                                text = f.read()
+                            if len(text.strip()) > 50:
+                                return f"### 阶段方案 (Stage 4 Design Scheme)\n\n{text}"
+                        except Exception:
+                            pass
                     return "*未检测到已生成的综合研报。请点击上方【🚀 启动全自动自主循环】生成完整研报。*"
 
                 with gr.Accordion("📄 最终综合研发报告 (Synthesis Report)", open=True):

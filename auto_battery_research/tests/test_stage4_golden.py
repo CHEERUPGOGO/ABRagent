@@ -19,9 +19,6 @@ import json
 import os
 import pytest
 
-pytest.importorskip("langchain_chroma", reason="RAGPipeline 构造 MultiRetrieval 需要 [rag] extra")
-pytest.importorskip("langchain_ollama", reason="RAGPipeline 构造 MultiRetrieval 需要 [rag] extra")
-
 from src.lmllm.RAG.rag_pipeline import RAGPipeline
 from src.lmllm.RAG.llm_client import LLMClient
 from src.lmllm.RAG.prompts import (

@@ -308,3 +308,28 @@ def test_auto_detect_honors_loaded_prefix(tmp_path):
     assert status_by_id[5] == "SKIPPED"
     assert status_by_id[6] == "FAILED"   # 无研报产物: 尝试验收后失败 (指针停留处)
     assert mgr.get_current_stage().id == 6
+
+
+def test_report_synthesis_task_isolation_never_leaks_global_scheme(tmp_path):
+    """新哈希课题生成 Stage 6 研报时，即使全局 output/auto_battery_research/
+    下残留了旧课题方案，研报中也绝不泄漏旧课题方案，保持严格审计隔离。"""
+    from auto_battery_research.tools.workflow_actions import run_synthesis_report
+
+    # 在全局 legacy 目录放置带有明显特征的旧课题方案
+    global_dir = tmp_path / "output" / "auto_battery_research"
+    global_dir.mkdir(parents=True, exist_ok=True)
+    (global_dir / "design_scheme.md").write_text("# 遗留旧方案: FOREIGN_LEGACY_SCHEME_XYZ", encoding="utf-8")
+    (global_dir / "design_scheme.json").write_text(json.dumps({"scheme": {"cathode": "FOREIGN_CATHODE_XYZ"}}), encoding="utf-8")
+
+    new_goal = "新课题_严格隔离研报生成测试"
+    mgr = StageManager(target_goal=new_goal, workspace_root=str(tmp_path))
+    assert mgr.is_legacy_task is False
+
+    res = run_synthesis_report(target_query=new_goal, stage_manager=mgr)
+    assert res["success"] is True
+
+    report_content = Path(res["report_file"]).read_text(encoding="utf-8")
+    # 必须绝不包含全局旧课题的特征字符串
+    assert "FOREIGN_LEGACY_SCHEME_XYZ" not in report_content
+    assert "FOREIGN_CATHODE_XYZ" not in report_content
+    assert "尚未生成独立的 Stage 4 电池体系设计方案" in report_content

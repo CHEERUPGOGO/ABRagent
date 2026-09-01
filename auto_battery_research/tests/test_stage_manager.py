@@ -143,3 +143,26 @@ def test_stage_manager_atomic_journal_concurrency(tmp_path):
     assert len(all_j) >= 1
 
 
+def test_complete_historical_stage_rejected_and_pointer_intact(tmp_path):
+    """测试调用 Complete(旧阶段) 被严格拒绝，且不会破坏状态机当前指针."""
+    mgr = StageManager(target_goal="测试历史阶段指针保护")
+    # 模拟前进到 Stage 4
+    mgr.current_stage_idx = 3
+    assert mgr.get_current_stage().id == 4
+
+    # 尝试完成历史阶段 Stage 2
+    ok, res = mgr.complete_stage(stage_id=2)
+    assert ok is False
+    assert "历史阶段已完成" in res.get("error", "")
+    # 指针必须保持在 Stage 4，绝不能前进到 Stage 5 或 6
+    assert mgr.current_stage_idx == 3
+    assert mgr.get_current_stage().id == 4
+
+    # 尝试越级完成未来阶段 Stage 6
+    ok_future, res_future = mgr.complete_stage(stage_id=6)
+    assert ok_future is False
+    assert "无法跨阶段推进" in res_future.get("error", "")
+    assert mgr.current_stage_idx == 3
+    assert mgr.get_current_stage().id == 4
+
+

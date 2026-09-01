@@ -578,20 +578,31 @@ def run_synthesis_report(target_query: str = "设计400Wh/kg高比能液态锂�
     scheme_md_file = task_dir / "design_scheme.md"
     scheme_json_file = task_dir / "design_scheme.json"
     
-    # 1. 产物与方案内容加载
+    # 1. 产物与方案内容加载 (严格课题隔离：新哈希课题禁止读取全局旧方案)
     scheme_text = ""
+    is_legacy = bool(getattr(mgr, "is_legacy_task", False) or getattr(mgr, "is_legacy_goal", lambda g: False)(target_query))
     if scheme_md_file.exists():
         with open(scheme_md_file, "r", encoding="utf-8") as f:
             scheme_text = f.read()
-    elif (legacy_dir / "design_scheme.md").exists():
+    elif is_legacy and (legacy_dir / "design_scheme.md").exists():
         with open(legacy_dir / "design_scheme.md", "r", encoding="utf-8") as f:
             scheme_text = f.read()
+    else:
+        scheme_text = "*本课题尚未生成独立的 Stage 4 电池体系设计方案 (design_scheme.md)。*"
 
     evidence_count = 0
     scheme_data = {}
     if scheme_json_file.exists():
         try:
             with open(scheme_json_file, "r", encoding="utf-8") as f:
+                s_data = json.load(f)
+                scheme_data = s_data if isinstance(s_data, dict) else {}
+                evidence_count = len(s_data.get("evidence", []))
+        except Exception:
+            pass
+    elif is_legacy and (legacy_dir / "design_scheme.json").exists():
+        try:
+            with open(legacy_dir / "design_scheme.json", "r", encoding="utf-8") as f:
                 s_data = json.load(f)
                 scheme_data = s_data if isinstance(s_data, dict) else {}
                 evidence_count = len(s_data.get("evidence", []))
