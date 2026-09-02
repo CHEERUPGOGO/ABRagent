@@ -614,17 +614,47 @@ def create_web_app(manager: Optional[StageManager] = None):
 
 def launch_web_server(
     manager: Optional[StageManager] = None,
-    host: str = "0.0.0.0",
+    host: str = "127.0.0.1",
     port: int = 7865,
     share: bool = False
 ):
-    """启动 Web 服务入口."""
+    """启动 Web 服务入口.
+
+    - 默认仅监听本地回环 127.0.0.1 (局域网访问需显式传 host="0.0.0.0")；
+    - 目标端口被残留进程占用时自动顺延探测空闲端口并明确提示，
+      避免浏览器连到僵尸/旧服务出现白屏无响应。
+    """
+    import socket
+
     theme = gr.themes.Soft(
         primary_hue="cyan",
         secondary_hue="blue",
         neutral_hue="slate",
     )
     demo = create_web_app(manager=manager)
+
+    def _port_free(check_host: str, check_port: int) -> bool:
+        # 注意不要设置 SO_REUSEADDR：Windows 下它允许重复绑定，会误判端口空闲
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.bind((check_host, check_port))
+                return True
+        except OSError:
+            return False
+
+    actual_port = port
+    if not _port_free(host, port):
+        print(f"⚠️ 端口 {port} 已被占用 (大概率有上一次 Web 会话的残留进程未退出)...")
+        for cand in range(port + 1, port + 11):
+            if _port_free(host, cand):
+                actual_port = cand
+                break
+        if actual_port == port:
+            print(f"❌ 端口 {port}~{port + 10} 均被占用：请关闭残留进程后重试，或用 --port 指定其他端口。")
+            return
+        print(f"👉 已自动切换到空闲端口: {actual_port} (请以新地址访问，旧标签页会白屏无响应)")
+
+    display_host = "127.0.0.1" if host in ("0.0.0.0", "") else host
     print(f"\n🌐 启动 AutoBatteryResearch Agent Web 仪表盘...")
-    print(f"👉 本地访问地址: http://127.0.0.1:{port}")
-    demo.launch(theme=theme, server_name=host, server_port=port, share=share)
+    print(f"👉 本地访问地址: http://{display_host}:{actual_port}")
+    demo.launch(theme=theme, server_name=host, server_port=actual_port, share=share)

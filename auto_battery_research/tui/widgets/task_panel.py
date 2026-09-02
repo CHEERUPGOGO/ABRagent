@@ -1,7 +1,7 @@
 """TaskPanel widget for AutoBatteryResearch TUI."""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 import os
 import time
 from datetime import datetime
@@ -31,6 +31,10 @@ class TaskPanel(VerticalScroll):
         super().__init__(**kwargs)
         self.manager = manager
         self.border_title = "Mission"
+        # Changed Files 递归扫描节流：Windows 下全目录 glob+stat 每秒全量扫描
+        # 会阻塞 Textual 事件循环，导致秒级计时与面板刷新迟滞
+        self._file_scan_tick = 0
+        self._cached_files_text: Optional[Text] = None
 
     def compose(self) -> ComposeResult:
         yield Static(id="mission-title")
@@ -94,34 +98,40 @@ class TaskPanel(VerticalScroll):
         # 3. Changed Files: 动态扫描当前课题目录中最新更新的交付物
         #    课题隔离：全局 legacy 目录仅对历史存量课题 (is_legacy_task) 展示，
         #    新哈希课题不得把全局旧产物显示为本课题交付物。
-        task_dir = self.manager.get_task_output_dir()
-        scan_dirs = [task_dir]
-        if getattr(self.manager, "is_legacy_task", False):
-            scan_dirs.append(self.manager.root_dir / "output" / "auto_battery_research")
+        #    性能：递归 glob+stat 每秒全量扫描会阻塞事件循环 (Windows 尤其明显)，
+        #    节流为每 5 秒重扫一次，其余秒直接复用缓存渲染，保证秒级计时灵敏。
+        self._file_scan_tick += 1
+        if self._cached_files_text is None or self._file_scan_tick >= 5:
+            self._file_scan_tick = 0
+            task_dir = self.manager.get_task_output_dir()
+            scan_dirs = [task_dir]
+            if getattr(self.manager, "is_legacy_task", False):
+                scan_dirs.append(self.manager.root_dir / "output" / "auto_battery_research")
 
-        seen_files = set()
-        file_list = []
-        for d in scan_dirs:
-            if d.exists():
-                for p in d.glob("**/*"):
-                    if p.is_file() and p.name not in seen_files:
-                        seen_files.add(p.name)
-                        try:
-                            mtime = os.path.getmtime(p)
-                            file_list.append((mtime, p.name))
-                        except Exception:
-                            pass
-        file_list.sort(reverse=True)
-        file_list = file_list[:4]
+            seen_files = set()
+            file_list = []
+            for d in scan_dirs:
+                if d.exists():
+                    for p in d.glob("**/*"):
+                        if p.is_file() and p.name not in seen_files:
+                            seen_files.add(p.name)
+                            try:
+                                mtime = os.path.getmtime(p)
+                                file_list.append((mtime, p.name))
+                            except Exception:
+                                pass
+            file_list.sort(reverse=True)
+            file_list = file_list[:4]
 
-        file_text = Text()
-        if file_list:
-            for mtime, fn in file_list:
-                t_str = datetime.fromtimestamp(mtime).strftime("%H:%M:%S")
-                file_text.append(f"{t_str}: {fn}\n", style="green")
-        else:
-            file_text.append("none\n", style="dim")
-        self.query_one("#changed-files", Static).update(file_text)
+            file_text = Text()
+            if file_list:
+                for mtime, fn in file_list:
+                    t_str = datetime.fromtimestamp(mtime).strftime("%H:%M:%S")
+                    file_text.append(f"{t_str}: {fn}\n", style="green")
+            else:
+                file_text.append("none\n", style="dim")
+            self._cached_files_text = file_text
+        self.query_one("#changed-files", Static).update(self._cached_files_text)
 
         # 4. Tools Call: 动态展示当前会话各工具精确调用次数
         tool_counts = get_session_tool_counts()
