@@ -530,13 +530,20 @@ class ABRAgent:
                 executed_actions.append("IndexSemanticVectors")
 
         elif stage_id == 3:
-            # Stage 3: 材料挖掘与电芯组装
+            # Stage 3: 材料挖掘与电芯组装 (严格作用于当前课题专属目录)
+            task_dir = self.manager.get_task_output_dir(self.goal)
+            task_cell_dir = task_dir / "cell_assembly"
+            has_task_cells = task_cell_dir.exists() and any(task_cell_dir.glob("*.json"))
+
             t_inspect = self.tool_map.get("InspectCellEntities")
             t_mine = self.tool_map.get("ExtractAndAssembleCells")
-            insp_res = json.loads(t_inspect._run() if t_inspect else "{}")
-            executed_actions.append(f"InspectCellEntities -> has_assets={insp_res.get('has_mining_assets')}")
-            if not insp_res.get("has_mining_assets") and t_mine:
-                t_mine._run()
+
+            rel_task_dir = str(task_cell_dir.relative_to(ROOT_DIR)).replace("\\", "/")
+            insp_res = json.loads(t_inspect._run(cell_dir=rel_task_dir) if t_inspect else "{}")
+            executed_actions.append(f"InspectCellEntities -> task_cells={has_task_cells}")
+
+            if not has_task_cells and t_mine:
+                t_mine._run(sample_limit=10, target_query=self.goal)
                 executed_actions.append("ExtractAndAssembleCells")
 
         elif stage_id == 4:

@@ -203,8 +203,8 @@ class IndexSemanticVectorsTool(BaseTool):
 
 class InspectCellEntitiesArgs(BaseModel):
     cell_dir: Optional[str] = Field(
-        default="output/auto_battery_research/cell_assembly",
-        description="电芯实体存储目录"
+        default="",
+        description="电芯实体存储目录 (留空则由 StageManager 或默认路径解析)"
     )
 
 class InspectCellEntitiesTool(BaseTool):
@@ -215,10 +215,10 @@ class InspectCellEntitiesTool(BaseTool):
     )
     args_schema: Type[BaseModel] = InspectCellEntitiesArgs
 
-    def _run(self, cell_dir: Optional[str] = "output/auto_battery_research/cell_assembly") -> str:
+    def _run(self, cell_dir: Optional[str] = "") -> str:
         log_tool_call(self.name, f"cell_dir='{cell_dir}'")
-        extracted_candidates = list((ROOT_DIR / "miner" / "json").glob("*_extracted.json"))
-        target_dir = ROOT_DIR / (cell_dir or "output/auto_battery_research/cell_assembly")
+        extracted_candidates = list((ROOT_DIR / "miner" / "json").glob("*_extracted*.json"))
+        target_dir = ROOT_DIR / cell_dir if cell_dir else ROOT_DIR / "output/auto_battery_research/cell_assembly"
         
         cells_count = 0
         if target_dir.exists():
@@ -233,13 +233,13 @@ class InspectCellEntitiesTool(BaseTool):
                 except Exception:
                     pass
 
-        has_data = len(extracted_candidates) > 0 or cells_count > 0
+        has_data = cells_count > 0 or len(extracted_candidates) > 0
 
         res = {
             "extracted_json_files": [str(p.relative_to(ROOT_DIR)) for p in extracted_candidates[:5]],
             "assembled_cells_count": cells_count,
             "has_mining_assets": has_data,
-            "suggestion": "材料与电芯实体数据就绪，可调用 Check 门禁自检" if has_data else "缺少电芯组装数据，请调用 ExtractAndAssembleCells 执行数据挖掘",
+            "suggestion": "材料与电芯实体数据就绪，可调用 Check 门禁自检" if cells_count > 0 else "缺少电芯组装数据，请调用 ExtractAndAssembleCells 执行数据挖掘",
         }
         log_observation(f"电芯实体探测完成: 发现 {cells_count} 个电芯实体, {len(extracted_candidates)} 个抽取源文件")
         return json.dumps(res, ensure_ascii=False, indent=2)
@@ -250,6 +250,10 @@ class ExtractAndAssembleCellsArgs(BaseModel):
         default=10,
         description="最大提取样本数量"
     )
+    target_query: Optional[str] = Field(
+        default="",
+        description="课题目标 (用于课题专属目录落盘)"
+    )
 
 class ExtractAndAssembleCellsTool(BaseTool):
     name: str = "ExtractAndAssembleCells"
@@ -258,9 +262,9 @@ class ExtractAndAssembleCellsTool(BaseTool):
     )
     args_schema: Type[BaseModel] = ExtractAndAssembleCellsArgs
 
-    def _run(self, sample_limit: Optional[int] = 10) -> str:
-        log_tool_call(self.name, f"sample_limit={sample_limit}")
-        res = run_data_mining(sample_limit=sample_limit or 10)
+    def _run(self, sample_limit: Optional[int] = 10, target_query: Optional[str] = "") -> str:
+        log_tool_call(self.name, f"sample_limit={sample_limit}, target_query='{target_query}'")
+        res = run_data_mining(max_files=sample_limit or 10, target_query=target_query or "")
         return json.dumps(res, ensure_ascii=False, indent=2)
 
 
