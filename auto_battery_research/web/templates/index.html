@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AutoBatteryResearch Agent · Web 监控大屏</title>
+<!-- 自包含页面 (follow UCAgent 模式): 无构建步骤、无前端框架; marked/highlight 为本地内嵌静态资源 -->
+<script src="/static/marked.min.js"></script>
+<script src="/static/highlight.min.js"></script>
+<style>
+:root {
+  --bg: #f4f6f9; --panel: #ffffff; --border: #e2e8f0; --text: #1f2937;
+  --text-dim: #6b7280; --accent: #0e7490; --accent-soft: #ecfeff;
+  --ok: #16a34a; --warn: #d97706; --info: #2563eb; --err: #dc2626; --muted: #94a3b8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Segoe UI", "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+  background: var(--bg); color: var(--text); font-size: 14px; height: 100vh;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+header {
+  background: linear-gradient(90deg, #0f172a 0%, #155e75 100%); color: #fff;
+  padding: 10px 18px; display: flex; align-items: center; gap: 14px; flex-shrink: 0;
+}
+header h1 { font-size: 17px; font-weight: 600; }
+header .sub { font-size: 12px; opacity: .82; }
+header .spacer { flex: 1; }
+#stats-bar { font-size: 12px; opacity: .9; display: flex; gap: 12px; }
+#stats-bar b { color: #67e8f9; }
+#refresh-state { font-size: 11px; opacity: .65; }
+
+main { flex: 1; display: flex; min-height: 0; }
+
+/* ---------- 左侧课题栏 ---------- */
+#sidebar {
+  width: 300px; flex-shrink: 0; background: var(--panel); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; min-height: 0;
+}
+#sidebar .hd { padding: 12px 14px 8px; }
+#sidebar .hd h2 { font-size: 14px; margin-bottom: 8px; }
+#goal-search {
+  width: 100%; padding: 7px 10px; border: 1px solid var(--border); border-radius: 8px;
+  font-size: 13px; outline: none;
+}
+#goal-search:focus { border-color: var(--accent); }
+#goal-list { flex: 1; overflow-y: auto; padding: 6px; }
+.goal-card {
+  padding: 10px 12px; border-radius: 10px; cursor: pointer; margin-bottom: 6px;
+  border: 1px solid transparent; transition: background .15s;
+}
+.goal-card:hover { background: var(--accent-soft); }
+.goal-card.active { background: var(--accent-soft); border-color: var(--accent); }
+.goal-card .g-title { font-weight: 600; font-size: 13px; line-height: 1.45;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.goal-card .g-meta { display: flex; align-items: center; gap: 8px; margin-top: 6px;
+  font-size: 11.5px; color: var(--text-dim); flex-wrap: wrap; }
+.badge { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+.badge.ok { background: #dcfce7; color: var(--ok); }
+.badge.run { background: #fef3c7; color: var(--warn); }
+.badge.idle { background: #f1f5f9; color: var(--muted); }
+.badge.err { background: #fee2e2; color: var(--err); }
+.badge.report { background: #e0f2fe; color: var(--info); }
+.badge.info { background: #dbeafe; color: #1d4ed8; }
+#goal-empty { color: var(--text-dim); text-align: center; padding: 30px 10px; font-size: 13px; line-height: 1.8; }
+
+/* ---------- 右侧主区 ---------- */
+#content { flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+
+#stage-bar {
+  background: var(--panel); border-bottom: 1px solid var(--border); padding: 14px 18px 10px;
+  flex-shrink: 0;
+}
+#stage-bar .goal-line { font-size: 15px; font-weight: 600; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+#stage-bar .goal-line .time { font-size: 12px; color: var(--text-dim); font-weight: 400; }
+#stage-track { display: flex; gap: 8px; overflow-x: auto; }
+.stage-chip {
+  flex: 1; min-width: 128px; border: 1px solid var(--border); border-radius: 10px;
+  padding: 8px 10px; position: relative; background: #fbfdfe;
+}
+.stage-chip .s-id { font-size: 10.5px; color: var(--text-dim); letter-spacing: .4px; }
+.stage-chip .s-name { font-size: 12.5px; font-weight: 600; margin: 2px 0 6px; line-height: 1.35; }
+.stage-chip .s-status { font-size: 11px; font-weight: 700; }
+.stage-chip.st-PASSED { border-color: #86efac; background: #f0fdf4; }
+.stage-chip.st-PASSED .s-status { color: var(--ok); }
+.stage-chip.st-IN_PROGRESS { border-color: #fcd34d; background: #fffbeb; box-shadow: 0 0 0 2px #fef3c7; }
+.stage-chip.st-IN_PROGRESS .s-status { color: var(--warn); }
+.stage-chip.st-SKIPPED { border-color: #bfdbfe; background: #eff6ff; }
+.stage-chip.st-SKIPPED .s-status { color: var(--info); }
+.stage-chip.st-FAILED { border-color: #fca5a5; background: #fef2f2; }
+.stage-chip.st-FAILED .s-status { color: var(--err); }
+.stage-chip.st-CURRENT { outline: 2px solid var(--accent); outline-offset: 1px; }
+.stage-chip .s-flag { position: absolute; top: 6px; right: 8px; font-size: 12px; }
+
+/* ---------- 标签页 ---------- */
+#tabs { display: flex; gap: 4px; padding: 10px 18px 0; background: var(--panel);
+  border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.tab-btn {
+  padding: 8px 16px; border: none; background: none; font-size: 13.5px; cursor: pointer;
+  color: var(--text-dim); border-bottom: 2px solid transparent; border-radius: 6px 6px 0 0;
+}
+.tab-btn:hover { color: var(--text); background: var(--accent-soft); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.tab-btn .pill { background: var(--accent-soft); color: var(--accent); border-radius: 999px;
+  padding: 0 7px; font-size: 11px; margin-left: 5px; }
+
+.tab-panel { flex: 1; min-height: 0; display: none; }
+.tab-panel.active { display: flex; }
+
+/* ---------- 研报页 ---------- */
+#panel-report { flex-direction: row; }
+#toc {
+  width: 230px; flex-shrink: 0; overflow-y: auto; padding: 14px 10px;
+  border-right: 1px solid var(--border); background: var(--panel); font-size: 12.5px;
+}
+#toc .toc-title { font-weight: 700; color: var(--text-dim); font-size: 11.5px;
+  letter-spacing: .5px; margin-bottom: 8px; }
+#toc a { display: block; color: var(--text-dim); text-decoration: none; padding: 4px 8px;
+  border-left: 2px solid transparent; border-radius: 0 6px 6px 0; line-height: 1.4;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#toc a:hover { color: var(--accent); background: var(--accent-soft); }
+#toc a.lvl3 { padding-left: 20px; font-size: 12px; }
+#report-wrap { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+#report-toolbar {
+  display: flex; gap: 8px; align-items: center; padding: 8px 18px;
+  border-bottom: 1px solid var(--border); background: #fbfdfe; font-size: 12.5px;
+}
+#report-toolbar .src { color: var(--text-dim); }
+.btn {
+  border: 1px solid var(--border); background: var(--panel); color: var(--text);
+  border-radius: 7px; padding: 4px 12px; font-size: 12.5px; cursor: pointer;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+#report-body { flex: 1; overflow-y: auto; padding: 22px 30px 60px; }
+#report-body.raw-view { font-family: Consolas, "Courier New", monospace; font-size: 12.5px;
+  white-space: pre-wrap; word-break: break-word; color: #334155; }
+.report-empty { color: var(--text-dim); text-align: center; padding-top: 80px; line-height: 2; }
+
+/* markdown 排版 (研报渲染) */
+#report-body .md h1 { font-size: 21px; margin: 18px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+#report-body .md h2 { font-size: 17.5px; margin: 26px 0 10px; color: #0c4a6e;
+  padding-left: 10px; border-left: 4px solid var(--accent); }
+#report-body .md h3 { font-size: 15px; margin: 18px 0 8px; color: #155e75; }
+#report-body .md p { margin: 9px 0; line-height: 1.85; }
+#report-body .md ul, #report-body .md ol { margin: 9px 0 9px 24px; line-height: 1.85; }
+#report-body .md li { margin: 3px 0; }
+#report-body .md blockquote { margin: 10px 0; padding: 8px 14px; background: var(--accent-soft);
+  border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; color: #155e75; }
+#report-body .md code { background: #f1f5f9; border-radius: 4px; padding: 1px 5px;
+  font-family: Consolas, monospace; font-size: 12.5px; }
+#report-body .md pre { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px; overflow-x: auto; margin: 12px 0; }
+#report-body .md pre code { background: none; color: #334155; padding: 0; font-size: 12.5px; }
+#report-body .md table { border-collapse: collapse; margin: 12px 0; width: 100%;
+  font-size: 13px; display: block; overflow-x: auto; }
+#report-body .md th, #report-body .md td { border: 1px solid var(--border); padding: 7px 11px; text-align: left; }
+#report-body .md th { background: #f0f9ff; color: #0c4a6e; white-space: nowrap; }
+#report-body .md tr:nth-child(even) td { background: #f8fafc; }
+#report-body .md hr { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+#report-body .md a { color: var(--accent); }
+/* 亮色主题下的 hljs token 配色 (内嵌, 免额外 css 文件) */
+#report-body .md .hljs-comment, #report-body .md .hljs-quote { color: #94a3b8; font-style: italic; }
+#report-body .md .hljs-keyword, #report-body .md .hljs-selector-tag { color: #7c3aed; }
+#report-body .md .hljs-string, #report-body .md .hljs-regexp { color: #15803d; }
+#report-body .md .hljs-number, #report-body .md .hljs-literal { color: #b45309; }
+#report-body .md .hljs-title, #report-body .md .hljs-section { color: #0e7490; font-weight: 600; }
+#report-body .md .hljs-attr, #report-body .md .hljs-name { color: #be185d; }
+#report-body .md .hljs-built_in, #report-body .md .hljs-type { color: #0369a1; }
+
+/* ---------- 阶段日志页 ---------- */
+#panel-journal { overflow-y: auto; padding: 18px; }
+.journal-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px 18px; margin-bottom: 12px; }
+.journal-card .j-hd { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.journal-card .j-hd b { font-size: 14px; }
+.journal-card .j-time { font-size: 11.5px; color: var(--text-dim); }
+.journal-card .j-notes { line-height: 1.8; margin: 6px 0; }
+.journal-card .j-del { font-size: 12px; color: var(--info); line-height: 1.7; word-break: break-all; }
+.journal-card pre { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px; font-size: 12px; overflow-x: auto; margin-top: 8px; }
+
+/* ---------- 运行日志页 ---------- */
+#panel-log { flex-direction: column; }
+#log-toolbar { display: flex; gap: 14px; align-items: center; padding: 8px 18px;
+  border-bottom: 1px solid var(--border); background: #fbfdfe; font-size: 12.5px;
+  color: var(--text-dim); flex-shrink: 0; }
+#log-toolbar label { display: flex; gap: 5px; align-items: center; cursor: pointer; }
+#log-body { flex: 1; overflow-y: auto; padding: 14px 18px; background: #0f172a; color: #cbd5e1;
+  font-family: Consolas, "Courier New", monospace; font-size: 12.5px; line-height: 1.65;
+  white-space: pre-wrap; word-break: break-all; }
+.ansi-seg { white-space: pre-wrap; }
+
+/* ---------- 空态 / 提示 ---------- */
+#no-goal { flex: 1; display: flex; align-items: center; justify-content: center;
+  color: var(--text-dim); line-height: 2.1; text-align: center; }
+footer { text-align: center; font-size: 11.5px; color: var(--muted); padding: 5px;
+  background: var(--panel); border-top: 1px solid var(--border); flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>⚡ AutoBatteryResearch Agent · Web 监控大屏</h1>
+    <div class="sub">文献解析 · 语义向量 · 材料挖掘 · RAG 设计 · PINN 仿真 · 综合研报 — 只读监控, 与 TUI/CLI 实时联动</div>
+  </div>
+  <div class="spacer"></div>
+  <div id="stats-bar" title="文献资产统计">加载中…</div>
+  <div id="refresh-state">—</div>
+</header>
+
+<main>
+  <aside id="sidebar">
+    <div class="hd">
+      <h2>🎯 研究课题 <span id="goal-count" style="color:var(--text-dim);font-weight:400;font-size:12px"></span></h2>
+      <input id="goal-search" type="text" placeholder="🔍 搜索课题…">
+    </div>
+    <div id="goal-list"></div>
+  </aside>
+
+  <section id="content">
+    <div id="stage-bar" style="display:none">
+      <div class="goal-line"><span id="cur-goal-title"></span><span class="time" id="cur-goal-meta"></span></div>
+      <div id="stage-track"></div>
+    </div>
+    <div id="no-goal">请从左侧选择一个研究课题<br><span style="font-size:12.5px">在 TUI/CLI 中运行新课题后, 此处约 5 秒内自动出现</span></div>
+
+    <div id="tabs" style="display:none">
+      <button class="tab-btn active" data-tab="report">📄 综合研报</button>
+      <button class="tab-btn" data-tab="journal">📝 阶段日志</button>
+      <button class="tab-btn" data-tab="log">💻 运行日志</button>
+    </div>
+
+    <div class="tab-panel active" id="panel-report">
+      <div id="toc"><div class="toc-title">📑 目录</div><div id="toc-body"></div></div>
+      <div id="report-wrap">
+        <div id="report-toolbar">
+          <span class="src" id="report-src"></span>
+          <span class="spacer" style="flex:1"></span>
+          <button class="btn" id="btn-raw">查看原文</button>
+          <button class="btn" id="btn-dl">⬇ 下载 .md</button>
+          <button class="btn" id="btn-refresh-rep">🔄 刷新</button>
+        </div>
+        <div id="report-body"></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-journal"></div>
+
+    <div class="tab-panel" id="panel-log">
+      <div id="log-toolbar">
+        <span id="log-path">未找到运行日志</span>
+        <span class="spacer" style="flex:1"></span>
+        <label><input type="checkbox" id="log-auto" checked> 自动滚动</label>
+        <button class="btn" id="btn-clear-log">清屏</button>
+      </div>
+      <div id="log-body"></div>
+    </div>
+  </section>
+</main>
+
+<footer>AutoBatteryResearch Agent · FastAPI 只读监控大屏 · 数据直读 output/tasks (原子状态文件), TUI/CLI/Web 三端联动</footer>
+
+<script>
+"use strict";
+/* ============================== 基础工具 ============================== */
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+async function api(url) {
+  const resp = await fetch(url);
+  const text = await resp.text();
+  let data;
+  try { data = text ? JSON.parse(text) : {}; } catch { data = { raw: text }; }
+  if (!resp.ok) throw new Error(data.error || resp.statusText || `HTTP ${resp.status}`);
+  return data;
+}
+
+/* ANSI 转义码 → 带色 HTML (对齐 UCAgent task.html 的实现) */
+const ANSI_FG = {
+  30: '#4a4a4a', 31: '#f87171', 32: '#4ade80', 33: '#fbbf24',
+  34: '#93c5fd', 35: '#c084fc', 36: '#67e8f9', 37: '#e2e8f0',
+  90: '#64748b', 91: '#fca5a5', 92: '#86efac', 93: '#fde68a',
+  94: '#93c5fd', 95: '#d8b4fe', 96: '#67e8f9', 97: '#f8fafc',
+};
+function ansiToHtml(input) {
+  const text = String(input ?? '');
+  const pattern = /\x1b\[?(\d+(?:;\d+)*)m/g;
+  let html = '', lastIndex = 0, bold = false, color = '', match;
+  while ((match = pattern.exec(text))) {
+    const chunk = text.slice(lastIndex, match.index);
+    if (chunk) {
+      let style = '';
+      if (bold) style += 'font-weight:700;';
+      if (color) style += `color:${color};`;
+      const content = esc(chunk).replace(/\n/g, '<br>');
+      html += style ? `<span class="ansi-seg" style="${style}">${content}</span>` : content;
+    }
+    for (const codeRaw of match[1].split(';')) {
+      const code = Number(codeRaw);
+      if (code === 0) { bold = false; color = ''; }
+      else if (code === 1) bold = true;
+      else if (ANSI_FG[code]) color = ANSI_FG[code];
+    }
+    lastIndex = pattern.lastIndex;
+  }
+  const tail = text.slice(lastIndex);
+  if (tail) {
+    let style = '';
+    if (bold) style += 'font-weight:700;';
+    if (color) style += `color:${color};`;
+    const content = esc(tail).replace(/\n/g, '<br>');
+    html += style ? `<span class="ansi-seg" style="${style}">${content}</span>` : content;
+  }
+  return html || esc(text);
+}
+
+/* ============================== 全局状态 ============================== */
+const state = {
+  goals: [],            // 课题列表 (后端按 updated_at 倒序)
+  currentDir: null,     // 当前选中课题的任务目录名
+  currentSummary: null, // 当前课题的 status 响应
+  reportRaw: false,     // 研报原文/渲染视图切换
+  reportSignature: '',  // 触发研报重拉的特征串 (updated_at + stage6 状态)
+  journalLoaded: false,
+};
+const POLL_MS = 5000;
+
+/* ============================== 课题列表 ============================== */
+function statusBadge(g) {
+  if (g.state_error) return '<span class="badge err">状态损坏</span>';
+  if (g.is_all_completed) return '<span class="badge ok">✅ 已完成</span>';
+  const cur = (g.stages || []).find((s) => s.id === g.current_stage_id);
+  if (cur && cur.status === 'IN_PROGRESS') return '<span class="badge run">⏳ 进行中</span>';
+  if (cur && cur.status === 'FAILED') return '<span class="badge err">门禁未过</span>';
+  return '<span class="badge idle">进行中</span>';
+}
+
+function renderGoalList() {
+  const list = document.getElementById('goal-list');
+  const kw = document.getElementById('goal-search').value.trim().toLowerCase();
+  const filtered = state.goals.filter((g) => !kw || g.goal.toLowerCase().includes(kw) || g.dir.toLowerCase().includes(kw));
+  document.getElementById('goal-count').textContent = state.goals.length ? `(${state.goals.length})` : '';
+  if (!state.goals.length) {
+    list.innerHTML = '<div id="goal-empty">暂无课题<br>在 TUI / CLI 中运行<br><code>abr-cli --run --goal "…"</code></div>';
+    return;
+  }
+  if (!filtered.length) { list.innerHTML = '<div id="goal-empty">无匹配课题</div>'; return; }
+  list.innerHTML = filtered.map((g) => `
+    <div class="goal-card ${g.dir === state.currentDir ? 'active' : ''}" data-dir="${esc(g.dir)}">
+      <div class="g-title">${esc(g.goal)}</div>
+      <div class="g-meta">
+        ${statusBadge(g)}
+        <span>进度 ${esc(g.progress)}</span>
+        ${g.has_report ? '<span class="badge report">📄 研报</span>' : ''}
+        <span>${esc((g.updated_at || '').replace('T', ' ').slice(5, 16))}</span>
+      </div>
+    </div>`).join('');
+  list.querySelectorAll('.goal-card').forEach((el) => {
+    el.addEventListener('click', () => selectGoal(el.dataset.dir));
+  });
+}
+
+async function loadGoals() {
+  try {
+    const data = await api('/api/goals');
+    state.goals = data.goals || [];
+    renderGoalList();
+    if (!state.currentDir && state.goals.length) selectGoal(state.goals[0].dir);
+  } catch (err) {
+    document.getElementById('refresh-state').textContent = '列表拉取失败: ' + err.message;
+  }
+}
+
+/* ============================== 课题详情 (阶段矩阵) ============================== */
+const STATUS_LABEL = {
+  PASSED: '✅ 已通过', IN_PROGRESS: '⏳ 进行中', SKIPPED: '🔵 已跳过',
+  FAILED: '❌ 未通过', PENDING: '⚪ 等待中', FALLBACK: '🟣 降级通过',
+};
+
+function renderStageBar(g) {
+  document.getElementById('no-goal').style.display = 'none';
+  const bar = document.getElementById('stage-bar');
+  const tabs = document.getElementById('tabs');
+  bar.style.display = 'block';
+  tabs.style.display = 'flex';
+  document.getElementById('cur-goal-title').textContent = g.goal;
+  document.getElementById('cur-goal-meta').textContent =
+    `· 更新于 ${(g.updated_at || '').replace('T', ' ').slice(0, 19)} · 进度 ${g.progress}` +
+    (g.is_legacy ? ' · 历史遗留课题' : '');
+
+  const track = document.getElementById('stage-track');
+  track.innerHTML = (g.stages || []).map((s) => {
+    const isCur = s.id === g.current_stage_id;
+    return `
+    <div class="stage-chip st-${esc(s.status)} ${isCur ? 'st-CURRENT' : ''}" title="${esc(s.description || s.name)}">
+      <span class="s-flag">${s.skip && s.status !== 'PASSED' ? '⏭' : (isCur ? '📍' : '')}</span>
+      <div class="s-id">STAGE ${s.id}${isCur ? ' · 当前' : ''}</div>
+      <div class="s-name">${esc(s.name)}</div>
+      <div class="s-status">${STATUS_LABEL[s.status] || esc(s.status)}</div>
+    </div>`;
+  }).join('');
+}
+
+async function loadStatus() {
+  if (!state.currentDir) return;
+  try {
+    const g = await api(`/api/goal/${encodeURIComponent(state.currentDir)}/status`);
+    if (g.error) return;
+    state.currentSummary = g;
+    renderStageBar(g);
+    /* 阶段推进 (updated_at 变化) 或 Stage 6 翻为 PASSED 时自动重拉研报 */
+    const stage6 = (g.stages || []).find((s) => s.id === 6);
+    const sig = `${g.updated_at}|${stage6 ? stage6.status : ''}`;
+    if (sig !== state.reportSignature) {
+      state.reportSignature = sig;
+      await loadReport();
+    }
+    if (document.querySelector('.tab-btn[data-tab="journal"]').classList.contains('active')) loadJournals();
+  } catch (err) {
+    document.getElementById('refresh-state').textContent = '状态拉取失败: ' + err.message;
+  }
+}
+
+/* ============================== 综合研报 ============================== */
+function buildToc() {
+  const body = document.getElementById('report-body');
+  const toc = document.getElementById('toc-body');
+  const heads = body.querySelectorAll('h2, h3');
+  let i = 0;
+  const items = [];
+  heads.forEach((h) => {
+    if (!h.id) h.id = 'toc-' + (++i) + '-' + h.textContent.trim().slice(0, 12).replace(/\s+/g, '-');
+    items.push(`<a class="${h.tagName === 'H3' ? 'lvl3' : ''}" href="#${h.id}" title="${esc(h.textContent)}">${esc(h.textContent)}</a>`);
+  });
+  toc.innerHTML = items.join('') || '<div style="color:var(--muted);font-size:12px;padding:4px 8px">— 无标题结构 —</div>';
+  document.getElementById('toc').style.display = state.reportRaw ? 'none' : 'block';
+}
+
+function renderReport(data) {
+  const body = document.getElementById('report-body');
+  const src = document.getElementById('report-src');
+  if (!data.found) {
+    src.textContent = '';
+    body.className = '';
+    body.innerHTML = '<div class="report-empty">📄 尚未生成综合研报<br>' +
+      '<span style="font-size:12.5px">在 TUI / CLI 推进到 Stage 6 后, 此处将自动渲染完整研报</span><br>' +
+      '<button class="btn" style="margin-top:10px" onclick="loadReport()">🔄 刷新</button></div>';
+    document.getElementById('btn-raw').style.display = 'none';
+    document.getElementById('btn-dl').style.display = 'none';
+    document.getElementById('toc-body').innerHTML = '';
+    return;
+  }
+  document.getElementById('btn-raw').style.display = '';
+  document.getElementById('btn-dl').style.display = '';
+  src.textContent = `来源: ${data.source}` + (data.bytes ? ` · ${(data.bytes / 1024).toFixed(1)} KB` : '');
+  if (state.reportRaw) {
+    body.className = 'raw-view';
+    body.textContent = data.markdown;
+  } else {
+    body.className = 'md';
+    try {
+      body.innerHTML = marked.parse(data.markdown);
+    } catch (e) {
+      body.innerHTML = '<pre>' + esc(data.markdown) + '</pre>';
+    }
+    body.querySelectorAll('pre code').forEach((blk) => {
+      try { hljs.highlightElement(blk); } catch (e) { /* 高亮失败不影响正文 */ }
+    });
+  }
+  buildToc();
+}
+
+async function loadReport() {
+  if (!state.currentDir) return;
+  try {
+    const data = await api(`/api/goal/${encodeURIComponent(state.currentDir)}/report`);
+    renderReport(data);
+  } catch (err) {
+    document.getElementById('report-src').textContent = '研报拉取失败: ' + err.message;
+  }
+}
+
+/* ============================== 阶段日志 ============================== */
+function renderJournals(data) {
+  const panel = document.getElementById('panel-journal');
+  const js = data.journals || [];
+  if (!js.length) {
+    panel.innerHTML = '<div class="report-empty">📝 暂无阶段日志<br><span style="font-size:12.5px">推进阶段 (Complete) 时会自动记录</span></div>';
+    return;
+  }
+  panel.innerHTML = js.map((j) => `
+    <div class="journal-card">
+      <div class="j-hd"><span class="badge info">${esc(j.stage_name || 'General')}</span>
+        <b>Stage ${esc(j.stage_id)}</b>
+        <span class="j-time">${esc((j.timestamp || '').replace('T', ' ').slice(0, 19))}</span>
+        ${j.duration_seconds ? `<span class="j-time">耗时 ${esc(j.duration_seconds)}s</span>` : ''}</div>
+      ${j.notes ? `<div class="j-notes">${esc(j.notes)}</div>` : ''}
+      ${(j.deliverables || []).length ? `<div class="j-del">📦 交付物: ${j.deliverables.map(esc).join(' · ')}</div>` : ''}
+      ${j.key_findings && Object.keys(j.key_findings).length
+        ? `<pre>${esc(JSON.stringify(j.key_findings, null, 2))}</pre>` : ''}
+    </div>`).join('');
+}
+
+async function loadJournals() {
+  if (!state.currentDir) return;
+  try {
+    renderJournals(await api(`/api/goal/${encodeURIComponent(state.currentDir)}/journals`));
+  } catch (err) {
+    document.getElementById('panel-journal').innerHTML =
+      `<div class="report-empty">日志拉取失败: ${esc(err.message)}</div>`;
+  }
+}
+
+/* ============================== 运行日志 ============================== */
+async function loadLog() {
+  if (!state.currentDir) return;
+  const el = document.getElementById('log-body');
+  try {
+    const data = await api(`/api/goal/${encodeURIComponent(state.currentDir)}/log?tail=300`);
+    document.getElementById('log-path').textContent =
+      data.found ? `${data.path} (尾部 ${data.lines} 行)` : '未找到运行日志 (TUI/CLI 运行该课题时自动生成 log/<课题>.log)';
+    const auto = document.getElementById('log-auto').checked;
+    const prevScroll = el.scrollTop;
+    el.innerHTML = data.found ? ansiToHtml(data.text) : '<span style="color:#64748b">— 无日志 —</span>';
+    const maxScroll = el.scrollHeight - el.clientHeight;
+    el.scrollTop = auto ? maxScroll : Math.min(prevScroll, maxScroll);
+  } catch (err) {
+    el.innerHTML = ansiToHtml('日志拉取失败: ' + err.message);
+  }
+}
+
+/* ============================== 课题切换 / 路由 ============================== */
+function selectGoal(dir) {
+  state.currentDir = dir;
+  state.reportSignature = '';
+  const newHash = '#goal=' + encodeURIComponent(dir);
+  if (location.hash !== newHash) location.hash = newHash;  // 持久化到 URL; 引发的 hashchange 由下方 guard 挡掉重复加载
+  onGoalChange();
+}
+
+function onGoalChange() {
+  renderGoalList();
+  loadStatus();
+  loadReport();
+  loadJournals();
+  loadLog();
+}
+
+window.addEventListener('hashchange', () => {
+  const m = location.hash.match(/^#goal=(.+)$/);
+  if (m) {
+    const dir = decodeURIComponent(m[1]);
+    if (dir && dir !== state.currentDir) { state.currentDir = dir; state.reportSignature = ''; onGoalChange(); }
+  }
+});
+
+/* ============================== 标签页 ============================== */
+document.querySelectorAll('.tab-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach((p) => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'journal') loadJournals();
+    if (btn.dataset.tab === 'log') loadLog();
+  });
+});
+
+/* ============================== 工具栏按钮 ============================== */
+document.getElementById('btn-raw').addEventListener('click', () => {
+  state.reportRaw = !state.reportRaw;
+  document.getElementById('btn-raw').textContent = state.reportRaw ? '渲染视图' : '查看原文';
+  loadReport();
+});
+document.getElementById('btn-dl').addEventListener('click', () => {
+  if (state.currentDir) window.open(`/api/goal/${encodeURIComponent(state.currentDir)}/report?download=1`, '_blank');
+});
+document.getElementById('btn-refresh-rep').addEventListener('click', loadReport);
+document.getElementById('btn-clear-log').addEventListener('click', () => {
+  document.getElementById('log-body').innerHTML = '';
+});
+document.getElementById('goal-search').addEventListener('input', renderGoalList);
+
+/* ============================== 资产统计 & 轮询 ============================== */
+async function loadStats() {
+  try {
+    const s = await api('/api/stats');
+    document.getElementById('stats-bar').innerHTML =
+      `📚 PDF <b>${s.pdf_papers}</b> · 📝 清洗 <b>${s.merged_markdown}</b> · 🗃️ 归档 <b>${s.classified_database}</b>` +
+      ` · 🔍 电芯 <b>${s.extracted_cells}</b> · 🏷️ 元数据 <b>${s.metadata_index}</b>`;
+  } catch (e) { /* 统计失败不阻塞主界面 */ }
+}
+
+let tick = 0;
+setInterval(() => {
+  if (document.hidden) return;  // 标签页不可见时暂停轮询
+  tick++;
+  document.getElementById('refresh-state').textContent = '同步于 ' + new Date().toLocaleTimeString();
+  loadGoals();          // 课题列表 (发现新课题/进度变化)
+  loadStatus();         // 当前课题阶段矩阵 (研报按 signature 变化自动重拉)
+  if (tick % 2 === 0) loadLog();  // 运行日志 10s 一拍, 降低 IO
+}, POLL_MS);
+
+/* ============================== 启动 ============================== */
+if (typeof marked !== 'undefined') marked.setOptions({ gfm: true, breaks: false });
+const m = location.hash.match(/^#goal=(.+)$/);
+if (m) { state.currentDir = decodeURIComponent(m[1]); onGoalChange(); }
+loadGoals();
+loadStats();
+</script>
+</body>
+</html>

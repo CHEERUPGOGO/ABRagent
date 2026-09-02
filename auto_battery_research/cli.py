@@ -137,11 +137,12 @@ def main():
 
     parser.add_argument("--reset", action="store_true", help="重置工作流状态至 Stage 1")
     parser.add_argument("--tui", action="store_true", help="启动 Rich 多面板终端交互控制台 (TUI)")
-    parser.add_argument("--web", action="store_true", help="启动 Gradio 交互式 Web 仪表盘")
+    parser.add_argument("--web", action="store_true", help="启动 FastAPI Web 监控大屏 (只读: 课题进度/研报/日志, 与 TUI/CLI 实时联动)")
+    parser.add_argument("--web-gradio", action="store_true", help="启动旧版 Gradio 交互仪表盘 (后备入口, 兼容 Gradio 4/5/6)")
     parser.add_argument("--mcp", action="store_true", help="启动 stdio MCP Server 服务")
-    parser.add_argument("--host", type=str, default="127.0.0.1", help="Web 仪表盘监听地址 (默认 127.0.0.1 安全本地回环)")
-    parser.add_argument("--port", type=int, default=7865, help="Web 仪表盘端口 (默认 7865)")
-    parser.add_argument("--share", action="store_true", help="创建公共分享链接 (Gradio)")
+    parser.add_argument("--host", type=str, default="127.0.0.1", help="Web 监控大屏监听地址 (默认 127.0.0.1 安全本地回环)")
+    parser.add_argument("--port", type=int, default=7865, help="Web 监控大屏端口 (默认 7865)")
+    parser.add_argument("--share", action="store_true", help="创建公共分享链接 (仅旧版 Gradio 后备入口支持)")
 
     args = parser.parse_args()
 
@@ -155,7 +156,14 @@ def main():
         start_stdio_server()
         return
 
-    # 2. 初始化 StageManager
+    # 2. FastAPI Web 监控大屏 (主 Web 入口): 纯读磁盘、零写入,
+    #    故放在 StageManager 构造之前 —— 不触发 Checker 级联/状态落盘
+    if args.web:
+        from auto_battery_research.web.server import launch_fastapi_web_server
+        launch_fastapi_web_server(host=args.host, port=args.port)
+        return
+
+    # 3. 初始化 StageManager
     skip_pinn_val = None
     if args.with_pinn:
         skip_pinn_val = False
@@ -165,8 +173,8 @@ def main():
     mgr = StageManager(skip_pinn=skip_pinn_val, target_goal=args.goal)
     set_stage_manager(mgr)
 
-    # 3. Web 模式
-    if args.web:
+    # 4. Gradio 旧版仪表盘 (后备入口, 需要 Manager 驱动交互操作)
+    if args.web_gradio:
         from auto_battery_research.web.app import launch_web_server
         launch_web_server(manager=mgr, host=args.host, port=args.port, share=args.share)
         return

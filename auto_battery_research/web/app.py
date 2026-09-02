@@ -1,6 +1,11 @@
 """Gradio Web Dashboard — 交互式 Web 大屏 (AutoBatteryResearch Agent).
 
-支持通过 `--web` 命令行参数一键启动，提供：
+⚠️ 本模块为**后备入口** (`abr-cli --web-gradio`)：主 Web 入口已切换为
+FastAPI 只读监控大屏 (`auto_battery_research/web/server.py`, `abr-cli --web`)。
+Gradio 5/6 的 SSR 渲染在部分 Windows 环境下会出现"tab 栏渲染但内容区空白"
+的白屏问题, 此处 launch 已显式关闭 SSR (ssr_mode=False) 尽力规避。
+
+支持通过 `--web-gradio` 命令行参数一键启动，提供：
 - 📊 智能体 6 阶段全流程工作流大屏与实时门禁审计
 - 🧪 多智能体 RAG 电池方案设计与 C1-C8 规则审查
 - 📚 文献资产库与电芯数据挖掘全景
@@ -626,11 +631,6 @@ def launch_web_server(
     """
     import socket
 
-    theme = gr.themes.Soft(
-        primary_hue="cyan",
-        secondary_hue="blue",
-        neutral_hue="slate",
-    )
     demo = create_web_app(manager=manager)
 
     def _port_free(check_host: str, check_port: int) -> bool:
@@ -655,6 +655,11 @@ def launch_web_server(
         print(f"👉 已自动切换到空闲端口: {actual_port} (请以新地址访问，旧标签页会白屏无响应)")
 
     display_host = "127.0.0.1" if host in ("0.0.0.0", "") else host
-    print(f"\n🌐 启动 AutoBatteryResearch Agent Web 仪表盘...")
+    print(f"\n🌐 启动 AutoBatteryResearch Agent Web 仪表盘 (Gradio 后备入口)...")
     print(f"👉 本地访问地址: http://{display_host}:{actual_port}")
-    demo.launch(theme=theme, server_name=host, server_port=actual_port, share=share)
+    # Gradio 5/6 默认走 SSR 渲染, 在部分 Windows 环境下 SSR 失败会白屏 —— 显式关闭;
+    # Gradio 4 的 launch() 不认 ssr_mode 形参, TypeError 时回退原样启动。
+    try:
+        demo.launch(server_name=host, server_port=actual_port, share=share, ssr_mode=False)
+    except TypeError:
+        demo.launch(server_name=host, server_port=actual_port, share=share)

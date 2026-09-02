@@ -15,6 +15,15 @@ if TYPE_CHECKING:
 class MessagesPanel(VerticalScroll, can_focus=True):
     """右上侧面板：展示阶段指引、交付物清单与实时诊断日志 ."""
 
+    # 阶段状态 → 展示标签 (动态渲染, 替换曾经的硬编码静态表格)
+    _STATUS_LABELS = {
+        "PASSED": "✅ Completed",
+        "IN_PROGRESS": "🔄 Active",
+        "SKIPPED": "⏭️ Skipped",
+        "FAILED": "❌ Failed",
+        "PENDING": "⚪ Pending",
+    }
+
     def __init__(self, manager: StageManager, **kwargs) -> None:
         super().__init__(**kwargs)
         self.manager = manager
@@ -30,6 +39,22 @@ class MessagesPanel(VerticalScroll, can_focus=True):
         self.update_content()
         self.set_interval(1.0, self.update_content)
 
+    def _render_stage_table(self) -> str:
+        """由 StageManager 真实状态渲染 6 阶段进度表 (有则提取、无则留空)."""
+        rows = ["| Stage | Description | Status |", "|:---:|:---|:---:|"]
+        try:
+            status = self.manager.get_status()
+            stages = status.get("stages", [])
+        except Exception:
+            stages = []
+        for s in stages:
+            st = s.get("status", "PENDING")
+            if s.get("skip") and st not in ("PASSED", "FAILED"):
+                st = "SKIPPED"
+            label = self._STATUS_LABELS.get(st, st)
+            rows.append(f"| {s.get('id')} | {s.get('name', s.get('key', ''))} | [{label}] |")
+        return "\n".join(rows) + "\n\n"
+
     def update_content(self, force: bool = False) -> None:
         """刷新指南与交付物列表."""
         curr = self.manager.get_current_stage()
@@ -42,17 +67,9 @@ class MessagesPanel(VerticalScroll, can_focus=True):
             self._last_stage_id = curr.id
             self.border_title = "Messages"
             tips_md = curr.get_tips()
-            
-            # 顶部表格与状态摘要
-            status = self.manager.get_status()
-            stages_table = """| Stage | Description | Status |
-|:---:|:---|:---:|
-| 1-3 | Literature ingestion, Vector DB indexing & Cell mining | [Completed] |
-| 4 | Multi-Agent RAG battery design scheme | [Active] |
-| 5 | PINN & PyBaMM physics simulation | [Skipped] |
-| 6 | Synthesis research report generation | [Pending] |
 
-"""
+            # 顶部表格与状态摘要 (动态渲染真实阶段状态)
+            stages_table = self._render_stage_table()
             full_md = f"### Stage {curr.id}: {curr.name}\n\n" + stages_table + "### Key Deliverables & Guidelines\n" + tips_md
             try:
                 self.query_one("#guide-markdown", Markdown).update(full_md)

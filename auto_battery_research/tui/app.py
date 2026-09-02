@@ -80,12 +80,33 @@ class BatteryAgentTUI(App[None]):
         from auto_battery_research.util.logger import set_console_sink
         set_console_sink(self._log_sink_callback)
 
+    def _ui_post(self, fn, *args) -> None:
+        """线程安全 UI 投递: 工作线程走 call_from_thread; 若本就在事件循环线程
+        (如 handle_command 内同步执行 checker 触发日志), 直接调用避免静默丢行."""
+        try:
+            self.call_from_thread(fn, *args)
+        except Exception:
+            try:
+                fn(*args)
+            except Exception:
+                pass
+
     def _log_sink_callback(self, text: str, style: str = "white") -> None:
+        # 日志双路分发: 底部 Console 全量留痕 + 左侧 TaskPanel 实时活动滚动窗口
         try:
             console_widget = self.query_one("#console-container", ConsoleWidget)
-            self.call_from_thread(console_widget.write_log, text, style)
         except Exception:
-            pass
+            return
+        self._ui_post(console_widget.write_log, text, style)
+        self._post_activity(text, style)
+
+    def _post_activity(self, text: str, style: str = "white") -> None:
+        """把模型/工具活动行投递到左侧面板 Agent Activity 区 (线程安全)."""
+        try:
+            task_panel = self.query_one("#task-panel", TaskPanel)
+        except Exception:
+            return
+        self._ui_post(task_panel.append_activity, text, style)
 
     def compose(self) -> ComposeResult:
         with Vertical(id="app-container"):
@@ -267,14 +288,18 @@ class BatteryAgentTUI(App[None]):
                         ev_sid = event.get("stage_id")
                         if ev_type == "stage_start":
                             self.call_from_thread(console_widget.write_log, f"{now_str()} >>> [Stage {ev_sid}] ABRAgent 正在自主规划与调度领域工具...", "yellow")
+                            self._post_activity(f"[Stage {ev_sid}] 模型开始自主规划与工具调度...", "bold yellow")
                         elif ev_type == "stage_checked":
                             self.call_from_thread(console_widget.write_log, f"{now_str()} [CHECK] Stage {ev_sid} 确定性质量门禁验证 PASSED.", "green")
+                            self._post_activity(f"[Stage {ev_sid}] 门禁自检通过 ✓", "green")
                         elif ev_type == "stage_failed_attempt":
                             fail_sum = event.get("diag", {}).get("failure_summary", {})
                             self.call_from_thread(console_widget.write_log, f"{now_str()} [FAIL] Stage {ev_sid} 门禁未通过: {fail_sum.get('error', '未达标')} -> 自愈修复中...", "red")
+                            self._post_activity(f"[Stage {ev_sid}] 门禁未通过, 自愈重试中...", "bold red")
                         elif ev_type == "stage_completed":
                             self.call_from_thread(console_widget.write_log, f"{now_str()} [COMPLETE] Stage {ev_sid} 门禁终审通过，进入下一阶段。", "bold green")
-                        
+                            self._post_activity(f"[Stage {ev_sid}] 终审通过 ✓ 进入下一阶段", "bold green")
+
                         self.call_from_thread(task_panel.update_content)
                         self.call_from_thread(messages_panel.update_content, True)
 
@@ -308,6 +333,19 @@ class BatteryAgentTUI(App[None]):
 
                     success_msg = f"{now_str()} ABRAgent Loop finished! All stages completed: success={all_done} (time: {elapsed:.1f}s)"
                     self.call_from_thread(console_widget.write_log, success_msg, "bold green")
+                    self._post_activity("课题运行结束", "bold cyan")
+                    if report_file.exists():
+                        self.call_from_thread(
+                            console_widget.write_log,
+                            f"{now_str()} 📄 最终综合研报已渲染至右侧 Messages 面板 (输入 report 可随时回看, 'web' 可在大屏浏览器中查看)",
+                            "bold magenta",
+                        )
+                    elif scheme_file.exists():
+                        self.call_from_thread(
+                            console_widget.write_log,
+                            f"{now_str()} 📝 Stage 4 设计方案已渲染至右侧面板 (综合研报待后续运行生成, 输入 report 重试)",
+                            "bold magenta",
+                        )
                 except Exception as e:
                     self.is_running_task = False
                     self.call_from_thread(console_widget.write_log, f"{now_str()} [ERROR] ABRAgent 运行异常: {e}", "bold red")
@@ -374,11 +412,7 @@ class BatteryAgentTUI(App[None]):
 
 
         elif action in ("web", "ui"):
-            console_widget.write_log(f"{now_str()} Launching Gradio Web Dashboard on http://127.0.0.1:7865 ...", style="bold cyan")
-            def _web_thread():
-                from auto_battery_research.web.app import launch_web_server
-                launch_web_server(manager=self.manager, port=7865)
-            threading.Thread(target=_web_thread, daemon=True).start()
+            self._launch_web_monitor(console_widget)
 
         elif action in ("reset", "restart"):
             self.manager.reset_workflow()
@@ -418,6 +452,71 @@ class BatteryAgentTUI(App[None]):
             threading.Thread(target=_chat_thread, daemon=True).start()
 
 
+    def _launch_web_monitor(self, console_widget) -> None:
+        """以独立子进程启动 (或复用已在运行的) Web 监控大屏.
+
+        ⚠️ 绝不能在 TUI 进程内的后台线程里跑 uvicorn: Textual 运行时接管了
+        stdout/stderr, 后台线程的 print 与 uvicorn 日志会与终端渲染争抢输出,
+        轻则花屏、重则死锁 (表现为界面无法输入)。独立子进程彻底隔离,
+        且服务生命周期与 TUI 解耦 —— TUI 退出后大屏仍可访问。
+        """
+        import subprocess
+        from auto_battery_research.web.server import probe_monitor_health, _port_free
+
+        port = 7865
+        if probe_monitor_health("127.0.0.1", port):
+            console_widget.write_log(
+                f"{now_str()} Web 监控大屏已在运行, 直接打开: http://127.0.0.1:{port} (只读, 与 TUI 实时联动)",
+                style="bold green",
+            )
+            return
+
+        if not _port_free("127.0.0.1", port):
+            console_widget.write_log(
+                f"{now_str()} 端口 {port} 被其他程序占用, 自动尝试 {port + 1}~{port + 10} ...", style="yellow"
+            )
+            for cand in range(port + 1, port + 11):
+                if _port_free("127.0.0.1", cand):
+                    port = cand
+                    break
+            else:
+                console_widget.write_log(
+                    f"{err_str()} 端口 {port}~{port + 10} 均被占用, Web 大屏启动失败 (可用 --port 指定其他端口)。", style="bold red"
+                )
+                return
+
+        # Windows 下无新窗口、独立进程组 (Ctrl+C 不波及); 输出全部丢弃, 不污染 TUI 终端
+        creation_flags = 0
+        if os.name == "nt":
+            creation_flags = subprocess.CREATE_NO_WINDOW | subprocess.CREATE_NEW_PROCESS_GROUP
+        subprocess.Popen(
+            [sys.executable, "-m", "auto_battery_research.cli", "--web", "--port", str(port)],
+            cwd=str(Path(__file__).resolve().parents[2]),
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            creationflags=creation_flags,
+        )
+        console_widget.write_log(f"{now_str()} 正在启动 Web 监控大屏 (独立进程): http://127.0.0.1:{port} ...", style="bold cyan")
+
+        def _wait_ready():
+            for _ in range(20):
+                if probe_monitor_health("127.0.0.1", port):
+                    self.call_from_thread(
+                        console_widget.write_log,
+                        f"{now_str()} ✅ Web 监控大屏已就绪: http://127.0.0.1:{port} (浏览器打开, 5 秒轮询联动本 TUI)",
+                        "bold green",
+                    )
+                    return
+                time.sleep(1)
+            self.call_from_thread(
+                console_widget.write_log,
+                f"{err_str()} Web 服务 20s 内未就绪; 请在另一终端运行 `abr-cli --web` 查看具体报错。",
+                "bold red",
+            )
+
+        threading.Thread(target=_wait_ready, daemon=True).start()
+
     def show_help(self) -> None:
         """展示帮助面板."""
         help_md = """# AutoBatteryResearch TUI Command Reference
@@ -436,7 +535,7 @@ class BatteryAgentTUI(App[None]):
 | `task [id]` | `exec` | Run underlying data mining or RAG pipeline |
 | `journal` | `j` | View historical stage journals and deliverables |
 | `report` | `rep` | Render final battery synthesis report |
-| `web` | `ui` | Launch interactive Gradio Web Dashboard |
+| `web` | `ui` | Launch read-only Web Monitor (FastAPI) |
 | `reset` | | Reset workflow state to Stage 1 |
 | `clear` | `cls` | Clear console output |
 | `help` | `?` | Show this command reference (or press F1) |

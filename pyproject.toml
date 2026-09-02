@@ -68,6 +68,10 @@ lmllm = "src/lmllm"
 where = [".", "src"]
 include = ["auto_battery_research*", "miner*", "agent*", "preprocessing*", "pinn*", "src*", "lmllm*"]
 
+[tool.setuptools.package-data]
+# Web 监控大屏 (FastAPI 版) 的自包含前端资源，打包时必须随包分发
+"auto_battery_research.web" = ["templates/*.html", "static/*.js"]
+
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]
 testpaths = ["auto_battery_research/tests"]

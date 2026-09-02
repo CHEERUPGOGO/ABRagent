@@ -1,6 +1,7 @@
 """TaskPanel widget for AutoBatteryResearch TUI."""
 
 from __future__ import annotations
+from collections import deque
 from typing import TYPE_CHECKING, Optional
 import os
 import time
@@ -15,6 +16,11 @@ from auto_battery_research.util.logger import get_session_tool_counts
 
 if TYPE_CHECKING:
     from auto_battery_research.workflow.stage_manager import StageManager
+
+# Agent Activity 滚动窗口行数上限 (左侧面板空间有限, 只留最新 N 条)
+ACTIVITY_MAX_LINES = 12
+# 单行截断长度 (工具入参 JSON 等长文本截断展示, 避免横向撑爆面板)
+ACTIVITY_LINE_MAX_CHARS = 110
 
 
 def format_duration(seconds: float) -> str:
@@ -35,16 +41,39 @@ class TaskPanel(VerticalScroll):
         # 会阻塞 Textual 事件循环，导致秒级计时与面板刷新迟滞
         self._file_scan_tick = 0
         self._cached_files_text: Optional[Text] = None
+        # Agent Activity 实时活动滚动窗口 (模型/工具调用经由 logger sink 汇入)
+        self._activity_lines: deque = deque(maxlen=ACTIVITY_MAX_LINES)
 
     def compose(self) -> ComposeResult:
         yield Static(id="mission-title")
         yield Static(id="task-list")
+        yield Static("Agent Activity", classes="section-title")
+        yield Static(id="activity-feed")
         yield Static("Changed Files", classes="section-title")
         yield Static(id="changed-files")
         yield Static("Tools Call", classes="section-title")
         yield Static(id="tool-status")
         yield Static("Status", classes="section-title")
         yield Static(id="status-summary")
+
+    def append_activity(self, text: str, style: str = "white") -> None:
+        """追加一条模型/工具实时活动行到左侧面板 (压平换行并截断)."""
+        line = " ".join(str(text).split())[:ACTIVITY_LINE_MAX_CHARS]
+        if not line:
+            return
+        self._activity_lines.append((line, style))
+        self._render_activity()
+
+    def _render_activity(self) -> None:
+        feed = Text()
+        if not self._activity_lines:
+            feed.append("(等待模型运行... 输入 run 启动)\n", style="dim")
+        for line, style in self._activity_lines:
+            feed.append(f"• {line}\n", style=style)
+        try:
+            self.query_one("#activity-feed", Static).update(feed)
+        except Exception:
+            pass
 
     def on_mount(self) -> None:
         self.update_content()
@@ -139,8 +168,20 @@ class TaskPanel(VerticalScroll):
         tools_text = Text(f"{tools_str}\n", style="yellow")
         self.query_one("#tool-status", Static).update(tools_text)
 
-        # 5. 状态概览
+        # 5. 状态概览 (+ 研报/完结提示, 让"跑完了"一眼可见)
         summary_text = Text()
         summary_text.append(f"Current Stage: Stage {curr_id} ({status.get('current_stage_name')})\n", style="cyan")
         summary_text.append(f"Progress: {status.get('progress')}\n", style="bold green")
+        try:
+            task_dir = self.manager.get_task_output_dir()
+            has_report = any(
+                (task_dir / name).exists()
+                for name in ("final_research_report.md", "final_report.md", "battery_research_synthesis_report.md")
+            )
+        except Exception:
+            has_report = False
+        if has_report:
+            summary_text.append("📄 最终研报已生成 (输入 report 查看)\n", style="bold magenta")
+        if callable(getattr(self.manager, "is_all_completed", None)) and self.manager.is_all_completed():
+            summary_text.append("✅ 全部阶段完成\n", style="bold green")
         self.query_one("#status-summary", Static).update(summary_text)
