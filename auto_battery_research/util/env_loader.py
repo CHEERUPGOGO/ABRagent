@@ -59,5 +59,37 @@ def load_env(env_file: Optional[Path] = None, override: bool = False) -> bool:
             os.environ[key] = val
             injected = True
 
+    # 若在 WSL 环境下运行且 localhost:11434 不通，自动桥接至 Windows 宿主机 Ollama 端口
+    wsl_ip = resolve_wsl_host_ip()
+    if wsl_ip:
+        curr_url = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
+        if curr_url in ("http://localhost:11434", "http://127.0.0.1:11434"):
+            import urllib.request
+            try:
+                with urllib.request.urlopen(f"{curr_url}/api/tags", timeout=0.4) as _:
+                    pass
+            except Exception:
+                try:
+                    with urllib.request.urlopen(f"http://{wsl_ip}:11434/api/tags", timeout=0.8) as _:
+                        os.environ["OLLAMA_BASE_URL"] = f"http://{wsl_ip}:11434"
+                except Exception:
+                    pass
+
     _loaded_paths.add(path)
     return injected
+
+
+def resolve_wsl_host_ip() -> Optional[str]:
+    """若在 WSL 环境下运行，自动探测 Windows 宿主机的网关 IP (nameserver)."""
+    try:
+        if os.path.exists("/proc/version"):
+            with open("/proc/version", "r", encoding="utf-8", errors="ignore") as f:
+                if "microsoft" in f.read().lower():
+                    if os.path.exists("/etc/resolv.conf"):
+                        with open("/etc/resolv.conf", "r", encoding="utf-8", errors="ignore") as rf:
+                            for line in rf:
+                                if line.startswith("nameserver"):
+                                    return line.split()[1].strip()
+    except Exception:
+        pass
+    return None

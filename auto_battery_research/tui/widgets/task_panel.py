@@ -91,13 +91,17 @@ class TaskPanel(VerticalScroll):
 
         self.query_one("#task-list", Static).update(rendered_tasks)
 
-        # 3. Changed Files: 动态扫描当前课题目录与全局产物目录中最新更新的交付物
+        # 3. Changed Files: 动态扫描当前课题目录中最新更新的交付物
+        #    课题隔离：全局 legacy 目录仅对历史存量课题 (is_legacy_task) 展示，
+        #    新哈希课题不得把全局旧产物显示为本课题交付物。
         task_dir = self.manager.get_task_output_dir()
-        legacy_dir = self.manager.root_dir / "output" / "auto_battery_research"
-        
+        scan_dirs = [task_dir]
+        if getattr(self.manager, "is_legacy_task", False):
+            scan_dirs.append(self.manager.root_dir / "output" / "auto_battery_research")
+
         seen_files = set()
         file_list = []
-        for d in (task_dir, legacy_dir):
+        for d in scan_dirs:
             if d.exists():
                 for p in d.glob("**/*"):
                     if p.is_file() and p.name not in seen_files:

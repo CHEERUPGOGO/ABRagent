@@ -333,3 +333,31 @@ def test_report_synthesis_task_isolation_never_leaks_global_scheme(tmp_path):
     assert "FOREIGN_LEGACY_SCHEME_XYZ" not in report_content
     assert "FOREIGN_CATHODE_XYZ" not in report_content
     assert "尚未生成独立的 Stage 4 电池体系设计方案" in report_content
+
+
+def test_pinn_simulation_never_writes_global_legacy_dir(tmp_path):
+    """新哈希课题执行 Stage 5 物理仿真时，产物只落课题目录；
+    全局 output/auto_battery_research/ 是只读 legacy 回退目录，禁止写入
+    (否则多课题仿真结果互相覆盖，课题报告与门禁审计口径不一致)。"""
+    from auto_battery_research.tools.workflow_actions import run_pinn_simulation
+
+    global_dir = tmp_path / "output" / "auto_battery_research"
+    global_dir.mkdir(parents=True, exist_ok=True)
+    # 预置历史课题的旧仿真产物，验证执行后原样保留、不被覆盖
+    (global_dir / "simulation_result.json").write_text('{"legacy_marker": true}', encoding="utf-8")
+
+    new_goal = "新课题_Stage5仿真隔离写入测试"
+    mgr = StageManager(target_goal=new_goal, workspace_root=str(tmp_path))
+    assert mgr.is_legacy_task is False
+
+    res = run_pinn_simulation(target_query=new_goal, stage_manager=mgr)
+    assert res["success"] is True, f"离线回退模式仿真应成功: {res.get('error')}"
+
+    # 课题目录拿到本课题仿真产物
+    task_sim = mgr.get_task_output_dir(new_goal) / "simulation_result.json"
+    assert task_sim.exists()
+    assert json.loads(task_sim.read_text(encoding="utf-8")).get("legacy_marker") is None
+
+    # 全局目录不被写入/覆盖：旧课题产物原样保留，不产生新镜像文件
+    assert json.loads((global_dir / "simulation_result.json").read_text(encoding="utf-8")) == {"legacy_marker": True}
+    assert not (global_dir / "pinn_simulation_report.json").exists()

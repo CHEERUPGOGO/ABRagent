@@ -131,7 +131,8 @@ def main():
     parser.add_argument("--goal", type=str, default="设计400Wh/kg高比能液态锂金属电池方案", help="指定电池设计研发目标")
     parser.add_argument("--journal", action="store_true", help="查看所有阶段的历史研发日志")
     parser.add_argument("--report", "-r", action="store_true", help="在终端中以高亮 Markdown 语法渲染并浏览最终综合研报")
-    parser.add_argument("--log", action="store_true", help="启用运行日志落盘 (默认保存至 log/<课题名称>.log)")
+    parser.add_argument("--log", action="store_true", help="启用运行日志落盘 (现已默认开启，保存至 log/<课题名称>.log)")
+    parser.add_argument("--no-log", action="store_true", help="关闭运行日志落盘 (默认已开启，此开关供显式关闭)")
     parser.add_argument("--log-file", type=str, default=None, help="自定义日志落盘文件路径 (默认落入 log/ 目录下)")
 
     parser.add_argument("--reset", action="store_true", help="重置工作流状态至 Stage 1")
@@ -243,7 +244,8 @@ def main():
         return
 
     if args.run:
-        enable_log = bool(args.log or args.log_file)
+        # 文件日志默认开启 (审计友好)；--no-log 显式关闭；--log-file 隐含开启并指定路径
+        enable_log = (not args.no_log) or bool(args.log_file)
         if args.reset:
             mgr.reset_workflow(start_stage_id=1)
         agent = ABRAgent(

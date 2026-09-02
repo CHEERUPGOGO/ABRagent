@@ -58,7 +58,7 @@ class ABRAgent:
         on_stage_update: Optional[Callable[[int, str, float], None]] = None,
         max_stage_retries: int = 3,
         verbose: bool = True,
-        enable_file_log: bool = False,
+        enable_file_log: bool = True,
         log_file: Optional[str] = None,
         manager: Optional[StageManager] = None,
     ):
@@ -69,7 +69,7 @@ class ABRAgent:
         self.stream_output = stream_output
         self.enable_file_log = bool(enable_file_log or log_file)
 
-        # 日志落盘路径配置 (默认不开启，开启时落入 log/ 目录下)
+        # 日志落盘路径配置 (默认开启以便事后审计，落入 log/ 目录下；显式传 False 可关闭)
         import re
         from auto_battery_research.util.logger import init_file_logger, disable_file_logger
         if self.enable_file_log:
@@ -464,11 +464,11 @@ class ABRAgent:
 
         # 1. 优先尝试通过 LangChain / LangGraph 后端调用大模型自主 ReAct 决策
         try:
-            openai_api_key = (
-                os.getenv("OPENAI_API_KEY")
-                or self.config.get("openai", {}).get("openai_api_key")
-                or self.config.get("llm", {}).get("api_key")
-            )
+            cfg_key = self.config.get("openai", {}).get("openai_api_key") or self.config.get("llm", {}).get("api_key")
+            if cfg_key in ("dummy_key", "none", "None", ""):
+                openai_api_key = cfg_key
+            else:
+                openai_api_key = os.getenv("OPENAI_API_KEY") or cfg_key
             is_valid_key = (
                 openai_api_key
                 and str(openai_api_key).strip()
@@ -479,11 +479,10 @@ class ABRAgent:
                 stage = self.manager.get_stage_by_id(stage_id)
                 stage_name = stage.name if stage else f"Stage {stage_id}"
                 call_msgs = stage_messages or self.messages
-                # thread_id 按课题+阶段稳定：同一阶段内多次重试共享 LangGraph 线程记忆，
-                # 上一轮已执行的工具调用与观测对反思修复轮可见
+                # thread_id 按课题+阶段+重试轮次隔离：避免上一轮失败重试中残留未执行的 tool_calls 引发 OpenAI/MiniMax 400 校验异常
                 goal_tag = hashlib.md5(self.goal.encode("utf-8")).hexdigest()[:8]
                 self.log(f"    [LLM-ReAct] 正在唤醒大模型进行 Stage {stage_id} ({stage_name}) 动态深度推理与工具调用...")
-                response = self.backend.invoke(call_msgs, thread_id=f"abr_{goal_tag}_stage_{stage_id}")
+                response = self.backend.invoke(call_msgs, thread_id=f"abr_{goal_tag}_s{stage_id}_a{attempt}")
                 llm_invoked = True
 
                 # 解析 response 中的 AIMessage 或 messages 列表

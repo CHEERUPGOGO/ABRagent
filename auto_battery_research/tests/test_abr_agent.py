@@ -12,7 +12,7 @@ OFFLINE_CONFIG = {"openai": {"openai_api_key": "dummy_key"}, "llm": {"api_key": 
 
 
 def test_abr_agent_initialization():
-    agent = ABRAgent(goal="测试锂金属电池方案", skip_pinn=True, verbose=False, config=OFFLINE_CONFIG)
+    agent = ABRAgent(goal="测试锂金属电池方案", skip_pinn=True, verbose=False, enable_file_log=False, config=OFFLINE_CONFIG)
     assert agent.goal == "测试锂金属电池方案"
     assert len(agent.all_tools) == 15  # 9 domain (Stage 4 已收敛为 RunRAGDesign 单服务) + 6 stage
     assert "InspectLiteratureAssets" in agent.tool_map
@@ -23,7 +23,8 @@ def test_abr_agent_initialization():
 
 
 def test_abr_agent_run_loop():
-    agent = ABRAgent(goal="测试端到端方案设计", skip_pinn=True, verbose=False, config=OFFLINE_CONFIG)
+    # enable_file_log=False：文件日志已默认开启，单测显式关闭避免在仓库 log/ 下落测试日志
+    agent = ABRAgent(goal="测试端到端方案设计", skip_pinn=True, verbose=False, enable_file_log=False, config=OFFLINE_CONFIG)
     # 重置工作流
     agent.manager.reset_workflow()
 

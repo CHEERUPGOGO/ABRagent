@@ -20,6 +20,24 @@ from .config import (
     create_openai_llm, create_deepseek_llm,
 )
 
+# 推理模型 (DeepSeek-R1 / MiniMax-M2 / Qwen3-thinking 等) 会在正文前输出 <think>...</think> 思考块
+_THINK_BLOCK_RE = re.compile(r"<think>.*?</think>", re.DOTALL | re.IGNORECASE)
+
+
+def strip_think_blocks(text: Optional[str]) -> str:
+    """剥离 LLM 返回中的 <think>...</think> 思考块，仅保留正式正文.
+
+    未闭合的 <think> (流式截断常见) 从开标签起全部视为思考丢弃；
+    正常文本不含该标签时原样返回 (零开销快速路径)。
+    """
+    if not text or "<think>" not in text.lower():
+        return text or ""
+    stripped = _THINK_BLOCK_RE.sub("", text)
+    idx = stripped.lower().find("<think>")
+    if idx != -1:
+        stripped = stripped[:idx]
+    return stripped.strip()
+
 
 class LLMClient:
     """统一的 LLM 客户端, 自动选择后端.
@@ -142,7 +160,7 @@ class LLMClient:
                 if hasattr(llm, "temperature"):
                     llm.temperature = temp
                 resp = llm.invoke(messages)
-                return resp.content.strip()
+                return strip_think_blocks(resp.content)
             except Exception as e:
                 if self.backend == "openai":
                     raise RuntimeError(f"OpenAI/MiniMax API 调用失败: {e}")
@@ -159,7 +177,7 @@ class LLMClient:
                 if hasattr(llm, "temperature"):
                     llm.temperature = temp
                 resp = llm.invoke(messages)
-                return resp.content.strip()
+                return strip_think_blocks(resp.content)
             except Exception as e:
                 if self.backend == "deepseek":
                     raise RuntimeError(f"DeepSeek API 调用失败: {e}")
@@ -167,7 +185,7 @@ class LLMClient:
         # 3. 尝试 Ollama
         if self.backend in ("auto", "ollama") and self.ollama_ready:
             try:
-                return self._ollama_chat(system_prompt, user_prompt, temp)
+                return strip_think_blocks(self._ollama_chat(system_prompt, user_prompt, temp))
             except Exception as e:
                 if self.backend == "ollama":
                     raise RuntimeError(f"Ollama 调用失败: {e}")

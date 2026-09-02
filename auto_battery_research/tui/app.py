@@ -205,8 +205,9 @@ class BatteryAgentTUI(App[None]):
                 console_widget.write_log(f"{now_str()} Warning: Task loop is already running.", style="yellow")
                 return
 
-            # 解析 --log 和 --log-file 参数 (兼容 -log 与 --log)
-            enable_log = False
+            # 解析 --log / --log-file / --no-log 参数 (兼容 -log 与 --log)
+            # 文件日志默认开启 (审计友好)；--no-log 显式关闭
+            enable_log = True
             custom_log_file = None
             clean_args = []
             i = 0
@@ -214,6 +215,8 @@ class BatteryAgentTUI(App[None]):
                 arg = args[i]
                 if arg in ("--log", "-log"):
                     enable_log = True
+                elif arg in ("--no-log", "-no-log"):
+                    enable_log = False
                 elif arg.startswith(("--log-file=", "-log-file=")):
                     enable_log = True
                     custom_log_file = arg.split("=", 1)[1]

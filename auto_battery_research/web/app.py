@@ -11,6 +11,7 @@ import os
 import sys
 import json
 import glob
+import threading
 from pathlib import Path
 from typing import Optional, Dict, Any, List, Tuple
 import matplotlib
@@ -26,6 +27,8 @@ except ImportError:
 from auto_battery_research.workflow.stage_manager import StageManager
 from auto_battery_research.backend.loop_runner import AutonomousLoopRunner
 from auto_battery_research.tools.stage_tools import (
+    set_stage_manager,
+    get_stage_manager_for_goal,
     tool_get_status,
     tool_get_current_tips,
     tool_check_stage,
@@ -37,6 +40,12 @@ from auto_battery_research.tools.stage_tools import (
 )
 
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+
+# 进程级执行互斥：工具层运行态 (全局 Manager 单例 + 课题缓存) 是进程内共享状态，
+# Gradio 的 default_concurrency_limit=1 只按"事件监听器"隔离 —— 不同按钮/不同会话
+# 的事件仍可能并发。所有会变更全局运行态的操作 (切课题/跑流水线/Check/Complete)
+# 必须先拿到本锁，拿不到就如实返回忙，杜绝 A 会话任务跑到一半被 B 会话切走课题。
+_RUNTIME_LOCK = threading.Lock()
 
 
 def get_stages_markdown(mgr: StageManager) -> str:
@@ -73,6 +82,10 @@ def create_web_app(manager: Optional[StageManager] = None):
         raise ImportError("Gradio 未安装，请先执行：pip install gradio")
 
     mgr = manager or StageManager()
+    # 与工具层共享同一运行态单例：即使未从 CLI 注入 (直接构建面板/测试)，
+    # 也把面板持有的 Manager 注册为全局单例，保证 Web 操作与 Agent/CLI/工具层
+    # 读写的是同一份状态机，避免双实例造成状态互相覆盖。
+    set_stage_manager(mgr)
 
     theme = gr.themes.Soft(
         primary_hue="cyan",
@@ -127,15 +140,25 @@ def create_web_app(manager: Optional[StageManager] = None):
                         interactive=False,
                     )
 
+                def _scoped_manager(goal: str = "") -> StageManager:
+                    """按会话课题解析只读视图管理器 (per-goal 缓存，不切换全局单例).
+
+                    所有渲染 (阶段矩阵/研报/日志/Tips) 一律走这里：每个浏览器会话
+                    的课题互不影响 —— A 会话切课题不会改变 B 会话正在查看的状态。
+                    """
+                    key = (goal or "").strip() or mgr.target_goal
+                    return get_stage_manager_for_goal(key)
+
                 def get_current_report_content(goal: str = "") -> str:
                     target = (goal or mgr.target_goal).strip()
-                    task_dir = mgr.get_task_output_dir(target)
+                    view = _scoped_manager(target)
+                    task_dir = view.get_task_output_dir(target)
                     cand_reports = [
                         task_dir / "final_research_report.md",
                         task_dir / "final_report.md",
                         task_dir / "battery_research_synthesis_report.md",
                     ]
-                    if mgr.is_legacy_goal(target):
+                    if view.is_legacy_goal(target):
                         cand_reports.extend([
                             ROOT_DIR / "output" / "auto_battery_research" / "final_research_report.md",
                             ROOT_DIR / "output" / "auto_battery_research" / "final_report.md",
@@ -170,11 +193,13 @@ def create_web_app(manager: Optional[StageManager] = None):
 
                 # 事件绑定
                 def _sync_goal(goal: str) -> str:
-                    """将面板操作统一同步到目标文本框中的课题 (切换并重载该课题状态).
+                    """将全局运行态切换到目标文本框中的课题 (变更动作专用).
 
                     所有按钮先经过本函数，避免 Check/Complete 等操作作用在与
                     文本框不一致的旧课题状态上；课题变更走 StageManager.switch_goal
                     正式路径，防止跨课题内存进度污染。
+                    ⚠️ 本函数会变更进程级共享运行态，只允许在持有 _RUNTIME_LOCK
+                    的动作处理器内调用；纯渲染请走 _scoped_manager()。
                     """
                     goal = (goal or "").strip()
                     if goal and goal != mgr.target_goal and hasattr(mgr, "switch_goal"):
@@ -182,73 +207,142 @@ def create_web_app(manager: Optional[StageManager] = None):
                     return goal or mgr.target_goal
 
                 def on_run_auto(goal, progress=gr.Progress()):
-                    goal = _sync_goal(goal)
-                    runner = AutonomousLoopRunner(manager=mgr, goal=goal, verbose=False)
-                    for step in runner.run_stream():
-                        p_val = step.get("progress_ratio", 0.0)
-                        s_id = step.get("stage_id", 1)
-                        progress(p_val, desc=f"Stage {s_id} 正在推进中...")
-
-                        rep = step.get("report", "")
-                        if not rep or rep in ("*未找到研报*", "*科研任务执行中...*"):
-                            if step.get("event") == "finished":
-                                rep = get_current_report_content(goal)
-                            else:
-                                rep = f"⏳ **工作流推进中** · 当前正在执行 Stage {s_id}，完成后将在此自动渲染完整研报..."
-
+                    if not _RUNTIME_LOCK.acquire(blocking=False):
+                        # 另一会话的任务正在占用全局运行态：如实反馈忙，绝不插队切换课题
+                        view = _scoped_manager(goal)
+                        progress(0.0, desc="全局运行态被其他会话占用")
                         yield (
-                            get_stages_markdown(mgr),
-                            step.get("tips", ""),
-                            step.get("diag", {}),
-                            step.get("log", ""),
-                            rep,
-                            step.get("journal", []),
+                            get_stages_markdown(view),
+                            view.get_current_tips(),
+                            {"message": "⏳ 另一会话的课题任务正在占用全局执行运行态 (进程级互斥)，本次启动未执行，请稍后重试。"},
+                            "[BUSY] 全局执行运行态忙：另一会话任务进行中，本次自主循环已跳过。",
+                            get_current_report_content(goal),
+                            view.get_all_stage_journal(),
                         )
+                        return
+                    try:
+                        goal = _sync_goal(goal)
+                        # 文件日志默认开启 (审计友好)：按课题名初始化，与 CLI/TUI 的 log/ 命名约定一致
+                        import re as _re
+                        from auto_battery_research.util.logger import init_file_logger
+                        _clean = _re.sub(r'[\/:*?"<>| ]+', '_', goal)[:40]
+                        init_file_logger(str(ROOT_DIR / "log" / f"{_clean}.log"))
+                        runner = AutonomousLoopRunner(manager=mgr, goal=goal, verbose=False)
+                        for step in runner.run_stream():
+                            p_val = step.get("progress_ratio", 0.0)
+                            s_id = step.get("stage_id", 1)
+                            progress(p_val, desc=f"Stage {s_id} 正在推进中...")
+
+                            rep = step.get("report", "")
+                            if not rep or rep in ("*未找到研报*", "*科研任务执行中...*"):
+                                if step.get("event") == "finished":
+                                    rep = get_current_report_content(goal)
+                                else:
+                                    rep = f"⏳ **工作流推进中** · 当前正在执行 Stage {s_id}，完成后将在此自动渲染完整研报..."
+
+                            yield (
+                                get_stages_markdown(mgr),
+                                step.get("tips", ""),
+                                step.get("diag", {}),
+                                step.get("log", ""),
+                                rep,
+                                step.get("journal", []),
+                            )
+                    finally:
+                        _RUNTIME_LOCK.release()
 
                 def on_check(goal):
-                    goal = _sync_goal(goal)
-                    passed, diag = mgr.check_stage(is_complete=False)
-                    status_text = "PASSED" if passed else "FAILED"
-                    log_text = f"[MANUAL CHECK] Stage {mgr.get_current_stage().id} Gate Check: [{status_text}]"
-                    return get_stages_markdown(mgr), diag, log_text
+                    view = _scoped_manager(goal)
+                    if not _RUNTIME_LOCK.acquire(blocking=False):
+                        return (
+                            get_stages_markdown(view),
+                            {"message": "⏳ 另一会话任务占用全局运行态，本次 Check 未执行。"},
+                            "[BUSY] Check 被跳过：另一会话任务进行中。",
+                        )
+                    try:
+                        goal = _sync_goal(goal)
+                        passed, diag = mgr.check_stage(is_complete=False)
+                        status_text = "PASSED" if passed else "FAILED"
+                        log_text = f"[MANUAL CHECK] Stage {mgr.get_current_stage().id} Gate Check: [{status_text}]"
+                        return get_stages_markdown(mgr), diag, log_text
+                    finally:
+                        _RUNTIME_LOCK.release()
 
                 def on_complete(goal):
-                    goal = _sync_goal(goal)
-                    comp_ok, res = mgr.complete_stage()
-                    log_text = f"[MANUAL COMPLETE] {res.get('message', 'Stage advanced')}"
-                    rep = get_current_report_content(mgr.target_goal)
-                    return (
-                        get_stages_markdown(mgr),
-                        mgr.get_current_tips(),
-                        res,
-                        log_text,
-                        rep,
-                        mgr.get_all_stage_journal(),
-                    )
+                    view = _scoped_manager(goal)
+                    if not _RUNTIME_LOCK.acquire(blocking=False):
+                        return (
+                            get_stages_markdown(view),
+                            view.get_current_tips(),
+                            {"message": "⏳ 另一会话任务占用全局运行态，本次 Complete 未执行。"},
+                            "[BUSY] Complete 被跳过：另一会话任务进行中。",
+                            get_current_report_content(goal),
+                            view.get_all_stage_journal(),
+                        )
+                    try:
+                        goal = _sync_goal(goal)
+                        comp_ok, res = mgr.complete_stage()
+                        log_text = f"[MANUAL COMPLETE] {res.get('message', 'Stage advanced')}"
+                        rep = get_current_report_content(mgr.target_goal)
+                        return (
+                            get_stages_markdown(mgr),
+                            mgr.get_current_tips(),
+                            res,
+                            log_text,
+                            rep,
+                            mgr.get_all_stage_journal(),
+                        )
+                    finally:
+                        _RUNTIME_LOCK.release()
 
                 def on_skip_pinn(goal):
-                    goal = _sync_goal(goal)
-                    mgr.set_stage_skip(5, skip=True, reason="Web 用户跳过")
-                    log_text = "[USER ACTION] Stage 5 (PINN) 已设置为跳过 (SKIPPED)。"
-                    return get_stages_markdown(mgr), mgr.get_current_tips(), log_text
+                    view = _scoped_manager(goal)
+                    if not _RUNTIME_LOCK.acquire(blocking=False):
+                        return get_stages_markdown(view), view.get_current_tips(), "[BUSY] Skip 被跳过：另一会话任务进行中。"
+                    try:
+                        goal = _sync_goal(goal)
+                        mgr.set_stage_skip(5, skip=True, reason="Web 用户跳过")
+                        log_text = "[USER ACTION] Stage 5 (PINN) 已设置为跳过 (SKIPPED)。"
+                        return get_stages_markdown(mgr), mgr.get_current_tips(), log_text
+                    finally:
+                        _RUNTIME_LOCK.release()
 
                 def on_enable_pinn(goal):
-                    goal = _sync_goal(goal)
-                    mgr.set_stage_skip(5, skip=False)
-                    log_text = "[USER ACTION] Stage 5 (PINN) 已重新激活为必检阶段。"
-                    return get_stages_markdown(mgr), mgr.get_current_tips(), log_text
+                    view = _scoped_manager(goal)
+                    if not _RUNTIME_LOCK.acquire(blocking=False):
+                        return get_stages_markdown(view), view.get_current_tips(), "[BUSY] Enable 被跳过：另一会话任务进行中。"
+                    try:
+                        goal = _sync_goal(goal)
+                        mgr.set_stage_skip(5, skip=False)
+                        log_text = "[USER ACTION] Stage 5 (PINN) 已重新激活为必检阶段。"
+                        return get_stages_markdown(mgr), mgr.get_current_tips(), log_text
+                    finally:
+                        _RUNTIME_LOCK.release()
 
                 def on_reset(goal):
-                    goal = _sync_goal(goal)
-                    mgr.reset_workflow()
-                    return (
-                        get_stages_markdown(mgr),
-                        mgr.get_current_tips(),
-                        {"message": "工作流已重置为 Stage 1"},
-                        "🔄 工作流状态已全部重置回 Stage 1，请配置新课题目标并重新启动。",
-                        "*工作流已重置，等待运行...*",
-                        [],
-                    )
+                    view = _scoped_manager(goal)
+                    if not _RUNTIME_LOCK.acquire(blocking=False):
+                        return (
+                            get_stages_markdown(view),
+                            view.get_current_tips(),
+                            {"message": "⏳ 另一会话任务占用全局运行态，本次 Reset 未执行。"},
+                            "[BUSY] Reset 被跳过：另一会话任务进行中。",
+                            get_current_report_content(goal),
+                            view.get_all_stage_journal(),
+                        )
+                    try:
+                        goal = _sync_goal(goal)
+                        mgr.reset_workflow()
+                        return (
+                            get_stages_markdown(mgr),
+                            mgr.get_current_tips(),
+                            {"message": "工作流已重置为 Stage 1"},
+                            "🔄 工作流状态已全部重置回 Stage 1，请配置新课题目标并重新启动。",
+                            "*工作流已重置，等待运行...*",
+                            [],
+                        )
+                    finally:
+                        _RUNTIME_LOCK.release()
 
                 run_auto_btn.click(
                     on_run_auto,
@@ -295,9 +389,14 @@ def create_web_app(manager: Optional[StageManager] = None):
 
                 def on_gen_rag(query, goal):
                     from auto_battery_research.tools.workflow_actions import run_rag_design
-                    # 课题键取 Tab 1 目标 (产物落同一课题目录、状态互通)；query 仅作为设计需求
-                    bound_goal = _sync_goal(goal)
-                    res = run_rag_design(target_query=bound_goal, design_query=query)
+                    if not _RUNTIME_LOCK.acquire(blocking=False):
+                        return "⏳ 另一会话任务占用全局运行态，RAG 方案生成未执行，请稍后重试。", {}
+                    try:
+                        # 课题键取 Tab 1 目标 (产物落同一课题目录、状态互通)；query 仅作为设计需求
+                        bound_goal = _sync_goal(goal)
+                        res = run_rag_design(target_query=bound_goal, design_query=query)
+                    finally:
+                        _RUNTIME_LOCK.release()
 
                     kf = res.get("key_findings", {})
                     rule_checks = kf.get("rule_checks") or res.get("rule_checks") or {}
@@ -504,8 +603,11 @@ def create_web_app(manager: Optional[StageManager] = None):
 
         gr.Markdown("--- \n*AutoBatteryResearch Agent · 吸收顶尖自动化工作流架构精髓，赋能化学电池研发新范式。*")
 
-    # 串行执行: 工具层运行态 (全局 Manager/课题缓存) 为进程内共享状态，
-    # 并发事件同时跑流水线会互相踩踏课题状态与产物目录。
+    # 串行执行: 工具层运行态 (全局 Manager/课题缓存) 为进程内共享状态。
+    # queue 的 default_concurrency_limit=1 只隔离同一监听器的并发；跨按钮/跨会话
+    # 的串行化由 _RUNTIME_LOCK 保证 (变更动作拿不到锁即如实返回忙)。
+    # 渲染走 _scoped_manager() 的 per-goal 视图，会话间互不改变对方界面状态。
+    # 不要提高并发上限 —— 运行态是进程级全局，并发写入会互相踩踏课题状态与产物目录。
     demo.queue(default_concurrency_limit=1)
     return demo
 

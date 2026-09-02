@@ -13,6 +13,7 @@
 from __future__ import annotations
 
 import hashlib
+import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -24,8 +25,8 @@ _LIT_CHROMA_DIR = str(_PROJECT_ROOT / "miner" / "chroma" / "paragraphs_q")
 _LIT_COLLECTION = "battery_paragraphs_q"
 _EBOOK_CHROMA_DIR = str(_PROJECT_ROOT / "miner" / "chroma" / "ebooks")
 _EBOOK_COLLECTION = "ebook_chunks"
-_OLLAMA_BASE_URL = "http://localhost:11434"
-_EMBEDDING_MODEL = "qwen3-embedding:8b"
+_OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", os.getenv("EMBEDDING_BASE_URL", "http://localhost:11434"))
+_EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "qwen3-embedding:8b")
 
 _RRF_K = 60  # RRF 常数（与文献库 RetrievalAgent 一致）
 
@@ -43,13 +44,15 @@ class MultiRetrieval:
         lit_collection: str = _LIT_COLLECTION,
         ebook_chroma_dir: str = _EBOOK_CHROMA_DIR,
         ebook_collection: str = _EBOOK_COLLECTION,
-        base_url: str = _OLLAMA_BASE_URL,
-        model: str = _EMBEDDING_MODEL,
+        base_url: Optional[str] = None,
+        model: Optional[str] = None,
         lit_weight: float = 0.7,
         ebook_weight: float = 0.3,
     ):
         self.lit_weight = lit_weight
         self.ebook_weight = ebook_weight
+        resolved_base_url = base_url or os.getenv("OLLAMA_BASE_URL", _OLLAMA_BASE_URL)
+        resolved_model = model or os.getenv("EMBEDDING_MODEL", _EMBEDDING_MODEL)
 
         try:
             from langchain_chroma import Chroma
@@ -59,7 +62,17 @@ class MultiRetrieval:
                 "MultiRetrieval 检索模块依赖缺失: 请安装 'auto-battery-research[rag]' (pip install langchain-chroma langchain-ollama chromadb)"
             ) from e
 
-        embeddings = OllamaEmbeddings(model=model, base_url=base_url)
+        try:
+            embeddings = OllamaEmbeddings(
+                model=resolved_model,
+                base_url=resolved_base_url,
+                client_kwargs={"timeout": 15.0},
+            )
+        except Exception:
+            embeddings = OllamaEmbeddings(
+                model=resolved_model,
+                base_url=resolved_base_url,
+            )
 
         self.lit_store = Chroma(
             collection_name=lit_collection,

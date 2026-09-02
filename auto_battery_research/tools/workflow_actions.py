@@ -375,11 +375,13 @@ def run_rag_design(target_query: str = "设计400Wh/kg高比能液态锂金属�
     return adapter.run_rag_design(target_query=(design_query or target_query), task_dir=task_dir)
 
 
-def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, target_query: str = "", **kwargs) -> Dict[str, Any]:
+def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, target_query: str = "", stage_manager: Optional[Any] = None, **kwargs) -> Dict[str, Any]:
     """执行 Stage 5: PINN / PyBaMM 物理电化学仿真与放电曲线求解 (读取 Stage 4 结构化 scheme 参数)."""
     log_tool_call("PINNPhysicsSolver", f"c_rate={c_rate}, temp_k={ambient_temp}")
-    task_dir = _get_target_task_dir(target_query)
-    legacy_dir = ROOT_DIR / "output" / "auto_battery_research"
+    if stage_manager is not None:
+        task_dir = stage_manager.get_task_output_dir(target_query or None)
+    else:
+        task_dir = _get_target_task_dir(target_query)
 
     sim_result_file = task_dir / "simulation_result.json"
     pinn_report_file = task_dir / "pinn_simulation_report.json"
@@ -423,7 +425,10 @@ def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, targe
             target_energy_wh_kg=target_energy,
         )
 
-        for out_f in (sim_result_file, pinn_report_file, legacy_dir / "simulation_result.json", legacy_dir / "pinn_simulation_report.json"):
+        # 严格课题隔离：仿真产物只落课题目录。全局 output/auto_battery_research/
+        # 是历史存量课题的只读回退目录，禁止写入 —— 多课题写全局会互相覆盖，
+        # 且新课题报告/门禁将读到他人仿真结果，审计口径不一致。
+        for out_f in (sim_result_file, pinn_report_file):
             with open(out_f, "w", encoding="utf-8") as f:
                 json.dump(sim_res, f, ensure_ascii=False, indent=2)
                 
@@ -532,7 +537,9 @@ def _generate_dynamic_recipe_roadmap(
                 )
                 resp = llm.chat(sys_prompt, user_prompt, temperature=0.2)
                 if resp and len(resp.strip()) > 150:
-                    return resp.strip()
+                    # 防御性二次剥离：即使 LLMClient 未来被替换，也绝不让 <think> 思考块混入研报
+                    from src.lmllm.RAG.llm_client import strip_think_blocks
+                    return strip_think_blocks(resp)
         except Exception as e:
             log_error(f"大模型动态生成落地建议受阻: {e}，切入规则定制模板。")
 
@@ -723,8 +730,9 @@ def run_synthesis_report(target_query: str = "设计400Wh/kg高比能液态锂�
 
 {recipe_roadmap_text}
 """
-    # 4. 原子安全写入课题专属文件 (覆盖课题目录内所有规范命名；不写全局镜像目录，
-    #    避免 output/auto_battery_research/ 中不同课题的研报互相覆盖)
+    # 4. 原子安全写入课题专属规范文件 (final_research_report.md 为唯一规范命名；
+    #    final_report.md / battery_research_synthesis_report.md 仅为读侧历史别名兼容，
+    #    不再重复写出 —— 避免同一课题目录下出现三份内容相同的研报)
     import uuid
     def _atomic_write_text(target: Path, text: str):
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -742,17 +750,7 @@ def run_synthesis_report(target_query: str = "设计400Wh/kg高比能液态锂�
             with open(target, "w", encoding="utf-8") as f:
                 f.write(text)
 
-    candidate_save_paths = [
-        report_file,
-        task_dir / "final_research_report.md",
-        task_dir / "final_report.md",
-        task_dir / "battery_research_synthesis_report.md",
-    ]
-    for p in candidate_save_paths:
-        try:
-            _atomic_write_text(p, report_content)
-        except Exception:
-            pass
+    _atomic_write_text(report_file, report_content)
 
     log_observation(f"综合研报编译完成 (文件大小: {len(report_content)} 字节)")
     log_success(f"全生命周期综合研报已生成: {report_file}")

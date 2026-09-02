@@ -1,5 +1,6 @@
 """主 RAG Pipeline 编排器 — 串联多智能体协作流程(材料筛选场景)"""
 
+import os
 import re
 from pathlib import Path
 from datetime import datetime
@@ -122,6 +123,8 @@ class RAGPipeline:
             lit_collection=chroma_collection or COLLECTION_NAME,
             ebook_chroma_dir=_ebook_dir,
             ebook_collection=_ebook_coll,
+            base_url=os.getenv("OLLAMA_BASE_URL", EMBEDDING_BASE_URL),
+            model=os.getenv("EMBEDDING_MODEL", EMBEDDING_MODEL),
         )
 
         # 统一的 LLM 客户端(作为轮换默认值)

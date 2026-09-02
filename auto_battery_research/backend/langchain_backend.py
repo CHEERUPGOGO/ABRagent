@@ -140,12 +140,12 @@ class ABRLangChainBackend:
         llm_cfg = self.config.get("llm", {})
         openai_cfg = self.config.get("openai", {})
 
-        api_key = (
-            openai_cfg.get("openai_api_key")
-            or llm_cfg.get("api_key")
-            or os.getenv("OPENAI_API_KEY")
-            or "dummy_key"
-        )
+        cfg_key = openai_cfg.get("openai_api_key") or llm_cfg.get("api_key")
+        if cfg_key in ("dummy_key", "none", "None", ""):
+            api_key = cfg_key or "dummy_key"
+        else:
+            api_key = os.getenv("OPENAI_API_KEY") or cfg_key or "dummy_key"
+
         api_base = (
             openai_cfg.get("openai_api_base")
             or llm_cfg.get("base_url")
@@ -207,6 +207,11 @@ class ABRLangChainBackend:
         trimmed_msgs = self.trimmer.trim(messages)
         for m in trimmed_msgs:
             self.statistic.update(m)
+
+        # 离线单测模式直接返回兜底消息
+        model_key = getattr(self.model, "api_key", None)
+        if str(model_key).strip() in ("dummy_key", "none", "None", ""):
+            return AIMessage(content="[Offline Mode] 确定性离线模式运行中。")
 
         if hasattr(self.agent, "invoke"):
             # LangGraph agent 调用
