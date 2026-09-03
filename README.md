@@ -212,7 +212,12 @@ abr-cli --web-gradio                          # 旧版交互式 Gradio 仪表盘
 ```bash
 abr-cli --mcp
 ```
-内置 Model Context Protocol 服务，可直接集成至 Cursor、Claude Desktop 等。
+内置 Model Context Protocol 服务（完整 initialize 握手 / ping / notification 规范），可直接集成至 Claude Code、Cursor、Claude Desktop 等。
+
+> ⚠️ **冷启动提示**：服务器启动需导入完整智能体依赖链（langchain 等），冷启动到握手就绪约 30~40s。Claude Code 会话内的 MCP 握手超时默认 30s，注册时建议加长：
+> ```bash
+> claude mcp add abr --scope local -e MCP_TIMEOUT=120000 -- python /path/to/auto_battery_research_cli.py --mcp
+> ```
 
 ---
 
