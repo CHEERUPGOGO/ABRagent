@@ -1,7 +1,6 @@
 """TaskPanel widget for AutoBatteryResearch TUI."""
 
 from __future__ import annotations
-from collections import deque
 from typing import TYPE_CHECKING, Optional
 import os
 import time
@@ -16,11 +15,6 @@ from auto_battery_research.util.logger import get_session_tool_counts
 
 if TYPE_CHECKING:
     from auto_battery_research.workflow.stage_manager import StageManager
-
-# Agent Activity 滚动窗口行数上限 (左侧面板空间有限, 只留最新 N 条)
-ACTIVITY_MAX_LINES = 12
-# 单行截断长度 (工具入参 JSON 等长文本截断展示, 避免横向撑爆面板)
-ACTIVITY_LINE_MAX_CHARS = 110
 
 
 def format_duration(seconds: float) -> str:
@@ -41,39 +35,16 @@ class TaskPanel(VerticalScroll):
         # 会阻塞 Textual 事件循环，导致秒级计时与面板刷新迟滞
         self._file_scan_tick = 0
         self._cached_files_text: Optional[Text] = None
-        # Agent Activity 实时活动滚动窗口 (模型/工具调用经由 logger sink 汇入)
-        self._activity_lines: deque = deque(maxlen=ACTIVITY_MAX_LINES)
 
     def compose(self) -> ComposeResult:
         yield Static(id="mission-title")
         yield Static(id="task-list")
-        yield Static("Agent Activity", classes="section-title")
-        yield Static(id="activity-feed")
         yield Static("Changed Files", classes="section-title")
         yield Static(id="changed-files")
         yield Static("Tools Call", classes="section-title")
         yield Static(id="tool-status")
         yield Static("Status", classes="section-title")
         yield Static(id="status-summary")
-
-    def append_activity(self, text: str, style: str = "white") -> None:
-        """追加一条模型/工具实时活动行到左侧面板 (压平换行并截断)."""
-        line = " ".join(str(text).split())[:ACTIVITY_LINE_MAX_CHARS]
-        if not line:
-            return
-        self._activity_lines.append((line, style))
-        self._render_activity()
-
-    def _render_activity(self) -> None:
-        feed = Text()
-        if not self._activity_lines:
-            feed.append("(等待模型运行... 输入 run 启动)\n", style="dim")
-        for line, style in self._activity_lines:
-            feed.append(f"• {line}\n", style=style)
-        try:
-            self.query_one("#activity-feed", Static).update(feed)
-        except Exception:
-            pass
 
     def on_mount(self) -> None:
         self.update_content()

@@ -52,6 +52,31 @@ def err_str() -> str:
     return datetime.now().strftime("[%Y-%m-%d %H:%M:%S.%f")[:-3] + " ERROR]"
 
 
+# 推理流日志行解析: 标准格式 "[YYYY-MM-DD HH:MM:SS.mmm LEVEL] text", 仅提取模型 ReAct 推理链相关级别
+import re as _re
+
+_REASON_LINE_PATTERN = _re.compile(r"^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+\s+(THINK|TOOL|OBS|ERROR)\]\s*(.*)$")
+_REASON_SUCCESS_PATTERN = _re.compile(r"^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+\s+INFO\]\s*Success:\s*(.*)$")
+_REASON_LEVEL_STYLE = {"THINK": "yellow", "TOOL": "bold cyan", "OBS": "green", "ERROR": "bold red"}
+
+
+def _parse_reasoning_log_line(text: str):
+    """从 logger 格式化行中提取推理流条目, 返回 (展示行, 样式); 非推理行返回 None.
+
+    提取范围: THINK(AgentThought 思维链) / TOOL(工具调用) / OBS(观测结果) /
+    ERROR(推理出错) / Success(阶段成果), 其余 INFO 噪音不上右侧推理面板.
+    """
+    m = _REASON_LINE_PATTERN.match(str(text).strip())
+    if m:
+        level, body = m.group(1), m.group(2).strip()
+        icon = {"THINK": "💭", "TOOL": "🔧", "OBS": "👁", "ERROR": "❌"}.get(level, "·")
+        return f"{icon} {body}", _REASON_LEVEL_STYLE.get(level, "white")
+    m = _REASON_SUCCESS_PATTERN.match(str(text).strip())
+    if m:
+        return f"✅ {m.group(1).strip()}", "bold green"
+    return None
+
+
 class BatteryAgentTUI(App[None]):
     """AutoBatteryResearch Agent 终端全屏控制台 ."""
 
@@ -92,21 +117,25 @@ class BatteryAgentTUI(App[None]):
                 pass
 
     def _log_sink_callback(self, text: str, style: str = "white") -> None:
-        # 日志双路分发: 底部 Console 全量留痕 + 左侧 TaskPanel 实时活动滚动窗口
+        # 日志双路分发: 底部 Console 全量留痕 + 右侧 Messages 面板推理流 (仅 THINK/TOOL/OBS/ERROR/Success)
         try:
             console_widget = self.query_one("#console-container", ConsoleWidget)
         except Exception:
             return
         self._ui_post(console_widget.write_log, text, style)
-        self._post_activity(text, style)
+        entry = _parse_reasoning_log_line(text)
+        if entry:
+            self._post_reasoning(entry[0], entry[1])
 
-    def _post_activity(self, text: str, style: str = "white") -> None:
-        """把模型/工具活动行投递到左侧面板 Agent Activity 区 (线程安全)."""
+    def _post_reasoning(self, text: str, style: str = "white") -> None:
+        """把模型推理流/阶段事件行投递到右侧 Messages 面板实时推理视图 (线程安全).
+
+        推理视图未激活时 (非 run 状态) 自动忽略, 不会劫持阶段指引展示."""
         try:
-            task_panel = self.query_one("#task-panel", TaskPanel)
+            messages_panel = self.query_one("#messages-panel", MessagesPanel)
         except Exception:
             return
-        self._ui_post(task_panel.append_activity, text, style)
+        self._ui_post(messages_panel.append_reasoning, text, style)
 
     def compose(self) -> ComposeResult:
         with Vertical(id="app-container"):
@@ -265,6 +294,8 @@ class BatteryAgentTUI(App[None]):
             log_info_str = f" [Log enabled: {custom_log_file or 'log/<goal>.log'}]" if enable_log else ""
             console_widget.write_log(f"{now_str()} Starting ABRAgent for goal: '{goal}'{log_info_str}", style="bold cyan")
             self.is_running_task = True
+            # 右侧面板切入实时推理视图: 展示模型接收任务后的 ReAct 推理流程 (思维链/工具调用/观测)
+            messages_panel.begin_reasoning(f"{goal[:40]}{'…' if len(goal) > 40 else ''}")
 
             def _on_stage_update(stage_id: int, status: str, duration: float):
                 self.call_from_thread(task_panel.update_content)
@@ -288,17 +319,17 @@ class BatteryAgentTUI(App[None]):
                         ev_sid = event.get("stage_id")
                         if ev_type == "stage_start":
                             self.call_from_thread(console_widget.write_log, f"{now_str()} >>> [Stage {ev_sid}] ABRAgent 正在自主规划与调度领域工具...", "yellow")
-                            self._post_activity(f"[Stage {ev_sid}] 模型开始自主规划与工具调度...", "bold yellow")
+                            self._post_reasoning(f"▶ [Stage {ev_sid}] 模型接收任务, 开始自主规划与工具调度…", "bold yellow")
                         elif ev_type == "stage_checked":
                             self.call_from_thread(console_widget.write_log, f"{now_str()} [CHECK] Stage {ev_sid} 确定性质量门禁验证 PASSED.", "green")
-                            self._post_activity(f"[Stage {ev_sid}] 门禁自检通过 ✓", "green")
+                            self._post_reasoning(f"✅ [Stage {ev_sid}] 门禁自检通过", "green")
                         elif ev_type == "stage_failed_attempt":
                             fail_sum = event.get("diag", {}).get("failure_summary", {})
                             self.call_from_thread(console_widget.write_log, f"{now_str()} [FAIL] Stage {ev_sid} 门禁未通过: {fail_sum.get('error', '未达标')} -> 自愈修复中...", "red")
-                            self._post_activity(f"[Stage {ev_sid}] 门禁未通过, 自愈重试中...", "bold red")
+                            self._post_reasoning(f"⚠ [Stage {ev_sid}] 门禁未通过 ({fail_sum.get('error_code', 'FAIL')}), 自愈重试中…", "bold red")
                         elif ev_type == "stage_completed":
                             self.call_from_thread(console_widget.write_log, f"{now_str()} [COMPLETE] Stage {ev_sid} 门禁终审通过，进入下一阶段。", "bold green")
-                            self._post_activity(f"[Stage {ev_sid}] 终审通过 ✓ 进入下一阶段", "bold green")
+                            self._post_reasoning(f"🏁 [Stage {ev_sid}] 终审通过, 进入下一阶段", "bold green")
 
                         self.call_from_thread(task_panel.update_content)
                         self.call_from_thread(messages_panel.update_content, True)
@@ -322,6 +353,7 @@ class BatteryAgentTUI(App[None]):
                         except Exception:
                             pass
                     
+                    self._post_reasoning("🏁 课题运行结束, 推理流程收束", "bold cyan")
                     if report_file.exists():
                         with open(report_file, "r", encoding="utf-8") as f:
                             rep_content = f.read()
@@ -330,10 +362,12 @@ class BatteryAgentTUI(App[None]):
                         with open(scheme_file, "r", encoding="utf-8") as f:
                             rep_content = f.read()
                         self.call_from_thread(messages_panel.show_text, "Design Scheme (Stage 4)", rep_content)
+                    else:
+                        # 无研报/方案可展示时交还面板给阶段指引 (推理留痕仍在底部 Console)
+                        self.call_from_thread(messages_panel.end_reasoning)
 
                     success_msg = f"{now_str()} ABRAgent Loop finished! All stages completed: success={all_done} (time: {elapsed:.1f}s)"
                     self.call_from_thread(console_widget.write_log, success_msg, "bold green")
-                    self._post_activity("课题运行结束", "bold cyan")
                     if report_file.exists():
                         self.call_from_thread(
                             console_widget.write_log,
@@ -349,6 +383,7 @@ class BatteryAgentTUI(App[None]):
                 except Exception as e:
                     self.is_running_task = False
                     self.call_from_thread(console_widget.write_log, f"{now_str()} [ERROR] ABRAgent 运行异常: {e}", "bold red")
+                    self.call_from_thread(messages_panel.end_reasoning)
                     import traceback
                     traceback.print_exc()
 
