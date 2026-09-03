@@ -200,7 +200,7 @@ def dispatch_tool_call(name: str, args: Dict[str, Any]) -> Any:
     elif name == "RunStageTask":
         return tool_run_stage_task(
             stage_id=args.get("stage_id"),
-            target_query=args.get("target_query", "设计400Wh/kg高比能液态锂金属电池方案"),
+            target_query=args.get("target_query", ""),
         )
     elif name == "ReadTextFile":
         return read_text_file(

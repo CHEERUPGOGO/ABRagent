@@ -61,7 +61,7 @@ class PINNPhysicsChecker(BaseChecker):
                 error_msg=f"PINN 物理仿真已激活，但未找到仿真输出文件 ({sim_json})",
                 observed={"sim_file_found": False},
                 expected="包含 PyBaMM / PINN 仿真曲线与放电指标的 simulation_result.json",
-                next_action="运行物理仿真：RunPINNSimulation() 或使用 skip 5 跳过本阶段",
+                next_action="运行物理仿真：RunPhysicsSimulation() 或使用 skip 5 跳过本阶段",
             )
 
         # 3. 校验物理参数与边界

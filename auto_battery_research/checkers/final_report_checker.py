@@ -52,13 +52,15 @@ class FinalReportChecker(BaseChecker):
             journal_file = output_agent_dir / "stage_journals.json"
 
         if not report_file.exists():
+            current_goal = self.stage_manager.target_goal if self.stage_manager else ""
+            call_hint = f"SynthesizeResearchReport(target_goal='{current_goal}')" if current_goal else "SynthesizeResearchReport()"
             return False, self.build_diagnostic(
                 passed=False,
                 error_code="SYNTHESIS_REPORT_MISSING",
                 error_msg=f"未检测到最终综合研发报告文件: {report_file}",
                 observed={"report_exists": False},
                 expected="存在完整的 final_research_report.md",
-                next_action="生成综合研报：RunGenerateSynthesisReport()",
+                next_action=f"生成综合研报：{call_hint}",
             )
 
         try:

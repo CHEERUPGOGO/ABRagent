@@ -50,13 +50,15 @@ class RAGDesignChecker(BaseChecker):
 
         # 1. 存在性检查
         if not scheme_json_file.exists() and not scheme_md_file.exists():
+            current_goal = self.stage_manager.target_goal if self.stage_manager else ""
+            call_hint = f"RunRAGDesign(target_goal='{current_goal}')" if current_goal else "RunRAGDesign()"
             return False, self.build_diagnostic(
                 passed=False,
                 error_code="DESIGN_SCHEME_FILE_MISSING",
                 error_msg=f"未找到 RAG 生成的设计方案文件 ({scheme_json_file} 或 {scheme_md_file})",
                 observed={"json_exists": scheme_json_file.exists(), "md_exists": scheme_md_file.exists()},
                 expected="存在完整的电池设计方案 Markdown 报告与结构化 JSON",
-                next_action="调用 RAG 设计工具生成方案：RunRAGDesign(target_query='设计400Wh/kg高比能锂金属电池')",
+                next_action=f"调用 RAG 设计工具生成方案：{call_hint}",
             )
 
         # 2. Markdown 正文与真正的标题层级五段式结构检查

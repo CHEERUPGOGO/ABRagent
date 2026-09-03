@@ -166,7 +166,7 @@ def tool_enable_stage(stage_id: int) -> Dict[str, Any]:
 
 def tool_run_stage_task(
     stage_id: Optional[int] = None,
-    target_query: str = "设计400Wh/kg高比能液态锂金属电池方案",
+    target_query: str = "",
     **kwargs
 ) -> Dict[str, Any]:
     """驱动执行当前或指定 Stage 的底层计算与挖掘任务."""
@@ -179,17 +179,18 @@ def tool_run_stage_task(
         generate_synthesis_report,
     )
     mgr = get_stage_manager()
+    query = (target_query or "").strip() or mgr.target_goal
     curr = mgr.get_stage_by_id(stage_id) if stage_id else mgr.get_current_stage()
     sid = curr.id
 
     if sid == 1:
-        return run_literature_ingestion(target_query=target_query, **kwargs)
+        return run_literature_ingestion(target_query=query, **kwargs)
     elif sid == 2:
-        return run_vector_indexing(target_query=target_query, **kwargs)
+        return run_vector_indexing(target_query=query, **kwargs)
     elif sid == 3:
-        return run_data_mining(target_query=target_query, max_files=kwargs.get("max_files", 5), **kwargs)
+        return run_data_mining(target_query=query, max_files=kwargs.get("max_files", 5), **kwargs)
     elif sid == 4:
-        return run_rag_design(target_query=target_query, **kwargs)
+        return run_rag_design(target_query=query, **kwargs)
     elif sid == 5:
         if curr.skip:
             return {"success": True, "message": "Stage 5 PINN 物理仿真已配置跳过，无需执行计算。"}
