@@ -32,3 +32,34 @@ jobs:
 
       - name: 离线单元测试
         run: python -m pytest -m "unit or not external" -q
+
+  wheel-smoke:
+    # 打包完整性 — 构建 wheel 后在全新 venv 安装冒烟,
+    # 防止 setting.yaml / abr_workflow.yaml / 阶段指南等运行时资源漏打包回归
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 构建 wheel
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build --wheel --outdir dist/
+
+      - name: 全新环境安装并冒烟
+        run: |
+          python -m venv /tmp/abr-fresh
+          /tmp/abr-fresh/bin/python -m pip install --upgrade pip
+          /tmp/abr-fresh/bin/python -m pip install dist/auto_battery_research-*.whl
+          # 中立目录执行, 避免仓库源码经 cwd 遮蔽安装包
+          cd /tmp
+          /tmp/abr-fresh/bin/abr-cli --status > status.txt
+          # 6 个阶段行必须全部载入 —— 证明 abr_workflow.yaml 已随包分发
+          test "$(grep -cE '^[1-6][[:space:]]' status.txt)" -eq 6
+          grep -q "文献解析与组件分类" status.txt
+          # 门禁可运行 (空工作区 fail-closed 属预期行为)
+          /tmp/abr-fresh/bin/abr-cli --check > check.txt || true
+          grep -q "IngestionChecker" check.txt

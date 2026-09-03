@@ -69,7 +69,13 @@ where = [".", "src"]
 include = ["auto_battery_research*", "miner*", "agent*", "preprocessing*", "pinn*", "src*", "lmllm*"]
 
 [tool.setuptools.package-data]
-# Web 监控大屏 (FastAPI 版) 的自包含前端资源，打包时必须随包分发
+# 运行时资源随包分发 —— 非 editable 安装的生命线:
+#   setting.yaml / workflow/abr_workflow.yaml 被 StageManager 从安装目录直读,
+#   缺失则阶段列表为空、CLI 不可用; doc/Guide_Doc 是 CurrentTips 引用的阶段
+#   指南; tcss 是 TUI 样式。子目录无需 __init__.py, 模式相对包根匹配。
+"auto_battery_research" = ["setting.yaml", "doc/Guide_Doc/*.md", "doc/templates/*.md"]
+"auto_battery_research.workflow" = ["*.yaml"]
+"auto_battery_research.tui" = ["styles/*.tcss"]
 "auto_battery_research.web" = ["templates/*.html", "static/*.js"]
 
 [tool.pytest.ini_options]
