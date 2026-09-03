@@ -209,8 +209,12 @@ class ABRLangChainBackend:
             self.statistic.update(m)
 
         # 离线单测模式直接返回兜底消息
-        model_key = getattr(self.model, "api_key", None)
-        if str(model_key).strip() in ("dummy_key", "none", "None", ""):
+        raw_key = getattr(self.model, "openai_api_key", None) or getattr(self.model, "api_key", None)
+        if raw_key is not None and hasattr(raw_key, "get_secret_value"):
+            model_key = raw_key.get_secret_value()
+        else:
+            model_key = raw_key
+        if model_key is None or str(model_key).strip() in ("dummy_key", "none", "None", ""):
             return AIMessage(content="[Offline Mode] 确定性离线模式运行中。")
 
         if hasattr(self.agent, "invoke"):
