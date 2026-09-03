@@ -423,7 +423,7 @@ class ABRAgent:
                     deliverables=delivs,
                     key_findings=findings,
                 )
-                if self.manager.current_stage_idx <= stage_idx and curr_stage.status != "PASSED":
+                if self.manager.current_stage_idx == stage_idx:
                     comp_ok, comp_res = self.manager.complete_stage(curr_stage.id)
                 else:
                     comp_ok = True
