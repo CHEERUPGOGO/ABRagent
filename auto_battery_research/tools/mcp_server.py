@@ -1,12 +1,15 @@
 """MCP Server — Model Context Protocol 服务实现 (AutoBatteryResearch Agent).
 
 支持 stdio 标准输入输出与 JSON-RPC 2.0，供 Claude Code、Qwen-Code、Antigravity 等接入。
+完整实现 initialize 握手 / ping 保活 / notification 静默 (不应答)；工具执行期间的
+同进程 print() 一律重定向 stderr，保护 stdout 纯 JSON-RPC 流。
 """
 
 import sys
 import json
 import logging
-from typing import Dict, Any, List
+import contextlib
+from typing import Dict, Any, List, Optional
 
 from auto_battery_research.tools.stage_tools import (
     tool_get_role_info,
@@ -186,9 +189,10 @@ def dispatch_tool_call(name: str, args: Dict[str, Any]) -> Any:
     elif name == "AllStageJournal":
         return tool_get_all_stage_journal()
     elif name == "SkipStage":
-        return tool_skip_stage(stage_id=args.get("stage_id", 5), reason=args.get("reason", "手动跳过"))
+        # stage_id 缺失时不再静默默认跳 Stage 5 (schema 已声明 required, 缺参应显式报错)
+        return tool_skip_stage(stage_id=args.get("stage_id"), reason=args.get("reason", "手动跳过"))
     elif name == "EnableStage":
-        return tool_enable_stage(stage_id=args.get("stage_id", 5))
+        return tool_enable_stage(stage_id=args.get("stage_id"))
     elif name == "RunStageTask":
         return tool_run_stage_task(
             stage_id=args.get("stage_id"),
@@ -216,6 +220,69 @@ def dispatch_tool_call(name: str, args: Dict[str, Any]) -> Any:
         return {"error": f"Unknown tool: {name}"}
 
 
+def handle_jsonrpc_request(req: Any) -> Optional[Dict[str, Any]]:
+    """处理单条 JSON-RPC 2.0 / MCP 请求帧, 返回应答帧.
+
+    notification (无 id 的请求, 如 notifications/initialized) 返回 None —— 按
+    JSON-RPC 规范不得应答; 工具执行期间的同进程 stdout 输出重定向到 stderr。
+    """
+    if not isinstance(req, dict):
+        return {"jsonrpc": "2.0", "id": None, "error": {"code": -32600, "message": "Invalid Request"}}
+
+    req_id = req.get("id")
+    method = req.get("method")
+    params = req.get("params") or {}
+
+    # notification: 无 id, 静默吞掉 (不得应答)
+    if "id" not in req:
+        return None
+
+    if method == "initialize":
+        try:
+            from auto_battery_research import __version__ as server_version
+        except Exception:
+            server_version = "1.0.0"
+        # 支持客户端请求的协议版本则原样回显, 否则回退本服务默认版本
+        protocol_version = params.get("protocolVersion") or "2025-06-18"
+        return {
+            "jsonrpc": "2.0",
+            "id": req_id,
+            "result": {
+                "protocolVersion": protocol_version,
+                "capabilities": {"tools": {"listChanged": False}},
+                "serverInfo": {"name": "auto-battery-research", "version": server_version},
+            },
+        }
+
+    if method == "ping":
+        return {"jsonrpc": "2.0", "id": req_id, "result": {}}
+
+    if method == "tools/list":
+        return {"jsonrpc": "2.0", "id": req_id, "result": {"tools": TOOL_SCHEMAS}}
+
+    if method == "tools/call":
+        t_name = params.get("name")
+        t_args = params.get("arguments") or {}
+        try:
+            # 工具链内同进程 print() (如 incremental.step_* 的进度输出) 一律转
+            # stderr, 防止污染 stdout 上的 JSON-RPC 流 (子进程输出已被 capture)
+            with contextlib.redirect_stdout(sys.stderr):
+                res = dispatch_tool_call(t_name, t_args)
+        except Exception as e:  # 工具内部异常以 isError 结果返回, 不打断 RPC 层
+            return {
+                "jsonrpc": "2.0",
+                "id": req_id,
+                "result": {"content": [{"type": "text", "text": f"Tool error: {e}"}], "isError": True},
+            }
+        return {
+            "jsonrpc": "2.0",
+            "id": req_id,
+            "result": {"content": [{"type": "text", "text": json.dumps(res, ensure_ascii=False, indent=2)}]},
+        }
+
+    return {"jsonrpc": "2.0", "id": req_id, "error": {"code": -32601, "message": f"Method {method} not found"}}
+
+
 def start_stdio_server():
     """以 stdio 方式启动 MCP JSON-RPC 2.0 服务 (保护 stdout 仅输出 JSON-RPC)."""
     import os
@@ -229,32 +296,22 @@ def start_stdio_server():
     sys.stderr.reconfigure(encoding="utf-8")
 
     while True:
+        req_id = None
         try:
             line = sys.stdin.readline()
             if not line:
                 break
             req = json.loads(line)
-            req_id = req.get("id")
-            method = req.get("method")
-            params = req.get("params", {})
-
-            if method == "tools/list":
-                resp = {"jsonrpc": "2.0", "id": req_id, "result": {"tools": TOOL_SCHEMAS}}
-            elif method == "tools/call":
-                t_name = params.get("name")
-                t_args = params.get("arguments", {})
-                res = dispatch_tool_call(t_name, t_args)
-                resp = {
-                    "jsonrpc": "2.0",
-                    "id": req_id,
-                    "result": {"content": [{"type": "text", "text": json.dumps(res, ensure_ascii=False, indent=2)}]},
-                }
-            else:
-                resp = {"jsonrpc": "2.0", "id": req_id, "error": {"code": -32601, "message": f"Method {method} not found"}}
-
-            sys.stdout.write(json.dumps(resp, ensure_ascii=False) + "\n")
-            sys.stdout.flush()
+            if isinstance(req, dict):
+                req_id = req.get("id")
+            resp = handle_jsonrpc_request(req)
+            if resp is None:
+                continue
+        except json.JSONDecodeError as e:
+            resp = {"jsonrpc": "2.0", "id": None, "error": {"code": -32700, "message": f"Parse error: {e}"}}
         except Exception as e:
-            err_resp = {"jsonrpc": "2.0", "id": None, "error": {"code": -32603, "message": str(e)}}
-            sys.stdout.write(json.dumps(err_resp, ensure_ascii=False) + "\n")
-            sys.stdout.flush()
+            # 保留请求 id 关联 (解析失败等拿不到 id 时才为 None)
+            resp = {"jsonrpc": "2.0", "id": req_id, "error": {"code": -32603, "message": str(e)}}
+
+        sys.stdout.write(json.dumps(resp, ensure_ascii=False) + "\n")
+        sys.stdout.flush()

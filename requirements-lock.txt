@@ -3,7 +3,7 @@
 # 用法 (作为约束安装，不引入额外包，只锁定版本):
 #   pip install -e ".[all]" -c requirements-lock.txt
 #
-# 锁定环境: Python 3.13.5 / Windows · 基线: 74 passed, 0 warnings
+# 锁定环境: Python 3.13.5 / Windows · 基线: 84 passed, 0 warnings
 # 升级依赖后请重新生成并跑: pytest -m "unit or not external"
 # 注意: pybamm 物理仿真需 Python < 3.13，未包含在本锁定环境内
 
