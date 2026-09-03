@@ -33,7 +33,7 @@ class ConsoleWidget(Vertical):
         )
         with Horizontal(id="console-input-row"):
             yield Static("(AutoBattery) > ", id="console-prompt")
-            yield Input(placeholder="输入指令 (输入 'run' 或回车立即启动全自动执行，'help' 查看清单)...", id="console-input")
+            yield Input(placeholder="输入指令 ('run' 启动全自动执行, 'web' 打开监控大屏, 'help' 查看清单)...", id="console-input")
 
     def on_mount(self) -> None:
         self.write_log(
@@ -41,7 +41,7 @@ class ConsoleWidget(Vertical):
             style="bold green"
         )
         self.write_log(
-            "Stage 1~3 pre-flight passed. Active focus: Stage 4 (Multi-Agent RAG Design). Type 'run' or press Enter to execute.",
+            "Stage 1~3 pre-flight passed. Active focus: Stage 4 (Multi-Agent RAG Design). Type 'run' to execute.",
             style="bold cyan"
         )
 
@@ -69,9 +69,11 @@ class ConsoleWidget(Vertical):
         inp.value = ""
         self.history_index = -1
 
-        # 若用户直接按回车未输入内容，默认执行 'run'
+        # 空输入回车不默认执行任何指令: 曾默认 'run', 但中文输入法的回车确认
+        # 会让提交事件先于文字落入输入框 (Enter 带空内容触发), 极易误拉起全自动循环
         if not val:
-            val = "run"
+            self.write_log("(空指令已忽略 — 输入 'run' 启动全自动执行, 'help' 查看全部指令)", style="yellow")
+            return
 
         self.history.append(val)
         self.write_log(f"> {val}", style="bold cyan")
