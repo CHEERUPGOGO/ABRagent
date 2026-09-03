@@ -16,9 +16,9 @@ if sys.platform == "win32":
     except Exception:
         pass
 
-from auto_battery_research.agent import ABRAgent
+# 重依赖 (agent → langchain 全家) 不在模块级导入: --mcp/--status/--web 等轻量
+# 入口保持秒级冷启动; ABRAgent 延迟到 --run 分支使用点加载。
 from auto_battery_research.workflow.stage_manager import StageManager
-from auto_battery_research.backend.loop_runner import AutonomousLoopRunner
 from auto_battery_research.tools.stage_tools import (
     set_stage_manager,
     tool_get_status,
@@ -252,6 +252,8 @@ def main():
         return
 
     if args.run:
+        # 重依赖 (langchain/agent 链) 延迟到 --run 使用点加载
+        from auto_battery_research.agent import ABRAgent
         # 文件日志默认开启 (审计友好)；--no-log 显式关闭；--log-file 隐含开启并指定路径
         enable_log = (not args.no_log) or bool(args.log_file)
         if args.reset:

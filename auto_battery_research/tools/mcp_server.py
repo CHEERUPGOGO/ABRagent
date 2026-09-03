@@ -4,8 +4,9 @@
 完整实现 initialize 握手 / ping 保活 / notification 静默 (不应答)；工具执行期间的
 同进程 print() 一律重定向 stderr，保护 stdout 纯 JSON-RPC 流。
 
-冷启动提示: 启动需导入完整智能体依赖链 (langchain 等, 实测约 30~40s)，部分客户端
-默认握手超时 30s 会误判连接失败 —— Claude Code 注册时加 `-e MCP_TIMEOUT=120000`。
+冷启动: 包级依赖为 PEP 562 惰性导入, 本服务只加载工作流工具链
+(stage_tools/stage_manager), 不拉起 langchain/RAG 引擎 —— 冷启动到握手
+就绪约 1s, 无需调大客户端握手超时。
 """
 
 import sys

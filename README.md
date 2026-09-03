@@ -214,10 +214,12 @@ abr-cli --mcp
 ```
 内置 Model Context Protocol 服务（完整 initialize 握手 / ping / notification 规范），可直接集成至 Claude Code、Cursor、Claude Desktop 等。
 
-> ⚠️ **冷启动提示**：服务器启动需导入完整智能体依赖链（langchain 等），冷启动到握手就绪约 30~40s。Claude Code 会话内的 MCP 握手超时默认 30s，注册时建议加长：
-> ```bash
-> claude mcp add abr --scope local -e MCP_TIMEOUT=120000 -- python /path/to/auto_battery_research_cli.py --mcp
-> ```
+```bash
+# Claude Code 接入示例 (轻量入口秒级冷启动, 无需调握手超时)
+claude mcp add abr --scope local -- python /path/to/auto_battery_research_cli.py --mcp
+```
+
+> 包级依赖为 PEP 562 惰性导入 —— `--mcp` 只加载工作流工具链，不拉起 langchain/RAG 引擎，冷启动到握手就绪约 1s。
 
 ---
 
@@ -301,7 +303,7 @@ pytest auto_battery_research/tests/test_checkers.py::test_pinn_checker_skip_logi
 pytest -m "unit"
 ```
 
-当前基线：**84 passed, 2 deselected, 0 warnings**（含课题隔离回归 `test_task_isolation.py`、Stage 4 离线 golden `test_stage4_golden.py`、FastAPI Web 监控 `test_web_server.py` 与 MCP 协议层 `test_mcp_server.py`）。单测通过注入 dummy key 保持零外部依赖；确定性 Checker 对空数据、编造数据、异质体系文献均有严格拦截用例。注：Python 3.14 环境可能出现 Pydantic v1 兼容 warning 与依赖缺省导致的 skip，建议 CI 固定 Python 3.12。
+当前基线：**86 passed, 2 deselected, 0 warnings**（含课题隔离回归 `test_task_isolation.py`、Stage 4 离线 golden `test_stage4_golden.py`、FastAPI Web 监控 `test_web_server.py`、MCP 协议层 `test_mcp_server.py` 与包级惰性导入 `test_package_init.py`）。单测通过注入 dummy key 保持零外部依赖；确定性 Checker 对空数据、编造数据、异质体系文献均有严格拦截用例。注：Python 3.14 环境可能出现 Pydantic v1 兼容 warning 与依赖缺省导致的 skip，建议 CI 固定 Python 3.12。
 
 ---
 
