@@ -263,8 +263,12 @@ class ExtractAndAssembleCellsTool(BaseTool):
     args_schema: Type[BaseModel] = ExtractAndAssembleCellsArgs
 
     def _run(self, sample_limit: Optional[int] = 10, target_query: Optional[str] = "") -> str:
-        log_tool_call(self.name, f"sample_limit={sample_limit}, target_query='{target_query}'")
-        res = run_data_mining(max_files=sample_limit or 10, target_query=target_query or "")
+        goal = (target_query or "").strip()
+        if not goal:
+            from auto_battery_research.tools.stage_tools import get_stage_manager
+            goal = get_stage_manager().target_goal
+        log_tool_call(self.name, f"sample_limit={sample_limit}, target_query='{goal}'")
+        res = run_data_mining(max_files=sample_limit or 10, target_query=goal)
         return json.dumps(res, ensure_ascii=False, indent=2)
 
 
@@ -316,8 +320,8 @@ class RunRAGDesignTool(BaseTool):
 
 class RunPhysicsSimulationArgs(BaseModel):
     target_goal: Optional[str] = Field(
-        default="设计400Wh/kg高比能液态锂金属电池方案",
-        description="待仿真方案课题"
+        default="",
+        description="待仿真方案课题 (留空则动态绑定当前工作流活跃课题)"
     )
     current_rate: Optional[str] = Field(
         default="0.2C",
@@ -331,8 +335,11 @@ class RunPhysicsSimulationTool(BaseTool):
     )
     args_schema: Type[BaseModel] = RunPhysicsSimulationArgs
 
-    def _run(self, target_goal: Optional[str] = "设计400Wh/kg高比能液态锂金属电池方案", current_rate: Optional[str] = "0.2C") -> str:
-        goal = target_goal or "设计400Wh/kg高比能液态锂金属电池方案"
+    def _run(self, target_goal: Optional[str] = "", current_rate: Optional[str] = "0.2C") -> str:
+        goal = (target_goal or "").strip()
+        if not goal:
+            from auto_battery_research.tools.stage_tools import get_stage_manager
+            goal = get_stage_manager().target_goal
         log_tool_call(self.name, f"target_goal='{goal}', current_rate='{current_rate}'")
         res = run_pinn_simulation(target_query=goal, current_rate=current_rate or "0.2C")
         return json.dumps(res, ensure_ascii=False, indent=2)
@@ -344,8 +351,8 @@ class RunPhysicsSimulationTool(BaseTool):
 
 class SynthesizeResearchReportArgs(BaseModel):
     target_goal: Optional[str] = Field(
-        default="设计400Wh/kg高比能液态锂金属电池方案",
-        description="研发总课题"
+        default="",
+        description="研发总课题 (留空则动态绑定当前工作流活跃课题)"
     )
 
 class SynthesizeResearchReportTool(BaseTool):
@@ -355,8 +362,11 @@ class SynthesizeResearchReportTool(BaseTool):
     )
     args_schema: Type[BaseModel] = SynthesizeResearchReportArgs
 
-    def _run(self, target_goal: Optional[str] = "设计400Wh/kg高比能液态锂金属电池方案") -> str:
-        goal = target_goal or "设计400Wh/kg高比能液态锂金属电池方案"
+    def _run(self, target_goal: Optional[str] = "") -> str:
+        goal = (target_goal or "").strip()
+        if not goal:
+            from auto_battery_research.tools.stage_tools import get_stage_manager
+            goal = get_stage_manager().target_goal
         log_tool_call(self.name, f"target_goal='{goal}'")
         res = generate_synthesis_report(target_query=goal)
         return json.dumps(res, ensure_ascii=False, indent=2)

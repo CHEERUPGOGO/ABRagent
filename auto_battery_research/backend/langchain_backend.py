@@ -170,39 +170,55 @@ class ABRLangChainBackend:
             max_retries=2,
         )
 
-    def bind_tools(self, tools: List[Any]) -> None:
-        """绑定全量领域工具与阶段门禁工具."""
-        self.tools = tools
-        # 优先使用 langchain>=1.0 的 create_agent —— langgraph.prebuilt.create_react_agent
-        # 已于 LangGraph V1.0 弃用 (V2.0 移除)；旧依赖栈或缺少 langgraph 时逐级回退
-        self.agent = None
+    def _compile_agent_for_tools(self, tools: List[Any]) -> Any:
+        """为特定工具集编译 ReAct Agent (兼容 LangChain 1.0+ 及旧版 LangGraph)."""
         try:
             from langchain.agents import create_agent
             from langgraph.checkpoint.memory import MemorySaver
-            self.agent = create_agent(
+            return create_agent(
                 model=self.model,
-                tools=self.tools,
+                tools=tools,
                 checkpointer=MemorySaver(),
             )
         except Exception as e1:
             try:
                 from langgraph.prebuilt import create_react_agent
                 from langgraph.checkpoint.memory import MemorySaver
-                self.agent = create_react_agent(
+                agent = create_react_agent(
                     model=self.model,
-                    tools=self.tools,
+                    tools=tools,
                     checkpointer=MemorySaver(),
                 )
                 L.warning("已回退到 langgraph.prebuilt.create_react_agent (langchain.agents.create_agent 不可用: %s)", e1)
+                return agent
             except Exception:
                 # 若环境既无 langchain.agents 也无 langgraph，则使用原生 Tool Calling 模型
-                self.agent = self.model.bind_tools(self.tools)
+                return self.model.bind_tools(tools)
 
-    def invoke(self, messages: List[BaseMessage], thread_id: str = "default") -> Any:
+    def bind_tools(self, tools: List[Any]) -> None:
+        """绑定全量领域工具与阶段门禁工具 (默认全局回退代理)."""
+        self.tools = tools
+        self.agent = self._compile_agent_for_tools(tools)
+
+    def bind_stage_tools(self, stage_id: int, tools: List[Any]) -> None:
+        """为特定阶段独立编译隔离的 ReAct Agent，杜绝跨阶段抢跑与工具幻觉."""
+        if not hasattr(self, "_stage_agents"):
+            self._stage_agents = {}
+        if not hasattr(self, "_stage_tools"):
+            self._stage_tools = {}
+        self._stage_tools[stage_id] = tools
+        self._stage_agents[stage_id] = self._compile_agent_for_tools(tools)
+
+    def get_stage_tools(self, stage_id: int) -> List[Any]:
+        """获取指定阶段授权的工具列表."""
+        if hasattr(self, "_stage_tools") and stage_id in self._stage_tools:
+            return self._stage_tools[stage_id]
+        return self.tools
+
+    def invoke(self, messages: List[BaseMessage], thread_id: str = "default", stage_id: Optional[int] = None) -> Any:
         """执行单次或多轮 ReAct 推理.
 
-        thread_id 需在多次重试间保持稳定，MemorySaver 的线程记忆才能累积
-        (上一轮已执行的工具调用与观测对下一轮反思可见)。
+        若提供 stage_id，则调度该阶段专属隔离的 Agent，视野严格局限于当前阶段工具内。
         """
         trimmed_msgs = self.trimmer.trim(messages)
         for m in trimmed_msgs:
@@ -217,23 +233,29 @@ class ABRLangChainBackend:
         if model_key is None or str(model_key).strip() in ("dummy_key", "none", "None", ""):
             return AIMessage(content="[Offline Mode] 确定性离线模式运行中。")
 
-        if hasattr(self.agent, "invoke"):
+        target_agent = None
+        if stage_id is not None and hasattr(self, "_stage_agents") and stage_id in self._stage_agents:
+            target_agent = self._stage_agents[stage_id]
+        else:
+            target_agent = self.agent
+
+        if hasattr(target_agent, "invoke"):
             # LangGraph agent 调用
             config = {"configurable": {"thread_id": thread_id}, "recursion_limit": self.recursion_limit}
             try:
-                return self.agent.invoke({"messages": trimmed_msgs}, config=config)
+                return target_agent.invoke({"messages": trimmed_msgs}, config=config)
             except _RECURSION_EXCS:
                 # 递归深度达上限：从 checkpointer 回收已完成的工具调用轨迹，
                 # 调用方仍能解析已执行动作，而非整体作废
                 L.warning("ReAct 循环达到递归上限 (recursion_limit=%s)，回收部分执行轨迹", self.recursion_limit)
                 try:
-                    state = self.agent.get_state(config)
+                    state = target_agent.get_state(config)
                     if state is not None and state.values:
                         return {"messages": state.values.get("messages", [])}
                 except Exception:
                     pass
                 raise
             except TypeError:
-                return self.agent.invoke(trimmed_msgs)
+                return target_agent.invoke(trimmed_msgs)
         else:
             return self.model.invoke(trimmed_msgs)

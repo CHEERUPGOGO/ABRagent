@@ -45,6 +45,24 @@ from auto_battery_research.util.logger import (
 
 L = logging.getLogger("AutoBatteryResearch.ABRAgent")
 
+STAGE_ALLOWED_DOMAIN_TOOLS: Dict[int, List[str]] = {
+    1: ["InspectLiteratureAssets", "IngestLiteraturePapers"],
+    2: ["InspectVectorDB", "IndexSemanticVectors"],
+    3: ["InspectCellEntities", "ExtractAndAssembleCells"],
+    4: ["RunRAGDesign"],
+    5: ["RunPhysicsSimulation"],
+    6: ["SynthesizeResearchReport"],
+}
+
+COMMON_STAGE_TOOLS: List[str] = [
+    "CurrentTips",
+    "Status",
+    "Check",
+    "Complete",
+    "SetStageJournal",
+    "RoleInfo",
+]
+
 
 class ABRAgent:
     """全生命周期化学电池研究自主智能体 (AutoBatteryResearch Agent)."""
@@ -115,13 +133,19 @@ class ABRAgent:
         self.all_tools = self.domain_tools + self.stage_tools
         self.tool_map = {t.name: t for t in self.all_tools}
 
-        # 4. 初始化 LangChain / LangGraph 后端
+        # 4. 初始化 LangChain / LangGraph 后端并按阶段绑定隔离工具
         self.backend = ABRLangChainBackend(
             config=self.config,
             on_token=on_token,
             streaming=stream_output,
         )
         self.backend.bind_tools(self.all_tools)
+
+        # 编译每个阶段专属的隔离 Agent，从模型视野上物理阻断跨阶段越界与抢跑
+        for sid in range(1, 7):
+            allowed_names = set(STAGE_ALLOWED_DOMAIN_TOOLS.get(sid, [])) | set(COMMON_STAGE_TOOLS)
+            s_tools = [self.tool_map[n] for n in allowed_names if n in self.tool_map]
+            self.backend.bind_stage_tools(sid, s_tools)
 
         # 5. 构建智能体系统提示词 (System Prompt)
         self.system_prompt = self._build_system_prompt()
@@ -170,6 +194,9 @@ class ABRAgent:
             "   - 若 `Check` 发现错误，仔细阅读返回的 `failure_summary` 与 `next_action`，进行针对性自我修正与重试。\n"
             "   - 当 `Check` 100% 通过后，调用 `Complete` 正式推进阶段指针。\n"
             "4. **研发日志**：推进前调用 `SetStageJournal` 记录阶段关键洞察。\n"
+            "5. **阶段纪律与工具权限隔离**：\n"
+            "   - 你在每个阶段仅被授予当前阶段专属工具与治理工具。严禁跨阶段抢跑调用未授权工具。\n"
+            "   - 完成当前阶段的交付物并 Check 通过后，调用 Complete 推进，切勿在当前阶段提前调用下游阶段任务。\n"
         )
 
     def _notify(self, stage_id: int, status: str, duration: float = 0.0):
@@ -477,7 +504,11 @@ class ABRAgent:
                 # thread_id 按课题+阶段+重试轮次隔离：避免上一轮失败重试中残留未执行的 tool_calls 引发 OpenAI/MiniMax 400 校验异常
                 goal_tag = hashlib.md5(self.goal.encode("utf-8")).hexdigest()[:8]
                 self.log(f"    [LLM-ReAct] 正在唤醒大模型进行 Stage {stage_id} ({stage_name}) 动态深度推理与工具调用...")
-                response = self.backend.invoke(call_msgs, thread_id=f"abr_{goal_tag}_s{stage_id}_a{attempt}")
+                response = self.backend.invoke(
+                    call_msgs,
+                    thread_id=f"abr_{goal_tag}_s{stage_id}_a{attempt}",
+                    stage_id=stage_id,
+                )
                 llm_invoked = True
 
                 # 解析 response 中的 AIMessage 或 messages 列表

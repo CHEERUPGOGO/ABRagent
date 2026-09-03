@@ -6,7 +6,8 @@
 
 ```
 ABRAgent (ReAct 主循环)
-   │  绑定 15 个 LangChain BaseTool (9 领域 + 6 护栏)
+   │  全局维护 15 个 LangChain BaseTool (9 领域 + 6 护栏)
+   │  运行时由 backend.bind_stage_tools 按 Stage 1~6 物理隔离与动态裁剪
    ▼
 ┌────────────────┐    真正干活     ┌──────────────────────┐
 │  domain_tools  │ ──────────────▶ │  workflow_actions    │ ──▶ legacy 流水线 / src/lmllm/RAG / pinn
@@ -19,7 +20,7 @@ ABRAgent (ReAct 主循环)
 
 | 文件 | 角色 | 说明 |
 |:---|:---|:---|
-| `domain_tools.py` | Agent 领域工具集 | 9 个 Stage 1~6 业务工具 (LangChain `BaseTool`) |
+| `domain_tools.py` | Agent 领域工具集 | 9 个 Stage 1~6 业务工具 (LangChain `BaseTool`)，入参动态绑定当前活跃课题 |
 | `stage_tools.py` | 工作流护栏工具集 | 6 个门禁/状态/日志工具 + 供 CLI/MCP/Web 直接调用的函数层 |
 | `workflow_actions.py` | 干活桥接层 | 工具 → 真实流水线的唯一入口，fail-closed：资产缺失时实际执行流水线而非报空 |
 | `rag_adapter.py` | Stage 4 适配器 | 桥接 `src/lmllm/RAG` 引擎，转换并校验 Stage 4 输出契约 (design_scheme + provenance 溯源) |
@@ -32,8 +33,8 @@ ABRAgent (ReAct 主循环)
 
 ## 一、领域工具集 (domain_tools.py · 9 个)
 
-按 6 阶段工作流划分，每阶段"感知探测 (Inspect*)" + "执行落地"两类。
-`agent.py` 装配为 `self.domain_tools = get_all_domain_tools()`。
+按 6 阶段工作流划分，每阶段包含"感知探测 (Inspect*)" 与 "执行落地"两类。
+`agent.py` 启动时通过 `STAGE_ALLOWED_DOMAIN_TOOLS` 为各阶段独立裁剪并编译隔离的 ReAct Agent，**杜绝跨阶段抢跑与工具幻觉**。
 
 | 工具名 | 阶段 | 功能 | 关键参数 |
 |:---|:---|:---|:---|
@@ -42,13 +43,14 @@ ABRAgent (ReAct 主循环)
 | `InspectVectorDB` | Stage 2 | 探测 Chroma 向量库与段落标注元数据：向量数、6 类语义标签分布 | `chroma_dir` (默认 `miner/chroma/paragraphs_q`) |
 | `IndexSemanticVectors` | Stage 2 | 段落 6 类语义打标 + Qwen3-Embedding 向量化持久化入库 | `max_papers` (默认 5), `incremental` (默认 True) |
 | `InspectCellEntities` | Stage 3 | 探测已挖掘材料数据与已组装电芯实体：电芯数、正负极/电解液三元组分布 | `cell_dir` (留空由 StageManager 解析) |
-| `ExtractAndAssembleCells` | Stage 3 | 材料微观表征挖掘 + 三层归一化 + 电芯实体组装流水线 | `sample_limit` (默认 10), `target_query` |
-| `RunRAGDesign` | Stage 4 | **Stage 4 唯一落盘入口**：单链路 Planner → Retrieval → Writer → Reviewer + RelationEngine C1–C8 硬约束核算，产出 `design_scheme.md/.json`、`rag_result.json` | `target_goal`, `design_query` |
-| `RunPhysicsSimulation` | Stage 5 | PyBaMM Newman P2D / PINN 代理仿真：充放电曲线与能量密度标定 (默认跳过) | `target_goal`, `current_rate` (默认 "0.2C") |
-| `SynthesizeResearchReport` | Stage 6 | 汇总全链路产物编译最终综合研报 `final_research_report.md` | `target_goal` |
+| `ExtractAndAssembleCells` | Stage 3 | 材料微观表征挖掘 + 三层归一化 + 电芯实体组装流水线 | `sample_limit` (默认 10), `target_query` (留空动态绑定当前活跃课题) |
+| `RunRAGDesign` | Stage 4 | **Stage 4 唯一落盘入口**：单链路 Planner → Retrieval → Writer → Reviewer + RelationEngine C1–C8 硬约束核算，产出 `design_scheme.md/.json`、`rag_result.json` | `target_goal` (留空动态绑定当前活跃课题), `design_query` |
+| `RunPhysicsSimulation` | Stage 5 | PyBaMM Newman P2D / PINN 代理仿真：充放电曲线与能量密度标定 (默认跳过) | `target_goal` (留空动态绑定当前活跃课题), `current_rate` (默认 "0.2C") |
+| `SynthesizeResearchReport` | Stage 6 | 汇总全链路产物编译最终综合研报 `final_research_report.md` | `target_goal` (留空动态绑定当前活跃课题) |
 
-> ⚠️ Stage 4 已收敛为 `RunRAGDesign` 单服务：CLI/TUI/Web/MCP/Agent 所有入口共用
-> `workflow_actions.run_rag_design` 一条链路，其余代码不得写 `design_scheme.*`。
+> ⚠️ **Stage 4 收敛与抢跑防御**：
+> 1. Stage 4 业务入口收敛为 `RunRAGDesign` 单服务，所有入口共用 `workflow_actions.run_rag_design` 唯一落盘链路；
+> 2. 大模型在 Stage 4 运行时，Stage 6 研报工具被物理隔离隐身，彻底阻断大模型在方案刚生成完毕时跨阶段调用 `SynthesizeResearchReport` 的抢跑幻觉。
 
 ## 二、工作流护栏工具集 (stage_tools.py · 6 个)
 
@@ -108,5 +110,7 @@ CLI / Web / TUI / MCP 不经过 LLM 直接调用的函数，与上述 BaseTool �
   `output/auto_battery_research/` 仅为已收养的 legacy 课题只读回退，禁止新写入。
 - **文件工具沙箱**：`file_tools` 所有路径先过 `validate_workspace_path` 校验
   严格位于仓库根内，拦截 `../` 路径穿越。
+- **阶段工具物理隔离 (防抢跑机制)**：`ABRAgent` 运行时在各 Stage 仅向大模型暴露当前阶段授权的领域工具与通用治理工具 (`Check`, `Complete`, `CurrentTips`, `Status`, `SetStageJournal`, `RoleInfo`)。例如在 Stage 4 中，Stage 6 研报工具被物理剔除，从认知层面彻底杜绝大模型“提前把后续阶段工具一并调用”的越界幻觉。
+- **课题目标动态绑定 (零硬编码)**：所有领域工具 (`SynthesizeResearchReport`, `RunPhysicsSimulation`, `ExtractAndAssembleCells` 等) 的课题入参默认值均为 `""`。执行时自动动态回退至 `get_stage_manager().target_goal`，杜绝任何硬编码（如 400Wh）导致的跨课题参数污染。
 - **离线可用**：无有效 API Key 时工具链走确定性回退 (规则模板/TF-IDF 检索)，
   门禁仍可推进，单测 (`tests/`) 全程离线。

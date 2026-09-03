@@ -358,21 +358,23 @@ def run_data_mining(component: str = "all", max_files: int = 5, target_query: st
         return {"success": False, "error": str(e)}
 
 
-def run_rag_design(target_query: str = "设计400Wh/kg高比能液态锂金属电池方案", design_query: Optional[str] = None, **kwargs) -> Dict[str, Any]:
+def run_rag_design(target_query: str = "", design_query: Optional[str] = None, **kwargs) -> Dict[str, Any]:
     """执行 Stage 4: 委托底层 src.lmllm.RAG 引擎执行全链路多智能体设计 (Planner/Retrieval/Writer/Reviewer/RelationEngine).
 
     target_query 为课题键 (决定任务目录与状态管理器归属)；design_query 为实际设计需求，
-    缺省同 target_query。Web 等入口可将二者解耦：设计需求允许不同于课题目标文案，
-    但产物始终写入课题专属目录 —— 避免按查询文案另开平行任务导致工作流割裂。
+    缺省同 target_query。留空则动态绑定当前工作流活跃课题。
     """
-    task_dir = _get_target_task_dir(target_query)
+    from auto_battery_research.tools.stage_tools import get_stage_manager, get_stage_manager_for_goal
+    resolved_query = (target_query or "").strip()
+    if not resolved_query:
+        resolved_query = get_stage_manager().target_goal
+    task_dir = _get_target_task_dir(resolved_query)
 
-    from auto_battery_research.tools.stage_tools import get_stage_manager_for_goal
-    mgr = get_stage_manager_for_goal(target_query)
+    mgr = get_stage_manager_for_goal(resolved_query)
 
     from auto_battery_research.tools.rag_adapter import AbrRagAdapter
     adapter = AbrRagAdapter(config=mgr.config)
-    return adapter.run_rag_design(target_query=(design_query or target_query), task_dir=task_dir)
+    return adapter.run_rag_design(target_query=(design_query or resolved_query), task_dir=task_dir)
 
 
 def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, target_query: str = "", stage_manager: Optional[Any] = None, **kwargs) -> Dict[str, Any]:
@@ -570,11 +572,14 @@ def _generate_dynamic_recipe_roadmap(
 - **安全边界考核**: 实施加速绝热量热 (ARC) 热失控起始温度 (T₁) 标定与满充状态针刺、过充安全性验证。"""
 
 
-def run_synthesis_report(target_query: str = "设计400Wh/kg高比能液态锂金属电池方案", stage_manager: Optional[Any] = None, **kwargs) -> Dict[str, Any]:
+def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = None, **kwargs) -> Dict[str, Any]:
     """执行 Stage 6: 汇总全生命周期综合研发报告 (读取 StageJournal 进行全链路审计与一致性前置核验)."""
-    from auto_battery_research.tools.stage_tools import get_stage_manager_for_goal
-    mgr = stage_manager or get_stage_manager_for_goal(target_query)
-    task_dir = mgr.get_task_output_dir(target_query)
+    from auto_battery_research.tools.stage_tools import get_stage_manager, get_stage_manager_for_goal
+    resolved_query = (target_query or "").strip()
+    if not resolved_query:
+        resolved_query = (stage_manager.target_goal if stage_manager else get_stage_manager().target_goal)
+    mgr = stage_manager or get_stage_manager_for_goal(resolved_query)
+    task_dir = mgr.get_task_output_dir(resolved_query)
     legacy_dir = ROOT_DIR / "output" / "auto_battery_research"
 
     report_file = task_dir / "final_research_report.md"
