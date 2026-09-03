@@ -23,6 +23,8 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
+from auto_battery_research.util.reports import resolve_final_report
+
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage, ToolMessage, BaseMessage
 
 from auto_battery_research.workflow.stage_manager import StageManager
@@ -416,27 +418,20 @@ class ABRAgent:
         append_log(f"总耗时: {total_elapsed:.1f}s")
 
         task_dir = self.manager.get_task_output_dir(self.goal)
-        cand_reports = [
-            task_dir / "final_research_report.md",
-            task_dir / "final_report.md",
-            task_dir / "battery_research_synthesis_report.md",
-        ]
-        if getattr(self.manager, "is_legacy_task", False):
-            cand_reports.append(ROOT_DIR / "output" / "auto_battery_research" / "final_research_report.md")
-
-        found_rf = next((p for p in cand_reports if p.exists()), None)
+        # 修正: 此前 getattr(manager, "is_legacy_task", False) 取到的是方法引用 (恒为真值),
+        # 非遗留课题也会追加全局旧研报候选; 统一走 resolve_final_report 的 is_legacy 判据
+        found_rf = resolve_final_report(
+            task_dir,
+            is_legacy=self.manager.is_legacy_goal(self.goal),
+            scheme_fallback=True,
+            global_dir=ROOT_DIR / "output" / "auto_battery_research",
+        )
         final_report_text = ""
         if found_rf:
             try:
                 with open(found_rf, "r", encoding="utf-8") as rf:
                     final_report_text = rf.read()
                 append_log(f"最终研发报告已生成: {found_rf.resolve()}")
-            except Exception:
-                pass
-        elif (task_dir / "design_scheme.md").exists():
-            try:
-                with open(task_dir / "design_scheme.md", "r", encoding="utf-8") as sf:
-                    final_report_text = sf.read()
             except Exception:
                 pass
 

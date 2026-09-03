@@ -46,13 +46,12 @@ _TERMINAL_OK = {"PASSED", "SKIPPED", "FALLBACK"}
 _HASH_SUFFIX_RE = re.compile(r"_[0-9a-f]{8}$")
 # 运行日志文件名清洗规则 (与 TUI/Gradio 入口的 init_file_logger 命名公式一致)
 _LOG_CLEAN_RE = re.compile(r'[\/:*?"<>| ]+')
-# 研报候选回退链 (与 Gradio 版 get_current_report_content 一致)
-_REPORT_CANDIDATES = (
-    "final_research_report.md",
-    "final_report.md",
-    "battery_research_synthesis_report.md",
+# 研报候选回退链 — 单一事实源在 util/reports.py (别名保持本模块内引用稳定)
+from auto_battery_research.util.reports import (
+    REPORT_CANDIDATES as _REPORT_CANDIDATES,
+    SCHEME_CANDIDATE as _SCHEME_CANDIDATE,
+    resolve_final_report,
 )
-_SCHEME_CANDIDATE = "design_scheme.md"
 _REPORT_MAX_BYTES = 2 * 1024 * 1024  # 研报响应体上限 (超出截断并标注)
 _TIPS_MAX_CHARS = 8000  # 当前阶段 Tips (参考指南文档) 的截断长度
 
@@ -213,19 +212,15 @@ def scan_goals() -> Dict[str, Any]:
 
 
 def _resolve_report(task_dir: Path, is_legacy: bool) -> Tuple[Optional[Path], str]:
-    """研报回退链: 任务目录内 final_research_report → final_report → synthesis → design_scheme;
-    历史遗留课题再回退到全局 output/auto_battery_research/ (与 Gradio 版逻辑一致)."""
-    candidates = list(_REPORT_CANDIDATES) + [_SCHEME_CANDIDATE]
-    for name in candidates:
-        p = task_dir / name
-        if p.exists():
-            return p, name
-    if is_legacy:
-        for name in candidates:
-            p = GLOBAL_OUT / name
-            if p.exists():
-                return p, f"(全局回退) {name}"
-    return None, ""
+    """研报回退链: 委托 util/reports.resolve_final_report (单一事实源);
+    历史遗留课题再回退到全局 output/auto_battery_research/."""
+    p = resolve_final_report(task_dir, is_legacy=is_legacy, scheme_fallback=True, global_dir=GLOBAL_OUT)
+    if p is None:
+        return None, ""
+    name = p.name
+    if p.parent == GLOBAL_OUT:
+        name = f"(全局回退) {name}"
+    return p, name
 
 
 def _read_report_text(path: Path) -> Tuple[str, int]:

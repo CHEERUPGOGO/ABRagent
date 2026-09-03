@@ -16,7 +16,6 @@ from textual.containers import Horizontal, Vertical
 from textual.widgets import HelpPanel
 
 from auto_battery_research.workflow.stage_manager import StageManager
-from auto_battery_research.backend.loop_runner import AutonomousLoopRunner
 from auto_battery_research.tools.stage_tools import (
     set_stage_manager,
     tool_get_status,

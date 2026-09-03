@@ -30,7 +30,7 @@ except ImportError:
     gr = None
 
 from auto_battery_research.workflow.stage_manager import StageManager
-from auto_battery_research.backend.loop_runner import AutonomousLoopRunner
+from auto_battery_research.util.reports import resolve_final_report, SCHEME_CANDIDATE
 from auto_battery_research.tools.stage_tools import (
     set_stage_manager,
     get_stage_manager_for_goal,
@@ -158,32 +158,21 @@ def create_web_app(manager: Optional[StageManager] = None):
                     target = (goal or mgr.target_goal).strip()
                     view = _scoped_manager(target)
                     task_dir = view.get_task_output_dir(target)
-                    cand_reports = [
-                        task_dir / "final_research_report.md",
-                        task_dir / "final_report.md",
-                        task_dir / "battery_research_synthesis_report.md",
-                    ]
-                    if view.is_legacy_goal(target):
-                        cand_reports.extend([
-                            ROOT_DIR / "output" / "auto_battery_research" / "final_research_report.md",
-                            ROOT_DIR / "output" / "auto_battery_research" / "final_report.md",
-                            ROOT_DIR / "output" / "auto_battery_research" / "battery_research_synthesis_report.md",
-                        ])
-                    for p in cand_reports:
-                        if p.exists():
-                            try:
-                                with open(p, "r", encoding="utf-8") as f:
-                                    text = f.read()
-                                if len(text.strip()) > 50:
-                                    return text
-                            except Exception:
-                                pass
-                    if (task_dir / "design_scheme.md").exists():
+                    # 回退链单一事实源: 课题目录优先, 仅历史遗留课题回退全局旧产物
+                    found = resolve_final_report(
+                        task_dir,
+                        is_legacy=view.is_legacy_goal(target),
+                        scheme_fallback=True,
+                        global_dir=ROOT_DIR / "output" / "auto_battery_research",
+                    )
+                    if found:
                         try:
-                            with open(task_dir / "design_scheme.md", "r", encoding="utf-8") as f:
+                            with open(found, "r", encoding="utf-8") as f:
                                 text = f.read()
                             if len(text.strip()) > 50:
-                                return f"### 阶段方案 (Stage 4 Design Scheme)\n\n{text}"
+                                if found.name == SCHEME_CANDIDATE:
+                                    return f"### 阶段方案 (Stage 4 Design Scheme)\n\n{text}"
+                                return text
                         except Exception:
                             pass
                     return "*未检测到已生成的综合研报。请点击上方【🚀 启动全自动自主循环】生成完整研报。*"
@@ -232,15 +221,19 @@ def create_web_app(manager: Optional[StageManager] = None):
                         from auto_battery_research.util.logger import init_file_logger
                         _clean = _re.sub(r'[\/:*?"<>| ]+', '_', goal)[:40]
                         init_file_logger(str(ROOT_DIR / "log" / f"{_clean}.log"))
-                        runner = AutonomousLoopRunner(manager=mgr, goal=goal, verbose=False)
-                        for step in runner.run_stream():
+                        # 单一执行内核: ABRAgent (LLM 主控; 无 Key 时其内部确定性执行器自然降级),
+                        # 事件字典与旧 AutonomousLoopRunner 完全同形
+                        from auto_battery_research.agent import ABRAgent
+                        agent = ABRAgent(manager=mgr, goal=goal, verbose=False, enable_file_log=False)
+                        for step in agent.run_stream():
                             p_val = step.get("progress_ratio", 0.0)
                             s_id = step.get("stage_id", 1)
                             progress(p_val, desc=f"Stage {s_id} 正在推进中...")
 
                             rep = step.get("report", "")
-                            if not rep or rep in ("*未找到研报*", "*科研任务执行中...*"):
-                                if step.get("event") == "finished":
+                            # 占位提示统一以 "*" 开头 (如 "*科研任务执行中...*")，不算真实研报
+                            if not rep or rep.startswith("*"):
+                                if step.get("event") == "finish":
                                     rep = get_current_report_content(goal)
                                 else:
                                     rep = f"⏳ **工作流推进中** · 当前正在执行 Stage {s_id}，完成后将在此自动渲染完整研报..."

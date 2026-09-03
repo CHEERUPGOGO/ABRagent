@@ -4,8 +4,7 @@
 - 6 阶段全流程工作流（文献解析 -> 向量库 -> 材料电芯挖掘 -> 多智能体RAG -> PINN物理仿真[可Skip] -> 综合研报）
 - 确定性 Python 门禁检查器 (Checkers) + LLM 语义审查
 - Stage 5 (PINN) 灵活跳过/激活机制
-- 全局自主科研主控智能体 (ABRAgent)
-- 全自动化自主循环引擎 (AutonomousLoopRunner) + 标准 MCP Server 协议支持
+- 全局自主科研主控智能体 (ABRAgent, 单一执行内核) + 标准 MCP Server 协议支持
 """
 
 from __future__ import annotations
@@ -21,7 +20,6 @@ __author__ = "Auto-Battery-Research Team"
 _LAZY_EXPORTS = {
     "ABRAgent": ("auto_battery_research.agent", "ABRAgent"),
     "StageManager": ("auto_battery_research.workflow.stage_manager", "StageManager"),
-    "AutonomousLoopRunner": ("auto_battery_research.backend.loop_runner", "AutonomousLoopRunner"),
     "cli_main": ("auto_battery_research.cli", "main"),
     "rag": ("auto_battery_research.rag", None),
     "simulation": ("auto_battery_research.simulation", None),
@@ -32,7 +30,6 @@ _LAZY_EXPORTS = {
 __all__ = [
     "ABRAgent",
     "StageManager",
-    "AutonomousLoopRunner",
     "cli_main",
     "rag",
     "simulation",

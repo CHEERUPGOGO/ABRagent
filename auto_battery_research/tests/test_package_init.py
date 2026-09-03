@@ -55,10 +55,11 @@ def test_lazy_attributes_resolve():
     code = (
         "import sys\n"
         "import auto_battery_research as abr\n"
-        "from auto_battery_research import StageManager, AutonomousLoopRunner, cli_main\n"
+        "from auto_battery_research import StageManager, cli_main\n"
         "assert abr.StageManager is StageManager\n"
-        "assert abr.AutonomousLoopRunner is AutonomousLoopRunner\n"
         "assert callable(cli_main)\n"
+        "import auto_battery_research.mining as mn\n"
+        "assert abr.mining is mn\n"
         "import auto_battery_research.pipeline as pl\n"
         "assert abr.pipeline is pl\n"
         "# 缓存生效: 命名空间已落位, 不再依赖 __getattr__\n"

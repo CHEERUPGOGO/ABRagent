@@ -250,7 +250,7 @@ python auto_battery_research_cli.py --mcp
 
 ### 6. 🐍 Python 编程接口 (API)
 ```python
-from auto_battery_research import StageManager, AutonomousLoopRunner
+from auto_battery_research import StageManager, ABRAgent
 from auto_battery_research.tools import tool_get_status, tool_check_stage, tool_run_stage_task
 
 # 1. 创建状态机
@@ -265,10 +265,10 @@ tool_run_stage_task(target_query="设计380Wh/kg富锂锰基电池")
 passed, diag = mgr.check_stage()
 print(f"检查通过: {passed}, 诊断: {diag}")
 
-# 4. 驱动全自动自主循环
-runner = AutonomousLoopRunner(manager=mgr, goal="设计400Wh/kg高比能锂金属电池方案")
-res = runner.run()
-print(f"最终研报路径: {res['report_file']}")
+# 4. 驱动全自动自主循环 (单一执行内核: LLM 主控 ReAct, 无 Key 时内部确定性执行器降级)
+agent = ABRAgent(manager=mgr, goal="设计400Wh/kg高比能锂金属电池方案")
+success = agent.run()
+print(f"全流程闭环: {success}, 研报: {mgr.get_task_output_dir(agent.goal) / 'final_research_report.md'}")
 ```
 
 ---
@@ -302,7 +302,7 @@ d:/llm-main/
 │   │   └── mcp_server.py              # 标准 MCP Server 协议实现
 │   ├── backend/
 │   │   ├── llm_client.py              # 统一大模型连接器
-│   │   └── loop_runner.py             # 自主循环驱动引擎
+│   │   └── langchain_backend.py       # LangGraph ReAct 运行时 (ABRAgent 后端)
 │   ├── tui/                           # 🌟 Rich 多面板终端交互界面
 │   │   └── app.py                     # TUI 应用程序与交互控制台
 │   ├── web/                           # 🌟 FastAPI 只读监控大屏 + Gradio 后备仪表盘
@@ -313,7 +313,7 @@ d:/llm-main/
 │   └── tests/                         # 自动化单元测试集
 │       ├── test_stage_manager.py
 │       ├── test_checkers.py
-│       └── test_loop_runner.py
+│       └── test_abr_agent.py
 │
 ├── auto_battery_research_cli.py       # 根目录快捷执行入口
 ├── abr_cli.py                         # 别名快捷入口
@@ -377,4 +377,4 @@ A: 这是系统预设的加速机制。Stage 5 默认处于跳过状态。如果
 A: 在 WSL 或服务器终端执行 `python auto_battery_research_cli.py --web --host 0.0.0.0 --port 7865`，然后直接在 Windows 浏览器中打开 `http://127.0.0.1:7865` 即可。
 
 **Q3: 门禁检查失败时智能体如何自愈？**  
-A: Checker 会返回明确的 `failure_summary`，包含 `error_code` 和 `next_action`。`AutonomousLoopRunner` 会捕获该建议并自动执行补偿动作，最多重试 3 次；在交互模式下，用户可直接依据 `next_action` 修复对应文件。
+A: Checker 会返回明确的 `failure_summary`，包含 `error_code` 和 `next_action`。`ABRAgent` 会将驳回诊断注入下一轮重试提示词形成 Self-Correction 反思回路，最多重试 3 次；在交互模式下，用户可直接依据 `next_action` 修复对应文件。

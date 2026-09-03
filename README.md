@@ -260,7 +260,7 @@ auto_battery_research/        # Layer 1: 智能体编排
 ├── agent.py                  #   ABRAgent 主控 ReAct 循环 + 自愈反思
 ├── backend/
 │   ├── langchain_backend.py  #   LangGraph create_agent + MemorySaver 运行时
-│   └── loop_runner.py        #   AutonomousLoopRunner (无 LLM 确定性兜底闭环)
+│   └── llm_client.py         #   OpenAI 兼容 LLM 客户端
 ├── workflow/stage_manager.py #   StageManager 6 阶段状态机 (声明式: abr_workflow.yaml)
 ├── checkers/                 #   每阶段一个确定性门禁 Checker
 ├── tools/
@@ -303,7 +303,7 @@ pytest auto_battery_research/tests/test_checkers.py::test_pinn_checker_skip_logi
 pytest -m "unit"
 ```
 
-当前基线：**86 passed, 2 deselected, 0 warnings**（含课题隔离回归 `test_task_isolation.py`、Stage 4 离线 golden `test_stage4_golden.py`、FastAPI Web 监控 `test_web_server.py`、MCP 协议层 `test_mcp_server.py` 与包级惰性导入 `test_package_init.py`）。单测通过注入 dummy key 保持零外部依赖；确定性 Checker 对空数据、编造数据、异质体系文献均有严格拦截用例。注：Python 3.14 环境可能出现 Pydantic v1 兼容 warning 与依赖缺省导致的 skip，建议 CI 固定 Python 3.12。
+当前基线：**85 passed, 1 deselected, 0 warnings**（含课题隔离回归 `test_task_isolation.py`、Stage 4 离线 golden `test_stage4_golden.py`、FastAPI Web 监控 `test_web_server.py`、MCP 协议层 `test_mcp_server.py` 与包级惰性导入 `test_package_init.py`）。单测通过注入 dummy key 保持零外部依赖；确定性 Checker 对空数据、编造数据、异质体系文献均有严格拦截用例。注：Python 3.14 环境可能出现 Pydantic v1 兼容 warning 与依赖缺省导致的 skip，建议 CI 固定 Python 3.12。
 
 ---
 
