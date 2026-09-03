@@ -317,7 +317,7 @@ d:/llm-main/
 │
 ├── auto_battery_research_cli.py       # 根目录快捷执行入口
 ├── abr_cli.py                         # 别名快捷入口
-├── requirements.txt                   # 完整依赖配置
+├── requirements-lock.txt              # 已验证精确版本锁定 (constraints 语义)
 ├── pyproject.toml                     # 项目打包配置
 └── output/auto_battery_research/      # 智能体产物与状态归档目录
     ├── final_research_report.md       # 最终综合研发报告
@@ -358,7 +358,7 @@ export OPENAI_API_KEY="your-api-key"
 
 ### 2. 安装核心依赖
 ```bash
-pip install -r requirements.txt
+pip install -e ".[all]" -c requirements-lock.txt
 ```
 
 ### 3. 运行完整单元测试集
