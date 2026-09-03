@@ -16,7 +16,7 @@ Comments, log messages, and docs are in Chinese; match that style.
 # Install (editable). Extras: rag (chroma/ollama), ui (textual/gradio), physics (pybamm), dev (pytest), all
 pip install -e ".[all]"
 
-# Run all offline tests (no API key / services needed; ~25s; baseline: 41 passed, 0 warnings)
+# Run all offline tests (no API key / services needed; ~5 min; baseline: 74 passed, 0 warnings)
 pytest -m "unit or not external"
 
 # Run one test file / one test
@@ -41,7 +41,7 @@ abr-cli --check / --complete    # diagnose current stage gate / pass & advance
 abr-cli --tips / --status / --journal / --report
 abr-cli --skip-stage 5 / --enable-stage 5
 abr-cli --tui                   # Rich terminal UI
-abr-cli --web --host 127.0.0.1 --port 7865   # Gradio dashboard
+abr-cli --web --host 127.0.0.1 --port 7865   # FastAPI read-only web monitor (--web-gradio: legacy Gradio)
 abr-cli --mcp                   # stdio MCP server for IDE integration
 abr-cli --reset                 # reset the CURRENT goal's workflow back to Stage 1
 ```
@@ -67,16 +67,17 @@ abr-cli --reset                 # reset the CURRENT goal's workflow back to Stag
 - `tools/` — the agent's toolbox:
   - `domain_tools.py` — 9 stage domain tools (`Inspect*` asset probes + `Ingest/Index/Extract/RunRAGDesign/Run/Synthesize` executors). Stage 4 is converged to a single `RunRAGDesignTool` — all entry points (CLI/TUI/Web/MCP/Agent) go through the one `run_rag_design` service (Planner/Retrieval/Writer/Reviewer live pipeline-internally in `src/lmllm/RAG/`); nothing else may write `design_scheme.*`.
   - `stage_tools.py` — workflow guardrail tools (`CurrentTips`, `Status`, `Check`, `Complete`, `SetStageJournal`, `SkipStage`, `EnableStage`). They read the module-level singleton wired via `set_stage_manager()`; the singleton + per-goal cache are guarded by `_MANAGER_LOCK` (Gradio handlers run threaded). The web UI queues events with `default_concurrency_limit=1` — do not raise it, tool runtime state is process-global. **Always fetch managers via `get_stage_manager_for_goal(goal)`** (reuses the global singleton or a per-goal cache) — constructing `StageManager` directly triggers the full checker cascade + state double-write and can race the main flow.
-  - `workflow_actions.py` — the bridge from tools to real work; fail-closed: when assets are missing it actually runs the pipelines (imports `step_mineru/step_merge/step_classify` from `pipeline_incremental.py`, subprocesses `miner/paragraph_metadata_pipeline_v5_qwen.py --incremental`, imports `agent.pipeline_tok2000.run`). `_merged_literature_dirs()` resolves merged-literature dirs as: canonical `paths.papers_merged_dir` (`papers/merged`) + legacy `papers/text_merged` where the old cleaning pipeline's data lives — count both, don't hardcode either.
+  - `workflow_actions.py` — the bridge from tools to real work; fail-closed: when assets are missing it actually runs the pipelines (imports `step_mineru/step_merge/step_classify` from `auto_battery_research.pipeline.incremental`, subprocesses `miner/paragraph_metadata_pipeline_v5_qwen.py --incremental`, imports `run_tok2000` via `auto_battery_research.mining`). `_merged_literature_dirs()` resolves merged-literature dirs as: canonical `paths.papers_merged_dir` (`papers/merged`) + legacy `papers/text_merged` where the old cleaning pipeline's data lives — count both, don't hardcode either.
   - `rag_adapter.py` — bridges Stage 4 to the RAG engine in `src/lmllm/RAG/` and converts results into the Stage 4 output contract. Validates fail-closed **before** writing, stamps `review_status: APPROVED|REJECTED` into `design_scheme.json` (consumed by `agent.py`'s scheme-valid precheck), always writes the artifacts (REJECTED output is kept for diagnosis), and pins a `provenance` block (corpus manifest hash / vector-index fingerprint / `RULES_VERSION` from `relation_engine.py`) plus `research_context.json` for reproducibility.
   - `mcp_server.py` — MCP stdio server.
-- `tui/`, `web/` — Textual TUI and Gradio dashboards.
+- `mining/`, `pipeline/`, `rag/`, `simulation/` — unified import facades re-exporting the legacy implementations (`agent/*`, `src/lmllm/RAG/*`, `pinn/*`); prefer these over importing legacy locations directly. Heavy deps (pybamm/chromadb/torch) stay guarded inside the source modules.
+- `tui/`, `web/` — Textual TUI; web: FastAPI read-only monitor (`web/server.py`, main `--web` entry, parses task state from disk without constructing StageManager) + legacy Gradio dashboard (`web/app.py`, `--web-gradio`).
 
 ### Layer 2: RAG engine — `src/lmllm/RAG/`
 
 Multi-agent material-screening RAG: **Planner → Retrieval → Writer → Reviewer** (`agents.py`, orchestrated by `rag_pipeline.py`). Key pieces: `multi_retrieval.py` (hybrid Chroma + BM25/TF-IDF), `relation_engine.py` (thermodynamic hard constraints **C1–C8** that every design scheme must pass), `structured_output.py`, `prompts.py` (central prompt registry).
 
-### Layer 3: Legacy stage scripts (invoked, not imported, by the agent)
+### Layer 3: Legacy stage scripts (subprocess-scheduled; `agent/`, `pinn/`, `src/lmllm/RAG/` are also imported via the Layer 1 facades)
 
 - `preprocessing/` — PDF → DOI extraction → MinerU Markdown → merge (Stage 1)
 - `miner/` — paragraph semantic labeling + Chroma vectorization (Stage 2); `miner/paragraph_metadata_pipeline_v5_qwen.py --incremental`

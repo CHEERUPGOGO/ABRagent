@@ -14,7 +14,7 @@
 - [五、Stage 5 (PINN 物理仿真) 弹性跳过机制](#五stage-5-pinn-物理仿真-弹性跳过机制)
 - [六、六大多维运行与交互模式](#六六大多维运行与交互模式)
   - [1. Rich 多面板终端交互界面 (Interactive TUI)](#1-rich-多面板终端交互界面-interactive-tui)
-  - [2. Gradio 交互式 Web 仪表盘 (Web Dashboard)](#2-gradio-交互式-web-仪表盘-web-dashboard)
+  - [2. Web 监控大屏 (FastAPI) 与 Gradio 后备](#2-web-监控大屏-fastapi-与-gradio-后备)
   - [3. 全自动自主循环模式 (Autonomous Loop)](#3-全自动自主循环模式-autonomous-loop)
   - [4. CLI 命令行交互与单步调试](#4-cli-命令行交互与单步调试)
   - [5. MCP Server 模式 (供 Claude Code / Qwen / Antigravity 接入)](#5-mcp-server-模式-供-claude-code--qwen--antigravity-接入)
@@ -178,23 +178,23 @@ python auto_battery_research_cli.py
   - `enable <id>` / `e`：重新激活指定阶段（如 `enable 5`）
   - `journal` / `j`：查看全阶段研发日志
   - `report` / `rep`：终端内 Markdown 渲染查看最新综合研报
-  - `web` / `ui`：直接从终端调起 Gradio Web 仪表盘
+  - `web` / `ui`：直接从终端调起 Web 监控大屏
   - `reset`：重置工作流状态机至 Stage 1
 
 ---
 
-### 2. 🌐 Gradio 交互式 Web 仪表盘 (Web Dashboard)
-通过 `--web` 参数一键启动集工作流监控、多智能体 RAG 方案设计、文献资产库挖掘与 PINN 物理仿真放电曲线于一体的现代化 Web 大屏：
+### 2. 🌐 Web 监控大屏 (FastAPI) 与 Gradio 后备
+默认 `--web` 启动 **FastAPI 只读监控大屏**：课题列表、6 阶段进度矩阵、综合研报 Markdown 渲染与运行日志轮询，适合跑任务时用浏览器旁路观察（读端不构造 StageManager，跨进程安全）：
 
 ```bash
-# 启动 Web 仪表盘 (默认端口 7865)
+# FastAPI 只读监控大屏 (默认端口 7865, 被占用时自动顺延)
 python auto_battery_research_cli.py --web
 
-# 指定端口与监听地址
-python auto_battery_research_cli.py --web --host 0.0.0.0 --port 7865 --share
+# 旧版交互式 Gradio 仪表盘 (后备, 支持交互操作与 --share)
+python auto_battery_research_cli.py --web-gradio --host 0.0.0.0 --port 7865 --share
 ```
 
-- **四大核心 Web 模块**：
+- **Gradio 后备版四大核心模块**：
   1. 📊 **智能体工作流大屏**：实时可视化 6 阶段状态卡片、一键全自动自主循环、阶段门禁自检/终审、综合研报 Markdown 在线预览。
   2. 🧪 **多智能体 RAG 方案设计**：4-Agent 协同规划（目标、推荐材料组合、预期关键指标、机理支撑、风险缺口）与 C1-C8 热力学硬约束审计。
   3. 📚 **文献资产与电芯数据挖掘**：7 篇 PDF、13 篇 Markdown、82 篇结构化电芯与 242 篇元数据全景图谱及电化学性能检索。
@@ -305,7 +305,7 @@ d:/llm-main/
 │   │   └── loop_runner.py             # 自主循环驱动引擎
 │   ├── tui/                           # 🌟 Rich 多面板终端交互界面
 │   │   └── app.py                     # TUI 应用程序与交互控制台
-│   ├── web/                           # 🌟 Gradio 交互式 Web 仪表盘
+│   ├── web/                           # 🌟 FastAPI 只读监控大屏 + Gradio 后备仪表盘
 │   │   └── app.py                     # Web Dashboard 应用
 │   ├── doc/
 │   │   ├── Guide_Doc/                 # 各 Stage 详细操作指南 (Stage 1~6)

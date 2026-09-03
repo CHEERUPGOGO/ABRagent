@@ -41,7 +41,7 @@ AutoBatteryResearch Agent (ABRAgent) 是专为高比能化学电池（锂金属�
 2. **确定性门禁与自愈反思**：`Check` 自检不通过时输出 `failure_summary`（error_code / error / next_action），回注重试轮提示词驱动针对性修复；同一阶段多次重试共享 LangGraph 线程记忆。
 3. **真实数据铁律**："有则提取、无则留空、禁止编造"。设计方案必须通过 RelationEngine 的全部热力学硬约束（C1–C8）与能量密度核算；证据链必须携带真实 DOI 溯源。
 4. **课题级产物隔离**：每个研究课题的产物（设计方案、电芯组装、综合研报、状态文件）独立存放在 `output/tasks/<课题>/`，多课题并行互不污染。
-5. **四维多模态交互入口**：CLI 命令行、Rich TUI 终端面板、Gradio Web UI、stdio MCP Server（可接入 Cursor / Claude Desktop 等 AI IDE）。
+5. **四维多模态交互入口**：CLI 命令行、Rich TUI 终端面板、FastAPI Web 监控大屏（Gradio 后备）、stdio MCP Server（可接入 Cursor / Claude Desktop 等 AI IDE）。
 
 ---
 
@@ -200,10 +200,11 @@ abr-cli --tui
 ```
 状态大屏实时跟踪 Stage 1~6 状态与耗时；智能体日志流展示 Thought / Tool Call / Observation；操作栏一键触发 Check、Complete、Run、Reset。
 
-### 模式 4：Gradio Web 交互式仪表盘
+### 模式 4：Web 监控大屏（FastAPI 只读版）
 
 ```bash
-abr-cli --web --host 127.0.0.1 --port 7865
+abr-cli --web --host 127.0.0.1 --port 7865   # 课题列表 / 阶段进度 / 研报渲染 / 运行日志
+abr-cli --web-gradio                          # 旧版交互式 Gradio 仪表盘（后备）
 ```
 
 ### 模式 5：接入 AI IDE (stdio MCP Server)
@@ -260,7 +261,9 @@ auto_battery_research/        # Layer 1: 智能体编排
 │   ├── stage_tools.py        #   工作流护栏工具 (Tips/Status/Check/Complete/...)
 │   ├── workflow_actions.py   #   工具 → 真实流水线桥接 (增量调度 legacy 脚本)
 │   └── rag_adapter.py        #   Stage 4 → RAG 引擎适配器 (输出契约规范化)
-├── tui/ · web/               #   Textual TUI 与 Gradio 仪表盘
+├── mining/ · pipeline/       #   统一门面: 再导出 agent/* 挖掘实现与增量流水线核心
+├── rag/ · simulation/        #   统一门面: 再导出 src/lmllm/RAG/* 与 pinn/* 物理求解器
+├── tui/ · web/               #   Textual TUI; FastAPI 只读监控 (--web) + Gradio 后备 (--web-gradio)
 └── tools/mcp_server.py       #   stdio MCP 服务
 
 src/lmllm/RAG/                # Layer 2: 多智能体 RAG 引擎
@@ -270,10 +273,10 @@ src/lmllm/RAG/                # Layer 2: 多智能体 RAG 引擎
 ├── relation_engine.py        #   热力学硬约束 C1–C8
 └── prompts.py                #   中央提示词注册表
 
-preprocessing/                # Layer 3: legacy 阶段脚本 (子进程调度，不直接 import)
+preprocessing/                # Layer 3: legacy 阶段脚本 (preprocessing/miner 由子进程调度)
 miner/                        #   Stage 2 语义打标 + 向量化
-agent/                        #   Stage 3 材料挖掘与电芯组装
-pinn/                         #   Stage 5 PyBaMM P2D 仿真
+agent/                        #   Stage 3 材料挖掘与电芯组装 (经 mining 门面导入)
+pinn/                         #   Stage 5 PyBaMM P2D 仿真 (经 simulation 门面导入)
 ```
 
 ---
@@ -281,7 +284,7 @@ pinn/                         #   Stage 5 PyBaMM P2D 仿真
 ## ✅ 测试与质量保障
 
 ```bash
-# 全量离线单元测试 (无需 API Key / 外部服务，约 25s)
+# 全量离线单元测试 (无需 API Key / 外部服务，约 5 分钟)
 pytest -m "unit or not external"
 
 # 单文件 / 单用例
@@ -293,7 +296,7 @@ pytest auto_battery_research/tests/test_checkers.py::test_pinn_checker_skip_logi
 pytest -m "unit"
 ```
 
-当前基线：**51 passed, 2 deselected, 0 warnings**（含课题隔离回归 `test_task_isolation.py` 与 Stage 4 离线 golden `test_stage4_golden.py`）。单测通过注入 dummy key 保持零外部依赖；确定性 Checker 对空数据、编造数据、异质体系文献均有严格拦截用例。注：Python 3.14 环境可能出现 Pydantic v1 兼容 warning 与依赖缺省导致的 skip，建议 CI 固定 Python 3.12。
+当前基线：**74 passed, 2 deselected, 0 warnings**（含课题隔离回归 `test_task_isolation.py`、Stage 4 离线 golden `test_stage4_golden.py` 与 FastAPI Web 监控 `test_web_server.py`）。单测通过注入 dummy key 保持零外部依赖；确定性 Checker 对空数据、编造数据、异质体系文献均有严格拦截用例。注：Python 3.14 环境可能出现 Pydantic v1 兼容 warning 与依赖缺省导致的 skip，建议 CI 固定 Python 3.12。
 
 ---
 
