@@ -83,7 +83,7 @@ Multi-agent material-screening RAG: **Planner → Retrieval → Writer → Revie
 - `agent/` — 2000-token material mining, normalization, cell entity assembly, ML dataset export (Stage 3); `agent/pipeline_tok2000.py`
 - `pinn/` — PyBaMM Newman P2D runner + literature-anchor validation (Stage 5)
 
-Entry wrappers: `pipeline_incremental.py` (whole legacy pipeline without the agent), `auto_battery_research_cli.py` / `abr_cli.py` (CLI), `chat_rag_v3_optimized*.py` / `chat_rag_v5_demo.py` (standalone RAG chat demos).
+Entry wrappers: `pipeline_incremental.py` (legacy pipeline wrapper; core in `auto_battery_research.pipeline.incremental`), `auto_battery_research_cli.py` / `abr_cli.py` (CLI), `scripts/legacy_rag/chat_rag_v3_optimized*.py` / `chat_rag_v5_demo.py` (archived standalone RAG chat demos).
 
 ### Data flow / paths
 

@@ -58,7 +58,7 @@ class AbrRagAdapter:
         reviewer_model = llm_cfg.get("reviewer_model", model_name)
 
         try:
-            from src.lmllm.RAG import RAGPipeline
+            from auto_battery_research.rag import RAGPipeline
             self.pipeline = RAGPipeline(
                 chroma_dir=chroma_dir,
                 chroma_collection=chroma_col,
@@ -260,7 +260,7 @@ class AbrRagAdapter:
         ).hexdigest()
 
         try:
-            from src.lmllm.RAG.relation_engine import RULES_VERSION
+            from auto_battery_research.rag import RULES_VERSION
             rules_version: str = RULES_VERSION
         except Exception:
             rules_version = "unknown"

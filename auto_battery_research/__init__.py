@@ -15,5 +15,19 @@ from .agent import ABRAgent
 from .workflow.stage_manager import StageManager
 from .backend.loop_runner import AutonomousLoopRunner
 from .cli import main as cli_main
+from . import rag
+from . import simulation
+from . import mining
+from . import pipeline
 
-__all__ = ["ABRAgent", "StageManager", "AutonomousLoopRunner", "cli_main", "__version__"]
+__all__ = [
+    "ABRAgent",
+    "StageManager",
+    "AutonomousLoopRunner",
+    "cli_main",
+    "rag",
+    "simulation",
+    "mining",
+    "pipeline",
+    "__version__",
+]

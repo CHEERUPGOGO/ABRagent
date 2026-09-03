@@ -37,8 +37,8 @@ except ImportError:
 from pinn import (candidates_scheme_to_cell_spec, fill_missing,
                   to_pybamm_dict, estimate_scheme_energy)
 
+# 输出目录 (惰性创建: 首次落盘曲线 JSON 时才 mkdir, 避免 import 副作用)
 OUT_DIR = Path(__file__).resolve().parent / "output"
-OUT_DIR.mkdir(exist_ok=True)
 
 # NMC 活性物质真密度估算（kg/m³），用于比容量计算
 RHO_ACTIVE = 4900.0
@@ -331,6 +331,7 @@ def run_discharge(
     }
 
     if save_curve:
+        OUT_DIR.mkdir(exist_ok=True)
         t = sol["Time [s]"].entries
         V = sol["Terminal voltage [V]"].entries
         Q = sol["Discharge capacity [A.h]"].entries

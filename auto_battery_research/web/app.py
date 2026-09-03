@@ -531,7 +531,7 @@ def create_web_app(manager: Optional[StageManager] = None):
                     
                     # 优先尝试调用真实 PyBaMM P2D 求解器
                     try:
-                        from pinn.p2d_runner import PyBaMMP2DRunner
+                        from auto_battery_research.simulation import PyBaMMP2DRunner
                         runner = PyBaMMP2DRunner()
                         sim_res = runner.run_simulation(
                             c_rate=c_rate_val,

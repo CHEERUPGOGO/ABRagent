@@ -86,7 +86,7 @@ def run_literature_ingestion(input_pdf_dir: Optional[str] = None, max_files: int
         if new_pdfs:
             if str(ROOT_DIR) not in sys.path:
                 sys.path.insert(0, str(ROOT_DIR))
-            from pipeline_incremental import step_mineru, step_merge, step_classify
+            from auto_battery_research.pipeline.incremental import step_mineru, step_merge, step_classify
 
             batch = new_pdfs[:max_files] if max_files and max_files > 0 else new_pdfs
             log_observation(f"检测到 {len(new_pdfs)} 篇未入库 PDF，执行增量解析 (本批处理 {len(batch)} 篇)")
@@ -254,7 +254,7 @@ def run_data_mining(component: str = "all", max_files: int = 5, target_query: st
             try:
                 if str(ROOT_DIR) not in sys.path:
                     sys.path.insert(0, str(ROOT_DIR))
-                from agent.pipeline_tok2000 import run as run_tok2000
+                from auto_battery_research.mining import run_tok2000
                 run_tok2000(
                     input_root=str(ROOT_DIR / "database" / "type"),
                     output_dir=str(ROOT_DIR / "miner" / "json"),
@@ -413,7 +413,7 @@ def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, targe
             pass
 
     try:
-        from pinn.p2d_runner import PyBaMMP2DRunner
+        from auto_battery_research.simulation import PyBaMMP2DRunner
         runner = PyBaMMP2DRunner()
         sim_res = runner.run_simulation(
             c_rate=c_rate,
@@ -507,7 +507,7 @@ def _generate_dynamic_recipe_roadmap(
 
     if is_valid_key:
         try:
-            from src.lmllm.RAG.llm_client import LLMClient
+            from auto_battery_research.rag import LLMClient
             llm = LLMClient(
                 model_name=model_name,
                 api_key=api_key,
@@ -538,7 +538,7 @@ def _generate_dynamic_recipe_roadmap(
                 resp = llm.chat(sys_prompt, user_prompt, temperature=0.2)
                 if resp and len(resp.strip()) > 150:
                     # 防御性二次剥离：即使 LLMClient 未来被替换，也绝不让 <think> 思考块混入研报
-                    from src.lmllm.RAG.llm_client import strip_think_blocks
+                    from auto_battery_research.rag import strip_think_blocks
                     return strip_think_blocks(resp)
         except Exception as e:
             log_error(f"大模型动态生成落地建议受阻: {e}，切入规则定制模板。")
