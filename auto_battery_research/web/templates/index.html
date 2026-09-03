@@ -501,16 +501,28 @@ function renderReport(data) {
   }
   document.getElementById('btn-raw').style.display = '';
   document.getElementById('btn-dl').style.display = '';
-  src.textContent = `来源: ${data.source}` + (data.bytes ? ` · ${(data.bytes / 1024).toFixed(1)} KB` : '');
+  const isSchemePreview = data.source && data.source.includes('design_scheme.md');
+  if (isSchemePreview) {
+    src.innerHTML = `<span style="color:#f59e0b;font-weight:600">📋 Stage 4 电池设计方案预览</span> (综合研报将在 Stage 6 生成) · ${esc(data.source)}` + (data.bytes ? ` · ${(data.bytes / 1024).toFixed(1)} KB` : '');
+  } else {
+    src.textContent = `来源: ${data.source}` + (data.bytes ? ` · ${(data.bytes / 1024).toFixed(1)} KB` : '');
+  }
   if (state.reportRaw) {
     body.className = 'raw-view';
     body.textContent = data.markdown;
   } else {
     body.className = 'md';
+    let bannerHtml = '';
+    if (isSchemePreview) {
+      bannerHtml = `<div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);color:var(--text);padding:10px 14px;border-radius:6px;margin-bottom:14px;font-size:13px;line-height:1.5;">
+        💡 <strong>当前展示为 Stage 4 电池设计方案先行预览 (design_scheme.md)</strong><br>
+        <span style="color:var(--muted);font-size:12px;">全流程 10000+ 字综合研报将在 <strong>Stage 6 (综合研发报告生成)</strong> 顺利完成后自动生成并替换此处。</span>
+      </div>`;
+    }
     try {
-      body.innerHTML = '<div class="md-inner">' + marked.parse(data.markdown) + '</div>';
+      body.innerHTML = bannerHtml + '<div class="md-inner">' + marked.parse(data.markdown) + '</div>';
     } catch (e) {
-      body.innerHTML = '<pre>' + esc(data.markdown) + '</pre>';
+      body.innerHTML = bannerHtml + '<pre>' + esc(data.markdown) + '</pre>';
     }
     foldReferenceWall(body);   // DOI 长列表折叠, 避免刷屏
     body.querySelectorAll('pre code').forEach((blk) => {

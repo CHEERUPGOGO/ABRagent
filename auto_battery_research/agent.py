@@ -357,6 +357,12 @@ class ABRAgent:
                 self.messages.append(AIMessage(content=f"已完成 Stage {curr_stage.id} 工具调用: {summary_act}"))
 
                 # 门禁严格自检
+                # 若大模型已在决策循环内显式调用了 Complete 并成功推进了状态机，直接确认通过
+                if self.manager.current_stage_idx > stage_idx or curr_stage.status in ("PASSED", "SKIPPED", "FALLBACK"):
+                    append_log(f"[CHECK] Stage {curr_stage.id} 已由智能体自主完成门禁验证并推进。")
+                    stage_passed = True
+                    break
+
                 check_passed, diag = self.manager.check_stage(curr_stage.id, is_complete=False)
 
                 if check_passed:
@@ -417,7 +423,11 @@ class ABRAgent:
                     deliverables=delivs,
                     key_findings=findings,
                 )
-                comp_ok, comp_res = self.manager.complete_stage(curr_stage.id)
+                if self.manager.current_stage_idx <= stage_idx and curr_stage.status != "PASSED":
+                    comp_ok, comp_res = self.manager.complete_stage(curr_stage.id)
+                else:
+                    comp_ok = True
+                    comp_res = {"message": f"Stage {curr_stage.id} 状态已固化，成功推进至下一阶段"}
                 self._notify(curr_stage.id, "PASSED", elapsed_stage)
                 append_log(f"[COMPLETE] {comp_res.get('message', '阶段成功推进')}")
 

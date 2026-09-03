@@ -382,7 +382,9 @@ class StageManager:
         }
 
         if all_passed:
-            stage.status = "PASSED" if is_complete else "IN_PROGRESS"
+            # 终态保护：若当前阶段已被终审或跳过 (PASSED / SKIPPED / FALLBACK)，只读检查绝不能将其倒退为 IN_PROGRESS
+            if stage.status not in ("PASSED", "SKIPPED", "FALLBACK"):
+                stage.status = "PASSED" if is_complete else "IN_PROGRESS"
         else:
             stage.status = "FAILED"
 
