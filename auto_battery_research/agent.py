@@ -474,6 +474,48 @@ class ABRAgent:
             "journal": self.manager.get_all_stage_journal(),
         }
 
+    def _log_llm_message(self, m: Any, executed_actions: List[str]):
+        """记录大模型完整的真实输出与工具调用 (零截断保留完整内容，保障审计溯源)."""
+        if not isinstance(m, AIMessage):
+            return
+
+        # 1. 提取思考链/推理过程 (Reasoning Content，如 DeepSeek-R1 / MiniMax 思考链)
+        reasoning = ""
+        if hasattr(m, "additional_kwargs") and isinstance(m.additional_kwargs, dict):
+            reasoning = m.additional_kwargs.get("reasoning_content") or ""
+        if not reasoning and hasattr(m, "response_metadata") and isinstance(m.response_metadata, dict):
+            reasoning = m.response_metadata.get("reasoning_content") or ""
+        if not reasoning and hasattr(m, "reasoning_content"):
+            reasoning = getattr(m, "reasoning_content") or ""
+
+        if reasoning and str(reasoning).strip():
+            self.log(f"    [LLM-Reasoning]\n{str(reasoning).strip()}")
+
+        # 2. 提取模型完整的正文输出 (Thought / Output，无截断保留真实内容)
+        content = m.content
+        if isinstance(content, list):
+            content_str = "\n".join(
+                c.get("text", "") if isinstance(c, dict) else str(c)
+                for c in content
+            ).strip()
+        else:
+            content_str = str(content or "").strip()
+
+        if content_str:
+            self.log(f"    [LLM-Thought]\n{content_str}")
+
+        # 3. 提取工具调用及其完整入参 (无截断记录供审计审查)
+        if hasattr(m, "tool_calls") and m.tool_calls:
+            for tc in m.tool_calls:
+                t_name = tc.get("name") if isinstance(tc, dict) else getattr(tc, "name", "")
+                t_args = tc.get("args") if isinstance(tc, dict) else getattr(tc, "args", {})
+                executed_actions.append(f"LLM ToolCall: {t_name}")
+                try:
+                    args_str = json.dumps(t_args, ensure_ascii=False) if isinstance(t_args, (dict, list)) else str(t_args)
+                except Exception:
+                    args_str = str(t_args)
+                self.log(f"    [LLM-ToolCall] {t_name}({args_str})")
+
     def _execute_agent_decision_loop(
         self,
         stage_id: int,
@@ -511,25 +553,16 @@ class ABRAgent:
                 )
                 llm_invoked = True
 
-                # 解析 response 中的 AIMessage 或 messages 列表
+                # 解析 response 中的 AIMessage 或 messages 列表 (全量真实输出留痕，零截断)
                 if isinstance(response, dict) and "messages" in response:
                     out_msgs = response["messages"]
                     for m in out_msgs:
-                        if hasattr(m, "tool_calls") and m.tool_calls:
-                            for tc in m.tool_calls:
-                                t_name = tc.get("name") if isinstance(tc, dict) else getattr(tc, "name", "")
-                                executed_actions.append(f"LLM ToolCall: {t_name}")
-                        elif isinstance(m, AIMessage) and m.content:
+                        if isinstance(m, AIMessage):
                             self.messages.append(m)
-                            self.log(f"    [LLM-Thought] {m.content[:200]}...")
+                            self._log_llm_message(m, executed_actions)
                 elif isinstance(response, AIMessage):
                     self.messages.append(response)
-                    if response.content:
-                        self.log(f"    [LLM-Thought] {response.content[:200]}...")
-                    if hasattr(response, "tool_calls") and response.tool_calls:
-                        for tc in response.tool_calls:
-                            t_name = tc.get("name") if isinstance(tc, dict) else getattr(tc, "name", "")
-                            executed_actions.append(f"LLM ToolCall: {t_name}")
+                    self._log_llm_message(response, executed_actions)
         except Exception as e:
             self.log(f"    [LLM-Notice] 大模型在线推理异常/离线 ({e})，启用确定性领域工具调度保证任务完成。")
 
