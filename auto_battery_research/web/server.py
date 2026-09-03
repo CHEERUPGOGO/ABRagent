@@ -440,6 +440,19 @@ def _port_free(check_host: str, check_port: int) -> bool:
         return False
 
 
+def _is_wsl() -> bool:
+    """检测是否运行在 WSL 内 (TUI/CLI 常在 WSL 跑, 而大屏在 Windows 浏览器里看)."""
+    import sys as _sys
+
+    if _sys.platform != "linux":
+        return False
+    try:
+        with open("/proc/version", "r", encoding="utf-8", errors="replace") as f:
+            return "microsoft" in f.read().lower()
+    except OSError:
+        return False
+
+
 def probe_monitor_health(host: str = "127.0.0.1", port: int = 7865, timeout: float = 2.0) -> bool:
     """探测目标端口上是否已有本监控服务健康实例 (供 TUI/CLI 复用而非重复启动)."""
     try:
@@ -475,11 +488,19 @@ def launch_fastapi_web_server(
             except Exception:
                 pass
 
+    # WSL 特例: WSL2 的 localhost 端口转发只转发绑定 0.0.0.0 的端口;
+    # 绑 127.0.0.1 时 Windows 浏览器访问 http://127.0.0.1:<port> 会直接被拒
+    # (WSL 内 curl 正常、Windows 侧打不开的典型症状)。默认回环监听且处于
+    # WSL 时自动改绑 0.0.0.0 —— WSL2 NAT 网络不直接暴露到物理局域网, 风险可控。
+    bind_host = host
+    if host in ("127.0.0.1", "localhost") and _is_wsl():
+        bind_host = "0.0.0.0"
+
     actual_port = port
-    if not _port_free(host, port):
+    if not _port_free(bind_host, port):
         print(f"⚠️ 端口 {port} 已被占用 (大概率有上一次 Web 会话的残留进程未退出)...")
         for cand in range(port + 1, port + 11):
-            if _port_free(host, cand):
+            if _port_free(bind_host, cand):
                 actual_port = cand
                 break
         if actual_port == port:
@@ -490,6 +511,8 @@ def launch_fastapi_web_server(
     display_host = "127.0.0.1" if host in ("0.0.0.0", "") else host
     print("\n🌐 启动 AutoBatteryResearch Agent Web 监控大屏 (FastAPI 只读版)...")
     print(f"👉 本地访问地址: http://{display_host}:{actual_port}")
+    if bind_host != host:
+        print(f"   · 检测到 WSL: 已改绑 0.0.0.0, Windows 浏览器同样用 http://127.0.0.1:{actual_port} 访问 (经 localhost 转发)")
     print("   · 课题进度 / 综合研报 / 阶段日志 / 运行日志 均直读磁盘, TUI/CLI 运行中可实时联动")
     print("   · API 文档: http://%s:%s/docs" % (display_host, actual_port))
-    uvicorn.run(app, host=host, port=actual_port, log_level="warning")
+    uvicorn.run(app, host=bind_host, port=actual_port, log_level="warning")

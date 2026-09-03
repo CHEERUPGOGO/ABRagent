@@ -499,8 +499,11 @@ class BatteryAgentTUI(App[None]):
 
         port = 7865
         if probe_monitor_health("127.0.0.1", port):
+            url = f"http://127.0.0.1:{port}"
+            opened = self._open_in_browser(url)
             console_widget.write_log(
-                f"{now_str()} Web 监控大屏已在运行, 直接打开: http://127.0.0.1:{port} (只读, 与 TUI 实时联动)",
+                f"{now_str()} Web 监控大屏已在运行 (只读, 与 TUI 实时联动): {url}"
+                + ("" if opened else " — 浏览器未能自动打开, 请手动访问该地址"),
                 style="bold green",
             )
             return
@@ -536,9 +539,11 @@ class BatteryAgentTUI(App[None]):
         def _wait_ready():
             for _ in range(20):
                 if probe_monitor_health("127.0.0.1", port):
+                    url = f"http://127.0.0.1:{port}"
+                    self._open_in_browser(url)
                     self.call_from_thread(
                         console_widget.write_log,
-                        f"{now_str()} ✅ Web 监控大屏已就绪: http://127.0.0.1:{port} (浏览器打开, 5 秒轮询联动本 TUI)",
+                        f"{now_str()} ✅ Web 监控大屏已就绪: {url} (5 秒轮询联动本 TUI)",
                         "bold green",
                     )
                     return
@@ -550,6 +555,34 @@ class BatteryAgentTUI(App[None]):
             )
 
         threading.Thread(target=_wait_ready, daemon=True).start()
+
+    @staticmethod
+    def _open_in_browser(url: str) -> bool:
+        """尽力调起系统浏览器打开 url; WSL 内 webbrowser 常找不到浏览器, 退回 wslview.
+
+        纯 best-effort: 打不开返回 False, 由调用方在控制台打印地址提示手动访问。
+        """
+        import shutil
+        import webbrowser
+
+        try:
+            if webbrowser.open(url):
+                return True
+        except Exception:
+            pass
+        # WSL: webbrowser 找不到 Linux 浏览器时, wslview 可转交 Windows 默认浏览器
+        if os.name != "nt" and shutil.which("wslview"):
+            try:
+                import subprocess
+                subprocess.Popen(
+                    ["wslview", url],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+                return True
+            except Exception:
+                pass
+        return False
 
     def show_help(self) -> None:
         """展示帮助面板."""
