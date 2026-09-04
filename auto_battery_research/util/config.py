@@ -15,6 +15,8 @@ import yaml
 from pathlib import Path
 from typing import Dict, Any, Optional, Union, List
 
+from auto_battery_research.util.constants import DEFAULT_GOAL
+
 
 ENV_PATTERN = re.compile(r"\$\(([\w]+)(?:\s*:\s*([^)]*))?\)")
 TEMPLATE_PATTERN = re.compile(r"\{([A-Z_]+)\}")
@@ -96,7 +98,7 @@ class ABRConfigLoader:
         self.raw_workflow: Dict[str, Any] = {}
         self.resolved_config: Dict[str, Any] = {}
 
-    def load(self, target_goal: str = "设计400Wh/kg高比能液态锂金属电池方案") -> Dict[str, Any]:
+    def load(self, target_goal: str = DEFAULT_GOAL) -> Dict[str, Any]:
         """执行完整分层加载与模板渲染流水线."""
         # 1. 加载 setting.yaml
         if self.setting_file.exists():

@@ -19,6 +19,7 @@ if sys.platform == "win32":
 # 重依赖 (agent → langchain 全家) 不在模块级导入: --mcp/--status/--web 等轻量
 # 入口保持秒级冷启动; ABRAgent 延迟到 --run 分支使用点加载。
 from auto_battery_research.workflow.stage_manager import StageManager
+from auto_battery_research.util.constants import DEFAULT_GOAL
 from auto_battery_research.tools.stage_tools import (
     set_stage_manager,
     tool_get_status,
@@ -122,7 +123,7 @@ def main():
     parser.add_argument("--with-pinn", action="store_true", help="激活 Stage 5 (PINN 物理仿真)")
     parser.add_argument("--skip-pinn", action="store_true", help="跳过 Stage 5 (PINN 物理仿真)")
     parser.add_argument("--run", action="store_true", help="启动 ABRAgent 进行全自动端到端自主执行")
-    parser.add_argument("--goal", type=str, default="设计400Wh/kg高比能液态锂金属电池方案", help="指定电池设计研发目标")
+    parser.add_argument("--goal", type=str, default=DEFAULT_GOAL, help="指定电池设计研发目标")
     parser.add_argument("--journal", action="store_true", help="查看所有阶段的历史研发日志")
     parser.add_argument("--report", "-r", action="store_true", help="在终端中以高亮 Markdown 语法渲染并浏览最终综合研报")
     parser.add_argument("--log", action="store_true", help="启用运行日志落盘 (现已默认开启，保存至 log/<课题名称>.log)")

@@ -24,6 +24,7 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from auto_battery_research.util.reports import resolve_final_report
+from auto_battery_research.util.constants import DEFAULT_GOAL
 
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage, ToolMessage, BaseMessage
 
@@ -69,7 +70,7 @@ class ABRAgent:
 
     def __init__(
         self,
-        goal: str = "设计400Wh/kg高比能液态锂金属电池方案",
+        goal: str = DEFAULT_GOAL,
         config_file: Optional[str] = None,
         config: Optional[Dict[str, Any]] = None,
         skip_pinn: Optional[bool] = None,
@@ -124,7 +125,13 @@ class ABRAgent:
                 else:
                     manager.target_goal = self.goal
         else:
-            self.manager = StageManager(skip_pinn=skip_pinn, target_goal=self.goal)
+            # overrides 必须透传 self.config —— 否则 ABRAgent(config=...) 只作用于
+            # 后端 LLM，而阶段工具/门禁仍读 setting.yaml 原值，形成配置双轨
+            self.manager = StageManager(
+                skip_pinn=skip_pinn,
+                target_goal=self.goal,
+                overrides=self.config,
+            )
         set_stage_manager(self.manager)
 
         # 3. 组装全量工具箱 (Domain Tools + Stage Workflow Tools)
@@ -155,7 +162,9 @@ class ABRAgent:
         """加载 setting.yaml 与覆盖配置 (递归解析 $(VAR: default) 环境变量)."""
         from auto_battery_research.util.config import resolve_env_vars
         base_cfg = {}
-        setting_path = ROOT_DIR / "auto_battery_research" / "setting.yaml"
+        # 从包目录直取 setting.yaml：editable 与 wheel 安装态都指向同一位置；
+        # 旧的 ROOT_DIR 相对路径在非 editable 安装下不存在
+        setting_path = Path(__file__).resolve().parent / "setting.yaml"
         if setting_path.exists():
             try:
                 import yaml

@@ -20,6 +20,7 @@ import threading
 from auto_battery_research.stage.base_stage import BaseStage
 from auto_battery_research.checkers.base_checker import BaseChecker
 from auto_battery_research.util.config import ABRConfigLoader
+from auto_battery_research.util.constants import DEFAULT_GOAL
 
 
 class StageManager:
@@ -30,7 +31,7 @@ class StageManager:
         setting_file: Optional[str] = None,
         workflow_file: Optional[str] = None,
         skip_pinn: Optional[bool] = None,
-        target_goal: str = "设计400Wh/kg高比能液态锂金属电池方案",
+        target_goal: str = DEFAULT_GOAL,
         overrides: Optional[Dict[str, Any]] = None,
         workspace_root: Optional[str] = None,
     ):

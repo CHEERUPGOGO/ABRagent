@@ -30,6 +30,7 @@ except ImportError:
     gr = None
 
 from auto_battery_research.workflow.stage_manager import StageManager
+from auto_battery_research.util.constants import DEFAULT_GOAL
 from auto_battery_research.util.reports import resolve_final_report, SCHEME_CANDIDATE
 from auto_battery_research.tools.stage_tools import (
     set_stage_manager,
@@ -117,7 +118,7 @@ def create_web_app(manager: Optional[StageManager] = None):
                     with gr.Column(scale=2):
                         goal_input = gr.Textbox(
                             label="🎯 电池研发目标 (Goal)",
-                            value="设计400Wh/kg高比能液态锂金属电池方案",
+                            value=DEFAULT_GOAL,
                             lines=2,
                         )
                         with gr.Row():

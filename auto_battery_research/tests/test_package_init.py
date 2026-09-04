@@ -23,6 +23,7 @@ _LAZY_PROBE = (
     "'rag_facade': 'auto_battery_research.rag' in sys.modules, "
     "'simulation_facade': 'auto_battery_research.simulation' in sys.modules, "
     "'src_rag': any(m == 'src.lmllm' or m.startswith('src.lmllm.') for m in sys.modules), "
+    "'lmllm_rag': any(m == 'lmllm' or m.startswith('lmllm.') for m in sys.modules), "
     "'langchain': any(m == 'langchain' or m.startswith('langchain.') for m in sys.modules), "
     "'numpy': 'numpy' in sys.modules, "
     "}))"
@@ -46,7 +47,7 @@ def test_package_import_is_lazy():
     r = _run_py(_LAZY_PROBE)
     assert r.returncode == 0, r.stderr
     loaded = json.loads(r.stdout.strip().splitlines()[-1])
-    for heavy in ("agent", "cli", "rag_facade", "simulation_facade", "src_rag", "langchain", "numpy"):
+    for heavy in ("agent", "cli", "rag_facade", "simulation_facade", "src_rag", "lmllm_rag", "langchain", "numpy"):
         assert loaded[heavy] is False, f"急切导入了重依赖: {heavy}"
 
 

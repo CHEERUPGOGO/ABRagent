@@ -66,7 +66,7 @@ lmllm = "src/lmllm"
 
 [tool.setuptools.packages.find]
 where = [".", "src"]
-include = ["auto_battery_research*", "miner*", "agent*", "preprocessing*", "pinn*", "src*", "lmllm*"]
+include = ["auto_battery_research*", "miner*", "agent*", "preprocessing*", "pinn*", "lmllm*"]
 
 [tool.setuptools.package-data]
 # 运行时资源随包分发 —— 非 editable 安装的生命线:
@@ -77,6 +77,10 @@ include = ["auto_battery_research*", "miner*", "agent*", "preprocessing*", "pinn
 "auto_battery_research.workflow" = ["*.yaml"]
 "auto_battery_research.tui" = ["styles/*.tcss"]
 "auto_battery_research.web" = ["templates/*.html", "static/*.js"]
+# RelationEngine 运行时数据 (alias_map/candidates/constraints + calibrated/seed/tasks
+# 子目录) —— 其 _load 对缺失文件是静默降级(空表继续跑)，漏打包会让 C1-C8 硬
+# 约束门禁在安装态沦为空校验，靠 test_packaging.py 在 zip 层面锁死回归。
+"lmllm.RAG" = ["data/*.json", "data/*/*.json", "data/*/*.md"]
 
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]

@@ -16,7 +16,7 @@ Comments, log messages, and docs are in Chinese; match that style.
 # Install (editable). Extras: rag (chroma/ollama), ui (textual/gradio), physics (pybamm), dev (pytest), all
 pip install -e ".[all]"
 
-# Run all offline tests (no API key / services needed; ~4 min; baseline: 85 passed, 0 warnings)
+# Run all offline tests (no API key / services needed; ~2 min; baseline: 90 passed, 0 warnings — includes 3 wheel-packaging regression tests in test_packaging.py)
 pytest -m "unit or not external"
 
 # Run one test file / one test

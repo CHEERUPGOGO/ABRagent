@@ -19,14 +19,14 @@ import json
 import os
 import pytest
 
-from src.lmllm.RAG.rag_pipeline import RAGPipeline
-from src.lmllm.RAG.llm_client import LLMClient
-from src.lmllm.RAG.prompts import (
+from lmllm.RAG.rag_pipeline import RAGPipeline
+from lmllm.RAG.llm_client import LLMClient
+from lmllm.RAG.prompts import (
     PLANNER_SYSTEM_PROMPT,
     WRITER_SYSTEM_PROMPT,
     REVIEWER_SYSTEM_PROMPT,
 )
-from src.lmllm.RAG.relation_engine import RULES_VERSION
+from lmllm.RAG.relation_engine import RULES_VERSION
 from auto_battery_research.tools.rag_adapter import AbrRagAdapter
 from auto_battery_research.checkers.rag_design_checker import RAGDesignChecker
 

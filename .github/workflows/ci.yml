@@ -63,3 +63,6 @@ jobs:
           # 门禁可运行 (空工作区 fail-closed 属预期行为)
           /tmp/abr-fresh/bin/abr-cli --check > check.txt || true
           grep -q "IngestionChecker" check.txt
+          # RelationEngine 数据表必须随包分发 —— 其 _load 对缺失文件静默降级
+          # (空约束表继续跑)，曾整批漏打包导致安装态 C1-C8 门禁形同虚设
+          /tmp/abr-fresh/bin/python -c "from auto_battery_research.rag import RelationEngine; e = RelationEngine(); assert e.alias_map and e.candidates and e.constraints, 'RelationEngine 数据表未随 wheel 分发'"

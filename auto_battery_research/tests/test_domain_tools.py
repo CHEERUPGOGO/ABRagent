@@ -81,7 +81,7 @@ def test_stage4_single_service_tool(monkeypatch, init_stage_manager):
     通过 monkeypatch 替换底层 run_rag_design 服务，保持单测离线确定性
     (真实 Planner/Retrieval/Writer/Reviewer 管线由 external 集成测试覆盖)。
     """
-    from src.lmllm.RAG.relation_engine import RULES_VERSION
+    from lmllm.RAG.relation_engine import RULES_VERSION
 
     calls = {}
 

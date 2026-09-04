@@ -11,7 +11,7 @@ from auto_battery_research.checkers.pinn_physics_checker import PINNPhysicsCheck
 from auto_battery_research.checkers.final_report_checker import FinalReportChecker
 from auto_battery_research.tools.file_tools import validate_workspace_path, read_text_file, edit_text_file
 from auto_battery_research.tools.knowledge_retriever import search_knowledge_base
-from src.lmllm.RAG.relation_engine import RelationEngine
+from lmllm.RAG.relation_engine import RelationEngine
 
 
 def test_pinn_checker_skip_logic():
@@ -541,7 +541,7 @@ def test_pinn_physics_checker_fallback_explicit_status(tmp_path):
 
 def test_unknown_materials_and_c7_c8_fail_closed():
     """测试 RelationEngine 对未知材料的 Fail-Closed 拒绝机制与 C7/C8 target_energy 拦截."""
-    from src.lmllm.RAG.relation_engine import RelationEngine
+    from lmllm.RAG.relation_engine import RelationEngine
     engine = RelationEngine()
 
     # 1. 全未知材料：必须触发 C0_UNVERIFIED_MATERIAL 拒绝 (Fail-Closed)
