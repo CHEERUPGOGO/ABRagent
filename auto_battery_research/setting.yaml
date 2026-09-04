@@ -40,7 +40,7 @@ llm:
   reviewer_model: "$(OPENAI_MODEL: MiniMax-M2.7-highspeed)"
   checker_model: "$(OPENAI_MODEL: MiniMax-M2.7-highspeed)"
   temperature: 0.1
-  max_tokens: 4096
+  max_tokens: 8192
   request_timeout: 120
   # ReAct 循环递归深度上限 (每轮工具调用约耗 2 个 super-step，25 支持完整多轮工具编排)
   recursion_limit: 25
