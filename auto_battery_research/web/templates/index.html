@@ -143,7 +143,7 @@ main { flex: 1; display: flex; min-height: 0; }
 .report-empty { color: var(--text-dim); text-align: center; padding-top: 80px; line-height: 2; }
 
 /* markdown 排版 (学术研报现代化渲染规范，对齐现代 AI 交互研报与卡片展示界面) */
-#report-body.md {
+#report-body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   color: #1e293b;
   line-height: 1.75;
@@ -154,7 +154,7 @@ main { flex: 1; display: flex; min-height: 0; }
 }
 
 /* 文档主标题: 仅首个 H1 按大标题渲染 */
-#report-body .md h1:first-of-type {
+#report-body h1:first-of-type {
   font-size: 24px;
   font-weight: 700;
   color: #0f172a;
@@ -166,8 +166,8 @@ main { flex: 1; display: flex; min-height: 0; }
 }
 
 /* 核心章节标题 H2 (及正文内嵌的 H1) */
-#report-body .md h1:not(:first-of-type),
-#report-body .md h2 {
+#report-body h1:not(:first-of-type),
+#report-body h2 {
   font-size: 18px;
   font-weight: 700;
   color: #0f172a;
@@ -181,7 +181,7 @@ main { flex: 1; display: flex; min-height: 0; }
 }
 
 /* 章节标题旁的折叠/高亮徽标 (对齐现代 UI 设计) */
-#report-body .md .sec-badge {
+#report-body .sec-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -198,13 +198,13 @@ main { flex: 1; display: flex; min-height: 0; }
   flex-shrink: 0;
   margin-left: 8px;
 }
-#report-body .md .sec-badge:hover {
+#report-body .sec-badge:hover {
   background: #0369a1;
   transform: scale(1.08);
 }
 
 /* 三级子章节 H3 */
-#report-body .md h3 {
+#report-body h3 {
   font-size: 15.5px;
   font-weight: 600;
   color: #1e293b;
@@ -213,7 +213,7 @@ main { flex: 1; display: flex; min-height: 0; }
 }
 
 /* 四级子小标题 H4 */
-#report-body .md h4 {
+#report-body h4 {
   font-size: 14px;
   font-weight: 600;
   color: #334155;
@@ -221,7 +221,7 @@ main { flex: 1; display: flex; min-height: 0; }
 }
 
 /* 研报头部元信息卡片 (课题目标/生成时间/引擎/审计等) */
-#report-body .md .md-inner > h1:first-of-type + ul {
+#report-body .md-inner > h1:first-of-type + ul {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 6px 20px;
@@ -235,12 +235,12 @@ main { flex: 1; display: flex; min-height: 0; }
   color: #475569;
   line-height: 1.65;
 }
-#report-body .md .md-inner > h1:first-of-type + ul li {
+#report-body .md-inner > h1:first-of-type + ul li {
   margin: 0;
 }
 
 /* 现代化卡片式表格渲染 (圆角边框、柔和表头、加粗首列、优雅间隔线) */
-#report-body .md .table-wrap {
+#report-body .table-wrap {
   margin: 18px 0 24px;
   border: 1px solid #d1d5db;
   border-radius: 12px;
@@ -248,15 +248,24 @@ main { flex: 1; display: flex; min-height: 0; }
   background: #ffffff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
-#report-body .md table {
+#report-body table {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
-  margin: 0;
+  margin: 18px 0 24px;
   font-size: 13px;
   line-height: 1.55;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  overflow: hidden;
 }
-#report-body .md th {
+#report-body .table-wrap table {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+}
+#report-body th {
   background: #e5e7eb;
   color: #1f2937;
   font-weight: 600;
@@ -266,41 +275,41 @@ main { flex: 1; display: flex; min-height: 0; }
   border-right: 1px solid #d1d5db;
   white-space: nowrap;
 }
-#report-body .md th:last-child {
+#report-body th:last-child {
   border-right: none;
 }
-#report-body .md td {
+#report-body td {
   padding: 10px 16px;
   border-bottom: 1px solid #e5e7eb;
   border-right: 1px solid #e5e7eb;
   color: #374151;
   vertical-align: middle;
 }
-#report-body .md td:first-child {
+#report-body td:first-child {
   font-weight: 600;
   color: #111827;
 }
-#report-body .md td:last-child {
+#report-body td:last-child {
   border-right: none;
 }
-#report-body .md tr:last-child td {
+#report-body tr:last-child td {
   border-bottom: none;
 }
-#report-body .md tr:nth-child(even) td {
+#report-body tr:nth-child(even) td {
   background: #f9fafb;
 }
-#report-body .md tr:hover td {
+#report-body tr:hover td {
   background: #f3f4f6;
 }
 
 /* 参考来源 DOI 长列表折叠区块 */
-#report-body .md details.ref-fold {
+#report-body details.ref-fold {
   margin: 12px 0 18px;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   background: #f8fafc;
 }
-#report-body .md details.ref-fold summary {
+#report-body details.ref-fold summary {
   cursor: pointer;
   padding: 10px 16px;
   font-size: 13px;
@@ -308,11 +317,11 @@ main { flex: 1; display: flex; min-height: 0; }
   font-weight: 600;
   user-select: none;
 }
-#report-body .md details.ref-fold[open] summary {
+#report-body details.ref-fold[open] summary {
   border-bottom: 1px dashed #e2e8f0;
   border-radius: 12px 12px 0 0;
 }
-#report-body .md details.ref-fold ul {
+#report-body details.ref-fold ul {
   margin: 10px 16px 14px 28px;
   font-size: 12.5px;
   color: #475569;
@@ -322,27 +331,27 @@ main { flex: 1; display: flex; min-height: 0; }
 }
 
 /* 段落与列表 */
-#report-body .md p {
+#report-body p {
   margin: 12px 0;
   line-height: 1.8;
   color: #334155;
   font-size: 14px;
 }
-#report-body .md ul, #report-body .md ol {
+#report-body ul, #report-body ol {
   margin: 10px 0 10px 24px;
   line-height: 1.8;
   color: #334155;
 }
-#report-body .md li {
+#report-body li {
   margin: 4px 0;
 }
-#report-body .md strong {
+#report-body strong {
   font-weight: 600;
   color: #0f172a;
 }
 
 /* 引用块 / GitHub 风格高亮提示卡片 */
-#report-body .md blockquote {
+#report-body blockquote {
   margin: 14px 0;
   padding: 12px 18px;
   background: #f0f9ff;
@@ -352,24 +361,24 @@ main { flex: 1; display: flex; min-height: 0; }
   font-size: 13.5px;
   line-height: 1.7;
 }
-#report-body .md blockquote.alert-warning {
+#report-body blockquote.alert-warning {
   background: #fffbeb;
   border-left-color: #f59e0b;
   color: #92400e;
 }
-#report-body .md blockquote.alert-tip {
+#report-body blockquote.alert-tip {
   background: #f0fdf4;
   border-left-color: #10b981;
   color: #065f46;
 }
-#report-body .md blockquote.alert-important {
+#report-body blockquote.alert-important {
   background: #fef2f2;
   border-left-color: #ef4444;
   color: #991b1b;
 }
 
 /* 行内代码与代码块 */
-#report-body .md code:not(pre code) {
+#report-body code:not(pre code) {
   background: #f1f5f9;
   color: #e11d48;
   border: 1px solid #e2e8f0;
@@ -378,7 +387,7 @@ main { flex: 1; display: flex; min-height: 0; }
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 12.5px;
 }
-#report-body .md pre {
+#report-body pre {
   background: #0f172a;
   color: #f1f5f9;
   border: 1px solid #1e293b;
@@ -389,7 +398,7 @@ main { flex: 1; display: flex; min-height: 0; }
   font-size: 13px;
   line-height: 1.65;
 }
-#report-body .md pre code {
+#report-body pre code {
   background: none;
   color: inherit;
   padding: 0;
@@ -398,28 +407,28 @@ main { flex: 1; display: flex; min-height: 0; }
 }
 
 /* 分割线与超链接 */
-#report-body .md hr {
+#report-body hr {
   border: none;
   border-top: 1px solid #e2e8f0;
   margin: 28px 0;
 }
-#report-body .md a {
+#report-body a {
   color: #0284c7;
   text-decoration: none;
   border-bottom: 1px solid rgba(2, 132, 199, 0.3);
 }
-#report-body .md a:hover {
+#report-body a:hover {
   border-bottom-color: #0284c7;
 }
 
 /* 亮色主题下的 hljs token 配色 */
-#report-body .md .hljs-comment, #report-body .md .hljs-quote { color: #94a3b8; font-style: italic; }
-#report-body .md .hljs-keyword, #report-body .md .hljs-selector-tag { color: #7c3aed; }
-#report-body .md .hljs-string, #report-body .md .hljs-regexp { color: #15803d; }
-#report-body .md .hljs-number, #report-body .md .hljs-literal { color: #b45309; }
-#report-body .md .hljs-title, #report-body .md .hljs-section { color: #0e7490; font-weight: 600; }
-#report-body .md .hljs-attr, #report-body .md .hljs-name { color: #be185d; }
-#report-body .md .hljs-built_in, #report-body .md .hljs-type { color: #0369a1; }
+#report-body .hljs-comment, #report-body .hljs-quote { color: #94a3b8; font-style: italic; }
+#report-body .hljs-keyword, #report-body .hljs-selector-tag { color: #7c3aed; }
+#report-body .hljs-string, #report-body .hljs-regexp { color: #15803d; }
+#report-body .hljs-number, #report-body .hljs-literal { color: #b45309; }
+#report-body .hljs-title, #report-body .hljs-section { color: #0e7490; font-weight: 600; }
+#report-body .hljs-attr, #report-body .hljs-name { color: #be185d; }
+#report-body .hljs-built_in, #report-body .hljs-type { color: #0369a1; }
 
 /* ---------- 阶段日志页 ---------- */
 #panel-journal { overflow-y: auto; padding: 18px; }
