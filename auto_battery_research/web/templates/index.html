@@ -526,6 +526,27 @@ footer { text-align: center; font-size: 11.5px; color: var(--muted); padding: 5p
 
 <script>
 "use strict";
+/* ============================== Markdown 引擎安全调优 ============================== */
+// 严格仅支持标准双波浪线 ~~删除~~，禁止将科技文献中表示"约等于/区间范围"的单波浪线 ~ (如 ~185 mAh/g, ~450 Wh/kg) 误解析为 <del> 删除线
+if (typeof marked !== 'undefined' && marked.use) {
+  marked.use({
+    tokenizer: {
+      del(src) {
+        const m = /^(~~)(?=[^\s~])([\s\S]*?[^\s~])\1(?=[^~]|$)/.exec(src);
+        if (m) {
+          return {
+            type: 'del',
+            raw: m[0],
+            text: m[2],
+            tokens: this.lexer.inlineTokens(m[2]),
+          };
+        }
+        return undefined;
+      }
+    }
+  });
+}
+
 /* ============================== 基础工具 ============================== */
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, (c) => ({
