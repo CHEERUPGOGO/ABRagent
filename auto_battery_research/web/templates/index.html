@@ -142,50 +142,277 @@ main { flex: 1; display: flex; min-height: 0; }
   white-space: pre-wrap; word-break: break-word; color: #334155; }
 .report-empty { color: var(--text-dim); text-align: center; padding-top: 80px; line-height: 2; }
 
-/* markdown 排版 (研报渲染) */
-/* 文档主标题: 仅首个 H1 按大标题渲染 */
-#report-body .md h1:first-of-type { font-size: 23px; margin: 6px 0 14px;
-  padding-bottom: 10px; border-bottom: 2px solid var(--accent); }
-/* 正文内嵌的 H1 (LLM 生成的方案/配方自带标题) 降级为节标题样式, 避免多个"主标题"互相打架 */
-#report-body .md h1:not(:first-of-type) { font-size: 17.5px; margin: 26px 0 10px; color: #0c4a6e;
-  padding-left: 10px; border-left: 4px solid var(--accent); border-bottom: none; }
-#report-body .md h2 { font-size: 17.5px; margin: 26px 0 10px; color: #0c4a6e;
-  padding-left: 10px; border-left: 4px solid var(--accent); }
-#report-body .md h3 { font-size: 15px; margin: 18px 0 8px; color: #155e75; }
-/* 研报头部元信息 bullet 列表 → 紧凑信息卡 (课题目标/生成时间/引擎/审计等) */
-#report-body .md .md-inner > h1:first-of-type + ul {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 3px 24px; background: #f8fafc; border: 1px solid var(--border); border-radius: 10px;
-  padding: 10px 16px; margin: 0 0 16px; list-style: none;
-  font-size: 12.5px; color: #475569; line-height: 1.7;
+/* markdown 排版 (学术研报现代化渲染规范，对齐现代 AI 交互研报与卡片展示界面) */
+#report-body.md {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  color: #1e293b;
+  line-height: 1.75;
 }
-/* 参考来源 DOI 长列表 → 可折叠区块 (renderReport 中 JS 检测包裹) */
-#report-body .md details.ref-fold { margin: 8px 0 16px; border: 1px solid var(--border);
-  border-radius: 10px; background: #fbfdfe; }
-#report-body .md details.ref-fold summary { cursor: pointer; padding: 9px 14px;
-  font-size: 13px; color: var(--accent); font-weight: 600; user-select: none; }
-#report-body .md details.ref-fold[open] summary { border-bottom: 1px dashed var(--border);
-  border-radius: 10px 10px 0 0; }
-#report-body .md details.ref-fold ul { margin: 8px 12px 12px 26px; font-size: 12.5px;
-  color: #475569; line-height: 1.9; columns: 2; column-gap: 32px; }
-#report-body .md p { margin: 9px 0; line-height: 1.85; }
-#report-body .md ul, #report-body .md ol { margin: 9px 0 9px 24px; line-height: 1.85; }
-#report-body .md li { margin: 3px 0; }
-#report-body .md blockquote { margin: 10px 0; padding: 8px 14px; background: var(--accent-soft);
-  border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; color: #155e75; }
-#report-body .md code { background: #f1f5f9; border-radius: 4px; padding: 1px 5px;
-  font-family: Consolas, monospace; font-size: 12.5px; }
-#report-body .md pre { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px;
-  padding: 14px; overflow-x: auto; margin: 12px 0; }
-#report-body .md pre code { background: none; color: #334155; padding: 0; font-size: 12.5px; }
-#report-body .md table { border-collapse: collapse; margin: 12px 0; width: 100%;
-  font-size: 13px; display: block; overflow-x: auto; }
-#report-body .md th, #report-body .md td { border: 1px solid var(--border); padding: 7px 11px; text-align: left; }
-#report-body .md th { background: #f0f9ff; color: #0c4a6e; white-space: nowrap; }
-#report-body .md tr:nth-child(even) td { background: #f8fafc; }
-#report-body .md hr { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
-#report-body .md a { color: var(--accent); }
-/* 亮色主题下的 hljs token 配色 (内嵌, 免额外 css 文件) */
+#report-body .md-inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* 文档主标题: 仅首个 H1 按大标题渲染 */
+#report-body .md h1:first-of-type {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 8px 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e2e8f0;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+/* 核心章节标题 H2 (及正文内嵌的 H1) */
+#report-body .md h1:not(:first-of-type),
+#report-body .md h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 34px 0 14px;
+  padding: 6px 0 8px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  letter-spacing: -0.01em;
+}
+
+/* 章节标题旁的折叠/高亮徽标 (对齐现代 UI 设计) */
+#report-body .md .sec-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #0284c7;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+#report-body .md .sec-badge:hover {
+  background: #0369a1;
+  transform: scale(1.08);
+}
+
+/* 三级子章节 H3 */
+#report-body .md h3 {
+  font-size: 15.5px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 22px 0 10px;
+  letter-spacing: -0.005em;
+}
+
+/* 四级子小标题 H4 */
+#report-body .md h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  margin: 16px 0 6px;
+}
+
+/* 研报头部元信息卡片 (课题目标/生成时间/引擎/审计等) */
+#report-body .md .md-inner > h1:first-of-type + ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 6px 20px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 18px;
+  margin: 0 0 20px;
+  list-style: none;
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.65;
+}
+#report-body .md .md-inner > h1:first-of-type + ul li {
+  margin: 0;
+}
+
+/* 现代化卡片式表格渲染 (圆角边框、柔和表头、加粗首列、优雅间隔线) */
+#report-body .md .table-wrap {
+  margin: 18px 0 24px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  overflow-x: auto;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+#report-body .md table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+}
+#report-body .md th {
+  background: #e5e7eb;
+  color: #1f2937;
+  font-weight: 600;
+  padding: 10px 16px;
+  text-align: left;
+  border-bottom: 1px solid #d1d5db;
+  border-right: 1px solid #d1d5db;
+  white-space: nowrap;
+}
+#report-body .md th:last-child {
+  border-right: none;
+}
+#report-body .md td {
+  padding: 10px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  border-right: 1px solid #e5e7eb;
+  color: #374151;
+  vertical-align: middle;
+}
+#report-body .md td:first-child {
+  font-weight: 600;
+  color: #111827;
+}
+#report-body .md td:last-child {
+  border-right: none;
+}
+#report-body .md tr:last-child td {
+  border-bottom: none;
+}
+#report-body .md tr:nth-child(even) td {
+  background: #f9fafb;
+}
+#report-body .md tr:hover td {
+  background: #f3f4f6;
+}
+
+/* 参考来源 DOI 长列表折叠区块 */
+#report-body .md details.ref-fold {
+  margin: 12px 0 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+#report-body .md details.ref-fold summary {
+  cursor: pointer;
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 600;
+  user-select: none;
+}
+#report-body .md details.ref-fold[open] summary {
+  border-bottom: 1px dashed #e2e8f0;
+  border-radius: 12px 12px 0 0;
+}
+#report-body .md details.ref-fold ul {
+  margin: 10px 16px 14px 28px;
+  font-size: 12.5px;
+  color: #475569;
+  line-height: 1.9;
+  columns: 2;
+  column-gap: 32px;
+}
+
+/* 段落与列表 */
+#report-body .md p {
+  margin: 12px 0;
+  line-height: 1.8;
+  color: #334155;
+  font-size: 14px;
+}
+#report-body .md ul, #report-body .md ol {
+  margin: 10px 0 10px 24px;
+  line-height: 1.8;
+  color: #334155;
+}
+#report-body .md li {
+  margin: 4px 0;
+}
+#report-body .md strong {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* 引用块 / GitHub 风格高亮提示卡片 */
+#report-body .md blockquote {
+  margin: 14px 0;
+  padding: 12px 18px;
+  background: #f0f9ff;
+  border-left: 4px solid #0284c7;
+  border-radius: 0 10px 10px 0;
+  color: #0369a1;
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+#report-body .md blockquote.alert-warning {
+  background: #fffbeb;
+  border-left-color: #f59e0b;
+  color: #92400e;
+}
+#report-body .md blockquote.alert-tip {
+  background: #f0fdf4;
+  border-left-color: #10b981;
+  color: #065f46;
+}
+#report-body .md blockquote.alert-important {
+  background: #fef2f2;
+  border-left-color: #ef4444;
+  color: #991b1b;
+}
+
+/* 行内代码与代码块 */
+#report-body .md code:not(pre code) {
+  background: #f1f5f9;
+  color: #e11d48;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12.5px;
+}
+#report-body .md pre {
+  background: #0f172a;
+  color: #f1f5f9;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 13px;
+  line-height: 1.65;
+}
+#report-body .md pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  border: none;
+  font-family: Consolas, "Courier New", monospace;
+}
+
+/* 分割线与超链接 */
+#report-body .md hr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 28px 0;
+}
+#report-body .md a {
+  color: #0284c7;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(2, 132, 199, 0.3);
+}
+#report-body .md a:hover {
+  border-bottom-color: #0284c7;
+}
+
+/* 亮色主题下的 hljs token 配色 */
 #report-body .md .hljs-comment, #report-body .md .hljs-quote { color: #94a3b8; font-style: italic; }
 #report-body .md .hljs-keyword, #report-body .md .hljs-selector-tag { color: #7c3aed; }
 #report-body .md .hljs-string, #report-body .md .hljs-regexp { color: #15803d; }
@@ -524,12 +751,47 @@ function renderReport(data) {
     } catch (e) {
       body.innerHTML = bannerHtml + '<pre>' + esc(data.markdown) + '</pre>';
     }
+
+    // 1. 自动为所有 table 包裹 .table-wrap，获得卡片式圆角、边框与横向滚动体验
+    body.querySelectorAll('table').forEach((tbl) => {
+      if (!tbl.parentElement.classList.contains('table-wrap')) {
+        const wrap = document.createElement('div');
+        wrap.className = 'table-wrap';
+        tbl.parentNode.insertBefore(wrap, tbl);
+        wrap.appendChild(tbl);
+      }
+    });
+
+    // 2. 识别引用块语义并添加对应的主题卡片样式 (Warning / Tip / Note)
+    body.querySelectorAll('blockquote').forEach((bq) => {
+      const text = bq.textContent;
+      if (/⚠️|警告|风险|注意|注意点|warning|caution/i.test(text)) {
+        bq.classList.add('alert-warning');
+      } else if (/💡|建议|采购建议|提示|技巧|tip|hint/i.test(text)) {
+        bq.classList.add('alert-tip');
+      } else if (/🚨|禁止|禁用|严重|error|important/i.test(text)) {
+        bq.classList.add('alert-important');
+      }
+    });
+
     foldReferenceWall(body);   // DOI 长列表折叠, 避免刷屏
     body.querySelectorAll('pre code').forEach((blk) => {
       try { hljs.highlightElement(blk); } catch (e) { /* 高亮失败不影响正文 */ }
     });
+
+    buildToc();
+
+    // 3. 为核心章节标题添加现代徽标与收起交互
+    body.querySelectorAll('.md-inner > h2, .md-inner > h1:not(:first-of-type)').forEach((h) => {
+      if (!h.querySelector('.sec-badge')) {
+        const badge = document.createElement('span');
+        badge.className = 'sec-badge';
+        badge.textContent = '＋';
+        badge.title = '章节定位与展开收起';
+        h.appendChild(badge);
+      }
+    });
   }
-  buildToc();
 }
 
 async function loadReport() {
