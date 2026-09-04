@@ -26,10 +26,12 @@ from auto_battery_research.backend.llm_client import LLMClient
 
 
 def _get_target_task_dir(target_query: str) -> Path:
-    """获取课题专属输出目录 (复用单例，避免重复实例化；不再创建全局镜像目录)."""
-    from auto_battery_research.tools.stage_tools import get_stage_manager_for_goal
-    mgr = get_stage_manager_for_goal(target_query)
-    return mgr.get_task_output_dir(target_query)
+    """获取课题专属输出目录 (复用单例，避免重复实例化；优先对齐当前工作流活跃课题)."""
+    from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+    mgr = get_stage_manager()
+    active_goal = (getattr(mgr, "target_goal", "") or "").strip()
+    goal = resolve_effective_goal(target_query, active_goal)
+    return mgr.get_task_output_dir(goal)
 
 
 def _pdf_already_processed(pdf: Path) -> bool:

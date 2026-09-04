@@ -263,10 +263,9 @@ class ExtractAndAssembleCellsTool(BaseTool):
     args_schema: Type[BaseModel] = ExtractAndAssembleCellsArgs
 
     def _run(self, sample_limit: Optional[int] = 10, target_query: Optional[str] = "") -> str:
-        goal = (target_query or "").strip()
-        if not goal:
-            from auto_battery_research.tools.stage_tools import get_stage_manager
-            goal = get_stage_manager().target_goal
+        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
+        goal = resolve_effective_goal(target_query, active_goal)
         log_tool_call(self.name, f"sample_limit={sample_limit}, target_query='{goal}'")
         res = run_data_mining(max_files=sample_limit or 10, target_query=goal)
         return json.dumps(res, ensure_ascii=False, indent=2)
@@ -305,10 +304,9 @@ class RunRAGDesignTool(BaseTool):
     args_schema: Type[BaseModel] = RunRAGDesignArgs
 
     def _run(self, target_goal: Optional[str] = "", design_query: Optional[str] = "") -> str:
-        goal = (target_goal or "").strip()
-        if not goal:
-            from auto_battery_research.tools.stage_tools import get_stage_manager
-            goal = get_stage_manager().target_goal
+        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
+        goal = resolve_effective_goal(target_goal, active_goal)
         dq = (design_query or "").strip() or None
         log_tool_call(self.name, f"target_goal='{goal}', design_query='{dq}'")
         res = run_rag_design(target_query=goal, design_query=dq)
@@ -336,10 +334,9 @@ class RunPhysicsSimulationTool(BaseTool):
     args_schema: Type[BaseModel] = RunPhysicsSimulationArgs
 
     def _run(self, target_goal: Optional[str] = "", current_rate: Optional[str] = "0.2C") -> str:
-        goal = (target_goal or "").strip()
-        if not goal:
-            from auto_battery_research.tools.stage_tools import get_stage_manager
-            goal = get_stage_manager().target_goal
+        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
+        goal = resolve_effective_goal(target_goal, active_goal)
         log_tool_call(self.name, f"target_goal='{goal}', current_rate='{current_rate}'")
         res = run_pinn_simulation(target_query=goal, current_rate=current_rate or "0.2C")
         return json.dumps(res, ensure_ascii=False, indent=2)
@@ -363,10 +360,9 @@ class SynthesizeResearchReportTool(BaseTool):
     args_schema: Type[BaseModel] = SynthesizeResearchReportArgs
 
     def _run(self, target_goal: Optional[str] = "") -> str:
-        goal = (target_goal or "").strip()
-        if not goal:
-            from auto_battery_research.tools.stage_tools import get_stage_manager
-            goal = get_stage_manager().target_goal
+        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
+        goal = resolve_effective_goal(target_goal, active_goal)
         log_tool_call(self.name, f"target_goal='{goal}'")
         res = generate_synthesis_report(target_query=goal)
         return json.dumps(res, ensure_ascii=False, indent=2)

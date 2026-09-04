@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 import json
+import re
 import threading
 from typing import Dict, Any, List, Optional, Type
 from pydantic import BaseModel, Field
@@ -47,6 +48,28 @@ def set_stage_manager(mgr: StageManager):
         _GLOBAL_MANAGER = mgr
 
 
+def resolve_effective_goal(target_goal: Optional[str] = None, active_goal: Optional[str] = None) -> str:
+    """解析生效课题目标: 优先使用显式课题，但若与当前活跃课题语义同义(如大小写/空格/电池后缀差异)则对齐回当前课题，防止分叉."""
+    g = (target_goal or "").strip()
+    a = (active_goal or "").strip()
+    if not g:
+        return a or "general_research_task"
+    if not a:
+        return g
+    na = re.sub(r"[\s_，。、]", "", a.lower())
+    ng = re.sub(r"[\s_，。、]", "", g.lower())
+    if na == ng:
+        return a
+    if len(na) >= 6 and len(ng) >= 6:
+        if na in ng or ng in na:
+            return a
+        ma = re.search(r"\d+wh[/-]?kg", na)
+        mg = re.search(r"\d+wh[/-]?kg", ng)
+        if ma and mg and ma.group(0) == mg.group(0):
+            return a
+    return g
+
+
 def get_stage_manager_for_goal(target_goal: Optional[str] = None) -> StageManager:
     """获取指定课题的 StageManager (优先复用全局单例，其次按课题缓存；线程安全).
 
@@ -54,9 +77,12 @@ def get_stage_manager_for_goal(target_goal: Optional[str] = None) -> StageManage
     全量 Checker 级联 (auto_detect_existing_progress) 与状态文件双写，
     既浪费性能，又可能与主流程的内存状态互相踩踏。
     """
-    global _GOAL_MANAGER_CACHE
-    if _GLOBAL_MANAGER is not None and (not target_goal or _GLOBAL_MANAGER.target_goal == target_goal):
-        return _GLOBAL_MANAGER
+    global _GOAL_MANAGER_CACHE, _GLOBAL_MANAGER
+    if _GLOBAL_MANAGER is not None:
+        active = getattr(_GLOBAL_MANAGER, "target_goal", "")
+        eff = resolve_effective_goal(target_goal, active)
+        if eff == active:
+            return _GLOBAL_MANAGER
     key = (target_goal or "").strip() or "general_research_task"
     with _MANAGER_LOCK:
         mgr = _GOAL_MANAGER_CACHE.get(key)
@@ -179,7 +205,8 @@ def tool_run_stage_task(
         generate_synthesis_report,
     )
     mgr = get_stage_manager()
-    query = (target_query or "").strip() or mgr.target_goal
+    active_goal = (getattr(mgr, "target_goal", "") or "").strip()
+    query = resolve_effective_goal(target_query, active_goal)
     curr = mgr.get_stage_by_id(stage_id) if stage_id else mgr.get_current_stage()
     sid = curr.id
 
@@ -194,9 +221,9 @@ def tool_run_stage_task(
     elif sid == 5:
         if curr.skip:
             return {"success": True, "message": "Stage 5 PINN 物理仿真已配置跳过，无需执行计算。"}
-        return run_pinn_simulation(target_query=target_query, **kwargs)
+        return run_pinn_simulation(target_query=query, **kwargs)
     elif sid == 6:
-        return generate_synthesis_report(target_query=target_query, stage_manager=mgr, **kwargs)
+        return generate_synthesis_report(target_query=query, stage_manager=mgr, **kwargs)
     else:
         return {"success": False, "error": f"未知 Stage ID: {sid}"}
 
