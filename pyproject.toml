@@ -51,6 +51,11 @@ physics = [
 dev = [
     "pytest>=7.0.0",
     "pytest-asyncio>=0.21.0",
+    # test_packaging 以 --no-build-isolation 离线构建 wheel，要求构建后端
+    # 就位于测试环境本身 (≥75 自带原生 bdist_wheel)。Python 3.12+ 的 venv 与
+    # 新版 GitHub runner 预装 Python 均不再捆绑 setuptools，缺它必抛
+    # BackendUnavailable: Cannot import 'setuptools.build_meta'
+    "setuptools>=75",
 ]
 all = [
     "langchain-chroma>=0.1.2",

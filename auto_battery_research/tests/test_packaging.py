@@ -11,6 +11,7 @@
 --no-deps --no-build-isolation，全程离线。
 """
 
+import importlib.util
 import shutil
 import subprocess
 import sys
@@ -31,6 +32,13 @@ def _build_wheel(out_dir: Path) -> Path:
     历史构建残留 (如已从 packages.find 移除的 src.*) 会被原样带进 wheel，
     造成"配置已改、产物仍旧"的假象。
     """
+    # --no-build-isolation 要求 setuptools 就位于当前环境 (dev extras 已含)；
+    # Python 3.12+ venv 与新版 runner 预装 Python 均不再捆绑，预检给出可操作报错
+    if importlib.util.find_spec("setuptools") is None:
+        pytest.fail(
+            "当前环境缺 setuptools，无法离线构建 wheel (--no-build-isolation)；"
+            "执行 pip install -e '.[dev]' 补齐后重试"
+        )
     shutil.rmtree(ROOT_DIR / "build", ignore_errors=True)
     try:
         r = subprocess.run(

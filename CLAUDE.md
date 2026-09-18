@@ -13,7 +13,7 @@ Comments, log messages, and docs are in Chinese; match that style.
 ## Commands
 
 ```bash
-# Install (editable). Extras: rag (chroma/ollama), ui (textual/gradio), physics (pybamm), dev (pytest), all
+# Install (editable). Extras: rag (chroma/ollama), ui (textual/gradio), physics (pybamm), dev (pytest + setuptools for offline wheel-build tests), all
 pip install -e ".[all]"
 
 # Run all offline tests (no API key / services needed; ~3 min; baseline: 105 passed, 1 deselected, 0 warnings — includes 3 wheel-packaging regression tests in test_packaging.py and 4 doctor self-check tests in test_doctor.py)
