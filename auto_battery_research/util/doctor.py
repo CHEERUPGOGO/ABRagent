@@ -1,7 +1,7 @@
 """环境自检模块 (abr-cli --doctor) — 无网络强依赖的一次性体检.
 
 检查项: Python 版本 / .env / LLM Key 与端点 / Ollama 与向量模型 / MinerU Token /
-文献资产 / 可选依赖 / 输出目录写权限。全部离线可跑 (Ollama 探测失败仅降级为 WARN)。
+文献资产 / ReAct 运行时 / 可选依赖 / 输出目录写权限。全部离线可跑 (Ollama 探测失败仅降级为 WARN)。
 """
 
 from __future__ import annotations
@@ -63,6 +63,34 @@ def _mask(secret: str) -> str:
 def _count(pattern: str) -> int:
     import glob as _glob
     return len(_glob.glob(pattern, recursive=True))
+
+
+def _agent_runtime_row() -> Tuple[str, str, str, str]:
+    """检查 ReAct 智能体运行时 (langchain>=1.0 / langgraph>=1.0，均为 base 依赖).
+
+    backend._compile_agent_for_tools 的降级链为 create_agent → create_react_agent
+    → 裸 bind_tools 模型。二者同时缺失时会落到第三级，而 invoke 仍按 LangGraph
+    dict 协议传 {"messages": [...]}，裸模型只接受 str/list[BaseMessage] → 每阶段
+    必抛 [LLM-Notice] Invalid input type <class 'dict'>，LLM 决策全部降级确定性
+    调度。该项让该症状在自检阶段即可定位。
+    """
+    errors = []
+    try:
+        from langchain.agents import create_agent  # noqa: F401
+    except Exception as e:
+        errors.append(f"langchain.agents.create_agent 不可用 ({e})")
+    try:
+        from langgraph.prebuilt import create_react_agent  # noqa: F401
+    except Exception as e:
+        errors.append(f"langgraph.prebuilt.create_react_agent 不可用 ({e})")
+    if not errors:
+        return ("ReAct 运行时", OK, "langchain / langgraph 就绪", "")
+    if len(errors) == 2:
+        return ("ReAct 运行时", WARN, "langchain 与 langgraph 均缺失",
+                "执行 pip install -e . 重装 (base 依赖已含二者)；缺失时 LLM 决策必失败并降级确定性调度 "
+                "(日志特征: [LLM-Notice] Invalid input type <class 'dict'>)")
+    return ("ReAct 运行时", WARN, errors[0],
+            "将回退另一入口编译 ReAct，建议对齐锁定版本: pip install -e \".[all]\" -c requirements-lock.txt")
 
 
 def run_doctor_checks() -> List[Tuple[str, str, str, str]]:
@@ -156,7 +184,10 @@ def run_doctor_checks() -> List[Tuple[str, str, str, str]]:
         results.append(("文献资产", WARN, "未检测到任何文献资产",
                         "放入 PDF 至 papers/pdf/ 并配置 MinerU Token；否则 Stage 1 将诚实失败"))
 
-    # 8. 可选依赖 (extras)
+    # 8. ReAct 智能体运行时 (langchain / langgraph)
+    results.append(_agent_runtime_row())
+
+    # 9. 可选依赖 (extras)
     for label, module, extra in (
         ("Chroma 向量库 [rag]", "chromadb", "pip install -e '.[rag]'"),
         ("Ollama 客户端 [rag]", "ollama", "pip install -e '.[rag]'"),
@@ -170,7 +201,7 @@ def run_doctor_checks() -> List[Tuple[str, str, str, str]]:
         except ImportError:
             results.append((label, WARN, "未安装", extra))
 
-    # 9. 输出目录写权限
+    # 10. 输出目录写权限
     try:
         out_dir = ROOT_DIR / "output" / "tasks"
         out_dir.mkdir(parents=True, exist_ok=True)

@@ -110,7 +110,7 @@ def main():
     )
 
     parser.add_argument("--status", action="store_true", help="显示工作流状态矩阵与进度")
-    parser.add_argument("--doctor", action="store_true", help="环境自检: LLM Key / Ollama / MinerU / 文献资产 / 可选依赖 一次查完")
+    parser.add_argument("--doctor", action="store_true", help="环境自检: LLM Key / ReAct 运行时 / Ollama / MinerU / 文献资产 / 可选依赖 一次查完")
     parser.add_argument("--detail", action="store_true", help="显示任务与所有阶段的深入明细信息")
     parser.add_argument("--tips", action="store_true", help="显示当前活跃 Stage 的任务指南与验收指标")
 
