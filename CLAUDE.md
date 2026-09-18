@@ -16,7 +16,7 @@ Comments, log messages, and docs are in Chinese; match that style.
 # Install (editable). Extras: rag (chroma/ollama), ui (textual/gradio), physics (pybamm), dev (pytest), all
 pip install -e ".[all]"
 
-# Run all offline tests (no API key / services needed; ~2 min; baseline: 90 passed, 0 warnings — includes 3 wheel-packaging regression tests in test_packaging.py)
+# Run all offline tests (no API key / services needed; ~3 min; baseline: 105 passed, 1 deselected, 0 warnings — includes 3 wheel-packaging regression tests in test_packaging.py and 4 doctor self-check tests in test_doctor.py)
 pytest -m "unit or not external"
 
 # Run one test file / one test
@@ -31,19 +31,22 @@ pytest -m "unit"
 abr-cli --status
 python auto_battery_research_cli.py --status
 
-# Environment self-check (LLM key / Ollama+embedding model / MinerU token / assets / optional deps)
+# Environment self-check (LLM key / ReAct runtime (langchain+langgraph) / Ollama+embedding model / MinerU token / assets / optional deps)
 abr-cli --doctor
 
 # Key CLI modes
 abr-cli --run --goal "设计400Wh/kg高比能液态锂金属电池方案"   # full autonomous loop
 abr-cli --run --with-pinn                                      # enable Stage 5 physics sim
 abr-cli --check / --complete    # diagnose current stage gate / pass & advance
+abr-cli --check-stage 4 / --complete-stage 4   # same, against an explicit stage id
+abr-cli --detail                # deep dive into task + all-stage detail
 abr-cli --tips / --status / --journal / --report
 abr-cli --skip-stage 5 / --enable-stage 5
 abr-cli --tui                   # Rich terminal UI
 abr-cli --web --host 127.0.0.1 --port 7865   # FastAPI read-only web monitor (--web-gradio: legacy Gradio)
 abr-cli --mcp                   # stdio MCP server for IDE integration
 abr-cli --reset                 # reset the CURRENT goal's workflow back to Stage 1
+# Run logs are persisted by default to log/<goal>.log (--no-log disables, --log-file overrides)
 ```
 
 ## LLM Configuration
@@ -61,11 +64,12 @@ abr-cli --reset                 # reset the CURRENT goal's workflow back to Stag
 
 - `agent.py` — `ABRAgent`, the global master agent. Per stage: builds a stage prompt, drives the backend ReAct loop, then runs deterministic executors. Self-correction: on `Check` failure the `failure_summary` (error_code/error/next_action) is stored in `last_failure` and injected into the **next retry's prompt** (【上一轮门禁驳回】block). LangGraph `thread_id` is `abr_{goal_md5[:8]}_stage_{id}` — stable across retries within a stage so `MemorySaver` thread memory accumulates.
 - `backend/langchain_backend.py` — LLM runtime. Builds the agent via `langchain.agents.create_agent` (langgraph's `create_react_agent` is deprecated, V2.0 removes it) with a fallback chain: create_agent → create_react_agent → raw `model.bind_tools`. On `GraphRecursionError` it harvests the partial message state from the checkpointer instead of discarding it. `ContextTrimmer` drops orphan `ToolMessage`s whose `AIMessage(tool_calls)` was trimmed away.
-- `workflow/stage_manager.py` — `StageManager`, the 6-stage state machine. Stages are **declaratively defined** in `workflow/abr_workflow.yaml` (keys, checker classes, expected_outputs, skip flags); checkers are loaded by import path string — **a failed checker load is fail-closed** (`CHECKER_LOAD_ERROR`, the gate always fails until the yaml/import is fixed), never silently substituted with an always-pass checker. On startup it auto-detects existing data assets and pre-passes completed stages; the pointer lands on the last stage when everything is done. `get_task_output_dir()` names task dirs `slug45_md5(goal)[:8]` to avoid prefix collisions, but **adopts legacy un-hashed dirs** whose `.stage_state.json` target matches (don't break existing tasks on upgrade).
+- `workflow/stage_manager.py` — `StageManager`, the 6-stage state machine. Stages are **declaratively defined** in `workflow/abr_workflow.yaml` (keys, checker classes, expected_outputs, skip flags; parsed into `stage/base_stage.py`'s `BaseStage` objects); checkers are loaded by import path string — **a failed checker load is fail-closed** (`CHECKER_LOAD_ERROR`, the gate always fails until the yaml/import is fixed), never silently substituted with an always-pass checker. On startup it auto-detects existing data assets and pre-passes completed stages; the pointer lands on the last stage when everything is done. `get_task_output_dir()` names task dirs `slug45_md5(goal)[:8]` to avoid prefix collisions, but **adopts legacy un-hashed dirs** whose `.stage_state.json` target matches (don't break existing tasks on upgrade).
 - `checkers/` — one deterministic gate checker per stage (`BaseChecker` subclasses). `Check` = diagnose only (no state change); `Complete` = verify then atomically advance the stage pointer. **Path resolution is task-first**: checkers prefer `stage_manager.get_task_output_dir()` artifacts; the global `output/auto_battery_research/` fallback is gated by `BaseChecker.allow_global_legacy_fallback` — only adopted legacy task dirs (un-hashed `output/tasks/{slug45}/`, `StageManager.is_legacy_task`) or standalone checkers (no stage_manager) may read global artifacts; new hashed tasks must be self-contained and never read global. `auto_detect_existing_progress()` enforces strict sequential-prefix claiming: a downstream stage is only auto-claimed when every prior stage is terminal-OK.
 - `tools/` — the agent's toolbox:
   - `domain_tools.py` — 9 stage domain tools (`Inspect*` asset probes + `Ingest/Index/Extract/RunRAGDesign/Run/Synthesize` executors). Stage 4 is converged to a single `RunRAGDesignTool` — all entry points (CLI/TUI/Web/MCP/Agent) go through the one `run_rag_design` service (Planner/Retrieval/Writer/Reviewer live pipeline-internally in `src/lmllm/RAG/`); nothing else may write `design_scheme.*`.
-  - `stage_tools.py` — workflow guardrail tools (`CurrentTips`, `Status`, `Check`, `Complete`, `SetStageJournal`, `SkipStage`, `EnableStage`). They read the module-level singleton wired via `set_stage_manager()`; the singleton + per-goal cache are guarded by `_MANAGER_LOCK` (Gradio handlers run threaded). The web UI queues events with `default_concurrency_limit=1` — do not raise it, tool runtime state is process-global. **Always fetch managers via `get_stage_manager_for_goal(goal)`** (reuses the global singleton or a per-goal cache) — constructing `StageManager` directly triggers the full checker cascade + state double-write and can race the main flow.
+  - `stage_tools.py` — workflow guardrail tools (`CurrentTips`, `Status`, `Check`, `Complete`, `SetStageJournal`, `SkipStage`, `EnableStage`). They read the module-level singleton wired via `set_stage_manager()`; the singleton + per-goal cache are guarded by `_MANAGER_LOCK` (Gradio handlers run threaded). The web UI queues events with `default_concurrency_limit=1` — do not raise it, tool runtime state is process-global. **Always fetch managers via `get_stage_manager_for_goal(goal)`** (reuses the global singleton or a per-goal cache) — constructing `StageManager` directly triggers the full checker cascade + state double-write and can race the main flow. Its `resolve_effective_goal(target, active)` folds synonymous goals (case/whitespace/punctuation, ≥6-char substring, same `Wh/kg` figure) back to the active goal — all four domain tools resolve their goal through it, and synonymous requests reuse the global singleton instead of spawning a per-goal manager.
+  - `file_tools.py` — workspace-sandboxed file utilities; `validate_workspace_path()` rejects any path resolving outside the repo root (path-traversal guard).
   - `workflow_actions.py` — the bridge from tools to real work; fail-closed: when assets are missing it actually runs the pipelines (imports `step_mineru/step_merge/step_classify` from `auto_battery_research.pipeline.incremental`, subprocesses `miner/paragraph_metadata_pipeline_v5_qwen.py --incremental`, imports `run_tok2000` via `auto_battery_research.mining`). `_merged_literature_dirs()` resolves merged-literature dirs as: canonical `paths.papers_merged_dir` (`papers/merged`) + legacy `papers/text_merged` where the old cleaning pipeline's data lives — count both, don't hardcode either.
   - `rag_adapter.py` — bridges Stage 4 to the RAG engine in `src/lmllm/RAG/` and converts results into the Stage 4 output contract. Validates fail-closed **before** writing, stamps `review_status: APPROVED|REJECTED` into `design_scheme.json` (consumed by `agent.py`'s scheme-valid precheck), always writes the artifacts (REJECTED output is kept for diagnosis), and pins a `provenance` block (corpus manifest hash / vector-index fingerprint / `RULES_VERSION` from `relation_engine.py`) plus `research_context.json` for reproducibility.
   - `mcp_server.py` — MCP stdio server.
@@ -100,7 +104,7 @@ papers/pdf → papers/merged (canonical; legacy data in papers/text_merged) → 
 ## Important Behaviors
 
 - **Stage 5 (PINN physics) is skipped by default** (`skip_pinn_default: true`); enable with `--with-pinn` or `abr-cli --enable-stage 5`. PyBaMM requires Python < 3.13. **Its internals are reserved/placeholder** (simulated fallback values in `pinn/p2d_runner.py`, default residual in `pinn_physics_checker.py`) — leave them alone unless asked.
-- Workflow state is sticky **per goal**: `output/tasks/<goal>/.stage_state.json` is reused across runs. After changing stage deliverables/code, use `abr-cli --reset` (or delete that goal's state file) to force re-evaluation from Stage 1.
+- Workflow state is sticky **per goal**: `output/tasks/<goal>/.stage_state.json` is reused across runs. After changing stage deliverables/code, use `abr-cli --reset` (or delete that goal's state file) to force re-evaluation from Stage 1. **Goal identity is normalized, not exact-matched**: `resolve_effective_goal()` treats case/whitespace/punctuation variants, ≥6-char substrings, and identical `Wh/kg` figures of the active goal as the same goal so LLM wording drift cannot fork a new task dir. The default goal has one source of truth — `util/constants.py:DEFAULT_GOAL`; changing it orphans existing task state dirs, and goal strings must never be hardcoded elsewhere (the 400Wh default was deliberately scrubbed from tools/checkers).
 - Strict mode (`runtime_options.strict_mode: true`) makes hard checkers fail the stage on any error; `max_retries_per_stage: 3` bounds self-healing loops.
 - Stage rule from the mission system prompt: never fabricate data — "有则提取、无则留空、禁止编造" (extract what exists, leave blank otherwise, never invent). Design schemes must pass all C1–C8 constraints in `relation_engine.py`.
 - Windows is the primary dev platform — entry points reconfigure stdout/stderr to UTF-8; keep that pattern when adding new entry scripts.
