@@ -24,6 +24,11 @@ dependencies = [
     "openai>=1.0.0",
     "langchain-core>=0.1.0",
     "langchain-openai>=0.0.2",
+    # ReAct 主循环运行时 (langchain.agents.create_agent / langgraph create_react_agent)：
+    # 属核心功能而非可选 extras —— 二者缺失时 backend 退化为裸 bind_tools 模型，
+    # LLM 决策必失败 ([LLM-Notice] Invalid input type <class 'dict'>) 并降级确定性调度
+    "langchain>=1.0.0",
+    "langgraph>=1.0.0",
     "rank-bm25>=0.2.2",
     "tiktoken>=0.7.0",
     "fastapi>=0.100.0",
