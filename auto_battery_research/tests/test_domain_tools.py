@@ -34,12 +34,13 @@ def init_stage_manager():
 
 def test_domain_tools_instantiation():
     tools = get_all_domain_tools()
-    assert len(tools) == 9  # Stage 4 四个细粒度工具已收敛为 RunRAGDesign 单链路服务
+    assert len(tools) == 10
     names = [t.name for t in tools]
     assert "InspectLiteratureAssets" in names
     assert "InspectVectorDB" in names
     assert "InspectCellEntities" in names
     assert "RunRAGDesign" in names
+    assert "QueryMaterialsProject" in names
     assert "RunPhysicsSimulation" in names
     assert "SynthesizeResearchReport" in names
 

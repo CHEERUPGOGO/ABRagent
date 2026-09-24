@@ -14,7 +14,7 @@ OFFLINE_CONFIG = {"openai": {"openai_api_key": "dummy_key"}, "llm": {"api_key": 
 def test_abr_agent_initialization():
     agent = ABRAgent(goal="测试锂金属电池方案", skip_pinn=True, verbose=False, enable_file_log=False, config=OFFLINE_CONFIG)
     assert agent.goal == "测试锂金属电池方案"
-    assert len(agent.all_tools) == 15  # 9 domain (Stage 4 已收敛为 RunRAGDesign 单服务) + 6 stage
+    assert len(agent.all_tools) == 16  # 10 domain (含 MP 查询) + 6 stage
     assert "InspectLiteratureAssets" in agent.tool_map
     assert "RunRAGDesign" in agent.tool_map
     assert "Check" in agent.tool_map

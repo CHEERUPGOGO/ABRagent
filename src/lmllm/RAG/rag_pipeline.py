@@ -534,6 +534,8 @@ class RAGPipeline:
             lit_weight=_lit_w,
             ebook_weight=_ebk_w,
         )
+        from auto_battery_research.tools.materials_project import augment_mp_evidence
+        retrieval = augment_mp_evidence(retrieval, plan, top_k)
         evidence = retrieval.get("results", [])[:top_k]
         print(f"  -> 召回 {len(evidence)} 条证据 (数据源: {retrieval.get('db_type', _db_type)})")
 
@@ -897,7 +899,9 @@ class RAGPipeline:
                 seen.add(ref_key)
                 doi = item.get("doi", "")
                 title = item.get("title", "")
-                if title:
+                if item.get("_source_type") == "materials_project":
+                    ref_line = f"- [{item.get('source_display', title)}]({item['source']}) [{item['passage_id']}]"
+                elif title:
                     ref_line = f"- {title}" + (f" (DOI: {doi})" if doi else "")
                 else:
                     ref_line = f"- {item.get('source', '')}"

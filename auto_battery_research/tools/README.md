@@ -6,7 +6,7 @@
 
 ```
 ABRAgent (ReAct 主循环)
-   │  全局维护 15 个 LangChain BaseTool (9 领域 + 6 护栏)
+   │  全局维护 16 个 LangChain BaseTool (10 领域 + 6 护栏)
    │  运行时由 backend.bind_stage_tools 按 Stage 1~6 物理隔离与动态裁剪
    ▼
 ┌────────────────┐    真正干活     ┌──────────────────────┐
@@ -20,7 +20,8 @@ ABRAgent (ReAct 主循环)
 
 | 文件 | 角色 | 说明 |
 |:---|:---|:---|
-| `domain_tools.py` | Agent 领域工具集 | 9 个 Stage 1~6 业务工具 (LangChain `BaseTool`)，入参动态绑定当前活跃课题 |
+| `domain_tools.py` | Agent 领域工具集 | 10 个 Stage 1~6 业务工具 (LangChain `BaseTool`)，入参动态绑定当前活跃课题 |
+| `materials_project.py` | MP Client 与工具 | FastMCP stdio Client，调用官方 `mp-api` Server；[配置指南](../../docs/materials_project_mcp.md) |
 | `stage_tools.py` | 工作流护栏工具集 | 6 个门禁/状态/日志工具 + 供 CLI/MCP/Web 直接调用的函数层 |
 | `workflow_actions.py` | 干活桥接层 | 工具 → 真实流水线的唯一入口，fail-closed：资产缺失时实际执行流水线而非报空 |
 | `rag_adapter.py` | Stage 4 适配器 | 桥接 `src/lmllm/RAG` 引擎，转换并校验 Stage 4 输出契约 (design_scheme + provenance 溯源) |
@@ -31,7 +32,7 @@ ABRAgent (ReAct 主循环)
 
 ---
 
-## 一、领域工具集 (domain_tools.py · 9 个)
+## 一、领域工具集 (domain_tools.py · 10 个)
 
 按 6 阶段工作流划分，每阶段包含"感知探测 (Inspect*)" 与 "执行落地"两类。
 `agent.py` 启动时通过 `STAGE_ALLOWED_DOMAIN_TOOLS` 为各阶段独立裁剪并编译隔离的 ReAct Agent，**杜绝跨阶段抢跑与工具幻觉**。
@@ -45,6 +46,7 @@ ABRAgent (ReAct 主循环)
 | `InspectCellEntities` | Stage 3 | 探测已挖掘材料数据与已组装电芯实体：电芯数、正负极/电解液三元组分布 | `cell_dir` (留空由 StageManager 解析) |
 | `ExtractAndAssembleCells` | Stage 3 | 材料微观表征挖掘 + 三层归一化 + 电芯实体组装流水线 | `sample_limit` (默认 10), `target_query` (留空动态绑定当前活跃课题) |
 | `RunRAGDesign` | Stage 4 | **Stage 4 唯一落盘入口**：单链路 Planner → Retrieval → Writer → Reviewer + RelationEngine C1–C8 硬约束核算，产出 `design_scheme.md/.json`、`rag_result.json` | `target_goal` (留空动态绑定当前活跃课题), `design_query` |
+| `QueryMaterialsProject` | Stage 4 | 查询官方 MP 计算材料属性并返回来源；主 RAG 链路也根据 Planner 的 `mp_queries` 自动补充证据 | `query`, `mode` (`search` / `fetch`) |
 | `RunPhysicsSimulation` | Stage 5 | PyBaMM Newman P2D / PINN 代理仿真：充放电曲线与能量密度标定 (默认跳过) | `target_goal` (留空动态绑定当前活跃课题), `current_rate` (默认 "0.2C") |
 | `SynthesizeResearchReport` | Stage 6 | 汇总全链路产物编译最终综合研报 `final_research_report.md` | `target_goal` (留空动态绑定当前活跃课题) |
 

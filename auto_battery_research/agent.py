@@ -50,7 +50,7 @@ STAGE_ALLOWED_DOMAIN_TOOLS: Dict[int, List[str]] = {
     1: ["InspectLiteratureAssets", "IngestLiteraturePapers"],
     2: ["InspectVectorDB", "IndexSemanticVectors"],
     3: ["InspectCellEntities", "ExtractAndAssembleCells"],
-    4: ["RunRAGDesign"],
+    4: ["RunRAGDesign", "QueryMaterialsProject"],
     5: ["RunPhysicsSimulation"],
     6: ["SynthesizeResearchReport"],
 }
@@ -195,7 +195,7 @@ class ABRAgent:
             "   - Stage 1: 使用 `InspectLiteratureAssets` 探测文献，若缺失则调用 `IngestLiteraturePapers`。\n"
             "   - Stage 2: 使用 `InspectVectorDB` 探测向量库，若缺失则调用 `IndexSemanticVectors`。\n"
             "   - Stage 3: 使用 `InspectCellEntities` 探测电芯，若缺失则调用 `ExtractAndAssembleCells`。\n"
-            "   - Stage 4: 调用一次 `RunRAGDesign` 单链路服务 (内部完成 Planner -> Retrieval -> Writer -> Reviewer 与 RelationEngine 硬约束核算)。\n"
+            "   - Stage 4: 调用一次 `RunRAGDesign` 单链路服务 (内部完成 Planner -> Retrieval -> Writer -> Reviewer 与 RelationEngine 硬约束核算)。仅当问题明确给出化学式、化学体系或 mp-id，且确实需要晶体结构、相稳定性、形成能、凸包能或带隙等计算属性时，才考虑 `QueryMaterialsProject`；只问实验容量、循环寿命、电解液配方、包覆工艺或界面抑氧效果时不要调用。`RunRAGDesign` 内部已按需查询 MP，同一问题不要预先重复调用。\n"
             "   - Stage 5: 调用 `RunPhysicsSimulation` 执行 P2D/PINN 物理验证（若未跳过）。\n"
             "   - Stage 6: 调用 `SynthesizeResearchReport` 整合全流程成果并生成最终综合研报。\n"
             "3. **确定性门禁质检 (Check & Complete)**：\n"

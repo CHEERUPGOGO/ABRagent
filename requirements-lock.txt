@@ -34,6 +34,12 @@ langchain-ollama==1.1.0
 chromadb==1.5.9
 ollama==0.6.2
 
+# ---- Materials Project 扩展 [mp] (chem 环境) ----
+mp-api==0.46.5
+fastmcp==2.14.7
+mcp==1.30.0
+python-dotenv==1.2.3
+
 # ---- UI 扩展 [ui] ----
 textual==8.2.8
 gradio==6.26.0

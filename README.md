@@ -150,6 +150,19 @@ cp .env.example .env   # 然后编辑填写
 
 > 未配置 API Key 时系统自动进入确定性流水线模式（离线兜底），各阶段门禁仍可正常推进。
 
+### Materials Project 官方 MCP（可选）
+
+在运行项目的 Python 环境中安装 `pip install -e ".[mp]"`，并在项目根目录的 `.env` 中填写 `MP_API_KEY`。`MP_MCP_PYTHON` 留空时使用当前解释器；若项目运行在其他环境，将它设为安装了 `mp-api[mcp]` 的解释器路径。FastMCP Client 会按需启动官方 `mp_api.mcp.server`，无需手动常驻 Server。配置和握手命令见 [Materials Project MCP 接入说明](docs/materials_project_mcp.md)。
+
+Stage 4 的 Planner **仅在两个条件同时成立时**生成 `mp_queries`：问题明确给出化学式、化学体系或 `mp-id`，且回答确实需要晶体结构、晶相稳定性、形成能、能量高于凸包、带隙等计算属性。查询在本地文献检索之后、Writer 生成方案之前执行；`RunRAGDesign` 已包含此步骤，同一设计问题无需先让 Agent 再调用一次 `QueryMaterialsProject`。
+
+| 问题示例 | 预期 `mp_queries` | 主要证据 |
+|---|---|---|
+| `LaFeO3 的空间群和能量高于凸包是多少？` | `["LaFeO3"]` | MP 计算属性 |
+| `LaFeO3 包覆后 1 C 循环 150 次容量保持率是多少？` | `[]` | 本地实验文献 |
+
+仅出现材料名称并不触发 MP。包覆工艺、电解液配方、界面 M–O 键是否形成、氧释放是否减少及循环性能，仍需实验或文献证据；MP 的本体计算属性不能直接证明这些结论。运行后可检查课题目录下 `rag_result.json`：`plan.mp_queries` 是规划的查询，`retrieval.search_logs` 是实际调用状态，最终 `evidence` 中的 `MP:` 条目及方案引用才表明 MP 数据进入了答案。
+
 ---
 
 ## 🚀 快速上手
@@ -264,7 +277,7 @@ auto_battery_research/        # Layer 1: 智能体编排
 ├── workflow/stage_manager.py #   StageManager 6 阶段状态机 (声明式: abr_workflow.yaml)
 ├── checkers/                 #   每阶段一个确定性门禁 Checker
 ├── tools/
-│   ├── domain_tools.py       #   9 个阶段领域工具 (Inspect* + RunRAGDesign 单链路服务 + 执行器)
+│   ├── domain_tools.py       #   10 个阶段领域工具 (含 Materials Project MCP 查询)
 │   ├── stage_tools.py        #   工作流护栏工具 (Tips/Status/Check/Complete/...)
 │   ├── workflow_actions.py   #   工具 → 真实流水线桥接 (增量调度 legacy 脚本)
 │   └── rag_adapter.py        #   Stage 4 → RAG 引擎适配器 (输出契约规范化)
