@@ -374,6 +374,8 @@ class SynthesizeResearchReportTool(BaseTool):
 
 def get_all_domain_tools() -> List[BaseTool]:
     """获取所有电池科研领域工具实例."""
+    from .materials_project import QueryMaterialsProjectTool
+
     return [
         # Stage 1
         InspectLiteratureAssetsTool(),
@@ -386,6 +388,7 @@ def get_all_domain_tools() -> List[BaseTool]:
         ExtractAndAssembleCellsTool(),
         # Stage 4 (单链路服务: 管线内部保留 Planner/Retrieval/Writer/Reviewer)
         RunRAGDesignTool(),
+        QueryMaterialsProjectTool(),
         # Stage 5
         RunPhysicsSimulationTool(),
         # Stage 6

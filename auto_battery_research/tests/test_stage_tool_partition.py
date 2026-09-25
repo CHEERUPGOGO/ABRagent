@@ -22,13 +22,14 @@ def test_stage_tools_partitioning():
     agent = ABRAgent(goal="设计500wh/kg高比能液态锂金属电池方案", config=OFFLINE_CONFIG, verbose=False, enable_file_log=False)
     
     # 1. 全局工具箱完整性保留 (向前兼容)
-    assert len(agent.all_tools) == 15
+    assert len(agent.all_tools) == 16
 
     # 2. Stage 4 专属工具检查 (物理隔离)
     s4_tools = agent.backend.get_stage_tools(stage_id=4)
     s4_tool_names = [t.name for t in s4_tools]
     
     assert "RunRAGDesign" in s4_tool_names
+    assert "QueryMaterialsProject" in s4_tool_names
     assert "Check" in s4_tool_names
     assert "Complete" in s4_tool_names
     assert "CurrentTips" in s4_tool_names
@@ -47,6 +48,7 @@ def test_stage_tools_partitioning():
     assert "InspectLiteratureAssets" in s1_tool_names
     assert "IngestLiteraturePapers" in s1_tool_names
     assert "RunRAGDesign" not in s1_tool_names
+    assert "QueryMaterialsProject" not in s1_tool_names
     assert "SynthesizeResearchReport" not in s1_tool_names
 
 
