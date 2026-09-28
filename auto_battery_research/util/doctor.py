@@ -176,13 +176,27 @@ def run_doctor_checks() -> List[Tuple[str, str, str, str]]:
     md_n = sum(_count(str(d / "**/*.md")) for d in merged_dirs)
     db_n = _count(str(ROOT_DIR / "database/type/**/*.md"))
     chroma_dir = ROOT_DIR / "miner/chroma/paragraphs_q"
-    chroma_ok = chroma_dir.exists() and any(chroma_dir.iterdir())
-    if pdf_n or md_n or db_n:
-        detail = f"PDF {pdf_n} 篇 · 合并 MD {md_n} 篇 · 分类库 {db_n} 篇 · 向量库{'✓' if chroma_ok else '✗'}"
+    chroma_count = 0
+    if chroma_dir.exists():
+        sqlite_file = chroma_dir / "chroma.sqlite3"
+        if sqlite_file.exists():
+            try:
+                import sqlite3
+                with sqlite3.connect(str(sqlite_file)) as conn:
+                    cur = conn.cursor()
+                    cur.execute("SELECT count(*) FROM embeddings")
+                    row = cur.fetchone()
+                    chroma_count = int(row[0]) if row else 0
+            except Exception:
+                pass
+    chroma_ok = chroma_count > 0
+    if pdf_n or md_n or db_n or chroma_ok:
+        chroma_str = f"✓ ({chroma_count:,} 条)" if chroma_ok else "✗ (0条/未索引)"
+        detail = f"PDF {pdf_n} 篇 · 合并 MD {md_n} 篇 · 分类库 {db_n} 篇 · 向量库{chroma_str}"
         results.append(("文献资产", OK, detail, ""))
     else:
         results.append(("文献资产", WARN, "未检测到任何文献资产",
-                        "放入 PDF 至 papers/pdf/ 并配置 MinerU Token；否则 Stage 1 将诚实失败"))
+                        "放入 PDF 至 papers/pdf/ 并配置 MinerU Token 或导入向量资产；否则 Stage 1 将诚实失败"))
 
     # 8. ReAct 智能体运行时 (langchain / langgraph)
     results.append(_agent_runtime_row())

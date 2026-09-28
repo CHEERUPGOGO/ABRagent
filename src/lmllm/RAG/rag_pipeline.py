@@ -222,8 +222,10 @@ class RAGPipeline:
             return None
 
     @staticmethod
-    def _init_bm25_from_chroma(chroma_dir: str, collection_name: str) -> "BM25KnowledgeBase":
-        """从 Chroma 集合或本地段落 JSON 构建 BM25 索引, 保持 passage_id 对齐."""
+    def _init_bm25_from_chroma(chroma_dir: str, collection_name: str, max_passages: int = 10000) -> "BM25KnowledgeBase":
+        """从 Chroma 集合或本地段落 JSON 构建 BM25 索引, 保持 passage_id 对齐.
+        注: 超过 max_passages 时采样前 max_passages 条构建内存 BM25，全量检索由 Chroma ANN 向量检索负责。
+        """
         import hashlib
         import json
         from .config import PROJECT_ROOT
@@ -238,20 +240,24 @@ class RAGPipeline:
             collection = client.get_collection(collection_name)
             total = collection.count()
             if total > 0:
-                print(f"[RAGPipeline] BM25 从 Chroma 构建: {total} 条段落")
+                target_count = min(total, max_passages)
+                print(f"[RAGPipeline] BM25 从 Chroma 构建: {target_count}/{total} 条段落 (全量走向量检索)")
                 batch_size = 1000
                 offset = 0
-                while offset < total:
+                while offset < target_count:
+                    curr_limit = min(batch_size, target_count - offset)
                     batch = collection.get(
-                        offset=offset, limit=batch_size,
+                        offset=offset, limit=curr_limit,
                         include=["documents", "metadatas"],
                     )
-                    for i, text in enumerate(batch["documents"]):
-                        meta = batch["metadatas"][i]
+                    docs = batch.get("documents", [])
+                    metas = batch.get("metadatas", [])
+                    for i, text in enumerate(docs):
+                        meta = metas[i] if i < len(metas) and metas[i] else {}
                         pid = hashlib.md5(text.encode()).hexdigest()[:12]
                         source = meta.get("source_file", meta.get("source_paper", "chroma"))
                         kb.add_passage(passage_id=pid, text=text, source=str(source), metadata=meta)
-                    offset += batch_size
+                    offset += curr_limit
                 loaded = True
         except Exception:
             pass

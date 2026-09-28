@@ -57,7 +57,20 @@ class VectorDBChecker(BaseChecker):
 
         # 2. 检查段落标注 JSON 或 Chroma 向量库
         chroma_p = self.resolve_path(chroma_dir)
-        chroma_exists = chroma_p.exists() and len(list(chroma_p.glob("*"))) > 0
+        chroma_vector_count = 0
+        if chroma_p.exists():
+            sqlite_file = chroma_p / "chroma.sqlite3"
+            if sqlite_file.exists():
+                try:
+                    import sqlite3
+                    with sqlite3.connect(str(sqlite_file)) as conn:
+                        cur = conn.cursor()
+                        cur.execute("SELECT count(*) FROM embeddings")
+                        row = cur.fetchone()
+                        chroma_vector_count = int(row[0]) if row else 0
+                except Exception:
+                    pass
+        chroma_exists = chroma_vector_count > 0
 
         para_data = None
         found_para_file = None
@@ -125,12 +138,16 @@ class VectorDBChecker(BaseChecker):
         return True, self.build_diagnostic(
             passed=True,
             observed={
-                "chroma_dir_exists": chroma_exists,
+                "chroma_dir_exists": chroma_p.exists(),
+                "chroma_vector_count": chroma_vector_count,
                 "para_json_file": found_para_file,
-                "total_paragraphs": valid_items_count,
+                "total_paragraphs": valid_items_count if valid_items_count > 0 else chroma_vector_count,
                 "label_distribution": label_stats,
                 "meta_file": found_meta_file,
             },
             expected="段落已建立语义标注与向量检索索引，标签分布完备",
-            details={"total_paragraphs": valid_items_count},
+            details={
+                "total_paragraphs": valid_items_count if valid_items_count > 0 else chroma_vector_count,
+                "chroma_vector_count": chroma_vector_count,
+            },
         )

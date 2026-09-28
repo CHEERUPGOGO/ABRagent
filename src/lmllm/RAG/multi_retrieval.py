@@ -112,8 +112,11 @@ class MultiRetrieval:
     # ── BM25 构建 ──────────────────────────────────────────────
 
     @staticmethod
-    def _build_bm25_from_store(chroma_dir: str, collection_name: str) -> BM25KnowledgeBase:
-        """从 Chroma 持久化目录或本地段落 JSON 读取所有段落，构建 BM25 索引。"""
+    def _build_bm25_from_store(chroma_dir: str, collection_name: str, max_passages: int = 10000) -> BM25KnowledgeBase:
+        """从 Chroma 持久化目录或本地段落 JSON 读取段落，构建 BM25 索引。
+        注: 当向量库规模极大 (如 >10,000 条) 时，采样前 max_passages 条构建内存 BM25，
+        全量检索由 Chroma ANN 向量索引负责，避免初始化阻塞数分钟。
+        """
         import json
         kb = BM25KnowledgeBase()
         loaded = False
@@ -123,19 +126,23 @@ class MultiRetrieval:
             collection = client.get_collection(collection_name)
             total = collection.count()
             if total > 0:
+                target_count = min(total, max_passages)
                 batch_size = 1000
                 offset = 0
-                while offset < total:
+                while offset < target_count:
+                    curr_limit = min(batch_size, target_count - offset)
                     batch = collection.get(
-                        offset=offset, limit=batch_size,
+                        offset=offset, limit=curr_limit,
                         include=["documents", "metadatas"],
                     )
-                    for i, text in enumerate(batch["documents"]):
+                    docs = batch.get("documents", [])
+                    metas = batch.get("metadatas", [])
+                    for i, text in enumerate(docs):
                         pid = hashlib.md5(text.encode()).hexdigest()[:12]
-                        meta = batch["metadatas"][i]
+                        meta = metas[i] if i < len(metas) and metas[i] else {}
                         source = str(meta.get("source_file", meta.get("source_paper", "chroma")))
                         kb.add_passage(passage_id=pid, text=text, source=source, metadata=meta)
-                    offset += batch_size
+                    offset += curr_limit
                 loaded = True
         except Exception:
             pass
