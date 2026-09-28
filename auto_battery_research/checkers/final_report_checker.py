@@ -18,6 +18,29 @@ class FinalReportChecker(BaseChecker):
 
     def do_check(self, is_complete: bool = False, **kwargs) -> Tuple[bool, Dict[str, Any]]:
         import re
+        if self.stage_manager and is_complete:
+            invalid = []
+            for stage_id in range(1, 6):
+                stage = self.stage_manager.get_stage_by_id(stage_id)
+                if stage is None:
+                    invalid.append({"stage_id": stage_id, "status": "MISSING"})
+                    continue
+                valid = (
+                    stage.status == "PASSED"
+                    or (stage.status == "SKIPPED" and stage.allow_skip and stage.skip)
+                    or (stage.id == 5 and stage.status == "FALLBACK")
+                )
+                if not valid:
+                    invalid.append({"stage_id": stage.id, "status": stage.status})
+            if invalid:
+                return False, self.build_diagnostic(
+                    passed=False,
+                    error_code="REPORT_PREREQUISITES_INCOMPLETE",
+                    error_msg="前置阶段未完成或状态不合法，综合研报不能通过终审",
+                    observed={"invalid_stages": invalid},
+                    expected="必需前置阶段 PASSED；允许的物理阶段可 SKIPPED 或 FALLBACK",
+                    next_action="完成前置阶段后重新生成报告并终审",
+                )
         paths = self.config.get("paths", {})
         output_agent_dir = self.resolve_path(paths.get("output_dir", "output/auto_battery_research"))
         explicit_report = paths.get("final_report_file")

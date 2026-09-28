@@ -451,6 +451,21 @@ class StageManager:
 
         self._save_state()
 
+        if target_stage.id == 6:
+            from auto_battery_research.util.reports import publish_report_audit
+            try:
+                publish_report_audit(
+                    self.get_task_output_dir() / "final_research_report.md", self.stages,
+                )
+            except Exception as exc:
+                target_stage.status = "FAILED"
+                self._save_state()
+                return False, {
+                    "complete": False,
+                    "error": f"终审报告状态发布失败: {exc}",
+                    "message": "报告未完成发布，请修复文件写入问题后重试 Complete。",
+                }
+
         new_current = self.get_current_stage()
         return True, {
             "complete": True,
