@@ -69,11 +69,19 @@ class MaterialsProjectClient:
         log_dir.mkdir(parents=True, exist_ok=True)
         mcp_log = log_dir / "mcp_mp_stderr.log"
 
+        child_env = os.environ.copy()
+        child_env.update({
+            "MP_API_KEY": self.api_key,
+            "PYTHONUTF8": "1",
+            "NO_PROXY": "api.materialsproject.org,materialsproject.org,localhost,127.0.0.1",
+            "no_proxy": "api.materialsproject.org,materialsproject.org,localhost,127.0.0.1",
+        })
+
         return Client(
             StdioTransport(
                 command=self.python,
                 args=["-m", "mp_api.mcp.server"],
-                env={"MP_API_KEY": self.api_key, "PYTHONUTF8": "1"},
+                env=child_env,
                 keep_alive=False,
                 log_file=mcp_log,
             ),
