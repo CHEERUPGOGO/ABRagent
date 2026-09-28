@@ -215,6 +215,20 @@ def run_doctor_checks() -> List[Tuple[str, str, str, str]]:
         except ImportError:
             results.append((label, WARN, "未安装", extra))
 
+    # Materials Project 官方 MCP [mp]
+    try:
+        from auto_battery_research.tools.materials_project import MaterialsProjectClient
+        mp_client = MaterialsProjectClient()
+        if mp_client.enabled and mp_client.api_key:
+            py_name = Path(mp_client.python).parent.name if Path(mp_client.python).parent.name != "Scripts" else Path(mp_client.python).parent.parent.name
+            results.append(("Materials Project [mp]", OK, f"已就绪 (Key 已配置 · {py_name})", ""))
+        elif mp_client.enabled:
+            results.append(("Materials Project [mp]", WARN, "未配置 API Key", "在 .env 中设置 MP_API_KEY (从 materialsproject.org/api 获取)"))
+        else:
+            results.append(("Materials Project [mp]", OK, "已禁用 (MP_MCP_ENABLED=false)", ""))
+    except Exception as e:
+        results.append(("Materials Project [mp]", WARN, f"未就绪: {e}", "pip install -e '.[mp]'"))
+
     # 10. 输出目录写权限
     try:
         out_dir = ROOT_DIR / "output" / "tasks"
