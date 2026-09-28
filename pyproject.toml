@@ -37,6 +37,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+mcp = ["mcp>=1.30,<2"]
 mp = [
     "fastmcp>=2.14,<3",
     "mp-api[mcp]>=0.46,<0.47",
@@ -63,6 +64,7 @@ dev = [
     "setuptools>=75",
 ]
 all = [
+    "mcp>=1.30,<2",
     "fastmcp>=2.14,<3",
     "mp-api[mcp]>=0.46,<0.47",
     "langchain-chroma>=0.1.2",
@@ -76,6 +78,7 @@ all = [
 [project.scripts]
 abr-cli = "auto_battery_research.cli:main"
 auto-battery-research = "auto_battery_research.cli:main"
+auto-battery-research-mcp = "auto_battery_research.mcp.server:main"
 
 [tool.setuptools.package-dir]
 "" = "."

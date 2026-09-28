@@ -641,14 +641,30 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
 
     # 3. 计算整体审计结论
     failed_stages = [s.id for s in mgr.stages if s.status == "FAILED"]
-    skipped_stages = [s.id for s in mgr.stages if s.status == "SKIPPED" or s.skip]
+    skipped_stages = [s.id for s in mgr.stages if s.status == "SKIPPED" and s.allow_skip and s.skip]
+    fallback_stages = [s.id for s in mgr.stages if s.id == 5 and s.status == "FALLBACK"]
+    unfinished_stages = [
+        s.id for s in mgr.stages
+        if s.status != "PASSED" and s.id not in skipped_stages
+        and s.id not in fallback_stages
+    ]
     
     if failed_stages:
         audit_summary = f"部分阶段未通过 (Stage {failed_stages} 失败)"
+    elif unfinished_stages:
+        audit_summary = f"流程未完成 (Stage {unfinished_stages})"
+        if 6 in unfinished_stages:
+            audit_summary += "；Stage 6 报告待终审"
+    elif fallback_stages:
+        audit_summary = "流程完成，物理验证仅为代理估算"
     elif skipped_stages:
-        audit_summary = f"必检阶段门禁全部通过 (Stage {skipped_stages} 按配置跳过)"
+        audit_summary = "必检阶段门禁全部通过"
     else:
         audit_summary = "全流程 6 阶段门禁检查全部通过"
+    if skipped_stages:
+        audit_summary += f"；Stage {skipped_stages} 按配置跳过"
+    if fallback_stages:
+        audit_summary += f"；Stage {fallback_stages} FALLBACK (代理估算)"
 
     journal_table_rows = []
     for j in all_journals:
@@ -658,7 +674,7 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
         s_deliv = ", ".join([Path(d).name for d in j.get("deliverables", [])]) or "无"
         journal_table_rows.append(f"| Stage {s_id} | {s_name} | {s_notes} | `{s_deliv}` |")
 
-    journal_table_str = "\n".join(journal_table_rows) if journal_table_rows else "| Stage 1~5 | 全流程阶段 | 阶段门禁检查全部通过 | 各阶段产物就绪 |"
+    journal_table_str = "\n".join(journal_table_rows) if journal_table_rows else "| — | 阶段履历 | 尚无阶段日志，无法确认执行履历 | 无 |"
 
     # 真实读取当前配置的大模型后端，禁止在研报中硬编码声明模型
     llm_cfg = mgr.config.get("llm") or {}

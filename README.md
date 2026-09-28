@@ -41,7 +41,7 @@ AutoBatteryResearch Agent (ABRAgent) 是专为高比能化学电池（锂金属�
 2. **确定性门禁与自愈反思**：`Check` 自检不通过时输出 `failure_summary`（error_code / error / next_action），回注重试轮提示词驱动针对性修复；同一阶段多次重试共享 LangGraph 线程记忆。
 3. **真实数据铁律**："有则提取、无则留空、禁止编造"。设计方案必须通过 RelationEngine 的全部热力学硬约束（C1–C8）与能量密度核算；证据链必须携带真实 DOI 溯源。
 4. **课题级产物隔离**：每个研究课题的产物（设计方案、电芯组装、综合研报、状态文件）独立存放在 `output/tasks/<课题>/`，多课题并行互不污染。
-5. **四维多模态交互入口**：CLI 命令行、Rich TUI 终端面板、FastAPI Web 监控大屏（Gradio 后备）、stdio MCP Server（可接入 Cursor / Claude Desktop 等 AI IDE）。
+5. **四维交互入口**：CLI 命令行、Rich TUI 终端面板、FastAPI Web 监控大屏（Gradio 后备）、领域专家 MCP Server（支持 Streamable HTTP / stdio）。
 
 ---
 
@@ -220,19 +220,14 @@ abr-cli --web --host 127.0.0.1 --port 7865   # 课题列表 / 阶段进度 / 研
 abr-cli --web-gradio                          # 旧版交互式 Gradio 仪表盘（后备）
 ```
 
-### 模式 5：接入 AI IDE (stdio MCP Server)
+### 模式 5：领域专家 MCP Server
 
 ```bash
-abr-cli --mcp
-```
-内置 Model Context Protocol 服务（完整 initialize 握手 / ping / notification 规范），可直接集成至 Claude Code、Cursor、Claude Desktop 等。
-
-```bash
-# Claude Code 接入示例 (轻量入口秒级冷启动, 无需调握手超时)
-claude mcp add abr --scope local -- python /path/to/auto_battery_research_cli.py --mcp
+pip install -e ".[mcp]"
+python -m auto_battery_research.mcp.server --transport streamable-http
 ```
 
-> 包级依赖为 PEP 562 惰性导入 —— `--mcp` 只加载工作流工具链，不拉起 langchain/RAG 引擎，冷启动到握手就绪约 1s。
+默认端点为 `http://127.0.0.1:8000/mcp`，也支持 `--transport stdio`。对外提供轻量文本咨询 `battery_consult` 和完整实验方案 `design_battery_experiment`；内部科研工具不直接暴露。接口与返回约定见 [MCP Server 说明](auto_battery_research/mcp/README.md)。原有 `abr-cli --mcp` stdio 入口仍保留。
 
 ---
 
@@ -280,11 +275,12 @@ auto_battery_research/        # Layer 1: 智能体编排
 │   ├── domain_tools.py       #   10 个阶段领域工具 (含 Materials Project MCP 查询)
 │   ├── stage_tools.py        #   工作流护栏工具 (Tips/Status/Check/Complete/...)
 │   ├── workflow_actions.py   #   工具 → 真实流水线桥接 (增量调度 legacy 脚本)
-│   └── rag_adapter.py        #   Stage 4 → RAG 引擎适配器 (输出契约规范化)
+│   ├── rag_adapter.py        #   Stage 4 → RAG 引擎适配器 (输出契约规范化)
+│   └── mcp_server.py         #   原有 stdio MCP 入口
 ├── mining/ · pipeline/       #   统一门面: 再导出 agent/* 挖掘实现与增量流水线核心
 ├── rag/ · simulation/        #   统一门面: 再导出 src/lmllm/RAG/* 与 pinn/* 物理求解器
-├── tui/ · web/               #   Textual TUI; FastAPI 只读监控 (--web) + Gradio 后备 (--web-gradio)
-└── tools/mcp_server.py       #   stdio MCP 服务
+├── mcp/                      #   领域专家 MCP Server（Streamable HTTP / stdio）
+└── tui/ · web/               #   Textual TUI; FastAPI 只读监控 (--web) + Gradio 后备 (--web-gradio)
 
 src/lmllm/RAG/                # Layer 2: 多智能体 RAG 引擎
 ├── agents.py                 #   Planner → Retrieval → Writer → Reviewer
