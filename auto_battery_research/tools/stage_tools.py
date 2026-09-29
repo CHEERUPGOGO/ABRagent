@@ -220,7 +220,25 @@ def tool_run_stage_task(
         return run_rag_design(target_query=query, **kwargs)
     elif sid == 5:
         if curr.skip:
-            return {"success": True, "message": "Stage 5 PINN 物理仿真已配置跳过，无需执行计算。"}
+            # 即使配置跳过，PINN 参数提取仍执行 (为专门 PINN 模块预置数据基础)；失败不阻断跳过
+            extract_res: Dict[str, Any] = {}
+            try:
+                from auto_battery_research.tools.workflow_actions import _generate_pinn_input_spec
+                extract_res = _generate_pinn_input_spec(query, mgr=mgr) or {}
+            except Exception as extract_err:
+                extract_res = {"success": False, "error": str(extract_err)}
+            extracted = bool(extract_res.get("success"))
+            return {
+                "success": True,
+                "message": (
+                    "Stage 5 PINN 物理仿真已配置跳过 (参数提取仍已执行，真实 PINN 模型待接入)。"
+                    if extracted
+                    else "Stage 5 PINN 物理仿真已配置跳过，无需执行计算。"
+                ),
+                "skip": True,
+                "param_extraction": extract_res,
+                "deliverables": extract_res.get("deliverables", []) if extracted else [],
+            }
         return run_pinn_simulation(target_query=query, **kwargs)
     elif sid == 6:
         return generate_synthesis_report(target_query=query, stage_manager=mgr, **kwargs)

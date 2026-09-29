@@ -98,12 +98,12 @@ papers/pdf → papers/merged (canonical; legacy data in papers/text_merged) → 
 → miner/json/metadata/meta_merged.json + miner/chroma/paragraphs_q (Chroma)
 → output/tasks/<goal>/
      .stage_state.json · stage_journals.json/.md · cell_assembly/
-     design_scheme.md/.json · rag_result.json · simulation_result.json · final_research_report.md
+     design_scheme.md/.json · rag_result.json · pinn_input_spec.json · final_research_report.md
 ```
 
 ## Important Behaviors
 
-- **Stage 5 (PINN physics) is skipped by default** (`skip_pinn_default: true`); enable with `--with-pinn` or `abr-cli --enable-stage 5`. PyBaMM requires Python < 3.13. **Its internals are reserved/placeholder** (simulated fallback values in `pinn/p2d_runner.py`, default residual in `pinn_physics_checker.py`) — leave them alone unless asked.
+- **Stage 5 (PINN) is skipped by default** (`skip_pinn_default: true`); enable with `--with-pinn` or `abr-cli --enable-stage 5`. The stage no longer runs PyBaMM in the workflow: it does trigger-judgment (placeholder `pinn_trigger.enabled` switch in `setting.yaml`, real conditions pending the dedicated PINN module) and extracts the selected materials' physical parameters to `pinn_input_spec.json` — extraction also runs on the skip fast path, fields that cannot be extracted stay `null`. `pinn/p2d_runner.py` remains a read-only library (web demo TAB reuses it directly); PyBaMM requires Python < 3.13 — leave its internals alone unless asked.
 - Workflow state is sticky **per goal**: `output/tasks/<goal>/.stage_state.json` is reused across runs. After changing stage deliverables/code, use `abr-cli --reset` (or delete that goal's state file) to force re-evaluation from Stage 1. **Goal identity is normalized, not exact-matched**: `resolve_effective_goal()` treats case/whitespace/punctuation variants, ≥6-char substrings, and identical `Wh/kg` figures of the active goal as the same goal so LLM wording drift cannot fork a new task dir. The default goal has one source of truth — `util/constants.py:DEFAULT_GOAL`; changing it orphans existing task state dirs, and goal strings must never be hardcoded elsewhere (the 400Wh default was deliberately scrubbed from tools/checkers).
 - Strict mode (`runtime_options.strict_mode: true`) makes hard checkers fail the stage on any error; `max_retries_per_stage: 3` bounds self-healing loops.
 - Stage rule from the mission system prompt: never fabricate data — "有则提取、无则留空、禁止编造" (extract what exists, leave blank otherwise, never invent). Design schemes must pass all C1–C8 constraints in `relation_engine.py`.

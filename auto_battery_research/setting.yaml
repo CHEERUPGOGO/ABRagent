@@ -59,3 +59,11 @@ runtime_options:
     host: "127.0.0.1"
     port: 5005
     timeout: 300
+
+# Stage 5 PINN 触发配置 (占位开关)
+# enabled 仅决定 trigger 判定结果；具体触发条件 (特定材料 ID 白名单 + 特定性能
+# 要求阈值) 待专门 PINN 模块接入时在 workflow_actions._check_pinn_trigger 中定义，
+# 届时可通过下方 rule 字段结构化声明规则。
+pinn_trigger:
+  enabled: false
+  rule: null

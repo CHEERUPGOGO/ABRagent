@@ -67,8 +67,8 @@
 │   [Stage 4] 多智能体 RAG 方案设计 ──► [RAGDesignChecker] ────────► design_scheme.json / .md │
 │        │                                                          (五段式结构 + C1-C8 校验) │
 │        ▼                                                                                   │
-│   [Stage 5] PINN 物理仿真校验 ──────► [PINNPhysicsChecker] ─────► simulation_result.json   │
-│        │    (【默认可 Skip】跳过时直通 Stage 6，激活时运行 PyBaMM/PINN)                      │
+│   [Stage 5] PINN 触发判定+参数提取 ──► [PINNPhysicsChecker] ─────► pinn_input_spec.json    │
+│        │    (【默认可 Skip】跳过时仍提取参数；真实仿真待 PINN 模块接入)                     │
 │        ▼                                                                                   │
 │   [Stage 6] 综合研发报告生成 ───────► [FinalReportChecker] ──────► 最终综合研发研报 (.md)   │
 │                                                                    全阶段日志 (.json)       │
@@ -85,7 +85,7 @@
 | **2** | `semantic_vector_indexing` | **语义标注与向量入库** | 提取文献元数据，对段落标注 6 类互斥语义标签，经 `qwen3-embedding:8b` 向量化持久化至 Chroma 库 | `meta_merged.json`、`miner/chroma/paragraphs_q/` | **必跑** |
 | **3** | `data_mining_cell_assembly` | **材料挖掘与电芯组装** | 2000-tokens 切分、Phase 0 材料发现、三层归一化、format1 属性校验、Cell 实体组装与 ML 数据集展平 | `*_extracted.json`、`output/auto_battery_research/cell_assembly/` | **必跑** |
 | **4** | `battery_rag_design` | **多智能体 RAG 方案设计** | Planner $\rightarrow$ Retrieval $\rightarrow$ Writer $\rightarrow$ Reviewer 协同生成五段式方案，通过 C1-C8 热力学硬约束 | `design_scheme.json`、`design_scheme.md` | **必跑** |
-| **5** | `pinn_physics_simulation` | **PINN 物理仿真校验** | 将方案参数映射至 CellSpec 契约，调用 PyBaMM P2D 求解器或 PINN 预测放电曲线与有效能量密度 | `simulation_result.json` | **默认 Skip** |
+| **5** | `pinn_physics_simulation` | **PINN 触发判定与参数提取** | `pinn_trigger` 占位开关触发判定；从 Stage 4 方案提取选中材料物理量组装 CellSpec 契约（提取不到留 null），真实电化学仿真待专门 PINN 模块接入 | `pinn_input_spec.json` | **默认 Skip** (skip 时仍提取参数) |
 | **6** | `synthesis_report_generation` | **综合研发报告生成** | 汇总全阶段日志、文献证据、电芯配方、RAG 方案与物理仿真数据，输出完整研究与实验合成研报 | `final_research_report.md` | **必跑** |
 
 ---
@@ -115,22 +115,23 @@
 - **`VectorDBChecker` (Stage 2)**: 检查元数据数组有效性、6 类语义标签覆盖率、Chroma 库持久化文件健康度。
 - **`CellAssemblyChecker` (Stage 3)**: 检查材料归一化 ID (`canonical_id` / `base_id`)、电解液配方拆解、电芯组装 `cell_id` 与 ML CSV 列对齐。
 - **`RAGDesignChecker` (Stage 4)**: 审查五段式报告结构（不少于 200 字符）、检查 C1-C8 热力学硬约束（如高压正极与裸碳酸酯不兼容判定）。
-- **`PINNPhysicsChecker` (Stage 5)**: 若配置跳过则直接放行；若激活则校验比容量 ($0\sim 600\text{ mAh/g}$)、平均电压 ($1.0\sim 5.5\text{ V}$)、能量密度 ($0\sim 2500\text{ Wh/kg}$) 物理边界与收敛残差。
+- **`PINNPhysicsChecker` (Stage 5)**: 若配置跳过则直接放行；若激活则校验 `pinn_input_spec.json` 结构完整性（`cell_spec` 参数块、触发判定与提取统计），历史课题的 `simulation_result.json` 数值区间校验路径保留兼容。
 - **`FinalReportChecker` (Stage 6)**: 检查综合研报篇幅 ($>400$ 字符)、五大核心章节覆盖率与阶段日志持久化。
 
 ---
 
-## 五、Stage 5 (PINN 物理仿真) 弹性跳过机制
+## 五、Stage 5 (PINN 触发判定与参数提取) 弹性跳过机制
 
-### 1. 为什么默认跳过？
-- **研发效率**：数据挖掘与 RAG 方案设计可在数秒内完成，而 P2D 偏微分方程数值积分与 GPU PINN 训练较为耗时。
-- **环境解耦**：无需在轻量端强行安装 TensorFlow / PyBaMM 即可正常跑通前 4 阶段并生成完整研报。
+### 1. 当前语义与默认行为
+- Stage 5 **不执行真实电化学仿真**（专门 PINN 模块后续接入）：激活时做触发判定（`setting.yaml` 顶层 `pinn_trigger.enabled` 占位开关，具体材料/性能条件待 PINN 模块定义）并从 Stage 4 方案提取选中材料物理量，落盘 `pinn_input_spec.json`（提取不到的字段为 `null`）。
+- 默认 `skip: true` 时整段仿真通道跳过，但**参数提取仍会在 skip 快速通道中执行**（失败仅记录，不阻断流水线），为 PINN 模块预置数据基础。
+- `pinn/p2d_runner.py` 保留为只读物理库，Web 页仿真演示 TAB 直接复用。
 
 ### 2. 灵活激活/跳过的三种方式
 
 #### 方式 A：命令行参数控制
 ```bash
-# 激活 Stage 5 执行物理仿真
+# 激活 Stage 5 执行触发判定与参数提取
 python auto_battery_research_cli.py --run --with-pinn
 
 # 显式强制跳过 Stage 5
@@ -145,7 +146,9 @@ python auto_battery_research_cli.py --enable-stage 5
 在 [`auto_battery_research/setting.yaml`](file:///d:/llm-main/auto_battery_research/setting.yaml) 中修改：
 ```yaml
 runtime_options:
-  skip_pinn_default: false  # 改为 false 即可默认开启 PINN 仿真
+  skip_pinn_default: false  # 改为 false 即可默认激活 Stage 5
+pinn_trigger:
+  enabled: false            # PINN 触发占位开关 (具体触发条件待 PINN 模块定义)
 ```
 
 #### 方式 C：工具/MCP/TUI 动态调用
@@ -371,7 +374,7 @@ pytest auto_battery_research/tests
 ## 九、常见问题与故障排查 (FAQ)
 
 **Q1: 为什么 Stage 5 (PINN) 显示 `[SKIPPED]`？**  
-A: 这是系统预设的加速机制。Stage 5 默认处于跳过状态。如果您希望运行 PyBaMM / PINN 物理仿真，只需在命令后加上 `--with-pinn` 或在 TUI 中输入 `enable 5`。
+A: 这是系统预设的加速机制。Stage 5 默认处于跳过状态（真实 PINN 物理模型尚未接入）。跳过时材料参数提取仍会执行并生成 `pinn_input_spec.json`；如需显式执行触发判定与参数提取流程，可在命令后加上 `--with-pinn` 或在 TUI 中输入 `enable 5`。
 
 **Q2: 如何在没有图形界面的服务器或 WSL 中查看 Web 仪表盘？**  
 A: 在 WSL 或服务器终端执行 `python auto_battery_research_cli.py --web --host 0.0.0.0 --port 7865`，然后直接在 Windows 浏览器中打开 `http://127.0.0.1:7865` 即可。

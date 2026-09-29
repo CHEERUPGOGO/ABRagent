@@ -66,15 +66,15 @@ def test_tool_arguments_no_hardcoded_400wh(monkeypatch):
     res_rep = json.loads(tool_rep._run())
     assert res_rep["goal"] == "设计500wh/kg高比能液态锂金属电池方案"
 
-    # 2. RunPhysicsSimulation
+    # 2. RunPhysicsSimulation (Stage 5 已改为参数提取，条件参数仅作记录)
     args_pinn = RunPhysicsSimulationArgs()
     assert args_pinn.target_goal == ""
 
     tool_pinn = RunPhysicsSimulationTool()
-    monkeypatch.setattr("auto_battery_research.tools.domain_tools.run_pinn_simulation", lambda target_query, current_rate: {"goal": target_query, "rate": current_rate})
+    monkeypatch.setattr("auto_battery_research.tools.domain_tools.run_pinn_simulation", lambda target_query, c_rate: {"goal": target_query, "c_rate": c_rate})
     res_pinn = json.loads(tool_pinn._run())
     assert res_pinn["goal"] == "设计500wh/kg高比能液态锂金属电池方案"
-    assert res_pinn["rate"] == "0.2C"
+    assert res_pinn["c_rate"] == 0.5
 
     # 3. ExtractAndAssembleCells
     tool_mine = ExtractAndAssembleCellsTool()

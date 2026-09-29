@@ -336,9 +336,9 @@ def test_report_synthesis_task_isolation_never_leaks_global_scheme(tmp_path):
 
 
 def test_pinn_simulation_never_writes_global_legacy_dir(tmp_path):
-    """新哈希课题执行 Stage 5 物理仿真时，产物只落课题目录；
+    """新哈希课题执行 Stage 5 参数提取时，产物只落课题目录；
     全局 output/auto_battery_research/ 是只读 legacy 回退目录，禁止写入
-    (否则多课题仿真结果互相覆盖，课题报告与门禁审计口径不一致)。"""
+    (否则多课题参数提取结果互相覆盖，课题报告与门禁审计口径不一致)。"""
     from auto_battery_research.tools.workflow_actions import run_pinn_simulation
 
     global_dir = tmp_path / "output" / "auto_battery_research"
@@ -351,13 +351,18 @@ def test_pinn_simulation_never_writes_global_legacy_dir(tmp_path):
     assert mgr.is_legacy_task is False
 
     res = run_pinn_simulation(target_query=new_goal, stage_manager=mgr)
-    assert res["success"] is True, f"离线回退模式仿真应成功: {res.get('error')}"
+    assert res["success"] is True, f"离线参数提取应成功: {res.get('error')}"
 
-    # 课题目录拿到本课题仿真产物
-    task_sim = mgr.get_task_output_dir(new_goal) / "simulation_result.json"
-    assert task_sim.exists()
-    assert json.loads(task_sim.read_text(encoding="utf-8")).get("legacy_marker") is None
+    # 课题目录拿到本课题参数提取产物 (pinn_input_spec.json)
+    task_spec = mgr.get_task_output_dir(new_goal) / "pinn_input_spec.json"
+    assert task_spec.exists()
+    spec_data = json.loads(task_spec.read_text(encoding="utf-8"))
+    assert spec_data.get("kind") == "pinn_input_spec"
+    assert spec_data.get("trigger", {}).get("triggered") is False
+    # 无 Stage 4 方案时降级生成，scheme 为空
+    assert spec_data.get("scheme", {}).get("cathode") is None
 
     # 全局目录不被写入/覆盖：旧课题产物原样保留，不产生新镜像文件
     assert json.loads((global_dir / "simulation_result.json").read_text(encoding="utf-8")) == {"legacy_marker": True}
     assert not (global_dir / "pinn_simulation_report.json").exists()
+    assert not (global_dir / "pinn_input_spec.json").exists()
