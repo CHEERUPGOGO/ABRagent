@@ -1,4 +1,11 @@
-"""Stage 5: PINNPhysicsChecker — PINN/P2D 物理仿真门禁检查器 (可跳过)."""
+"""Stage 5: PINNPhysicsChecker — PINN 触发判定/参数提取门禁检查器 (可跳过).
+
+激活 (非 skip) 时的验收对象按优先级:
+1. pinn_input_spec.json — Stage 5 新契约 (触发判定 + 材料物理参数提取，真实 PINN
+   模型接入前的规范产物)，校验结构完整性；
+2. simulation_result.json / pinn_simulation_report.json — 历史兼容路径 (legacy
+   课题的 PyBaMM 仿真产物)，保留数值物理区间校验。
+"""
 
 from pathlib import Path
 from typing import Dict, Any, Tuple
@@ -30,10 +37,66 @@ class PINNPhysicsChecker(BaseChecker):
                 details={"skip": True},
             )
 
-        # 2. 如果开启了仿真，验证仿真结果文件
+        # 2. Stage 5 新契约：PINN 参数提取清单 (真实 PINN 模型未接入期的规范产物)
         paths = self.config.get("paths", {})
         output_agent_dir = self.resolve_path(paths.get("output_dir", "output/auto_battery_research"))
 
+        spec_candidates = []
+        if self.stage_manager:
+            spec_candidates.append(
+                self.stage_manager.get_task_output_dir() / "pinn_input_spec.json"
+            )
+        # 全局 legacy 目录仅对历史存量课题 / Checker 独立使用保留
+        if not self.stage_manager or self.allow_global_legacy_fallback:
+            spec_candidates.append(output_agent_dir / "pinn_input_spec.json")
+
+        found_spec_file = next((p for p in spec_candidates if p.exists() and p.stat().st_size > 10), None)
+        if found_spec_file:
+            spec_data, spec_err = self.load_json_safe(str(found_spec_file))
+            if spec_err or not isinstance(spec_data, dict):
+                return False, self.build_diagnostic(
+                    passed=False,
+                    error_code="PINN_INPUT_SPEC_CORRUPTED",
+                    error_msg=f"PINN 参数提取清单 JSON 损坏: {spec_err}",
+                    observed={"spec_file": str(found_spec_file)},
+                    expected="结构完整的 pinn_input_spec.json (含 trigger / scheme / cell_spec / extraction_summary)",
+                    next_action="重新执行参数提取：RunPhysicsSimulation() 或使用 skip 5 跳过本阶段",
+                )
+            if not isinstance(spec_data.get("cell_spec"), dict):
+                return False, self.build_diagnostic(
+                    passed=False,
+                    error_code="PINN_INPUT_SPEC_INCOMPLETE",
+                    error_msg="pinn_input_spec.json 缺少 cell_spec 结构化参数块",
+                    observed={"keys": sorted(spec_data.keys())},
+                    expected="cell_spec 含 cathode / anode / electrolyte 参数",
+                    next_action="检查 Stage 4 方案产物后重新执行参数提取：RunPhysicsSimulation()",
+                )
+            trigger_info = spec_data.get("trigger") if isinstance(spec_data.get("trigger"), dict) else {}
+            extraction = spec_data.get("extraction_summary") if isinstance(spec_data.get("extraction_summary"), dict) else {}
+            filled_total = sum(
+                len(v.get("fields_filled") or [])
+                for v in extraction.values() if isinstance(v, dict)
+            )
+            missing_total = sum(
+                len(v.get("fields_missing") or [])
+                for v in extraction.values() if isinstance(v, dict)
+            )
+            return True, self.build_diagnostic(
+                passed=True,
+                observed={
+                    "spec_file": str(found_spec_file),
+                    "trigger_enabled": bool(trigger_info.get("enabled", False)),
+                    "pinn_triggered": bool(trigger_info.get("triggered", False)),
+                    "scheme": spec_data.get("scheme") or {},
+                    "param_fields_filled": filled_total,
+                    "param_fields_missing": missing_total,
+                    "notes": "PINN 参数提取清单结构完整；物理求解待专门 PINN 模块接入",
+                },
+                expected="存在结构完整的 pinn_input_spec.json (触发判定 + 材料物理参数提取)",
+                details={"output_path": str(found_spec_file)},
+            )
+
+        # 3. 历史兼容：已激活仿真且产出 simulation_result.json 的 legacy 课题走数值区间校验
         candidates = []
         if self.stage_manager:
             task_dir = self.stage_manager.get_task_output_dir()
@@ -53,15 +116,15 @@ class PINNPhysicsChecker(BaseChecker):
 
         found_sim_file = next((p for p in candidates if p.exists() and p.stat().st_size > 10), None)
 
-        if not found_sim_file:
-            sim_json = output_agent_dir / "simulation_result.json"
+        if not found_sim_file and not found_spec_file:
+            spec_json = self.stage_manager.get_task_output_dir() / "pinn_input_spec.json" if self.stage_manager else output_agent_dir / "pinn_input_spec.json"
             return False, self.build_diagnostic(
                 passed=False,
                 error_code="PINN_SIMULATION_RESULT_MISSING",
-                error_msg=f"PINN 物理仿真已激活，但未找到仿真输出文件 ({sim_json})",
-                observed={"sim_file_found": False},
-                expected="包含 PyBaMM / PINN 仿真曲线与放电指标的 simulation_result.json",
-                next_action="运行物理仿真：RunPhysicsSimulation() 或使用 skip 5 跳过本阶段",
+                error_msg=f"PINN 物理仿真已激活，但未找到参数提取清单或仿真输出文件 ({spec_json})",
+                observed={"spec_file_found": False, "sim_file_found": False},
+                expected="包含触发判定与材料物理参数的 pinn_input_spec.json (或历史 simulation_result.json)",
+                next_action="执行参数提取：RunPhysicsSimulation() 或使用 skip 5 跳过本阶段",
             )
 
         # 3. 校验物理参数与边界

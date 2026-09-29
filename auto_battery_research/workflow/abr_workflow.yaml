@@ -94,9 +94,9 @@ stages:
   - id: 5
     key: "pinn_physics_simulation"
     name: "PINN 物理仿真校验"
-    description: "【默认可跳过】将设计方案参数转换为 CellSpec 物理契约，调用 PyBaMM Newman P2D 求解器或 PINN 物理代理模型预测充放电曲线与有效能量密度，与文献锚点比对。"
+    description: "【默认可跳过】PINN 触发判定 (pinn_trigger 配置占位，具体材料/性能条件待专门 PINN 模块定义) + 当前方案选中材料物理参数提取：从 Stage 4 design_scheme.json 提取正极/负极/电解液及可获得的物理量，落盘 pinn_input_spec.json (提取不到的字段为 null)。真实电化学仿真待 PINN 模块接入后启用。"
     skip: true
-    skip_reason: "PINN/P2D 物理求解器属于深度仿真层，默认跳过以提高研发速度。使用 --with-pinn 或交互指令可随时激活。"
+    skip_reason: "PINN 真实物理模型尚未接入，默认跳过仿真计算以提高研发速度；跳过时材料参数提取仍会执行。使用 --with-pinn 或交互指令可随时激活。"
     reference_files:
       - "auto_battery_research/doc/Guide_Doc/stage5_pinn_simulation.md"
     checkers:
@@ -104,7 +104,7 @@ stages:
         class: "auto_battery_research.checkers.pinn_physics_checker.PINNPhysicsChecker"
         strict: false
     expected_outputs:
-      - "output/tasks/<goal>/simulation_result.json"   # 课题专属目录 (全局 output/auto_battery_research/ 仅历史课题可读)
+      - "output/tasks/<goal>/pinn_input_spec.json"   # 课题专属目录 (全局 output/auto_battery_research/ 仅历史课题可读)
 
   - id: 6
     key: "synthesis_report_generation"
