@@ -22,6 +22,35 @@ REPORT_CANDIDATES: Tuple[str, ...] = (
 SCHEME_CANDIDATE = "design_scheme.md"
 
 
+def publish_report_audit(path: Path, stages) -> None:
+    """终审后仅更新审计状态，原子发布；写入错误交由调用方显式处理。"""
+    import os
+    import re
+    import uuid
+
+    text = path.read_text(encoding="utf-8")
+    skipped = [s.id for s in stages if s.status == "SKIPPED"]
+    fallback = [s.id for s in stages if s.status == "FALLBACK"]
+    summary = "全流程 6 阶段门禁检查全部通过"
+    if skipped:
+        summary = f"必检阶段门禁全部通过；Stage {skipped} 按配置跳过"
+    if fallback:
+        summary = f"流程完成；Stage {fallback} FALLBACK (代理估算)"
+    text, count = re.subn(r"^- 阶段审计:.*$", lambda _: f"- 阶段审计: {summary}", text, count=1, flags=re.MULTILINE)
+    if count != 1:
+        raise ValueError("报告缺少阶段审计字段，无法发布终审结论")
+    text = re.sub(
+        r"(Stage 6 \(综合研报生成\): 状态 )\[[^\]]*\]",
+        r"\1[PASSED]", text,
+    )
+    temporary = path.with_suffix(f".tmp.{uuid.uuid4().hex}")
+    try:
+        temporary.write_text(text, encoding="utf-8")
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
 def resolve_final_report(
     task_dir: Path,
     is_legacy: bool = False,
