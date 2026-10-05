@@ -10,7 +10,7 @@ import time
 import subprocess
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List, Tuple
 
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -379,99 +379,327 @@ def run_rag_design(target_query: str = "", design_query: Optional[str] = None, *
     return adapter.run_rag_design(target_query=(design_query or resolved_query), task_dir=task_dir)
 
 
-def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, target_query: str = "", stage_manager: Optional[Any] = None, **kwargs) -> Dict[str, Any]:
-    """执行 Stage 5: PINN / PyBaMM 物理电化学仿真与放电曲线求解 (读取 Stage 4 结构化 scheme 参数)."""
-    log_tool_call("PINNPhysicsSolver", f"c_rate={c_rate}, temp_k={ambient_temp}")
-    if stage_manager is not None:
-        task_dir = stage_manager.get_task_output_dir(target_query or None)
-    else:
-        task_dir = _get_target_task_dir(target_query)
+# ══════════════════ Stage 5: PINN 触发判定 (占位) + 材料参数提取 ══════════════════
 
-    sim_result_file = task_dir / "simulation_result.json"
-    pinn_report_file = task_dir / "pinn_simulation_report.json"
+PINN_INPUT_SPEC_FILENAME = "pinn_input_spec.json"
 
-    # 读取 Stage 4 结构化方案参数
-    target_loading = 22.0
-    cathode = "NCM811"
-    anode = "li_metal"
-    electrolyte = "lhce"
-    target_energy = 400.0
+# 材料级物理量字段 (extraction_summary 统计口径; None/空串视为"未提取到")
+_MATERIAL_PARAM_FIELDS = (
+    "formula", "c_max", "theoretical_capacity", "stoich_min", "stoich_max",
+    "D_s", "k_ref", "Ea_Ds", "Ea_k", "R_p", "sigma", "avg_voltage",
+    "voltage_limit", "U_ocp",
+)
+_ELECTROLYTE_PARAM_FIELDS = (
+    "composition", "c_e0", "D_e", "t_plus", "kappa",
+    "oxidation_window", "reduction_stability",
+)
+_ELECTRODE_GEOMETRY_FIELDS = ("L", "epsilon", "epsilon_s", "mass_loading")
 
-    scheme_json_file = task_dir / "design_scheme.json"
-    if scheme_json_file.exists():
+
+def _atomic_write_text(target: Path, text: str) -> None:
+    """原子安全写文本文件 (临时文件 + os.replace，失败降级直写)."""
+    import uuid
+    target.parent.mkdir(parents=True, exist_ok=True)
+    tmp = target.with_suffix(f".tmp.{os.getpid()}.{uuid.uuid4().hex[:8]}")
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            f.write(text)
+        os.replace(tmp, target)
+    except Exception:
+        if tmp.exists():
+            try:
+                tmp.unlink(missing_ok=True)
+            except Exception:
+                pass
+        with open(target, "w", encoding="utf-8") as f:
+            f.write(text)
+
+
+def _load_pinn_trigger_cfg(mgr: Optional[Any] = None) -> Dict[str, Any]:
+    """读取 PINN 触发配置 (setting.yaml 顶层 pinn_trigger 块，缺省关闭)."""
+    cfg: Any = {}
+    try:
+        if mgr is None:
+            from auto_battery_research.tools.stage_tools import get_stage_manager
+            mgr = get_stage_manager()
+        cfg = (getattr(mgr, "config", {}) or {}).get("pinn_trigger", {})
+    except Exception:
+        cfg = {}
+    return cfg if isinstance(cfg, dict) else {}
+
+
+def _check_pinn_trigger(scheme: Dict[str, Any], trigger_cfg: Dict[str, Any]) -> Tuple[bool, List[str]]:
+    """PINN 触发判定 (占位接口).
+
+    当前 triggered 恒等于 pinn_trigger.enabled 开关值；具体判定规则
+    (特定材料 ID 白名单 + 特定性能要求阈值) 待专门 PINN 模块接入时
+    在此处补充实现，scheme 参数已预置供其消费。
+    """
+    enabled = bool(trigger_cfg.get("enabled", False))
+    if enabled:
+        return True, [
+            "pinn_trigger.enabled=true (具体触发条件尚未定义，暂按开关放行；"
+            "待 PINN 模块接入后补充材料白名单与性能阈值判定)"
+        ]
+    return False, ["pinn_trigger.enabled=false，触发条件未配置 (PINN 模块未接入)"]
+
+
+def _load_stage4_scheme(target_query: str, task_dir: Path, mgr: Optional[Any]) -> Dict[str, Any]:
+    """读取 Stage 4 design_scheme.json 的结构化 scheme (课题目录优先；仅 legacy 课题回退全局目录)."""
+    legacy_dir = ROOT_DIR / "output" / "auto_battery_research"
+    is_legacy_fn = getattr(mgr, "is_legacy_goal", None)
+    is_legacy = bool(callable(is_legacy_fn) and is_legacy_fn(target_query))
+    scheme_files = [task_dir / "design_scheme.json"]
+    if is_legacy:
+        scheme_files.append(legacy_dir / "design_scheme.json")
+    for scheme_file in scheme_files:
+        if not scheme_file.exists():
+            continue
         try:
-            with open(scheme_json_file, "r", encoding="utf-8") as f:
-                s_data = json.load(f)
-                s_dict = s_data.get("scheme", {})
-                if s_dict.get("cathode"):
-                    cathode = str(s_dict.get("cathode"))
-                if s_dict.get("anode"):
-                    anode = str(s_dict.get("anode"))
-                if s_dict.get("electrolyte"):
-                    electrolyte = str(s_dict.get("electrolyte"))
-                if s_dict.get("loading_mg_cm2"):
-                    target_loading = float(s_dict.get("loading_mg_cm2"))
-                if s_dict.get("target_energy_wh_kg"):
-                    target_energy = float(s_dict.get("target_energy_wh_kg"))
+            with open(scheme_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            scheme = data.get("scheme") if isinstance(data, dict) else None
+            if isinstance(scheme, dict):
+                return scheme
+        except Exception:
+            continue
+    return {}
+
+
+def _load_candidates_library(mgr: Optional[Any] = None) -> Dict[str, Any]:
+    """加载候选材料知识库 candidates.json (经 paths.rag_data_dir 定位，缺省 src/lmllm/RAG/data)."""
+    paths_cfg: Dict[str, Any] = {}
+    if mgr is not None:
+        paths_cfg = (getattr(mgr, "config", {}) or {}).get("paths", {}) or {}
+    candidates_file = ROOT_DIR / str(paths_cfg.get("rag_data_dir", "src/lmllm/RAG/data")) / "candidates.json"
+    try:
+        with open(candidates_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def _summarize_param_extraction(spec_obj: Any, fields: Tuple[str, ...]) -> Tuple[List[str], List[str]]:
+    """按字段清单统计已提取 / 未提取 (None 或空串) 的物理量."""
+    filled: List[str] = []
+    missing: List[str] = []
+    for name in fields:
+        value = getattr(spec_obj, name, None)
+        if value is None or (isinstance(value, str) and not value.strip()):
+            missing.append(name)
+        else:
+            filled.append(name)
+    return filled, missing
+
+
+def _generate_pinn_input_spec(
+    target_query: str,
+    mgr: Optional[Any] = None,
+    task_dir: Optional[Path] = None,
+    c_rate: float = 0.5,
+    ambient_temp_k: float = 298.15,
+) -> Dict[str, Any]:
+    """Stage 5 参数提取核心：当前方案选中材料 → 物理量参数清单落盘 pinn_input_spec.json.
+
+    提取链路: design_scheme.json scheme → candidates.json 材料级参数覆盖
+    → DEFAULT_MATERIALS / DEFAULT_ELECTROLYTES 缺省表回填物理量；
+    缺省表未覆盖的材料 (如 LFP/LCO/hard_carbon) 物理字段保持 null。
+    本函数不执行任何物理仿真 (真实 PINN 模型后续接入)，且无网络/LLM 依赖，
+    可安全地在 Stage 5 skip 快速通道中调用。
+    """
+    if mgr is None:
+        from auto_battery_research.tools.stage_tools import get_stage_manager
+        mgr = get_stage_manager()
+    if task_dir is None:
+        task_dir = mgr.get_task_output_dir(target_query or None)
+
+    scheme = _load_stage4_scheme(target_query, task_dir, mgr)
+    candidates_lib = _load_candidates_library(mgr)
+    trigger_cfg = _load_pinn_trigger_cfg(mgr)
+    triggered, trigger_reasons = _check_pinn_trigger(scheme, trigger_cfg)
+
+    # 1. 组装 CellSpec (candidates 覆盖材料级参数 + 缺省表回填物理量)
+    spec_error = ""
+    spec = None
+    try:
+        if str(ROOT_DIR) not in sys.path:
+            sys.path.insert(0, str(ROOT_DIR))
+        from pinn.cell_spec_schema import candidates_scheme_to_cell_spec, fill_missing, mg_cm2_to_kg_m2
+
+        normalized = {
+            "cathode": scheme.get("cathode") or "",
+            "anode": scheme.get("anode") or "",
+            "electrolyte": scheme.get("electrolyte") or "",
+            # design_scheme.json 契约键为 target_energy_wh_kg，转换函数读 target_energy
+            "target_energy": scheme.get("target_energy_wh_kg") or scheme.get("target_energy"),
+        }
+        spec = candidates_scheme_to_cell_spec(normalized, candidates=candidates_lib or None, scheme_id=target_query)
+        spec = fill_missing(spec)
+
+        loading_mg_cm2 = scheme.get("loading_mg_cm2")
+        if loading_mg_cm2:
+            try:
+                spec.cathode.mass_loading = mg_cm2_to_kg_m2(float(loading_mg_cm2))
+            except (TypeError, ValueError):
+                pass
+
+        spec.condition.c_rate = float(c_rate)
+        spec.condition.temperature_C = float(ambient_temp_k) - 273.15
+
+        # 电压窗口只读复用 p2d_runner.MATERIAL_PROFILES (缺省表未覆盖则保持 None)
+        try:
+            from pinn.p2d_runner import MATERIAL_PROFILES
+            profile = MATERIAL_PROFILES.get(normalized["cathode"], {}) if normalized["cathode"] else {}
+            if profile.get("v_min") is not None:
+                spec.condition.voltage_min = float(profile["v_min"])
+            if profile.get("v_max") is not None:
+                spec.condition.voltage_max = float(profile["v_max"])
         except Exception:
             pass
-
-    try:
-        from auto_battery_research.simulation import PyBaMMP2DRunner
-        runner = PyBaMMP2DRunner()
-        sim_res = runner.run_simulation(
-            c_rate=c_rate,
-            ambient_temp=ambient_temp,
-            cathode=cathode,
-            anode=anode,
-            electrolyte=electrolyte,
-            loading_mg_cm2=target_loading,
-            target_energy_wh_kg=target_energy,
-        )
-
-        # 严格课题隔离：仿真产物只落课题目录。全局 output/auto_battery_research/
-        # 是历史存量课题的只读回退目录，禁止写入 —— 多课题写全局会互相覆盖，
-        # 且新课题报告/门禁将读到他人仿真结果，审计口径不一致。
-        for out_f in (sim_result_file, pinn_report_file):
-            with open(out_f, "w", encoding="utf-8") as f:
-                json.dump(sim_res, f, ensure_ascii=False, indent=2)
-                
-        is_fallback = bool(sim_res.get("is_fallback", False) or sim_res.get("status") == "FALLBACK")
-        sim_status = "FALLBACK" if is_fallback else "CONVERGED"
-        solver_used = sim_res.get("solver", "pybamm_newman_p2d" if not is_fallback else "0th_order_surrogate")
-        residual_loss = sim_res.get("pde_residual_loss", 0.00142 if not is_fallback else 0.005)
-
-        if is_fallback:
-            log_observation("PyBaMM 求解器未安装或发生回退，已完成 0 阶电化学理论模型代理估算 (非全微分求解)")
-            journal_notes = f"完成 0 阶电化学理论模型与代理估算 (Solver: {solver_used})，非全偏微分方程求解。"
-        else:
-            log_observation("PyBaMM Newman P2D 偏微分方程求解完成，放电曲线与电荷转移过电位收敛")
-            journal_notes = f"完成 PyBaMM Newman P2D 物理偏微分方程求解与放电特性收敛计算 (Solver: {solver_used})。"
-
-        log_success(f"PINN 物理仿真产物已保存: {sim_result_file} (Status: {sim_status})")
-        return {
-            "success": True,
-            "report_file": str(sim_result_file),
-            "simulation_result": sim_res,
-            "message": f"PINN 物理仿真计算完成 (状态: {sim_status})",
-            "journal_notes": journal_notes,
-            "deliverables": [str(sim_result_file)],
-            "key_findings": {
-                "simulation_status": sim_status,
-                "is_fallback": is_fallback,
-                "solver": solver_used,
-                "pde_residual_loss": residual_loss,
-            },
-        }
     except Exception as e:
-        log_error(f"PINN 物理仿真执行失败: {e}")
+        spec_error = f"{type(e).__name__}: {e}"
+
+    # 2. 提取统计 (fields_filled / fields_missing，标注每个组件的数据可得性)
+    extraction_summary: Dict[str, Any] = {}
+    try:
+        from pinn.cell_spec_schema import DEFAULT_MATERIALS, DEFAULT_ELECTROLYTES
+        default_tables = {
+            "cathode": DEFAULT_MATERIALS,
+            "anode": DEFAULT_MATERIALS,
+            "electrolyte": DEFAULT_ELECTROLYTES,
+        }
+    except Exception:
+        default_tables = {}
+    for comp in ("cathode", "anode", "electrolyte"):
+        comp_id = (scheme.get(comp) or None) if isinstance(scheme, dict) else None
+        comp_spec = getattr(spec, comp, None) if spec is not None else None
+        entry: Dict[str, Any] = {"id": comp_id}
+        if comp_spec is None:
+            entry.update({
+                "in_default_table": False,
+                "fields_filled": [],
+                "fields_missing": [],
+                "error": spec_error or "CellSpec 构建失败",
+            })
+        else:
+            table = default_tables.get(comp, {})
+            entry["in_default_table"] = bool(comp_id) and comp_id in table
+            if comp == "electrolyte":
+                filled, missing = _summarize_param_extraction(comp_spec, _ELECTROLYTE_PARAM_FIELDS)
+            else:
+                mat_filled, mat_missing = _summarize_param_extraction(comp_spec.material, _MATERIAL_PARAM_FIELDS)
+                geo_filled, geo_missing = _summarize_param_extraction(comp_spec, _ELECTRODE_GEOMETRY_FIELDS)
+                filled, missing = mat_filled + geo_filled, mat_missing + geo_missing
+            entry["fields_filled"] = filled
+            entry["fields_missing"] = missing
+        extraction_summary[comp] = entry
+
+    filled_total = sum(len(v.get("fields_filled") or []) for v in extraction_summary.values())
+    missing_total = sum(len(v.get("fields_missing") or []) for v in extraction_summary.values())
+
+    # 3. 组装参数清单契约并原子落盘
+    notes = (
+        "PINN 真实模型尚未接入；本文件为触发判定与当前方案选中材料物理参数的落盘基础，"
+        "提取不到的物理量以 null 占位 (缺省参数表未覆盖的材料/字段待参数库或 PINN 模块补全)。"
+    )
+    if not scheme:
+        notes += " 注意: Stage 4 结构化方案 (design_scheme.json) 未读取到，scheme 与 cell_spec 为空。"
+    if spec_error:
+        notes += f" CellSpec 构建受阻: {spec_error}。"
+
+    payload = {
+        "schema_version": "1.0",
+        "kind": "pinn_input_spec",
+        "target": target_query,
+        "generated_at": datetime.now().isoformat(),
+        "trigger": {
+            "enabled": bool(trigger_cfg.get("enabled", False)),
+            "triggered": triggered,
+            "reasons": trigger_reasons,
+            "rule": trigger_cfg.get("rule"),
+        },
+        "scheme": {
+            "cathode": scheme.get("cathode"),
+            "anode": scheme.get("anode"),
+            "electrolyte": scheme.get("electrolyte"),
+            "additives": scheme.get("additives") or [],
+            "target_energy_wh_kg": scheme.get("target_energy_wh_kg") or scheme.get("target_energy"),
+            "loading_mg_cm2": scheme.get("loading_mg_cm2"),
+        },
+        "cell_spec": spec.to_dict() if spec is not None else None,
+        "extraction_summary": extraction_summary,
+        "notes": notes,
+    }
+
+    spec_file = task_dir / PINN_INPUT_SPEC_FILENAME
+    try:
+        _atomic_write_text(spec_file, json.dumps(payload, ensure_ascii=False, indent=2))
+    except Exception as e:
+        log_error(f"PINN 参数提取产物写入失败: {e}")
         return {
             "success": False,
-            "error": f"PINN 物理仿真执行失败: {str(e)}",
-            "journal_notes": f"PINN 物理仿真求解发生异常: {str(e)}",
+            "error": f"PINN 参数提取产物写入失败: {e}",
+            "journal_notes": f"PINN 参数提取产物写入失败: {e}",
             "deliverables": [],
             "key_findings": {"status": "FAILED", "error": str(e)},
         }
+
+    journal_notes = (
+        f"完成 PINN 触发判定 ({'命中' if triggered else '未命中'}) 与选中材料物理参数提取: "
+        f"{filled_total} 项提取 / {missing_total} 项待补全，产物 pinn_input_spec.json (真实 PINN 模型待接入)。"
+    )
+    return {
+        "success": True,
+        "spec_file": str(spec_file),
+        "message": (
+            f"PINN 参数提取完成 (触发判定: {'命中' if triggered else '未命中'})，"
+            f"物理量字段 {filled_total} 项提取 / {missing_total} 项待补全"
+        ),
+        "journal_notes": journal_notes,
+        "deliverables": [str(spec_file)],
+        "key_findings": {
+            "status": "PINN_TRIGGERED" if triggered else "PINN_NOT_TRIGGERED",
+            "scheme_found": bool(scheme),
+            "trigger_reasons": trigger_reasons,
+            "fields_filled": filled_total,
+            "fields_missing": missing_total,
+        },
+    }
+
+
+def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, target_query: str = "", stage_manager: Optional[Any] = None, **kwargs) -> Dict[str, Any]:
+    """执行 Stage 5: PINN 触发判定 (占位) + 当前方案选中材料物理参数提取落盘.
+
+    真实 PINN 物理模型尚未接入，本阶段当前不执行任何电化学仿真：
+    1. 按 setting.yaml `pinn_trigger` 配置做触发判定 (enabled 开关占位，
+       具体材料/性能条件待 PINN 模块定义)；
+    2. 从 Stage 4 design_scheme.json 提取选中材料及可获得的物理量参数，
+       原子落盘 pinn_input_spec.json (提取不到的字段为 null)。
+    """
+    log_tool_call("PINNParamExtractor", f"c_rate={c_rate}, temp_k={ambient_temp}")
+    if stage_manager is not None:
+        mgr = stage_manager
+        task_dir = stage_manager.get_task_output_dir(target_query or None)
+    else:
+        from auto_battery_research.tools.stage_tools import get_stage_manager, get_stage_manager_for_goal
+        resolved_query = (target_query or "").strip() or get_stage_manager().target_goal
+        mgr = get_stage_manager_for_goal(resolved_query)
+        task_dir = _get_target_task_dir(resolved_query)
+
+    result = _generate_pinn_input_spec(
+        target_query,
+        mgr=mgr,
+        task_dir=task_dir,
+        c_rate=c_rate,
+        ambient_temp_k=ambient_temp,
+    )
+    if result.get("success"):
+        log_success(f"PINN 参数提取产物已保存: {result.get('spec_file')}")
+        log_observation(result.get("message", ""))
+    else:
+        log_error(f"PINN 参数提取失败: {result.get('error')}")
+    return result
 
 
 def _generate_dynamic_recipe_roadmap(
@@ -635,7 +863,7 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     elif stage_statuses.get(5) == "FAILED":
         s5_status_desc = "FAILED (偏微分方程求解发散或物理边界超限)"
     elif stage_statuses.get(5) == "PASSED":
-        s5_status_desc = "PASSED (PyBaMM/P2D 物理求解收敛且物理边界自洽)"
+        s5_status_desc = "PASSED (PINN 触发判定与材料参数提取完成，物理求解待 PINN 模块接入)"
     else:
         s5_status_desc = "PENDING (尚未执行)"
 
@@ -740,23 +968,6 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     # 4. 原子安全写入课题专属规范文件 (final_research_report.md 为唯一规范命名；
     #    final_report.md / battery_research_synthesis_report.md 仅为读侧历史别名兼容，
     #    不再重复写出 —— 避免同一课题目录下出现三份内容相同的研报)
-    import uuid
-    def _atomic_write_text(target: Path, text: str):
-        target.parent.mkdir(parents=True, exist_ok=True)
-        tmp = target.with_suffix(f".tmp.{os.getpid()}.{uuid.uuid4().hex[:8]}")
-        try:
-            with open(tmp, "w", encoding="utf-8") as f:
-                f.write(text)
-            os.replace(tmp, target)
-        except Exception:
-            if tmp.exists():
-                try:
-                    tmp.unlink(missing_ok=True)
-                except Exception:
-                    pass
-            with open(target, "w", encoding="utf-8") as f:
-                f.write(text)
-
     _atomic_write_text(report_file, report_content)
 
     log_observation(f"综合研报编译完成 (文件大小: {len(report_content)} 字节)")

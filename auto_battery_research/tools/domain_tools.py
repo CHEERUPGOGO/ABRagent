@@ -329,7 +329,9 @@ class RunPhysicsSimulationArgs(BaseModel):
 class RunPhysicsSimulationTool(BaseTool):
     name: str = "RunPhysicsSimulation"
     description: str = (
-        "【Stage 5 仿真工具】调用 PyBaMM Newman P2D 偏微分方程求解器或 PINN 物理代理模型进行电池充放电曲线仿真与能量密度标定。"
+        "【Stage 5 参数提取工具】执行 PINN 触发判定 (pinn_trigger 配置占位) 并从 Stage 4 方案提取"
+        "选中材料的物理量参数，落盘 pinn_input_spec.json (提取不到的字段为 null)。"
+        "真实电化学仿真待专门 PINN 模块接入后启用。"
     )
     args_schema: Type[BaseModel] = RunPhysicsSimulationArgs
 
@@ -338,7 +340,8 @@ class RunPhysicsSimulationTool(BaseTool):
         active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
         goal = resolve_effective_goal(target_goal, active_goal)
         log_tool_call(self.name, f"target_goal='{goal}', current_rate='{current_rate}'")
-        res = run_pinn_simulation(target_query=goal, current_rate=current_rate or "0.2C")
+        # 条件参数 (c_rate/温度) 仅作为提取清单中的测试条件记录，不触发仿真
+        res = run_pinn_simulation(target_query=goal, c_rate=0.5)
         return json.dumps(res, ensure_ascii=False, indent=2)
 
 

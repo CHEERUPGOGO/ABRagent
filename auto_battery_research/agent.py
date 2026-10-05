@@ -285,11 +285,25 @@ class ABRAgent:
             if curr_stage.skip:
                 append_log(f"\n>>> [Stage {curr_stage.id}/{total_stages}] {curr_stage.name} (Key: {curr_stage.key})")
                 append_log(f"[SKIP] 阶段已跳过: {curr_stage.skip_reason or '默认加速模式'}")
+                skip_deliverables: list = []
+                skip_findings: dict = {"status": "SKIPPED"}
+                if curr_stage.id == 5:
+                    # Stage 5 特例: 即使整体跳过，PINN 参数提取仍执行 (为专门 PINN
+                    # 模块预置材料参数数据基础)；失败仅记录，不阻断跳过通道。
+                    try:
+                        from auto_battery_research.tools.workflow_actions import _generate_pinn_input_spec
+                        extract_res = _generate_pinn_input_spec(self.goal, mgr=self.manager)
+                        if extract_res.get("success"):
+                            skip_deliverables = extract_res.get("deliverables", [])
+                            skip_findings.update(extract_res.get("key_findings", {}))
+                            append_log(f"[SKIP] Stage 5 参数提取仍已执行: {extract_res.get('message', '')}")
+                    except Exception as extract_err:
+                        append_log(f"[SKIP] Stage 5 参数提取受阻 (不影响跳过): {extract_err}")
                 self.manager.set_stage_journal(
                     stage_id=curr_stage.id,
                     notes=f"Stage skipped: {curr_stage.skip_reason}",
-                    deliverables=[],
-                    key_findings={"status": "SKIPPED"},
+                    deliverables=skip_deliverables,
+                    key_findings=skip_findings,
                 )
                 curr_stage.status = "SKIPPED"
                 curr_stage.duration_seconds = 0.0

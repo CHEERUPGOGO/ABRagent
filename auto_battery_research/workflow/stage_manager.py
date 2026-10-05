@@ -392,6 +392,31 @@ class StageManager:
         self._save_state()
         return all_passed, result
 
+    def _extract_stage5_params_on_skip(self, stage_obj) -> None:
+        """Stage 5 级联/直接跳过时的参数提取兜底 (真实 PINN 模型接入前的数据预置).
+
+        complete_stage 的级联跳过不经过 agent 主循环的 skip 快速通道，此前会
+        完全绕过 pinn_input_spec.json 参数提取；此处补齐。失败仅记录、不影响
+        状态机推进。
+        """
+        if stage_obj.id != 5:
+            return
+        try:
+            from auto_battery_research.tools.workflow_actions import _generate_pinn_input_spec
+            res = _generate_pinn_input_spec(self.target_goal, mgr=self)
+            if res.get("success"):
+                self.set_stage_journal(
+                    stage_id=5,
+                    notes=(
+                        f"Stage skipped: {stage_obj.skip_reason or '默认快速模式'}"
+                        f" (参数提取仍已执行: {res.get('journal_notes', '')})"
+                    ),
+                    deliverables=res.get("deliverables", []),
+                    key_findings=res.get("key_findings", {}),
+                )
+        except Exception:
+            pass
+
     def complete_stage(self, stage_id: Optional[int] = None, **kwargs) -> Tuple[bool, Dict[str, Any]]:
         """执行 Complete 动作：严格按照状态机顺序推进，禁止跨阶段越级推进."""
         current_stage = self.get_current_stage()
@@ -425,6 +450,7 @@ class StageManager:
 
         if target_stage.skip:
             target_stage.status = "SKIPPED"
+            self._extract_stage5_params_on_skip(target_stage)
         else:
             # 检查是否有 Checker 报告了 FALLBACK 终态
             is_fallback = False
@@ -440,6 +466,7 @@ class StageManager:
             next_stage = self.stages[next_idx]
             if next_stage.skip:
                 next_stage.status = "SKIPPED"
+                self._extract_stage5_params_on_skip(next_stage)
                 continue
             self.current_stage_idx = next_idx
             self.stages[self.current_stage_idx].status = "IN_PROGRESS"

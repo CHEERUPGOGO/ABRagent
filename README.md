@@ -53,7 +53,7 @@ AutoBatteryResearch Agent (ABRAgent) 是专为高比能化学电池（锂金属�
 | 2 | 语义标注与向量入库 | `miner/chroma/paragraphs_q` 段落向量库 | `VectorDBChecker` |
 | 3 | 材料挖掘与电芯组装 | `<task>/cell_assembly/` 结构化电芯实体 | `CellAssemblyChecker`（材料+电芯+溯源完备） |
 | 4 | 多智能体 RAG 方案设计 | `<task>/design_scheme.md/.json` | `RAGDesignChecker`（五段式+证据+RelationEngine） |
-| 5 | PINN/P2D 物理仿真 | `<task>/simulation_result.json` | `PINNPhysicsChecker`（**默认跳过**） |
+| 5 | PINN 触发判定与参数提取 | `<task>/pinn_input_spec.json` | `PINNPhysicsChecker`（**默认跳过**，skip 时仍提取参数） |
 | 6 | 综合研报生成 | `<task>/final_research_report.md` | `FinalReportChecker`（五大章节+阶段日志） |
 
 阶段与 Checker 均在 `auto_battery_research/workflow/abr_workflow.yaml` 中声明式定义，`StageManager` 从中加载；工作流状态按课题持久化于 `output/tasks/<课题>/.stage_state.json`，跨 CLI 调用续跑。
@@ -257,7 +257,7 @@ papers/pdf ──(MinerU 解析+合并+分类)──▶ papers/merged → databa
               │  design_scheme.md/.json     Stage 4 设计方案 (五段式+证据链)     │
               │  rag_result.json            Stage 4 原始 RAG 结果               │
               │  research_context.json      知识资产溯源快照 (corpus哈希/向量库/规则版本) │
-              │  simulation_result.json     Stage 5 仿真结果 (启用时)            │
+              │  pinn_input_spec.json      Stage 5 PINN 触发判定+材料参数提取清单 │
               │  final_research_report.md   Stage 6 综合研报                    │
               └───────────────────────────────────────────────────────────────┘
 ```
@@ -322,7 +322,7 @@ pytest -m "unit"
 
 ## 📌 重要行为说明
 
-- **Stage 5 默认跳过**（`runtime_options.skip_pinn_default: true`），`--with-pinn` 或 `abr-cli --enable-stage 5` 激活；PyBaMM 需要 Python < 3.13。
+- **Stage 5 默认跳过**（`runtime_options.skip_pinn_default: true`），`--with-pinn` 或 `abr-cli --enable-stage 5` 激活；跳过时参数提取仍执行（生成 `pinn_input_spec.json`，提取不到的字段留 `null`），真实 PINN 电化学仿真待专门 PINN 模块接入。
 - **工作流状态按课题持久化**：修改阶段交付物或代码后，用 `abr-cli --reset` 让该课题从 Stage 1 重新评估。
 - **严格模式**（`runtime_options.strict_mode: true`）下任何 Checker 错误即判失败；`max_retries_per_stage: 3` 约束自愈重试上限。
 - **Windows 为主开发平台**：入口脚本自动将 stdout/stderr 重配置为 UTF-8。
