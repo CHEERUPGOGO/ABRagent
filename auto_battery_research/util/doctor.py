@@ -1,7 +1,8 @@
 """环境自检模块 (abr-cli --doctor) — 无网络强依赖的一次性体检.
 
 检查项: Python 版本 / .env / LLM Key 与端点 / Ollama 与向量模型 / MinerU Token /
-文献资产 / ReAct 运行时 / 可选依赖 / 输出目录写权限。全部离线可跑 (Ollama 探测失败仅降级为 WARN)。
+文献资产 / ReAct 运行时 / 可选依赖 / PINN 模型资产 / Materials Project MCP / 输出目录写权限。
+全部离线可跑 (Ollama 探测失败仅降级为 WARN)。
 """
 
 from __future__ import annotations
@@ -19,6 +20,14 @@ ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
 OK, WARN, FAIL = "OK", "WARN", "FAIL"
 _ICONS = {OK: "[green]✅[/green]", WARN: "[yellow]⚠️ [/yellow]", FAIL: "[red]❌[/red]"}
+
+# 可选依赖 extras: (展示名, 模块名, 安装提示) — pyproject optional-dependencies 的镜像
+_OPTIONAL_EXTRAS: Tuple[Tuple[str, str, str], ...] = (
+    ("Chroma 向量库 [rag]", "chromadb", "pip install -e '.[rag]'"),
+    ("Ollama 客户端 [rag]", "ollama", "pip install -e '.[rag]'"),
+    ("Textual TUI [ui]", "textual", "pip install -e '.[ui]'"),
+    ("Gradio Web [ui]", "gradio", "pip install -e '.[ui]'"),
+)
 
 
 def _load_setting_light() -> Dict:
@@ -93,20 +102,82 @@ def _agent_runtime_row() -> Tuple[str, str, str, str]:
             "将回退另一入口编译 ReAct，建议对齐锁定版本: pip install -e \".[all]\" -c requirements-lock.txt")
 
 
+def _pinn_row(pinn_trigger: Optional[Dict] = None, models_dir: Optional[Path] = None) -> Tuple[str, str, str, str]:
+    """检查 Stage 5 PINN 仿真环境 (纯 numpy SPM 前向，无 TF/GPU 依赖).
+
+    numpy 是 base 依赖，缺失判 FAIL (PINN 完全无法运行)；registry.json 缺失/
+    损坏/为空或某体系资产残缺 (params.json / discharge 权重 npz) 判 WARN ——
+    运行期对未命中场景平滑回退参数提取-only，不视为致命。charge 权重为预留位
+    (null) 不检查；pinn_trigger 总开关是有意配置，只反映在 detail 不影响状态。
+    路径解析与运行期同源 (registry 内路径相对 MODELS_DIR)，优先复用
+    pinn.spm_runner.MODELS_DIR 以兼容 wheel 布局；models_dir 可注入以便测试隔离。
+    """
+    trigger_on = bool((pinn_trigger or {}).get("enabled", False))
+
+    # 1. numpy 可导入性 (base 依赖)
+    try:
+        import numpy  # noqa: F401
+    except Exception as e:
+        return ("PINN 仿真环境", FAIL, f"numpy 不可用: {e}",
+                "执行 pip install -e '.' 重装 base 依赖 (PINN 前向完全依赖 numpy)")
+
+    # 2. 模型目录: 与运行期同源，兼容源码仓与 wheel 两种布局
+    if models_dir is None:
+        try:
+            from pinn.spm_runner import MODELS_DIR as _runtime_models_dir
+            models_dir = Path(_runtime_models_dir)
+        except Exception:
+            models_dir = ROOT_DIR / "pinn" / "models"
+
+    registry_file = models_dir / "registry.json"
+    if not registry_file.exists():
+        return ("PINN 仿真环境", WARN, f"未找到 {registry_file}",
+                "模型资产随 wheel 分发: 重装 pip install -e '.[all]'，或检查 pinn/models/ 目录")
+    try:
+        import json
+        registry = json.loads(registry_file.read_text(encoding="utf-8")) or {}
+        systems = registry.get("systems") or []
+    except Exception as e:
+        return ("PINN 仿真环境", WARN, f"registry.json 解析失败: {e}",
+                "修正 pinn/models/registry.json (Stage 5 将回退参数提取-only)")
+    if not systems:
+        return ("PINN 仿真环境", WARN, "registry.json 未声明任何已训练体系",
+                "Stage 5 将对全部方案回退参数提取-only")
+
+    # 3. 逐体系资产完整性 (提前暴露"模型目录只拷一半"，否则运行期匹配命中才失败)
+    incomplete = []
+    for sys_def in systems:
+        sid = str(sys_def.get("system_id", "?"))
+        missing = []
+        params_rel = sys_def.get("params")
+        if params_rel and not (models_dir / params_rel).exists():
+            missing.append(str(params_rel))
+        discharge = (sys_def.get("directions") or {}).get("discharge") or {}
+        for side in ("ne", "pe"):
+            w_rel = discharge.get(side)
+            if w_rel and not (models_dir / w_rel).exists():
+                missing.append(str(w_rel))
+        if missing:
+            incomplete.append(f"{sid} (缺 {'、'.join(missing)})")
+
+    trigger_str = "trigger=开启" if trigger_on else "总开关关闭 (仅参数提取)"
+    ids = ", ".join(str(s.get("system_id", "?")) for s in systems)
+    if incomplete:
+        return ("PINN 仿真环境", WARN,
+                f"声明 {len(systems)} 个体系，资产残缺: {'; '.join(incomplete)}",
+                "补齐缺失文件或从 registry.json 移除该体系")
+    return ("PINN 仿真环境", OK, f"{len(systems)} 个已训练体系 ({ids}) · {trigger_str}", "")
+
+
 def run_doctor_checks() -> List[Tuple[str, str, str, str]]:
     """执行全部自检，返回 (项目, 状态, 详情, 修复建议) 列表."""
     cfg = _load_setting_light()
     results: List[Tuple[str, str, str, str]] = []
 
-    # 1. Python 版本
+    # 1. Python 版本 (Stage 5 PINN 为纯 numpy 前向，无 PyBaMM 时代的 <3.13 硬限制)
     py = sys.version_info
     if py < (3, 10):
         results.append(("Python 版本", FAIL, platform.python_version(), "需要 Python >= 3.10"))
-    elif py >= (3, 13):
-        results.append((
-            "Python 版本", WARN, platform.python_version(),
-            ">= 3.13 无法安装 PyBaMM，Stage 5 物理仿真不可用 (其余功能正常)",
-        ))
     else:
         results.append(("Python 版本", OK, platform.python_version(), ""))
 
@@ -202,13 +273,7 @@ def run_doctor_checks() -> List[Tuple[str, str, str, str]]:
     results.append(_agent_runtime_row())
 
     # 9. 可选依赖 (extras)
-    for label, module, extra in (
-        ("Chroma 向量库 [rag]", "chromadb", "pip install -e '.[rag]'"),
-        ("Ollama 客户端 [rag]", "ollama", "pip install -e '.[rag]'"),
-        ("Textual TUI [ui]", "textual", "pip install -e '.[ui]'"),
-        ("Gradio Web [ui]", "gradio", "pip install -e '.[ui]'"),
-        ("PyBaMM 物理 [physics]", "pybamm", "pip install -e '.[physics]' (需 Python < 3.13)"),
-    ):
+    for label, module, extra in _OPTIONAL_EXTRAS:
         try:
             __import__(module)
             results.append((label, OK, "已安装", ""))
@@ -228,6 +293,9 @@ def run_doctor_checks() -> List[Tuple[str, str, str, str]]:
             results.append(("Materials Project [mp]", OK, "已禁用 (MP_MCP_ENABLED=false)", ""))
     except Exception as e:
         results.append(("Materials Project [mp]", WARN, f"未就绪: {e}", "pip install -e '.[mp]'"))
+
+    # PINN 仿真环境 (Stage 5 默认启用: 纯 numpy SPM 前向)
+    results.append(_pinn_row(cfg.get("pinn_trigger") or {}))
 
     # 10. 输出目录写权限
     try:
