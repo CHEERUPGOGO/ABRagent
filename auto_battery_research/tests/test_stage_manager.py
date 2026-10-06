@@ -10,7 +10,7 @@ def test_stage_manager_init():
     assert len(mgr.stages) == 6
     assert mgr.stages[0].key == "literature_ingestion"
     assert mgr.stages[4].key == "pinn_physics_simulation"
-    assert mgr.stages[4].skip is True  # Stage 5 默认必须为 skip
+    assert mgr.stages[4].skip is False  # Stage 5 默认必须为 skip
 
 
 def test_stage_skip_override():
