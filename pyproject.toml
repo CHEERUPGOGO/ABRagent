@@ -50,9 +50,6 @@ ui = [
     "textual>=0.50.0",
     "gradio>=4.0.0",
 ]
-physics = [
-    "pybamm>=23.5",
-]
 dev = [
     "pytest>=7.0.0",
     "pytest-asyncio>=0.21.0",
@@ -70,7 +67,6 @@ all = [
     "chromadb>=0.5.0",
     "textual>=0.50.0",
     "gradio>=4.0.0",
-    "pybamm>=23.5; python_version < '3.13'",
 ]
 
 [project.scripts]
@@ -98,6 +94,17 @@ include = ["auto_battery_research*", "miner*", "agent*", "preprocessing*", "pinn
 # 子目录) —— 其 _load 对缺失文件是静默降级(空表继续跑)，漏打包会让 C1-C8 硬
 # 约束门禁在安装态沦为空校验，靠 test_packaging.py 在 zip 层面锁死回归。
 "lmllm.RAG" = ["data/*.json", "data/*/*.json", "data/*/*.md"]
+# SPM PINN 模型资产 (registry + 体系参数/pOCV/训练报告/权重/金样本) —— spm_runner
+# 运行时从安装目录直读；漏打包会让 Stage 5 体系匹配全部落空 (回退提取-only)。
+"pinn" = [
+    "models/registry.json",
+    "models/README.md",
+    "models/systems/*/params.json",
+    "models/systems/*/*.txt",
+    "models/systems/*/train_report_*.json",
+    "models/systems/*/golden_io.json",
+    "models/systems/*/weights/*.npz",
+]
 
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]

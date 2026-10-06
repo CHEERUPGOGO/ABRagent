@@ -260,16 +260,16 @@ def test_auto_detect_strict_prefix(tmp_path):
     assert status_by_id[2] == "PASSED"
     assert status_by_id[3] == "FAILED"      # 首个未定论阶段: 尝试验收后失败
     assert status_by_id[4] == "PENDING"     # ★ 旧缺陷: 会被独立验收为 PASSED
-    assert status_by_id[5] == "SKIPPED"     # 默认跳过 (初始化设定，不受前缀影响)
+    assert status_by_id[5] == "PENDING"     # 默认启用 (skip_pinn_default=false), 严格前缀下不认领
     assert status_by_id[6] == "PENDING"     # ★ 旧缺陷: 会被独立验收为 PASSED
 
     # 指针停在首个未完成阶段 (Stage 3, 0-based idx=2)
     assert mgr.current_stage_idx == 2
     assert mgr.get_current_stage().id == 3
 
-    # 进度不显示虚假的 6/6
+    # 进度不显示虚假的 6/6 (Stage 5 默认启用后不再计入 SKIPPED 折算进度)
     progress = mgr.get_status()["progress"]
-    assert progress == "3/6"
+    assert progress == "2/6"
 
 
 def test_auto_detect_honors_loaded_prefix(tmp_path):

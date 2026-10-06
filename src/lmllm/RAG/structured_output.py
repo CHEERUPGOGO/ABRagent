@@ -258,25 +258,6 @@ def format_process_log(
     else:
         lines.append("- 无额外问题")
 
-    pinn_result = review_output.get("pinn_result")
-    if pinn_result:
-        lines.append("### 5.1 PINN 数值验证（独立物理计算）")
-        if "error" in pinn_result:
-            lines.append(f"- 计算不可用: {pinn_result['error']}")
-        else:
-            lines.append(
-                f"- 模型: {pinn_result.get('model', '?')} | "
-                f"置信度: {pinn_result.get('confidence', '?')}"
-            )
-            lines.append(
-                f"- 放电比容量: {pinn_result.get('q_end_mAh_g', '?')} mAh/g | "
-                f"平均电压: {pinn_result.get('v_mean', '?')} V"
-            )
-            lines.append(f"- 能量密度: {pinn_result.get('energy_wh_kg', '?')} Wh/kg")
-            if pinn_result.get("data_gaps"):
-                lines.append(f"- 数据缺口: {'; '.join(pinn_result['data_gaps'])}")
-        lines.append("")
-
     if plan.get("fallback") or writer_output.get("fallback") or review_output.get("fallback"):
         lines.append("### 6. 运行说明")
         lines.append("- 当前有部分步骤处于回退模式.请确认 LLM 后端已正确配置.")

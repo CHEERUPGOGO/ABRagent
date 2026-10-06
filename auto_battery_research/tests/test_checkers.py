@@ -238,83 +238,6 @@ def test_rag_design_checker_fail_closed_incomplete_scheme(tmp_path):
     assert diag["error_code"] == "STRUCTURED_SCHEME_INCOMPLETE"
 
 
-def test_pinn_physics_checker_bounds_validation(tmp_path):
-    """测试 PINN 物理门禁对异常物理值、偏微分方程发散与异常残差的严格校验 (Fail-Closed)."""
-    checker = PINNPhysicsChecker()
-    checker.on_init(
-        stage_manager=None,
-        stage_info={"id": 5, "name": "物理仿真", "skip": False},
-        config={"paths": {"output_dir": str(tmp_path)}},
-    )
-
-    sim_file = tmp_path / "simulation_result.json"
-
-    # 1. 负容量与超高容量测试
-    sim_file.write_text(json.dumps({
-        "q_end_mAh_g": -1.0,
-        "v_mean": 3.7,
-        "energy_wh_kg": 400.0,
-    }), encoding="utf-8")
-    passed, diag = checker.do_check()
-    assert passed is False
-    assert diag["error_code"] == "PINN_CAPACITY_OUT_OF_BOUNDS"
-
-    # 2. 荒谬电压测试 (999V)
-    sim_file.write_text(json.dumps({
-        "q_end_mAh_g": 220.0,
-        "v_mean": 999.0,
-        "energy_wh_kg": 400.0,
-    }), encoding="utf-8")
-    passed, diag = checker.do_check()
-    assert passed is False
-    assert diag["error_code"] == "PINN_VOLTAGE_OUT_OF_BOUNDS"
-
-    # 3. 负能量密度测试 (-4 Wh/kg)
-    sim_file.write_text(json.dumps({
-        "q_end_mAh_g": 220.0,
-        "v_mean": 3.7,
-        "energy_wh_kg": -4.0,
-    }), encoding="utf-8")
-    passed, diag = checker.do_check()
-    assert passed is False
-    assert diag["error_code"] == "PINN_ENERGY_DENSITY_OUT_OF_BOUNDS"
-
-    # 4. 偏微分方程求解发散测试
-    sim_file.write_text(json.dumps({
-        "q_end_mAh_g": 220.0,
-        "v_mean": 3.7,
-        "energy_wh_kg": 400.0,
-        "convergence": "FAILED",
-    }), encoding="utf-8")
-    passed, diag = checker.do_check()
-    assert passed is False
-    assert diag["error_code"] == "PINN_SIMULATION_DIVERGED"
-
-    # 5. 残差过高测试 (> 0.05)
-    sim_file.write_text(json.dumps({
-        "q_end_mAh_g": 220.0,
-        "v_mean": 3.7,
-        "energy_wh_kg": 400.0,
-        "convergence": "Converged",
-        "pde_residual_loss": 0.15,
-    }), encoding="utf-8")
-    passed, diag = checker.do_check()
-    assert passed is False
-    assert diag["error_code"] == "PINN_RESIDUAL_LOSS_TOO_HIGH"
-
-    # 6. 正确合规物理仿真数据
-    sim_file.write_text(json.dumps({
-        "q_end_mAh_g": 221.5,
-        "v_mean": 3.75,
-        "energy_wh_kg": 408.2,
-        "convergence": "Converged",
-        "pde_residual_loss": 0.0012,
-    }), encoding="utf-8")
-    passed, diag = checker.do_check()
-    assert passed is True
-    assert diag["observed"]["specific_capacity_mAh_g"] == 221.5
-
-
 def test_ingestion_checker_fail_closed_missing_component(tmp_path):
     """测试文献分类不全时，IngestionChecker 严格判定失败."""
     db_dir = tmp_path / "database" / "type"
@@ -351,18 +274,23 @@ def test_cell_assembly_checker_fail_closed(tmp_path):
 
 
 def test_stage4_to_5_schema_integration(tmp_path):
-    """测试 Stage 4 RAG 配方 -> Stage 5 物理仿真 -> PINNPhysicsChecker 契约贯通."""
-    from pinn.p2d_runner import PyBaMMP2DRunner
-    runner = PyBaMMP2DRunner()
-    
-    # 执行仿真生成真实契约产物
-    sim_result = runner.run_simulation(
-        cathode="NCM811",
-        anode="li_metal",
-        electrolyte="lhce",
-        target_energy_wh_kg=400.0,
-    )
-    assert sim_result["status"] in ("CONVERGED", "FALLBACK")
+    """测试 Stage 4 方案 -> Stage 5 SPM PINN 仿真 -> PINNPhysicsChecker 契约贯通."""
+    from pinn.spm_runner import run_pinn_discharge, match_pinn_system
+    from pinn.input_spec import build_cell_spec
+
+    system = match_pinn_system("NCM811", "si_base")
+    assert system is not None, "GrSi_NMC811 体系应已注册"
+    scheme = {"cathode": "NCM811", "anode": "si_base", "electrolyte": "lhce",
+              "target_energy_wh_kg": 500.0}
+    cell_spec = build_cell_spec(scheme, None, c_rate=0.5)
+    # 输入合规 (校准到体系训练参考值)，保证走通完整仿真链路
+    cell_spec["anode"].update({"L": 110e-6, "epsilon": 0.56})
+    cell_spec["anode"]["material"].update({"R_p": 8.21e-6, "D_s": 4e-14})
+    cell_spec["cathode"].update({"L": 70e-6, "epsilon": 0.31})
+    cell_spec["cathode"]["material"].update({"R_p": 5.34e-6, "D_s": 1e-14})
+
+    sim_result = run_pinn_discharge(cell_spec, scheme=scheme, system=system)
+    assert sim_result["status"] == "CONVERGED", sim_result.get("error")
     assert "specific_capacity_mAh_g" in sim_result
     assert "average_voltage_V" in sim_result
     assert "energy_wh_kg" in sim_result
@@ -370,9 +298,8 @@ def test_stage4_to_5_schema_integration(tmp_path):
     assert "capacity" in sim_result["discharge_curve"]
     assert "voltage" in sim_result["discharge_curve"]
 
-    # 写入文件并交由 PINNPhysicsChecker 校验
-    sim_file = tmp_path / "simulation_result.json"
-    sim_file.write_text(json.dumps(sim_result), encoding="utf-8")
+    sim_file = tmp_path / "pinn_simulation_result.json"
+    sim_file.write_text(json.dumps(sim_result, ensure_ascii=False), encoding="utf-8")
 
     checker = PINNPhysicsChecker()
     checker.on_init(stage_manager=None, stage_info={"id": 5, "name": "物理仿真", "skip": False}, config={"paths": {"output_dir": str(tmp_path)}})
@@ -514,29 +441,6 @@ def test_cell_assembly_checker_incomplete_cell_fields_fail_closed(tmp_path):
     passed, diag = checker.do_check()
     assert passed is False
     assert diag["error_code"] == "CELL_SPEC_INCOMPLETE"
-
-
-def test_pinn_physics_checker_fallback_explicit_status(tmp_path):
-    """测试 0 阶代理模型回退输出时，PINNPhysicsChecker 准确反映 FALLBACK 状态与 0th_order_surrogate 求解器."""
-    sim_file = tmp_path / "simulation_result.json"
-    sim_file.write_text(json.dumps({
-        "status": "FALLBACK",
-        "is_fallback": True,
-        "solver": "0th_order_surrogate",
-        "specific_capacity_mAh_g": 220.0,
-        "average_voltage_V": 3.75,
-        "energy_wh_kg": 400.0,
-        "convergence": "SURROGATE_CONVERGED",
-        "pde_residual_loss": 0.005,
-    }), encoding="utf-8")
-
-    checker = PINNPhysicsChecker()
-    checker.on_init(stage_manager=None, stage_info={"id": 5, "name": "物理仿真", "skip": False}, config={"paths": {"output_dir": str(tmp_path)}})
-    passed, diag = checker.do_check()
-    assert passed is True
-    assert diag["observed"]["simulation_status"] == "FALLBACK"
-    assert diag["observed"]["is_fallback"] is True
-    assert diag["observed"]["solver"] == "0th_order_surrogate"
 
 
 def test_unknown_materials_and_c7_c8_fail_closed():

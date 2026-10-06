@@ -112,7 +112,7 @@ WRITER_SYSTEM_PROMPT = """你是 Writer Agent.
 # 设计任务输出结构（当用户要求"设计/推荐电池方案"时,按以下五段式组织答案）
 如果用户问题是"设计一套方案/推荐材料组合"类(题目含 设计/推荐/方案 等词),在遵守 answer_outline 的前提下,**必须**按以下五段式组织:
 1. **目标与设计路线**:明确能量密度目标(如 ≥400 Wh/kg)与约束范围
-2. **推荐组合与关键配方**:正极 + 负极 + 电解液 + 添加剂(如有)。
+2. **推荐组合与关键配方**:正极 + 负极 + 电解液 + 添加剂(如有)。正/负极章节须给出可验证的几何设计数值:面载量 (mg/cm²)、压实密度 (g/cm³)、孔隙率 (%)、N/P 比、极片涂敷厚度 (μm)——有文献依据给区间并标注出处,无依据给工程建议值并标注"(基于文献推断)"。
    【化学相容性必须遵守】: 若采用锂金属负极，必须匹配局部高浓度电解液 (LHCE，如 1.5M LiFSI in DME/TTE) 或含 FEC 氟代溶剂体系，严禁搭配常规低浓度未修饰碳酸酯(EC/DMC/DEC)；若采用高镍正极(NCM811/Ni90+)，需匹配宽电位窗口抗氧化电解液。
 3. **预期关键指标**:估算能量密度/电压窗口/库仑效率预期,并标注计算口径(材料级还是电芯级)
 4. **可行性依据与机理**:每条推荐对应约束规则或文献证据,用 [passage_id] 引用
@@ -143,10 +143,7 @@ JSON 格式:
   "issues": ["问题1:XX陈述缺乏证据支持", "问题2:YY数值条件不完整", ...],
   "revised_answer": "修正后的最终答案(完整可展示)",
   "confidence": "high" | "medium" | "low",
-  "error_type": "retrieval" | "writing" | "none",
-  "needs_pinn": true | false,
-  "pinn_condition": {"c_rate": 0.1, "voltage_min": 2.8,
-                     "voltage_max": 4.3, "temperature_C": 25}
+  "error_type": "retrieval" | "writing" | "none"
 }
 
 # error_type 判定规则（按优先级）:
@@ -163,13 +160,6 @@ JSON 格式:
 - revised_answer 必须使用中文输出
 - revised_answer 必须是完整可展示的最终答案,具体性能数值要附带测试条件.
 """
-# PINN 数值验证工具声明（追加到 Reviewer prompt，见 pinn_tools/protocol.py）
-try:
-    from .pinn_tools import PINN_TOOL_PROMPT as _PINN_TOOL_PROMPT
-except Exception:
-    _PINN_TOOL_PROMPT = ""
-REVIEWER_SYSTEM_PROMPT += _PINN_TOOL_PROMPT
-
 # ════════════════════════════════════════════════════════════
 # Baseline A — 直接回答(用于对比)
 # ════════════════════════════════════════════════════════════

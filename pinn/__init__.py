@@ -1,39 +1,33 @@
 # -*- coding: utf-8 -*-
-"""pinn — 物理验证层（P2D 模型 + PINN + 数据契约）
+"""pinn — 物理仿真层（SPM PINN + 输入 spec 契约）
 
-本目录承载「高比能液态锂电池设计」方案里的物理验证层：
-  - cell_spec_schema.py   阶段 A：电芯方案参数字典（Cell Spec Dict）
-                          三方对齐契约（P2D 输入 / miner JSON / 数据库字段）
-  - （阶段 B）P2D 骨架 + 积分后处理（PyBaMM）
-  - （阶段 C）miner 子集验证闭环
-  - （阶段 D）PINN 化 + 接入 RAG 管线
+本目录承载 Stage 5 的物理仿真方案：
+  - spm_runner.py     万能族 SPM PINN 推理运行器（纯 numpy，零 TF 依赖），
+                      模型资产位于 pinn/models/（registry.json + systems/）
+  - input_spec.py     pinn_input_spec.json 的 cell_spec 构建契约
+                      （无缺省表回填，仅真实数据来源）
+  - models/           每个化学体系的参数/pOCV/权重/金样本 + 注册表
 
-从 cell_spec_schema 导入：
-    from pinn.cell_spec_schema import CellSpec, candidates_scheme_to_cell_spec
+用法：
+    from pinn.spm_runner import run_pinn_discharge, match_pinn_system
+    from pinn.input_spec import build_cell_spec
 """
 
-from .cell_spec_schema import (  # noqa: F401
-    CellSpec,
-    MaterialSpec,
-    ElectrodeSpec,
-    ElectrolyteSpec,
-    SeparatorSpec,
-    CellDesignSpec,
-    TestCondition,
-    PerformanceAnchor,
-    Provenance,
-    candidates_scheme_to_cell_spec,
-    miner_records_to_cell_spec,
-    fill_missing,
-    to_pybamm_dict,
-    validate,
-    estimate_material_energy,
-    estimate_cell_energy,
-    estimate_scheme_energy,
+from .input_spec import (  # noqa: F401
+    build_cell_spec,
+    summarize_param_extraction,
+    MATERIAL_PARAM_FIELDS,
+    ELECTROLYTE_PARAM_FIELDS,
+    ELECTRODE_GEOMETRY_FIELDS,
 )
 
 try:
-    from .p2d_runner import PyBaMMP2DRunner
-except Exception:
-    PyBaMMP2DRunner = None
-
+    from .spm_runner import (  # noqa: F401
+        run_pinn_discharge,
+        run_pinn_charge,
+        match_pinn_system,
+        load_registry,
+        load_system_params,
+    )
+except Exception:  # pragma: no cover - 模型资产缺失时保持可导入
+    pass

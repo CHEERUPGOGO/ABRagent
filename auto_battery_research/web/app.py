@@ -9,7 +9,7 @@ Gradio 5/6 的 SSR 渲染在部分 Windows 环境下会出现"tab 栏渲染但�
 - 📊 智能体 6 阶段全流程工作流大屏与实时门禁审计
 - 🧪 多智能体 RAG 电池方案设计与 C1-C8 规则审查
 - 📚 文献资产库与电芯数据挖掘全景
-- ⚡ PINN / PyBaMM 物理仿真与放电曲线绘制
+- ⚡ SPM PINN 物理仿真与放电曲线绘制
 """
 
 import os
@@ -509,55 +509,51 @@ def create_web_app(manager: Optional[StageManager] = None):
             # TAB 4: PINN 物理仿真与放电曲线
             # =================================================================
             with gr.Tab("⚡ PINN 物理仿真与放电曲线 (Physics Simulation)"):
-                gr.Markdown("### Newman P2D / PINN 物理连续性放电曲线求解器")
+                gr.Markdown("### SPM PINN 放电曲线求解器 (pinn/models/ 注册体系, spec 驱动输入)")
                 with gr.Row():
                     with gr.Column(scale=1):
-                        c_rate = gr.Slider(minimum=0.1, maximum=5.0, value=0.5, step=0.1, label="放电倍率 (C-rate)")
-                        loading = gr.Slider(minimum=10.0, maximum=40.0, value=22.0, step=1.0, label="正极面载量 (mg/cm²)")
-                        np_ratio = gr.Slider(minimum=1.0, maximum=3.0, value=2.0, step=0.1, label="负/正容量比 (N/P Ratio)")
-                        sim_run_btn = gr.Button("🚀 运行物理仿真求解", variant="primary")
+                        c_rate = gr.Slider(minimum=0.1, maximum=3.0, value=0.5, step=0.1, label="放电倍率 (C-rate)")
+                        sim_run_btn = gr.Button("🚀 运行 PINN 放电仿真", variant="primary")
                     with gr.Column(scale=2):
                         plot_output = gr.Plot(label="电压-比容量放电曲线 (V-Q Curve)")
                         sim_metrics_display = gr.JSON(label="电芯级能量密度与物理指标")
 
-                def on_run_simulation(c_rate_val, load_val, np_val):
+                def on_run_simulation(c_rate_val):
                     import numpy as np
-                    
-                    # 优先尝试调用真实 PyBaMM P2D 求解器
+
+                    # SPM PINN 推理 (注册表第一个体系; 物理输入以体系训练参数为基准)
+                    sim_res = None
                     try:
-                        from auto_battery_research.simulation import PyBaMMP2DRunner
-                        runner = PyBaMMP2DRunner()
-                        sim_res = runner.run_simulation(
-                            c_rate=c_rate_val,
-                            loading_mg_cm2=load_val,
+                        from auto_battery_research.simulation import (
+                            load_registry, run_pinn_discharge, build_cell_spec,
                         )
-                        capacities = np.array(sim_res.get("discharge_curve", {}).get("capacity", []))
-                        voltages = np.array(sim_res.get("discharge_curve", {}).get("voltage", []))
-                        solver_type = "PyBaMM Newman P2D Solver"
-                    except Exception:
-                        solver_type = "Calibrated Electrochemical SPM Surrogate"
-                        # 连续电化学放电曲线解析求解
-                        q_max = 225.0
-                        n_pts = 40
-                        soc = np.linspace(1.0, 0.02, n_pts)
-                        capacities = q_max * (1.0 - soc)
-                        
-                        # 开路电压函数 OCV(SOC) + Butler-Volmer 活化过电位 + 扩散极化
-                        ocv = 3.65 + 0.65 * (soc ** 0.5) - 0.25 * ((1.0 - soc) ** 2.5)
-                        r_int = 0.035 + 0.004 * load_val / 20.0
-                        eta_ohm = c_rate_val * r_int
-                        eta_diff = 0.045 * (c_rate_val ** 0.7) * (1.0 / (soc + 0.05) - 0.95)
-                        eta_diff = np.clip(eta_diff, 0.0, 0.65)
-                        
-                        voltages = ocv - eta_ohm - eta_diff
-                        valid_idx = voltages >= 2.75
-                        capacities = capacities[valid_idx]
-                        voltages = voltages[valid_idx]
+                        systems = load_registry().get("systems", [])
+                        if not systems:
+                            raise RuntimeError("注册表无可用 PINN 体系 (pinn/models/registry.json)")
+                        system = systems[0]
+                        match = system.get("match", {})
+                        scheme = {
+                            "cathode": (match.get("cathode") or [""])[0],
+                            "anode": (match.get("anode") or [""])[0],
+                            "electrolyte": "lhce",
+                        }
+                        cell_spec = build_cell_spec(scheme, None, c_rate=float(c_rate_val))
+                        sim_res = run_pinn_discharge(cell_spec, scheme=scheme, system=system)
+                        if sim_res.get("status") != "CONVERGED":
+                            raise RuntimeError(sim_res.get("error") or sim_res.get("status"))
+                        capacities = np.array(sim_res["discharge_curve"]["capacity"])
+                        voltages = np.array(sim_res["discharge_curve"]["voltage"])
+                        solver_type = f"SPM PINN ({sim_res['system_id']})"
+                    except Exception as e:
+                        solver_type = f"PINN 仿真不可用: {e}"
+                        capacities = np.array([])
+                        voltages = np.array([])
 
                     fig, ax = plt.subplots(figsize=(7, 4.2), dpi=100)
-                    ax.plot(capacities, voltages, color="#00bcd4", linewidth=2.5, label=f"Simulation ({c_rate_val}C)")
+                    if len(capacities) > 0:
+                        ax.plot(capacities, voltages, color="#00bcd4", linewidth=2.5, label=f"SPM PINN ({c_rate_val}C)")
                     ax.axhline(y=2.8, color="r", linestyle="--", alpha=0.6, label="Cutoff Voltage (2.8V)")
-                    ax.set_title(f"Cell Discharge Voltage Profile @ {c_rate_val}C (Loading: {load_val} mg/cm²)", fontsize=11)
+                    ax.set_title(f"Cell Discharge Voltage Profile @ {c_rate_val}C", fontsize=11)
                     ax.set_xlabel("Discharge Specific Capacity (mAh/g)", fontsize=10)
                     ax.set_ylabel("Cell Terminal Voltage (V)", fontsize=10)
                     ax.set_ylim(2.5, 4.4)
@@ -565,37 +561,29 @@ def create_web_app(manager: Optional[StageManager] = None):
                     ax.legend(loc="lower left")
                     fig.tight_layout()
 
-                    v_mean = float(np.mean(voltages)) if len(voltages) > 0 else 3.7
-                    q_delivered = float(capacities[-1]) if len(capacities) > 0 else 220.0
-                    cell_weight_per_cm2 = load_val * 4.2 + (load_val * np_val * 1.8) + 85.0
-                    energy_density = (q_delivered * v_mean * 1000) / (cell_weight_per_cm2 * 1.15)
-
+                    # 指标如实透传自 PINN 结果；不可用时如实标注失败原因，不编造数值
+                    v_mean = float(np.mean(voltages)) if len(voltages) > 0 else 0.0
+                    q_delivered = float(capacities[-1]) if len(capacities) > 0 else 0.0
                     metrics = {
                         "solver": solver_type,
                         "c_rate": f"{c_rate_val} C",
                         "delivered_capacity_mAh_g": round(q_delivered, 2),
                         "average_voltage_V": round(v_mean, 3),
-                        "calculated_cell_energy_wh_kg": round(energy_density, 1),
+                        "calculated_cell_energy_wh_kg": round(float(sim_res.get("energy_wh_kg", 0.0)), 1) if sim_res else "N/A",
                     }
-
-                    if solver_type.startswith("PyBaMM"):
-                        # 残差与收敛信息如实透传自真实求解器；缺失时标注 N/A，不编造收敛声明
-                        resid = sim_res.get("pde_residual_loss")
-                        if isinstance(resid, (int, float)):
-                            metrics["pde_residual_loss"] = round(float(resid), 6)
-                            metrics["convergence"] = f"Converged (Residual {float(resid):.2e} < 1e-3)"
-                        else:
-                            metrics["pde_residual_loss"] = "N/A (求解器未返回残差指标)"
-                            metrics["convergence"] = "N/A (求解器未返回收敛信息)"
+                    resid = sim_res.get("pde_residual_loss") if sim_res else None
+                    if isinstance(resid, (int, float)):
+                        metrics["pde_residual_loss"] = round(float(resid), 6)
+                        metrics["convergence"] = "Converged"
                     else:
-                        metrics["pde_residual_loss"] = "N/A (解析代理模型无 PDE 残差)"
-                        metrics["convergence"] = "N/A (代理模型为解析求解，无迭代收敛过程)"
+                        metrics["pde_residual_loss"] = "N/A"
+                        metrics["convergence"] = "N/A"
                     return fig, metrics
 
 
                 sim_run_btn.click(
                     on_run_simulation,
-                    inputs=[c_rate, loading, np_ratio],
+                    inputs=[c_rate],
                     outputs=[plot_output, sim_metrics_display],
                     show_progress="minimal",
                 )

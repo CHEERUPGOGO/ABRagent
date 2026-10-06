@@ -1,6 +1,6 @@
 """AutoBatteryResearch Simulation 统一门面模块 (Unified Simulation Facade).
 
-对外暴露 PyBaMM Newman P2D 物理求解器、文献锚点校验模型与 CellSpec 物理契约。
+对外暴露 SPM PINN 推理运行器与输入 spec 构建契约。
 """
 
 from __future__ import annotations
@@ -12,13 +12,13 @@ ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from pinn.p2d_runner import PyBaMMP2DRunner, run_discharge, MATERIAL_PROFILES
-from pinn.cell_spec_schema import CellSpec, candidates_scheme_to_cell_spec
+from pinn.spm_runner import run_pinn_discharge, run_pinn_charge, match_pinn_system, load_registry
+from pinn.input_spec import build_cell_spec
 
 __all__ = [
-    "PyBaMMP2DRunner",
-    "run_discharge",
-    "MATERIAL_PROFILES",
-    "CellSpec",
-    "candidates_scheme_to_cell_spec",
+    "run_pinn_discharge",
+    "run_pinn_charge",
+    "match_pinn_system",
+    "load_registry",
+    "build_cell_spec",
 ]
