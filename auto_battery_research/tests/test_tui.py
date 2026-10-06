@@ -10,9 +10,10 @@ from auto_battery_research.tui.app import BatteryAgentTUI
 
 
 @pytest.mark.asyncio
-async def test_battery_agent_tui_headless():
+async def test_battery_agent_tui_headless(tmp_path):
     """测试 TUI 无头启动与基础渲染."""
-    mgr = StageManager(skip_pinn=True)
+    # 临时 workspace: skip_pinn=True 会持久化进课题 sticky state，禁止污染真实课题
+    mgr = StageManager(skip_pinn=True, workspace_root=str(tmp_path))
     app = BatteryAgentTUI(manager=mgr)
     async with app.run_test() as pilot:
         # 等待挂载完成
