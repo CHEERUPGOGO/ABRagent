@@ -2,7 +2,7 @@
 
 **全生命周期化学电池研究自主智能体与科研工程平台**
 
-AutoBatteryResearch Agent (ABRAgent) 是专为高比能化学电池（锂金属电池、固态电池、高镍三元体系等）研发设计的自主 AI 智能体系统。系统采用 **Agent-Centric（智能体主控）设计哲学**：由全局顶层智能体（`ABRAgent`）驱动 LangChain/LangGraph ReAct 认知循环，融合**学术文献感知、语义向量入库、微观材料与电芯组装挖掘、多智能体 RAG 方案设计（Planner/Retrieval/Writer/Reviewer）、热力学硬约束规则引擎（RelationEngine C1–C8）以及 PyBaMM/P2D 物理偏微分方程仿真**，实现从海量学术论文到结构化电芯配方方案、物理验证及综合科研研报的端到端自主闭环。
+AutoBatteryResearch Agent (ABRAgent) 是专为高比能化学电池（锂金属电池、固态电池、高镍三元体系等）研发设计的自主 AI 智能体系统。系统采用 **Agent-Centric（智能体主控）设计哲学**：由全局顶层智能体（`ABRAgent`）驱动 LangChain/LangGraph ReAct 认知循环，融合**学术文献感知、语义向量入库、微观材料与电芯组装挖掘、多智能体 RAG 方案设计（Planner/Retrieval/Writer/Reviewer）、热力学硬约束规则引擎（RelationEngine C1–C8）以及 SPM PINN 物理仿真（纯 numpy 推理）**，实现从海量学术论文到结构化电芯配方方案、物理验证及综合科研研报的端到端自主闭环。
 
 ---
 
@@ -83,7 +83,6 @@ pip install -e ".[all]" -c requirements-lock.txt
 # 按需扩展
 pip install -e ".[rag]"       # Chroma 向量知识库 + Ollama 检索
 pip install -e ".[ui]"        # Rich TUI + Gradio Web
-pip install -e ".[physics]"   # PyBaMM P2D 物理仿真 (Python < 3.13)
 pip install -e ".[dev]"       # pytest 测试
 pip install -e ".[all]"       # 一键全功能
 ```
@@ -296,7 +295,7 @@ src/lmllm/RAG/                # Layer 2: 多智能体 RAG 引擎
 preprocessing/                # Layer 3: legacy 阶段脚本 (preprocessing/miner 由子进程调度)
 miner/                        #   Stage 2 语义打标 + 向量化
 agent/                        #   Stage 3 材料挖掘与电芯组装 (经 mining 门面导入)
-pinn/                         #   Stage 5 PyBaMM P2D 仿真 (经 simulation 门面导入)
+pinn/                         #   Stage 5 SPM PINN 仿真 (经 simulation 门面导入)
 ```
 
 ---

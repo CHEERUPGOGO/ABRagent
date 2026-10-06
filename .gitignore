@@ -61,3 +61,9 @@ doi.py
 *.swo
 .DS_Store
 Thumbs.db
+.zcode/
+.zcodeignore
+pinn\PINN-SPM-fast-prototyping
+pinn/PINN-SPM-fast-prototyping/
+AGENTS.md
+AGENTS.md
