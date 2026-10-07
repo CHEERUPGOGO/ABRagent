@@ -7,7 +7,9 @@ import sys
 import os
 import json
 import time
+import hashlib
 import subprocess
+import uuid
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, Optional, List, Tuple
@@ -615,6 +617,7 @@ def _generate_pinn_input_spec(
             "loading_mg_cm2": scheme.get("loading_mg_cm2"),
         },
         "cell_spec": spec,
+        "cell_spec_hash": _canonical_hash(spec),
         "extraction_summary": extraction_summary,
         "notes": notes,
     }
@@ -634,7 +637,7 @@ def _generate_pinn_input_spec(
 
     journal_notes = (
         f"完成 PINN 触发判定 ({'命中' if triggered else '未命中'}) 与选中材料物理参数提取: "
-        f"{filled_total} 项提取 / {missing_total} 项待补全，产物 pinn_input_spec.json (真实 PINN 模型待接入)。"
+        f"{filled_total} 项提取 / {missing_total} 项待补全，产物 pinn_input_spec.json。"
     )
     return {
         "success": True,
@@ -655,6 +658,59 @@ def _generate_pinn_input_spec(
     }
 
 
+def _canonical_hash(obj: Any) -> str:
+    """任意 JSON 对象的稳定输入指纹 (md5 前 12 位)。
+
+    算法沿用 rag_adapter provenance 的 `json.dumps(sort_keys=True)` 先例，
+    用于把 pinn_input_spec.json 与 pinn_simulation_result.json 绑定到同一份输入。
+    """
+    try:
+        return hashlib.md5(
+            json.dumps(obj, sort_keys=True, ensure_ascii=False, default=str).encode("utf-8")
+        ).hexdigest()[:12]
+    except Exception:
+        return ""
+
+
+def _pinn_model_version(system_id: Optional[str]) -> str:
+    """体系 + 放电权重内容指纹 (防权重文件静默替换后旧结果冒充新仿真)。"""
+    if not system_id:
+        return ""
+    try:
+        from pinn.spm_runner import MODELS_DIR
+        weights_dir = Path(MODELS_DIR) / "systems" / str(system_id) / "weights"
+        digest = hashlib.md5()
+        for npz in sorted(weights_dir.glob("discharge_*.npz")):
+            digest.update(npz.name.encode("utf-8"))
+            digest.update(npz.read_bytes())
+        return f"{system_id}:{digest.hexdigest()[:8]}" if digest.digest() else system_id
+    except Exception:
+        return str(system_id)
+
+
+def _stamp_pinn_identity(out: Dict[str, Any], spec_hash: str, scheme_hash: str, system_id: Optional[str]) -> None:
+    """给仿真结果 payload 注记输入/模型身份 (CONVERGED 与失败 payload 统一处理)。"""
+    pinn_block = out.get("pinn") if isinstance(out.get("pinn"), dict) else {}
+    pinn_block["spec_hash"] = spec_hash
+    pinn_block["scheme_hash"] = scheme_hash
+    pinn_block["model_version"] = _pinn_model_version(system_id)
+    pinn_block["run_id"] = uuid.uuid4().hex[:12]
+    out["pinn"] = pinn_block
+
+
+def _invalidate_stale_pinn_artifacts(result_file: Path, png_file: Path) -> List[str]:
+    """删除与当前触发判定/输入失配的陈旧仿真产物，返回被移除的文件名列表。"""
+    removed: List[str] = []
+    for stale in (result_file, png_file):
+        try:
+            if stale.exists():
+                stale.unlink()
+                removed.append(stale.name)
+        except Exception:
+            pass
+    return removed
+
+
 def _run_pinn_inference_if_triggered(
     extract_result: Dict[str, Any],
     mgr: Optional[Any],
@@ -663,10 +719,17 @@ def _run_pinn_inference_if_triggered(
 ) -> Dict[str, Any]:
     """Stage 5 激活且触发命中时执行 SPM PINN 放电仿真，原子落盘结果文件.
 
-    返回 pinn_run 摘要, status ∈ CONVERGED | OUT_OF_ENVELOPE | NO_MATCH |
-    PINN_DISABLED | SKIPPED | ERROR。skip 快速通道永远只做参数提取。
+    返回 pinn_run 摘要, status ∈ CONVERGED | OUT_OF_RANGE | OUT_OF_ENVELOPE |
+    NO_MATCH | PINN_DISABLED | SKIPPED | ERROR。skip 快速通道永远只做参数提取。
+    结果 payload 统一注记输入/模型身份 (pinn.spec_hash/scheme_hash/model_version/
+    run_id)，与 pinn_input_spec.json 的 cell_spec_hash 绑定，供 checker 与报告
+    做陈旧结果防护；未收敛时同样以失败态覆写落盘，绝不保留旧成功结果冒充本轮。
     """
     system_id: Optional[str] = None
+    task_result_file = task_dir / PINN_SIM_RESULT_FILENAME
+    task_png_file = task_dir / PINN_CURVE_PNG_FILENAME
+    spec_hash = ""
+    scheme_hash = ""
     try:
         spec_file = Path(extract_result.get("spec_file", ""))
         with open(spec_file, "r", encoding="utf-8") as f:
@@ -674,11 +737,17 @@ def _run_pinn_inference_if_triggered(
         trigger = payload.get("trigger") or {}
         match_info = trigger.get("match") or {}
         system_id = match_info.get("system_id")
-        if not trigger.get("enabled"):
-            return {"status": "PINN_DISABLED", "system_id": system_id}
         cell_spec = payload.get("cell_spec")
+        spec_hash = _canonical_hash(cell_spec) if isinstance(cell_spec, dict) else ""
+        scheme_hash = _canonical_hash(payload.get("scheme") or {})
+        if not trigger.get("enabled"):
+            # 总开关关闭: 陈旧仿真产物与本轮判定必然失配, 一并失效
+            return {"status": "PINN_DISABLED", "system_id": system_id,
+                    "invalidated": _invalidate_stale_pinn_artifacts(task_result_file, task_png_file)}
         if not match_info.get("matched") or not isinstance(cell_spec, dict):
-            return {"status": "NO_MATCH", "system_id": system_id}
+            # 未匹配: 陈旧产物可能属于其他体系, 一并失效
+            return {"status": "NO_MATCH", "system_id": system_id,
+                    "invalidated": _invalidate_stale_pinn_artifacts(task_result_file, task_png_file)}
         # 动态读取 StageManager 运行状态, 杜绝陈旧静态配置
         stage_obj = mgr.get_stage_by_id(5) if mgr is not None else None
         if stage_obj is not None and stage_obj.skip:
@@ -688,7 +757,29 @@ def _run_pinn_inference_if_triggered(
     except Exception as e:
         return {"status": "ERROR", "error": f"PINN 推理异常: {type(e).__name__}: {e}", "system_id": system_id}
     if res.get("status") != "CONVERGED":
-        return {"status": res.get("status", "ERROR"), "error": res.get("error", ""), "system_id": system_id}
+        # 本轮失败持久化: 以失败态覆写旧成功结果 (不得冒充本轮), 陈旧 PNG 一并失效
+        failure_out = {
+            "schema_version": "1.0",
+            "kind": "pinn_simulation_result",
+            "target": payload.get("target"),
+            "generated_at": datetime.now().isoformat(),
+            **res,
+        }
+        _stamp_pinn_identity(failure_out, spec_hash, scheme_hash, system_id)
+        try:
+            _atomic_write_text(task_result_file, json.dumps(failure_out, ensure_ascii=False, indent=2))
+        except Exception:
+            pass  # 失败态落盘尽力而为, 不遮蔽原始 error
+        try:
+            task_png_file.unlink(missing_ok=True)
+        except Exception:
+            pass
+        return {
+            "status": res.get("status", "ERROR"),
+            "error": res.get("error", ""),
+            "system_id": system_id,
+            "result_file": str(task_result_file),
+        }
 
     out = {
         "schema_version": "1.0",
@@ -697,6 +788,7 @@ def _run_pinn_inference_if_triggered(
         "generated_at": datetime.now().isoformat(),
         **res,
     }
+    _stamp_pinn_identity(out, spec_hash, scheme_hash, system_id)
     curve_png = _render_pinn_curve_png(res, task_dir)
     if curve_png:
         out["curve_png"] = curve_png
@@ -773,9 +865,28 @@ def _load_pinn_result_summary(mgr: Optional[Any] = None) -> Optional[Dict[str, A
             "design": pinn_info.get("design"),
             "spec_inputs": pinn_info.get("spec_inputs"),
             "temperature_K": pinn_info.get("temperature_K"),
+            "spec_hash": pinn_info.get("spec_hash"),
         }
     except Exception:
         return None
+
+
+def _pinn_result_identity_ok(mgr: Optional[Any], summary: Optional[Dict[str, Any]]) -> bool:
+    """报告守卫: 仿真结果摘要必须与当前 pinn_input_spec.json 的输入指纹一致.
+
+    防陈旧结果冒充本轮结果 (如先 0.5C 成功、改 10C 越界重跑后旧结果残留)。
+    spec 缺失/不可读/hash 任一侧缺失或失配 → False (fail-closed)。
+    """
+    if not summary or not summary.get("spec_hash"):
+        return False
+    try:
+        spec_file = mgr.get_task_output_dir() / PINN_INPUT_SPEC_FILENAME
+        if not spec_file.exists():
+            return False
+        spec_data = json.loads(spec_file.read_text(encoding="utf-8"))
+    except Exception:
+        return False
+    return bool(spec_data.get("cell_spec_hash")) and spec_data["cell_spec_hash"] == summary["spec_hash"]
 
 
 def _render_pinn_geometry_block(summary: Optional[Dict[str, Any]]) -> str:
@@ -883,6 +994,19 @@ def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, targe
             result["deliverables"].append(pinn_run["curve_png"])
         log_success(f"PINN 放电仿真产物已保存: {pinn_run.get('result_file')}")
         log_observation(result["message"])
+    elif pinn_run.get("status") in ("OUT_OF_RANGE", "OUT_OF_ENVELOPE", "ERROR"):
+        # 仿真失败是硬失败: 外层 success 置 False, 具体原因透传给 LLM/用户修正
+        # (如 "c_rate=10 超出体系有效范围 [0.1, 3]")；NO_MATCH/PINN_DISABLED/SKIPPED
+        # 是合法回退, 保持提取成功的 success=True 语义
+        result["success"] = False
+        result["message"] = (
+            f"PINN 放电仿真未完成 ({pinn_run.get('status')}): {pinn_run.get('error', '')}；"
+            f"参数提取产物已保留，请修正越界输入后重跑"
+        )
+        result["journal_notes"] = (
+            f"PINN 放电仿真未完成 ({pinn_run.get('status')}): {pinn_run.get('error', '')}"
+        )
+        log_error(result["message"])
     elif pinn_run.get("status") != "SKIPPED":
         log_observation(f"PINN 仿真未执行 ({pinn_run.get('status')}): {pinn_run.get('error', '')}")
     return result
@@ -1048,10 +1172,23 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     elif stage_statuses.get(5) == "FALLBACK":
         s5_status_desc = "FALLBACK (0 阶理论模型代理估算，非全微分方程收敛)"
     elif stage_statuses.get(5) == "FAILED":
-        s5_status_desc = "FAILED (偏微分方程求解发散或物理边界超限)"
+        s5_failure_desc = ""
+        try:
+            _rf = mgr.get_task_output_dir() / PINN_SIM_RESULT_FILENAME
+            if _rf.exists():
+                _rd = json.loads(_rf.read_text(encoding="utf-8"))
+                if _rd.get("status") and _rd.get("status") != "CONVERGED":
+                    s5_failure_desc = f": {_rd.get('status')} — {(_rd.get('error') or '').strip()}"
+        except Exception:
+            pass
+        s5_status_desc = f"FAILED (Stage 5 门禁未通过{s5_failure_desc})"
     elif stage_statuses.get(5) == "PASSED":
         s5_pinn = _load_pinn_result_summary(mgr)
-        if s5_pinn:
+        if s5_pinn and not _pinn_result_identity_ok(mgr, s5_pinn):
+            # 陈旧结果 (与当前输入指纹不一致): 拒绝采信, 几何回显与曲线一并置空
+            s5_status_desc = "PASSED (存在仿真结果但与当前输入指纹不一致，已拒绝采信；请重跑 RunPhysicsSimulation 对齐)"
+            s5_pinn = None
+        elif s5_pinn:
             s5_status_desc = (
                 f"PASSED (SPM PINN 放电仿真完成: 体系 {s5_pinn['system_id']}, {s5_pinn['c_rate']}C, "
                 f"比容量 {s5_pinn['specific_capacity_mAh_g']:.1f} mAh/g, "
@@ -1062,13 +1199,15 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
             s5_status_desc = "PASSED (PINN 触发判定与材料参数提取完成；体系未匹配注册表 PINN，未执行仿真)"
     else:
         s5_status_desc = "PENDING (尚未执行)"
-    # PINN 实际生效几何回显（result 缺失/非收敛 → 空块）
+    # PINN 实际生效几何回显（result 缺失/非收敛/陈旧 → 空块）
     s5_geometry_block = _render_pinn_geometry_block(s5_pinn)
 
-    # Stage 5 放电曲线图 (存在则嵌入研报；报告与图同目录, 相对路径引用)
+    # Stage 5 放电曲线图: 仅当 stage PASSED 且结果通过指纹守卫时才允许嵌入
+    # (旧实现只判断 PNG 文件存在, Stage 5 跳过/失败时会把陈旧曲线带进报告)
     s5_curve_block = ""
     try:
-        if (mgr.get_task_output_dir() / PINN_CURVE_PNG_FILENAME).exists():
+        if (stage_statuses.get(5) == "PASSED" and s5_pinn
+                and (mgr.get_task_output_dir() / PINN_CURVE_PNG_FILENAME).exists()):
             s5_curve_block = f"\n\n![SPM PINN 放电曲线 ({PINN_CURVE_PNG_FILENAME})]({PINN_CURVE_PNG_FILENAME})"
     except Exception:
         pass

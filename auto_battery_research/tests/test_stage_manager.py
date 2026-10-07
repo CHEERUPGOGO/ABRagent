@@ -147,6 +147,26 @@ def test_stage_manager_atomic_journal_concurrency(tmp_path):
     assert len(all_j) >= 1
 
 
+def test_auto_detect_stage5_zero_artifacts_stays_failed(tmp_path):
+    """strict 硬门禁回归: 前四阶段完成 + Stage 5 零产物 → 禁止自动认领 PASSED.
+
+    Stage 5 曾是唯一 strict: false 的阶段, 零产物时 PINN_SIMULATION_RESULT_MISSING
+    被降级为 warning, auto-detect 会把它标成 PASSED 并把指针推进 Stage 6。
+    strict=true 后必须 FAILED 且指针停在 Stage 5。
+    """
+    mgr = StageManager(workspace_root=str(tmp_path))
+    for s in mgr.stages[:4]:
+        s.status = "PASSED"
+    mgr.stages[4].status = "PENDING"
+    mgr.current_stage_idx = 4
+
+    mgr.auto_detect_existing_progress()
+
+    assert mgr.stages[4].status == "FAILED"
+    assert mgr.get_current_stage().id == 5
+    assert mgr.get_status()["progress"] == "4/6"
+
+
 def test_complete_historical_stage_rejected_and_pointer_intact(tmp_path):
     """测试调用 Complete(旧阶段) 被严格拒绝，且不会破坏状态机当前指针."""
     mgr = StageManager(target_goal="测试历史阶段指针保护")

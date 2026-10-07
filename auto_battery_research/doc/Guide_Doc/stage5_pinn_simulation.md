@@ -23,9 +23,14 @@
 
 PINN 链路：`match_pinn_system(cathode, anode)` → 体系 `params.json` + pOCV 曲线 + npz 权重 → 容量/bc 解析映射 → 训练包络检查 (|bc|/|bc_ref| ∈ [0.02, 15]，越界拒绝执行) → 网络前向 → OCV + Butler–Volmer → 电压截止 (v_min) 截断 → 标量落盘。放电/充电模型在 registry 中成对预留 (`directions.charge`)，当前仅放电接入。
 
-## 验收门禁 (PINNPhysicsChecker)
+## 验收门禁 (PINNPhysicsChecker，strict=true 硬门禁)
 - 若 `stage.skip == True`：直接通过门禁；但参数提取仍会在 skip 快速通道中执行 (失败仅记录，不阻断)，**skip 快速通道不做仿真**。
-- 若 `stage.skip == False`：按优先级验收——
-  1. 课题目录存在 `pinn_simulation_result.json` → 数值物理区间校验 (比容量 [50, 4500] mAh/g、平均电压 [1.0, 5.5] V、能量密度 [50, 3000] Wh/kg) + 训练包络 + 残差 ≤ 0.05；
-  2. 否则须存在结构完整的 `pinn_input_spec.json` (含 `cell_spec` 块)；
-  3. 历史课题的 `simulation_result.json` 数值校验路径保留兼容。
+- 若 `stage.skip == False`：按两种合法模式判定——
+  1. **仿真模式** (`trigger.triggered == true`，体系匹配且总开关开启)：必须存在 `pinn_simulation_result.json`，且依次校验
+     - `status == CONVERGED`（拦截/异常 payload → `PINN_SIMULATION_NOT_CONVERGED`）；
+     - 输入指纹一致：`pinn.spec_hash == pinn_input_spec.json 的 cell_spec_hash`（缺失/失配 → `PINN_RESULT_STALE`，防陈旧结果冒充本轮）；
+     - 数值物理区间 (比容量 [50, 4500] mAh/g、平均电压 [1.0, 5.5] V、能量密度 [50, 3000] Wh/kg) + 训练包络 + 残差 ≤ 0.05。
+     任一环失败均为硬失败（`abr_workflow.yaml` 中 Stage 5 `strict: true`），阶段状态置 FAILED 并阻断推进。
+  2. **提取-only 模式** (`trigger.triggered == false`，未匹配体系/总开关关闭)：`pinn_input_spec.json` 结构完整即通过——这是规范降级路径，不算错误；`triggered=true` 却无结果文件 → `PINN_TRIGGERED_RESULT_MISSING` 硬失败。
+- 输入/模型身份绑定：spec 落盘时写入 `cell_spec_hash`（对 cell_spec 规范化 json 的 md5）；结果 payload 的 `pinn` 块统一注记 `spec_hash / scheme_hash / model_version` (体系 + 放电权重内容指纹) `/ run_id`。
+- 失效语义：非 CONVERGED 重跑以失败态覆写旧结果并删除旧曲线 PNG；未匹配/总开关关闭时陈旧 result+PNG 一并移除；Stage 6 报告仅在 stage PASSED 且指纹守卫 (`_pinn_result_identity_ok`) 通过时才嵌入数值/几何/曲线。
