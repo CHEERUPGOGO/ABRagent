@@ -38,7 +38,7 @@
    - 任务被严格划分为 6 个按序执行的 Stage。
    - `Check` 动作负责门禁自检（只诊断不推进），返回包含 `error_code`、`failure_summary` 与 `next_action` 的结构化诊断，指导智能体自我修复；`Complete` 动作在门禁合格后原子推进阶段指针。
 4. **Stage 5 (PINN) 弹性跳过机制**：
-   - 将高耗时/特定环境依赖的物理求解层（PyBaMM P2D / PINN）设计为可配置跳过（默认 `skip: true`），兼顾快速方案生成与深度物理核算。
+   - 将高耗时的物理求解层（SPM PINN 放电仿真，纯 numpy）设计为可配置跳过（默认启用，体系未匹配时平滑回退参数提取），兼顾快速方案生成与深度物理核算。
 5. **阶段研发日志持久化 (Stage Journal)**：
    - 各阶段推进前调用 `SetStageJournal` 记录关键发现与交付物路径，全流程输出 `abr_agent_journal.json` 便于复盘审计。
 
