@@ -124,6 +124,20 @@ class AbrRagAdapter:
 
         review_status = "REJECTED" if errors else "APPROVED"
 
+        # 2.5 几何声明块归一化 (产物契约 v1.1): scheme.geometry 从叙事稀疏提取
+        # 升级为显式完整声明 (逐字段值 + provenance: stage4_recipe/params_baseline)。
+        # 归一化结果同步进 scheme (design_scheme.json 与 rag_result.json 共用同一 dict)。
+        geometry_md = ""
+        try:
+            from pinn.input_spec import complete_geometry_block, format_geometry_markdown
+            normalized = complete_geometry_block(
+                scheme.get("geometry"), scheme.get("cathode"), scheme.get("anode"))
+            if normalized is not None:
+                scheme["geometry"] = normalized
+                geometry_md = format_geometry_markdown(normalized)
+        except Exception as geo_err:
+            log_observation(f"几何声明块归一化跳过 (保持叙事原值): {geo_err}")
+
         # 3. 规范化 Stage 4 标准输出契约 (含知识资产溯源，供科研可复现性回溯)
         provenance = self._build_provenance()
         contract_payload = {
@@ -153,9 +167,9 @@ class AbrRagAdapter:
         }
 
         # 4. 持久化文件 (仅课题目录；无论验收通过与否均落盘，REJECTED 产物保留供诊断回溯)
-        # Markdown
+        # Markdown (final_answer 五段式 + 设计点几何声明表)
         with open(scheme_md_file, "w", encoding="utf-8") as f:
-            f.write(final_answer)
+            f.write(final_answer if not geometry_md else final_answer + "\n\n---\n\n" + geometry_md + "\n")
 
         # JSON 契约
         with open(scheme_json_file, "w", encoding="utf-8") as f:

@@ -708,6 +708,33 @@ class RAGPipeline:
         }
 
 
+    # 用户问题 (goal) 中点名体系的锚定关键词: 方案提取优先与 goal 一致,
+    # 防止泛正文中的对比性提及 (如"对比锂金属") 抢走材料位
+    _ANCHOR_KEYWORDS: Dict[str, Dict[str, Tuple[str, ...]]] = {
+        "cathode": {
+            "NCM811": ("ncm811",),
+            "LRMO": ("lrmo", "富锂"),
+            "LNMO": ("lnmo", "尖晶石"),
+            "LFP": ("lfp", "磷酸铁锂"),
+            "LCO": ("lco", "钴酸锂"),
+        },
+        "anode": {
+            "si_base": ("硅", "si-c", "si/c", "silicon", "si anode"),
+            "li_metal": ("锂金属", "li metal", "li-metal", "lithium metal"),
+            "graphite": ("石墨", "graphite"),
+        },
+    }
+
+    @classmethod
+    def _anchored_pick(cls, cat: str, ids: List[str], question: str) -> Optional[str]:
+        """按用户问题中点名的体系锚定候选 id；问题未点名任何候选时返回 None。"""
+        q = (question or "").lower()
+        anchors = cls._ANCHOR_KEYWORDS.get(cat, {})
+        for id_ in ids:
+            if any(kw in q for kw in anchors.get(id_, ())):
+                return id_
+        return None
+
     def _extract_scheme(self, question: str, plan: Dict, draft_text: str = "") -> Optional[Dict[str, Any]]:
         """从问题+规划+答案正文中提取材料组合方案（供 RelationEngine / Stage 5 硬规则与物理仿真消费）."""
         if self.relation_engine is None:
@@ -730,8 +757,11 @@ class RAGPipeline:
                         else:
                             scheme[cat] = ids[0]
                     elif cat == "cathode":
-                        # 优先采用高比能正极
-                        if "NCM811" in ids:
+                        # 优先与用户问题 (goal) 点名的正极一致，其次按高比能正极排序
+                        anchored = self._anchored_pick("cathode", ids, question)
+                        if anchored:
+                            scheme[cat] = anchored
+                        elif "NCM811" in ids:
                             scheme[cat] = "NCM811"
                         elif "LRMO" in ids:
                             scheme[cat] = "LRMO"
@@ -744,7 +774,12 @@ class RAGPipeline:
                         else:
                             scheme[cat] = ids[0]
                     elif cat == "anode":
-                        if "li_metal" in ids:
+                        # 优先与用户问题 (goal) 点名的负极一致——问题点名"硅"时,
+                        # 禁止泛正文中的对比性提及 ("对比锂金属") 抢走负极位
+                        anchored = self._anchored_pick("anode", ids, question)
+                        if anchored:
+                            scheme[cat] = anchored
+                        elif "li_metal" in ids:
                             scheme[cat] = "li_metal"
                         elif "si_base" in ids:
                             scheme[cat] = "si_base"
@@ -765,9 +800,110 @@ class RAGPipeline:
             claimed = self._extract_energy_claim(combined)
             if claimed:
                 scheme["target_energy_wh_kg"] = claimed
+            # 提取几何设计数值（面载量/压实/孔隙率/厚度/N-P，供 Stage 5 PINN 验证推荐设计点）
+            geometry = self._extract_geometry(combined)
+            if geometry:
+                scheme["geometry"] = geometry
             return scheme or None
         except Exception:
             return None
+
+    # ── 几何参数正则提取（按组件关键词就近归属，区间取中值） ──────────────
+
+    # 数值区间：支持 12–20 / 12~20 / 12-20 / 12 到 20 等写法
+    _NUM = r"\d+(?:\.\d+)?"
+    _RANGE = _NUM + r"(?:\s*[~–—\-到]\s*" + _NUM + r")?"
+
+    # 组件锚定关键词（数值归属到其左侧最近的组件词）
+    _GEOMETRY_ANCHORS = {
+        "cathode": ("正极", "cathode"),
+        "anode": ("负极", "硅碳", "硅基", "Si-C", "Si/C", "anode"),
+    }
+
+    @classmethod
+    def _extract_geometry(cls, text: str) -> Dict[str, Dict[str, float]]:
+        """从五段式叙事提取几何设计数值；只记录真实出现的值，缺失字段不写入.
+
+        字段: loading_mg_cm2（面载量, mg/cm²）、compaction_g_cm3（压实密度,
+        g/cm³）、porosity_pct（孔隙率, %）、thickness_um（极片厚度, μm）；
+        区间写法取中值。N/P 比为电芯级，单独放 geometry["n_p_ratio"]。
+
+        组件归属: 优先按五段式 Markdown 标题（### ...正极/负极...）切片；
+        无标题时退化为就近锚点归属（数值左侧最近的组件关键词）。
+        """
+        # 组件标题边界（五段式: 章节标题决定其管辖文本段的组件归属）
+        section_spans = sorted(
+            (m.start(), comp)
+            for m in re.finditer(r"^#{1,6}[^\n]*$", text, re.MULTILINE)
+            for comp, kws in cls._GEOMETRY_ANCHORS.items()
+            if any(kw.lower() in m.group().lower() for kw in kws)
+        )
+        # 内联锚点（无标题结构的文本退化为就近归属）
+        inline_anchors = sorted(
+            (m.start(), comp)
+            for comp, kws in cls._GEOMETRY_ANCHORS.items()
+            for kw in kws
+            for m in re.finditer(re.escape(kw), text, re.IGNORECASE)
+        )
+
+        def owner(pos: int) -> Optional[str]:
+            if section_spans:
+                hits = [comp for s, comp in section_spans if s <= pos]
+                return hits[-1] if hits else None
+            hits = [comp for s, comp in inline_anchors if s <= pos]
+            return hits[-1] if hits else None
+
+        def mid(rng: str) -> Optional[float]:
+            nums = re.findall(cls._NUM, rng)
+            if not nums:
+                return None
+            vals = [float(n) for n in nums]
+            return sum(vals) / len(vals)
+
+        geometry: Dict[str, Dict[str, float]] = {"cathode": {}, "anode": {}}
+
+        def record(comp: Optional[str], field: str, value: Optional[float]) -> None:
+            if comp and comp in geometry and field not in geometry[comp] and value is not None:
+                geometry[comp][field] = value
+
+        # 面载量: 载量/loading 紧跟 mg·cm⁻² / mg/cm²（区分 mAh·cm⁻² 面容量）
+        for m in re.finditer(
+                r"(?:面?载量|loading)[^\d]{0,8}(" + cls._RANGE + r")\s*mg\s*[·/·]?\s*cm(?:⁻²|²|\^2|-2)",
+                text, re.IGNORECASE):
+            record(owner(m.start()), "loading_mg_cm2", mid(m.group(1)))
+        # 压实密度: 压实(密度)? 紧跟 g·cm⁻³ / g/cm³
+        for m in re.finditer(
+                r"压实(?:密度)?[^\d]{0,8}(" + cls._RANGE + r")\s*g\s*[·/]?\s*cm(?:⁻³|³|\^3|-3)",
+                text, re.IGNORECASE):
+            record(owner(m.start()), "compaction_g_cm3", mid(m.group(1)))
+        # 孔隙率: X–Y %
+        for m in re.finditer(
+                r"孔隙率[^\d%]{0,8}(" + cls._RANGE + r")\s*%", text):
+            record(owner(m.start()), "porosity_pct", mid(m.group(1)))
+        # 极片厚度: 厚度 紧跟 X μm（锚定"厚度"，避免颗粒 D50 的 μm 干扰）
+        for m in re.finditer(
+                r"(?:涂[布敷]厚度|极片厚度|电极厚度|厚度)[^\d]{0,6}(" + cls._NUM + r")\s*(?:μm|um|微米)",
+                text, re.IGNORECASE):
+            record(owner(m.start()), "thickness_um", mid(m.group(1)))
+        # N/P 比（电芯级）
+        m = re.search(r"N\s*/\s*P(?:\s*比)?[^\d]{0,6}(" + cls._NUM + r")", text, re.IGNORECASE)
+        if m:
+            v = mid(m.group(1))
+            if v is not None:
+                geometry["n_p_ratio"] = v
+        # 电压窗口: 电压/工作窗口 X–Y V（电芯级条件，v_min/v_max 取区间端点）
+        for m in re.finditer(
+                r"(?:电压窗口|工作窗口|电压范围|截止电压)[^\d]{0,10}(" + cls._RANGE + r")\s*V",
+                text, re.IGNORECASE):
+            nums = re.findall(cls._NUM, m.group(1))
+            if nums:
+                cond = geometry.setdefault("condition", {})
+                cond.setdefault("v_min", float(nums[0]))
+                if len(nums) > 1:
+                    cond.setdefault("v_max", float(nums[-1]))
+
+        # 清掉无命中的组件桶，全部为空则返回空 dict（下游据此省略 geometry 键）
+        return {k: v for k, v in geometry.items() if v}
 
 
 

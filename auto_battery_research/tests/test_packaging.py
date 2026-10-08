@@ -87,6 +87,21 @@ def test_wheel_single_namespace(wheel_names):
     assert not offenders, f"src.* 命名空间泄漏进打包: {offenders[:5]}"
 
 
+def test_wheel_contains_pinn_model_assets(wheel_names):
+    """SPM PINN 模型资产必须随包分发：缺失会让 Stage 5 体系匹配全部落空.
+
+    spm_runner 对缺失资产的行为 (registry 读不到 → 匹配返回 None → 回退
+    提取-only) 是静默降级，必须靠打包层面锁死。
+    """
+    for required in ("pinn/models/registry.json",):
+        assert required in wheel_names, f"PINN 注册表漏打包: {required}"
+    system_dir_entries = [n for n in wheel_names if n.startswith("pinn/models/systems/")]
+    assert any(n.endswith("/params.json") for n in system_dir_entries), "体系参数文件漏打包"
+    assert any(n.endswith("/golden_io.json") for n in system_dir_entries), "网络金样本漏打包"
+    assert any(n.endswith(".npz") for n in system_dir_entries), "PINN 权重 npz 漏打包"
+    assert any(n.endswith(".txt") for n in system_dir_entries), "pOCV 曲线漏打包"
+
+
 def test_wheel_contains_core_runtime_resources(wheel_names):
     """setting.yaml / 工作流 yaml / TUI 样式 / Web 静态资源必须随包分发."""
     for required in (

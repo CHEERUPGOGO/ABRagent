@@ -379,9 +379,11 @@ def run_rag_design(target_query: str = "", design_query: Optional[str] = None, *
     return adapter.run_rag_design(target_query=(design_query or resolved_query), task_dir=task_dir)
 
 
-# ══════════════════ Stage 5: PINN 触发判定 (占位) + 材料参数提取 ══════════════════
+# ══════════════════ Stage 5: PINN 触发判定 + 材料参数提取 + SPM PINN 仿真 ══════════════════
 
 PINN_INPUT_SPEC_FILENAME = "pinn_input_spec.json"
+PINN_SIM_RESULT_FILENAME = "pinn_simulation_result.json"
+PINN_CURVE_PNG_FILENAME = "pinn_simulation_curve.png"
 
 # 材料级物理量字段 (extraction_summary 统计口径; None/空串视为"未提取到")
 _MATERIAL_PARAM_FIELDS = (
@@ -428,20 +430,49 @@ def _load_pinn_trigger_cfg(mgr: Optional[Any] = None) -> Dict[str, Any]:
     return cfg if isinstance(cfg, dict) else {}
 
 
-def _check_pinn_trigger(scheme: Dict[str, Any], trigger_cfg: Dict[str, Any]) -> Tuple[bool, List[str]]:
-    """PINN 触发判定 (占位接口).
+def _match_pinn_system_for_scheme(scheme: Dict[str, Any]) -> Dict[str, Any]:
+    """Stage 5 体系匹配预检：scheme 的 (cathode, anode) id 对 pinn/models/registry.json。
 
-    当前 triggered 恒等于 pinn_trigger.enabled 开关值；具体判定规则
-    (特定材料 ID 白名单 + 特定性能要求阈值) 待专门 PINN 模块接入时
-    在此处补充实现，scheme 参数已预置供其消费。
+    匹配失败不视为错误——未训练该体系的 PINN 时 Stage 5 平滑回退提取-only。
+    """
+    result: Dict[str, Any] = {"matched": False, "system_id": None, "reasons": []}
+    if not isinstance(scheme, dict) or not scheme:
+        result["reasons"].append("Stage 4 方案未读取到，无法匹配 PINN 体系")
+        return result
+    cathode_id = str(scheme.get("cathode") or "")
+    anode_id = str(scheme.get("anode") or "")
+    try:
+        from pinn.spm_runner import match_pinn_system
+        system = match_pinn_system(cathode_id, anode_id)
+    except Exception as e:
+        result["reasons"].append(f"PINN 注册表读取失败: {type(e).__name__}: {e}")
+        return result
+    if system is None:
+        result["reasons"].append(
+            f"cathode={cathode_id!r} / anode={anode_id!r} 未匹配注册表任何 PINN 体系 (仅参数提取)")
+        return result
+    result["matched"] = True
+    result["system_id"] = system.get("system_id")
+    result["reasons"].append(
+        f"体系匹配命中: {system.get('system_id')} (cathode={cathode_id!r}, anode={anode_id!r})")
+    return result
+
+
+def _check_pinn_trigger(
+    scheme: Dict[str, Any],
+    trigger_cfg: Dict[str, Any],
+    match_info: Optional[Dict[str, Any]] = None,
+) -> Tuple[bool, List[str]]:
+    """PINN 触发判定：总开关 (pinn_trigger.enabled) AND 体系匹配命中。
+
+    - enabled=false → kill-switch，无论是否命中都不跑仿真（仅参数提取）；
+    - enabled=true 但未匹配 → 体系未训练对应 PINN，回退提取-only；
+    - 具体性能阈值规则 (rule 字段) 仍预留待 PINN 模块后续扩展。
     """
     enabled = bool(trigger_cfg.get("enabled", False))
-    if enabled:
-        return True, [
-            "pinn_trigger.enabled=true (具体触发条件尚未定义，暂按开关放行；"
-            "待 PINN 模块接入后补充材料白名单与性能阈值判定)"
-        ]
-    return False, ["pinn_trigger.enabled=false，触发条件未配置 (PINN 模块未接入)"]
+    info = match_info if match_info is not None else _match_pinn_system_for_scheme(scheme)
+    triggered = enabled and bool(info.get("matched"))
+    return triggered, list(info.get("reasons") or [])
 
 
 def _load_stage4_scheme(target_query: str, task_dir: Path, mgr: Optional[Any]) -> Dict[str, Any]:
@@ -481,16 +512,9 @@ def _load_candidates_library(mgr: Optional[Any] = None) -> Dict[str, Any]:
 
 
 def _summarize_param_extraction(spec_obj: Any, fields: Tuple[str, ...]) -> Tuple[List[str], List[str]]:
-    """按字段清单统计已提取 / 未提取 (None 或空串) 的物理量."""
-    filled: List[str] = []
-    missing: List[str] = []
-    for name in fields:
-        value = getattr(spec_obj, name, None)
-        if value is None or (isinstance(value, str) and not value.strip()):
-            missing.append(name)
-        else:
-            filled.append(name)
-    return filled, missing
+    """按字段清单统计已提取 / 未提取 (None 或空串) 的物理量 (dict 感知)."""
+    from pinn.input_spec import summarize_param_extraction
+    return summarize_param_extraction(spec_obj, fields)
 
 
 def _generate_pinn_input_spec(
@@ -502,10 +526,11 @@ def _generate_pinn_input_spec(
 ) -> Dict[str, Any]:
     """Stage 5 参数提取核心：当前方案选中材料 → 物理量参数清单落盘 pinn_input_spec.json.
 
-    提取链路: design_scheme.json scheme → candidates.json 材料级参数覆盖
-    → DEFAULT_MATERIALS / DEFAULT_ELECTROLYTES 缺省表回填物理量；
-    缺省表未覆盖的材料 (如 LFP/LCO/hard_carbon) 物理字段保持 null。
-    本函数不执行任何物理仿真 (真实 PINN 模型后续接入)，且无网络/LLM 依赖，
+    提取链路: design_scheme.json scheme → candidates.json 材料级参数 (formula/
+    capacity/电压) → 组装 cell_spec；物理动力学字段 (c_max/D_s/R_p/孔隙率等)
+    不做缺省表回填，保持 null——由 PINN 体系 params.json (训练基准) 或 spec
+    显式输入提供。
+    本函数不执行物理仿真 (仿真见 run_pinn_simulation)，且无网络/LLM 依赖，
     可安全地在 Stage 5 skip 快速通道中调用。
     """
     if mgr is None:
@@ -517,78 +542,39 @@ def _generate_pinn_input_spec(
     scheme = _load_stage4_scheme(target_query, task_dir, mgr)
     candidates_lib = _load_candidates_library(mgr)
     trigger_cfg = _load_pinn_trigger_cfg(mgr)
-    triggered, trigger_reasons = _check_pinn_trigger(scheme, trigger_cfg)
+    match_info = _match_pinn_system_for_scheme(scheme)
+    triggered, trigger_reasons = _check_pinn_trigger(scheme, trigger_cfg, match_info=match_info)
 
-    # 1. 组装 CellSpec (candidates 覆盖材料级参数 + 缺省表回填物理量)
+    # 1. 组装 cell_spec (仅真实数据: scheme + candidates.json 材料级参数;
+    #    物理动力学字段保持 null, 由 PINN 体系 params.json 或 spec 显式输入提供)
     spec_error = ""
     spec = None
     try:
-        if str(ROOT_DIR) not in sys.path:
-            sys.path.insert(0, str(ROOT_DIR))
-        from pinn.cell_spec_schema import candidates_scheme_to_cell_spec, fill_missing, mg_cm2_to_kg_m2
-
-        normalized = {
-            "cathode": scheme.get("cathode") or "",
-            "anode": scheme.get("anode") or "",
-            "electrolyte": scheme.get("electrolyte") or "",
-            # design_scheme.json 契约键为 target_energy_wh_kg，转换函数读 target_energy
-            "target_energy": scheme.get("target_energy_wh_kg") or scheme.get("target_energy"),
-        }
-        spec = candidates_scheme_to_cell_spec(normalized, candidates=candidates_lib or None, scheme_id=target_query)
-        spec = fill_missing(spec)
-
-        loading_mg_cm2 = scheme.get("loading_mg_cm2")
-        if loading_mg_cm2:
-            try:
-                spec.cathode.mass_loading = mg_cm2_to_kg_m2(float(loading_mg_cm2))
-            except (TypeError, ValueError):
-                pass
-
-        spec.condition.c_rate = float(c_rate)
-        spec.condition.temperature_C = float(ambient_temp_k) - 273.15
-
-        # 电压窗口只读复用 p2d_runner.MATERIAL_PROFILES (缺省表未覆盖则保持 None)
-        try:
-            from pinn.p2d_runner import MATERIAL_PROFILES
-            profile = MATERIAL_PROFILES.get(normalized["cathode"], {}) if normalized["cathode"] else {}
-            if profile.get("v_min") is not None:
-                spec.condition.voltage_min = float(profile["v_min"])
-            if profile.get("v_max") is not None:
-                spec.condition.voltage_max = float(profile["v_max"])
-        except Exception:
-            pass
+        from pinn.input_spec import build_cell_spec
+        spec = build_cell_spec(scheme, candidates_lib or None, c_rate=c_rate,
+                               ambient_temp_k=ambient_temp_k)
+        spec["scheme_id"] = target_query
     except Exception as e:
         spec_error = f"{type(e).__name__}: {e}"
 
     # 2. 提取统计 (fields_filled / fields_missing，标注每个组件的数据可得性)
     extraction_summary: Dict[str, Any] = {}
-    try:
-        from pinn.cell_spec_schema import DEFAULT_MATERIALS, DEFAULT_ELECTROLYTES
-        default_tables = {
-            "cathode": DEFAULT_MATERIALS,
-            "anode": DEFAULT_MATERIALS,
-            "electrolyte": DEFAULT_ELECTROLYTES,
-        }
-    except Exception:
-        default_tables = {}
     for comp in ("cathode", "anode", "electrolyte"):
         comp_id = (scheme.get(comp) or None) if isinstance(scheme, dict) else None
-        comp_spec = getattr(spec, comp, None) if spec is not None else None
+        comp_spec = spec.get(comp) if isinstance(spec, dict) else None
         entry: Dict[str, Any] = {"id": comp_id}
         if comp_spec is None:
             entry.update({
-                "in_default_table": False,
                 "fields_filled": [],
                 "fields_missing": [],
-                "error": spec_error or "CellSpec 构建失败",
+                "error": spec_error or "cell_spec 构建失败",
             })
         else:
-            table = default_tables.get(comp, {})
-            entry["in_default_table"] = bool(comp_id) and comp_id in table
             if comp == "electrolyte":
                 filled, missing = _summarize_param_extraction(comp_spec, _ELECTROLYTE_PARAM_FIELDS)
             else:
-                mat_filled, mat_missing = _summarize_param_extraction(comp_spec.material, _MATERIAL_PARAM_FIELDS)
+                mat_spec = comp_spec.get("material") or {}
+                mat_filled, mat_missing = _summarize_param_extraction(mat_spec, _MATERIAL_PARAM_FIELDS)
                 geo_filled, geo_missing = _summarize_param_extraction(comp_spec, _ELECTRODE_GEOMETRY_FIELDS)
                 filled, missing = mat_filled + geo_filled, mat_missing + geo_missing
             entry["fields_filled"] = filled
@@ -600,13 +586,13 @@ def _generate_pinn_input_spec(
 
     # 3. 组装参数清单契约并原子落盘
     notes = (
-        "PINN 真实模型尚未接入；本文件为触发判定与当前方案选中材料物理参数的落盘基础，"
-        "提取不到的物理量以 null 占位 (缺省参数表未覆盖的材料/字段待参数库或 PINN 模块补全)。"
+        "本文件为触发判定与当前方案选中材料物理参数的落盘基础；物理动力学字段不做缺省表"
+        "回填，保持 null 的字段由 PINN 体系 params.json (训练基准) 或 spec 显式输入提供。"
     )
     if not scheme:
         notes += " 注意: Stage 4 结构化方案 (design_scheme.json) 未读取到，scheme 与 cell_spec 为空。"
     if spec_error:
-        notes += f" CellSpec 构建受阻: {spec_error}。"
+        notes += f" cell_spec 构建受阻: {spec_error}。"
 
     payload = {
         "schema_version": "1.0",
@@ -618,6 +604,7 @@ def _generate_pinn_input_spec(
             "triggered": triggered,
             "reasons": trigger_reasons,
             "rule": trigger_cfg.get("rule"),
+            "match": match_info,
         },
         "scheme": {
             "cathode": scheme.get("cathode"),
@@ -627,7 +614,7 @@ def _generate_pinn_input_spec(
             "target_energy_wh_kg": scheme.get("target_energy_wh_kg") or scheme.get("target_energy"),
             "loading_mg_cm2": scheme.get("loading_mg_cm2"),
         },
-        "cell_spec": spec.to_dict() if spec is not None else None,
+        "cell_spec": spec,
         "extraction_summary": extraction_summary,
         "notes": notes,
     }
@@ -668,14 +655,192 @@ def _generate_pinn_input_spec(
     }
 
 
-def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, target_query: str = "", stage_manager: Optional[Any] = None, **kwargs) -> Dict[str, Any]:
-    """执行 Stage 5: PINN 触发判定 (占位) + 当前方案选中材料物理参数提取落盘.
+def _run_pinn_inference_if_triggered(
+    extract_result: Dict[str, Any],
+    mgr: Optional[Any],
+    task_dir: Path,
+    c_rate: float,
+) -> Dict[str, Any]:
+    """Stage 5 激活且触发命中时执行 SPM PINN 放电仿真，原子落盘结果文件.
 
-    真实 PINN 物理模型尚未接入，本阶段当前不执行任何电化学仿真：
-    1. 按 setting.yaml `pinn_trigger` 配置做触发判定 (enabled 开关占位，
-       具体材料/性能条件待 PINN 模块定义)；
+    返回 pinn_run 摘要, status ∈ CONVERGED | OUT_OF_ENVELOPE | NO_MATCH |
+    PINN_DISABLED | SKIPPED | ERROR。skip 快速通道永远只做参数提取。
+    """
+    system_id: Optional[str] = None
+    try:
+        spec_file = Path(extract_result.get("spec_file", ""))
+        with open(spec_file, "r", encoding="utf-8") as f:
+            payload = json.load(f)
+        trigger = payload.get("trigger") or {}
+        match_info = trigger.get("match") or {}
+        system_id = match_info.get("system_id")
+        if not trigger.get("enabled"):
+            return {"status": "PINN_DISABLED", "system_id": system_id}
+        cell_spec = payload.get("cell_spec")
+        if not match_info.get("matched") or not isinstance(cell_spec, dict):
+            return {"status": "NO_MATCH", "system_id": system_id}
+        # 动态读取 StageManager 运行状态, 杜绝陈旧静态配置
+        stage_obj = mgr.get_stage_by_id(5) if mgr is not None else None
+        if stage_obj is not None and stage_obj.skip:
+            return {"status": "SKIPPED", "system_id": system_id}
+        from pinn.spm_runner import run_pinn_discharge
+        res = run_pinn_discharge(cell_spec, scheme=payload.get("scheme") or {}, c_rate=c_rate)
+    except Exception as e:
+        return {"status": "ERROR", "error": f"PINN 推理异常: {type(e).__name__}: {e}", "system_id": system_id}
+    if res.get("status") != "CONVERGED":
+        return {"status": res.get("status", "ERROR"), "error": res.get("error", ""), "system_id": system_id}
+
+    out = {
+        "schema_version": "1.0",
+        "kind": "pinn_simulation_result",
+        "target": payload.get("target"),
+        "generated_at": datetime.now().isoformat(),
+        **res,
+    }
+    curve_png = _render_pinn_curve_png(res, task_dir)
+    if curve_png:
+        out["curve_png"] = curve_png
+    result_file = task_dir / PINN_SIM_RESULT_FILENAME
+    try:
+        _atomic_write_text(result_file, json.dumps(out, ensure_ascii=False, indent=2))
+    except Exception as e:
+        return {"status": "ERROR", "error": f"PINN 仿真产物写入失败: {e}", "system_id": system_id}
+    return {
+        "status": "CONVERGED",
+        "system_id": system_id,
+        "result_file": str(result_file),
+        "curve_png": curve_png,
+        "specific_capacity_mAh_g": res.get("specific_capacity_mAh_g"),
+        "average_voltage_V": res.get("average_voltage_V"),
+        "energy_wh_kg": res.get("energy_wh_kg"),
+    }
+
+
+def _render_pinn_curve_png(sim_result: Dict[str, Any], task_dir: Path) -> Optional[str]:
+    """渲染 SPM PINN 放电曲线 PNG (仅 CONVERGED 结果)；渲染失败仅记录不阻断.
+
+    matplotlib 为核心依赖，强制 Agg 后端 (无 GUI 环境/线程安全)；spm_runner
+    本身保持纯 numpy，绘图只发生在工作流落盘层。
+    """
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+
+        curve = sim_result.get("discharge_curve") or {}
+        cap = curve.get("capacity") or []
+        volt = curve.get("voltage") or []
+        if not cap or not volt:
+            return None
+        fig, ax = plt.subplots(figsize=(7, 4.2), dpi=110)
+        ax.plot(cap, volt, color="#00bcd4", linewidth=2.2,
+                label=f"SPM PINN discharge ({sim_result.get('c_rate')}C)")
+        v_min = sim_result.get("v_min_cutoff_V")
+        if isinstance(v_min, (int, float)):
+            ax.axhline(y=v_min, color="r", linestyle="--", alpha=0.6, label=f"Cutoff ({v_min:g}V)")
+        ax.set_title(f"SPM PINN Discharge Curve - {sim_result.get('system_id')}", fontsize=11)
+        ax.set_xlabel("Discharge Specific Capacity (mAh/g)", fontsize=10)
+        ax.set_ylabel("Cell Terminal Voltage (V)", fontsize=10)
+        ax.grid(True, linestyle=":", alpha=0.6)
+        ax.legend(loc="lower left")
+        fig.tight_layout()
+        png_path = task_dir / PINN_CURVE_PNG_FILENAME
+        fig.savefig(png_path)
+        plt.close(fig)
+        return str(png_path)
+    except Exception as e:
+        log_error(f"PINN 放电曲线 PNG 渲染失败: {e}")
+        return None
+
+
+def _load_pinn_result_summary(mgr: Optional[Any] = None) -> Optional[Dict[str, Any]]:
+    """读取课题目录 pinn_simulation_result.json 的关键标量与几何回显 (Stage 6 报告展示用)。"""
+    try:
+        result_file = mgr.get_task_output_dir() / PINN_SIM_RESULT_FILENAME
+        if not result_file.exists():
+            return None
+        with open(result_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        if not isinstance(data, dict) or data.get("status") != "CONVERGED":
+            return None
+        pinn_info = data.get("pinn") if isinstance(data.get("pinn"), dict) else {}
+        return {
+            "system_id": data.get("system_id"),
+            "c_rate": data.get("c_rate"),
+            "specific_capacity_mAh_g": data.get("specific_capacity_mAh_g"),
+            "average_voltage_V": data.get("average_voltage_V"),
+            "energy_wh_kg": data.get("energy_wh_kg"),
+            "design": pinn_info.get("design"),
+            "spec_inputs": pinn_info.get("spec_inputs"),
+            "temperature_K": pinn_info.get("temperature_K"),
+        }
+    except Exception:
+        return None
+
+
+def _render_pinn_geometry_block(summary: Optional[Dict[str, Any]]) -> str:
+    """把 PINN 实际生效几何渲染为报告 markdown 表（result 缺失/非收敛 → 空串）.
+
+    数值取自 result 的 pinn.design 回显（正/负极 L/ε/ε_s/R_s/D_s），
+    来源行随 spec_inputs 切换：空 = 体系训练参数基准；非空 = Stage 4 方案显式输入。
+    """
+    if not summary or not isinstance(summary.get("design"), dict):
+        return ""
+
+    def fmt(value: Any, scale: float = 1.0, spec: str = "{:.4g}") -> str:
+        if isinstance(value, (int, float)):
+            return spec.format(float(value) * scale)
+        return "—"
+
+    design = summary["design"]
+
+    def row(name_cn: str, side: str) -> str:
+        d = design.get(side) or {}
+        return (
+            f"| {name_cn} | {fmt(d.get('L'), 1e6)} | {fmt(d.get('porosity'))} "
+            f"| {fmt(d.get('eps_s'))} | {fmt(d.get('R_s'), 1e6)} "
+            f"| {fmt(d.get('D_s'), spec='{:.2e}')} |"
+        )
+
+    spec_inputs = summary.get("spec_inputs") or {}
+    sources = [entry.get("source") for side in ("ne", "pe")
+               for entry in (spec_inputs.get(side) or {}).values() if isinstance(entry, dict)]
+    n_recipe = sum(1 for s in sources if s == "stage4_recipe")
+    n_base = sum(1 for s in sources if s == "params_baseline")
+    fields = sorted({f for side in ("ne", "pe") for f in (spec_inputs.get(side) or {})})
+    if n_recipe and n_base:
+        source_line = f"几何来源：Stage 4 方案声明 {n_recipe} 项（{', '.join(fields)}），体系基准兜底 {n_base} 项。"
+    elif n_recipe:
+        source_line = f"几何来源：Stage 4 方案显式输入（{', '.join(fields)}）。"
+    elif n_base:
+        source_line = f"几何来源：体系训练参数基准（params.json，{n_base} 项），方案未提供显式几何。"
+    else:
+        source_line = "几何来源：体系训练参数基准（params.json），方案未提供显式几何。"
+    t_k = summary.get("temperature_K")
+    temp_c = f"{t_k - 273.15:.0f}" if isinstance(t_k, (int, float)) else "—"
+    lines = [
+        "**仿真输入几何**（PINN 实际生效值）：",
+        "",
+        "| 电极 | 厚度 L (μm) | 孔隙率 ε | 活性占比 ε_s | R_s (μm) | D_s (m²/s) |",
+        "|---|---|---|---|---|---|",
+        row("正极", "pe"),
+        row("负极", "ne"),
+        "",
+        f"测试条件：{fmt(summary.get('c_rate'))}C、{temp_c} °C。{source_line}",
+    ]
+    return "\n\n" + "\n".join(lines)
+
+
+def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, target_query: str = "", stage_manager: Optional[Any] = None, **kwargs) -> Dict[str, Any]:
+    """执行 Stage 5: PINN 触发判定 + 材料物理参数提取落盘 + (激活且匹配时) PINN 放电仿真.
+
+    1. 按 setting.yaml `pinn_trigger` 配置做触发判定 (总开关 AND 体系匹配，
+       见 pinn/models/registry.json)；
     2. 从 Stage 4 design_scheme.json 提取选中材料及可获得的物理量参数，
-       原子落盘 pinn_input_spec.json (提取不到的字段为 null)。
+       原子落盘 pinn_input_spec.json (提取不到的字段为 null)；
+    3. Stage 5 激活 (非 skip) 且触发命中时执行 SPM PINN 放电仿真
+       (pinn/spm_runner.py，纯 numpy)，原子落盘 pinn_simulation_result.json；
+       未命中/总开关关闭/skip 快速通道均只做参数提取，不执行仿真。
     """
     log_tool_call("PINNParamExtractor", f"c_rate={c_rate}, temp_k={ambient_temp}")
     if stage_manager is not None:
@@ -699,6 +864,27 @@ def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, targe
         log_observation(result.get("message", ""))
     else:
         log_error(f"PINN 参数提取失败: {result.get('error')}")
+        return result
+
+    pinn_run = _run_pinn_inference_if_triggered(result, mgr=mgr, task_dir=task_dir, c_rate=c_rate)
+    result["key_findings"]["pinn_run"] = pinn_run
+    if pinn_run.get("status") == "CONVERGED":
+        result["message"] = (
+            f"{result.get('message', '')}；PINN 放电仿真完成 (体系 {pinn_run.get('system_id')}, {c_rate}C): "
+            f"比容量 {pinn_run.get('specific_capacity_mAh_g', 0):.1f} mAh/g, "
+            f"平均电压 {pinn_run.get('average_voltage_V', 0):.2f} V, "
+            f"能量密度 {pinn_run.get('energy_wh_kg', 0):.1f} Wh/kg"
+        )
+        result["journal_notes"] = (
+            f"{result.get('journal_notes', '')} PINN 放电仿真完成 (体系 {pinn_run.get('system_id')})，"
+            f"产物 {PINN_SIM_RESULT_FILENAME} 与放电曲线 {PINN_CURVE_PNG_FILENAME}。"
+        )
+        if pinn_run.get("curve_png"):
+            result["deliverables"].append(pinn_run["curve_png"])
+        log_success(f"PINN 放电仿真产物已保存: {pinn_run.get('result_file')}")
+        log_observation(result["message"])
+    elif pinn_run.get("status") != "SKIPPED":
+        log_observation(f"PINN 仿真未执行 ({pinn_run.get('status')}): {pinn_run.get('error', '')}")
     return result
 
 
@@ -856,6 +1042,7 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     
     # 2. 动态分析 Stage 5 物理仿真实际状态
     s5_stage = mgr.get_stage_by_id(5)
+    s5_pinn = None
     if s5_stage and (s5_stage.skip or s5_stage.status == "SKIPPED"):
         s5_status_desc = "SKIPPED (物理仿真已按配置跳过 - 快速研发模式)"
     elif stage_statuses.get(5) == "FALLBACK":
@@ -863,9 +1050,28 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     elif stage_statuses.get(5) == "FAILED":
         s5_status_desc = "FAILED (偏微分方程求解发散或物理边界超限)"
     elif stage_statuses.get(5) == "PASSED":
-        s5_status_desc = "PASSED (PINN 触发判定与材料参数提取完成，物理求解待 PINN 模块接入)"
+        s5_pinn = _load_pinn_result_summary(mgr)
+        if s5_pinn:
+            s5_status_desc = (
+                f"PASSED (SPM PINN 放电仿真完成: 体系 {s5_pinn['system_id']}, {s5_pinn['c_rate']}C, "
+                f"比容量 {s5_pinn['specific_capacity_mAh_g']:.1f} mAh/g, "
+                f"平均电压 {s5_pinn['average_voltage_V']:.2f} V, "
+                f"能量密度 {s5_pinn['energy_wh_kg']:.1f} Wh/kg)"
+            )
+        else:
+            s5_status_desc = "PASSED (PINN 触发判定与材料参数提取完成；体系未匹配注册表 PINN，未执行仿真)"
     else:
         s5_status_desc = "PENDING (尚未执行)"
+    # PINN 实际生效几何回显（result 缺失/非收敛 → 空块）
+    s5_geometry_block = _render_pinn_geometry_block(s5_pinn)
+
+    # Stage 5 放电曲线图 (存在则嵌入研报；报告与图同目录, 相对路径引用)
+    s5_curve_block = ""
+    try:
+        if (mgr.get_task_output_dir() / PINN_CURVE_PNG_FILENAME).exists():
+            s5_curve_block = f"\n\n![SPM PINN 放电曲线 ({PINN_CURVE_PNG_FILENAME})]({PINN_CURVE_PNG_FILENAME})"
+    except Exception:
+        pass
 
     # 3. 计算整体审计结论
     failed_stages = [s.id for s in mgr.stages if s.status == "FAILED"]
@@ -964,7 +1170,7 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
 - Stage 2 (向量库检索): 状态 [{stage_statuses.get(2, 'PASSED')}] (VectorDBChecker 验收)
 - Stage 3 (材料挖掘组装): 状态 [{stage_statuses.get(3, 'PASSED')}] (CellAssemblyChecker 验收)
 - Stage 4 (多智能体 RAG): 状态 [{stage_statuses.get(4, 'PASSED')}] (RAGDesignChecker 验收, 真实证据数: {evidence_count} 条)
-- Stage 5 (PINN 物理仿真): {s5_status_desc}
+- Stage 5 (PINN 物理仿真): {s5_status_desc}{s5_geometry_block}{s5_curve_block}
 - Stage 6 (综合研报生成): 状态 [{stage_statuses.get(6, 'PASSED')}] (FinalReportChecker 终审验收)
 
 ### 验证层级与计算方法透明化说明

@@ -27,8 +27,10 @@ mission:
     3. **真实性与证据严谨性**：
        - 数据挖掘与方案设计必须基于文献与物理事实，遵循“有则提取、无则留空、禁止编造”。
        - 设计方案必须通过 8 大热力学/电化学硬约束（C1-C8）检验。
-    4. **Stage 5 (PINN) 弹性跳过机制**：
-       - Stage 5 (PINN 物理仿真) 默认处于 `skip: true` 状态。如果用户指定 `--with-pinn` 或环境已就绪，可激活并执行 P2D / PINN 数值验证；否则工作流平滑跃迁至 Stage 6。
+    4. **Stage 5 (PINN) 匹配执行机制**：
+       - Stage 5 默认启用：触发判定 = `pinn_trigger.enabled` 总开关 AND 方案 (cathode, anode) 匹配 `pinn/models/registry.json` 中已训练的 PINN 体系；
+       - 匹配命中 → 执行 SPM PINN 放电仿真 (纯 numpy，`pinn/spm_runner.py`)，产物 `pinn_simulation_result.json`；
+       - 未命中或总开关关闭 → 平滑回退为仅参数提取，不视为错误；`--skip-stage 5` 可整体跳过 (参数提取仍执行)。
 
 stages:
   - id: 1
@@ -94,9 +96,9 @@ stages:
   - id: 5
     key: "pinn_physics_simulation"
     name: "PINN 物理仿真校验"
-    description: "【默认可跳过】PINN 触发判定 (pinn_trigger 配置占位，具体材料/性能条件待专门 PINN 模块定义) + 当前方案选中材料物理参数提取：从 Stage 4 design_scheme.json 提取正极/负极/电解液及可获得的物理量，落盘 pinn_input_spec.json (提取不到的字段为 null)。真实电化学仿真待 PINN 模块接入后启用。"
-    skip: true
-    skip_reason: "PINN 真实物理模型尚未接入，默认跳过仿真计算以提高研发速度；跳过时材料参数提取仍会执行。使用 --with-pinn 或交互指令可随时激活。"
+    description: "SPM PINN 放电仿真 + 材料物理参数提取：从 Stage 4 design_scheme.json 提取正极/负极/电解液及可获得的物理量，落盘 pinn_input_spec.json (提取不到的字段为 null)；若方案 (cathode, anode) 匹配已训练的 PINN 体系 (pinn/models/registry.json) 且总开关开启，则执行 SPM PINN 放电仿真并落盘 pinn_simulation_result.json，未匹配体系平滑回退提取-only。"
+    skip: false
+    skip_reason: "用户手动跳过 (快速研发模式)；跳过时材料参数提取仍会执行，但不做 PINN 仿真。"
     reference_files:
       - "auto_battery_research/doc/Guide_Doc/stage5_pinn_simulation.md"
     checkers:
@@ -105,6 +107,7 @@ stages:
         strict: false
     expected_outputs:
       - "output/tasks/<goal>/pinn_input_spec.json"   # 课题专属目录 (全局 output/auto_battery_research/ 仅历史课题可读)
+      - "output/tasks/<goal>/pinn_simulation_result.json"   # 体系匹配到 PINN 时生成的仿真结果
 
   - id: 6
     key: "synthesis_report_generation"

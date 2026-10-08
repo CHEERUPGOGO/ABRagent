@@ -5,17 +5,19 @@ from pathlib import Path
 from auto_battery_research.workflow.stage_manager import StageManager
 
 
-def test_stage_manager_init():
-    mgr = StageManager()
+def test_stage_manager_init(tmp_path):
+    # 注入临时 workspace: 避免读取真实课题目录的 sticky state
+    # (_load_state 会恢复持久化的 stage5 skip 字段，历史测试污染会让本断言漂移)
+    mgr = StageManager(workspace_root=str(tmp_path))
     assert len(mgr.stages) == 6
     assert mgr.stages[0].key == "literature_ingestion"
     assert mgr.stages[4].key == "pinn_physics_simulation"
-    assert mgr.stages[4].skip is True  # Stage 5 默认必须为 skip
+    assert mgr.stages[4].skip is False  # Stage 5 默认启用 (skip_pinn_default: false)
 
 
-def test_stage_skip_override():
-    # 测试 CLI 覆盖 PINN skip 为 False
-    mgr = StageManager(skip_pinn=False)
+def test_stage_skip_override(tmp_path):
+    # 临时 workspace: set_stage_skip 默认 persist=True，禁止写入真实课题状态
+    mgr = StageManager(skip_pinn=False, workspace_root=str(tmp_path))
     assert mgr.stages[4].skip is False
 
     # 测试动态跳过与激活
@@ -62,9 +64,11 @@ def test_stage_ordering_enforcement():
     assert "无法跨阶段推进" in res.get("error", "")
 
 
-def test_stage_skip_restrictions():
+def test_stage_skip_restrictions(tmp_path):
     """测试仅允许跳过支持 skip 的阶段，核心阶段禁止跳过."""
-    mgr = StageManager()
+    # 临时 workspace: 本用例结尾 set_stage_skip(5, skip=True) 会持久化，
+    # 若写真实课题目录将污染默认课题的 sticky state (Stage 5 被静默跳过)
+    mgr = StageManager(workspace_root=str(tmp_path))
     # 尝试跳过 Stage 1、4、6 (核心必跑阶段)
     assert mgr.set_stage_skip(1, skip=True) is False
     assert mgr.set_stage_skip(4, skip=True) is False

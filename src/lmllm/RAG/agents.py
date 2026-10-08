@@ -31,11 +31,6 @@ try:
 except Exception:
     RelationEngine = None  # 关系引擎不可用时降级为纯 RAG
 
-try:
-    from .pinn_tools import run_pinn_prediction as _run_pinn_prediction
-except Exception:
-    _run_pinn_prediction = None  # pinn_tools 不可用时 PINN 插桩降级
-
 class PlannerAgent:
     """任务规划智能体 — 拆解问题/规划回答结构(材料筛选导向)
 
@@ -783,41 +778,6 @@ class ReviewerAgent:
                 "confidence": "low",
                 "fallback": True,
             }
-
-        # ── 插桩 C: PINN 数值验证（LLM 自主决策 needs_pinn；管线执行；结果注入二轮）──
-        pinn_result = None
-        _needs = str(data.get("needs_pinn", "")).lower()
-        if _needs in ("true", "1", "yes"):
-            if _run_pinn_prediction is not None and scheme:
-                try:
-                    pinn_result = _run_pinn_prediction(
-                        scheme, condition=data.get("pinn_condition") or {}
-                    )
-                except Exception as e:
-                    pinn_result = {"error": f"PINN 调用失败: {type(e).__name__}: {e}"}
-            else:
-                pinn_result = {
-                    "error": "未提取到材料方案或 pinn_tools 不可用，跳过 PINN 验证"
-                }
-            if pinn_result:
-                pinn_note = (
-                    "\n\n【PINN 物理模型计算结果（独立计算证据，非文献引用）】\n"
-                    + json.dumps(pinn_result, ensure_ascii=False, indent=1)
-                    + "\n请基于该数值结果重新审核并生成最终 revised_answer："
-                    "与草稿矛盾时以计算结果为准修正；"
-                    "若结果含 error 字段则说明计算不可用，保持保守。"
-                )
-                try:
-                    raw2 = self.llm.chat(
-                        REVIEWER_SYSTEM_PROMPT, user_prompt + pinn_note, temperature=0.1
-                    )
-                    data2 = safe_json_loads(raw2)
-                    if data2 and data2.get("revised_answer"):
-                        data = data2
-                except Exception as e:
-                    print(f"[ReviewerAgent] PINN 二轮注入失败(保留首轮): {e}")
-                data["pinn_result"] = pinn_result
-                data["issues"] = list(data.get("issues", []))
 
         # 如果审核发现问题但答案没变,强制使用保守答案
         normalized_draft = re.sub(r"\s+", "", draft_answer)

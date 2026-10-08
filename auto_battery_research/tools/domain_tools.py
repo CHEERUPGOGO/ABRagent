@@ -322,26 +322,36 @@ class RunPhysicsSimulationArgs(BaseModel):
         description="待仿真方案课题 (留空则动态绑定当前工作流活跃课题)"
     )
     current_rate: Optional[str] = Field(
-        default="0.2C",
-        description="放电倍率 (如 0.1C, 0.2C, 0.5C, 1.0C)"
+        default="0.5C",
+        description="放电倍率 (如 0.1C, 0.2C, 0.5C, 1.0C；PINN 仿真直接依赖该倍率)"
     )
+
+
+def _parse_c_rate(text: Optional[str], default: float = 0.5) -> float:
+    """"0.5C" / "0.5c" / "0.5" → 0.5；解析失败回退缺省。"""
+    try:
+        stripped = str(text).strip().rstrip("cC") if text else ""
+        return float(stripped) if stripped else default
+    except (TypeError, ValueError):
+        return default
+
 
 class RunPhysicsSimulationTool(BaseTool):
     name: str = "RunPhysicsSimulation"
     description: str = (
-        "【Stage 5 参数提取工具】执行 PINN 触发判定 (pinn_trigger 配置占位) 并从 Stage 4 方案提取"
-        "选中材料的物理量参数，落盘 pinn_input_spec.json (提取不到的字段为 null)。"
-        "真实电化学仿真待专门 PINN 模块接入后启用。"
+        "【Stage 5 PINN 工具】执行 PINN 触发判定 + Stage 4 方案材料物理参数提取，落盘 pinn_input_spec.json "
+        "(提取不到的字段为 null)；若 Stage 5 激活且方案体系匹配已训练的 PINN 模型 "
+        "(pinn/models/registry.json)，则执行 SPM PINN 放电仿真并落盘 pinn_simulation_result.json。"
     )
     args_schema: Type[BaseModel] = RunPhysicsSimulationArgs
 
-    def _run(self, target_goal: Optional[str] = "", current_rate: Optional[str] = "0.2C") -> str:
+    def _run(self, target_goal: Optional[str] = "", current_rate: Optional[str] = "0.5C") -> str:
         from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
         active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
         goal = resolve_effective_goal(target_goal, active_goal)
-        log_tool_call(self.name, f"target_goal='{goal}', current_rate='{current_rate}'")
-        # 条件参数 (c_rate/温度) 仅作为提取清单中的测试条件记录，不触发仿真
-        res = run_pinn_simulation(target_query=goal, c_rate=0.5)
+        c_rate = _parse_c_rate(current_rate)
+        log_tool_call(self.name, f"target_goal='{goal}', current_rate='{current_rate}' -> c_rate={c_rate}")
+        res = run_pinn_simulation(target_query=goal, c_rate=c_rate)
         return json.dumps(res, ensure_ascii=False, indent=2)
 
 

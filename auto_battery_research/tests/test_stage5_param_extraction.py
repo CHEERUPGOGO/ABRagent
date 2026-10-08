@@ -1,11 +1,13 @@
-"""Stage 5 参数提取单元测试 (PINN 真实模型接入前的占位阶段).
+"""Stage 5 参数提取单元测试 (PINN 仿真见 test_stage5_pinn_inference.py).
 
 覆盖:
-1. 完整方案 (NCM811/li_metal/lhce) → CellSpec 物理量从缺省表提取, 锂金属负极
-   物理字段为 null (li_metal_boundary 模型);
-2. 缺省表未覆盖材料 (LFP) → 物理量字段保持 null, 仅 candidates.json 材料级参数可提取;
+1. 完整方案 (NCM811/li_metal/lhce) → cell_spec 仅含真实数据来源字段:
+   candidates.json 材料级参数 (formula/capacity/电压) + scheme 设计目标;
+   物理动力学字段 (c_max/D_s/R_p/孔隙率等) 不做缺省表回填, 保持 null;
+2. 缺省表概念已删除: 所有 candidates 注册材料统一走同一提取链路 (LFP 与
+   NCM811 无差别), 物理量字段一律由 PINN 体系 params.json 或 spec 显式输入提供;
 3. Stage 4 方案缺失 → 降级生成 (scheme 为空), 不抛异常;
-4. pinn_trigger.enabled 开关占位判定;
+4. 触发判定 = 总开关 AND 体系匹配 (enabled+命中 / enabled+未命中);
 5. PINNPhysicsChecker 对 pinn_input_spec.json 的结构校验 (缺失/损坏/完整);
 6. skip 快速通道语义: _generate_pinn_input_spec 直接以 (goal, mgr) 调用同样落盘。
 
@@ -48,6 +50,19 @@ SCHEME_LFP_GRAPHITE = {
     "evidence": [],
 }
 
+SCHEME_MATCHED = {
+    "schema_version": "1.1",
+    "target": "设计500Wh/kg高比能电池",
+    "scheme": {
+        "cathode": "NCM811",
+        "anode": "si_base",
+        "electrolyte": "lhce",
+        "additives": ["FEC"],
+        "target_energy_wh_kg": 500.0,
+    },
+    "evidence": [],
+}
+
 
 def _make_mgr(tmp_path: Path, goal: str, pinn_trigger: dict = None) -> StageManager:
     mgr = StageManager(target_goal=goal, workspace_root=str(tmp_path))
@@ -65,7 +80,7 @@ def _write_scheme(tmp_path: Path, mgr: StageManager, goal: str, scheme_payload: 
 
 
 def test_extraction_full_scheme_ncm811_li_metal(tmp_path):
-    """缺省表内材料: 物理量从 DEFAULT 表提取; 锂金属负极物理字段为 null."""
+    """candidates 级字段提取; 物理动力学字段不做缺省回填, 保持 null."""
     goal = "Stage5参数提取_完整方案测试"
     mgr = _make_mgr(tmp_path, goal)
     _write_scheme(tmp_path, mgr, goal, SCHEME_NCM811_LI_METAL)
@@ -82,36 +97,44 @@ def test_extraction_full_scheme_ncm811_li_metal(tmp_path):
     assert payload["trigger"]["triggered"] is False
 
     cell_spec = payload["cell_spec"]
-    assert cell_spec["cathode"]["material"]["c_max"] == 49000.0
-    assert cell_spec["cathode"]["material"]["D_s"] == 1e-14
-    assert cell_spec["cathode"]["material"]["R_p"] == 5e-6
-    # NCM811 无 U_ocp 缺省 → 留 null
+    # 正极: candidates.json 材料级参数 (formula/capacity/电压) 提取到位
+    assert cell_spec["cathode"]["material"]["formula"] == "LiNi0.8Co0.1Mn0.1O2"
+    assert cell_spec["cathode"]["material"]["theoretical_capacity"] == 200.0
+    assert cell_spec["cathode"]["material"]["avg_voltage"] == 3.8
+    assert cell_spec["cathode"]["material"]["voltage_limit"] == 4.3
+    # 物理动力学字段: 无缺省表回填 → null (由 PINN 体系 params.json 或 spec 显式输入提供)
+    assert cell_spec["cathode"]["material"]["c_max"] is None
+    assert cell_spec["cathode"]["material"]["D_s"] is None
+    assert cell_spec["cathode"]["material"]["R_p"] is None
     assert cell_spec["cathode"]["material"]["U_ocp"] is None
-    # 锂金属负极: li_metal_boundary 模型, 物理字段全 null
-    assert cell_spec["anode"]["material"]["model"] == "li_metal_boundary"
+    # 锂金属负极: candidates 材料级数据; model 不再由缺省表标注
+    assert cell_spec["anode"]["material"]["formula"] == "Li"
+    assert cell_spec["anode"]["material"]["theoretical_capacity"] == 3860.0
+    assert cell_spec["anode"]["material"]["model"] is None
     assert cell_spec["anode"]["material"]["D_s"] is None
-    assert cell_spec["anode"]["material"]["c_max"] is None
-    # lhce 电解液: c_e0 = 2500 mol/m³
+    # lhce 电解液: candidates 提供配方描述与氧化窗口; 输运参数 null
     assert cell_spec["electrolyte"]["name"] == "lhce"
-    assert cell_spec["electrolyte"]["c_e0"] == 2500.0
+    assert cell_spec["electrolyte"]["oxidation_window"] == 5.0
+    assert cell_spec["electrolyte"]["c_e0"] is None
     # 设计目标与测试条件
     assert cell_spec["design"]["target_energy_density"] == 400.0
     assert cell_spec["condition"]["c_rate"] == 0.5
     assert cell_spec["condition"]["temperature_C"] == 25.0
-    # NCM811 在 MATERIAL_PROFILES 中有电压窗口
-    assert cell_spec["condition"]["voltage_min"] is not None
+    # 电压窗口不再由 MATERIAL_PROFILES 回填 → null (PINN 运行时从注册表取)
+    assert cell_spec["condition"]["voltage_min"] is None
 
     summary = payload["extraction_summary"]
-    assert summary["cathode"]["in_default_table"] is True
-    assert "c_max" in summary["cathode"]["fields_filled"]
+    assert "in_default_table" not in summary["cathode"]
+    assert "formula" in summary["cathode"]["fields_filled"]
+    assert "theoretical_capacity" in summary["cathode"]["fields_filled"]
+    assert "c_max" in summary["cathode"]["fields_missing"]
     assert "U_ocp" in summary["cathode"]["fields_missing"]
-    assert summary["anode"]["in_default_table"] is True
     assert "D_s" in summary["anode"]["fields_missing"]
 
 
-def test_extraction_material_not_in_default_table(tmp_path):
-    """缺省表外材料 (LFP): 物理量字段保持 null, 仅材料级 capacity 可由 candidates.json 提供."""
-    goal = "Stage5参数提取_缺省表外材料测试"
+def test_extraction_materials_uniform_via_candidates(tmp_path):
+    """缺省表已删除: LFP/graphite 与 NCM811 走同一链路, 均从 candidates 提取材料级数据."""
+    goal = "Stage5参数提取_LFP石墨测试"
     mgr = _make_mgr(tmp_path, goal)
     _write_scheme(tmp_path, mgr, goal, SCHEME_LFP_GRAPHITE)
 
@@ -120,20 +143,17 @@ def test_extraction_material_not_in_default_table(tmp_path):
 
     payload = json.loads(Path(res["spec_file"]).read_text(encoding="utf-8"))
     cell_spec = payload["cell_spec"]
-    # LFP 不在 DEFAULT_MATERIALS → D_s/c_max 等物理量无缺省, 保持 null
+    # LFP: candidates 材料级参数与 NCM811 同构提取
+    assert cell_spec["cathode"]["material"]["formula"] == "LiFePO4"
+    assert cell_spec["cathode"]["material"]["theoretical_capacity"] == 165.0
+    assert cell_spec["cathode"]["material"]["avg_voltage"] == 3.4
+    # 物理量参数一律 null
     assert cell_spec["cathode"]["material"]["D_s"] is None
     assert cell_spec["cathode"]["material"]["c_max"] is None
-    # graphite 在缺省表内 → 物理量可提取
-    assert cell_spec["anode"]["material"]["D_s"] == 3.9e-14
-    # carbonate_ec 在缺省表内
-    assert cell_spec["electrolyte"]["c_e0"] == 1000.0
+    assert cell_spec["anode"]["material"]["formula"] == "C"
 
     summary = payload["extraction_summary"]
-    assert summary["cathode"]["in_default_table"] is False
-    # candidates.json 可提供 LFP 的材料级参数 (formula/capacity/电压)
     assert "formula" in summary["cathode"]["fields_filled"]
-    assert "theoretical_capacity" in summary["cathode"]["fields_filled"]
-    # 物理量参数无缺省来源 → 全部留在 fields_missing
     for physics_field in ("D_s", "c_max", "R_p", "k_ref", "sigma"):
         assert physics_field in summary["cathode"]["fields_missing"]
         assert physics_field not in summary["cathode"]["fields_filled"]
@@ -150,14 +170,15 @@ def test_extraction_without_scheme_degrades(tmp_path):
 
     payload = json.loads(Path(res["spec_file"]).read_text(encoding="utf-8"))
     assert payload["scheme"]["cathode"] is None
+    assert payload["cell_spec"]["cathode"]["material"]["name"] == ""
     assert "design_scheme.json" in payload["notes"]
 
 
-def test_trigger_enabled_switch(tmp_path):
-    """pinn_trigger.enabled=true → triggered=True (占位开关语义, 具体条件待 PINN 模块定义)."""
+def test_trigger_enabled_and_matched(tmp_path):
+    """pinn_trigger.enabled=true 且体系匹配注册表 → triggered=True."""
     goal = "Stage5参数提取_触发开关测试"
     mgr = _make_mgr(tmp_path, goal, pinn_trigger={"enabled": True})
-    _write_scheme(tmp_path, mgr, goal, SCHEME_NCM811_LI_METAL)
+    _write_scheme(tmp_path, mgr, goal, SCHEME_MATCHED)
 
     res = _generate_pinn_input_spec(goal, mgr=mgr)
     assert res["key_findings"]["status"] == "PINN_TRIGGERED"
@@ -165,7 +186,23 @@ def test_trigger_enabled_switch(tmp_path):
     payload = json.loads(Path(res["spec_file"]).read_text(encoding="utf-8"))
     assert payload["trigger"]["enabled"] is True
     assert payload["trigger"]["triggered"] is True
-    assert any("开关" in r for r in payload["trigger"]["reasons"])
+    assert payload["trigger"]["match"]["system_id"] == "GrSi_NMC811"
+    assert any("匹配命中" in r for r in payload["trigger"]["reasons"])
+
+
+def test_trigger_enabled_but_unmatched(tmp_path):
+    """pinn_trigger.enabled=true 但体系未匹配 → triggered=False (回退提取-only)."""
+    goal = "Stage5参数提取_开关开未匹配测试"
+    mgr = _make_mgr(tmp_path, goal, pinn_trigger={"enabled": True})
+    _write_scheme(tmp_path, mgr, goal, SCHEME_NCM811_LI_METAL)
+
+    res = _generate_pinn_input_spec(goal, mgr=mgr)
+    assert res["key_findings"]["status"] == "PINN_NOT_TRIGGERED"
+
+    payload = json.loads(Path(res["spec_file"]).read_text(encoding="utf-8"))
+    assert payload["trigger"]["enabled"] is True
+    assert payload["trigger"]["triggered"] is False
+    assert payload["trigger"]["match"]["matched"] is False
 
 
 def test_run_pinn_simulation_wrapper(tmp_path):
@@ -179,10 +216,9 @@ def test_run_pinn_simulation_wrapper(tmp_path):
     assert res["journal_notes"]
     assert len(res["deliverables"]) == 1
     assert res["deliverables"][0].endswith("pinn_input_spec.json")
-    # 不再产出仿真文件
+    # 未匹配体系: 无仿真产物
     task_dir = mgr.get_task_output_dir(goal)
-    assert not (task_dir / "simulation_result.json").exists()
-    assert not (task_dir / "pinn_simulation_report.json").exists()
+    assert not (task_dir / "pinn_simulation_result.json").exists()
 
 
 def test_checker_accepts_spec_file(tmp_path):
@@ -250,6 +286,8 @@ def test_complete_stage_cascade_triggers_stage5_extraction(tmp_path):
     """
     goal = "Stage5级联跳过参数提取测试"
     mgr = _make_mgr(tmp_path, goal)
+    # 默认 Stage 5 已启用 (skip_pinn_default=false)——级联跳过语义需显式注入 skip
+    mgr.set_stage_skip(5, skip=True, reason="测试强制跳过")
     _write_scheme(tmp_path, mgr, goal, SCHEME_NCM811_LI_METAL)
 
     # 手动置位: Stage 1-3 已完成, 当前活跃阶段为 Stage 4
@@ -268,7 +306,7 @@ def test_complete_stage_cascade_triggers_stage5_extraction(tmp_path):
     spec_file = mgr.get_task_output_dir(goal) / "pinn_input_spec.json"
     assert spec_file.exists()
     payload = json.loads(spec_file.read_text(encoding="utf-8"))
-    assert payload["cell_spec"]["cathode"]["material"]["c_max"] == 49000.0
+    assert payload["cell_spec"]["cathode"]["material"]["formula"] == "LiNi0.8Co0.1Mn0.1O2"
     journals = mgr.get_all_stage_journal()
     s5_rows = [j for j in journals if j.get("stage_id") == 5]
     assert len(s5_rows) == 1

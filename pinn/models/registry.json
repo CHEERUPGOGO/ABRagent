@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "description": "SPM PINN 模型注册表：Stage 5 按 (cathode, anode) id 匹配体系后调用对应模型放电仿真。加载逻辑见 pinn/spm_runner.py。",
+  "updated": "2026-10-05",
+  "systems": [
+    {
+      "system_id": "GrSi_NMC811",
+      "match": {
+        "cathode": ["NCM811"],
+        "anode": ["si_base"]
+      },
+      "params": "systems/GrSi_NMC811/params.json",
+      "directions": {
+        "discharge": {
+          "ne": "systems/GrSi_NMC811/weights/discharge_ne.npz",
+          "pe": "systems/GrSi_NMC811/weights/discharge_pe.npz"
+        },
+        "charge": null
+      },
+      "envelope": {
+        "bc_lo": 0.02,
+        "bc_hi": 15.0,
+        "band_margin": 1.1
+      },
+      "input_ranges": {
+        "ne": {
+          "thickness": {"min": 2e-05, "max": 0.00025, "unit": "m"},
+          "porosity": {"min": 0.1, "max": 0.7, "unit": "-"},
+          "R_s": {"min": 4.105e-06, "max": 1.642e-05, "unit": "m"},
+          "D_s": {"min": 1e-14, "max": 1.6e-13, "unit": "m2/s"}
+        },
+        "pe": {
+          "thickness": {"min": 2e-05, "max": 0.00025, "unit": "m"},
+          "porosity": {"min": 0.1, "max": 0.7, "unit": "-"},
+          "R_s": {"min": 2.67e-06, "max": 1.068e-05, "unit": "m"},
+          "D_s": {"min": 2.5e-15, "max": 4e-14, "unit": "m2/s"}
+        },
+        "c_rate": {"min": 0.1, "max": 3.0, "unit": "C"}
+      },
+      "input_ranges_basis": "逐参数有效范围（调用 PINN 前拦截）。R_s 取验证网格覆盖域 [0.5,2]x 参考值；c_rate 取电压精度验证域 [0.1,3]C (README_universal.md §4.1)；D_s 与 R_s^2 在 bc 中等价，取 [0.25,4]x 参考值；厚度/孔隙率未独立扫参（验证仅在参考值附近），给工程合理边界。组合约束由 envelope (|bc|/|bc_ref| ∈ [0.02,15]) 第二层拦截。范围数据与体系绑定，新增体系时必须显式声明。",
+      "post_processing": {
+        "rho_cathode_kg_m3": 4900.0,
+        "v_min_cutoff_V": 2.8,
+        "cell_energy_ratio": 0.42,
+        "basis": "比容量换算用正极真密度、电压截止下限、电芯级能量折算系数（si_base 负极体系），均为该体系绑定的后处理常数；spec 未提供 condition.voltage_min 时用 v_min_cutoff_V。"
+      },
+      "reference": {
+        "params_source": "pinn/PINN-SPM-fast-prototyping/data/params_GrSi_NMC811.json",
+        "models_source": "pinn/PINN-SPM-fast-prototyping/train_universal/artifacts/models/UNI SPM NE|PE",
+        "train_reports": {
+          "ne": "systems/GrSi_NMC811/train_report_ne.json",
+          "pe": "systems/GrSi_NMC811/train_report_pe.json"
+        }
+      },
+      "notes": "GrSi=石墨-硅掺混负极 (Graphite-Silicon)。训练温度 298.15K，全 SOC 放电起点 (x0=stoi1)。电解液固定为 params 中的 LiPF6 (c_e0=1000 mol/m3)，方案电解液不参与匹配。charge 位预留给成对充电模型。"
+    }
+  ]
+}
