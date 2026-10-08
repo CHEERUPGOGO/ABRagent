@@ -9,9 +9,11 @@
    拦截 (OUT_OF_ENVELOPE);
 4. run_pinn_charge 配对占位: registry 无充电模型 → CHARGE_NOT_AVAILABLE;
 5. 端到端 run_pinn_simulation: Stage 5 激活 + 匹配 + 输入合规 → 落盘
-   pinn_simulation_result.json; 输入越界 → 拦截不产出; skip/未匹配/总开关关闭
-   → 只落盘参数提取清单;
-6. PINNPhysicsChecker 对 pinn_simulation_result.json 的接受/拒绝路径。
+   pinn_simulation_result.json; 输入越界 → 拦截并持久化失败态 (success=False);
+   skip/未匹配/总开关关闭 → 只落盘参数提取清单 (陈旧仿真产物一并失效);
+6. PINNPhysicsChecker 对 pinn_simulation_result.json 的接受/拒绝路径;
+7. 三漏洞修复回归: 非 CONVERGED 硬失败 / 输入指纹 (spec_hash) 绑定 /
+   陈旧结果失效与报告守卫。
 
 全部测试在临时工作区运行, 离线无 LLM/网络/TF (numpy 前向为核心依赖自带)。
 """
@@ -33,7 +35,11 @@ from pinn.spm_runner import (
 )
 from pinn.input_spec import build_cell_spec
 from auto_battery_research.workflow.stage_manager import StageManager
-from auto_battery_research.tools.workflow_actions import run_pinn_simulation
+from auto_battery_research.tools.workflow_actions import (
+    _canonical_hash,
+    _pinn_result_identity_ok,
+    run_pinn_simulation,
+)
 from auto_battery_research.checkers.pinn_physics_checker import PINNPhysicsChecker
 
 
@@ -651,3 +657,163 @@ def test_checker_rejects_corrupted_and_out_of_bounds_pinn_result(tmp_path):
     result_file.write_text(json.dumps(env_res, ensure_ascii=False), encoding="utf-8")
     passed, diag = checker.do_check()
     assert passed is False and diag["error_code"] == "PINN_OUT_OF_ENVELOPE"
+
+
+# ══════════════════ 6. 三漏洞修复回归 (门禁硬化/指纹绑定/陈旧失效) ══════════════════
+
+def test_run_pinn_simulation_out_of_range_fails_hard(tmp_path):
+    """审查复现②: 匹配体系 + 越界倍率 (10C) → 工具 success=False, 失败态持久化."""
+    goal = "Stage5PINN越界硬失败测试"
+    mgr = _make_mgr(tmp_path, goal)
+    _write_scheme(tmp_path, mgr, goal, SCHEME_MATCHED)
+
+    res = run_pinn_simulation(target_query=goal, stage_manager=mgr, c_rate=10.0)
+    assert res["success"] is False, "越界拦截必须使工具层硬失败"
+    assert res["key_findings"]["pinn_run"]["status"] == "OUT_OF_RANGE"
+    assert "OUT_OF_RANGE" in res["message"]
+
+    task_dir = mgr.get_task_output_dir(goal)
+    result_file = task_dir / "pinn_simulation_result.json"
+    # 失败态覆写落盘 (不再静默透传): checker 与诊断都能看到本轮真实状态
+    payload = json.loads(result_file.read_text(encoding="utf-8"))
+    assert payload["status"] == "OUT_OF_RANGE"
+    assert "c_rate" in (payload.get("error") or "")
+    # PNG 不得留存 (旧曲线不再对应任何被验收的结果)
+    assert not (task_dir / "pinn_simulation_curve.png").exists()
+
+
+def test_result_payload_binds_input_identity(tmp_path):
+    """spec_hash 绑定: result.pinn.spec_hash 与 spec.cell_spec_hash 同源一致."""
+    goal = "Stage5PINN身份指纹测试"
+    mgr = _make_mgr(tmp_path, goal)
+    _write_scheme(tmp_path, mgr, goal, SCHEME_MATCHED)
+
+    res = run_pinn_simulation(target_query=goal, stage_manager=mgr, c_rate=0.5)
+    assert res["success"] is True
+    task_dir = mgr.get_task_output_dir(goal)
+    spec_payload = json.loads((task_dir / "pinn_input_spec.json").read_text(encoding="utf-8"))
+    result_payload = json.loads((task_dir / "pinn_simulation_result.json").read_text(encoding="utf-8"))
+    pinn_block = result_payload["pinn"]
+    assert pinn_block["spec_hash"] == spec_payload["cell_spec_hash"]
+    assert pinn_block["scheme_hash"]
+    assert pinn_block["model_version"].startswith(SYSTEM_ID)
+    assert len(pinn_block["run_id"]) == 12
+
+
+def test_rerun_failure_overwrites_previous_success(tmp_path):
+    """审查复现③: 先 0.5C 成功, 改 10C 越界重跑 → 旧成功结果被失败态覆写, 旧曲线被删."""
+    goal = "Stage5PINN重跑失效测试"
+    mgr = _make_mgr(tmp_path, goal)
+    _write_scheme(tmp_path, mgr, goal, SCHEME_MATCHED)
+    task_dir = mgr.get_task_output_dir(goal)
+    result_file = task_dir / "pinn_simulation_result.json"
+    png_file = task_dir / "pinn_simulation_curve.png"
+
+    res_ok = run_pinn_simulation(target_query=goal, stage_manager=mgr, c_rate=0.5)
+    assert res_ok["success"] is True and png_file.exists()
+    old_capacity = json.loads(result_file.read_text(encoding="utf-8"))["specific_capacity_mAh_g"]
+
+    res_bad = run_pinn_simulation(target_query=goal, stage_manager=mgr, c_rate=10.0)
+    assert res_bad["success"] is False
+    payload = json.loads(result_file.read_text(encoding="utf-8"))
+    assert payload["status"] == "OUT_OF_RANGE", "旧成功结果必须被本轮失败态覆写"
+    assert payload["pinn"]["c_rate"] == 10.0
+    assert not png_file.exists(), "与被拒结果关联的旧曲线必须失效"
+
+
+def test_no_match_invalidates_stale_result(tmp_path):
+    """体系变更为未匹配 → 陈旧 result/PNG 一并失效, 不残留冒充."""
+    goal = "Stage5PINN未匹配失效测试"
+    mgr = _make_mgr(tmp_path, goal)
+    _write_scheme(tmp_path, mgr, goal, SCHEME_UNMATCHED)
+    task_dir = mgr.get_task_output_dir(goal)
+    task_dir.mkdir(parents=True, exist_ok=True)
+    stale_result = task_dir / "pinn_simulation_result.json"
+    stale_png = task_dir / "pinn_simulation_curve.png"
+    stale_result.write_text('{"status": "CONVERGED", "stale": true}', encoding="utf-8")
+    stale_png.write_bytes(b"PK\x03\x04fake")
+
+    res = run_pinn_simulation(target_query=goal, stage_manager=mgr)
+    assert res["success"] is True  # 未匹配 = 合法提取-only
+    assert res["key_findings"]["pinn_run"]["status"] == "NO_MATCH"
+    assert sorted(res["key_findings"]["pinn_run"]["invalidated"]) == [
+        "pinn_simulation_curve.png", "pinn_simulation_result.json",
+    ]
+    assert not stale_result.exists() and not stale_png.exists()
+
+
+def test_pinn_result_identity_ok_guard(tmp_path):
+    """报告守卫: 指纹一致才放行; spec 缺失/失配/摘要为空一律 fail-closed."""
+    goal = "Stage5PINN报告守卫测试"
+    mgr = _make_mgr(tmp_path, goal)
+    task_dir = mgr.get_task_output_dir(goal)
+    task_dir.mkdir(parents=True, exist_ok=True)
+    cell_spec = {"a": 1}
+    spec_payload = {"cell_spec": cell_spec, "cell_spec_hash": _canonical_hash(cell_spec)}
+    (task_dir / "pinn_input_spec.json").write_text(json.dumps(spec_payload), encoding="utf-8")
+
+    assert _pinn_result_identity_ok(mgr, None) is False
+    assert _pinn_result_identity_ok(mgr, {"spec_hash": ""}) is False
+    assert _pinn_result_identity_ok(mgr, {"spec_hash": spec_payload["cell_spec_hash"]}) is True
+    assert _pinn_result_identity_ok(mgr, {"spec_hash": "deadbeef0000"}) is False
+
+
+def test_checker_rejects_not_converged_result(tmp_path):
+    """非 CONVERGED payload (拦截/异常) → PINN_SIMULATION_NOT_CONVERGED, 不落入标量兜底."""
+    cell_spec = _calibrated_cell_spec_dict(SCHEME_MATCHED)
+    cell_spec["condition"]["c_rate"] = 10.0  # spec 优先于参数: 超出注册表 [0.1, 3.0]
+    res = run_pinn_discharge(cell_spec, scheme=SCHEME_MATCHED)
+    assert res["status"] == "OUT_OF_RANGE"
+    result_file = tmp_path / "pinn_simulation_result.json"
+    result_file.write_text(json.dumps(res, ensure_ascii=False), encoding="utf-8")
+
+    checker = _make_checker(tmp_path)
+    passed, diag = checker.do_check()
+    assert passed is False
+    assert diag["error_code"] == "PINN_SIMULATION_NOT_CONVERGED"
+    assert "OUT_OF_RANGE" in diag["error"]
+
+
+def test_checker_rejects_stale_result_but_accepts_aligned(tmp_path):
+    """陈旧结果防护: spec_hash 失配 → PINN_RESULT_STALE; 对齐后恢复通过."""
+    cell_spec = _calibrated_cell_spec_dict(SCHEME_MATCHED)
+    sim_res = run_pinn_discharge(cell_spec, scheme=SCHEME_MATCHED, c_rate=0.5)
+    assert sim_res["status"] == "CONVERGED"
+    sim_res.setdefault("pinn", {})["spec_hash"] = "stale_hash_000"
+    result_file = tmp_path / "pinn_simulation_result.json"
+    result_file.write_text(json.dumps(sim_res, ensure_ascii=False), encoding="utf-8")
+
+    spec_payload = {
+        "cell_spec": cell_spec,
+        "cell_spec_hash": _canonical_hash(cell_spec),
+        "trigger": {"enabled": True, "triggered": True},
+    }
+    (tmp_path / "pinn_input_spec.json").write_text(json.dumps(spec_payload), encoding="utf-8")
+
+    checker = _make_checker(tmp_path)
+    passed, diag = checker.do_check()
+    assert passed is False and diag["error_code"] == "PINN_RESULT_STALE"
+
+    # 对齐后恢复通过
+    sim_res["pinn"]["spec_hash"] = spec_payload["cell_spec_hash"]
+    result_file.write_text(json.dumps(sim_res, ensure_ascii=False), encoding="utf-8")
+    passed, diag = checker.do_check()
+    assert passed is True, diag.get("error_msg")
+
+
+def test_checker_triggered_spec_without_result_fails(tmp_path):
+    """审查漏洞②: triggered=true (匹配命中) 但无结果文件 → 硬失败, 不再降级提取-only."""
+    (tmp_path / "pinn_input_spec.json").write_text(json.dumps({
+        "kind": "pinn_input_spec",
+        "trigger": {"enabled": True, "triggered": True,
+                    "match": {"matched": True, "system_id": SYSTEM_ID}},
+        "scheme": {"cathode": "NCM811", "anode": "si_base"},
+        "cell_spec": {"cathode": {"material": {"c_max": 49000.0}}, "anode": {}, "electrolyte": {}},
+        "extraction_summary": {"cathode": {"fields_filled": ["c_max"], "fields_missing": ["D_s"]}},
+    }, ensure_ascii=False), encoding="utf-8")
+
+    checker = _make_checker(tmp_path)
+    passed, diag = checker.do_check()
+    assert passed is False
+    assert diag["error_code"] == "PINN_TRIGGERED_RESULT_MISSING"
+    assert "重跑" in diag["next_action"]

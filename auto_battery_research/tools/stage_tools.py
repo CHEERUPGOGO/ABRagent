@@ -231,7 +231,7 @@ def tool_run_stage_task(
             return {
                 "success": True,
                 "message": (
-                    "Stage 5 PINN 物理仿真已配置跳过 (参数提取仍已执行，真实 PINN 模型待接入)。"
+                    "Stage 5 PINN 物理仿真已配置跳过 (参数提取仍已执行，未执行仿真)。"
                     if extracted
                     else "Stage 5 PINN 物理仿真已配置跳过，无需执行计算。"
                 ),

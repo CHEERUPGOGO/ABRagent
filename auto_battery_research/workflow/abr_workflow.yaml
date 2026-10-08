@@ -104,7 +104,7 @@ stages:
     checkers:
       - name: "PINNPhysicsChecker"
         class: "auto_battery_research.checkers.pinn_physics_checker.PINNPhysicsChecker"
-        strict: false
+        strict: true   # 硬门禁: 触发命中 (体系匹配+总开关) 必须有 CONVERGED 且 spec_hash 一致的仿真结果; 未匹配/总开关关闭的提取-only 合法放行
     expected_outputs:
       - "output/tasks/<goal>/pinn_input_spec.json"   # 课题专属目录 (全局 output/auto_battery_research/ 仅历史课题可读)
       - "output/tasks/<goal>/pinn_simulation_result.json"   # 体系匹配到 PINN 时生成的仿真结果
