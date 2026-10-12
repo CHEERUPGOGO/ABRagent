@@ -2,8 +2,8 @@
 
 ## 任务目标
 1. 【触发判定】触发 = `setting.yaml` 顶层 `pinn_trigger.enabled` 总开关 AND 方案 (cathode, anode) 匹配 `pinn/models/registry.json` 中已训练的 PINN 体系。关闭开关或未命中体系都只做参数提取，不视为错误。
-2. 【参数提取】从 Stage 4 `design_scheme.json` 提取当前方案选中的正极/负极/电解液/添加剂，组装 CellSpec 物理契约 (candidates.json 材料级覆盖 + 缺省参数表回填物理量)，落盘 `pinn_input_spec.json`。
-3. 【PINN 仿真】Stage 5 激活 (非 skip) 且体系匹配命中时，调用 `RunPhysicsSimulation` 执行 SPM PINN 放电仿真 (纯 numpy，`pinn/spm_runner.py`)，产物 `pinn_simulation_result.json`。仿真是 **spec 驱动**的：R_s、D_s、电极厚度、孔隙率、C-rate 五个设计参数从 `pinn_input_spec.json` 的 cell_spec 显式输入——全部来自 Stage 4 方案的 `scheme.geometry`（产物契约 v1.1 显式完整声明块：L_um/porosity/R_s_um/D_s_m2s/condition.v_min/v_max，逐字段 provenance=stage4_recipe|params_baseline）(未匹配体系时字段缺失回退体系训练参数)。每个 PINN 体系在 registry `input_ranges` 中声明各输入的有效范围——逐参数越界 (OUT_OF_RANGE) 或组合越界 (训练包络 OUT_OF_ENVELOPE) 都在调用网络之前拦截，不产出仿真结果，错误信息会点名越界字段与合法范围。
+2. 【参数提取】从 Stage 4 `design_scheme.json` 提取当前方案选中的正极/负极/电解液/添加剂，组装 CellSpec 物理契约 (candidates.json 材料级覆盖；提取不到的物理量保持 null，由 spec 显式输入或体系 params.json 基准提供)，落盘 `pinn_input_spec.json`。
+3. 【PINN 仿真】Stage 5 激活 (非 skip) 且体系匹配命中时，调用 `RunPhysicsSimulation` 执行 SPM PINN 放电仿真 (纯 numpy，`pinn/spm_runner.py`)，产物 `pinn_simulation_result.json`。仿真是 **spec 驱动**的：R_s、D_s、电极厚度、孔隙率、C-rate 五个设计参数从 `pinn_input_spec.json` 的 cell_spec 显式输入——全部来自 Stage 4 方案的 `scheme.geometry`（产物契约 v1.1 显式完整声明块：L_um/porosity/R_s_um/D_s_m2s/condition.v_min/v_max，逐字段 provenance=stage4_recipe|params_baseline）(未匹配体系时字段缺失回退体系训练参数)。其中电极厚度/孔隙率为 Stage 4 门禁硬性声明项（`RAGDesignChecker` geometry 门禁：`GEOMETRY_DECLARATION_INCOMPLETE`/`GEOMETRY_VALUE_ILLEGAL`），其余字段可选——声明则采用并校验，缺省回退体系基准/默认值；`scheme.geometry.condition.c_rate` 为可选声明位（声明则 `c_rate_source=spec`，优先于工具入参）。每个 PINN 体系在 registry `input_ranges` 中声明各输入的有效范围——逐参数越界 (OUT_OF_RANGE) 或组合越界 (训练包络 OUT_OF_ENVELOPE) 都在调用网络之前拦截，不产出仿真结果，错误信息会点名越界字段与合法范围。
 
 ## 产物契约
 `output/tasks/<goal>/pinn_input_spec.json`：

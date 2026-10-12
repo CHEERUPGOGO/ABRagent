@@ -826,7 +826,8 @@ class RAGPipeline:
 
         字段: loading_mg_cm2（面载量, mg/cm²）、compaction_g_cm3（压实密度,
         g/cm³）、porosity_pct（孔隙率, %）、thickness_um（极片厚度, μm）；
-        区间写法取中值。N/P 比为电芯级，单独放 geometry["n_p_ratio"]。
+        区间写法取中值。N/P 比为电芯级，单独放 geometry["n_p_ratio"]；
+        放电倍率为电芯级条件，放 geometry["condition"]["c_rate"]（可选）。
 
         组件归属: 优先按五段式 Markdown 标题（### ...正极/负极...）切片；
         无标题时退化为就近锚点归属（数值左侧最近的组件关键词）。
@@ -901,6 +902,13 @@ class RAGPipeline:
                 cond.setdefault("v_min", float(nums[0]))
                 if len(nums) > 1:
                     cond.setdefault("v_max", float(nums[-1]))
+        # 放电倍率: 倍率关键词锚定 X C / XC（区分容量 mAh·cm⁻² 与材料名中的 C）
+        for m in re.finditer(
+                r"(?:放电倍率|充放电倍率|倍率)[^\d]{0,6}(" + cls._NUM + r")\s*C\b",
+                text, re.IGNORECASE):
+            v = mid(m.group(1))
+            if v is not None:
+                geometry.setdefault("condition", {}).setdefault("c_rate", v)
 
         # 清掉无命中的组件桶，全部为空则返回空 dict（下游据此省略 geometry 键）
         return {k: v for k, v in geometry.items() if v}

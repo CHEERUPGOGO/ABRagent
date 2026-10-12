@@ -234,6 +234,131 @@ class RAGDesignChecker(BaseChecker):
                 next_action="调整正极/负极/电解液搭配，排除不相容或未经验证的组分",
             )
 
+        # 3.5 几何声明门禁 (产物契约 v1.1): 正/负极厚度与孔隙率 4 个设计值必须由方案
+        #     显式给出 (provenance=stage4_recipe), 全部提供值经物理/registry 范围校验
+        #     —— 杜绝"静默回退训练基准冒充设计点"。runtime_options.geometry_gate:
+        #     enforce (默认, 硬失败) | warn (灰度, 降级为警告不阻断)。
+        gate_mode = str((self.config.get("runtime_options") or {}).get("geometry_gate", "enforce")).lower()
+
+        def _geo_fail(code: str, msg: str, observed: dict, expected: str, next_action: str):
+            diag = self.build_diagnostic(
+                passed=False, error_code=code, error_msg=msg,
+                observed=observed, expected=expected, next_action=next_action)
+            if gate_mode == "warn":
+                diag["check_pass"] = True
+                diag["error_code"] = None
+                diag["error"] = None
+                diag["warning_only"] = True
+                return True, diag
+            return False, diag
+
+        geo = scheme.get("geometry") if isinstance(scheme.get("geometry"), dict) else None
+        if geo is None:
+            return _geo_fail(
+                "GEOMETRY_BLOCK_MISSING",
+                "design_scheme.json 的 scheme.geometry 缺失 —— Stage 4 必须显式声明电极几何设计值 (契约 v1.1: 正/负极厚度/孔隙率)",
+                {"scheme_keys": sorted(scheme.keys())},
+                "scheme.geometry 存在且为 v1.1 归一化声明块",
+                "重新执行 RunRAGDesign: 方案正/负极章节须明确给出电极涂敷厚度 (μm) 与孔隙率 (%)")
+        if geo.get("schema_version") != "1.1":
+            return _geo_fail(
+                "GEOMETRY_DECLARATION_INCOMPLETE",
+                f"scheme.geometry 不是 v1.1 归一化声明块 (schema_version={geo.get('schema_version')!r})",
+                {"geometry": geo},
+                "v1.1 归一化块 (由 RunRAGDesign 归一化写入 design_scheme.json)",
+                "重新执行 RunRAGDesign 生成 v1.1 几何声明块")
+
+        geo_prov = geo.get("provenance") if isinstance(geo.get("provenance"), dict) else {}
+        hard_fields = (("cathode", "L_um"), ("cathode", "porosity"), ("anode", "L_um"), ("anode", "porosity"))
+        missing, not_explicit, illegal = [], [], []
+        for comp, field in hard_fields:
+            comp_block = geo.get(comp) if isinstance(geo.get(comp), dict) else {}
+            val = comp_block.get(field)
+            path = f"{comp}.{field}"
+            if not isinstance(val, (int, float)) or isinstance(val, bool):
+                missing.append(path)
+                continue
+            src_tag = geo_prov.get(path)
+            if src_tag == "invalid":
+                illegal.append(f"{path}={val} (非法值)")
+            elif src_tag != "stage4_recipe":
+                not_explicit.append(f"{path}={val} (来源={src_tag or '未标注'})")
+        if missing or not_explicit:
+            return _geo_fail(
+                "GEOMETRY_DECLARATION_INCOMPLETE",
+                "几何硬性设计值缺失或非显式声明: " + "; ".join(missing + not_explicit),
+                {"missing": missing, "not_explicit": not_explicit},
+                "正/负极厚度与孔隙率 4 个值必须由方案显式给出 (provenance=stage4_recipe)",
+                "在方案正/负极章节明确给出电极涂敷厚度 (μm) 与孔隙率 (%) 后重新执行 RunRAGDesign")
+
+        # 全部提供值的范围校验 (registry input_ranges 对齐, 未匹配体系退物理常识)
+        try:
+            from pinn.spm_runner import match_pinn_system
+            _system = match_pinn_system(str(scheme.get("cathode") or ""), str(scheme.get("anode") or ""))
+        except Exception:
+            _system = None
+        ranges = (_system or {}).get("input_ranges") or {}
+        _side_of = {"cathode": "pe", "anode": "ne"}
+
+        def _range_ok(path: str, value: float) -> bool:
+            if "." in path:
+                comp, field = path.split(".", 1)
+                side_ranges = ranges.get(_side_of.get(comp)) or {}
+            else:
+                field = path
+                side_ranges = {}
+            if field in ("L_um", "R_s_um"):
+                r = side_ranges.get("thickness" if field == "L_um" else "R_s")
+                if isinstance(r, dict) and r.get("min") is not None and r.get("max") is not None:
+                    return float(r["min"]) * 1e6 <= value <= float(r["max"]) * 1e6
+                return value > 0
+            if field == "porosity":
+                r = side_ranges.get("porosity")
+                return (float(r["min"]) <= value <= float(r["max"])) if isinstance(r, dict) else 0.0 < value < 1.0
+            if field == "D_s_m2s":
+                r = side_ranges.get("D_s")
+                return (float(r["min"]) <= value <= float(r["max"])) if isinstance(r, dict) else value > 0
+            if field in ("loading_mg_cm2", "compaction_g_cm3"):
+                return value > 0
+            if field == "n_p_ratio":
+                return 1.0 <= value <= 2.5
+            if field in ("v_min", "v_max"):
+                return 1.0 <= value <= 5.5
+            if field == "c_rate":
+                r = ranges.get("c_rate")
+                return (float(r["min"]) <= value <= float(r["max"])) if isinstance(r, dict) else value > 0
+            return True
+
+        for comp in ("cathode", "anode"):
+            comp_block = geo.get(comp) if isinstance(geo.get(comp), dict) else {}
+            for field in ("L_um", "porosity", "R_s_um", "D_s_m2s", "loading_mg_cm2", "compaction_g_cm3"):
+                val = comp_block.get(field)
+                if isinstance(val, (int, float)) and not isinstance(val, bool):
+                    path = f"{comp}.{field}"
+                    if geo_prov.get(path) == "invalid" or not _range_ok(path, float(val)):
+                        illegal.append(f"{path}={val}")
+        n_p_val = geo.get("n_p_ratio")
+        if isinstance(n_p_val, (int, float)) and not isinstance(n_p_val, bool):
+            if geo_prov.get("n_p_ratio") == "invalid" or not _range_ok("n_p_ratio", float(n_p_val)):
+                illegal.append(f"n_p_ratio={n_p_val}")
+        cond_block = geo.get("condition") if isinstance(geo.get("condition"), dict) else {}
+        for field in ("v_min", "v_max", "c_rate"):
+            val = cond_block.get(field)
+            if isinstance(val, (int, float)) and not isinstance(val, bool):
+                if geo_prov.get(f"condition.{field}") == "invalid" or not _range_ok(field, float(val)):
+                    illegal.append(f"condition.{field}={val}")
+        if isinstance(cond_block.get("v_min"), (int, float)) and isinstance(cond_block.get("v_max"), (int, float)) \
+                and float(cond_block["v_max"]) <= float(cond_block["v_min"]):
+            illegal.append(f"condition.v_max({cond_block['v_max']}) <= v_min({cond_block['v_min']})")
+        if illegal:
+            illegal = list(dict.fromkeys(illegal))
+            return _geo_fail(
+                "GEOMETRY_VALUE_ILLEGAL",
+                "scheme.geometry 提供了非法/越界值: " + "; ".join(illegal),
+                {"illegal": illegal},
+                "全部提供值在物理与 registry input_ranges 范围内 (未匹配体系按物理常识)",
+                "修正方案中的非法几何值 (或删除该值改用体系默认) 后重新执行 RunRAGDesign")
+
         return True, self.build_diagnostic(
             passed=True,
             observed={
@@ -244,6 +369,7 @@ class RAGDesignChecker(BaseChecker):
                 "confidence": json_data.get("confidence", "high"),
                 "extracted_scheme": json_data.get("scheme", {}),
                 "rule_checks_status": "VALIDATED",
+                "geometry_gate": "PASSED (v1.1 声明块, 正/负极厚度/孔隙率显式)",
             },
             expected="设计方案符合五段式规范，证据溯源完备，经由 RelationEngine 审查通过",
             details={
