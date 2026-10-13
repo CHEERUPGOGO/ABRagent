@@ -123,9 +123,9 @@
 ## 五、Stage 5 (PINN 触发判定与参数提取) 弹性跳过机制
 
 ### 1. 当前语义与默认行为
-- Stage 5 **不执行真实电化学仿真**（专门 PINN 模块后续接入）：激活时做触发判定（`setting.yaml` 顶层 `pinn_trigger.enabled` 占位开关，具体材料/性能条件待 PINN 模块定义）并从 Stage 4 方案提取选中材料物理量，落盘 `pinn_input_spec.json`（提取不到的字段为 `null`）。
-- 默认 `skip: true` 时整段仿真通道跳过，但**参数提取仍会在 skip 快速通道中执行**（失败仅记录，不阻断流水线），为 PINN 模块预置数据基础。
-- `pinn/p2d_runner.py` 保留为只读物理库，Web 页仿真演示 TAB 直接复用。
+- Stage 5 **默认启用**：触发判定 = `pinn_trigger.enabled` 总开关 AND 方案 (cathode, anode) 匹配 `pinn/models/registry.json` 已训练体系；命中即执行纯 numpy SPM PINN 放电仿真（`pinn/spm_runner.py`）并落盘 `pinn_simulation_result.json`，未匹配/总开关关闭平滑回退参数提取-only（提取不到的字段为 `null`）。
+- Stage 4 门禁要求方案显式声明电极厚度/孔隙率（`scheme.geometry` 契约 v1.1，`RAGDesignChecker` geometry 硬门禁，`runtime_options.geometry_gate: enforce|warn`）。
+- 旧 PyBaMM `p2d_runner.py` 已移除；Web 页仿真演示 TAB 经 `auto_battery_research.simulation` facade 复用 `pinn/spm_runner.py`。
 
 ### 2. 灵活激活/跳过的三种方式
 
@@ -373,8 +373,8 @@ pytest auto_battery_research/tests
 
 ## 九、常见问题与故障排查 (FAQ)
 
-**Q1: 为什么 Stage 5 (PINN) 显示 `[SKIPPED]`？**  
-A: 这是系统预设的加速机制。Stage 5 默认处于跳过状态（真实 PINN 物理模型尚未接入）。跳过时材料参数提取仍会执行并生成 `pinn_input_spec.json`；如需显式执行触发判定与参数提取流程，可在命令后加上 `--with-pinn` 或在 TUI 中输入 `enable 5`。
+**Q1: 为什么 Stage 5 (PINN) 有时只生成 `pinn_input_spec.json` 而没有仿真结果？**  
+A: 触发判定 = 总开关（`pinn_trigger.enabled`）AND 方案体系匹配 `pinn/models/registry.json`。未匹配体系（如锂金属负极）平滑回退参数提取-only，属合法降级而非错误；也可用 `--skip-pinn` / TUI `skip 5` 手动跳过。
 
 **Q2: 如何在没有图形界面的服务器或 WSL 中查看 Web 仪表盘？**  
 A: 在 WSL 或服务器终端执行 `python auto_battery_research_cli.py --web --host 0.0.0.0 --port 7865`，然后直接在 Windows 浏览器中打开 `http://127.0.0.1:7865` 即可。

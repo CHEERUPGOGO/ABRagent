@@ -88,7 +88,7 @@ CLI / Web / TUI / MCP 不经过 LLM 直接调用的函数，与上述 BaseTool �
 | `run_vector_indexing` | Stage 2 | 子进程 `paragraph_metadata_pipeline_v5_qwen.py --incremental` |
 | `run_data_mining` | Stage 3 | `agent/pipeline_tok2000.run` |
 | `run_rag_design` | Stage 4 | 经 `rag_adapter` → `src/lmllm/RAG` 引擎 |
-| `run_pinn_simulation` | Stage 5 | `pinn/p2d_runner` (默认 skip) |
+| `run_pinn_simulation` | Stage 5 | `pinn/spm_runner` (默认启用, 未匹配回退提取) |
 | `run_synthesis_report` | Stage 6 | 模板 + LLM 动态生成第 5 章 → 只写规范名 `final_research_report.md` |
 
 别名兼容：`generate_synthesis_report` / `run_generate_synthesis_report` 均指向 `run_synthesis_report`。

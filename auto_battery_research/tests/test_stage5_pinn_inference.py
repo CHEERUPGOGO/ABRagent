@@ -276,7 +276,7 @@ def test_complete_geometry_block_matched_fills_baselines():
     assert block["anode"]["D_s_m2s"] == 4e-14
     assert block["provenance"]["anode.D_s_m2s"] == "params_baseline"
     assert block["n_p_ratio"] == pytest.approx(1.1)
-    assert block["condition"] == {"v_min": 2.8, "v_max": 4.3}
+    assert block["condition"] == {"v_min": 2.8, "v_max": 4.3, "c_rate": None}
 
 
 def test_complete_geometry_block_unmatched():

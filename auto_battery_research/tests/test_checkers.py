@@ -136,7 +136,17 @@ def test_fortified_rag_design_checker(tmp_path):
         "target": "设计400Wh/kg高比能电池",
         "confidence": "high",
         "evidence": [{"passage_id": "ev_001", "source": "10.1038/s41467", "text": "evidence text"}],
-        "scheme": {"cathode": "SC-NCM90", "anode": "li_metal", "electrolyte": "lhce"},
+        "scheme": {"cathode": "SC-NCM90", "anode": "li_metal", "electrolyte": "lhce",
+                   "geometry": {
+                       "schema_version": "1.1",
+                       "cathode": {"L_um": 80.0, "porosity": 0.35},
+                       "anode": {"L_um": 50.0, "porosity": 0.2},
+                       "provenance": {
+                           "cathode.L_um": "stage4_recipe", "cathode.porosity": "stage4_recipe",
+                           "anode.L_um": "stage4_recipe", "anode.porosity": "stage4_recipe",
+                       },
+                       "condition": {},
+                   }},
         "rule_checks": {"violations": [], "rejects": []},
     }
     scheme_json.write_text(json.dumps(valid_json_payload), encoding="utf-8")
@@ -484,3 +494,112 @@ def test_unknown_materials_and_c7_c8_fail_closed():
 
 
 
+
+
+# ────────────────────────── Stage 4 geometry 声明门禁 ──────────────────────────
+
+def _write_rag_artifacts(tmp_path, scheme, extra_config=None):
+    """写入合规五段式 md + 带指定 scheme 的 design_scheme.json, 返回 do_check 结果。"""
+    scheme_md = tmp_path / "design_scheme.md"
+    scheme_json = tmp_path / "design_scheme.json"
+    scheme_md.write_text("""# 设计方案
+## 1. 目标与设计路线
+设计400Wh/kg高比能电池路线
+
+## 2. 推荐组合与关键配方
+- 正极: NCM811
+- 负极: si_base
+
+## 3. 预期关键性能指标
+- 能量密度: 410 Wh/kg
+
+## 4. 可行性依据与机理
+[ev_001] LHCE 稳定高镍界面。
+
+## 5. 风险与数据缺口
+风险评估。
+""" * 2, encoding="utf-8")
+    payload = {
+        "schema_version": "1.0",
+        "target": "设计400Wh/kg高比能电池",
+        "confidence": "high",
+        "evidence": [{"passage_id": "ev_001", "source": "10.1038/s41467", "text": "evidence text"}],
+        "scheme": scheme,
+        "rule_checks": {"violations": [], "rejects": []},
+    }
+    scheme_json.write_text(json.dumps(payload), encoding="utf-8")
+    checker = RAGDesignChecker()
+    checker.on_init(stage_manager=None, stage_info={"id": 4, "name": "方案设计"},
+                    config={"paths": {"output_dir": str(tmp_path)}, **(extra_config or {})})
+    return checker.do_check()
+
+
+GEOMETRY_V11 = {
+    "schema_version": "1.1",
+    "cathode": {"L_um": 80.0, "porosity": 0.35},
+    "anode": {"L_um": 110.0, "porosity": 0.45},
+    "provenance": {
+        "cathode.L_um": "stage4_recipe", "cathode.porosity": "stage4_recipe",
+        "anode.L_um": "stage4_recipe", "anode.porosity": "stage4_recipe",
+        "cathode.R_s_um": "params_baseline", "cathode.D_s_m2s": "params_baseline",
+        "anode.R_s_um": "params_baseline", "anode.D_s_m2s": "params_baseline",
+        "condition.v_min": "params_baseline",
+    },
+    "n_p_ratio": 1.2,
+    "condition": {"v_min": 2.8, "c_rate": 0.5},
+}
+
+
+def test_rag_geometry_gate_pass(tmp_path):
+    """4 硬值显式 (stage4_recipe) + 可选字段合法 → 门禁通过."""
+    scheme = {"cathode": "NCM811", "anode": "si_base", "electrolyte": "lhce", "geometry": GEOMETRY_V11}
+    passed, diag = _write_rag_artifacts(tmp_path, scheme)
+    assert passed is True, f"{diag.get('error_code')}: {diag.get('error')}"
+
+
+def test_rag_geometry_gate_missing_block(tmp_path):
+    """scheme.geometry 缺失 → GEOMETRY_BLOCK_MISSING."""
+    scheme = {"cathode": "NCM811", "anode": "si_base", "electrolyte": "lhce"}
+    passed, diag = _write_rag_artifacts(tmp_path, scheme)
+    assert passed is False and diag["error_code"] == "GEOMETRY_BLOCK_MISSING"
+
+
+def test_rag_geometry_gate_incomplete(tmp_path):
+    """硬值缺失 (anode.L_um) → GEOMETRY_DECLARATION_INCOMPLETE."""
+    import json as _json
+    geo = _json.loads(_json.dumps(GEOMETRY_V11))
+    geo["anode"].pop("L_um")
+    geo["provenance"].pop("anode.L_um")
+    scheme = {"cathode": "NCM811", "anode": "si_base", "electrolyte": "lhce", "geometry": geo}
+    passed, diag = _write_rag_artifacts(tmp_path, scheme)
+    assert passed is False and diag["error_code"] == "GEOMETRY_DECLARATION_INCOMPLETE"
+
+
+def test_rag_geometry_gate_baseline_not_explicit(tmp_path):
+    """厚度来自体系基准 (params_baseline) 而非显式声明 → 门禁拒绝."""
+    import json as _json
+    geo = _json.loads(_json.dumps(GEOMETRY_V11))
+    geo["provenance"]["cathode.L_um"] = "params_baseline"
+    scheme = {"cathode": "NCM811", "anode": "si_base", "electrolyte": "lhce", "geometry": geo}
+    passed, diag = _write_rag_artifacts(tmp_path, scheme)
+    assert passed is False and diag["error_code"] == "GEOMETRY_DECLARATION_INCOMPLETE"
+
+
+def test_rag_geometry_gate_illegal_value(tmp_path):
+    """提供非法值 (负厚度/孔隙率越界) → GEOMETRY_VALUE_ILLEGAL."""
+    import json as _json
+    geo = _json.loads(_json.dumps(GEOMETRY_V11))
+    geo["cathode"]["L_um"] = -10.0
+    geo["cathode"]["porosity"] = 1.2
+    scheme = {"cathode": "NCM811", "anode": "si_base", "electrolyte": "lhce", "geometry": geo}
+    passed, diag = _write_rag_artifacts(tmp_path, scheme)
+    assert passed is False and diag["error_code"] == "GEOMETRY_VALUE_ILLEGAL"
+
+
+def test_rag_geometry_gate_warn_mode(tmp_path):
+    """warn 灰度模式: 缺 geometry 不阻断, 但诊断带 warning_only 标记."""
+    scheme = {"cathode": "NCM811", "anode": "si_base", "electrolyte": "lhce"}
+    passed, diag = _write_rag_artifacts(
+        tmp_path, scheme,
+        extra_config={"runtime_options": {"geometry_gate": "warn"}})
+    assert passed is True and diag.get("warning_only") is True

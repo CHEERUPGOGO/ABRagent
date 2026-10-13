@@ -99,7 +99,11 @@ def complete_geometry_block(
     每个 PINN 输入字段逐字段给出值与来源 provenance:
       - stage4_recipe:   叙事正则提取（含载量/压实换算厚度）；
       - params_baseline: 叙事未写, 体系 params.json/registry 训练基准兜底;
-      - unmatched:       体系未匹配, 无基准可兜底（字段保持 null, 不虚构）。
+      - unmatched:       体系未匹配, 无基准可兜底（字段保持 null, 不虚构）;
+      - invalid:         提供了但类型/范围非法的值（保留原值, 供门禁精确报错）。
+
+    幂等性: 输入已是 v1.1 归一化块时, 显式字段原样携带（值与 provenance 均不
+    改写）, 仅对 null 字段补体系基准 —— 重复归一化不会把设计值覆盖回基准。
 
     Returns:
         完整 geometry 块；体系未匹配且叙事无任何几何值时返回 None（调用方保持原样）。
@@ -107,6 +111,8 @@ def complete_geometry_block(
     from pinn.spm_runner import MODELS_DIR, load_system_params, match_pinn_system
 
     raw = raw_geometry if isinstance(raw_geometry, dict) else {}
+    is_v11 = raw.get("schema_version") == "1.1" and isinstance(raw.get("provenance"), dict)
+    raw_prov = raw.get("provenance") if isinstance(raw.get("provenance"), dict) else {}
     raw_has_values = any(
         isinstance(raw.get(comp), dict) and raw.get(comp)
         for comp in ("cathode", "anode")
@@ -139,7 +145,15 @@ def complete_geometry_block(
         }
 
     def num(value: Any) -> Optional[float]:
-        return float(value) if isinstance(value, (int, float)) else None
+        return float(value) if isinstance(value, (int, float)) and not isinstance(value, bool) else None
+
+    def _carry(path: str, value: Optional[float], computed: str) -> str:
+        """幂等携带: v1.1 重入且字段有值时沿用原 provenance, 否则用本次计算来源。"""
+        if is_v11 and value is not None:
+            prev = raw_prov.get(path)
+            if isinstance(prev, str) and prev:
+                return prev
+        return computed
 
     block: Dict[str, Any] = {
         "schema_version": "1.1",
@@ -152,55 +166,92 @@ def complete_geometry_block(
         b = baseline(side)
         out: Dict[str, Any] = {}
 
-        # 厚度: 叙事显式厚度 > 载量/压实换算 > 体系基准
-        t_um = num(raw_side.get("thickness_um"))
-        t_source = "stage4_recipe" if t_um is not None else None
-        if t_um is None:
-            loading, comp_d = num(raw_side.get("loading_mg_cm2")), num(raw_side.get("compaction_g_cm3"))
-            if loading is not None and comp_d:
-                t_um = loading / comp_d * 10.0  # mg/cm² ÷ g/cm³ = 1e-3 cm = 10 μm
-                t_source = "stage4_recipe"
-        if t_um is None and b.get("L_um") is not None:
-            t_um = num(b.get("L_um"))  # baseline 已归一为 μm
-            t_source = "params_baseline"
+        # 厚度: v1.1 直读(幂等) > 叙事显式厚度 > 载量/压实换算 > 体系基准
+        t_um = num(raw_side.get("L_um"))
+        if t_um is not None:
+            t_source = _carry(f"{comp}.L_um", t_um, "stage4_recipe")
+        else:
+            t_um = num(raw_side.get("thickness_um"))
+            t_source = "stage4_recipe" if t_um is not None else None
+            if t_um is None:
+                loading, comp_d = num(raw_side.get("loading_mg_cm2")), num(raw_side.get("compaction_g_cm3"))
+                if loading is not None and comp_d:
+                    t_um = loading / comp_d * 10.0  # mg/cm² ÷ g/cm³ = 1e-3 cm = 10 μm
+                    t_source = "stage4_recipe"
+            if t_um is None and b.get("L_um") is not None:
+                t_um = num(b.get("L_um"))  # baseline 已归一为 μm
+                t_source = "params_baseline"
+        if t_um is not None and t_um <= 0:
+            t_source = "invalid"  # 提供了非法值: 保留原值, 供门禁精确报错
         out["L_um"] = t_um
         block["provenance"][f"{comp}.L_um"] = t_source or "unmatched"
 
-        # 孔隙率: 叙事 % → 小数 > 体系基准
-        por = num(raw_side.get("porosity_pct"))
-        por_source = "stage4_recipe" if por is not None else None
-        por = por / 100.0 if por is not None else None
-        if por is None and b.get("porosity") is not None:
-            por = num(b.get("porosity"))
-            por_source = "params_baseline"
+        # 孔隙率: v1.1 直读(幂等) > 叙事 % → 小数 > 体系基准
+        por = num(raw_side.get("porosity"))
+        if por is not None:
+            por_source = _carry(f"{comp}.porosity", por, "stage4_recipe")
+        else:
+            por = num(raw_side.get("porosity_pct"))
+            por_source = "stage4_recipe" if por is not None else None
+            por = por / 100.0 if por is not None else None
+            if por is None and b.get("porosity") is not None:
+                por = num(b.get("porosity"))
+                por_source = "params_baseline"
+        if por is not None and not (0.0 < float(por) < 1.0):
+            por_source = "invalid"
         out["porosity"] = por
         block["provenance"][f"{comp}.porosity"] = por_source or "unmatched"
 
-        # R_s / D_s: 暂无叙事来源, 体系基准
+        # R_s / D_s: v1.1 直读(幂等) > 体系基准（spec 可选覆盖, registry 拦截）
         for field in ("R_s_um", "D_s_m2s"):
-            v = num(b.get(field))
+            v = num(raw_side.get(field))
+            if v is not None:
+                v_source = _carry(f"{comp}.{field}", v, "stage4_recipe")
+            else:
+                v = num(b.get(field))
+                v_source = "params_baseline" if v is not None else "unmatched"
+            if v is not None and float(v) <= 0:
+                v_source = "invalid"
             out[field] = v
-            block["provenance"][f"{comp}.{field}"] = "params_baseline" if v is not None else "unmatched"
+            block["provenance"][f"{comp}.{field}"] = v_source
 
-        # 信息性原值 (叙事原样, 不参与仿真)
+        # 信息性原值 (叙事原样, 不参与仿真; 非法值同样标记, 供门禁精确报错)
         out["loading_mg_cm2"] = num(raw_side.get("loading_mg_cm2"))
         out["compaction_g_cm3"] = num(raw_side.get("compaction_g_cm3"))
+        if out["loading_mg_cm2"] is not None and out["loading_mg_cm2"] <= 0:
+            block["provenance"][f"{comp}.loading_mg_cm2"] = "invalid"
+        if out["compaction_g_cm3"] is not None and out["compaction_g_cm3"] <= 0:
+            block["provenance"][f"{comp}.compaction_g_cm3"] = "invalid"
         block[comp] = out
 
-    n_p = num(raw.get("n_p_ratio")) if raw.get("n_p_ratio") is not None else None
+    n_p = num(raw.get("n_p_ratio"))
+    n_p_source = _carry("n_p_ratio", n_p, "stage4_recipe" if n_p is not None else "unmatched")
+    if n_p is not None and float(n_p) <= 0:
+        n_p_source = "invalid"
     block["n_p_ratio"] = n_p
-    block["provenance"]["n_p_ratio"] = "stage4_recipe" if n_p is not None else "unmatched"
+    block["provenance"]["n_p_ratio"] = n_p_source
 
     cond_raw = raw.get("condition") if isinstance(raw.get("condition"), dict) else {}
     v_min = num(cond_raw.get("v_min"))
     v_max = num(cond_raw.get("v_max"))
+    c_rate = num(cond_raw.get("c_rate"))
     if v_min is None and post.get("v_min_cutoff_V") is not None:
         v_min = num(post.get("v_min_cutoff_V"))
-        block["provenance"]["condition.v_min"] = "params_baseline"
+        v_min_source = "params_baseline"
     else:
-        block["provenance"]["condition.v_min"] = "stage4_recipe" if v_min is not None else "unmatched"
-    block["provenance"]["condition.v_max"] = "stage4_recipe" if v_max is not None else "unmatched"
-    block["condition"] = {"v_min": v_min, "v_max": v_max}
+        v_min_source = _carry("condition.v_min", v_min, "stage4_recipe" if v_min is not None else "unmatched")
+    if v_min is not None and float(v_min) <= 0:
+        v_min_source = "invalid"
+    v_max_source = _carry("condition.v_max", v_max, "stage4_recipe" if v_max is not None else "unmatched")
+    if v_max is not None and float(v_max) <= 0:
+        v_max_source = "invalid"
+    c_rate_source = _carry("condition.c_rate", c_rate, "stage4_recipe" if c_rate is not None else "unmatched")
+    if c_rate is not None and float(c_rate) <= 0:
+        c_rate_source = "invalid"
+    block["condition"] = {"v_min": v_min, "v_max": v_max, "c_rate": c_rate}
+    block["provenance"]["condition.v_min"] = v_min_source
+    block["provenance"]["condition.v_max"] = v_max_source
+    block["provenance"]["condition.c_rate"] = c_rate_source
     return block
 
 
@@ -231,13 +282,15 @@ def format_geometry_markdown(geometry: Dict[str, Any]) -> str:
         )
     n_p = geometry.get("n_p_ratio")
     cond = geometry.get("condition") or {}
+    rate = cond.get("c_rate") if isinstance(cond, dict) else None
+    rate_txt = f"放电倍率：{cell(rate)} C；" if isinstance(rate, (int, float)) else ""
     window = "—"
     if isinstance(cond.get("v_min"), (int, float)) and isinstance(cond.get("v_max"), (int, float)):
         window = f"{cond['v_min']:g}–{cond['v_max']:g} V"
     elif isinstance(cond.get("v_min"), (int, float)):
         window = f"截止 {cond['v_min']:g} V"
     lines.append("")
-    lines.append(f"N/P 比：{cell(n_p)}；电压窗口：{window}。来源口径：叙事提取=方案文本明确给出的设计值；体系基准=该 PINN 体系训练参数（params.json）。")
+    lines.append(f"N/P 比：{cell(n_p)}；{rate_txt}电压窗口：{window}。来源口径：叙事提取=方案文本明确给出的设计值；体系基准=该 PINN 体系训练参数（params.json）；非法=提供了但不合法的值（Stage 4 门禁将拒绝）。")
     return "\n".join(lines)
 
 
@@ -247,14 +300,22 @@ def _apply_recipe_geometry(cell_spec: Dict[str, Any], geometry: Dict[str, Any]) 
     优先消费 v1.1 显式 schema (L_um/porosity/R_s_um/D_s_m2s/condition.*)，
     旧键 (thickness_um/porosity_pct/载量+压实) 保留兼容；provenance 逐字段
     取自 geometry.provenance，流入 PINN 结果的 spec_inputs 供报告标注来源。
-    缺失字段不写（保持 None, 由 PINN 逐字段回退体系训练参数）。
+    缺失字段不写（保持 None, 由 PINN 逐字段回退体系训练参数）；
+    提供了但类型/范围非法的值 → ValueError（fail-closed）, 绝不静默丢弃或改写
+    —— 杜绝"非法声明被静默替换为训练基准冒充设计点"。
     """
     prov_block = geometry.get("provenance") if isinstance(geometry.get("provenance"), dict) else {}
+    illegal: List[str] = []
 
     def src(comp: str, field: str, default: str = "stage4_recipe") -> Dict[str, str]:
         return {"source": prov_block.get(f"{comp}.{field}", default),
                 "confidence": "medium",
                 "ref": "design_scheme.json scheme.geometry"}
+
+    def _num(v: Any) -> Optional[float]:
+        if isinstance(v, bool) or not isinstance(v, (int, float)):
+            return None
+        return float(v)
 
     for comp in ("cathode", "anode"):
         g = geometry.get(comp) or {}
@@ -262,51 +323,89 @@ def _apply_recipe_geometry(cell_spec: Dict[str, Any], geometry: Dict[str, Any]) 
             continue
         electrode = cell_spec.get(comp) or {}
         material = electrode.setdefault("material", {})
-        # v1.1: 厚度/孔隙率 (直接值)
-        if isinstance(g.get("L_um"), (int, float)) and g["L_um"] > 0:
-            electrode["L"] = float(g["L_um"]) * 1e-6
-            cell_spec["provenance"][f"{comp}.L"] = src(comp, "L_um")
-        if isinstance(g.get("porosity"), (int, float)) and 0 < float(g["porosity"]) < 1:
-            electrode["epsilon"] = float(g["porosity"])
-            cell_spec["provenance"][f"{comp}.epsilon"] = src(comp, "porosity")
-        # v1.1: R_s / D_s
-        if isinstance(g.get("R_s_um"), (int, float)) and g["R_s_um"] > 0:
-            material["R_p"] = float(g["R_s_um"]) * 1e-6
-            cell_spec["provenance"][f"{comp}.material.R_p"] = src(comp, "R_s_um")
-        if isinstance(g.get("D_s_m2s"), (int, float)) and g["D_s_m2s"] > 0:
-            material["D_s"] = float(g["D_s_m2s"])
-            cell_spec["provenance"][f"{comp}.material.D_s"] = src(comp, "D_s_m2s")
-        # 旧 schema 兼容: 显式厚度 > 载量/压实换算 > 孔隙率 %
-        if electrode.get("L") is None and isinstance(g.get("thickness_um"), (int, float)) and g["thickness_um"] > 0:
-            electrode["L"] = float(g["thickness_um"]) * 1e-6
-            cell_spec["provenance"][f"{comp}.L"] = src(comp, "thickness_um")
-        if electrode.get("L") is None and isinstance(g.get("loading_mg_cm2"), (int, float)) \
-                and isinstance(g.get("compaction_g_cm3"), (int, float)) and g["compaction_g_cm3"] > 0:
-            electrode["L"] = float(g["loading_mg_cm2"]) / float(g["compaction_g_cm3"]) * 1e-5
-            cell_spec["provenance"][f"{comp}.L"] = src(comp, "loading_mg_cm2")
-        if electrode.get("epsilon") is None and isinstance(g.get("porosity_pct"), (int, float)) \
-                and 0 < float(g["porosity_pct"]) < 100:
-            electrode["epsilon"] = float(g["porosity_pct"]) / 100.0
-            cell_spec["provenance"][f"{comp}.epsilon"] = src(comp, "porosity_pct")
-        # 面载量 (两 schema 同名): mg/cm² → kg/m²
-        if isinstance(g.get("loading_mg_cm2"), (int, float)) and g["loading_mg_cm2"] > 0:
-            electrode["mass_loading"] = float(g["loading_mg_cm2"]) * _MG_CM2_TO_KG_M2
+
+        def put(field: str, ok, apply, label: str, src_field: str, prov_key: str) -> None:
+            """缺失→跳过（回退）；提供且合法→写入；提供但非法→记入 illegal。
+
+            prov_key 沿用 cell_spec.provenance 的既有键位约定（L / epsilon /
+            material.R_p / material.D_s），供 runner 的 spec_inputs 来源标注读取。
+            """
+            if field not in g or g[field] is None:
+                return
+            v = _num(g[field])
+            if v is not None and ok(v):
+                apply(v)
+                cell_spec["provenance"][prov_key] = src(comp, src_field)
+            else:
+                illegal.append(f"{comp}.{field}={g[field]!r} ({label})")
+
+        put("L_um", lambda x: x > 0, lambda x: electrode.__setitem__("L", x * 1e-6),
+            "厚度须为 >0 的数值 (μm)", "L_um", f"{comp}.L")
+        put("porosity", lambda x: 0.0 < x < 1.0, lambda x: electrode.__setitem__("epsilon", x),
+            "孔隙率须为 (0,1) 内的数值", "porosity", f"{comp}.epsilon")
+        put("R_s_um", lambda x: x > 0, lambda x: material.__setitem__("R_p", x * 1e-6),
+            "颗粒半径须为 >0 的数值 (μm)", "R_s_um", f"{comp}.material.R_p")
+        put("D_s_m2s", lambda x: x > 0, lambda x: material.__setitem__("D_s", x),
+            "扩散系数须为 >0 的数值 (m²/s)", "D_s_m2s", f"{comp}.material.D_s")
+        # 旧 schema 兼容（仅在对应 v1.1 字段未命中时生效）:
+        # 显式厚度 > 载量+压实换算 > 孔隙率 %
+        if electrode.get("L") is None:
+            put("thickness_um", lambda x: x > 0, lambda x: electrode.__setitem__("L", x * 1e-6),
+                "厚度须为 >0 的数值 (μm)", "thickness_um", f"{comp}.L")
+            if electrode.get("L") is None:
+                ld, cd = _num(g.get("loading_mg_cm2")), _num(g.get("compaction_g_cm3"))
+                if ld is not None and ld > 0 and cd is not None and cd > 0:
+                    electrode["L"] = ld / cd * 1e-5
+                    cell_spec["provenance"][f"{comp}.L"] = src(comp, "loading_mg_cm2")
+        if electrode.get("epsilon") is None:
+            put("porosity_pct", lambda x: 0.0 < x < 100.0,
+                lambda x: electrode.__setitem__("epsilon", x / 100.0),
+                "孔隙率须为 (0,100) 内的数值 (%)", "porosity_pct", f"{comp}.epsilon")
+        # 面载量/压实 (信息性): 合法值回写 mass_loading; 非法值记入 illegal
+        ld, cd = _num(g.get("loading_mg_cm2")), _num(g.get("compaction_g_cm3"))
+        if g.get("loading_mg_cm2") is not None and (ld is None or ld <= 0):
+            illegal.append(f"{comp}.loading_mg_cm2={g.get('loading_mg_cm2')!r} (面载量须为 >0 的数值)")
+        if g.get("compaction_g_cm3") is not None and (cd is None or cd <= 0):
+            illegal.append(f"{comp}.compaction_g_cm3={g.get('compaction_g_cm3')!r} (压实密度须为 >0 的数值)")
+        if ld is not None and ld > 0:
+            electrode["mass_loading"] = ld * _MG_CM2_TO_KG_M2
             cell_spec["provenance"][f"{comp}.mass_loading"] = src(comp, "loading_mg_cm2")
 
-    # N/P 比
-    n_p = geometry.get("n_p_ratio")
-    if isinstance(n_p, (int, float)) and n_p > 0:
-        cell_spec.setdefault("anode", {})["N_P_ratio"] = float(n_p)
-        cell_spec["provenance"]["anode.N_P_ratio"] = src("anode", "n_p_ratio")
+    # N/P 比 (电芯级设计一致性输入)
+    if geometry.get("n_p_ratio") is not None:
+        n_p = _num(geometry.get("n_p_ratio"))
+        if n_p is not None and n_p > 0:
+            cell_spec.setdefault("anode", {})["N_P_ratio"] = n_p
+            cell_spec["provenance"]["anode.N_P_ratio"] = src("anode", "n_p_ratio")
+        else:
+            illegal.append(f"n_p_ratio={geometry.get('n_p_ratio')!r} (N/P 须为 >0 的数值)")
 
-    # 电压窗口 → 测试条件 (runner 的截止电压优先读 condition.voltage_min)
+    # 电压窗口 + 放电倍率 → 测试条件 (runner: 截止电压/倍率解析优先读 spec)
     cond = geometry.get("condition") if isinstance(geometry.get("condition"), dict) else {}
-    if isinstance(cond.get("v_min"), (int, float)) and cond["v_min"] > 0:
-        cell_spec.setdefault("condition", {})["voltage_min"] = float(cond["v_min"])
-        cell_spec["provenance"]["condition.voltage_min"] = src("condition", "v_min")
-    if isinstance(cond.get("v_max"), (int, float)) and cond["v_max"] > 0:
-        cell_spec.setdefault("condition", {})["voltage_max"] = float(cond["v_max"])
-        cell_spec["provenance"]["condition.voltage_max"] = src("condition", "v_max")
+
+    def put_cond(field: str, ok, apply, label: str, src_field: str, prov_key: str) -> None:
+        if field not in cond or cond[field] is None:
+            return
+        v = _num(cond[field])
+        if v is not None and ok(v):
+            apply(v)
+            cell_spec["provenance"][prov_key] = src("condition", src_field)
+        else:
+            illegal.append(f"condition.{field}={cond[field]!r} ({label})")
+
+    put_cond("v_min", lambda x: x > 0,
+             lambda x: cell_spec.setdefault("condition", {}).__setitem__("voltage_min", x),
+             "截止电压须为 >0 的数值 (V)", "v_min", "condition.voltage_min")
+    put_cond("v_max", lambda x: x > 0,
+             lambda x: cell_spec.setdefault("condition", {}).__setitem__("voltage_max", x),
+             "电压上限须为 >0 的数值 (V)", "v_max", "condition.voltage_max")
+    put_cond("c_rate", lambda x: x > 0,
+             lambda x: cell_spec.setdefault("condition", {}).__setitem__("c_rate", x),
+             "放电倍率须为 >0 的数值 (C)", "c_rate", "condition.c_rate")
+
+    if illegal:
+        raise ValueError(
+            "scheme.geometry 提供了非法值 (fail-closed, 不允许静默回退): " + "; ".join(illegal))
 
 
 def build_cell_spec(

@@ -17,6 +17,8 @@
 import json
 from pathlib import Path
 
+import pytest
+
 from auto_battery_research.workflow.stage_manager import StageManager
 from auto_battery_research.tools.workflow_actions import (
     _generate_pinn_input_spec,
@@ -311,3 +313,61 @@ def test_complete_stage_cascade_triggers_stage5_extraction(tmp_path):
     s5_rows = [j for j in journals if j.get("stage_id") == 5]
     assert len(s5_rows) == 1
     assert s5_rows[0]["deliverables"] == [str(spec_file)]
+
+
+# ════════════════ geometry 契约 v1.1: 幂等 / 非法值 fail-closed / c_rate ════════════════
+
+def test_complete_geometry_block_idempotent():
+    """重复归一化不改变设计值 (回归: v1.1 块二次归一化曾回退体系基准)."""
+    from pinn.input_spec import complete_geometry_block
+
+    g1 = complete_geometry_block(
+        {"cathode": {"thickness_um": 100.0, "porosity_pct": 40.0}}, "NCM811", "si_base")
+    assert g1["cathode"]["L_um"] == 100.0
+    assert g1["provenance"]["cathode.L_um"] == "stage4_recipe"
+    g2 = complete_geometry_block(g1, "NCM811", "si_base")
+    assert g2["cathode"]["L_um"] == 100.0
+    assert g2["cathode"]["porosity"] == 0.4
+    assert g2["provenance"]["cathode.L_um"] == "stage4_recipe"
+
+
+def test_complete_geometry_block_marks_invalid():
+    """提供了非法值 → provenance=invalid (保留原值, 供门禁精确报错)。"""
+    from pinn.input_spec import complete_geometry_block
+
+    g = complete_geometry_block(
+        {"cathode": {"L_um": -10.0, "porosity": 1.2}}, "NCM811", "si_base")
+    assert g["provenance"]["cathode.L_um"] == "invalid"
+    assert g["provenance"]["cathode.porosity"] == "invalid"
+
+
+def test_build_cell_spec_illegal_geometry_raises():
+    """非法几何值 → fail-closed 抛 ValueError, 不静默回退训练基准。"""
+    from pinn.input_spec import build_cell_spec
+
+    scheme = {"cathode": "NCM811", "anode": "si_base",
+              "geometry": {"cathode": {"L_um": -10.0, "porosity": 1.2}, "anode": {}}}
+    with pytest.raises(ValueError, match="非法"):
+        build_cell_spec(scheme, None, c_rate=0.5)
+
+
+def test_build_cell_spec_missing_geometry_falls_back():
+    """缺失字段 → 保持 None (回退语义), 不抛错。"""
+    from pinn.input_spec import build_cell_spec
+
+    scheme = {"cathode": "NCM811", "anode": "si_base", "geometry": {"anode": {}}}
+    cell = build_cell_spec(scheme, None, c_rate=0.5)
+    assert cell["cathode"]["L"] is None
+    assert cell["cathode"]["epsilon"] is None
+
+
+def test_scheme_c_rate_overrides_argument():
+    """scheme.geometry.condition.c_rate 声明 → spec 优先于工具入参。"""
+    from pinn.input_spec import build_cell_spec
+
+    scheme = {"cathode": "NCM811", "anode": "si_base",
+              "geometry": {"cathode": {"L_um": 80.0, "porosity": 0.35},
+                           "anode": {"L_um": 110.0, "porosity": 0.45},
+                           "condition": {"c_rate": 1.5}}}
+    cell = build_cell_spec(scheme, None, c_rate=0.5)
+    assert cell["condition"]["c_rate"] == 1.5

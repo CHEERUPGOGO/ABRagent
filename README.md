@@ -317,7 +317,7 @@ pytest -m "unit"
 
 ## 📌 重要行为说明
 
-- **Stage 5 默认跳过**（`runtime_options.skip_pinn_default: true`），`--with-pinn` 或 `abr-cli --enable-stage 5` 激活；跳过时参数提取仍执行（生成 `pinn_input_spec.json`，提取不到的字段留 `null`），真实 PINN 电化学仿真待专门 PINN 模块接入。
+- **Stage 5 默认启用**（`runtime_options.skip_pinn_default: false`）：方案体系匹配 `pinn/models/registry.json` 即执行纯 numpy SPM PINN 放电仿真，未匹配体系平滑回退参数提取-only；`--skip-pinn` 或 `abr-cli --skip-stage 5` 可手动跳过（参数提取仍执行）。Stage 4 门禁同时要求方案显式声明电极厚度/孔隙率（`scheme.geometry` 契约 v1.1，`RAGDesignChecker` geometry 硬门禁，`runtime_options.geometry_gate: enforce|warn`）。
 - **工作流状态按课题持久化**：修改阶段交付物或代码后，用 `abr-cli --reset` 让该课题从 Stage 1 重新评估。
 - **严格模式**（`runtime_options.strict_mode: true`）下任何 Checker 错误即判失败；`max_retries_per_stage: 3` 约束自愈重试上限。
 - **Windows 为主开发平台**：入口脚本自动将 stdout/stderr 重配置为 UTF-8。

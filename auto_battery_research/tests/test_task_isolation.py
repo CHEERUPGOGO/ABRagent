@@ -67,7 +67,17 @@ VALID_SCHEME_JSON = {
             "text": "锂金属 (lithium metal) 负极搭配高镍 NCM811 正极与 LHCE 局部高浓电解液的循环稳定性证据。",
         }
     ],
-    "scheme": {"cathode": "NCM811", "anode": "li_metal", "electrolyte": "lhce"},
+    "scheme": {"cathode": "NCM811", "anode": "li_metal", "electrolyte": "lhce",
+               "geometry": {
+                   "schema_version": "1.1",
+                   "cathode": {"L_um": 80.0, "porosity": 0.35},
+                   "anode": {"L_um": 50.0, "porosity": 0.2},
+                   "provenance": {
+                       "cathode.L_um": "stage4_recipe", "cathode.porosity": "stage4_recipe",
+                       "anode.L_um": "stage4_recipe", "anode.porosity": "stage4_recipe",
+                   },
+                   "condition": {},
+               }},
     "rule_checks": {"violations": [], "rejects": []},
 }
 
