@@ -220,9 +220,30 @@ class ABRLangChainBackend:
 
         若提供 stage_id，则调度该阶段专属隔离的 Agent，视野严格局限于当前阶段工具内。
         """
+        from auto_battery_research.util.llm_trace import (
+            record_llm_call, serialize_message, serialize_messages,
+            extract_usage as _extract_usage,
+        )
+
+        pre_trim_count = len(messages) if messages else 0
         trimmed_msgs = self.trimmer.trim(messages)
         for m in trimmed_msgs:
             self.statistic.update(m)
+        trace_input = {
+            "messages": serialize_messages(trimmed_msgs),
+            "pre_trim_count": pre_trim_count,
+            "post_trim_count": len(trimmed_msgs) if trimmed_msgs else 0,
+        }
+
+        def _trace(**kw: Any) -> None:
+            # 轨迹记录尽力而为: 任何异常都不影响推理主链路
+            try:
+                record_llm_call(
+                    "backend.langchain_backend.invoke",
+                    thread_id=thread_id, stage_id=stage_id,
+                    input=trace_input, **kw)
+            except Exception:
+                pass
 
         # 离线单测模式直接返回兜底消息
         raw_key = getattr(self.model, "openai_api_key", None) or getattr(self.model, "api_key", None)
@@ -231,7 +252,11 @@ class ABRLangChainBackend:
         else:
             model_key = raw_key
         if model_key is None or str(model_key).strip() in ("dummy_key", "none", "None", ""):
-            return AIMessage(content="[Offline Mode] 确定性离线模式运行中。")
+            offline_msg = AIMessage(content="[Offline Mode] 确定性离线模式运行中。")
+            # offline 兜底同样记录 (backend=offline), 保证离线时序可完整回放
+            _trace(backend="offline",
+                   output={"status": "ok", "messages": [serialize_message(offline_msg)]})
+            return offline_msg
 
         target_agent = None
         if stage_id is not None and hasattr(self, "_stage_agents") and stage_id in self._stage_agents:
@@ -239,23 +264,65 @@ class ABRLangChainBackend:
         else:
             target_agent = self.agent
 
-        if hasattr(target_agent, "invoke"):
-            # LangGraph agent 调用
-            config = {"configurable": {"thread_id": thread_id}, "recursion_limit": self.recursion_limit}
-            try:
-                return target_agent.invoke({"messages": trimmed_msgs}, config=config)
-            except _RECURSION_EXCS:
-                # 递归深度达上限：从 checkpointer 回收已完成的工具调用轨迹，
-                # 调用方仍能解析已执行动作，而非整体作废
-                L.warning("ReAct 循环达到递归上限 (recursion_limit=%s)，回收部分执行轨迹", self.recursion_limit)
+        t0 = time.monotonic()
+        response: Any = None
+        recovered_from_recursion = False
+        try:
+            if hasattr(target_agent, "invoke"):
+                # LangGraph agent 调用
+                config = {"configurable": {"thread_id": thread_id}, "recursion_limit": self.recursion_limit}
                 try:
-                    state = target_agent.get_state(config)
-                    if state is not None and state.values:
-                        return {"messages": state.values.get("messages", [])}
-                except Exception:
-                    pass
-                raise
-            except TypeError:
-                return target_agent.invoke(trimmed_msgs)
-        else:
-            return self.model.invoke(trimmed_msgs)
+                    response = target_agent.invoke({"messages": trimmed_msgs}, config=config)
+                except _RECURSION_EXCS:
+                    # 递归深度达上限：从 checkpointer 回收已完成的工具调用轨迹，
+                    # 调用方仍能解析已执行动作，而非整体作废
+                    L.warning("ReAct 循环达到递归上限 (recursion_limit=%s)，回收部分执行轨迹", self.recursion_limit)
+                    try:
+                        state = target_agent.get_state(config)
+                        if state is not None and state.values:
+                            response = {"messages": state.values.get("messages", [])}
+                            recovered_from_recursion = True
+                    except Exception:
+                        pass
+                    if response is None:
+                        _trace(backend=self._trace_backend_name(),
+                               error=f"GraphRecursionError: recursion_limit={self.recursion_limit}",
+                               duration_ms=(time.monotonic() - t0) * 1000.0)
+                        raise
+                except TypeError:
+                    response = target_agent.invoke(trimmed_msgs)
+            else:
+                response = self.model.invoke(trimmed_msgs)
+        except Exception as e:
+            # 递归异常在 inner handler 已带详情记录过, 外层不再重复记录
+            if not isinstance(e, _RECURSION_EXCS):
+                _trace(backend=self._trace_backend_name(),
+                       error=f"{type(e).__name__}: {e}",
+                       duration_ms=(time.monotonic() - t0) * 1000.0)
+            raise
+
+        # 完整输出轨迹 (AIMessage tool_calls / ToolMessage 观测 / token 元数据)
+        out_msgs = response.get("messages") if isinstance(response, dict) else [response]
+        usage = None
+        for m in (out_msgs or []):
+            u = _extract_usage(m)
+            if u:
+                usage = u  # 取最后一条带用量的消息 (聚合整轮)
+        _trace(
+            backend=self._trace_backend_name(),
+            output={
+                "status": "ok",
+                "recovered_from_recursion_limit": recovered_from_recursion,
+                "messages": serialize_messages(out_msgs),
+            },
+            usage=usage,
+            duration_ms=(time.monotonic() - t0) * 1000.0,
+        )
+        return response
+
+    def _trace_backend_name(self) -> str:
+        """轨迹记录用的模型名 (取 ChatOpenAI 的 model_name, 失败不阻塞)."""
+        try:
+            return getattr(self.model, "model_name", None) or ""
+        except Exception:
+            return ""

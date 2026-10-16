@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import time
 import urllib.error
 import urllib.request
 from typing import Any, Dict, List, Optional
@@ -39,6 +40,10 @@ def strip_think_blocks(text: Optional[str]) -> str:
     return stripped.strip()
 
 
+class LLMOutputError(RuntimeError):
+    """输出空白或被截断；不得当作成功答案，也不得降级为虚构配方。"""
+
+
 class LLMClient:
     """统一的 LLM 客户端, 自动选择后端.
 
@@ -53,10 +58,13 @@ class LLMClient:
         max_tokens: Optional[int] = None,
         api_key: Optional[str] = None,
         api_base: Optional[str] = None,
+        output_max_tokens: Optional[int] = None,
     ):
         self.backend = backend  # "auto" | "openai" | "deepseek" | "ollama" | "rule"
         self.temperature = temperature if temperature is not None else LLM_TEMPERATURE
         self.max_tokens = max_tokens if max_tokens is not None else LLM_MAX_TOKENS
+        self.output_max_tokens = max(self.max_tokens, output_max_tokens or 32768)
+        self.last_response = {}
 
         # 1. OpenAI / MiniMax API (显式传入优先，其次配置表/环境变量)
         self._openai_llm = None
@@ -144,61 +152,131 @@ class LLMClient:
         system_prompt: str,
         user_prompt: str,
         temperature: Optional[float] = None,
+        trace_tag: Optional[str] = None,
     ) -> str:
-        """统一的 chat 接口, 自动选择可用后端."""
+        """统一的 chat 接口, 自动选择可用后端.
+
+        trace_tag: LLM 轨迹记录的调用方标签 (planner/writer/writer_revise/reviewer/...)；
+        仅当轨迹记录开启 (runtime_options.llm_trace / LLM_TRACE) 时产生记录, 否则零开销。
+        """
         temp = temperature if temperature is not None else self.temperature
+        self.last_response = {}
+        active_prompt = user_prompt
+        budget = self.max_tokens
+        attempt = 1
+
+        # 轨迹记录 (opt-in): 完整输入/输出/后端/耗时; 记录动作失败绝不影响调用
+        try:
+            from auto_battery_research.util import llm_trace as _trace_mod
+        except Exception:
+            _trace_mod = None
+        _t0 = time.monotonic() if (_trace_mod and _trace_mod.llm_trace_enabled()) else None
+
+        def _record(backend: Optional[str], text: Optional[str],
+                    resp: Any = None, error: Any = None) -> None:
+            if _t0 is None or _trace_mod is None:
+                return
+            try:
+                _trace_mod.record_llm_call(
+                    "lmllm.RAG.llm_client.chat",
+                    trace_tag=trace_tag,
+                    backend=backend,
+                    model=self._model_name,
+                    duration_ms=(time.monotonic() - _t0) * 1000.0,
+                    input={"messages": [
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": active_prompt},
+                    ], "max_tokens": budget, "attempt": attempt},
+                    output={"status": "ok" if error is None else "error", "text": text,
+                            **self.last_response},
+                    usage=_trace_mod.extract_usage(resp) if resp is not None else None,
+                    error=error,
+                )
+            except Exception:
+                pass
+
+        def invoke_complete(llm, backend):
+            """有限重试：扩大正文预算并要求精简；每次响应分别留痕。"""
+            nonlocal active_prompt, budget, attempt, _t0
+            from langchain_core.messages import SystemMessage, HumanMessage
+            for attempt in (1, 2):
+                if _t0 is not None:
+                    _t0 = time.monotonic()
+                bound = llm.bind(max_tokens=budget, temperature=temp) if hasattr(llm, "bind") else llm
+                resp = bound.invoke([SystemMessage(content=system_prompt), HumanMessage(content=active_prompt)])
+                content = resp.content
+                if isinstance(content, list):
+                    content = "".join(b.get("text", "") for b in content
+                                      if isinstance(b, dict) and b.get("type") == "text")
+                text = strip_think_blocks(content)
+                meta = getattr(resp, "response_metadata", {}) or {}
+                usage = getattr(resp, "usage_metadata", {}) or {}
+                tokens = meta.get("token_usage") or {}
+                reason = meta.get("finish_reason")
+                reasoning = (usage.get("output_token_details") or {}).get("reasoning")
+                if reasoning is None:
+                    reasoning = (tokens.get("completion_tokens_details") or {}).get("reasoning_tokens")
+                output_tokens = usage.get("output_tokens", tokens.get("completion_tokens"))
+                # 缺 finish_reason 的网关按达到预算保守判截断；有明确 stop 时不猜测。
+                truncated = reason in ("length", "max_tokens") or (
+                    reason is None and isinstance(output_tokens, int) and output_tokens >= budget)
+                self.last_response = {"finish_reason": reason, "reasoning_tokens": reasoning,
+                                      "truncated": truncated, "empty": not bool(text.strip())}
+                error = LLMOutputError("LLM 输出截断或为空，未获得完整正文") if truncated or not text.strip() else None
+                _record(backend, text, resp=resp, error=error)
+                if error is None:
+                    return text
+                if attempt == 2:
+                    raise error
+                budget = min(budget * 2, self.output_max_tokens)
+                active_prompt = user_prompt + "\n\n上次输出未完成。请精简推理和重复表述，先保证全部必需章节/JSON完整，正文不超过2500中文字；禁止省略结尾。"
 
         # 1. 尝试 OpenAI / MiniMax
         if self.backend in ("auto", "openai") and self._openai_llm is not None:
             try:
-                from langchain_core.messages import SystemMessage, HumanMessage
-                messages = [
-                    SystemMessage(content=system_prompt),
-                    HumanMessage(content=user_prompt),
-                ]
-                llm = self._openai_llm
-                if hasattr(llm, "temperature"):
-                    llm.temperature = temp
-                resp = llm.invoke(messages)
-                return strip_think_blocks(resp.content)
+                return invoke_complete(self._openai_llm, "openai")
+            except LLMOutputError:
+                raise
             except Exception as e:
+                _record("openai", None, error=e)
                 if self.backend == "openai":
                     raise RuntimeError(f"OpenAI/MiniMax API 调用失败: {e}")
 
         # 2. 尝试 DeepSeek
         if self.backend in ("auto", "deepseek") and self._deepseek_llm is not None:
             try:
-                from langchain_core.messages import SystemMessage, HumanMessage
-                messages = [
-                    SystemMessage(content=system_prompt),
-                    HumanMessage(content=user_prompt),
-                ]
-                llm = self._deepseek_llm
-                if hasattr(llm, "temperature"):
-                    llm.temperature = temp
-                resp = llm.invoke(messages)
-                return strip_think_blocks(resp.content)
+                return invoke_complete(self._deepseek_llm, "deepseek")
+            except LLMOutputError:
+                raise
             except Exception as e:
+                _record("deepseek", None, error=e)
                 if self.backend == "deepseek":
                     raise RuntimeError(f"DeepSeek API 调用失败: {e}")
 
         # 3. 尝试 Ollama
         if self.backend in ("auto", "ollama") and self.ollama_ready:
             try:
-                return strip_think_blocks(self._ollama_chat(system_prompt, user_prompt, temp))
+                result = strip_think_blocks(self._ollama_chat(system_prompt, user_prompt, temp))
+                if not result.strip() or self.last_response.get("truncated"):
+                    raise LLMOutputError("Ollama 输出截断或为空")
+                _record("ollama", result)
+                return result
             except Exception as e:
+                _record("ollama", None, error=e)
                 if self.backend == "ollama":
                     raise RuntimeError(f"Ollama 调用失败: {e}")
 
-        raise RuntimeError(
+        no_backend = RuntimeError(
             "没有可用的 LLM 后端. 请设置 OPENAI_API_KEY / DEEPSEEK_API_KEY 或启动 Ollama 服务."
         )
+        _record(None, None, error=no_backend)
+        raise no_backend
 
     def _ollama_chat(self, system_prompt: str, user_prompt: str, temperature: float) -> str:
         payload = {
             "model": self.ollama_model,
             "stream": False,
-            "options": {"temperature": temperature},
+            "options": {"temperature": temperature, "num_predict": self.max_tokens},
             "messages": [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
@@ -214,6 +292,8 @@ class LLMClient:
         try:
             with urllib.request.urlopen(req, timeout=self.ollama_timeout) as resp:
                 data = json.loads(resp.read().decode("utf-8", errors="ignore"))
+            self.last_response = {"finish_reason": data.get("done_reason"),
+                                  "truncated": data.get("done_reason") == "length"}
             return (data.get("message", {}) or {}).get("content", "").strip()
         except urllib.error.HTTPError as e:
             detail = e.read().decode("utf-8", errors="ignore")

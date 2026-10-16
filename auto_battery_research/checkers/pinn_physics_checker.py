@@ -150,6 +150,34 @@ class PINNPhysicsChecker(BaseChecker):
             spec_candidates.append(Path(output_agent_dir) / "pinn_input_spec.json")
         return next((p for p in spec_candidates if p.exists() and p.stat().st_size > 10), None)
 
+    def _current_scheme_hash(self) -> Optional[str]:
+        """当前 design_scheme.json 的 scheme 投影指纹 (缺失/不可读 → None, 跳过比对)。
+
+        与 workflow_actions._generate_pinn_input_spec 落盘的 scheme 投影共用同一实现
+        (util.hashing)，保证两侧对同一 scheme 算出同一 hash。
+        """
+        candidates: list = []
+        if self.stage_manager:
+            try:
+                candidates.append(self.stage_manager.get_task_output_dir() / "design_scheme.json")
+            except Exception:
+                pass
+        if not self.stage_manager or self.allow_global_legacy_fallback:
+            paths = self.config.get("paths", {})
+            output_agent_dir = self.resolve_path(paths.get("output_dir", "output/auto_battery_research"))
+            candidates.append(Path(output_agent_dir) / "design_scheme.json")
+        for path in candidates:
+            try:
+                if not path.exists():
+                    continue
+                data, err = self.load_json_safe(str(path))
+                if not err and isinstance(data, dict) and isinstance(data.get("scheme"), dict):
+                    from auto_battery_research.util.hashing import canonical_hash, stage5_scheme_projection
+                    return canonical_hash(stage5_scheme_projection(data["scheme"]))
+            except Exception:
+                continue
+        return None
+
     def _bounds_failure(
         self, q_end: Any, v_mean: Any, energy_density: Any
     ) -> Optional[Dict[str, Any]]:
@@ -224,6 +252,31 @@ class PINNPhysicsChecker(BaseChecker):
             spec_data, spec_err = self.load_json_safe(str(spec_file))
             spec_hash = spec_data.get("cell_spec_hash") if not spec_err and isinstance(spec_data, dict) else None
             result_hash = pinn_info.get("spec_hash")
+            if isinstance(spec_data, dict) and (spec_data.get("cell_spec") or {}).get("geometry_hash"):
+                from auto_battery_research.util.hashing import canonical_hash
+                if spec_hash != canonical_hash(spec_data.get("cell_spec")):
+                    return False, self.build_diagnostic(
+                        passed=False, error_code="PINN_INPUT_HASH_INVALID",
+                        error_msg="cell_spec 内容与存储哈希不一致", next_action="重新生成输入并仿真")
+                scheme_doc, scheme_err = self.load_json_safe(str(spec_file.parent / "design_scheme.json"))
+                if scheme_err or not isinstance(scheme_doc, dict):
+                    return False, self.build_diagnostic(passed=False, error_code="PINN_DESIGN_MISSING",
+                        error_msg="结构化设计原件缺失", next_action="恢复当前设计版本")
+                from auto_battery_research.simulation.geometry_contract import validate_geometry_contract, geometry_hash
+                current = scheme_doc.get("scheme") or {}
+                geo = current.get("geometry") or {}
+                if geo.get("contract_version") == "2.0":
+                    errors = validate_geometry_contract(geo, current, scheme_doc.get("evidence") or [])
+                    spec = spec_data["cell_spec"]
+                    try:
+                        actual_hash = geometry_hash(geo)
+                    except (ValueError, TypeError):
+                        actual_hash = None
+                    if actual_hash is None or spec.get("geometry_hash") != actual_hash or spec.get("design_revision") != current.get("design_revision", 0):
+                        errors.append("仿真输入版本与设计版本不一致")
+                    if errors:
+                        return False, self.build_diagnostic(passed=False, error_code="PINN_GEOMETRY_CONTRACT_INVALID",
+                            error_msg="; ".join(errors), next_action="核验设计来源后重新仿真")
             if not spec_hash or not result_hash or result_hash != spec_hash:
                 return False, self.build_diagnostic(
                     passed=False,
@@ -239,6 +292,31 @@ class PINNPhysicsChecker(BaseChecker):
                     },
                     expected="result.pinn.spec_hash 与 pinn_input_spec.json 的 cell_spec_hash 一致",
                     next_action="重跑 RunPhysicsSimulation() 使仿真结果与当前输入重新对齐",
+                )
+
+        # 1b. scheme 级防陈旧: result.pinn.scheme_hash 必须与当前 design_scheme.json 的
+        #     scheme 投影一致 (投影含 geometry) —— 补齐 spec 文件未跟上几何修订的窗口
+        #     (修订后未重跑仿真即在此拦截)。design_scheme.json 缺失/不可读时跳过比对
+        #     (无法判定不冤枉)；结果侧缺 scheme_hash 视为陈旧 (与 spec 守卫同一 fail-closed 语义)。
+        scheme_hash_now = self._current_scheme_hash()
+        if scheme_hash_now is not None:
+            result_scheme_hash = pinn_info.get("scheme_hash")
+            if not result_scheme_hash or result_scheme_hash != scheme_hash_now:
+                return False, self.build_diagnostic(
+                    passed=False,
+                    error_code="PINN_SCHEME_STALE",
+                    error_msg=(
+                        f"仿真结果与当前方案几何不一致 (陈旧结果): result.pinn.scheme_hash="
+                        f"{result_scheme_hash or '缺失'} vs design_scheme.json 投影={scheme_hash_now} "
+                        "(几何修订后未重跑仿真)"
+                    ),
+                    observed={
+                        "result_scheme_hash": result_scheme_hash,
+                        "current_scheme_hash": scheme_hash_now,
+                        "result_generated_at": sim_data.get("generated_at"),
+                    },
+                    expected="result.pinn.scheme_hash 与当前 design_scheme.json 的 scheme 投影一致 (含 geometry)",
+                    next_action="重跑 RunPhysicsSimulation() 使仿真结果与当前 scheme.geometry 重新对齐",
                 )
 
         q_end = sim_data.get("specific_capacity_mAh_g") or sim_data.get("q_end_mAh_g") or 0

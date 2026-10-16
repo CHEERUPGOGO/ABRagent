@@ -5,13 +5,7 @@ from pathlib import Path
 from typing import Dict, Any, Tuple, List
 from .base_checker import BaseChecker
 
-REQUIRED_SECTIONS = [
-    ("目标与设计路线", ["目标", "设计路线", "能量目标", "target", "路线"]),
-    ("推荐组合", ["推荐材料组合", "推荐组合", "正极", "负极", "电解液", "combination", "配方"]),
-    ("预期关键指标", ["预期指标", "关键指标", "能量密度", "比容量", "metrics", "性能指标"]),
-    ("可行性依据", ["可行性依据", "文献证据", "机理支撑", "feasibility", "evidence", "依据"]),
-    ("风险与数据缺口", ["风险与数据缺口", "风险分析", "数据缺口", "risks", "gaps", "风险评估"]),
-]
+from auto_battery_research.util.design_sections import REQUIRED_SECTIONS
 
 
 class RAGDesignChecker(BaseChecker):
@@ -187,16 +181,13 @@ class RAGDesignChecker(BaseChecker):
             )
 
         # 3.2 Reviewer 置信度强制检查
-        confidence = json_data.get("confidence", "high")
-        if str(confidence).lower() == "low":
+        review = json_data.get("reviewer_output") or {}
+        # 仅审核"响应失败"才否决; 审核已执行但给出意见属正常结果, 由后续规则/结构门禁处理。
+        if review.get("error_type") == "reviewer" or json_data.get("review_completed", json_data.get("review_passed")) is False:
             return False, self.build_diagnostic(
-                passed=False,
-                error_code="REVIEWER_CONFIDENCE_TOO_LOW",
-                error_msg=f"Reviewer 审核置信度过低 (confidence='low')，存在未解决的学术/证据冲突",
-                observed={"confidence": confidence, "issues": json_data.get("reviewer_output", {}).get("issues", [])},
-                expected="Reviewer 审核置信度达到 medium 或 high",
-                next_action="检查文献知识库或优化提问以补足证据链条",
-            )
+                passed=False, error_code="REVIEWER_RESPONSE_FAILED", error_msg="Reviewer 审核响应失败，草稿未经审核",
+                observed={"reviewer_error_type": review.get("error_type"), "issues": review.get("issues")},
+                next_action="重跑 RunRAGDesign 获得有效审核响应；规则通过不能替代 Reviewer 审核")
 
         # 3.3 结构化配方 (Scheme) 完整性强制检查
         if not isinstance(scheme, dict) or not scheme.get("cathode") or not scheme.get("anode") or not scheme.get("electrolyte"):
@@ -224,7 +215,7 @@ class RAGDesignChecker(BaseChecker):
         rejects = rule_checks.get("rule_checks", {}).get("rejects") or rule_checks.get("rejects", [])
         unverified = rule_checks.get("rule_checks", {}).get("unverified") or rule_checks.get("unverified", [])
         energy_check = rule_checks.get("energy_check")
-        if violations or rejects or unverified or energy_check == "energy_mismatch":
+        if violations or rejects or unverified or energy_check == "energy_mismatch" or rule_checks.get("confidence") == "low":
             return False, self.build_diagnostic(
                 passed=False,
                 error_code="RELATION_ENGINE_VIOLATION",
@@ -234,10 +225,10 @@ class RAGDesignChecker(BaseChecker):
                 next_action="调整正极/负极/电解液搭配，排除不相容或未经验证的组分",
             )
 
-        # 3.5 几何声明门禁 (产物契约 v1.1): 正/负极厚度与孔隙率 4 个设计值必须由方案
-        #     显式给出 (provenance=stage4_recipe), 全部提供值经物理/registry 范围校验
-        #     —— 杜绝"静默回退训练基准冒充设计点"。runtime_options.geometry_gate:
-        #     enforce (默认, 硬失败) | warn (灰度, 降级为警告不阻断)。
+        # 3.5 几何声明门禁 (产物契约 v1.1): 正/负极厚度/孔隙率/粒径/扩散系数 8 个设计值
+        #     必须由方案显式给出 (provenance ∈ {stage4_recipe, stage5_revision}), 全部
+        #     提供值经物理/registry 范围校验 —— 杜绝"静默回退训练基准冒充设计点"。
+        #     runtime_options.geometry_gate: enforce (默认, 硬失败) | warn (灰度, 降级为警告不阻断)。
         gate_mode = str((self.config.get("runtime_options") or {}).get("geometry_gate", "enforce")).lower()
 
         def _geo_fail(code: str, msg: str, observed: dict, expected: str, next_action: str):
@@ -256,10 +247,12 @@ class RAGDesignChecker(BaseChecker):
         if geo is None:
             return _geo_fail(
                 "GEOMETRY_BLOCK_MISSING",
-                "design_scheme.json 的 scheme.geometry 缺失 —— Stage 4 必须显式声明电极几何设计值 (契约 v1.1: 正/负极厚度/孔隙率)",
+                "design_scheme.json 的 scheme.geometry 缺失 —— Stage 4 必须显式声明电极几何设计值 "
+                "(契约 v1.1: 正/负极厚度/孔隙率/颗粒粒径/固相扩散系数)",
                 {"scheme_keys": sorted(scheme.keys())},
                 "scheme.geometry 存在且为 v1.1 归一化声明块",
-                "重新执行 RunRAGDesign: 方案正/负极章节须明确给出电极涂敷厚度 (μm) 与孔隙率 (%)")
+                "重新执行 RunRAGDesign: 方案正/负极章节须明确给出电极涂敷厚度 (μm)、孔隙率 (%)、"
+                "颗粒粒径 (μm) 与固相扩散系数 (m²/s)")
         if geo.get("schema_version") != "1.1":
             return _geo_fail(
                 "GEOMETRY_DECLARATION_INCOMPLETE",
@@ -269,89 +262,67 @@ class RAGDesignChecker(BaseChecker):
                 "重新执行 RunRAGDesign 生成 v1.1 几何声明块")
 
         geo_prov = geo.get("provenance") if isinstance(geo.get("provenance"), dict) else {}
-        hard_fields = (("cathode", "L_um"), ("cathode", "porosity"), ("anode", "L_um"), ("anode", "porosity"))
+        if geo.get("contract_version") == "2.0":
+            from auto_battery_research.simulation.geometry_contract import validate_geometry_contract, geometry_hash
+            contract_errors = validate_geometry_contract(geo, scheme, evidence_list)
+            try:
+                actual_hash = geometry_hash(geo)
+            except (ValueError, TypeError):
+                actual_hash = None
+            if actual_hash is None or scheme.get("geometry_hash") != actual_hash:
+                contract_errors.append("geometry_hash 与实际内容不一致")
+            if contract_errors:
+                return _geo_fail("GEOMETRY_CONTRACT_INVALID", "; ".join(contract_errors),
+                                 {"errors": contract_errors}, "结构化几何来源与输入身份可验证", "修复指定字段的结构化契约")
+        # 硬字段 8 项: 两电极各自的厚度/孔隙率/粒径/扩散系数; 显式声明 provenance
+        # 接受 stage4_recipe (Stage 4 叙事提取) 与 stage5_revision (Stage 5 反馈修订)
+        from auto_battery_research.tools.geometry_revision import EXPLICIT_PROVENANCE_TAGS
+        hard_fields = tuple(
+            (comp, field) for comp in ("cathode", "anode")
+            for field in ("L_um", "porosity", "R_s_um", "D_s_m2s")
+        )
         missing, not_explicit, illegal = [], [], []
         for comp, field in hard_fields:
             comp_block = geo.get(comp) if isinstance(geo.get(comp), dict) else {}
             val = comp_block.get(field)
             path = f"{comp}.{field}"
+            structured = geo.get("contract_version") == "2.0"
+            source = (geo.get("parameter_sources") or {}).get(path, {})
+            if structured and field in ("R_s_um", "D_s_m2s"):
+                if source.get("origin") == "model_baseline" and geo_prov.get(path) == "params_baseline":
+                    continue
+                if val is None and source.get("origin") == "missing":
+                    continue
+                if field == "D_s_m2s":
+                    try:
+                        from auto_battery_research.simulation.geometry_contract import validate_diffusion_evidence
+                        validate_diffusion_evidence(source.get("evidence"), val, str(scheme.get(comp)), evidence_list)
+                    except (ValueError, TypeError) as exc:
+                        illegal.append(f"{path}: {exc}")
             if not isinstance(val, (int, float)) or isinstance(val, bool):
                 missing.append(path)
                 continue
             src_tag = geo_prov.get(path)
             if src_tag == "invalid":
                 illegal.append(f"{path}={val} (非法值)")
-            elif src_tag != "stage4_recipe":
+            elif src_tag not in EXPLICIT_PROVENANCE_TAGS:
                 not_explicit.append(f"{path}={val} (来源={src_tag or '未标注'})")
         if missing or not_explicit:
             return _geo_fail(
                 "GEOMETRY_DECLARATION_INCOMPLETE",
                 "几何硬性设计值缺失或非显式声明: " + "; ".join(missing + not_explicit),
                 {"missing": missing, "not_explicit": not_explicit},
-                "正/负极厚度与孔隙率 4 个值必须由方案显式给出 (provenance=stage4_recipe)",
-                "在方案正/负极章节明确给出电极涂敷厚度 (μm) 与孔隙率 (%) 后重新执行 RunRAGDesign")
+                "正/负极厚度、孔隙率、颗粒粒径与固相扩散系数共 8 个值必须由方案显式给出 "
+                f"(provenance ∈ {list(EXPLICIT_PROVENANCE_TAGS)})",
+                "在方案正/负极章节明确给出电极涂敷厚度 (μm)、孔隙率 (%)、颗粒粒径 (μm) 与"
+                "固相扩散系数 (m²/s) 后重新执行 RunRAGDesign")
 
-        # 全部提供值的范围校验 (registry input_ranges 对齐, 未匹配体系退物理常识)
-        try:
-            from pinn.spm_runner import match_pinn_system
-            _system = match_pinn_system(str(scheme.get("cathode") or ""), str(scheme.get("anode") or ""))
-        except Exception:
-            _system = None
-        ranges = (_system or {}).get("input_ranges") or {}
-        _side_of = {"cathode": "pe", "anode": "ne"}
-
-        def _range_ok(path: str, value: float) -> bool:
-            if "." in path:
-                comp, field = path.split(".", 1)
-                side_ranges = ranges.get(_side_of.get(comp)) or {}
-            else:
-                field = path
-                side_ranges = {}
-            if field in ("L_um", "R_s_um"):
-                r = side_ranges.get("thickness" if field == "L_um" else "R_s")
-                if isinstance(r, dict) and r.get("min") is not None and r.get("max") is not None:
-                    return float(r["min"]) * 1e6 <= value <= float(r["max"]) * 1e6
-                return value > 0
-            if field == "porosity":
-                r = side_ranges.get("porosity")
-                return (float(r["min"]) <= value <= float(r["max"])) if isinstance(r, dict) else 0.0 < value < 1.0
-            if field == "D_s_m2s":
-                r = side_ranges.get("D_s")
-                return (float(r["min"]) <= value <= float(r["max"])) if isinstance(r, dict) else value > 0
-            if field in ("loading_mg_cm2", "compaction_g_cm3"):
-                return value > 0
-            if field == "n_p_ratio":
-                return 1.0 <= value <= 2.5
-            if field in ("v_min", "v_max"):
-                return 1.0 <= value <= 5.5
-            if field == "c_rate":
-                r = ranges.get("c_rate")
-                return (float(r["min"]) <= value <= float(r["max"])) if isinstance(r, dict) else value > 0
-            return True
-
-        for comp in ("cathode", "anode"):
-            comp_block = geo.get(comp) if isinstance(geo.get(comp), dict) else {}
-            for field in ("L_um", "porosity", "R_s_um", "D_s_m2s", "loading_mg_cm2", "compaction_g_cm3"):
-                val = comp_block.get(field)
-                if isinstance(val, (int, float)) and not isinstance(val, bool):
-                    path = f"{comp}.{field}"
-                    if geo_prov.get(path) == "invalid" or not _range_ok(path, float(val)):
-                        illegal.append(f"{path}={val}")
-        n_p_val = geo.get("n_p_ratio")
-        if isinstance(n_p_val, (int, float)) and not isinstance(n_p_val, bool):
-            if geo_prov.get("n_p_ratio") == "invalid" or not _range_ok("n_p_ratio", float(n_p_val)):
-                illegal.append(f"n_p_ratio={n_p_val}")
-        cond_block = geo.get("condition") if isinstance(geo.get("condition"), dict) else {}
-        for field in ("v_min", "v_max", "c_rate"):
-            val = cond_block.get(field)
-            if isinstance(val, (int, float)) and not isinstance(val, bool):
-                if geo_prov.get(f"condition.{field}") == "invalid" or not _range_ok(field, float(val)):
-                    illegal.append(f"condition.{field}={val}")
-        if isinstance(cond_block.get("v_min"), (int, float)) and isinstance(cond_block.get("v_max"), (int, float)) \
-                and float(cond_block["v_max"]) <= float(cond_block["v_min"]):
-            illegal.append(f"condition.v_max({cond_block['v_max']}) <= v_min({cond_block['v_min']})")
+        # 全部提供值的范围校验 (registry input_ranges 对齐, 未匹配体系退物理常识;
+        # 范围逻辑统一承载于 geometry_revision, 与 ReviseGeometry 共用避免双份漂移)
+        from auto_battery_research.tools.geometry_revision import collect_geometry_violations, resolve_input_ranges
+        ranges = resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"))
+        illegal = list(dict.fromkeys(illegal + collect_geometry_violations(geo, ranges)))
         if illegal:
-            illegal = list(dict.fromkeys(illegal))
             return _geo_fail(
                 "GEOMETRY_VALUE_ILLEGAL",
                 "scheme.geometry 提供了非法/越界值: " + "; ".join(illegal),
@@ -369,7 +340,7 @@ class RAGDesignChecker(BaseChecker):
                 "confidence": json_data.get("confidence", "high"),
                 "extracted_scheme": json_data.get("scheme", {}),
                 "rule_checks_status": "VALIDATED",
-                "geometry_gate": "PASSED (v1.1 声明块, 正/负极厚度/孔隙率显式)",
+                "geometry_gate": "PASSED (v1.1 声明块, 正/负极厚度/孔隙率/粒径/扩散系数显式)",
             },
             expected="设计方案符合五段式规范，证据溯源完备，经由 RelationEngine 审查通过",
             details={

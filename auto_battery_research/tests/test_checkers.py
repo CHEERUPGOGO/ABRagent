@@ -139,11 +139,13 @@ def test_fortified_rag_design_checker(tmp_path):
         "scheme": {"cathode": "SC-NCM90", "anode": "li_metal", "electrolyte": "lhce",
                    "geometry": {
                        "schema_version": "1.1",
-                       "cathode": {"L_um": 80.0, "porosity": 0.35},
-                       "anode": {"L_um": 50.0, "porosity": 0.2},
+                       "cathode": {"L_um": 80.0, "porosity": 0.35, "R_s_um": 5.0, "D_s_m2s": 1e-14},
+                       "anode": {"L_um": 50.0, "porosity": 0.2, "R_s_um": 20.0, "D_s_m2s": 1e-10},
                        "provenance": {
                            "cathode.L_um": "stage4_recipe", "cathode.porosity": "stage4_recipe",
                            "anode.L_um": "stage4_recipe", "anode.porosity": "stage4_recipe",
+                           "cathode.R_s_um": "stage4_recipe", "cathode.D_s_m2s": "stage4_recipe",
+                           "anode.R_s_um": "stage4_recipe", "anode.D_s_m2s": "stage4_recipe",
                        },
                        "condition": {},
                    }},
@@ -536,13 +538,13 @@ def _write_rag_artifacts(tmp_path, scheme, extra_config=None):
 
 GEOMETRY_V11 = {
     "schema_version": "1.1",
-    "cathode": {"L_um": 80.0, "porosity": 0.35},
-    "anode": {"L_um": 110.0, "porosity": 0.45},
+    "cathode": {"L_um": 80.0, "porosity": 0.35, "R_s_um": 5.34, "D_s_m2s": 1e-14},
+    "anode": {"L_um": 110.0, "porosity": 0.45, "R_s_um": 8.21, "D_s_m2s": 4e-14},
     "provenance": {
         "cathode.L_um": "stage4_recipe", "cathode.porosity": "stage4_recipe",
         "anode.L_um": "stage4_recipe", "anode.porosity": "stage4_recipe",
-        "cathode.R_s_um": "params_baseline", "cathode.D_s_m2s": "params_baseline",
-        "anode.R_s_um": "params_baseline", "anode.D_s_m2s": "params_baseline",
+        "cathode.R_s_um": "stage4_recipe", "cathode.D_s_m2s": "stage4_recipe",
+        "anode.R_s_um": "stage4_recipe", "anode.D_s_m2s": "stage4_recipe",
         "condition.v_min": "params_baseline",
     },
     "n_p_ratio": 1.2,
@@ -551,7 +553,7 @@ GEOMETRY_V11 = {
 
 
 def test_rag_geometry_gate_pass(tmp_path):
-    """4 硬值显式 (stage4_recipe) + 可选字段合法 → 门禁通过."""
+    """8 硬值显式 (stage4_recipe) + 可选字段合法 → 门禁通过."""
     scheme = {"cathode": "NCM811", "anode": "si_base", "electrolyte": "lhce", "geometry": GEOMETRY_V11}
     passed, diag = _write_rag_artifacts(tmp_path, scheme)
     assert passed is True, f"{diag.get('error_code')}: {diag.get('error')}"
@@ -575,6 +577,35 @@ def test_rag_geometry_gate_incomplete(tmp_path):
     assert passed is False and diag["error_code"] == "GEOMETRY_DECLARATION_INCOMPLETE"
 
 
+def test_rag_geometry_gate_rs_ds_missing(tmp_path):
+    """R_s/D_s 与厚度/孔隙率同级硬性: 两极粒径/扩散系数缺失 → GEOMETRY_DECLARATION_INCOMPLETE."""
+    import json as _json
+    geo = _json.loads(_json.dumps(GEOMETRY_V11))
+    for comp in ("cathode", "anode"):
+        geo[comp].pop("R_s_um")
+        geo[comp].pop("D_s_m2s")
+        geo["provenance"].pop(f"{comp}.R_s_um")
+        geo["provenance"].pop(f"{comp}.D_s_m2s")
+    scheme = {"cathode": "NCM811", "anode": "si_base", "electrolyte": "lhce", "geometry": geo}
+    passed, diag = _write_rag_artifacts(tmp_path, scheme)
+    assert passed is False and diag["error_code"] == "GEOMETRY_DECLARATION_INCOMPLETE"
+    joined = "; ".join(diag.get("observed", {}).get("missing", []))
+    assert "cathode.R_s_um" in joined and "anode.D_s_m2s" in joined
+
+
+def test_rag_geometry_gate_stage5_revision_accepted(tmp_path):
+    """Stage 5 反馈修订后的几何 (provenance=stage5_revision) 在 Stage 4 重检时同样放行."""
+    import json as _json
+    geo = _json.loads(_json.dumps(GEOMETRY_V11))
+    geo["cathode"]["L_um"] = 85.0
+    geo["provenance"]["cathode.L_um"] = "stage5_revision"
+    geo["anode"]["D_s_m2s"] = 5e-14
+    geo["provenance"]["anode.D_s_m2s"] = "stage5_revision"
+    scheme = {"cathode": "NCM811", "anode": "si_base", "electrolyte": "lhce", "geometry": geo}
+    passed, diag = _write_rag_artifacts(tmp_path, scheme)
+    assert passed is True, f"{diag.get('error_code')}: {diag.get('error')}"
+
+
 def test_rag_geometry_gate_baseline_not_explicit(tmp_path):
     """厚度来自体系基准 (params_baseline) 而非显式声明 → 门禁拒绝."""
     import json as _json
@@ -583,6 +614,16 @@ def test_rag_geometry_gate_baseline_not_explicit(tmp_path):
     scheme = {"cathode": "NCM811", "anode": "si_base", "electrolyte": "lhce", "geometry": geo}
     passed, diag = _write_rag_artifacts(tmp_path, scheme)
     assert passed is False and diag["error_code"] == "GEOMETRY_DECLARATION_INCOMPLETE"
+
+
+def test_rag_geometry_gate_rs_out_of_registry_range(tmp_path):
+    """粒径超出 registry input_ranges (pe R_s 上限 10.68 μm) → GEOMETRY_VALUE_ILLEGAL."""
+    import json as _json
+    geo = _json.loads(_json.dumps(GEOMETRY_V11))
+    geo["cathode"]["R_s_um"] = 50.0
+    scheme = {"cathode": "NCM811", "anode": "si_base", "electrolyte": "lhce", "geometry": geo}
+    passed, diag = _write_rag_artifacts(tmp_path, scheme)
+    assert passed is False and diag["error_code"] == "GEOMETRY_VALUE_ILLEGAL"
 
 
 def test_rag_geometry_gate_illegal_value(tmp_path):

@@ -129,6 +129,7 @@ def main():
     parser.add_argument("--log", action="store_true", help="启用运行日志落盘 (现已默认开启，保存至 log/<课题名称>.log)")
     parser.add_argument("--no-log", action="store_true", help="关闭运行日志落盘 (默认已开启，此开关供显式关闭)")
     parser.add_argument("--log-file", type=str, default=None, help="自定义日志落盘文件路径 (默认落入 log/ 目录下)")
+    parser.add_argument("--trace", action="store_true", help="开启 LLM 全量轨迹记录 (完整保留每次 LLM 输入/输出/耗时，写入课题目录 llm_trace/；亦可经 setting.yaml runtime_options.llm_trace 或环境变量 LLM_TRACE 开启)")
 
     parser.add_argument("--reset", action="store_true", help="重置工作流状态至 Stage 1")
     parser.add_argument("--tui", action="store_true", help="启动 Rich 多面板终端交互控制台 (TUI)")
@@ -259,7 +260,12 @@ def main():
             skip_pinn=skip_pinn_val,
             enable_file_log=enable_log,
             log_file=args.log_file,
+            enable_trace=True if args.trace else None,
         )
+        if args.trace:
+            from auto_battery_research.util.llm_trace import get_llm_trace_recorder
+            if get_llm_trace_recorder().is_enabled():
+                print(f"🖊️  LLM 轨迹记录已开启: 轨迹文件写入 {mgr.get_task_output_dir(args.goal) / 'llm_trace'}/")
         success = agent.run()
         print("\n" + "="*80)
         print(f"🎉 [ABRAgent] 全生命周期科研循环执行完成: {'全部闭环' if success else '部分完成'}")

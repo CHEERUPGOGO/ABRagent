@@ -358,6 +358,13 @@ class StageManager:
                 "next_action": "本阶段已跳过，请直接调用 Complete 进行推进。",
             }
 
+        # Check 与 Complete 共用同一收尾，先选定最终产物再验收，避免预算耗尽后
+        # Check 永远检查失败候选、只有 Complete 才能回滚的矛盾。
+        selection = None
+        if stage.id == 5 and stage is self.get_current_stage() and stage.status not in ("PASSED", "FALLBACK"):
+            from auto_battery_research.tools.workflow_actions import select_best_stage5_result
+            selection = select_best_stage5_result(self)
+
         all_passed = True
         diagnostics = []
         failure_summary = None
@@ -380,6 +387,7 @@ class StageManager:
             "stage_name": stage.name,
             "diagnostics": diagnostics,
             "failure_summary": failure_summary,
+            "selection": selection,
         }
 
         if all_passed:
@@ -608,6 +616,13 @@ class StageManager:
                 "deliverables": deliverables or [],
                 "key_findings": key_findings or {},
             }
+            previous = next((j for j in journals if j.get("stage_id") == sid), None)
+            if previous:
+                old_notes = previous.get("notes", "")
+                entry["notes"] = old_notes if not notes or notes == old_notes else (
+                    f"{old_notes}\n\n{notes}" if old_notes else notes)
+                entry["deliverables"] = list(dict.fromkeys((previous.get("deliverables") or []) + (deliverables or [])))
+                entry["key_findings"] = {**(previous.get("key_findings") or {}), **(key_findings or {})}
             journals = [j for j in journals if j.get("stage_id") != sid]
             journals.append(entry)
             journals.sort(key=lambda x: x.get("stage_id", 0))
