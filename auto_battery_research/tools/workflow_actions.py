@@ -6,6 +6,7 @@
 import sys
 import os
 import json
+import re
 import time
 import hashlib
 import subprocess
@@ -16,6 +17,7 @@ from typing import Dict, Any, Optional, List, Tuple
 
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
+from auto_battery_research.util.hashing import canonical_hash, stage5_scheme_projection
 from auto_battery_research.util.logger import (
     log_tool_call,
     log_observation,
@@ -378,7 +380,9 @@ def run_rag_design(target_query: str = "", design_query: Optional[str] = None, *
 
     from auto_battery_research.tools.rag_adapter import AbrRagAdapter
     adapter = AbrRagAdapter(config=mgr.config)
-    return adapter.run_rag_design(target_query=(design_query or resolved_query), task_dir=task_dir)
+    actual_request = design_query or resolved_query
+    adapter.original_design_request = actual_request
+    return adapter.run_rag_design(target_query=actual_request, task_dir=task_dir)
 
 
 # ══════════════════ Stage 5: PINN 触发判定 + 材料参数提取 + SPM PINN 仿真 ══════════════════
@@ -386,6 +390,11 @@ def run_rag_design(target_query: str = "", design_query: Optional[str] = None, *
 PINN_INPUT_SPEC_FILENAME = "pinn_input_spec.json"
 PINN_SIM_RESULT_FILENAME = "pinn_simulation_result.json"
 PINN_CURVE_PNG_FILENAME = "pinn_simulation_curve.png"
+# Stage 5 反馈回路逐轮留档: 旁车结果/输入对 + 紧凑历史索引 (择优回滚的恢复件)
+PINN_SIM_HISTORY_FILENAME = "pinn_simulation_history.json"
+PINN_ROUND_RESULT_TEMPLATE = "pinn_simulation_round_{k}.result.json"
+PINN_ROUND_SPEC_TEMPLATE = "pinn_simulation_round_{k}.spec.json"
+PINN_HISTORY_MAX_ROUNDS = 20
 
 # 材料级物理量字段 (extraction_summary 统计口径; None/空串视为"未提取到")
 _MATERIAL_PARAM_FIELDS = (
@@ -430,6 +439,48 @@ def _load_pinn_trigger_cfg(mgr: Optional[Any] = None) -> Dict[str, Any]:
     except Exception:
         cfg = {}
     return cfg if isinstance(cfg, dict) else {}
+
+
+def _load_runtime_options(mgr: Optional[Any] = None) -> Dict[str, Any]:
+    """读取 setting.yaml runtime_options 块 (缺省空 dict)。"""
+    try:
+        if mgr is None:
+            from auto_battery_research.tools.stage_tools import get_stage_manager
+            mgr = get_stage_manager()
+        opts = (getattr(mgr, "config", {}) or {}).get("runtime_options", {})
+    except Exception:
+        opts = {}
+    return opts if isinstance(opts, dict) else {}
+
+
+_MAX_GEOMETRY_REVISIONS_DEFAULT = 3
+_TARGET_ENERGY_TOLERANCE_PCT_DEFAULT = 5.0
+
+
+def get_max_geometry_revisions(mgr: Optional[Any] = None) -> int:
+    """几何修订轮数预算 (runtime_options.max_geometry_revisions, 默认 3, 下限 1)。"""
+    try:
+        return max(1, int(_load_runtime_options(mgr).get(
+            "max_geometry_revisions", _MAX_GEOMETRY_REVISIONS_DEFAULT)))
+    except (TypeError, ValueError):
+        return _MAX_GEOMETRY_REVISIONS_DEFAULT
+
+
+def get_target_energy_tolerance_pct(mgr: Optional[Any] = None) -> float:
+    """达标判定容差百分比 (runtime_options.target_energy_tolerance_pct, 默认 5, 上限 50)。"""
+    try:
+        return min(50.0, max(0.0, float(_load_runtime_options(mgr).get(
+            "target_energy_tolerance_pct", _TARGET_ENERGY_TOLERANCE_PCT_DEFAULT))))
+    except (TypeError, ValueError):
+        return _TARGET_ENERGY_TOLERANCE_PCT_DEFAULT
+
+
+def extract_energy_target_wh_kg(goal_text: str) -> Optional[float]:
+    """从课题文本提取数值化能量密度目标 (如 "设计400Wh/kg..." → 400.0)；无数字 → None。"""
+    if not goal_text:
+        return None
+    m = re.search(r"(\d+(?:\.\d+)?)\s*(?:Wh\s*[/_]\s*kg|Wh·kg⁻¹|wh/kg)", str(goal_text), re.IGNORECASE)
+    return float(m.group(1)) if m else None
 
 
 def _match_pinn_system_for_scheme(scheme: Dict[str, Any]) -> Dict[str, Any]:
@@ -542,6 +593,19 @@ def _generate_pinn_input_spec(
         task_dir = mgr.get_task_output_dir(target_query or None)
 
     scheme = _load_stage4_scheme(target_query, task_dir, mgr)
+    if (scheme.get("geometry") or {}).get("contract_version") == "2.0":
+        from auto_battery_research.simulation.geometry_contract import validate_geometry_contract, geometry_hash
+        _, source_doc = _load_design_scheme_doc(target_query, task_dir, mgr)
+        geometry = scheme["geometry"]
+        errors = validate_geometry_contract(geometry, scheme, (source_doc or {}).get("evidence") or [])
+        try:
+            if scheme.get("geometry_hash") != geometry_hash(geometry):
+                errors.append("设计几何哈希失配")
+        except (ValueError, TypeError):
+            errors.append("设计几何不可规范序列化")
+        if errors:
+            return {"success": False, "error_code": "GEOMETRY_CONTRACT_INVALID",
+                    "error": "; ".join(errors), "deliverables": [], "key_findings": {}}
     candidates_lib = _load_candidates_library(mgr)
     trigger_cfg = _load_pinn_trigger_cfg(mgr)
     match_info = _match_pinn_system_for_scheme(scheme)
@@ -608,14 +672,9 @@ def _generate_pinn_input_spec(
             "rule": trigger_cfg.get("rule"),
             "match": match_info,
         },
-        "scheme": {
-            "cathode": scheme.get("cathode"),
-            "anode": scheme.get("anode"),
-            "electrolyte": scheme.get("electrolyte"),
-            "additives": scheme.get("additives") or [],
-            "target_energy_wh_kg": scheme.get("target_energy_wh_kg") or scheme.get("target_energy"),
-            "loading_mg_cm2": scheme.get("loading_mg_cm2"),
-        },
+        # scheme 投影与仿真输入相关字段子集 (含 geometry —— 几何修订后 scheme_hash
+        # 随之变化, 供 checker 做结果↔当前几何的陈旧防护), 见 util.hashing
+        "scheme": stage5_scheme_projection(scheme),
         "cell_spec": spec,
         "cell_spec_hash": _canonical_hash(spec),
         "extraction_summary": extraction_summary,
@@ -661,15 +720,10 @@ def _generate_pinn_input_spec(
 def _canonical_hash(obj: Any) -> str:
     """任意 JSON 对象的稳定输入指纹 (md5 前 12 位)。
 
-    算法沿用 rag_adapter provenance 的 `json.dumps(sort_keys=True)` 先例，
-    用于把 pinn_input_spec.json 与 pinn_simulation_result.json 绑定到同一份输入。
+    实现下沉 util.hashing (checker 侧重算 scheme_hash 时复用同一实现, 避免双份漂移)。
     """
-    try:
-        return hashlib.md5(
-            json.dumps(obj, sort_keys=True, ensure_ascii=False, default=str).encode("utf-8")
-        ).hexdigest()[:12]
-    except Exception:
-        return ""
+    from auto_battery_research.util.hashing import canonical_hash
+    return canonical_hash(obj)
 
 
 def _pinn_model_version(system_id: Optional[str]) -> str:
@@ -711,6 +765,113 @@ def _invalidate_stale_pinn_artifacts(result_file: Path, png_file: Path) -> List[
     return removed
 
 
+def _clear_pinn_history(task_dir: Path) -> List[str]:
+    """清除逐轮留档 (历史索引 + 各轮旁车文件)；未匹配/总开关关闭时一并失效。"""
+    removed: List[str] = []
+    candidates = [task_dir / PINN_SIM_HISTORY_FILENAME]
+    candidates.extend(task_dir.glob("pinn_simulation_round_*.result.json"))
+    candidates.extend(task_dir.glob("pinn_simulation_round_*.spec.json"))
+    for stale in candidates:
+        try:
+            if stale.exists():
+                stale.unlink()
+                removed.append(stale.name)
+        except Exception:
+            pass
+    return removed
+
+
+def _load_pinn_history(task_dir: Path) -> Dict[str, Any]:
+    """读取逐轮留档索引 (缺失/损坏 → 空历史)。"""
+    try:
+        with open(task_dir / PINN_SIM_HISTORY_FILENAME, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) and isinstance(data.get("rounds"), list) else {"rounds": []}
+    except Exception:
+        return {"rounds": []}
+
+
+def _best_history_round(history: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """择优: 仅 CONVERGED 轮参与, energy_wh_kg 最高, 并列取比容量高者。"""
+    converged = [
+        r for r in history.get("rounds", [])
+        if isinstance(r, dict) and r.get("status") == "CONVERGED"
+    ]
+    if not converged:
+        return None
+    return max(converged, key=lambda r: (
+        float(r.get("energy_wh_kg") or 0.0), float(r.get("specific_capacity_mAh_g") or 0.0)))
+
+
+def _record_pinn_round(
+    task_dir: Path,
+    spec_file: Path,
+    result_payload: Dict[str, Any],
+    geometry_snapshot: Optional[Dict[str, Any]],
+) -> Optional[Dict[str, Any]]:
+    """把本轮仿真 payload 落旁车文件并追加历史索引 (返回新增 round 记录; 尽力而为).
+
+    CONVERGED 轮才落旁车 (result/spec 配对, 择优回滚的恢复件)；失败轮仅进索引供
+    审计、不参与择优。留档失败仅记日志，绝不阻断仿真主链路。
+    """
+    try:
+        history = _load_pinn_history(task_dir)
+        rounds: List[Dict[str, Any]] = history.setdefault("rounds", [])
+        k = len(rounds) + 1
+        pinn_info = result_payload.get("pinn") if isinstance(result_payload.get("pinn"), dict) else {}
+        spec_payload: Optional[Dict[str, Any]] = None
+        try:
+            with open(spec_file, "r", encoding="utf-8") as f:
+                loaded = json.load(f)
+            spec_payload = loaded if isinstance(loaded, dict) else None
+        except Exception:
+            spec_payload = None
+        record: Dict[str, Any] = {
+            "round": k,
+            "timestamp": result_payload.get("generated_at") or datetime.now().isoformat(),
+            "status": result_payload.get("status"),
+            "system_id": result_payload.get("system_id"),
+            "c_rate": result_payload.get("c_rate"),
+            "energy_wh_kg": result_payload.get("energy_wh_kg") or result_payload.get("calculated_cell_energy_wh_kg"),
+            "specific_capacity_mAh_g": result_payload.get("specific_capacity_mAh_g"),
+            "average_voltage_V": result_payload.get("average_voltage_V"),
+            "termination": result_payload.get("termination"),
+            "spec_hash": pinn_info.get("spec_hash"),
+            "scheme_hash": pinn_info.get("scheme_hash"),
+            "run_id": pinn_info.get("run_id"),
+            "geometry_snapshot": geometry_snapshot,
+            "result_file": None,
+            "spec_file": None,
+        }
+        if record["status"] == "CONVERGED":
+            result_sidecar = task_dir / PINN_ROUND_RESULT_TEMPLATE.format(k=k)
+            spec_sidecar = task_dir / PINN_ROUND_SPEC_TEMPLATE.format(k=k)
+            _atomic_write_text(result_sidecar, json.dumps(result_payload, ensure_ascii=False, indent=2))
+            if spec_payload is not None:
+                _atomic_write_text(spec_sidecar, json.dumps(spec_payload, ensure_ascii=False, indent=2))
+                record["spec_file"] = spec_sidecar.name
+            record["result_file"] = result_sidecar.name
+        rounds.append(record)
+        history["updated_at"] = datetime.now().isoformat()
+        if len(rounds) > PINN_HISTORY_MAX_ROUNDS:
+            # 超限裁剪最旧轮次 (旁车恢复件一并清理)
+            for old in rounds[:-PINN_HISTORY_MAX_ROUNDS]:
+                for key in ("result_file", "spec_file"):
+                    name = old.get(key)
+                    if name:
+                        try:
+                            (task_dir / name).unlink(missing_ok=True)
+                        except Exception:
+                            pass
+            history["rounds"] = rounds = rounds[-PINN_HISTORY_MAX_ROUNDS:]
+        _atomic_write_text(task_dir / PINN_SIM_HISTORY_FILENAME,
+                           json.dumps(history, ensure_ascii=False, indent=2))
+        return record
+    except Exception as e:
+        log_error(f"PINN 逐轮留档失败 (不阻断仿真主链路): {type(e).__name__}: {e}")
+        return None
+
+
 def _run_pinn_inference_if_triggered(
     extract_result: Dict[str, Any],
     mgr: Optional[Any],
@@ -740,14 +901,17 @@ def _run_pinn_inference_if_triggered(
         cell_spec = payload.get("cell_spec")
         spec_hash = _canonical_hash(cell_spec) if isinstance(cell_spec, dict) else ""
         scheme_hash = _canonical_hash(payload.get("scheme") or {})
+        geometry_snapshot = (payload.get("scheme") or {}).get("geometry")
         if not trigger.get("enabled"):
-            # 总开关关闭: 陈旧仿真产物与本轮判定必然失配, 一并失效
+            # 总开关关闭: 陈旧仿真产物与本轮判定必然失配, 一并失效 (含逐轮留档)
             return {"status": "PINN_DISABLED", "system_id": system_id,
-                    "invalidated": _invalidate_stale_pinn_artifacts(task_result_file, task_png_file)}
+                    "invalidated": _invalidate_stale_pinn_artifacts(task_result_file, task_png_file),
+                    "history_cleared": _clear_pinn_history(task_dir)}
         if not match_info.get("matched") or not isinstance(cell_spec, dict):
-            # 未匹配: 陈旧产物可能属于其他体系, 一并失效
+            # 未匹配: 陈旧产物可能属于其他体系, 一并失效 (含逐轮留档)
             return {"status": "NO_MATCH", "system_id": system_id,
-                    "invalidated": _invalidate_stale_pinn_artifacts(task_result_file, task_png_file)}
+                    "invalidated": _invalidate_stale_pinn_artifacts(task_result_file, task_png_file),
+                    "history_cleared": _clear_pinn_history(task_dir)}
         # 动态读取 StageManager 运行状态, 杜绝陈旧静态配置
         stage_obj = mgr.get_stage_by_id(5) if mgr is not None else None
         if stage_obj is not None and stage_obj.skip:
@@ -774,11 +938,14 @@ def _run_pinn_inference_if_triggered(
             task_png_file.unlink(missing_ok=True)
         except Exception:
             pass
+        # 失败轮同样逐轮留档 (仅索引审计, 不参与择优)
+        _record_pinn_round(task_dir, spec_file, failure_out, geometry_snapshot)
         return {
             "status": res.get("status", "ERROR"),
             "error": res.get("error", ""),
             "system_id": system_id,
             "result_file": str(task_result_file),
+            "geometry_snapshot": geometry_snapshot,
         }
 
     out = {
@@ -797,6 +964,11 @@ def _run_pinn_inference_if_triggered(
         _atomic_write_text(result_file, json.dumps(out, ensure_ascii=False, indent=2))
     except Exception as e:
         return {"status": "ERROR", "error": f"PINN 仿真产物写入失败: {e}", "system_id": system_id}
+    # 本轮逐轮留档 (result/spec 旁车对 + 历史索引), 供收尾择优与修订轨迹审计
+    round_record = _record_pinn_round(task_dir, spec_file, out, geometry_snapshot)
+    history = _load_pinn_history(task_dir)
+    best = _best_history_round(history)
+    pinn_info = out.get("pinn") if isinstance(out.get("pinn"), dict) else {}
     return {
         "status": "CONVERGED",
         "system_id": system_id,
@@ -805,6 +977,16 @@ def _run_pinn_inference_if_triggered(
         "specific_capacity_mAh_g": res.get("specific_capacity_mAh_g"),
         "average_voltage_V": res.get("average_voltage_V"),
         "energy_wh_kg": res.get("energy_wh_kg"),
+        "termination": res.get("termination"),
+        "limiting_electrode": res.get("limiting_electrode"),
+        "t_end_s": res.get("t_end_s"),
+        "effective_geometry": pinn_info.get("design"),
+        "energy_accounting": out.get("energy_accounting"),
+        "spec_inputs": pinn_info.get("spec_inputs"),
+        "round": round_record.get("round") if round_record else None,
+        "history_rounds": len(history.get("rounds", [])),
+        "best_round": (best or {}).get("round"),
+        "best_energy_wh_kg": (best or {}).get("energy_wh_kg"),
     }
 
 
@@ -916,7 +1098,8 @@ def _render_pinn_geometry_block(summary: Optional[Dict[str, Any]]) -> str:
     spec_inputs = summary.get("spec_inputs") or {}
     sources = [entry.get("source") for side in ("ne", "pe")
                for entry in (spec_inputs.get(side) or {}).values() if isinstance(entry, dict)]
-    n_recipe = sum(1 for s in sources if s == "stage4_recipe")
+    # stage4_recipe (Stage 4 叙事提取) 与 stage5_revision (Stage 5 反馈修订) 同为方案显式声明
+    n_recipe = sum(1 for s in sources if s in ("stage4_recipe", "stage5_revision"))
     n_base = sum(1 for s in sources if s == "params_baseline")
     fields = sorted({f for side in ("ne", "pe") for f in (spec_inputs.get(side) or {})})
     if n_recipe and n_base:
@@ -979,6 +1162,18 @@ def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, targe
 
     pinn_run = _run_pinn_inference_if_triggered(result, mgr=mgr, task_dir=task_dir, c_rate=c_rate)
     result["key_findings"]["pinn_run"] = pinn_run
+    # 修改必须基于当前设计版本；向主控提供可直接用于工具调用的身份与证据。
+    _, current_doc = _load_design_scheme_doc(target_query, task_dir, mgr)
+    if current_doc and isinstance(current_doc.get("scheme", {}).get("geometry"), dict):
+        from auto_battery_research.simulation.geometry_contract import geometry_hash
+        current_scheme = current_doc["scheme"]
+        result["key_findings"]["geometry_context"] = {
+            "base_revision": current_scheme.get("design_revision", 0),
+            "base_geometry_hash": geometry_hash(current_scheme["geometry"]),
+            "geometry": current_scheme["geometry"],
+            "diffusion_policy": "R_s是半径，可设计；D_s仅在任务证据支持时可修改，否则保持模型基准",
+            "evidence": current_doc.get("evidence", [])[:25],
+        }
     if pinn_run.get("status") == "CONVERGED":
         result["message"] = (
             f"{result.get('message', '')}；PINN 放电仿真完成 (体系 {pinn_run.get('system_id')}, {c_rate}C): "
@@ -986,6 +1181,8 @@ def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, targe
             f"平均电压 {pinn_run.get('average_voltage_V', 0):.2f} V, "
             f"能量密度 {pinn_run.get('energy_wh_kg', 0):.1f} Wh/kg"
         )
+        result["key_findings"]["energy_accounting"] = pinn_run.get("energy_accounting")
+        result["message"] += "（材料级比能量×固定体系系数；候选最优不代表物理上限，不证明非活性质量优化收益）"
         result["journal_notes"] = (
             f"{result.get('journal_notes', '')} PINN 放电仿真完成 (体系 {pinn_run.get('system_id')})，"
             f"产物 {PINN_SIM_RESULT_FILENAME} 与放电曲线 {PINN_CURVE_PNG_FILENAME}。"
@@ -994,14 +1191,75 @@ def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, targe
             result["deliverables"].append(pinn_run["curve_png"])
         log_success(f"PINN 放电仿真产物已保存: {pinn_run.get('result_file')}")
         log_observation(result["message"])
+
+        # 目标达标判定块 (带容差): 目标能量取课题文本数值 (如 "400Wh/kg")，容差取
+        # runtime_options.target_energy_tolerance_pct (默认 ±5%)。确定性 met 字段是
+        # LLM 停止修订的主判据，避免容差内微小差距反复空转。
+        from auto_battery_research.tools.geometry_revision import count_geometry_revisions
+        goal_text = (target_query or "").strip() or getattr(mgr, "target_goal", "") or ""
+        tolerance_pct = get_target_energy_tolerance_pct(mgr)
+        energy_target = extract_energy_target_wh_kg(goal_text)
+        energy_now = pinn_run.get("energy_wh_kg")
+        max_revisions = get_max_geometry_revisions(mgr)
+        try:
+            scheme_doc_file, scheme_doc = _load_design_scheme_doc(target_query, task_dir, mgr)
+            revisions_used = count_geometry_revisions(scheme_doc.get("scheme") or {}) if scheme_doc else 0
+        except Exception:
+            revisions_used = 0
+        revisions_remaining = max(0, max_revisions - revisions_used)
+        result["key_findings"]["revision_budget"] = {
+            "used": revisions_used, "max": max_revisions, "remaining": revisions_remaining,
+        }
+        if isinstance(energy_now, (int, float)):
+            threshold = energy_target * (1.0 - tolerance_pct / 100.0) if energy_target is not None else None
+            target_block = {
+                "energy_target_wh_kg": energy_target,
+                "tolerance_pct": tolerance_pct,
+                "threshold_wh_kg": threshold,
+                "met": (float(energy_now) >= threshold) if threshold is not None else None,
+            }
+            result["key_findings"]["target"] = target_block
+            if target_block["met"] is True:
+                result["message"] += (
+                    f"。达标判定: 能量 {energy_now:.1f} ≥ 阈值 {threshold:.1f} Wh/kg "
+                    f"(目标 {energy_target:g} Wh/kg, 容差 ±{tolerance_pct:g}%) —— 已达标, "
+                    f"请停止修订, 调用 Check 验证后 Complete 推进"
+                )
+            elif target_block["met"] is None:
+                # 课题无数值化能量目标: 定性判断归 LLM, 择优收尾也不会替其回滚
+                result["message"] += (
+                    "。课题未含数值化能量目标: 请综合放电曲线/终止模式定性判断是否继续修订 "
+                    f"(剩余修订预算 {revisions_remaining}/{max_revisions} 轮, 工具 ReviseGeometry)"
+                )
+            elif revisions_remaining > 0:
+                gap = f" (差 {threshold - float(energy_now):.1f} Wh/kg 至阈值)" if threshold is not None else ""
+                result["message"] += (
+                    f"。达标判定: 未达标{gap} —— 可调用 ReviseGeometry 修订 scheme.geometry "
+                    f"(两电极厚度/孔隙率/颗粒粒径/扩散系数) 后重跑 RunPhysicsSimulation "
+                    f"(剩余修订预算 {revisions_remaining}/{max_revisions} 轮)"
+                )
+            else:
+                result["message"] += (
+                    f"。达标判定: 未达标且修订预算已用尽 ({revisions_used}/{max_revisions}) —— "
+                    f"完成 Stage 5 时将自动择优回滚至能量最高一轮, 可直接 Check → Complete"
+                )
+        else:
+            result["message"] += (
+                "。仿真结果缺能量标量: 请检查体系匹配与 spec 显式输入 "
+                f"(剩余修订预算 {revisions_remaining}/{max_revisions} 轮, 工具 ReviseGeometry)"
+            )
+        log_observation(result["message"])
     elif pinn_run.get("status") in ("OUT_OF_RANGE", "OUT_OF_ENVELOPE", "ERROR"):
         # 仿真失败是硬失败: 外层 success 置 False, 具体原因透传给 LLM/用户修正
         # (如 "c_rate=10 超出体系有效范围 [0.1, 3]")；NO_MATCH/PINN_DISABLED/SKIPPED
         # 是合法回退, 保持提取成功的 success=True 语义
         result["success"] = False
+        from auto_battery_research.tools.geometry_revision import count_geometry_revisions
+        exhausted = count_geometry_revisions((current_doc or {}).get("scheme") or {}) >= get_max_geometry_revisions(mgr)
         result["message"] = (
             f"PINN 放电仿真未完成 ({pinn_run.get('status')}): {pinn_run.get('error', '')}；"
-            f"参数提取产物已保留，请修正越界输入后重跑"
+            + ("修订预算已耗尽，请调用 Check 选定最佳历史结果并验收，再 Complete；无需重复仿真。" if exhausted else
+               "参数提取产物已保留，可调用 ReviseGeometry 把越界的几何/倍率输入修正到合法范围后重跑")
         )
         result["journal_notes"] = (
             f"PINN 放电仿真未完成 ({pinn_run.get('status')}): {pinn_run.get('error', '')}"
@@ -1012,104 +1270,327 @@ def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, targe
     return result
 
 
+# ══════════════════════════════════════════════════════════════
+# Stage 5 反馈回路: 几何修订 (ReviseGeometry) 与收尾择优回滚
+# ══════════════════════════════════════════════════════════════
+
+_GEOMETRY_MD_HEADER = "**设计点几何声明**"
+
+
+def _load_design_scheme_doc(
+    target_query: str, task_dir: Path, mgr: Optional[Any]
+) -> Tuple[Optional[Path], Optional[Dict[str, Any]]]:
+    """读取课题 design_scheme.json 完整契约文档 (返回 (路径, 文档)；未找到 → (None, None))。"""
+    legacy_dir = ROOT_DIR / "output" / "auto_battery_research"
+    is_legacy_fn = getattr(mgr, "is_legacy_goal", None)
+    is_legacy = bool(callable(is_legacy_fn) and is_legacy_fn(target_query))
+    scheme_files = [task_dir / "design_scheme.json"]
+    if is_legacy:
+        scheme_files.append(legacy_dir / "design_scheme.json")
+    for scheme_file in scheme_files:
+        try:
+            if not scheme_file.exists():
+                continue
+            with open(scheme_file, "r", encoding="utf-8") as f:
+                doc = json.load(f)
+            if isinstance(doc, dict) and isinstance(doc.get("scheme"), dict):
+                return scheme_file, doc
+        except Exception:
+            continue
+    return None, None
+
+
+def _update_design_scheme_md(md_path: Path, geometry_md: str, revision_md: str) -> bool:
+    """就地重渲染 design_scheme.md 尾部: 设计点几何声明表 + 几何修订记录 (幂等).
+
+    修订/回滚只改 scheme.geometry 与 geometry_revisions, 叙事正文不动 —— 声明表
+    之前的内容原样保留, 尾部两段整体重建, 重复调用结果一致。
+    """
+    try:
+        text = md_path.read_text(encoding="utf-8") if md_path.exists() else ""
+        idx = text.find(_GEOMETRY_MD_HEADER)
+        head = text[:idx] if idx >= 0 else text
+        head = head.rstrip()
+        if head.endswith("---"):
+            head = head[:-3].rstrip()  # 旧声明表前的分隔线, 统一重建
+        sections = [head] if head else []
+        if geometry_md:
+            sections.append("---\n\n" + geometry_md)
+        if revision_md:
+            sections.append(revision_md)
+        _atomic_write_text(md_path, "\n\n".join(sections) + "\n")
+        return True
+    except Exception as e:
+        log_error(f"design_scheme.md 几何区更新失败: {e}")
+        return False
+
+
+def revise_geometry(
+    revisions: Dict[str, Any],
+    reason: str = "",
+    target_query: str = "",
+    stage_manager: Optional[Any] = None,
+    **kwargs,
+) -> Dict[str, Any]:
+    """Stage 5 反馈回路: LLM 依据 PINN 仿真结果修订 scheme.geometry 并落盘.
+
+    只允许修订 8 个显式声明字段 (两电极 L_um/porosity/R_s_um/D_s_m2s)；修订值经
+    registry input_ranges 范围校验，越界拒绝不落盘；修订预算 runtime_options.
+    max_geometry_revisions (默认 3) 耗尽后拒绝。成功后 design_scheme.json/md 同步
+    更新 (provenance=stage5_revision + geometry_revisions 留痕)，由 LLM 重跑
+    RunPhysicsSimulation 使仿真结果与新几何对齐 (spec_hash/scheme_hash 防陈旧)。
+    """
+    log_tool_call("ReviseGeometry", f"target_query='{target_query}', reason='{str(reason)[:60]}'")
+    if stage_manager is not None:
+        mgr = stage_manager
+        task_dir = stage_manager.get_task_output_dir(target_query or None)
+    else:
+        from auto_battery_research.tools.stage_tools import get_stage_manager, get_stage_manager_for_goal
+        resolved_query = (target_query or "").strip() or get_stage_manager().target_goal
+        mgr = get_stage_manager_for_goal(resolved_query)
+        task_dir = _get_target_task_dir(resolved_query)
+        target_query = resolved_query
+
+    from auto_battery_research.tools.geometry_revision import apply_geometry_revision
+    scheme_file, doc = _load_design_scheme_doc(target_query, task_dir, mgr)
+    if scheme_file is None or doc is None:
+        return {
+            "success": False,
+            "error_code": "DESIGN_SCHEME_MISSING",
+            "error": "未找到 design_scheme.json (Stage 4 方案)，无法修订几何",
+            "journal_notes": "ReviseGeometry 失败: design_scheme.json 缺失",
+            "deliverables": [],
+            "key_findings": {"status": "DESIGN_SCHEME_MISSING"},
+        }
+
+    from auto_battery_research.simulation.geometry_contract import validate_geometry_contract
+    existing_geo = doc["scheme"].get("geometry") or {}
+    if existing_geo.get("contract_version") == "2.0":
+        contract_errors = validate_geometry_contract(existing_geo, doc["scheme"], doc.get("evidence") or [])
+        if contract_errors:
+            return {"success": False, "error_code": "GEOMETRY_CONTRACT_INVALID",
+                    "error": "; ".join(contract_errors)}
+
+    max_revisions = get_max_geometry_revisions(mgr)
+    rev_res = apply_geometry_revision(
+        doc["scheme"], revisions, reason=reason, max_revisions=max_revisions,
+        evidence_claims=kwargs.get("evidence_claims"), evidence=doc.get("evidence") or [],
+        base_revision=kwargs.get("base_revision"), base_geometry_hash=kwargs.get("base_geometry_hash"))
+    if not rev_res.get("ok"):
+        return {
+            "success": False,
+            "error_code": rev_res.get("error_code"),
+            "error": rev_res.get("error"),
+            "illegal": rev_res.get("illegal"),
+            "legal_ranges": rev_res.get("legal_ranges"),
+            "revisions_used": rev_res.get("revisions_used"),
+            "max_revisions": max_revisions,
+            "journal_notes": f"ReviseGeometry 被拒绝 ({rev_res.get('error_code')})",
+            "deliverables": [],
+            "key_findings": {"status": rev_res.get("error_code"), "error": rev_res.get("error")},
+        }
+
+    # 原子落盘 json + 就地更新 md (声明表 + 修订记录)
+    try:
+        # 不可变设计快照先写，当前契约后提交；失败候选不会覆盖有效方案。
+        revision = doc["scheme"].get("design_revision", 0)
+        snapshot = task_dir / "design_revisions" / f"revision_{revision}_{doc['scheme']['geometry_hash'][:12]}.json"
+        if not snapshot.exists():
+            _atomic_write_text(snapshot, json.dumps(doc, ensure_ascii=False, indent=2))
+        _atomic_write_text(scheme_file, json.dumps(doc, ensure_ascii=False, indent=2))
+    except Exception as e:
+        return {
+            "success": False,
+            "error": f"design_scheme.json 写入失败: {e}",
+            "deliverables": [],
+            "key_findings": {"status": "WRITE_FAILED"},
+        }
+    from pinn.input_spec import format_geometry_markdown
+    from auto_battery_research.tools.geometry_revision import render_revision_log_markdown
+    scheme = doc["scheme"]
+    geometry_md = format_geometry_markdown(scheme.get("geometry") or {})
+    revision_md = render_revision_log_markdown(scheme.get("geometry_revisions") or [])
+    md_path = scheme_file.parent / "design_scheme.md"
+    md_updated = _update_design_scheme_md(md_path, geometry_md, revision_md)
+
+    changes_txt = "; ".join(f"{c['field']}: {c['old']} → {c['new']}" for c in rev_res.get("changes", []))
+    message = (
+        f"几何修订已落盘 (第 {rev_res['revisions_used']}/{max_revisions} 轮): {changes_txt}。"
+        f"请重跑 RunPhysicsSimulation 使仿真结果与新几何对齐。"
+    )
+    log_success(f"ReviseGeometry 第 {rev_res['revisions_used']} 轮修订落盘: {changes_txt}")
+    return {
+        "success": True,
+        "message": message,
+        "journal_notes": f"几何修订第 {rev_res['revisions_used']}/{max_revisions} 轮: {changes_txt} (理由: {reason})",
+        "deliverables": [str(scheme_file)] + ([str(md_path)] if md_updated else []),
+        "key_findings": {
+            "status": "REVISED",
+            "changes": rev_res.get("changes", []),
+            "revision_entry": rev_res.get("revision_entry"),
+            "revisions_used": rev_res.get("revisions_used"),
+            "max_revisions": max_revisions,
+            "design_scheme_md_updated": md_updated,
+        },
+    }
+
+
+def select_best_stage5_result(mgr: Optional[Any] = None) -> Dict[str, Any]:
+    """Stage 5 确定性收尾: 未达标时择优回滚至能量最高的 CONVERGED 轮.
+
+    由 StageManager.complete_stage 在 Stage 5 门禁校验前调用:
+      - 任一轮已达标 (能量 ≥ 目标×(1-容差)) → 不动作 (达标轮即最终结果);
+      - 课题无数值化能量目标 → 不动作 (定性判断归 LLM, 不替其做主);
+      - 最优轮 == 最后一轮 → 不动作;
+      - 否则用旁车文件原子恢复最优轮 result/spec (PNG 由留存曲线重渲染),
+        design_scheme.json 几何回滚至该轮快照并追加择优留痕 —— 恢复件
+        spec_hash/scheme_hash 与恢复后几何天然一致, 门禁校验不受影响。
+    无历史/无设计稿/缺恢复件时静默跳过 (尽力而为, 不阻断推进)。
+    """
+    try:
+        if mgr is None:
+            return {"action": "none", "reason": "no_manager"}
+        task_dir = mgr.get_task_output_dir()
+        history = _load_pinn_history(task_dir)
+        rounds = [r for r in history.get("rounds", []) if isinstance(r, dict)]
+        if not rounds:
+            return {"action": "none", "reason": "no_history"}
+        tolerance_pct = get_target_energy_tolerance_pct(mgr)
+        energy_target = extract_energy_target_wh_kg(getattr(mgr, "target_goal", "") or "")
+        if energy_target is None:
+            return {"action": "none", "reason": "no_numeric_target"}
+        threshold = energy_target * (1.0 - tolerance_pct / 100.0)
+        met_rounds = [
+            r for r in rounds
+            if r.get("status") == "CONVERGED"
+            and isinstance(r.get("energy_wh_kg"), (int, float))
+            and float(r["energy_wh_kg"]) >= threshold
+        ]
+        if met_rounds:
+            return {"action": "none", "reason": "target_met", "met_round": met_rounds[-1].get("round")}
+        best = _best_history_round(history)
+        last = rounds[-1]
+        if not best or best.get("round") == last.get("round"):
+            return {"action": "none", "reason": "best_is_last"}
+        if not best.get("geometry_snapshot") or not best.get("result_file"):
+            return {"action": "none", "reason": "restore_pieces_missing"}
+
+        result_sidecar = task_dir / str(best["result_file"])
+        if not result_sidecar.exists():
+            return {"action": "none", "reason": "result_sidecar_missing"}
+        with open(result_sidecar, "r", encoding="utf-8") as f:
+            result_payload = json.load(f)
+        spec_sidecar = task_dir / str(best["spec_file"]) if best.get("spec_file") else None
+        spec_payload = None
+        if spec_sidecar and spec_sidecar.exists():
+            with open(spec_sidecar, "r", encoding="utf-8") as f:
+                spec_payload = json.load(f)
+        if not isinstance(spec_payload, dict):
+            return {"action": "none", "reason": "spec_sidecar_missing"}
+        if (result_payload.get("pinn") or {}).get("spec_hash") != _canonical_hash(spec_payload.get("cell_spec")):
+            return {"action": "none", "reason": "archive_hash_mismatch"}
+
+        # 1. 几何回滚 + 择优留痕 (先改 scheme, 失败则放弃恢复保持一致性)
+        scheme_file, doc = _load_design_scheme_doc(getattr(mgr, "target_goal", "") or "", task_dir, mgr)
+        if doc is None or not isinstance(doc.get("scheme", {}).get("geometry"), dict):
+            return {"action": "none", "reason": "scheme_geometry_unavailable"}
+        scheme = doc["scheme"]
+        # 同一课题重新设计后，历史轮次可能属于不同材料/条件；不得跨方案恢复。
+        from auto_battery_research.util.hashing import stage5_scheme_projection
+        restored_scheme = dict(scheme, geometry=best["geometry_snapshot"])
+        archived_scheme_hash = (result_payload.get("pinn") or {}).get("scheme_hash")
+        if archived_scheme_hash != _canonical_hash(stage5_scheme_projection(restored_scheme)):
+            return {"action": "none", "reason": "archive_scheme_mismatch"}
+        current_result = task_dir / PINN_SIM_RESULT_FILENAME
+        if scheme.get("geometry") == best["geometry_snapshot"] and current_result.exists():
+            current = json.loads(current_result.read_text(encoding="utf-8"))
+            spec_path = task_dir / PINN_INPUT_SPEC_FILENAME
+            try:
+                current_spec = json.loads(spec_path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                current_spec = None
+            if current == result_payload and current_spec == spec_payload and (task_dir / PINN_CURVE_PNG_FILENAME).exists():
+                return {"action": "none", "reason": "already_selected", "best_round": best.get("round")}
+        scheme["geometry"] = best["geometry_snapshot"]
+        from auto_battery_research.simulation.geometry_contract import geometry_hash
+        scheme["geometry_hash"] = geometry_hash(scheme["geometry"])
+        if spec_payload:
+            scheme["design_revision"] = (spec_payload.get("cell_spec") or {}).get("design_revision", 0)
+        entries = scheme.get("geometry_revisions") if isinstance(scheme.get("geometry_revisions"), list) else []
+        entries.append({
+            "kind": "selection",
+            "round": len(entries) + 1,
+            "timestamp": datetime.now().isoformat(),
+            "changes": [{
+                "field": "scheme.geometry",
+                "old": f"第 {last.get('round')} 轮几何",
+                "new": f"回滚至第 {best.get('round')} 轮快照",
+            }],
+            "reason": (
+                f"仍未达标 (目标 {energy_target:g} Wh/kg, 容差 ±{tolerance_pct:g}%, "
+                f"阈值 {threshold:.1f} Wh/kg): 择优选定能量最高轮 —— "
+                f"第 {best.get('round')} 轮 {best.get('energy_wh_kg')} Wh/kg "
+                f"(最后一轮 {last.get('energy_wh_kg')} Wh/kg)"
+            ),
+        })
+        scheme["geometry_revisions"] = entries
+        _atomic_write_text(scheme_file, json.dumps(doc, ensure_ascii=False, indent=2))
+
+        # 2. 恢复最优轮 result/spec + 重渲染 PNG
+        _atomic_write_text(task_dir / PINN_SIM_RESULT_FILENAME,
+                           json.dumps(result_payload, ensure_ascii=False, indent=2))
+        if spec_payload is not None:
+            _atomic_write_text(task_dir / PINN_INPUT_SPEC_FILENAME,
+                               json.dumps(spec_payload, ensure_ascii=False, indent=2))
+        curve = result_payload.get("discharge_curve") or {}
+        if not (curve.get("capacity") and curve.get("voltage")
+                and _render_pinn_curve_png(result_payload, task_dir)):
+            try:
+                (task_dir / PINN_CURVE_PNG_FILENAME).unlink(missing_ok=True)
+            except Exception:
+                pass
+
+        # 3. md 尾部同步 (声明表 = 回滚后几何 + 含择优条目的修订记录)
+        from pinn.input_spec import format_geometry_markdown
+        from auto_battery_research.tools.geometry_revision import render_revision_log_markdown
+        _update_design_scheme_md(
+            scheme_file.parent / "design_scheme.md",
+            format_geometry_markdown(scheme.get("geometry") or {}),
+            render_revision_log_markdown(entries),
+        )
+        log_success(
+            f"Stage 5 择优收尾: 回滚至第 {best.get('round')} 轮 "
+            f"({best.get('energy_wh_kg')} Wh/kg > 最后一轮 {last.get('energy_wh_kg')} Wh/kg)"
+        )
+        return {
+            "action": "restored_best",
+            "best_round": best.get("round"),
+            "best_energy_wh_kg": best.get("energy_wh_kg"),
+            "last_round": last.get("round"),
+            "threshold_wh_kg": threshold,
+        }
+    except Exception as e:
+        # 收尾择优尽力而为: 任何异常都不阻断 complete_stage 的门禁校验与推进
+        log_error(f"Stage 5 择优收尾跳过: {type(e).__name__}: {e}")
+        return {"action": "none", "reason": f"error: {type(e).__name__}: {e}"}
+
+
 def _generate_dynamic_recipe_roadmap(
     target_query: str,
     scheme_text: str,
     scheme_data: Dict[str, Any],
     mgr: Any,
 ) -> str:
-    """由大模型根据具体电池设计方案动态生成【实验配方与落地建议】，遵循统一的格式模板规范."""
-    # 1. 尝试大模型动态生成
-    llm_cfg = mgr.config.get("llm") if mgr else {}
-    openai_cfg = mgr.config.get("openai") if mgr else {}
-
-    api_key = (
-        (openai_cfg.get("openai_api_key") if openai_cfg else None)
-        or (llm_cfg.get("api_key") if llm_cfg else None)
-        or os.getenv("OPENAI_API_KEY")
-    )
-    api_base = (
-        (openai_cfg.get("openai_api_base") if openai_cfg else None)
-        or (llm_cfg.get("base_url") if llm_cfg else None)
-        or os.getenv("OPENAI_API_BASE")
-    )
-    model_name = (
-        (llm_cfg.get("writer_model") if llm_cfg else None)
-        or (llm_cfg.get("model") if llm_cfg else None)
-        or (openai_cfg.get("model_name") if openai_cfg else None)
-        or os.getenv("OPENAI_MODEL", "MiniMax-M2.7-highspeed")
-    )
-
-    is_valid_key = (
-        api_key
-        and str(api_key).strip()
-        and str(api_key).strip() not in ("dummy_key", "none", "None", "")
-        and not str(api_key).startswith("$(")
-    )
-
-    if is_valid_key:
-        try:
-            from auto_battery_research.rag import LLMClient
-            llm = LLMClient(
-                model_name=model_name,
-                api_key=api_key,
-                api_base=api_base,
-                temperature=0.2,
-            )
-            if llm.available:
-                sys_prompt = (
-                    "你是一位化学电池工程与实验落地专家。\n"
-                    "请根据给定的电池设计目标与推荐方案，按照指定的四段式模板格式，"
-                    "输出专门针对该材料体系的【实验配方与落地建议】。\n\n"
-                    "【必须遵循的输出格式模板】：\n"
-                    "### 5.1 原材料前驱体与采购规格 (Raw Materials & Specifications)\n"
-                    "- 列出针对该体系的正极、负极、电解液溶剂/锂盐、功能添加剂的具体规格要求（纯度、粒径、水分限制、形貌等）。\n\n"
-                    "### 5.2 极片制备与界面改性工艺 (Electrode Processing & Surface Modification)\n"
-                    "- 详细说明混料浆料配比、溶剂、涂布面载量控制、辊压压实密度以及表面包覆/改性操作要点。\n\n"
-                    "### 5.3 电芯组装与化成激活制度 (Cell Assembly & Formation Protocol)\n"
-                    "- 详细说明装配气氛（露点要求）、电解液注液量系数 (E/C ratio)、预充/阶梯化成电流与脱气封装工艺。\n\n"
-                    "### 5.4 电化学性能与安全性验证路线 (Testing & Validation Matrix)\n"
-                    "- 列出 0.1C 首效/容量测试、0.5C/1C 循环衰减监测、高低温工作窗口评估及 ARC 热失控安全测试方案。"
-                )
-                scheme_summary = scheme_text[:1500] if scheme_text else f"材料方案: {scheme_data}"
-                user_prompt = (
-                    f"课题目标: {target_query}\n\n"
-                    f"设计方案摘要与材料配方:\n{scheme_summary}\n\n"
-                    "请输出针对该体系的完整落地建议章节内容："
-                )
-                resp = llm.chat(sys_prompt, user_prompt, temperature=0.2)
-                if resp and len(resp.strip()) > 150:
-                    # 防御性二次剥离：即使 LLMClient 未来被替换，也绝不让 <think> 思考块混入研报
-                    from auto_battery_research.rag import strip_think_blocks
-                    return strip_think_blocks(resp)
-        except Exception as e:
-            log_error(f"大模型动态生成落地建议受阻: {e}，切入规则定制模板。")
-
-    # 2. 规则定制化回退（根据材料实体动态定制）
-    s_obj = scheme_data.get("scheme", {}) if isinstance(scheme_data, dict) else {}
-    cathode = s_obj.get("cathode") or "高镍三元正极"
-    anode = s_obj.get("anode") or "锂金属/硅碳负极"
-    electrolyte = s_obj.get("electrolyte") or "高电压/局域高浓度电解液"
-
-    return f"""### 5.1 原材料前驱体与采购规格 (Raw Materials & Specifications)
-- **正极材料**: 选用 {cathode} 单晶/颗粒，要求 D50 粒径控制在 3-5 μm，残碱含量 (LiOH + Li₂CO₃) < 0.3 wt%，水分敏感度严格控制 (< 10 ppm)。
-- **负极材料**: 采用 {anode}，纯度 ≥ 99.9%，厚度或面容量需与正极实现 N/P 比严格匹配 (1.05~1.15)。
-- **电解液体系**: 采用 {electrolyte} 体系，要求水分 < 10 ppm，游离酸 (HF) < 20 ppm。
-
-### 5.2 极片制备与界面改性工艺 (Electrode Processing & Surface Modification)
-- **浆料制备**: 采用行星式高速分散机混料，正极配比推荐 主材:导电炭黑(Super P/CNT):粘结剂(PVDF) = 96:2:2，固含量控制在 65-70%。
-- **涂布与辊压**: 双面涂布面载量控制在 18-22 mg/cm²，热风分段干燥 (80°C/100°C/120°C)，冷轧压实密度目标 3.3-3.5 g/cm³。
-- **表面包覆/钝化**: 建议对极片或材料表面引入纳米级保护层以抑制高脱锂态下的过渡金属溶出。
-
-### 5.3 电芯组装与化成激活制度 (Cell Assembly & Formation Protocol)
-- **环境控制**: 手套箱露点温度控制在 ≤ -50°C (Ar 气氛，O₂ < 0.1 ppm, H₂O < 0.1 ppm)。
-- **注液系数**: 按照 E/C 比 2.0-2.5 g/Ah 进行真空浸润与注液，并在 45°C 下静置 24 小时以确保电解液充分润湿。
-- **化成制度**: 0.05C 恒流预充至 3.2V，随后以 0.1C 恒流恒压充电至 4.35V/4.4V，完成首次钝化膜 (SEI/CEI) 诱导生成，并在封口前进行真空抽气脱气。
-
-### 5.4 电化学性能与安全性验证路线 (Testing & Validation Matrix)
-- **扣电/半电芯评估**: 在 0.1C 倍率下测试首次库仑效率 (ICE ≥ 88%) 及理论比容量发挥。
-- **全电池工况测试**: 开展 0.5C/1.0C 长循环寿命评估 (目标 500 周保持率 > 80%)，并监测 3C 高倍率放电极化。
-- **安全边界考核**: 实施加速绝热量热 (ARC) 热失控起始温度 (T₁) 标定与满充状态针刺、过充安全性验证。"""
+    """兼容旧入口；实验参数只由选定契约生成，未知制备条件保持待验证。"""
+    from auto_battery_research.util.report_contract import report_context, render_recipe
+    result, spec = {}, {}
+    if mgr:
+        task_dir = mgr.get_task_output_dir()
+        for filename, destination in ((PINN_SIM_RESULT_FILENAME, result), (PINN_INPUT_SPEC_FILENAME, spec)):
+            path = task_dir / filename
+            if path.exists():
+                destination.update(json.loads(path.read_text(encoding="utf-8")))
+    return render_recipe(report_context(scheme_data, result, spec))
 
 
 def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = None, **kwargs) -> Dict[str, Any]:
@@ -1163,6 +1644,27 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
 
     all_journals = mgr.get_all_stage_journal()
     stage_statuses = {s.id: s.status for s in mgr.stages}
+    from auto_battery_research.util.report_contract import (
+        report_context, report_identity, render_selected_design, render_recipe, render_energy, render_evidence,
+    )
+    final_result, final_spec = {}, {}
+    if stage_statuses.get(5) == "PASSED":
+        for filename, destination in ((PINN_SIM_RESULT_FILENAME, final_result), (PINN_INPUT_SPEC_FILENAME, final_spec)):
+            path = task_dir / filename
+            if path.exists():
+                destination.update(json.loads(path.read_text(encoding="utf-8")))
+        if final_result:
+            from auto_battery_research.checkers.pinn_physics_checker import PINNPhysicsChecker
+            checker = PINNPhysicsChecker()
+            checker.on_init(mgr, {"id": 5}, mgr.config)
+            valid, diagnostic = checker.do_check()
+            if not valid:
+                return {"success": False, "error": diagnostic.get("error"), "error_code": "REPORT_INPUT_STALE"}
+    context = report_context(scheme_data, final_result, final_spec)
+    # 以结构化最终方案替代旧 Markdown 全文，原始提案仍可通过档案链接追溯。
+    scheme_text = render_selected_design(context)
+    energy_text = render_energy(context, extract_energy_target_wh_kg(resolved_query), get_target_energy_tolerance_pct(mgr))
+    evidence_text = render_evidence(scheme_data)
     
     # 2. 动态分析 Stage 5 物理仿真实际状态
     s5_stage = mgr.get_stage_by_id(5)
@@ -1201,6 +1703,45 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
         s5_status_desc = "PENDING (尚未执行)"
     # PINN 实际生效几何回显（result 缺失/非收敛/陈旧 → 空块）
     s5_geometry_block = _render_pinn_geometry_block(s5_pinn)
+    # 初始设计、选定设计与实际生效几何并列展示；未仿真字段保持空白。
+    selected_scheme = scheme_data.get("scheme") or {}
+    selected_geo = selected_scheme.get("geometry") or {}
+    if selected_geo.get("contract_version") == "2.0":
+        initial_geo = {}
+        for initial_file in sorted((task_dir / "design_revisions").glob("revision_0_*.json"),
+                                   key=lambda p: p.stat().st_mtime, reverse=True):
+            try:
+                initial_geo = json.loads(initial_file.read_text(encoding="utf-8"))["scheme"]["geometry"]
+                from auto_battery_research.simulation.geometry_contract import geometry_hash
+                if geometry_hash(initial_geo) != selected_scheme.get("initial_geometry_hash"):
+                    initial_geo = {}
+                    continue
+                break
+            except (OSError, ValueError, KeyError):
+                continue
+        rows = ["\n\n**参数版本对照**（R_s 为半径）：", "",
+                "| 参数 | 初始设计 | 选定设计 | PINN 实际生效 |", "|---|---|---|---|"]
+        for comp, side in (("cathode", "pe"), ("anode", "ne")):
+            effective = ((s5_pinn or {}).get("design") or {}).get(side) or {}
+            for field, key, scale in (("L_um", "L", 1e6), ("porosity", "porosity", 1),
+                                      ("R_s_um", "R_s", 1e6), ("D_s_m2s", "D_s", 1)):
+                actual = effective.get(key)
+                actual = actual * scale if isinstance(actual, (int, float)) else "—"
+                rows.append(f"| {comp}.{field} | {(initial_geo.get(comp) or {}).get(field, '—')} | "
+                            f"{(selected_geo.get(comp) or {}).get(field, '—')} | {actual} |")
+        s5_geometry_block += "\n".join(rows)
+
+    # 几何修订记录 (Stage 5 反馈回路留痕: 修订轮次 + 择优回滚条目; 无修订 → 空块)
+    s5_revision_block = ""
+    try:
+        _scheme_doc_file, _scheme_doc = _load_design_scheme_doc(
+            getattr(mgr, "target_goal", "") or "", mgr.get_task_output_dir(), mgr)
+        _rev_entries = ((_scheme_doc or {}).get("scheme") or {}).get("geometry_revisions") if _scheme_doc else None
+        if isinstance(_rev_entries, list) and _rev_entries:
+            from auto_battery_research.tools.geometry_revision import render_revision_log_markdown
+            s5_revision_block = "\n\n" + render_revision_log_markdown(_rev_entries)
+    except Exception:
+        pass
 
     # Stage 5 放电曲线图: 仅当 stage PASSED 且结果通过指纹守卫时才允许嵌入
     # (旧实现只判断 PNG 文件存在, Stage 5 跳过/失败时会把陈旧曲线带进报告)
@@ -1243,7 +1784,8 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     for j in all_journals:
         s_id = j.get("stage_id", 0)
         s_name = j.get("stage_name", "")
-        s_notes = j.get("notes", "")
+        # 详细发现保留在日志文件；报告履历只呈现执行状态，不复述未经核实的性能结论。
+        s_notes = f"状态 {stage_statuses.get(s_id, '未知')}；耗时 {j.get('duration_seconds', 0):.1f}s；详细记录见 stage_journals.json"
         s_deliv = ", ".join([Path(d).name for d in j.get("deliverables", [])]) or "无"
         journal_table_rows.append(f"| Stage {s_id} | {s_name} | {s_notes} | `{s_deliv}` |")
 
@@ -1266,14 +1808,47 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     ).rstrip("/")
     backend_desc = f"{backend_model} ({backend_base}, OpenAI-compatible)" if backend_base else backend_model
 
-    recipe_roadmap_text = _generate_dynamic_recipe_roadmap(
-        target_query=target_query,
-        scheme_text=scheme_text,
-        scheme_data=scheme_data,
-        mgr=mgr,
+    recipe_roadmap_text = render_recipe(context)
+    from auto_battery_research.util.report_analysis import render_materials, render_experiments, render_sources, render_history
+    materials_text = render_materials(scheme_data)
+    experiments_text = render_experiments(scheme_data)
+    sources_text = render_sources(scheme_data)
+    history_text = render_history(task_dir)
+
+    # 第五部分: 大模型综合完整方案/证据/仿真生成实验方案; 失败回退确定性渲染。
+    from auto_battery_research.util import report_recipe_llm as _plan_mod
+    full_scheme_md = ""
+    _smd = task_dir / "design_scheme.md"
+    if _smd.exists():
+        full_scheme_md = _smd.read_text(encoding="utf-8")
+    _target = extract_energy_target_wh_kg(resolved_query)
+    _tolerance = get_target_energy_tolerance_pct(mgr)
+    plan = _plan_mod.generate_experiment_plan(
+        mgr, task_dir, scheme_data, context, final_result, final_spec,
+        full_scheme_md, _target, _tolerance,
     )
+    if plan:
+        plan_start, plan_end = plan["marker"]
+        section5_body = (
+            f"{plan_start}\n{_plan_mod.plan_fingerprint_marker(_plan_mod.input_fingerprint(scheme_data, context, final_result, final_spec, full_scheme_md))}\n"
+            f"{plan['text']}\n{plan_end}"
+        )
+        log_observation(f"实验方案由大模型生成 ({plan['source']})")
+    else:
+        # 回退: 确定性实验章节 (最终参数核对 + 有来源制备路线 + 分阶段验证路线)
+        section5_body = (
+            f"<!-- abr-experiment-plan-fallback -->\n"
+            f"大模型实验方案不可用，以下为确定性渲染的实验路线。\n\n"
+            f"<!-- abr-final-recipe:start -->\n{recipe_roadmap_text}\n<!-- abr-final-recipe:end -->\n\n"
+            f"{experiments_text}"
+        )
+        log_observation("实验方案回退为确定性渲染 (LLM 不可用或未通过验收)")
+
 
     report_content = f"""# 化学电池全生命周期研发与设计综合研报
+<!-- abr-report-contract:2 -->
+<!-- abr-report-layout:6 -->
+{report_identity(scheme_data, final_result, final_spec)}
 
 - 课题目标: {target_query}
 - 生成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
@@ -1286,52 +1861,72 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
 ---
 
 ## 1. 研发摘要 (Executive Summary)
-本报告由 AutoBatteryResearch Agent 自动化工作流驱动完成，涵盖学术文献解析入库、语义标注、材料电芯数据挖掘、src/lmllm/RAG 多智能体协同方案规划与 RelationEngine 规则核算。面向用户课题需求，给出了高确定性、可落地的正极-负极-电解液-添加剂一体化配方体系。
+本报告基于最终选定设计和匹配的仿真产物编译。流程门禁通过表示产物可验收，不表示性能目标或实验验证已经完成。
+
+最终候选：{selected_scheme.get('cathode', '未提供')} 正极 / {selected_scheme.get('anode', '未提供')} 负极 / {selected_scheme.get('electrolyte', '未提供')} 电解液，选定版本 {selected_scheme.get('design_revision', '未提供')}。
+仿真结果：{s5_status_desc}。性能差距以以下确定性判定为准；限制电极和终止模式见第 4 节，不能仅据终止模式认定具体材料机理。
+
+<!-- abr-energy:start -->
+{energy_text}
+<!-- abr-energy:end -->
 
 ---
 
-## 2. 研发阶段执行履历与审计记录 (Stage Journals & Audit Trail)
+## 2. 材料选择与文献依据
 
-| 阶段 | 阶段名称 | 阶段核心工作与所得 (Notes) | 主要交付物 (Deliverables) |
-|:---|:---|:---|:---|
-{journal_table_str}
+{materials_text}
 
 ---
 
-## 3. 电池体系设计方案 (Battery System Design Scheme)
+## 3. 最终设计方案
 
+<!-- abr-final-design:start -->
 {scheme_text}
+<!-- abr-final-design:end -->
 
 ---
 
-## 4. 物理仿真与验证结论 (Physics Simulation & Verification Summary)
+## 4. 仿真与优化分析
 - Stage 1 (文献解析): 状态 [{stage_statuses.get(1, 'PASSED')}] (IngestionChecker 验收)
 - Stage 2 (向量库检索): 状态 [{stage_statuses.get(2, 'PASSED')}] (VectorDBChecker 验收)
 - Stage 3 (材料挖掘组装): 状态 [{stage_statuses.get(3, 'PASSED')}] (CellAssemblyChecker 验收)
 - Stage 4 (多智能体 RAG): 状态 [{stage_statuses.get(4, 'PASSED')}] (RAGDesignChecker 验收, 真实证据数: {evidence_count} 条)
-- Stage 5 (PINN 物理仿真): {s5_status_desc}{s5_geometry_block}{s5_curve_block}
+- Stage 5 (PINN 物理仿真): {s5_status_desc}{s5_geometry_block}{s5_revision_block}{s5_curve_block}
 - Stage 6 (综合研报生成): 状态 [{stage_statuses.get(6, 'PASSED')}] (FinalReportChecker 终审验收)
 
 ### 验证层级与计算方法透明化说明
-1. **0 阶解析代理估算 (0-Order Analytical Proxy / FALLBACK)**: 基于热力学理论比容量与工作电压积分的宏观理论能量密度测算。
-2. **P2D 偏微分方程连续体数值求解 (Newman P2D Simulation)**: 基于液相/固相扩散偏微分方程与 Butler-Volmer 电荷转移方程的极化曲线与微观锂离子浓度分布仿真。
-3. **物理实验室实测验证 (Experimental Validation)**: 纽扣/软包电池实际组装、恒流充放电 (GCD)、电化学阻抗谱 (EIS) 及差示扫描量热 (DSC) 实测。
+1. **SPM PINN**：单粒子模型代理推理，非本次运行 P2D 求解；训练参考 RMS 不等于当前工况新求得的 PDE 残差。
+2. **电芯能量折算**：材料级比能量乘固定体系系数，不含逐项质量优化核算。
+3. **实验验证**：单次放电仿真不验证循环寿命、首效或配方工艺；候选最优不代表物理上限。
+
+{history_text}
 
 > **⚠️ 科研可信度声明与使用边界 (Scientific Credibility & Disclaimer)**:
 > 本研报由多智能体文献 RAG、热力学硬约束求解器与数值代理模型协同生成。输出的配方选型、理论能量密度与工作电压区间供内部研发参考、文献方案编排与实验设计探索；未在实体实验室经过全流程物理装配与 ARC 热失控验证前，不应直接作为工业量产或高安全领域的唯一定论。
 
 ---
 
-## 5. 实验配方与落地建议 (Recipe Roadmap & Next Steps)
+## 5. 实验路线与验证计划
 
-{recipe_roadmap_text}
+{section5_body}
+
+## 6. 参考来源附录
+
+{sources_text}
+
+### 阶段执行履历
+| 阶段 | 阶段名称 | 阶段核心工作与所得 (Notes) | 主要交付物 (Deliverables) |
+|:---|:---|:---|:---|
+{journal_table_str}
+
+[详细阶段日志](stage_journals.json)
 """
     # 4. 原子安全写入课题专属规范文件 (final_research_report.md 为唯一规范命名；
     #    final_report.md / battery_research_synthesis_report.md 仅为读侧历史别名兼容，
     #    不再重复写出 —— 避免同一课题目录下出现三份内容相同的研报)
     _atomic_write_text(report_file, report_content)
 
-    log_observation(f"综合研报编译完成 (文件大小: {len(report_content)} 字节)")
+    log_observation(f"综合研报编译完成 (文件大小: {len(report_content.encode('utf-8'))} 字节)")
     log_success(f"全生命周期综合研报已生成: {report_file}")
     return {
         "success": True,
@@ -1339,7 +1934,7 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
         "message": "全生命周期综合研报已生成",
         "journal_notes": f"汇总全阶段所得编译生成全生命周期综合研报 ({report_file.name})，工作流闭环完成。",
         "deliverables": [str(report_file)],
-        "key_findings": {"synthesis_report_file": report_file.name, "report_size_bytes": len(report_content)},
+        "key_findings": {"synthesis_report_file": report_file.name, "report_size_bytes": len(report_content.encode('utf-8'))},
     }
 
 

@@ -69,7 +69,7 @@ class PlannerAgent:
         user_prompt += "\n请按要求输出 JSON."
 
         try:
-            raw = self.llm.chat(PLANNER_SYSTEM_PROMPT, user_prompt, temperature=0.1)
+            raw = self.llm.chat(PLANNER_SYSTEM_PROMPT, user_prompt, temperature=0.1, trace_tag="planner")
             data = safe_json_loads(raw)
         except Exception:
             data = None
@@ -477,8 +477,8 @@ class WriterAgent:
                 "## 2. 推荐材料组合与关键配方\n"
                 "| 组件 | 推荐材料 | 关键参数/配比 |\n"
                 "|:---|:---|:---|\n"
-                "| 正极 | 单晶 SC-NCM90 | 面载量 22 mg/cm²，极片厚度 80 μm，孔隙率 30% |\n"
-                "| 负极 | 锂金属箔 (Li metal) | 极片厚度 50 μm，孔隙率 20%，超薄自支撑 |\n"
+                "| 正极 | 单晶 SC-NCM90 | 面载量 22 mg/cm²，极片厚度 80 μm，孔隙率 30%，颗粒粒径 0.5 μm，固相扩散系数 2.5e-14 m²/s |\n"
+                "| 负极 | 锂金属箔 (Li metal) | 极片厚度 50 μm，孔隙率 20%，超薄自支撑，等效颗粒粒径 20 μm，固相扩散系数 1e-10 m²/s |\n"
                 "| 电解液 | 1.5 M LiFSI in DME/TTE (LHCE) | 溶剂体积比 1:2，添加 FEC 2 wt% |\n\n"
                 "## 3. 预期关键性能指标\n"
                 "- 单体质量能量密度: 410 Wh/kg\n"
@@ -526,33 +526,10 @@ class WriterAgent:
             )
 
         try:
-            raw = self.llm.chat(WRITER_SYSTEM_PROMPT, user_prompt, temperature=0.2)
+            raw = self.llm.chat(WRITER_SYSTEM_PROMPT, user_prompt, temperature=0.2, trace_tag="writer")
             return {"draft_answer": raw, "fallback": False}
-        except Exception:
-            bullets = "\n".join([
-                f"- {item['text'][:200]} [{item.get('passage_id', 'ev')}]"
-                for item in evidence[:4]
-            ])
-            draft = (
-                "## 1. 目标与设计路线\n"
-                f"针对课题「{question}」，规划单晶高镍正极与金属锂负极匹配局部高浓度电解液体系。\n\n"
-                "## 2. 推荐材料组合与关键配方\n"
-                "| 组件 | 推荐材料 | 关键参数/配比 |\n"
-                "|:---|:---|:---|\n"
-                "| 正极 | 单晶 SC-NCM90 | 面载量 22 mg/cm²，极片厚度 80 μm，孔隙率 30% |\n"
-                "| 负极 | 锂金属箔 (Li metal) | 极片厚度 50 μm，孔隙率 20%，超薄自支撑 |\n"
-                "| 电解液 | 1.5 M LiFSI in DME/TTE (LHCE) | 溶剂体积比 1:2，添加 FEC 2 wt% |\n\n"
-                "## 3. 预期关键性能指标\n"
-                "- 单体质量能量密度: 410 Wh/kg\n"
-                "- 0.5C 放电比容量: 220 mAh/g\n"
-                "- 300周容量保持率: > 86%\n\n"
-                "## 4. 可行性依据与机理\n"
-                f"{bullets or '- 前沿文献表明局部高浓度电解液 (LHCE) 可在金属锂表面诱导形成富含 LiF 的坚韧钝化层。'}\n\n"
-                "## 5. 风险与数据缺口\n"
-                "- 极片制备环境水分敏感度需严格控制 (< 10 ppm)\n"
-                "- 需进一步补充厚电极充放电过电位测试。"
-            )
-            return {"draft_answer": draft, "fallback": True}
+        except Exception as exc:
+            return {"draft_answer": "", "fallback": True, "error": str(exc)}
 
     def revise(
         self,
@@ -583,7 +560,7 @@ class WriterAgent:
             f"回复格式要求与首次生成一致."
         )
         try:
-            return self.llm.chat(WRITER_SYSTEM_PROMPT, revise_prompt, temperature=0.2)
+            return self.llm.chat(WRITER_SYSTEM_PROMPT, revise_prompt, temperature=0.2, trace_tag="writer_revise")
         except Exception:
             return draft_answer
 
@@ -709,9 +686,12 @@ class ReviewerAgent:
                 "rule_result": rule_result,
             }
 
+        # 覆盖 Writer 的全部证据，另补草稿引用的其余段落，避免只看前六条误判引用。
+        cited = set(re.findall(r"\[([^\]]+)\]", draft_answer))
+        review_evidence = [e for i, e in enumerate(evidence) if i < 25 or e.get("passage_id") in cited]
         evidence_text = "\n\n".join([
             f"[{e['passage_id']}] 来源:{e['source']}\n内容:{e['text']}"
-            for e in evidence[:6]
+            for e in review_evidence
         ])
 
         user_prompt = ""
@@ -725,8 +705,7 @@ class ReviewerAgent:
             f"草稿答案:\n{draft_answer}\n\n"
             f"请严格按 JSON 格式输出.\n"
             f"审核关注:材料筛选数值的准确性/条件完整性/比较公平性.\n"
-            f"如果草稿中存在无证据支持内容,你必须删除这些内容,并重新生成 revised_answer.\n"
-            f"revised_answer 必须是最终可直接展示给用户的答案."
+            f"指出需修复的问题，仅返回简短审核 JSON，不生成或改写正文。"
         )
         if rule_result is not None:
             rule_note = (
@@ -736,38 +715,41 @@ class ReviewerAgent:
                 f"energy_check: {rule_result.get('energy_check')}\n"
                 f"condition_missing: {rule_result.get('condition_missing')}\n"
                 "若 violations/rejects 非空或 energy_check=energy_mismatch，"
-                "revised_answer 必须指出该方案不可行，confidence 必须为 low。"
+                "issues 必须指出该方案不可行，confidence 必须为 low；只返回判定，不生成正文。"
             )
             user_prompt += rule_note
 
         try:
-            raw = self.llm.chat(REVIEWER_SYSTEM_PROMPT, user_prompt, temperature=0.1)
+            raw = self.llm.chat(REVIEWER_SYSTEM_PROMPT, user_prompt, temperature=0.1, trace_tag="reviewer")
         except Exception as e:
-            issues = [f"Reviewer 调用跳过 (离线/规则直通): {e}"]
-            conf = "high" if (rule_result is None or (not rule_result.get("rule_checks", {}).get("violations") and rule_result.get("energy_check") != "energy_mismatch")) else "low"
+            issues = [f"Reviewer 调用失败: {e}"]
             return {
                 "issues": issues,
                 "revised_answer": draft_answer if draft_answer else self._build_conservative_answer(question, evidence, issues),
-                "confidence": conf,
+                "confidence": "low",
+                "error_type": "reviewer",
                 "fallback": True,
             }
 
 
         data = safe_json_loads(raw)
-        if not data:
+        if not isinstance(data, dict) or data.get("confidence") not in ("low", "medium", "high") or not isinstance(data.get("issues"), list):
             raw_preview = raw[:500] if raw else "(空)"
             logger.error(f"Reviewer JSON 解析失败. raw 前500字符: {raw_preview}")
-            issues = ["审核输出 JSON 解析失败,已自动切换为保守修正版答案."]
+            issues = ["审核输出 JSON 无效，保持草稿待审；不得标记审核通过。"]
             return {
                 "issues": issues,
                 "revised_answer": self._build_conservative_answer(question, evidence, issues),
                 "confidence": "low",
+                "error_type": "reviewer",
                 "fallback": True,
                 "raw": raw,
             }
 
         issues = data.get("issues", [])
-        revised_answer = str(data.get("revised_answer", "")).strip()
+        # 只审核当前草稿；Reviewer 私自给出的新正文未经审核，不能作为最终产物。
+        revised_answer = draft_answer
+        data["revised_answer"] = draft_answer
         confidence = data.get("confidence", "medium")
 
         if not revised_answer:
@@ -779,16 +761,10 @@ class ReviewerAgent:
                 "fallback": True,
             }
 
-        # 如果审核发现问题但答案没变,强制使用保守答案
-        normalized_draft = re.sub(r"\s+", "", draft_answer)
-        normalized_revised = re.sub(r"\s+", "", revised_answer)
-        if issues and normalized_draft == normalized_revised:
-            return {
-                "issues": issues,
-                "revised_answer": self._build_conservative_answer(question, evidence, issues),
-                "confidence": "low",
-                "fallback": False,
-            }
+        if issues:
+            data["confidence"] = "low"
+            if data.get("error_type") not in ("writing", "retrieval"):
+                data["error_type"] = "writing"
 
         # ── 插桩 B 收尾: rule_checks 附到输出, confidence 规则否决 ──
         if rule_result is not None:

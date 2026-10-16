@@ -96,7 +96,7 @@ stages:
   - id: 5
     key: "pinn_physics_simulation"
     name: "PINN 物理仿真校验"
-    description: "SPM PINN 放电仿真 + 材料物理参数提取：从 Stage 4 design_scheme.json 提取正极/负极/电解液及可获得的物理量，落盘 pinn_input_spec.json (提取不到的字段为 null)；若方案 (cathode, anode) 匹配已训练的 PINN 体系 (pinn/models/registry.json) 且总开关开启，则执行 SPM PINN 放电仿真并落盘 pinn_simulation_result.json，未匹配体系平滑回退提取-only。"
+    description: "SPM PINN 放电仿真 + 材料物理参数提取 + 几何反馈修订：从 Stage 4 design_scheme.json 提取正极/负极/电解液及可获得的物理量，落盘 pinn_input_spec.json；若方案 (cathode, anode) 匹配已训练的 PINN 体系且总开关开启，则执行 SPM PINN 放电仿真。仿真结果带带容差的达标判定 (key_findings.target, 容差 runtime_options.target_energy_tolerance_pct 默认 ±5%)：未达标时调用 ReviseGeometry 修订 scheme.geometry (两电极厚度/孔隙率/粒径/扩散系数, 预算 max_geometry_revisions 默认 3 轮) 后重跑仿真；完成时仍未达标则自动择优回滚至能量最高一轮，不依赖 LLM 自觉。"
     skip: false
     skip_reason: "用户手动跳过 (快速研发模式)；跳过时材料参数提取仍会执行，但不做 PINN 仿真。"
     reference_files:

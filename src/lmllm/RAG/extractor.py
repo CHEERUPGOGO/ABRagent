@@ -102,6 +102,38 @@ class RelationExtractor:
     def _call(self, prompt: str) -> str:
         if not self.api_key:
             raise RuntimeError("缺少 DEEPSEEK_API_KEY（环境变量或构造参数）")
+        # 轨迹记录 (opt-in): 完整 prompt/响应/耗时; 失败静默
+        try:
+            from auto_battery_research.util import llm_trace as _trace_mod
+        except Exception:
+            _trace_mod = None
+        import time as _time
+        _t0 = _time.monotonic() if (_trace_mod and _trace_mod.llm_trace_enabled()) else None
+
+        def _record(text: Any = None, resp_raw: Any = None, error: Any = None) -> None:
+            if _t0 is None or _trace_mod is None:
+                return
+            try:
+                usage = None
+                if isinstance(resp_raw, dict):
+                    u = resp_raw.get("usage") or {}
+                    if u.get("total_tokens") is not None:
+                        usage = {"input_tokens": u.get("prompt_tokens"),
+                                 "output_tokens": u.get("completion_tokens"),
+                                 "total_tokens": u.get("total_tokens")}
+                _trace_mod.record_llm_call(
+                    "lmllm.RAG.extractor._call",
+                    backend="deepseek_raw", model=self.model,
+                    duration_ms=(_time.monotonic() - _t0) * 1000.0,
+                    input={"messages": [
+                        {"role": "system", "content": "你是电池材料领域信息抽取器，只输出 JSON。"},
+                        {"role": "user", "content": prompt},
+                    ]},
+                    output={"status": "ok" if error is None else "error", "text": text},
+                    usage=usage, error=error)
+            except Exception:
+                pass
+
         import urllib.request
         payload = json.dumps({
             "model": self.model,
@@ -118,9 +150,15 @@ class RelationExtractor:
             headers={"Content-Type": "application/json",
                      "Authorization": f"Bearer {self.api_key}"},
         )
-        with urllib.request.urlopen(req, timeout=120) as r:
-            resp = json.loads(r.read().decode("utf-8"))
-        return resp["choices"][0]["message"]["content"]
+        try:
+            with urllib.request.urlopen(req, timeout=120) as r:
+                resp = json.loads(r.read().decode("utf-8"))
+            text = resp["choices"][0]["message"]["content"]
+            _record(text=text, resp_raw=resp)
+            return text
+        except Exception as e:
+            _record(error=e)
+            raise
 
 
 if __name__ == "__main__":

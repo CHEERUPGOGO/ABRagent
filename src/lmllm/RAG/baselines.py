@@ -57,6 +57,7 @@ class BaselineA:
                 BASELINE_A_SYSTEM_PROMPT,
                 f"请回答以下锂电池相关问题:\n{question}",
                 temperature=0.2,
+                trace_tag="baseline_a",
             )
             return answer
         except Exception as e:

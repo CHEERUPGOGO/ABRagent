@@ -40,7 +40,8 @@ llm:
   reviewer_model: "$(OPENAI_MODEL: MiniMax-M2.7-highspeed)"
   checker_model: "$(OPENAI_MODEL: MiniMax-M2.7-highspeed)"
   temperature: 0.1
-  max_tokens: 8192
+  max_tokens: 16384
+  output_max_tokens: 32768  # RAG 空白/截断输出最多重试一次，预算上限
   request_timeout: 120
   # ReAct 循环递归深度上限 (每轮工具调用约耗 2 个 super-step，25 支持完整多轮工具编排)
   recursion_limit: 25
@@ -56,6 +57,19 @@ runtime_options:
   enable_llm_checker: true
   strict_mode: true
   max_retries_per_stage: 3
+  # LLM 全量轨迹记录 (opt-in, 默认关): 开启后完整保留每次 LLM 调用的输入/输出/token/耗时
+  # 与提示组装过程, 按行写入课题目录 llm_trace/trace_<会话>.jsonl。开启方式优先级:
+  # abr-cli --trace > 本开关 > 环境变量 LLM_TRACE (覆盖 MCP/TUI 等无 CLI 进程)。
+  # 轨迹含完整提示词 (可能含文献证据全文), 仅建议在本地调试/审计场景开启。
+  llm_trace: false
+  # Stage 5 反馈回路: 几何修订轮数预算 (ReviseGeometry 工具) 与达标判定容差。
+  # 目标能量从课题文本提取 (如 "设计400Wh/kg..." → 400)；能量 ≥ 目标×(1-容差)
+  # 即视为达标，LLM 停止修订；收尾仍未达标时自动择优回滚至能量最高一轮。
+  max_geometry_revisions: 3
+  target_energy_tolerance_pct: 5
+  # Stage 6 第五部分实验方案: 由大模型综合完整方案/证据/仿真生成 (验收引用与参数一致性)。
+  # 关闭或 LLM 不可用时回退为确定性实验章节渲染。
+  experiment_plan_llm: true
   save_step_artifacts: true
   mcp_server:
     host: "127.0.0.1"

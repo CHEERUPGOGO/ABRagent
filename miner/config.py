@@ -75,6 +75,13 @@ def create_llm(model_type: str = "classification") -> Any:
 
     from langchain_openai import ChatOpenAI
 
+    # LLM 轨迹记录 (opt-in): tracing 开启时注入回调, 覆盖挖矿链路的进程内 LLM 流量
+    try:
+        from auto_battery_research.util.llm_trace import trace_callback_list
+        _trace_callbacks = trace_callback_list("miner.config.create_llm")
+    except Exception:
+        _trace_callbacks = []
+
     return ChatOpenAI(
         api_key=api_key,
         base_url=base_url,
@@ -82,6 +89,7 @@ def create_llm(model_type: str = "classification") -> Any:
         temperature=temperature,
         max_tokens=max_tokens,
         request_timeout=timeout,
+        callbacks=_trace_callbacks,
     )
 
 

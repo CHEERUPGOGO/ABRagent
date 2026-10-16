@@ -70,6 +70,8 @@ class RAGPipeline:
         # 显式注入 API 配置
         api_key: Optional[str] = None,
         api_base: Optional[str] = None,
+        max_tokens: Optional[int] = None,
+        output_max_tokens: Optional[int] = None,
     ):
         """
         Args:
@@ -89,6 +91,8 @@ class RAGPipeline:
         self.retrieval_mode = retrieval_mode
         self.api_key = api_key
         self.api_base = api_base
+        self.max_tokens = max_tokens
+        self.output_max_tokens = output_max_tokens
 
         # BM25 知识库 (hybrid 模式从 Chroma 构建)
         self.kb = BM25KnowledgeBase()
@@ -187,6 +191,8 @@ class RAGPipeline:
             backend=backend,
             api_key=getattr(self, "api_key", None),
             api_base=getattr(self, "api_base", None),
+            max_tokens=getattr(self, "max_tokens", None),
+            output_max_tokens=getattr(self, "output_max_tokens", None),
         )
 
 
@@ -559,8 +565,28 @@ class RAGPipeline:
         # ── Stage 3: Writer ──
         print("  [3/4] Writer 生成中...")
         _writer_scheme = self._extract_scheme(question, plan)
+        geometry_candidate = None
+        geometry_error = None
+        writer_question = question
+        # 工作流设计模式：先冻结结构化参数，再供 Writer/Reviewer 引用。
+        if getattr(self, "structured_geometry_enabled", False):
+            try:
+                import json
+                from auto_battery_research.simulation.geometry_contract import GEOMETRY_SYSTEM_PROMPT, build_geometry_contract, constrain_generated_np
+                from auto_battery_research.tools.geometry_revision import resolve_input_ranges
+                from .llm_client import safe_json_loads
+                materials = {k: (_writer_scheme or {}).get(k) for k in ("cathode", "anode", "electrolyte")}
+                raw = self.writer_llm.chat(GEOMETRY_SYSTEM_PROMPT, json.dumps({
+                    "design_request": question, "materials": materials, "evidence": evidence[:25],
+                    "ranges_SI": resolve_input_ranges(materials.get("cathode"), materials.get("anode")),
+                }, ensure_ascii=False), temperature=0.1, trace_tag="geometry_design")
+                geometry_candidate = constrain_generated_np(safe_json_loads(raw), getattr(self, "original_design_request", question))
+                geometry = build_geometry_contract(geometry_candidate, materials, evidence)
+                writer_question += "\n【已校验结构化几何，正文不得变更；工程候选不是用户实测值】\n" + json.dumps(geometry, ensure_ascii=False)
+            except Exception as exc:
+                geometry_error = str(exc)
         writer_output = self.writer.run(
-            question=question,
+            question=writer_question,
             plan=plan,
             evidence=evidence,
             history_context=history_context,
@@ -575,26 +601,39 @@ class RAGPipeline:
         _current_queries = list(_current_plan.get("retrieval_queries", [question]))
         _current_evidence = list(evidence)
         _final = None
+        review_passed = False
         for _round in range(max_review_rounds):
             print(f"  [4/4] Reviewer 审核中 (第{_round+1}轮)...")
             _scheme = self._extract_scheme(question, _current_plan, draft_text=_draft)
             _claimed_energy = self._extract_energy_claim(_draft)
-            reviewer_output = self.reviewer.run(
-                question=question,
-                evidence=_current_evidence,
-                draft_answer=_draft,
-                history_context=history_context,
-                scheme=_scheme,
-                claimed_energy=_claimed_energy,
-            )
+            structure_errors = []
+            if getattr(self, "structured_geometry_enabled", False):
+                from auto_battery_research.util.design_sections import design_output_issues
+                structure_errors = design_output_issues(_draft)
+            if structure_errors:
+                reviewer_output = {"confidence": "low", "error_type": "writing", "issues": structure_errors}
+            else:
+                reviewer_output = self.reviewer.run(
+                    question=writer_question, evidence=_current_evidence, draft_answer=_draft,
+                    history_context=history_context, scheme=_scheme, claimed_energy=_claimed_energy,
+                )
 
             _confidence = reviewer_output.get("confidence", "low")
             _issues = reviewer_output.get("issues", [])
             _error_type = reviewer_output.get("error_type", "writing")
             print(f"  -> 置信度: {_confidence}, 错误类型: {_error_type}, 问题数: {len(_issues)}")
 
-            if _confidence in ("high", "medium"):
-                _final = reviewer_output.get("revised_answer", _draft)
+            # 审核"响应失败"(空输出/JSON 截断/调用异常) 与"审核已执行并给出意见"
+            # 必须分开: 前者不算通过, 后者是正常审核结果 —— 否则方案永远无法推进。
+            if _error_type == "reviewer":
+                if _round == max_review_rounds - 1:
+                    break  # 审核始终失败: review_passed 保持 False, 由门禁拒绝
+                continue  # 重试审核, 不要求 Writer 为 JSON 故障重写全文
+
+            # 审核已成功执行: 若还有预算, 依据意见尝试改进; 最后一轮直接验收当前草稿。
+            if _round == max_review_rounds - 1 or not _issues:
+                _final = _draft
+                review_passed = not structure_errors and _confidence in ("high", "medium") and not _issues
                 break
 
             if _error_type == "retrieval" and _issues:
@@ -626,9 +665,9 @@ class RAGPipeline:
                         query=question, passages=_current_evidence,
                         top_k=RERANKER_TOP_K, alpha=RERANKER_ALPHA,
                     )
-                # 完整重新 Writer
+                # 补检索只更新证据；所有写作轮次复用首次冻结的结构化参数上下文。
                 _retry_writer = self.writer.run(
-                    question=question, plan=_current_plan,
+                    question=writer_question, plan=_current_plan,
                     evidence=_current_evidence, history_context=history_context,
                 )
                 _draft = _retry_writer.get("draft_answer", _draft)
@@ -636,19 +675,15 @@ class RAGPipeline:
                 # ── 文字/学术错误 → 回退到 Writer 修正 ──
                 print(f"  -> 文字修正,回退 Writer (第{_round+2}轮)...")
                 _draft = self.writer.revise(
-                    question=question, plan=_current_plan,
+                    question=writer_question, plan=_current_plan,
                     evidence=_current_evidence, draft_answer=_draft,
                     feedback=_issues, history_context=history_context,
                 )
             else:
                 break
 
-            # 最后一轮：修正完后直接输出，不再 Review
-            if _round == max_review_rounds - 1:
-                _final = _draft
-                break
-
-        final_answer = _final or writer_output.get("draft_answer", "无法生成材料筛选答案.")
+        final_answer = _final if _final is not None else _draft
+        evidence = _current_evidence
 
         # 追加参考来源
         ref_section = self._build_reference_section(evidence)
@@ -682,10 +717,11 @@ class RAGPipeline:
         # 综合评定最终置信度 (以最终生成的结构化方案及 RelationEngine 校验为准)
         rule_conf = rule_checks.get("confidence") if isinstance(rule_checks, dict) else None
         rev_conf = reviewer_output.get("confidence", "medium")
-        if rule_conf == "low":
+        review_completed = not structure_errors and _error_type != "reviewer" and bool(_draft.strip())
+        if not review_passed or rule_conf == "low":
             confidence = "low"
         elif rule_conf in ("high", "medium"):
-            confidence = rule_conf
+            confidence = "medium" if "medium" in (rule_conf, rev_conf) else "high"
         else:
             confidence = rev_conf
 
@@ -699,10 +735,14 @@ class RAGPipeline:
             "retrieval": retrieval,
             "writer_output": writer_output,
             "reviewer_output": reviewer_output,
+            "review_passed": review_passed,
+            "review_completed": review_completed,
             "final_answer": final_answer,
             "evidence": evidence,
             "confidence": confidence,
             "scheme": extracted_scheme or {},
+            "geometry_candidate": geometry_candidate,
+            "geometry_error": geometry_error,
             "rule_checks": rule_checks,
             "timestamp": datetime.now().isoformat(),
         }
@@ -813,6 +853,10 @@ class RAGPipeline:
     # 数值区间：支持 12–20 / 12~20 / 12-20 / 12 到 20 等写法
     _NUM = r"\d+(?:\.\d+)?"
     _RANGE = _NUM + r"(?:\s*[~–—\-到]\s*" + _NUM + r")?"
+    # 科学计数法尾数×10^指数的指数部分 (含 Unicode 上标 ⁻¹⁴ 形式)
+    _SUP_DIGITS = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹", "0123456789")
+    # 扩散系数单位: m²/s | m2/s | m²·s⁻¹ (cm²/s 同构, ×1e-4 换算)
+    _D_UNIT = r"(m|cm)\s*(?:²|2|\^2)\s*[·/]?\s*s(?:⁻¹)?"
 
     # 组件锚定关键词（数值归属到其左侧最近的组件词）
     _GEOMETRY_ANCHORS = {
@@ -821,11 +865,35 @@ class RAGPipeline:
     }
 
     @classmethod
+    def _parse_sci_number(cls, raw: str) -> Optional[float]:
+        """把 1e-14 / 2.5×10⁻¹⁴ / 10^-14 / 0.5 等写法解析为 float (扩散系数专用).
+
+        文献中 D_s 常以科学计数法给出, 基础 _NUM 不覆盖; 这里统一归一:
+        Unicode 上标 ⁻¹⁴ → ^-14, ×/x/· → *, 随后 2.5*10^-14 → 2.5E-14 交给 float。
+        """
+        t = re.sub(r"\s+", "", str(raw)).replace("−", "-").replace("×", "*").replace("·", "")
+        t = t.replace("X", "*").replace("x", "*")
+        t = re.sub(
+            r"[⁻⁺]?[⁰¹²³⁴⁵⁶⁷⁸⁹]+",
+            lambda m: "^" + m.group().replace("⁻", "-").replace("⁺", "+").translate(cls._SUP_DIGITS),
+            t,
+        )
+        if "^" in t:
+            t = t.replace("*10^", "E")
+            t = re.sub(r"(?<![\d.])10\^", "1E", t)  # 裸 10^-14 (无尾数)
+        try:
+            return float(t)
+        except ValueError:
+            return None
+
+    @classmethod
     def _extract_geometry(cls, text: str) -> Dict[str, Dict[str, float]]:
         """从五段式叙事提取几何设计数值；只记录真实出现的值，缺失字段不写入.
 
         字段: loading_mg_cm2（面载量, mg/cm²）、compaction_g_cm3（压实密度,
-        g/cm³）、porosity_pct（孔隙率, %）、thickness_um（极片厚度, μm）；
+        g/cm³）、porosity_pct（孔隙率, %）、thickness_um（极片厚度, μm）、
+        R_s_um（颗粒粒径/半径, μm, 按 PINN 输入口径直接作为 R_s）、
+        D_s_m2s（固相扩散系数, m²/s, 支持科学计数法与 cm²/s 换算）；
         区间写法取中值。N/P 比为电芯级，单独放 geometry["n_p_ratio"]；
         放电倍率为电芯级条件，放 geometry["condition"]["c_rate"]（可选）。
 
@@ -886,6 +954,29 @@ class RAGPipeline:
                 r"(?:涂[布敷]厚度|极片厚度|电极厚度|厚度)[^\d]{0,6}(" + cls._NUM + r")\s*(?:μm|um|微米)",
                 text, re.IGNORECASE):
             record(owner(m.start()), "thickness_um", mid(m.group(1)))
+        # 颗粒粒径/半径: 粒径|颗粒粒径|颗粒半径|D50 紧跟 X μm (长关键词在前,
+        # 避免"粒径"吃掉"颗粒粒径"; 声明值按 PINN 输入口径直接作为 R_s)
+        for m in re.finditer(
+                r"(?:颗粒粒径|颗粒半径|一次颗粒|粒径|D50)[^\d]{0,6}(" + cls._RANGE + r")\s*(?:μm|um|微米)",
+                text, re.IGNORECASE):
+            record(owner(m.start()), "R_s_um", mid(m.group(1)))
+        # 固相扩散系数: 扩散系数|D_s 紧跟科学计数法数值 + m²/s (cm²/s ×1e-4 换算);
+        # 数值窗口独立捕获后逐 token 解析 (1e-14 / 2.5×10⁻¹⁴ / 10^-14), 区间取中值
+        # (区间分隔符仅 ~–—到, ASCII 连字符保留给指数负号)
+        for m in re.finditer(
+                r"(?:固相扩散系数|锂离子扩散系数|扩散系数|D\s*_\s*s)\s*(?:为|是|大约|约为|约|≈|=|＝|[:：])?\s*"
+                r"([\d.][^\s，,。；;]{0,24}?)\s*" + cls._D_UNIT,
+                text, re.IGNORECASE):
+            unit_prefix = (m.group(2) or "").lower()  # 捕获组: 1=数值窗口, 2=(m|cm)
+            tokens = re.split(r"[~–—到]", m.group(1))
+            vals = [cls._parse_sci_number(tok) for tok in tokens]
+            vals = [v for v in vals if v is not None]
+            if not vals:
+                continue
+            v = sum(vals) / len(vals)
+            if unit_prefix == "cm":
+                v *= 1e-4  # cm²/s → m²/s
+            record(owner(m.start()), "D_s_m2s", v)
         # N/P 比（电芯级）
         m = re.search(r"N\s*/\s*P(?:\s*比)?[^\d]{0,6}(" + cls._NUM + r")", text, re.IGNORECASE)
         if m:
