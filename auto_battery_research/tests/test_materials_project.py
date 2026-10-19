@@ -32,16 +32,16 @@ def client(tmp_path, monkeypatch):
 
 @pytest.fixture
 def server(client, monkeypatch):
-    fastmcp = pytest.importorskip("fastmcp")
+    fastmcp = pytest.importorskip("fastmcp", minversion="2.14")
     server = fastmcp.FastMCP("MP protocol fixture")
     calls = []
 
-    @server.tool
+    @server.tool()
     def search(query: str) -> SearchRecords:
         calls.append(("search", query))
         return SearchRecords(results=[FetchRecord(id=idx) for idx in ("mp-149", "mp-149", "mp-13", "mp-1")])
 
-    @server.tool
+    @server.tool()
     def fetch(idx: str) -> FetchRecord:
         calls.append(("fetch", idx))
         return FetchRecord(id=idx, metadata={"formation_energy_per_atom": 0.0, "band_gap": 0.6})

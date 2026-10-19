@@ -70,3 +70,8 @@ AGENTS.md
 documents/
 pdf_build/
 _stage5_audit/
+*.docx
+*协议*
+scripts/*agreement*
+scripts/dump_paragraph_details.py
+scripts/inspect_template.py
