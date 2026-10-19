@@ -70,11 +70,13 @@ VALID_SCHEME_JSON = {
     "scheme": {"cathode": "NCM811", "anode": "li_metal", "electrolyte": "lhce",
                "geometry": {
                    "schema_version": "1.1",
-                   "cathode": {"L_um": 80.0, "porosity": 0.35},
-                   "anode": {"L_um": 50.0, "porosity": 0.2},
+                   "cathode": {"L_um": 80.0, "porosity": 0.35, "R_s_um": 5.0, "D_s_m2s": 2.5e-14},
+                   "anode": {"L_um": 50.0, "porosity": 0.2, "R_s_um": 20.0, "D_s_m2s": 1e-10},
                    "provenance": {
                        "cathode.L_um": "stage4_recipe", "cathode.porosity": "stage4_recipe",
                        "anode.L_um": "stage4_recipe", "anode.porosity": "stage4_recipe",
+                       "cathode.R_s_um": "stage4_recipe", "cathode.D_s_m2s": "stage4_recipe",
+                       "anode.R_s_um": "stage4_recipe", "anode.D_s_m2s": "stage4_recipe",
                    },
                    "condition": {},
                }},

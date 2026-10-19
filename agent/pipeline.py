@@ -33,8 +33,15 @@ def _create_llm(model: str, temperature: float = 0.1):
             base_url = os.getenv("DEEPSEEK_API_BASE", _cfg_llm.get("base_url", base_url))
         except Exception:
             pass
+    # LLM 轨迹记录 (opt-in): tracing 开启时注入回调, 覆盖 legacy 抽取链路的 LLM 流量
+    try:
+        from auto_battery_research.util.llm_trace import trace_callback_list
+        _trace_callbacks = trace_callback_list("agent.pipeline._create_llm")
+    except Exception:
+        _trace_callbacks = []
     return ChatOpenAI(api_key=api_key, base_url=base_url, model=model,
-                      temperature=temperature, max_tokens=1024, request_timeout=120)
+                      temperature=temperature, max_tokens=1024, request_timeout=120,
+                      callbacks=_trace_callbacks)
 
 
 def _clean_and_split(file_path: str) -> Optional[str]:

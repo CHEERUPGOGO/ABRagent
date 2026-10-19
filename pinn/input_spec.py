@@ -252,6 +252,11 @@ def complete_geometry_block(
     block["provenance"]["condition.v_min"] = v_min_source
     block["provenance"]["condition.v_max"] = v_max_source
     block["provenance"]["condition.c_rate"] = c_rate_source
+    # 新契约附加信息幂等携带；数值布局维持 v1.1，兼容历史仿真与归档。
+    for key in ("contract_version", "parameter_sources"):
+        if key in raw:
+            import copy
+            block[key] = copy.deepcopy(raw[key])
     return block
 
 
@@ -260,7 +265,12 @@ def format_geometry_markdown(geometry: Dict[str, Any]) -> str:
     if not isinstance(geometry, dict) or not geometry.get("provenance"):
         return ""
     prov = geometry.get("provenance") or {}
-    src_cn = {"stage4_recipe": "叙事提取", "params_baseline": "体系基准", "unmatched": "无基准"}
+    src_cn = {
+        "stage4_recipe": "叙事提取",
+        "stage5_revision": "Stage 5 修订",
+        "params_baseline": "体系基准",
+        "unmatched": "无基准",
+    }
 
     def cell(value: Any, spec: str = "{:.4g}") -> str:
         return spec.format(float(value)) if isinstance(value, (int, float)) else "—"
@@ -291,6 +301,12 @@ def format_geometry_markdown(geometry: Dict[str, Any]) -> str:
         window = f"截止 {cond['v_min']:g} V"
     lines.append("")
     lines.append(f"N/P 比：{cell(n_p)}；{rate_txt}电压窗口：{window}。来源口径：叙事提取=方案文本明确给出的设计值；体系基准=该 PINN 体系训练参数（params.json）；非法=提供了但不合法的值（Stage 4 门禁将拒绝）。")
+    if geometry.get("contract_version") == "2.0":
+        lines.append("\n新契约说明：R_s 为颗粒半径（不是直径）；结构化设计候选为工程建议，不是用户实测值。D_s 的模型基准与文献证据分别标注。")
+        for path, source in (geometry.get("parameter_sources") or {}).items():
+            claim = source.get("evidence") or {}
+            lines.append(f"- {path}: {source.get('origin')} / {source.get('basis')}"
+                         + (f"；证据 [{claim.get('passage_id')}]，{claim.get('method')}，{claim.get('temperature_K')} K" if claim else ""))
     return "\n".join(lines)
 
 
@@ -493,6 +509,11 @@ def build_cell_spec(
     geometry = scheme.get("geometry") if isinstance(scheme, dict) else None
     if isinstance(geometry, dict) and geometry:
         _apply_recipe_geometry(cell_spec, geometry)
+    cell_spec["design_revision"] = scheme.get("design_revision", 0)
+    if isinstance(geometry, dict):
+        from auto_battery_research.simulation.geometry_contract import geometry_hash
+        cell_spec["geometry_hash"] = geometry_hash(geometry)
+        cell_spec["parameter_sources"] = geometry.get("parameter_sources", {})
     return cell_spec
 
 

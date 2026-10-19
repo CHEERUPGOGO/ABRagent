@@ -8,8 +8,8 @@ REPORT_REQUIRED_SECTIONS = [
     ("研发摘要", ["研发摘要", "执行摘要", "总体概览", "summary"]),
     ("文献与电芯数据概况", ["文献", "数据概况", "电芯挖掘", "literature", "mining", "stage journal", "阶段履历"]),
     ("电池体系设计方案", ["体系设计方案", "设计方案", "正极", "负极", "电解液", "design", "方案"]),
-    ("物理仿真与验证", ["物理仿真", "pinn", "pybamm", "仿真验证", "跳过说明", "simulation", "物理"]),
-    ("实验配方与落地建议", ["实验配方", "落地建议", "制备工艺", "研发路线", "recipe", "roadmap", "后续建议", "结论"]),
+    ("物理仿真与验证", ["仿真与优化分析", "物理仿真", "pinn", "pybamm", "仿真验证", "跳过说明", "simulation", "物理"]),
+    ("实验配方与落地建议", ["实验路线与验证计划", "实验配方", "落地建议", "制备工艺", "研发路线", "recipe", "roadmap", "后续建议", "结论"]),
 ]
 
 
@@ -108,6 +108,12 @@ class FinalReportChecker(BaseChecker):
             )
 
         headings = re.findall(r"^#{1,4}\s+(.+)$", content, re.MULTILINE)
+        if "<!-- abr-report-layout:6 -->" in content:
+            required = ["研发摘要", "材料选择与文献依据", "最终设计方案", "仿真与优化分析", "实验路线与验证计划", "参考来源附录"]
+            for i, title in enumerate(required, 1):
+                if not re.search(rf"^## {i}\. {title}", content, re.M):
+                    return False, self.build_diagnostic(passed=False, error_code="SYNTHESIS_REPORT_SECTIONS_INCOMPLETE",
+                        error_msg=f"缺少第{i}节：{title}", next_action="重新编译六节报告")
         found_sections = []
         missing_sections = []
         for sec_name, keywords in REPORT_REQUIRED_SECTIONS:
@@ -133,6 +139,50 @@ class FinalReportChecker(BaseChecker):
             )
 
         # 严格门禁：必须确保阶段日志已同步持久化且非空
+        if "<!-- abr-report-contract:2 -->" in content or "<!-- abr-report-identity:" in content:
+            from auto_battery_research.util.report_contract import report_context, report_identity, validate_report_blocks
+            from auto_battery_research.tools.workflow_actions import extract_energy_target_wh_kg, get_target_energy_tolerance_pct
+            try:
+                if "<!-- abr-report-contract:2 -->" not in content:
+                    raise ValueError("报告契约标记缺失")
+                doc, error = self.load_json_safe(str(report_file.parent / "design_scheme.json"))
+                doc = doc or {}
+                result, spec = {}, {}
+                stage5 = self.stage_manager.get_stage_by_id(5) if self.stage_manager else None
+                if stage5 is None or (stage5.status == "PASSED" and not stage5.skip):
+                    for filename, destination in (("pinn_simulation_result.json", result), ("pinn_input_spec.json", spec)):
+                        path = report_file.parent / filename
+                        if path.exists():
+                            data, error = self.load_json_safe(str(path))
+                            if error:
+                                raise ValueError(error)
+                            destination.update(data)
+                if report_identity(doc, result, spec) not in content:
+                    raise ValueError("报告输入指纹与当前设计/仿真不一致")
+                if "<!-- abr-report-layout:6 -->" in content:
+                    from auto_battery_research.util.report_analysis import render_materials, render_sources, render_history
+                    for expected in (render_materials(doc), render_sources(doc), render_history(report_file.parent)):
+                        if expected not in content:
+                            raise ValueError("材料分析、引用或历史与归档数据不一致")
+                    from auto_battery_research.util import report_recipe_llm as plan_mod
+                    if "<!-- abr-experiment-plan-fallback -->" not in content:
+                        scheme_md_path = report_file.parent / "design_scheme.md"
+                        scheme_md = scheme_md_path.read_text(encoding="utf-8") if scheme_md_path.exists() else ""
+                        goal_text = self.stage_manager.target_goal if self.stage_manager else doc.get("target", "")
+                        plan_errors = plan_mod.validate_plan_record(
+                            report_file.parent, doc, report_context(doc, result, spec), result, spec, scheme_md,
+                            extract_energy_target_wh_kg(goal_text), get_target_energy_tolerance_pct(self.stage_manager), content)
+                        if plan_errors:
+                            raise ValueError("; ".join(plan_errors))
+                goal = self.stage_manager.target_goal if self.stage_manager else doc.get("target", "")
+                errors = validate_report_blocks(content, report_context(doc, result, spec),
+                                                extract_energy_target_wh_kg(goal), get_target_energy_tolerance_pct(self.stage_manager))
+                if errors:
+                    raise ValueError("; ".join(errors))
+            except (ValueError, TypeError, AttributeError) as exc:
+                return False, self.build_diagnostic(passed=False, error_code="REPORT_FINAL_INPUT_MISMATCH",
+                    error_msg=str(exc), next_action="用最终设计及匹配仿真重新生成报告")
+
         journal_exists = journal_file.exists() and journal_file.stat().st_size > 10
         if not journal_exists:
             return False, self.build_diagnostic(

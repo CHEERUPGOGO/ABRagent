@@ -109,8 +109,8 @@ GOLDEN_WRITER_DRAFT = """## 目标与设计路线
 ---
 
 ## 推荐材料组合与关键配方
-- 正极: NCM811 单晶高镍三元 (Ni 含量 >= 80%)，极片厚度 80 μm，孔隙率 35%
-- 负极: 锂金属 (li_metal) 超薄锂箔，极片厚度 50 μm，孔隙率 20%
+- 正极: NCM811 单晶高镍三元 (Ni 含量 >= 80%)，极片厚度 80 μm，孔隙率 35%，颗粒粒径 0.5 μm，固相扩散系数 2.5e-14 m²/s
+- 负极: 锂金属 (li_metal) 超薄锂箔，极片厚度 50 μm，孔隙率 20%，等效颗粒粒径 20 μm，固相扩散系数 1e-10 m²/s
 - 电解液: LHCE 局部高浓度电解液 1.5 M LiFSI DME/TTE 稀释比 1:2，添加 FEC 2 wt% [golden-P3]
 
 ---
@@ -196,7 +196,12 @@ def _install_scripted_llm(monkeypatch, writer_draft: str):
     """
     call_log = []
 
-    def fake_chat(self, system_prompt, user_prompt, temperature=None):
+    def fake_chat(self, system_prompt, user_prompt, temperature=None, trace_tag=None):
+        if trace_tag == "geometry_design":
+            return json.dumps({
+                "cathode": {"L_um": 70., "porosity": .31, "R_s_um": 5.34, "D_s_m2s": None},
+                "anode": {"L_um": 50., "porosity": .35, "R_s_um": 8.21, "D_s_m2s": None},
+            })
         if system_prompt is PLANNER_SYSTEM_PROMPT:
             call_log.append({"agent": "planner", "temperature": temperature, "prompt_head": user_prompt[:120]})
             return json.dumps(GOLDEN_PLAN, ensure_ascii=False)
@@ -394,7 +399,42 @@ def test_offline_golden_rejects_incomplete_scheme(tmp_path, monkeypatch):
     assert diag["error_code"] == "STRUCTURED_SCHEME_INCOMPLETE"
 
 
+@pytest.mark.parametrize("always_invalid", [False, True])
+def test_reviewer_failure_retries_review_not_writer(tmp_path, monkeypatch, always_invalid):
+    """规则高置信度不能覆盖失败审核，审核 JSON 故障不触发正文重写。"""
+    _install_scripted_llm(monkeypatch, GOLDEN_WRITER_DRAFT)
+    original = LLMClient.chat
+    counts = {"writer": 0, "reviewer": 0, "writer_revise": 0}
+    def scripted(self, system_prompt, user_prompt, temperature=None, trace_tag=None):
+        if trace_tag in counts:
+            counts[trace_tag] += 1
+        if trace_tag == "reviewer" and (always_invalid or counts["reviewer"] < 3):
+            return '{"issues": ['
+        return original(self, system_prompt, user_prompt, temperature=temperature, trace_tag=trace_tag)
+    monkeypatch.setattr(LLMClient, "chat", scripted)
+    out = _run_adapter(_build_seeded_pipeline(tmp_path), tmp_path / "review_retry", GOLDEN_GOAL)
+    assert out["success"] is (not always_invalid)
+    assert counts == {"writer": 1, "reviewer": 3, "writer_revise": 0}
+
+
 # ────────────────────────── external 真实链路 golden ──────────────────────────
+
+def test_remaining_review_issues_are_not_called_approved(tmp_path, monkeypatch):
+    _install_scripted_llm(monkeypatch, GOLDEN_WRITER_DRAFT)
+    original = LLMClient.chat
+    def scripted(self, system_prompt, user_prompt, temperature=None, trace_tag=None):
+        if trace_tag == "reviewer":
+            return json.dumps({"confidence": "low", "issues": ["单来源结论需要验证"], "error_type": "writing"})
+        return original(self, system_prompt, user_prompt, temperature=temperature, trace_tag=trace_tag)
+    monkeypatch.setattr(LLMClient, "chat", scripted)
+    directory = tmp_path / "issues"
+    out = _run_adapter(_build_seeded_pipeline(tmp_path), directory, GOLDEN_GOAL)
+    assert out["success"] is True
+    assert out["review_status"] == "REVIEWED_WITH_ISSUES"
+    doc = json.loads((directory / "design_scheme.json").read_text(encoding="utf-8"))
+    assert doc["confidence"] == "low"
+    assert doc["review_completed"] is True and doc["review_passed"] is False
+    assert _gate_check(directory, GOLDEN_GOAL, tmp_path)[0] is True
 
 
 @pytest.mark.external

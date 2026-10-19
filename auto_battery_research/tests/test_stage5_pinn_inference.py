@@ -354,15 +354,20 @@ def test_rag_adapter_normalizes_geometry_into_artifacts(tmp_path, monkeypatch):
     adapter._init_error = None
     adapter.config = {}  # _build_provenance 读取 paths (缺省路径即可)
 
+    rag_raw["geometry_candidate"] = {
+        "cathode": {"L_um": 70., "porosity": .30, "R_s_um": None, "D_s_m2s": None},
+        "anode": {"L_um": 110., "porosity": .25, "R_s_um": None, "D_s_m2s": None},
+    }
     res = adapter.run_rag_design("设计350Wh/kg高比能硅碳负极NCM811锂离子电池方案", tmp_path)
     assert res["success"] is True, res.get("error")
 
     contract = json.loads((tmp_path / "design_scheme.json").read_text(encoding="utf-8"))
     geo = contract["scheme"]["geometry"]
     assert geo["schema_version"] == "1.1"
-    # fixture 正极无压实 → 厚度换算不可用 → 兜底体系基准 70 μm
+    # 新契约厚度来自结构化候选，不能再从正文/模型默认值静默补充。
     assert geo["cathode"]["L_um"] == pytest.approx(70.0)
-    assert geo["provenance"]["cathode.L_um"] == "params_baseline"
+    assert geo["provenance"]["cathode.L_um"] == "stage4_recipe"
+    assert geo["contract_version"] == "2.0"
     assert geo["cathode"]["porosity"] == pytest.approx(0.30)
     assert geo["provenance"]["cathode.porosity"] == "stage4_recipe"
     assert geo["provenance"]["anode.porosity"] == "stage4_recipe"

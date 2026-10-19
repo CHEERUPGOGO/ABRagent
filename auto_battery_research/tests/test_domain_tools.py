@@ -34,7 +34,7 @@ def init_stage_manager():
 
 def test_domain_tools_instantiation():
     tools = get_all_domain_tools()
-    assert len(tools) == 10
+    assert len(tools) == 11
     names = [t.name for t in tools]
     assert "InspectLiteratureAssets" in names
     assert "InspectVectorDB" in names
@@ -42,6 +42,7 @@ def test_domain_tools_instantiation():
     assert "RunRAGDesign" in names
     assert "QueryMaterialsProject" in names
     assert "RunPhysicsSimulation" in names
+    assert "ReviseGeometry" in names
     assert "SynthesizeResearchReport" in names
 
 

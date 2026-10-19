@@ -41,6 +41,7 @@ from auto_battery_research.tools.workflow_actions import (
     run_data_mining,
     run_rag_design,
     run_pinn_simulation,
+    revise_geometry,
     generate_synthesis_report,
     _get_target_task_dir,
     _merged_literature_dirs,
@@ -342,6 +343,8 @@ class RunPhysicsSimulationTool(BaseTool):
         "【Stage 5 PINN 工具】执行 PINN 触发判定 + Stage 4 方案材料物理参数提取，落盘 pinn_input_spec.json "
         "(提取不到的字段为 null)；若 Stage 5 激活且方案体系匹配已训练的 PINN 模型 "
         "(pinn/models/registry.json)，则执行 SPM PINN 放电仿真并落盘 pinn_simulation_result.json。"
+        "返回含带容差的达标判定 (key_findings.target) 与修订预算——未达标时可调用 ReviseGeometry "
+        "修订几何后重跑本工具。"
     )
     args_schema: Type[BaseModel] = RunPhysicsSimulationArgs
 
@@ -352,7 +355,53 @@ class RunPhysicsSimulationTool(BaseTool):
         c_rate = _parse_c_rate(current_rate)
         log_tool_call(self.name, f"target_goal='{goal}', current_rate='{current_rate}' -> c_rate={c_rate}")
         res = run_pinn_simulation(target_query=goal, c_rate=c_rate)
-        return json.dumps(res, ensure_ascii=False, indent=2)
+        return json.dumps(res, ensure_ascii=False, indent=2, default=str)
+
+
+class ReviseGeometryArgs(BaseModel):
+    base_revision: Optional[int] = Field(default=None, description="最新设计版本号，新契约修订必须提供")
+    base_geometry_hash: Optional[str] = Field(default=None, description="最新几何哈希，新契约修订必须提供")
+    evidence_claims: Dict[str, Any] = Field(default_factory=dict, description="D_s修改必须按组件字段路径提供可核查证据；包含passage_id/quote/material_id/parameter/value/unit/temperature_K/applicability/method。R_s为半径，可自由提出范围内设计值。")
+    target_goal: Optional[str] = Field(
+        default="",
+        description="课题目标 (留空则取当前工作流活跃课题)"
+    )
+    revisions: Dict[str, Any] = Field(
+        description=(
+            "几何修订字典: {'cathode': {'L_um': 85.0, 'porosity': 0.28, 'R_s_um': 0.5, 'D_s_m2s': 2.5e-14}, "
+            "'anode': {...}}——每电极可修订 厚度L_um(μm)/孔隙率porosity(小数)/颗粒粒径R_s_um(μm)/"
+            "固相扩散系数D_s_m2s(m²/s), 单位与 v1.1 声明块一致; 只需给出要改的字段"
+        )
+    )
+    reason: str = Field(
+        default="",
+        description="修订理由 (须引用仿真结果数据, 如能量缺口/截止模式/限流电极)"
+    )
+
+
+class ReviseGeometryTool(BaseTool):
+    name: str = "ReviseGeometry"
+    description: str = (
+        "【Stage 5 反馈工具】依据 RunPhysicsSimulation 的仿真结果修订 Stage 4 方案的电极几何声明 "
+        "(scheme.geometry v1.1: 两电极厚度/孔隙率/颗粒粒径/扩散系数共 8 字段, provenance=stage5_revision)。"
+        "修订值经 registry 合法范围校验 (越界拒绝并返回合法范围), 有修订轮数预算 (默认 3 轮); "
+        "R_s是颗粒半径，可提出工程设计；D_s必须提供可定位任务证据，不得为提高性能任意增大。"
+        "新契约必须透传仿真 geometry_context 的 base_revision/base_geometry_hash。"
+        "成功后 design_scheme.json/md 同步更新并留痕, 必须重跑 RunPhysicsSimulation 对齐仿真结果。"
+    )
+    args_schema: Type[BaseModel] = ReviseGeometryArgs
+
+    def _run(self, target_goal: Optional[str] = "", revisions: Optional[Dict[str, Any]] = None, reason: str = "",
+             base_revision: Optional[int] = None, base_geometry_hash: Optional[str] = None,
+             evidence_claims: Optional[Dict[str, Any]] = None) -> str:
+        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
+        goal = resolve_effective_goal(target_goal, active_goal)
+        log_tool_call(self.name, f"target_goal='{goal}', reason='{str(reason)[:60]}'")
+        res = revise_geometry(revisions=dict(revisions or {}), reason=str(reason or ""), target_query=goal,
+                              base_revision=base_revision, base_geometry_hash=base_geometry_hash,
+                              evidence_claims=evidence_claims)
+        return json.dumps(res, ensure_ascii=False, indent=2, default=str)
 
 
 # =============================================================================
@@ -404,6 +453,7 @@ def get_all_domain_tools() -> List[BaseTool]:
         QueryMaterialsProjectTool(),
         # Stage 5
         RunPhysicsSimulationTool(),
+        ReviseGeometryTool(),
         # Stage 6
         SynthesizeResearchReportTool(),
     ]

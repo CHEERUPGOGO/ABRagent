@@ -43,6 +43,7 @@ from auto_battery_research.util.logger import (
     log_success,
     log_error,
 )
+from auto_battery_research.util.llm_trace import record_trace_event, configure_llm_trace
 
 L = logging.getLogger("AutoBatteryResearch.ABRAgent")
 
@@ -51,7 +52,7 @@ STAGE_ALLOWED_DOMAIN_TOOLS: Dict[int, List[str]] = {
     2: ["InspectVectorDB", "IndexSemanticVectors"],
     3: ["InspectCellEntities", "ExtractAndAssembleCells"],
     4: ["RunRAGDesign", "QueryMaterialsProject"],
-    5: ["RunPhysicsSimulation"],
+    5: ["RunPhysicsSimulation", "ReviseGeometry"],
     6: ["SynthesizeResearchReport"],
 }
 
@@ -82,6 +83,7 @@ class ABRAgent:
         enable_file_log: bool = True,
         log_file: Optional[str] = None,
         manager: Optional[StageManager] = None,
+        enable_trace: Optional[bool] = None,
     ):
         self.goal = goal
         self.max_retries = max_stage_retries
@@ -133,6 +135,29 @@ class ABRAgent:
                 overrides=self.config,
             )
         set_stage_manager(self.manager)
+
+        # 2.5 LLM 轨迹记录开关 (opt-in): CLI 显式值 > setting.yaml runtime_options.llm_trace
+        #     > 环境变量 LLM_TRACE > 默认关闭。轨迹写入课题目录 llm_trace/ (无课题场景落
+        #     log/llm_trace/)；必须在任何 LLM 调用发生前完成配置。
+        trace_enabled: Optional[bool] = None
+        if enable_trace is not None:
+            trace_enabled = bool(enable_trace)
+        else:
+            _rt_val = (self.config.get("runtime_options") or {}).get("llm_trace")
+            if isinstance(_rt_val, bool):
+                trace_enabled = _rt_val
+        try:
+            _trace_dir = self.manager.get_task_output_dir() / "llm_trace"
+        except Exception:
+            _trace_dir = None
+        configure_llm_trace(
+            enabled=trace_enabled,
+            trace_dir=_trace_dir,
+            goal=self.goal,
+            source="ABRAgent",
+            meta={"model": (self.config.get("llm") or {}).get("model"),
+                  "base_url": (self.config.get("llm") or {}).get("base_url")},
+        )
 
         # 3. 组装全量工具箱 (Domain Tools + Stage Workflow Tools)
         self.domain_tools = get_all_domain_tools()
@@ -205,6 +230,8 @@ class ABRAgent:
             "4. **研发日志**：推进前调用 `SetStageJournal` 记录阶段关键洞察。\n"
             "5. **阶段纪律与工具权限隔离**：\n"
             "   - 你在每个阶段仅被授予当前阶段专属工具与治理工具。严禁跨阶段抢跑调用未授权工具。\n"
+            "   - N/P 不是必填项，不要求模型设计或补全；缺失时不校准正负极厚度。\n"
+            "   - PINN 电芯能量采用固定系数折算，未逐项计算非活性质量。候选最好结果不是物理上限。\n"
             "   - 完成当前阶段的交付物并 Check 通过后，调用 Complete 推进，切勿在当前阶段提前调用下游阶段任务。\n"
         )
 
@@ -371,6 +398,15 @@ class ABRAgent:
                     SystemMessage(content=self.system_prompt),
                     HumanMessage(content=prompt_content),
                 ]
+                # 轨迹: 记录本轮提示的组装过程 (输入从哪来: 阶段指引/目标/上一轮驳回诊断)
+                record_trace_event(
+                    "prompt_assembly", "agent.run_stream",
+                    stage_id=curr_stage.id, stage_key=curr_stage.key, attempt=attempt,
+                    prompt_chars=len(prompt_content),
+                    system_prompt_chars=len(self.system_prompt or ""),
+                    last_failure_code=(last_failure or {}).get("code") if last_failure else None,
+                    self_correction_injected=bool(last_failure),
+                )
 
                 # 驱动 Agent 执行工具调用链
                 agent_res = self._execute_agent_decision_loop(curr_stage.id, attempt, stage_msgs)
@@ -600,6 +636,10 @@ class ABRAgent:
             self.log(f"    [LLM-Notice] 大模型在线推理异常/离线 ({e})，启用确定性领域工具调度保证任务完成。")
 
         # 2. 领域工具调度保障 (无论是在线还是离线，均确保阶段必须的领域产物被完整构建)
+        completed = self.manager.get_stage_by_id(stage_id)
+        if completed and completed.status in ("PASSED", "SKIPPED", "FALLBACK"):
+            return {"success": True, "llm_invoked": llm_invoked, "actions": executed_actions,
+                    "summary": " | ".join(executed_actions)}
         if stage_id == 1:
             # Stage 1: 文献解析与分类
             t_inspect = self.tool_map.get("InspectLiteratureAssets")
@@ -647,7 +687,7 @@ class ABRAgent:
                 try:
                     with open(scheme_file, "r", encoding="utf-8") as f:
                         sd = json.load(f)
-                        if len(sd.get("evidence", [])) > 0 and sd.get("review_status") == "APPROVED":
+                        if len(sd.get("evidence", [])) > 0 and sd.get("review_status") in ("APPROVED", "REVIEWED_WITH_ISSUES"):
                             scheme_valid = True
                 except Exception:
                     pass
@@ -662,9 +702,13 @@ class ABRAgent:
                     )
 
         elif stage_id == 5:
-            # Stage 5: PINN 物理仿真
+            # 已有可验收结果或本轮已经运行工具时，不重复执行仿真。
             t_pinn = self.tool_map.get("RunPhysicsSimulation")
-            if t_pinn:
+            from auto_battery_research.checkers.pinn_physics_checker import PINNPhysicsChecker
+            checker = PINNPhysicsChecker()
+            checker.on_init(self.manager, {"id": 5}, self.manager.config)
+            valid, _ = checker.do_check()
+            if t_pinn and not valid and not any("RunPhysicsSimulation" in a for a in executed_actions):
                 t_pinn._run(target_goal=self.goal)
                 executed_actions.append("RunPhysicsSimulation")
 
