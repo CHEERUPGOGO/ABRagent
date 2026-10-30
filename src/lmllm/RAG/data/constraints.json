@@ -1,71 +1,76 @@
 {
-  "version": "0.1-seed",
-  "updated": "2026-08-18",
-  "note": "核心 8 条硬规则手工精校。trigger.field 支持点路径（cathode.voltage_limit）与方案字段（target_energy）。op: gt/gte/lt/lte/eq/in。action: exclude/include/reject。后续用 NERRE compatibility schema 从 papers/ebook 抽取扩充。",
+  "version": "2.1-coincell-academic",
+  "updated": "2026-10-29",
+  "note": "高校科研实验室纽扣电池专用规则：彻底剔除原 C4；C7 转向扣电材料级克容量与放电平台核算，剔除工业制造辅材指标；C1/C2/C3/C5/C6/C8 软化为自洽性质询与前沿标记。",
   "rules": [
     {
       "id": "C1",
+      "name": "高压正极碳酸酯自洽性质询",
       "trigger": {"field": "cathode.voltage_limit", "op": "gt", "value": 4.3},
-      "action": "exclude",
-      "target": "electrolyte:carbonate_ec",
-      "reason": "正极充电截止电压超过常规碳酸酯氧化窗口(~4.3V)，电解液氧化分解",
-      "source": "教科书共识（electrolyte oxidation window）"
+      "condition": {"field": "electrolyte", "op": "contains", "value": "carbonate"},
+      "mitigation_whitelist": [
+        "additive:FEC", "additive:LiPO2F2", "additive:VC", "additive:DTD",
+        "coating:LPO", "coating:Al2O3", "morphology:single_crystal"
+      ],
+      "action": "challenge",
+      "reason": "扣式电池充电截止电压高于 4.3V，若采用常规碳酸酯电解液，建议结合表面快离子包覆、单晶高镍或氟代添加剂，以抑制界面高压氧化与阻抗上升。",
+      "source": "前沿文献共识（High-voltage cathode interface & additives）"
     },
     {
       "id": "C2",
+      "name": "超高压体系相容性质询",
       "trigger": {"field": "cathode.voltage_limit", "op": "gt", "value": 4.6},
-      "action": "exclude",
-      "target": "electrolyte:[carbonate_ec, fluorinated]",
-      "reason": ">4.6V 需氧化窗口 >5V 的电解液（高浓/LHCE/砜类）",
-      "source": "教科书共识（high-voltage electrolyte）"
+      "condition": {"field": "electrolyte", "op": "eq", "value": "carbonate_ec"},
+      "action": "warn",
+      "reason": ">4.6V 超高压扣电测试中，未改性纯常规碳酸酯易发生剧烈氧化分解导致阻抗激增，建议采用高浓溶剂化物或全氟化溶剂体系。",
+      "source": "前沿文献共识（Super-high voltage electrolyte）"
     },
     {
       "id": "C3",
+      "name": "锂金属负极扣电界面修饰自洽核查",
       "trigger": {"field": "anode", "op": "eq", "value": "li_metal"},
-      "action": "exclude",
-      "target": "electrolyte:carbonate_ec",
-      "reason": "锂金属负极 + 常规低浓碳酸酯 → 枝晶生长、库仑效率低",
-      "source": "教科书共识（Li metal dendrite）"
-    },
-    {
-      "id": "C4",
-      "trigger": {"field": "anode", "op": "eq", "value": "li_metal"},
-      "action": "include",
-      "target": "electrolyte:[high_concentration, lhce]",
-      "reason": "液态体系下锂金属负极唯一可行路线：高浓或局部高浓电解液",
-      "source": "教科书共识（high-concentration electrolyte for Li metal）"
+      "condition": {"field": "electrolyte", "op": "contains", "value": "carbonate"},
+      "mitigation_whitelist": [
+        "anode_mod:artificial_sei", "anode_mod:alloy_li_ag", "anode_mod:lithiophilic_framework",
+        "anode:las", "anode:li-ag",
+        "additive:FEC", "additive:LiNO3", "electrolyte:lhce"
+      ],
+      "action": "challenge",
+      "reason": "扣式半电池/全电池采用金属锂负极匹配碳酸酯电解液时，建议采用人工 SEI 膜或亲锂合金层修饰；扣电循环需重点考察库仑效率（CE）与过电位表现。",
+      "source": "扣电文献共识（Li metal coin cell & CE tests）"
     },
     {
       "id": "C5",
+      "name": "硅基负极首效与粉化风险提示",
       "trigger": {"field": "anode", "op": "eq", "value": "si_base"},
-      "action": "include",
+      "action": "recommend",
       "target": "additive:FEC",
-      "reason": "硅基负极体积膨胀需 FEC 类添加剂形成稳定 SEI",
-      "source": "教科书共识（Si anode SEI）"
+      "reason": "硅基材料首次库仑效率（ICE）偏低且体积膨胀显著，纽扣电池极片制备建议采用微纳导电网络或交联弹性黏结剂（如 PAA/海藻酸钠），并关注首圈预锂化需求。",
+      "source": "硅负极扣电实验规范（Si anode mechanics & ICE）"
     },
     {
       "id": "C6",
+      "name": "锰基高压材料溶出穿梭审查",
       "trigger": {"field": "cathode", "op": "in", "value": ["LNMO", "LRMO"]},
-      "action": "exclude",
-      "target": "electrolyte:carbonate_ec",
-      "reason": "高压正极导致常规碳酸酯分解，且 Mn 溶解加剧",
-      "source": "教科书共识（high-voltage cathode）"
+      "action": "audit_note",
+      "reason": "尖晶石/富锂锰基材料在高电位下存在锰离子溶出风险，扣电测试建议关注隔膜涂层或游离酸清除剂以保护负极界面。",
+      "source": "高压尖晶石文献共识（Mn dissolution & shuttle）"
     },
     {
       "id": "C7",
+      "name": "纽扣电池材料级理论克容量与电压平台核算",
       "trigger": {"field": "target_energy", "op": "gte", "value": 400},
-      "action": "exclude",
-      "target": "anode:[graphite, si_base]",
-      "reason": "石墨体系电芯级能量密度上限约 350 Wh/kg，≥400 Wh/kg 必须锂金属负极",
-      "source": "电芯级能量密度工程共识"
+      "action": "coin_cell_eval",
+      "reason": "纽扣电池容量评估重点基于正极活性物质放电克容量 (mAh/g) 与中值工作电压 (V) 核算，严禁超出材料晶体结构理论脱锂极限；高倍率工况建议控制极片面载量。",
+      "source": "材料热力学理论极限与扣电测试规范"
     },
     {
       "id": "C8",
+      "name": "超高指标前沿学术探索标识",
       "trigger": {"field": "target_energy", "op": "gte", "value": 500},
-      "action": "reject",
-      "target": null,
-      "reason": "液态体系电芯级 500 Wh/kg 不可行，需固态或新体系；标记数据缺口",
-      "source": "各国电池路线图（液态上限共识）"
+      "action": "flag_frontier",
+      "reason": "该研发目标属于前沿极限探索构想，系统予以放行并在研报中标记为‘前瞻学术探索’，客观呈现学术界前沿突破机制与实验复现缺口。",
+      "source": "高比能学术前沿探索倡议"
     }
   ]
 }

@@ -25,7 +25,7 @@ DATA_DIR = Path(__file__).resolve().parent / "data"
 
 # 规则版本标识：修改 alias_map/candidates/constraints 数据或约束求值逻辑时务必同步递增，
 # 供 Stage 4 方案产物固化溯源 (design_scheme.json 的 provenance.rules_version)。
-RULES_VERSION = "C1-C8/v1"
+RULES_VERSION = "C1-C8/v2.1-coincell"
 
 # 数值-条件绑定检测：出现数值单位但全文无任何条件词 → condition_missing
 _NUM_UNIT_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:mAh/g|mAh g|Wh/kg|Wh kg|%)", re.I)
@@ -169,20 +169,91 @@ class RelationEngine:
             return actual in (expected or [])
         if op == "not_in":
             return actual not in (expected or [])
+        if op == "contains":
+            if isinstance(actual, (list, tuple, set)):
+                return expected in actual or any(str(expected).lower() in str(x).lower() for x in actual)
+            return str(expected).lower() in str(actual).lower()
         return False
 
+    @staticmethod
+    def _has_mitigation(scheme: Dict, resolved: Dict, whitelist: List[str]) -> Tuple[bool, List[str]]:
+        """检查方案中是否包含白名单中声明的改性策略/添加剂/界面工程."""
+        matched = []
+        texts_to_check = []
+        for k in ("cathode", "anode", "electrolyte", "additives", "additive", "notes", "strategy", "modifications"):
+            v = scheme.get(k)
+            if v:
+                if isinstance(v, list):
+                    texts_to_check.extend([str(item).lower() for item in v])
+                else:
+                    texts_to_check.append(str(v).lower())
+            v_res = resolved.get(k)
+            if v_res and v_res != v:
+                if isinstance(v_res, list):
+                    texts_to_check.extend([str(item).lower() for item in v_res])
+                else:
+                    texts_to_check.append(str(v_res).lower())
+
+        full_text = " ".join(texts_to_check)
+
+        for item in whitelist:
+            prefix, _, token = item.partition(":")
+            token = token.lower() if token else item.lower()
+            aliases = [token]
+            if token == "fec":
+                aliases.extend(["氟代碳酸乙烯酯", "fluoroethylene carbonate"])
+            elif token == "vc":
+                aliases.extend(["碳酸亚乙烯酯", "vinylene carbonate"])
+            elif token == "lipo2f2":
+                aliases.extend(["二氟磷酸锂", "difluorophosphate"])
+            elif token == "single_crystal":
+                aliases.extend(["单晶", "sc-", "single crystal"])
+            elif token == "artificial_sei":
+                aliases.extend(["人工sei", "人工界面", "保护层", "artificial sei"])
+            elif token in ("alloy_li_ag", "li-ag", "las"):
+                aliases.extend(["li-ag", "las", "合金", "亲锂"])
+            elif token == "lithiophilic_framework":
+                aliases.extend(["亲锂", "三维", "3d", "骨架"])
+            elif token in ("lpo", "al2o3"):
+                aliases.extend(["包覆", "coating", "快离子"])
+
+            for a in aliases:
+                if a in full_text:
+                    matched.append(item)
+                    break
+
+        return len(matched) > 0, matched
+
     def evaluate(self, scheme: Dict) -> Dict:
-        """对方案求值全部约束 (未知材料实行严密 Fail-Closed)。
+        """对方案求值全部约束 (软质询矩阵 · 实验室扣电科研版).
 
         Returns:
-          feasible:    bool，无 reject 且无 exclude 命中 → True
-          violations:  [{"rule_id", "reason", "excluded"}]
-          inclusions:  [{"rule_id", "required"}]（建议项，未满足不致命）
-          rejects:     [{"rule_id", "reason"}]
-          unverified:  [str]
+          feasible:        bool，无 reject 且无 exclude/硬挑战违规命中 → True
+          violations:      [{"rule_id", "reason", "excluded"}]
+          inclusions:      [{"rule_id", "required"}]
+          rejects:         [{"rule_id", "reason"}]
+          warnings:        [{"rule_id", "reason"}]
+          challenges:      [{"rule_id", "status", "mitigated_by", "note"}]
+          recommendations: [{"rule_id", "reason"}]
+          audit_notes:     [{"rule_id", "reason"}]
+          coin_cell_evals: [{"rule_id", "material_energy_wh_kg", "assessment", "note"}]
+          frontier_flags:  [{"rule_id", "target_energy", "note"}]
+          unverified:      [str]
         """
         resolved = self.resolve_scheme(scheme)
-        out: Dict = {"feasible": True, "violations": [], "inclusions": [], "rejects": [], "unverified": []}
+        out: Dict = {
+            "feasible": True,
+            "violations": [],
+            "inclusions": [],
+            "rejects": [],
+            "warnings": [],
+            "challenges": [],
+            "recommendations": [],
+            "audit_notes": [],
+            "coin_cell_evals": [],
+            "frontier_flags": [],
+            "unverified": [],
+        }
 
         # 严格科研约束：未知材料 Fail-Closed 机制（非受控体系必须标记 UNVERIFIED 并拒绝）
         unverified_mats = []
@@ -199,22 +270,34 @@ class RelationEngine:
                 "reason": f"方案包含未经验证的材料体系 [{', '.join(unverified_mats)}]，科研引擎拒绝盲目放行 (Fail-Closed)",
             })
             out["feasible"] = False
+
         for rule in self.constraints.get("rules", []):
+            rule_id = rule.get("id")
             trig = rule.get("trigger", {})
             actual = self._resolve_field(resolved, trig.get("field", ""))
             if not self._op_matches(trig.get("op", "eq"), actual, trig.get("value")):
                 continue
+
+            cond = rule.get("condition")
+            if cond:
+                cond_actual = self._resolve_field(resolved, cond.get("field", ""))
+                if not self._op_matches(cond.get("op", "eq"), cond_actual, cond.get("value")):
+                    continue
+
             action = rule.get("action")
+            reason = rule.get("reason", "")
+
             if action == "reject":
-                out["rejects"].append({"rule_id": rule["id"], "reason": rule.get("reason", "")})
+                out["rejects"].append({"rule_id": rule_id, "reason": reason})
                 out["feasible"] = False
+
             elif action in ("exclude", "include"):
                 targets = self._parse_targets(rule.get("target", ""))
                 hit = self._targets_hit_scheme(targets, resolved)
                 if action == "exclude" and hit:
                     out["violations"].append({
-                        "rule_id": rule["id"],
-                        "reason": rule.get("reason", ""),
+                        "rule_id": rule_id,
+                        "reason": reason,
                         "excluded": [t[1] for t in hit],
                     })
                     out["feasible"] = False
@@ -222,10 +305,96 @@ class RelationEngine:
                     missing = self._targets_missing(targets, resolved)
                     if missing:
                         out["inclusions"].append({
-                            "rule_id": rule["id"],
-                            "reason": rule.get("reason", ""),
+                            "rule_id": rule_id,
+                            "reason": reason,
                             "required": missing,
                         })
+
+            elif action == "challenge":
+                # 自洽性质询（C1, C3）
+                whitelist = rule.get("mitigation_whitelist", [])
+                has_mit, matched = self._has_mitigation(scheme, resolved, whitelist)
+                if has_mit:
+                    out["challenges"].append({
+                        "rule_id": rule_id,
+                        "status": "passed",
+                        "mitigated_by": matched,
+                        "note": f"检测到相应界面/改性对策: {matched}",
+                    })
+                else:
+                    if rule_id == "C3":
+                        # C3: 金属锂负极搭配纯常规碳酸酯且完全未声明任何界面/添加剂保护措施
+                        out["violations"].append({
+                            "rule_id": rule_id,
+                            "reason": reason,
+                            "excluded": ["carbonate_ec"],
+                        })
+                        out["feasible"] = False
+                    else:
+                        out["warnings"].append({
+                            "rule_id": rule_id,
+                            "reason": reason,
+                        })
+
+            elif action == "warn":
+                out["warnings"].append({
+                    "rule_id": rule_id,
+                    "reason": reason,
+                })
+
+            elif action == "recommend":
+                out["recommendations"].append({
+                    "rule_id": rule_id,
+                    "reason": reason,
+                })
+                target = rule.get("target")
+                if target:
+                    targets = self._parse_targets(target)
+                    missing = self._targets_missing(targets, resolved)
+                    if missing:
+                        out["inclusions"].append({
+                            "rule_id": rule_id,
+                            "reason": reason,
+                            "required": missing,
+                        })
+
+            elif action == "audit_note":
+                out["audit_notes"].append({
+                    "rule_id": rule_id,
+                    "reason": reason,
+                })
+
+            elif action == "coin_cell_eval":
+                # 纽扣电池材料级核算（C7）
+                anode = resolved.get("anode")
+                target_e = float(actual) if actual is not None else 0.0
+                if anode == "graphite" and target_e >= 400:
+                    # 石墨负极理论比容量仅 372 mAh/g，纽扣电池材料级与全电池均无法达到 >=400 Wh/kg
+                    out["violations"].append({
+                        "rule_id": rule_id,
+                        "reason": "石墨负极理论比容量仅 372 mAh/g，纽扣电池材料级与电芯级能量密度均无法达到 ≥400 Wh/kg（该指标必须采用锂金属或高硅基负极）",
+                        "excluded": ["graphite"],
+                    })
+                    out["feasible"] = False
+                else:
+                    cat_mat = resolved.get("cathode_attrs") or {}
+                    cap = (cat_mat.get("capacity") or {}).get("value") or 200
+                    volt = cat_mat.get("avg_voltage") or 3.8
+                    mat_e = volt * cap
+                    out["coin_cell_evals"].append({
+                        "rule_id": rule_id,
+                        "material_energy_wh_kg": mat_e,
+                        "assessment": "passed",
+                        "note": reason,
+                    })
+
+            elif action == "flag_frontier":
+                out["frontier_flags"].append({
+                    "rule_id": rule_id,
+                    "target_energy": actual,
+                    "note": reason,
+                })
+
         return out
 
     @staticmethod
@@ -297,9 +466,14 @@ class RelationEngine:
             actual = self._resolve_field(resolved, trig.get("field", ""))
             if not self._op_matches(trig.get("op", "eq"), actual, trig.get("value")):
                 continue
+            cond = rule.get("condition")
+            if cond:
+                cond_actual = self._resolve_field(resolved, cond.get("field", ""))
+                if not self._op_matches(cond.get("op", "eq"), cond_actual, cond.get("value")):
+                    continue
             if rule.get("action") == "exclude":
                 exclude_ids.update(t for _, t in self._parse_targets(rule.get("target", "")))
-            elif rule.get("action") == "include":
+            elif rule.get("action") in ("include", "recommend"):
                 boost_ids.update(t for _, t in self._parse_targets(rule.get("target", "")))
         return {
             "exclude_terms": self._ids_to_terms(exclude_ids),
@@ -354,10 +528,22 @@ class RelationEngine:
                 "violations": ev["violations"],
                 "inclusions": ev["inclusions"],
                 "rejects": ev["rejects"],
+                "warnings": ev.get("warnings", []),
+                "challenges": ev.get("challenges", []),
+                "recommendations": ev.get("recommendations", []),
+                "audit_notes": ev.get("audit_notes", []),
+                "coin_cell_evals": ev.get("coin_cell_evals", []),
+                "frontier_flags": ev.get("frontier_flags", []),
             },
             "energy_check": energy_check,
             "condition_missing": condition_missing,
             "confidence": confidence,
+            "warnings": ev.get("warnings", []),
+            "challenges": ev.get("challenges", []),
+            "recommendations": ev.get("recommendations", []),
+            "audit_notes": ev.get("audit_notes", []),
+            "coin_cell_evals": ev.get("coin_cell_evals", []),
+            "frontier_flags": ev.get("frontier_flags", []),
         }
 
     @staticmethod

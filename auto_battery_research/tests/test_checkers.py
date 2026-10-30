@@ -489,8 +489,22 @@ def test_unknown_materials_and_c7_c8_fail_closed():
         "target_energy": 520.0,
     }
     ev_c8 = engine.evaluate(c8_scheme)
-    assert ev_c8["feasible"] is False
-    assert any(r["rule_id"] == "C8" for r in ev_c8["rejects"])
+    assert ev_c8["feasible"] is True
+    assert any(r["rule_id"] == "C8" for r in ev_c8["frontier_flags"])
+
+    # 4. C4 规则已永久移除
+    assert not any(r.get("id") == "C4" for r in engine.constraints.get("rules", []))
+
+    # 5. C1 与 C3 自洽性软质询：声明 FEC/单晶等对策即放行
+    mitigated_scheme = {
+        "cathode": "NCM811",
+        "anode": "li_metal",
+        "electrolyte": "carbonate_ec",
+        "additives": ["FEC", "VC"],
+    }
+    ev_mit = engine.evaluate(mitigated_scheme)
+    assert ev_mit["feasible"] is True
+    assert any(c["rule_id"] == "C3" and c["status"] == "passed" for c in ev_mit["challenges"])
 
 
 
