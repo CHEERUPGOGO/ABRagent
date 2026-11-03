@@ -43,6 +43,9 @@ def _leading_label(para):
 
 
 def render_materials(doc):
+    if doc.get("ledger_view"):
+        from .material_arguments import render_material_arguments
+        return render_material_arguments(doc)
     evidence = {str(e.get("passage_id")): e for e in doc.get("evidence") or []}
     text = doc.get("final_answer") or ""
     # (显示名, 段首标题关键词, 正文关键词, 通用选择准则)
@@ -109,6 +112,8 @@ def render_materials(doc):
 
 
 def render_experiments(doc):
+    if doc.get("ledger_view"):
+        return "### 待验证扩展\n未维护的工艺和配方需先完成候选筛选并更新方案表，不能沿用初始正文中的数值。"
     lines = ["### 5.5 有来源的制备路线与迁移边界",
              "以下摘录来自归档证据原文，只是原论文的制备参考，不能直接作为本任务工艺指令。原文温度、配比等参数必须连同材料体系理解；引用中未给出的条件保持待确定。"]
     seen = set()
@@ -145,12 +150,14 @@ def render_history(task_dir):
     if not path.exists():
         return "### 仿真与优化历史\n未保存逐轮仿真历史，不能重建优化趋势。"
     history = json.loads(path.read_text(encoding="utf-8"))
-    lines = ["### 逐轮候选比较", "| 仿真轮 | 状态 | 倍率 C | 比能量 Wh/kg | 较上一有效轮变化 |", "|---|---|---|---|---|"]
+    lines = ["### 逐轮候选比较"]
     previous = None
     for r in history.get("rounds", []):
         energy = r.get("energy_wh_kg")
         delta = energy - previous if isinstance(energy, (int, float)) and previous is not None else None
-        lines.append(f"| {r.get('round')} | {display(r.get('status'))} | {display(r.get('c_rate'))} | {display(energy)} | {display(delta)} |")
+        change = f"，较上一有效轮变化 {display(delta)} Wh/kg" if delta is not None else ""
+        lines.append(f"第 {r.get('round')} 轮状态为 {display(r.get('status'))}，倍率为 {display(r.get('c_rate'))} C，"
+                     f"比能量为 {display(energy)} Wh/kg{change}。")
         if isinstance(energy, (int, float)):
             previous = energy
     lines += ["", "### 各轮有效参数与结果解释"]

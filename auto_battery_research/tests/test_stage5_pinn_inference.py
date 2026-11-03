@@ -345,7 +345,18 @@ def test_rag_adapter_normalizes_geometry_into_artifacts(tmp_path, monkeypatch):
                                 "anode": {"porosity_pct": 25.0}}},
     }
 
+    class _RecipeClient:
+        available = True
+
+        def chat(self, *args, **kwargs):
+            from auto_battery_research.tests.test_experiment_design import recipe_payload
+            payload = recipe_payload()
+            payload["citations"] = ["ev_001"]
+            return json.dumps(payload, ensure_ascii=False)
+
     class _StubPipeline:
+        writer_llm = _RecipeClient()
+
         def run(self, q):
             return rag_raw
 

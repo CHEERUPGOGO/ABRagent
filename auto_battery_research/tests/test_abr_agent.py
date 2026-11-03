@@ -14,7 +14,7 @@ OFFLINE_CONFIG = {"openai": {"openai_api_key": "dummy_key"}, "llm": {"api_key": 
 def test_abr_agent_initialization():
     agent = ABRAgent(goal="测试锂金属电池方案", skip_pinn=True, verbose=False, enable_file_log=False, config=OFFLINE_CONFIG)
     assert agent.goal == "测试锂金属电池方案"
-    assert len(agent.all_tools) == 17  # 11 domain (含 MP 查询 / ReviseGeometry) + 6 stage
+    assert len(agent.all_tools) == 18  # 11 domain (含 MP 查询 / ReviseGeometry) + 6 stage
     assert "InspectLiteratureAssets" in agent.tool_map
     assert "RunRAGDesign" in agent.tool_map
     assert "Check" in agent.tool_map
@@ -25,6 +25,9 @@ def test_abr_agent_initialization():
 def test_abr_agent_run_loop(tmp_path, monkeypatch):
     # enable_file_log=False：文件日志已默认开启，单测显式关闭避免在仓库 log/ 下落测试日志
     agent = ABRAgent(goal="测试端到端方案设计", skip_pinn=True, verbose=False, enable_file_log=False, config=OFFLINE_CONFIG)
+    # 每次测试独立目录，不能复用仓库中已提交方案或过期修复检查点。
+    (tmp_path / "task").mkdir()
+    agent.manager._task_dir_cache[agent.goal] = tmp_path / "task"
     # 重置工作流
     agent.manager.reset_workflow()
 

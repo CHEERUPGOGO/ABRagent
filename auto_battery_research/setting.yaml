@@ -51,6 +51,8 @@ embedding:
   ollama_base_url: "$(OLLAMA_BASE_URL: http://localhost:11434)"
 
 runtime_options:
+  # 默认优先交付附条件报告；科研审核和物理验证状态独立保留。
+  report_first: true
   # Stage 5 (PINN) 默认启用: SPM PINN 模型已接入 (pinn/models/)，方案体系匹配
   # 注册表即执行放电仿真；未匹配体系回退参数提取-only。--skip-stage 5 可手动跳过。
   skip_pinn_default: false
@@ -67,8 +69,8 @@ runtime_options:
   # 即视为达标，LLM 停止修订；收尾仍未达标时自动择优回滚至能量最高一轮。
   max_geometry_revisions: 3
   target_energy_tolerance_pct: 5
-  # Stage 6 第五部分实验方案: 由大模型综合完整方案/证据/仿真生成 (验收引用与参数一致性)。
-  # 关闭或 LLM 不可用时回退为确定性实验章节渲染。
+  # Stage 5B 实验设计：复用文献并少量补检索，重点校验与方案表重叠部分。
+  # 无总耗时上限；模型不可用时复用有效推荐，没有推荐则明确失败。
   experiment_plan_llm: true
   save_step_artifacts: true
   mcp_server:

@@ -26,8 +26,17 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
             calls.append((trace_tag, user_prompt))
             if trace_tag == "geometry_design":
                 return json.dumps(candidate)
+            if trace_tag == "writer_patch":
+                payload = json.loads(user_prompt)
+                iid, interface = next(iter(payload["interface_contract"]["interfaces"].items()))
+                return json.dumps({"base_hash": payload["permission"]["base_hash"], "submissions": [
+                    {"interface_id": iid, "replacement": interface["original"] + "，待验证"}]})
+            if trace_tag == "repair_verify":
+                payload = json.loads(user_prompt)
+                return json.dumps({"verdicts": [{"group_id": g, "issue_id": i, "resolved": True, "reason": "已注明待验证"}
+                    for g, c in payload["transactions"].items() for i in c["issue_ids"]], "new_issues": []})
             # 草稿刻意不复述参数，防止测试仅因旧草稿保留参数而误通过。
-            return "\n".join(f"## {title}\n" + "需要进一步证据支持。" * 5
+            return "\n\n".join(f"## {title}\n\n" + title + "需要进一步证据支持。" * 5
                              for title in ("目标与设计路线", "推荐组合", "预期关键指标", "可行性依据", "风险与数据缺口"))
 
     def retrieve(**kwargs):
@@ -40,6 +49,7 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
     def review(**kwargs):
         review_questions.append(kwargs["question"])
         return {"confidence": "low", "issues": ["需要补充或修正文献依据"],
+                "repair_issues": [{"quote": "可行性依据需要进一步证据支持", "reason": "需补证据", "suggestion": "注明待验证"}],
                 "error_type": "retrieval" if len(review_questions) == 1 else "writing"}
 
     pipeline = RAGPipeline.__new__(RAGPipeline)
@@ -62,12 +72,11 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
 
     result = pipeline.run(question)
     writing_calls = [(tag, prompt) for tag, prompt in calls if tag != "geometry_design"]
-    assert [tag for tag, _ in writing_calls] == ["writer", "writer", "writer_revise"]
+    assert [tag for tag, _ in writing_calls] == ["writer", "writer_patch", "repair_verify"]
     # 完成审核不等于审核通过：末轮意见保留，不能伪装成已解决。
     assert result["review_completed"] is True
-    assert result["review_passed"] is False
-    assert result["confidence"] == "low"
-    assert result["reviewer_output"]["error_type"] == "writing"
+    assert result["review_passed"] is True
+    assert result["confidence"] == "medium"
     assert retrieval_questions == [question, question]
     assert result["question"] == question
     assert result["geometry_error"] is None
@@ -81,11 +90,11 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
         assert parsed["anode"]["R_s_um"] == 6.0
         assert parsed["condition"]["c_rate"] == 0.5
         assert parsed["parameter_sources"]["cathode.D_s_m2s"]["origin"] == "model_baseline"
-        for _, prompt in writing_calls:
-            assert marker + frozen in prompt
-            assert prompt.count(marker) == 1
+        assert marker + frozen in writing_calls[0][1]
+        assert json.loads(writing_calls[1][1])["read_only_context"] == review_questions[0]
+        assert json.loads(writing_calls[2][1])["context"] == review_questions[0]
     else:
-        assert review_questions == [question] * 3
+        assert review_questions == [question]
         assert all(marker not in prompt for _, prompt in writing_calls)
-    assert "证据2" in writing_calls[1][1]
-    assert "审核反馈" in writing_calls[2][1]
+    assert any(e["text"] == "证据2" for e in json.loads(writing_calls[1][1])["evidence"])
+    assert json.loads(writing_calls[2][1])["issues"][0]["suggestion"] == "注明待验证"

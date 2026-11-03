@@ -543,26 +543,10 @@ class WriterAgent:
         """根据 Reviewer 的 feedback 修正答案"""
         if not self.llm.available or not feedback:
             return draft_answer
-
-        _max_evidence = 25 if plan.get("needs_reasoning", False) else 15
-        evidence_text = "\n\n".join(
-            [f"[{e['passage_id']}] 来源:{e['source']}\n内容:{e['text']}"
-             for e in evidence[:_max_evidence]]
-        )
-        feedback_text = "\n".join(f"- {f}" for f in feedback)
-
-        revise_prompt = (
-            f"用户问题:{question}\n\n"
-            f"你之前生成的答案:\n{draft_answer}\n\n"
-            f"可用证据如下:\n{evidence_text}\n\n"
-            f"审核反馈（请按以下意见修正答案）:\n{feedback_text}\n\n"
-            f"请根据审核反馈修正答案,修正后的答案必须完整可展示,保留 [passage_id] 引用.\n"
-            f"回复格式要求与首次生成一致."
-        )
-        try:
-            return self.llm.chat(WRITER_SYSTEM_PROMPT, revise_prompt, temperature=0.2, trace_tag="writer_revise")
-        except Exception:
-            return draft_answer
+        from auto_battery_research.util.design_repair import repair
+        review = {"repair_issues": [item for item in feedback if isinstance(item, dict)]}
+        changed, _, _ = repair(self, draft_answer, review, evidence, {})
+        return changed
 
 
 class ReviewerAgent:
@@ -706,6 +690,9 @@ class ReviewerAgent:
             f"请严格按 JSON 格式输出.\n"
             f"审核关注:材料筛选数值的准确性/条件完整性/比较公平性.\n"
             f"指出需修复的问题，仅返回简短审核 JSON，不生成或改写正文。"
+            f"同时返回 repair_issues 数组，每项包含 type、severity、quote（草稿中的精确原句，必须唯一定位）、reason（错误原因）、suggestion（修改建议）、parameter_paths（仅确需更改的方案字段路径）。"
+            f"同段多个问题逐项列出，quote尽量采用能唯一定位的最短原文；重叠问题由程序合并为联合接口，不要返回改写后的段落。"
+            f"issues 仍为字符串摘要。无精确定位的问题不会获得写权限。"
         )
         if rule_result is not None:
             rule_note = (

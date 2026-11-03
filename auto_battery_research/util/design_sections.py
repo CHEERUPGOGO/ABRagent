@@ -6,9 +6,20 @@ REQUIRED_SECTIONS = [
     ("目标与设计路线", ["目标", "设计路线", "能量目标", "target", "路线"]),
     ("推荐组合", ["推荐材料组合", "推荐组合", "正极", "负极", "电解液", "combination", "配方"]),
     ("预期关键指标", ["预期指标", "关键指标", "能量密度", "比容量", "metrics", "性能指标"]),
-    ("可行性依据", ["可行性依据", "文献证据", "机理支撑", "feasibility", "evidence", "依据"]),
+    ("可行性依据", ["可行性依据", "文献证据", "机理支撑", "论证链与机理", "feasibility", "evidence", "依据"]),
     ("风险与数据缺口", ["风险与数据缺口", "风险分析", "数据缺口", "risks", "gaps", "风险评估"]),
 ]
+
+
+def normalize_titles(text):
+    """只规范唯一可识别的标题，不移动或改写正文。"""
+    def replace(match):
+        title = match.group(2)
+        hits = [name for name, aliases in REQUIRED_SECTIONS if any(a.lower() in title.lower() for a in aliases)]
+        if len(hits) != 1:
+            return match.group(0)
+        return f"## {hits[0]}"
+    return re.sub(r"^(#{1,2})\s+([^\n]+)$", replace, text, flags=re.M)
 
 
 def design_sections(text: str) -> tuple[list, list, list]:

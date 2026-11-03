@@ -26,7 +26,7 @@ class FinalReportChecker(BaseChecker):
                     invalid.append({"stage_id": stage_id, "status": "MISSING"})
                     continue
                 valid = (
-                    stage.status == "PASSED"
+                    stage.status == "PASSED" or (stage_id == 4 and stage.status == "FALLBACK")
                     or (stage.status == "SKIPPED" and stage.allow_skip and stage.skip)
                     or (stage.id == 5 and stage.status == "FALLBACK")
                 )
@@ -109,7 +109,7 @@ class FinalReportChecker(BaseChecker):
 
         headings = re.findall(r"^#{1,4}\s+(.+)$", content, re.MULTILINE)
         if "<!-- abr-report-layout:6 -->" in content:
-            required = ["研发摘要", "材料选择与文献依据", "最终设计方案", "仿真与优化分析", "实验路线与验证计划", "参考来源附录"]
+            required = ["研发摘要", "材料选择与文献依据", "(?:电芯总体方案与关键匹配|最终设计方案)", "仿真与优化分析", "实验路线与验证计划", "参考来源附录"]
             for i, title in enumerate(required, 1):
                 if not re.search(rf"^## {i}\. {title}", content, re.M):
                     return False, self.build_diagnostic(passed=False, error_code="SYNTHESIS_REPORT_SECTIONS_INCOMPLETE",
@@ -147,9 +147,13 @@ class FinalReportChecker(BaseChecker):
                     raise ValueError("报告契约标记缺失")
                 doc, error = self.load_json_safe(str(report_file.parent / "design_scheme.json"))
                 doc = doc or {}
+                if doc.get("experiment_contract") and "<!-- abr-experiment-plan-fallback -->" in content:
+                    raise ValueError("Stage 4 实验推荐必须完整渲染，不能用缺口清单替代")
+                from auto_battery_research.util.scheme_ledger import require_current
+                require_current(report_file.parent, doc)
                 result, spec = {}, {}
                 stage5 = self.stage_manager.get_stage_by_id(5) if self.stage_manager else None
-                if stage5 is None or (stage5.status == "PASSED" and not stage5.skip):
+                if stage5 is None or (stage5.status == "PASSED" and (not stage5.skip or doc.get("stage5_contract"))):
                     for filename, destination in (("pinn_simulation_result.json", result), ("pinn_input_spec.json", spec)):
                         path = report_file.parent / filename
                         if path.exists():
@@ -159,7 +163,17 @@ class FinalReportChecker(BaseChecker):
                             destination.update(data)
                 if report_identity(doc, result, spec) not in content:
                     raise ValueError("报告输入指纹与当前设计/仿真不一致")
+                if doc.get("delivery_contract") == 1:
+                    from auto_battery_research.util.report_readiness import notice, unresolved_issues
+                    if notice(doc) not in content:
+                        raise ValueError("交付类别、审核或物理限制说明缺失")
+                    if any(issue not in content for issue in unresolved_issues(doc)):
+                        raise ValueError("报告缺少尚未解决的完整审核意见")
                 if "<!-- abr-report-layout:6 -->" in content:
+                    if doc.get("ledger_view"):
+                        from auto_battery_research.util.report_narrative import render_model_parameters
+                        if render_model_parameters(doc["ledger_view"]) not in content:
+                            raise ValueError("第四部分模型参数声明缺失或与方案表不一致")
                     from auto_battery_research.util.report_analysis import render_materials, render_sources, render_history
                     for expected in (render_materials(doc), render_sources(doc), render_history(report_file.parent)):
                         if expected not in content:

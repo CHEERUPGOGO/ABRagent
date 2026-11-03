@@ -31,11 +31,9 @@ from auto_battery_research.backend.llm_client import LLMClient
 
 def _get_target_task_dir(target_query: str) -> Path:
     """获取课题专属输出目录 (复用单例，避免重复实例化；优先对齐当前工作流活跃课题)."""
-    from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
-    mgr = get_stage_manager()
-    active_goal = (getattr(mgr, "target_goal", "") or "").strip()
-    goal = resolve_effective_goal(target_query, active_goal)
-    return mgr.get_task_output_dir(goal)
+    from auto_battery_research.tools.stage_tools import get_stage_manager_for_goal, get_stage_manager
+    mgr = get_stage_manager_for_goal(target_query) if target_query else get_stage_manager()
+    return mgr.get_task_output_dir()
 
 
 def _pdf_already_processed(pdf: Path) -> bool:
@@ -374,15 +372,15 @@ def run_rag_design(target_query: str = "", design_query: Optional[str] = None, *
     resolved_query = (target_query or "").strip()
     if not resolved_query:
         resolved_query = get_stage_manager().target_goal
-    task_dir = _get_target_task_dir(resolved_query)
-
     mgr = get_stage_manager_for_goal(resolved_query)
+    resolved_query = mgr.target_goal
+    task_dir = mgr.get_task_output_dir()
 
     from auto_battery_research.tools.rag_adapter import AbrRagAdapter
     adapter = AbrRagAdapter(config=mgr.config)
     actual_request = design_query or resolved_query
     adapter.original_design_request = actual_request
-    return adapter.run_rag_design(target_query=actual_request, task_dir=task_dir)
+    return adapter.run_rag_design(target_query=actual_request, task_dir=task_dir, task_goal=resolved_query)
 
 
 # ══════════════════ Stage 5: PINN 触发判定 + 材料参数提取 + SPM PINN 仿真 ══════════════════
@@ -590,7 +588,8 @@ def _generate_pinn_input_spec(
         from auto_battery_research.tools.stage_tools import get_stage_manager
         mgr = get_stage_manager()
     if task_dir is None:
-        task_dir = mgr.get_task_output_dir(target_query or None)
+        task_dir = mgr.get_task_output_dir()
+    target_query = getattr(mgr, "target_goal", target_query)
 
     scheme = _load_stage4_scheme(target_query, task_dir, mgr)
     if (scheme.get("geometry") or {}).get("contract_version") == "2.0":
@@ -603,7 +602,7 @@ def _generate_pinn_input_spec(
                 errors.append("设计几何哈希失配")
         except (ValueError, TypeError):
             errors.append("设计几何不可规范序列化")
-        if errors:
+        if errors and _match_pinn_system_for_scheme(scheme).get("matched"):
             return {"success": False, "error_code": "GEOMETRY_CONTRACT_INVALID",
                     "error": "; ".join(errors), "deliverables": [], "key_findings": {}}
     candidates_lib = _load_candidates_library(mgr)
@@ -617,6 +616,11 @@ def _generate_pinn_input_spec(
     spec = None
     try:
         from pinn.input_spec import build_cell_spec
+        from auto_battery_research.util.scheme_ledger import load as load_ledger
+        ledger = load_ledger(task_dir)
+        if ledger:
+            params = ledger["parameters"]
+            ambient_temp_k = (params.get("condition.temperature_K") or {}).get("value") or ambient_temp_k
         spec = build_cell_spec(scheme, candidates_lib or None, c_rate=c_rate,
                                ambient_temp_k=ambient_temp_k)
         spec["scheme_id"] = target_query
@@ -681,6 +685,12 @@ def _generate_pinn_input_spec(
         "notes": notes,
     }
 
+    from auto_battery_research.util.scheme_ledger import load as load_ledger, digest
+    ledger = load_ledger(task_dir)
+    if ledger:
+        payload["ledger_hash"] = digest(ledger)
+        payload["ledger_revision"] = ledger["revision"]
+        payload["declared_scheme_parameters"] = ledger["parameters"]
     spec_file = task_dir / PINN_INPUT_SPEC_FILENAME
     try:
         _atomic_write_text(spec_file, json.dumps(payload, ensure_ascii=False, indent=2))
@@ -1139,13 +1149,21 @@ def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, targe
     log_tool_call("PINNParamExtractor", f"c_rate={c_rate}, temp_k={ambient_temp}")
     if stage_manager is not None:
         mgr = stage_manager
-        task_dir = stage_manager.get_task_output_dir(target_query or None)
+        task_dir = stage_manager.get_task_output_dir()
     else:
         from auto_battery_research.tools.stage_tools import get_stage_manager, get_stage_manager_for_goal
         resolved_query = (target_query or "").strip() or get_stage_manager().target_goal
         mgr = get_stage_manager_for_goal(resolved_query)
         task_dir = _get_target_task_dir(resolved_query)
 
+    target_query = mgr.target_goal
+    from auto_battery_research.util.scheme_ledger import require_current
+    design_path = task_dir / "design_scheme.json"
+    if design_path.exists():
+        try:
+            require_current(task_dir, json.loads(design_path.read_text(encoding="utf-8")))
+        except ValueError as exc:
+            return {"success": False, "error_code": "SCHEME_LEDGER_STALE", "error": str(exc)}
     result = _generate_pinn_input_spec(
         target_query,
         mgr=mgr,
@@ -1343,7 +1361,7 @@ def revise_geometry(
     log_tool_call("ReviseGeometry", f"target_query='{target_query}', reason='{str(reason)[:60]}'")
     if stage_manager is not None:
         mgr = stage_manager
-        task_dir = stage_manager.get_task_output_dir(target_query or None)
+        task_dir = stage_manager.get_task_output_dir()
     else:
         from auto_battery_research.tools.stage_tools import get_stage_manager, get_stage_manager_for_goal
         resolved_query = (target_query or "").strip() or get_stage_manager().target_goal
@@ -1351,6 +1369,7 @@ def revise_geometry(
         task_dir = _get_target_task_dir(resolved_query)
         target_query = resolved_query
 
+    target_query = mgr.target_goal
     from auto_battery_research.tools.geometry_revision import apply_geometry_revision
     scheme_file, doc = _load_design_scheme_doc(target_query, task_dir, mgr)
     if scheme_file is None or doc is None:
@@ -1392,6 +1411,15 @@ def revise_geometry(
 
     # 原子落盘 json + 就地更新 md (声明表 + 修订记录)
     try:
+        from auto_battery_research.util.scheme_ledger import align_geometry_parameters
+        align_geometry_parameters(doc, [change["field"] for change in rev_res.get("changes", [])],
+                                  "Stage 5 已校验几何修订：" + reason)
+        from auto_battery_research.util.experiment_design import sync
+        sync(task_dir, doc, dry_run=True)
+        from auto_battery_research.util.scheme_ledger import load as load_ledger, commit_design
+        if load_ledger(task_dir):
+            commit_design(task_dir, doc, reason="Stage 5 几何修订：" + reason)
+        sync(task_dir, doc)
         # 不可变设计快照先写，当前契约后提交；失败候选不会覆盖有效方案。
         revision = doc["scheme"].get("design_revision", 0)
         snapshot = task_dir / "design_revisions" / f"revision_{revision}_{doc['scheme']['geometry_hash'][:12]}.json"
@@ -1496,6 +1524,10 @@ def select_best_stage5_result(mgr: Optional[Any] = None) -> Dict[str, Any]:
             return {"action": "none", "reason": "scheme_geometry_unavailable"}
         scheme = doc["scheme"]
         # 同一课题重新设计后，历史轮次可能属于不同材料/条件；不得跨方案恢复。
+        if doc.get("ledger_hash"):
+            spec_payload["ledger_hash"] = doc["ledger_hash"]
+            spec_payload["ledger_revision"] = doc["ledger_revision"]
+            spec_payload["declared_scheme_parameters"] = doc["ledger_view"]["parameters"]
         from auto_battery_research.util.hashing import stage5_scheme_projection
         restored_scheme = dict(scheme, geometry=best["geometry_snapshot"])
         archived_scheme_hash = (result_payload.get("pinn") or {}).get("scheme_hash")
@@ -1534,6 +1566,18 @@ def select_best_stage5_result(mgr: Optional[Any] = None) -> Dict[str, Any]:
             ),
         })
         scheme["geometry_revisions"] = entries
+        from auto_battery_research.util.scheme_ledger import align_geometry_parameters
+        align_geometry_parameters(doc, [f"{c}.{f}" for c in ("cathode", "anode")
+            for f in ("L_um", "porosity", "R_s_um", "D_s_m2s")], "Stage 5 有效快照择优恢复")
+        from auto_battery_research.util.experiment_design import sync
+        sync(task_dir, doc, dry_run=True)
+        from auto_battery_research.util.scheme_ledger import load as load_ledger, commit_design
+        if load_ledger(task_dir):
+            commit_design(task_dir, doc, reason="Stage 5 择优回滚")
+            spec_payload["ledger_hash"] = doc["ledger_hash"]
+            spec_payload["ledger_revision"] = doc["ledger_revision"]
+            spec_payload["declared_scheme_parameters"] = doc["ledger_view"]["parameters"]
+        sync(task_dir, doc)
         _atomic_write_text(scheme_file, json.dumps(doc, ensure_ascii=False, indent=2))
 
         # 2. 恢复最优轮 result/spec + 重渲染 PNG
@@ -1600,7 +1644,9 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     if not resolved_query:
         resolved_query = (stage_manager.target_goal if stage_manager else get_stage_manager().target_goal)
     mgr = stage_manager or get_stage_manager_for_goal(resolved_query)
-    task_dir = mgr.get_task_output_dir(resolved_query)
+    resolved_query = mgr.target_goal
+    target_query = resolved_query
+    task_dir = mgr.get_task_output_dir()
     legacy_dir = ROOT_DIR / "output" / "auto_battery_research"
 
     report_file = task_dir / "final_research_report.md"
@@ -1642,6 +1688,14 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
         except Exception:
             pass
 
+    from auto_battery_research.util.scheme_ledger import load as load_ledger, require_current, commit_design
+    try:
+        require_current(task_dir, scheme_data)
+        if load_ledger(task_dir) and scheme_data.get("scheme") and not scheme_data.get("ledger_hash"):
+            commit_design(task_dir, scheme_data, reason="旧任务结构化方案迁移")
+            _atomic_write_text(scheme_json_file, json.dumps(scheme_data, ensure_ascii=False, indent=2))
+    except ValueError as exc:
+        return {"success": False, "error_code": "SCHEME_LEDGER_STALE", "error": str(exc)}
     all_journals = mgr.get_all_stage_journal()
     stage_statuses = {s.id: s.status for s in mgr.stages}
     from auto_battery_research.util.report_contract import (
@@ -1672,7 +1726,7 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     if s5_stage and (s5_stage.skip or s5_stage.status == "SKIPPED"):
         s5_status_desc = "SKIPPED (物理仿真已按配置跳过 - 快速研发模式)"
     elif stage_statuses.get(5) == "FALLBACK":
-        s5_status_desc = "FALLBACK (0 阶理论模型代理估算，非全微分方程收敛)"
+        s5_status_desc = "FALLBACK (附条件交付；物理验证未通过或未完成，不使用失败仿真数值)"
     elif stage_statuses.get(5) == "FAILED":
         s5_failure_desc = ""
         try:
@@ -1706,6 +1760,7 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     # 初始设计、选定设计与实际生效几何并列展示；未仿真字段保持空白。
     selected_scheme = scheme_data.get("scheme") or {}
     selected_geo = selected_scheme.get("geometry") or {}
+    initial_geo = {}
     if selected_geo.get("contract_version") == "2.0":
         initial_geo = {}
         for initial_file in sorted((task_dir / "design_revisions").glob("revision_0_*.json"),
@@ -1730,6 +1785,9 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
                 rows.append(f"| {comp}.{field} | {(initial_geo.get(comp) or {}).get(field, '—')} | "
                             f"{(selected_geo.get(comp) or {}).get(field, '—')} | {actual} |")
         s5_geometry_block += "\n".join(rows)
+    if scheme_data.get("ledger_view"):
+        from auto_battery_research.util.report_narrative import render_geometry_comparison, render_model_parameters
+        s5_geometry_block = "\n\n" + render_model_parameters(scheme_data["ledger_view"]) + render_geometry_comparison(s5_pinn, selected_geo, initial_geo)
 
     # 几何修订记录 (Stage 5 反馈回路留痕: 修订轮次 + 择优回滚条目; 无修订 → 空块)
     s5_revision_block = ""
@@ -1740,6 +1798,8 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
         if isinstance(_rev_entries, list) and _rev_entries:
             from auto_battery_research.tools.geometry_revision import render_revision_log_markdown
             s5_revision_block = "\n\n" + render_revision_log_markdown(_rev_entries)
+            if scheme_data.get("ledger_view"):
+                s5_revision_block = f"\n\n本课题记录了 {len(_rev_entries)} 次几何修订或方案选择，参数变化及模型实际输入见上文；各次执行记录见阶段履历。"
     except Exception:
         pass
 
@@ -1756,7 +1816,7 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     # 3. 计算整体审计结论
     failed_stages = [s.id for s in mgr.stages if s.status == "FAILED"]
     skipped_stages = [s.id for s in mgr.stages if s.status == "SKIPPED" and s.allow_skip and s.skip]
-    fallback_stages = [s.id for s in mgr.stages if s.id == 5 and s.status == "FALLBACK"]
+    fallback_stages = [s.id for s in mgr.stages if s.id in (4, 5) and s.status == "FALLBACK"]
     unfinished_stages = [
         s.id for s in mgr.stages
         if s.status != "PASSED" and s.id not in skipped_stages
@@ -1778,7 +1838,7 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     if skipped_stages:
         audit_summary += f"；Stage {skipped_stages} 按配置跳过"
     if fallback_stages:
-        audit_summary += f"；Stage {fallback_stages} FALLBACK (代理估算)"
+        audit_summary += f"；Stage {fallback_stages} FALLBACK (附条件交付，验证未通过或未完成)"
 
     journal_table_rows = []
     for j in all_journals:
@@ -1815,7 +1875,10 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     sources_text = render_sources(scheme_data)
     history_text = render_history(task_dir)
 
-    # 第五部分: 大模型综合完整方案/证据/仿真生成实验方案; 失败回退确定性渲染。
+    # 第五部分：新契约只投影 Stage 4 实验推荐，历史独立调用保留旧路径。
+    if scheme_data.get("ledger_view") and not scheme_data.get("experiment_contract"):
+        return {"success": False, "error_code": "EXPERIMENT_PLAN_MIGRATION_REQUIRED",
+                "error": "当前设计尚无 Stage 5B 实验推荐，请先使用 --regenerate-experiment-plan 基于已有设计及文献生成"}
     from auto_battery_research.util import report_recipe_llm as _plan_mod
     full_scheme_md = ""
     _smd = task_dir / "design_scheme.md"
@@ -1823,17 +1886,20 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
         full_scheme_md = _smd.read_text(encoding="utf-8")
     _target = extract_energy_target_wh_kg(resolved_query)
     _tolerance = get_target_energy_tolerance_pct(mgr)
-    plan = _plan_mod.generate_experiment_plan(
-        mgr, task_dir, scheme_data, context, final_result, final_spec,
-        full_scheme_md, _target, _tolerance,
-    )
+    try:
+        plan = _plan_mod.generate_experiment_plan(
+            mgr, task_dir, scheme_data, context, final_result, final_spec,
+            full_scheme_md, _target, _tolerance,
+        )
+    except ValueError as exc:
+        return {"success": False, "error_code": "EXPERIMENT_PLAN_INVALID", "error": str(exc)}
     if plan:
         plan_start, plan_end = plan["marker"]
         section5_body = (
             f"{plan_start}\n{_plan_mod.plan_fingerprint_marker(_plan_mod.input_fingerprint(scheme_data, context, final_result, final_spec, full_scheme_md))}\n"
             f"{plan['text']}\n{plan_end}"
         )
-        log_observation(f"实验方案由大模型生成 ({plan['source']})")
+        log_observation(f"实验章节读取 Stage 5B 推荐并完成参数核对 ({plan['source']})" if plan['source'] == "stage4_projection" else f"实验方案由大模型生成 ({plan['source']})")
     else:
         # 回退: 确定性实验章节 (最终参数核对 + 有来源制备路线 + 分阶段验证路线)
         section5_body = (
@@ -1845,6 +1911,10 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
         log_observation("实验方案回退为确定性渲染 (LLM 不可用或未通过验收)")
 
 
+    from auto_battery_research.util.report_narrative import text as narrative_text
+    candidate_summary = " / ".join(narrative_text(selected_scheme.get(k)) for k in ("cathode", "anode", "electrolyte"))
+    physics_summary = (f"已完成 {s5_pinn['c_rate']:g}C 单次放电仿真，比容量 {s5_pinn['specific_capacity_mAh_g']:.1f} mAh/g，平均电压 {s5_pinn['average_voltage_V']:.2f} V。"
+                       if s5_pinn else "本次未获得可采信的匹配放电仿真，不能据此判定性能达标。")
     report_content = f"""# 化学电池全生命周期研发与设计综合研报
 <!-- abr-report-contract:2 -->
 <!-- abr-report-layout:6 -->
@@ -1861,14 +1931,17 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
 ---
 
 ## 1. 研发摘要 (Executive Summary)
-本报告基于最终选定设计和匹配的仿真产物编译。流程门禁通过表示产物可验收，不表示性能目标或实验验证已经完成。
+**推荐体系：** {candidate_summary}，选定版本 {selected_scheme.get('design_revision', '未提供')}。材料选择依据见第 2 节，具体规格见第 3 节。
 
-最终候选：{selected_scheme.get('cathode', '未提供')} 正极 / {selected_scheme.get('anode', '未提供')} 负极 / {selected_scheme.get('electrolyte', '未提供')} 电解液，选定版本 {selected_scheme.get('design_revision', '未提供')}。
-仿真结果：{s5_status_desc}。性能差距以以下确定性判定为准；限制电极和终止模式见第 4 节，不能仅据终止模式认定具体材料机理。
+**当前结果：** {physics_summary}性能差距与能量口径如下，优化过程见第 4 节。
 
 <!-- abr-energy:start -->
 {energy_text}
 <!-- abr-energy:end -->
+
+**下一步：** 按第 5 节开展首轮实验，测量可逆容量、界面稳定性及完整电芯质量，核验容量匹配与电芯比能量；据实测结果确定下一轮调整。
+
+{__import__('auto_battery_research.util.report_readiness', fromlist=['notice']).notice(scheme_data)}
 
 ---
 
@@ -1878,7 +1951,7 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
 
 ---
 
-## 3. 最终设计方案
+## 3. 电芯总体方案与关键匹配
 
 <!-- abr-final-design:start -->
 {scheme_text}

@@ -74,6 +74,20 @@ class StageManager:
         # 4. 恢复已有状态
         self._load_state()
 
+        stage5 = self.get_stage_by_id(5)
+        needs_experiment = False
+        if stage5 and stage5.status in ("SKIPPED", "PASSED", "FALLBACK"):
+            try:
+                recipe = json.loads((self.get_task_output_dir() / "experiment_plan.json").read_text(encoding="utf-8"))
+                needs_experiment = recipe.get("generated_stage") != 5
+            except (OSError, ValueError):
+                needs_experiment = True
+        if stage5 and needs_experiment:
+            self._stage5_require_experiment = True
+            stage5.status = "PENDING"
+            self.current_stage_idx = min(self.current_stage_idx, 4)
+            self.get_stage_by_id(6).status = "PENDING"
+
         # 5. 覆写 PINN skip 选项（若 CLI 显式传入）
         if skip_pinn is not None:
             self.set_stage_skip(5, skip=skip_pinn, reason="CLI 参数覆盖跳过设置" if skip_pinn else "CLI 强制激活仿真")
@@ -95,7 +109,7 @@ class StageManager:
         for s in self.stages:
             if s.status in TERMINAL_OK:
                 continue  # 已确认的前缀保持连续 (含 _load_state 恢复的终态)
-            if s.skip:
+            if s.skip and s.id != 5:
                 s.status = "SKIPPED"
                 continue
             if s.status != "PENDING":
@@ -326,16 +340,16 @@ class StageManager:
         """
         for s in self.stages:
             if s.id == stage_id_or_key or s.key == str(stage_id_or_key):
-                if skip and not getattr(s, "allow_skip", s.id == 5):
+                if skip and s.id != 5 and not getattr(s, "allow_skip", False):
                     print(f"[StageManager] 拒绝跳过: Stage {s.id} ({s.name}) 为核心必跑阶段，禁止跳过！")
                     return False
                 s.skip = skip
                 if skip:
                     s.skip_reason = reason or "手动配置跳过"
-                    s.status = "SKIPPED"
+                    s.status = "PENDING" if s.id == 5 else "SKIPPED"
                 else:
                     s.skip_reason = ""
-                    if s.status == "SKIPPED":
+                    if s.status == "SKIPPED" or s.id == 5:
                         s.status = "PENDING"
                 if persist:
                     self._save_state()
@@ -348,7 +362,7 @@ class StageManager:
         if not stage:
             return False, {"check_pass": False, "error": f"找不到指定阶段: {stage_id}"}
 
-        if stage.skip:
+        if stage.skip and stage.id != 5:
             return True, {
                 "check_pass": True,
                 "stage_id": stage.id,
@@ -361,7 +375,7 @@ class StageManager:
         # Check 与 Complete 共用同一收尾，先选定最终产物再验收，避免预算耗尽后
         # Check 永远检查失败候选、只有 Complete 才能回滚的矛盾。
         selection = None
-        if stage.id == 5 and stage is self.get_current_stage() and stage.status not in ("PASSED", "FALLBACK"):
+        if stage.id == 5 and not stage.skip and stage is self.get_current_stage() and stage.status not in ("PASSED", "FALLBACK"):
             from auto_battery_research.tools.workflow_actions import select_best_stage5_result
             selection = select_best_stage5_result(self)
 
@@ -448,7 +462,7 @@ class StageManager:
 
         passed, check_res = self.check_stage(target_stage.id, is_complete=True, **kwargs)
 
-        if not passed and not target_stage.skip:
+        if not passed and (not target_stage.skip or target_stage.id == 5):
             return False, {
                 "complete": False,
                 "message": f"Stage {target_stage.id} 门禁检查未通过，无法推进！",
@@ -456,7 +470,7 @@ class StageManager:
                 "details": check_res,
             }
 
-        if target_stage.skip:
+        if target_stage.skip and target_stage.id != 5:
             target_stage.status = "SKIPPED"
             self._extract_stage5_params_on_skip(target_stage)
         else:
@@ -472,7 +486,7 @@ class StageManager:
         advanced = False
         for next_idx in range(self.current_stage_idx + 1, len(self.stages)):
             next_stage = self.stages[next_idx]
-            if next_stage.skip:
+            if next_stage.skip and next_stage.id != 5:
                 next_stage.status = "SKIPPED"
                 self._extract_stage5_params_on_skip(next_stage)
                 continue
@@ -576,6 +590,8 @@ class StageManager:
         task_dir.mkdir(parents=True, exist_ok=True)
         self._task_dir_cache[target] = task_dir
         self._task_dir_legacy[target] = is_legacy
+        from auto_battery_research.util.scheme_ledger import ensure
+        ensure(task_dir, target)
         return task_dir
 
     def is_legacy_goal(self, goal: Optional[str] = None) -> bool:
@@ -699,7 +715,7 @@ class StageManager:
 
             if s.id < start_stage_id:
                 s.status = "PASSED"
-            elif s.skip:
+            elif s.skip and s.id != 5:
                 s.status = "SKIPPED"
             else:
                 s.status = "PENDING"

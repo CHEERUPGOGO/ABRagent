@@ -10,6 +10,14 @@ Core design principle: **"LLM in the brain seat, workflow in the referee seat"**
 
 Comments, log messages, and docs are in Chinese; match that style.
 
+Stage 4 局部修复由 `util/design_repair.py` 可信合并器执行：Reviewer 的精确原句、原因、建议经程序定位后签发块/字段白名单；Writer 只返回带基准哈希的补丁，不能全文替换、删除或更改锁定字段。缺失标题/章节共用 `util/design_sections.py` 定义；字段引用统一在参数顶层并兼容旧嵌套。检查点保存草稿、证据、审核与三轮预算，重复调用不重跑完整 RAG；只有用户 `--rebuild-stage4` 可准备新的完整设计。详见 `docs/scheme_ledger.md`。
+
+同段多问题使用 `util/repair_interfaces.py` 的问题接口事务：程序为唯一原句签发精确范围与接口ID；重叠范围合为联合接口。同段、共享字段或明确依赖组成事务，模型批量提交 submissions，不各自覆盖整段。程序校验后一次 `repair_verify` 批量复核问题解决情况和新矛盾；事务全部通过才合并，独立事务可部分成功，最后全量校验及一次写入。失败只重试剩余问题，审计记录接口、提交、复核及COMMITTED/REJECTED/ROLLED_BACK状态。
+
+Stage 6 正文由确定性视图组织：摘要先给候选与结果；材料论证按依据、取舍、推断分组；规格区分工程声明、模型输入和待补数据；实验段落按原顺序编号。完整审核与交付意见去重后集中在第 2.6 节，检查器仍要求每项完整披露。报告温度显示为摄氏度，方案与实验 JSON 保留原始单位；排版变更须递增 `report_narrative.RENDER_VERSION` 并同步渲染验收，不重跑 RAG 或 Stage 5B。
+
+第三部分为“电芯总体方案与关键匹配”：总体组合、极片与容量匹配、电解液与配套、预算与待决事项。条件性基线不能拼接成定案配方；缺少 N/P 不以厚度推断匹配成功。方案表中的 R_s / D_s 在第四部分统一声明，即使未仿真也保留，由报告检查器验收。
+
 ## Commands
 
 ```bash
@@ -103,9 +111,26 @@ papers/pdf → papers/merged (canonical; legacy data in papers/text_merged) → 
 
 ## Important Behaviors
 
-- 六节报告由 `util/report_analysis.py` 补充材料论证摘录、文献制备参考、逐轮仿真比较和实验验证路线；当前参数仍来自 `report_contract.py`。原始路径集中在第六节，来源按 DOI/文件归并。Stage 6 对六节布局及分析内容与归档的一致性进行验收。第五部分实验方案由 `util/report_recipe_llm.py` 让大模型综合完整 `design_scheme.md`、最终设计、证据原文与仿真结果生成，程序侧验收引用真实性与参数一致性，记录存 `experiment_plan.json` 并按输入指纹防陈旧；LLM 不可用或验收不过时回退确定性渲染。
+- Stage 5 合法几何修订与择优恢复必须同步 `scheme_parameters` 中同路径的重复声明（`align_geometry_parameters`），旧原句/来源留在 geometry_parameter_history，不能把旧提取值当成第二份冻结几何；用户锁定和其他字段冲突仍由方案表提交校验。旧优化检查点若三次均因“补充参数与几何契约冲突”被拒且从未产生真实修订，可一次性归档恢复预算；已执行修订的预算不重置。
 
-- 最终报告使用 `util/report_contract.py` 的最终设计/仿真视图，不嵌入初始 Markdown 数值；实验章节直接渲染有效几何与已声明条件，缺失工艺参数留空，不再回退固定数值配方。报告指纹与关键块在 Stage 6 门禁重算验收。PINN 结果明确携带 `energy_accounting`，电芯比能量是材料级值乘固定系数，不是逐项质量核算或物理上限证明。
+- Stage 5 的有限 PINN 优化已移入 `util/pinn_optimization.py`，由收尾执行器主动运行，不依赖外层 ReAct。收敛不等于达标：仅匹配、开启且结果身份有效时比较目标容差；未达标最多按 max_geometry_revisions 提案/修订/重跑，检查点持久化预算，最后统一择优。仅调整未锁定的可设计几何，不修改 D_s 或材料；模型不可用时采用范围内的有限工程候选。实验推荐使用 `util/experiment_repair.py` 逐字段、逐段校验，一次首稿加一次局部补丁，保留已通过内容；修复失败只把错误单元标为待确定。引用对象可提取真实 passage_id 再核验，未知引用仍拒绝。
+
+- 报告优先为默认模式（`runtime_options.report_first: true`）。新的 `delivery_contract=1` 将报告交付类别与学术/物理验证状态分开：Stage 4 可在附条件或诊断状态推进，Stage 5 匹配失败或物理失败不阻断实验建议，Stage 6 必须如实呈现限制。下文严格几何与仿真门禁仍约束真正的仿真输入和旧契约，不再成为所有新课题出报告的前置条件。禁止为了通过门禁虚填 D_s、把致密锂箔更换为多孔宿主，或把失效仿真数值写成性能结论。`util/report_readiness.py` 维护交付状态与披露正文；报告指纹及终审都校验该状态。
+
+- 课题身份比较使用 NFKC（含化学式下标数字）、空格、常见标点及连接号归一化，但保留当前课题原文和已有目录哈希。运行中领域工具通过 `bind_active_goal` 固定当前管理器课题，模型参数不能隐式切换目录；明确切换必须走正式工作流入口。RAG 设计请求独立于 `target` 保存为 `design_request`，执行服务从选定管理器取得目录。既有同义目录不自动搬迁或覆盖。
+
+- Stage 5 v2 分为物理与实验：`util/stage5_execution.py` 执行 `finalize_stage5`，物理仅匹配且开启时运行，实验始终尝试；`checkers/stage5_checker.py` 组合验收。`--skip-pinn`/兼容跳过操作仅关闭物理，不能跳过实验。旧 SKIPPED 或缺实验推荐的完成态重开 Stage 5。Stage 4 不生成实验方案；5B 复用文献并最多三个本地工艺查询、八个补充段落、二十段/一万六千字符输入，一次主生成加一次修正，六千 token，无总耗时限制。重点硬校验与当前方案表重叠字段；非重叠工艺/预算假设允许工程建议并提示，不回填物性或 PINN 输入。检查点保存 `stage5_execution.json`，证据保存 `experiment_evidence.json`。`FinalizeStage5` 和 `--regenerate-experiment-plan` 支持只重试实验；Stage 6 只读取渲染。
+
+- 实验推荐契约 v3 由 `util/experiment_design.py` 维护，来源阶段为 5，参数引用与独立工程假设分别保存。检索补充证据不改写材料方案，失败保留有效推荐与诊断。Stage 5 组合门禁要求物理合法终态和有效实验推荐，Stage 6 只做参数对齐的文字投影。
+
+- 方案表与报告表达分离：`util/report_narrative.py` 专门生成方案正文、实验步骤、参数对照与缺口建议的中文段落，内部 `scheme_table.md` 仍保留表格。报告不输出方案表或候选 JSON；缺口候选支持无数值的获取方法及采用判据，离线时也生成确定性获取路径。报告与实验计划指纹包含渲染版本，门禁重算正文防篡改。候选仍单独归档，不能自动成为当前方案。
+
+- 统一课题方案表：`util/scheme_ledger.py` 维护任务目录的 `scheme_ledger.json`，首次解析课题目录建立，中文视图为 `scheme_table.md`，修订快照为 `scheme_history/`。用户更新默认锁定；Agent 只能更新未锁字段，提交必须匹配基准版本。Stage 4 的设计契约是表的派生视图，几何修订及择优回滚也提交该表；各门禁校验当前指纹。旧任务只导入结构化字段，不从旧正文补参数。新的报告路径由程序渲染方案表和派生计算，模型仅为缺失字段生成单独标记的结构化候选，不再转录初始方案数值；无方案表的历史独立调用保留旧报告路径。CLI 维护方式及规范单位见 `docs/scheme_ledger.md`。
+
+- 六节报告由 `util/report_analysis.py` 补充材料论证、逐轮仿真比较及参考来源；当前参数来自 `report_contract.py`。第五部分由 Stage 5B 的 `experiment_plan.json` 通过 `util/report_recipe_llm.py` 只读投影为文字，渲染记录存 `experiment_report.json`，不在报告阶段另调用模型生成实验路线。Stage 6 对六节布局、推荐主体、参数绑定、仿真说明与归档的一致性验收；不存在有效推荐时明确失败，不用空缺列表代替完整方案。
+- 第二部分通过 `util/material_arguments.py` 从 Stage 4 的 `final_answer` / `evidence` 恢复具体选材论证、候选比较及机理推断，保留已归档引用与未解决审核意见；当前材料与改性规格从方案表读取，过滤旧几何/工艺，候选表转为文字且不保留主观评分。不增加检索或模型调用，不以固定通用优点代替真实论证；论证和证据变动纳入报告输入指纹，门禁重算第二部分。
+
+- 最终报告使用 `util/report_contract.py` 的最终设计/仿真视图，不嵌入初始 Markdown 数值；实验章节直接渲染有效几何与已声明条件，缺失工艺参数由 Stage 5B 给工程推荐，不写成实测或模型物性。报告指纹与关键块在 Stage 6 门禁重算验收。PINN 结果明确携带 `energy_accounting`，电芯比能量是材料级值乘固定系数，不是逐项质量核算或物理上限证明。
 - N/P 可选且不要求模型生成；缺失时不校准两电极厚度。Stage 5 的 Check/Complete 共用幂等择优收尾。阶段完成后不再兜底重复仿真；阶段日志合并保留详细发现。
 - RAG Writer/Reviewer 共享证据覆盖，Reviewer 仅返回简短判定。`review_completed` 表示有效审核响应，`review_passed` 表示无未解决意见且置信度合格；预算耗尽但仍有内容意见时仅作为 `REVIEWED_WITH_ISSUES` 待验证候选推进，保留真实低置信度和意见到报告，不能称为 APPROVED。响应失败/结构不全/硬规则失败仍拒绝。LLM 响应记录 finish_reason/推理 token；OpenAI-compatible 空白或截断最多扩大预算重试一次，仍失败则拒绝。工作流 RAG 预算来自 LLM_MAX_TOKENS 或 llm.max_tokens，重试上限 llm.output_max_tokens。
 

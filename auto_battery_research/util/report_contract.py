@@ -3,6 +3,7 @@
 import json
 import hashlib
 from typing import Any
+from .report_narrative import RENDER_VERSION
 
 
 ENERGY_SCOPE = (
@@ -14,8 +15,10 @@ ENERGY_SCOPE = (
 
 def report_identity(doc: dict, result: dict | None, spec: dict | None) -> str:
     """报告输入指纹包含完整结构化方案与实际结果，变更后必须重新编译。"""
-    payload = {"scheme": doc.get("scheme") or {}, "reviewer_output": doc.get("reviewer_output") or {},
-               "result": result or {}, "spec": spec or {}}
+    payload = {"render_version": RENDER_VERSION, "experiment_plan_hash": doc.get("experiment_plan_hash"), "scheme": doc.get("scheme") or {}, "ledger_hash": doc.get("ledger_hash"), "reviewer_output": doc.get("reviewer_output") or {},
+               "result": result or {}, "spec": spec or {},
+               "materials_input": {"analysis": doc.get("final_answer"), "evidence": doc.get("evidence")},
+               "report_readiness": doc.get("report_readiness")}
     digest = hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False, allow_nan=False).encode("utf-8")).hexdigest()
     return f"<!-- abr-report-identity:{digest} -->"
 
@@ -56,6 +59,7 @@ def report_context(doc: dict, result: dict | None, spec: dict | None = None) -> 
         accounting = {"method": "fixed_material_to_cell_ratio", "material_energy_wh_kg": material,
                       "cell_energy_wh_kg": energy, "cell_energy_ratio": energy / material}
     return {"scheme": scheme, "geometry": scheme.get("geometry") or {},
+            "ledger_view": doc.get("ledger_view"),
             "effective": (result.get("pinn") or {}).get("design") or {},
             "condition": ((spec or {}).get("cell_spec") or {}).get("condition") or {},
             "result": result, "energy_accounting": accounting,
@@ -64,6 +68,13 @@ def report_context(doc: dict, result: dict | None, spec: dict | None = None) -> 
 
 def render_selected_design(context: dict) -> str:
     """正文只渲染最终版本；初始提案链接留档，不能混入当前配方。"""
+    if context.get("ledger_view"):
+        from .report_narrative import render_design
+        body = render_design(context["ledger_view"])
+        issues = (context.get("reviewer_output") or {}).get("issues") or []
+        if issues:
+            body += "\n\n**适用边界。** 本方案仍有未解决的审核意见，完整内容见第 2.6 节；相关判断不能作为已验证结论。"
+        return body
     s, g = context["scheme"], context["geometry"]
     if not s:
         return "*本课题尚未生成独立的 Stage 4 电池体系设计方案 (design_scheme.json)。缺失参数保持空白。*"
@@ -95,10 +106,10 @@ def render_energy(context: dict, target: float | None, tolerance: float) -> str:
     r, a = context["result"], context["energy_accounting"]
     energy = r.get("energy_wh_kg")
     if not isinstance(energy, (int, float)):
-        return "**目标判定：未完成有效仿真，不能判定达标。**\n\n" + ENERGY_SCOPE
+        return "**目标判定：未完成有效仿真，不能判定达标。** \n\n" + ENERGY_SCOPE
     threshold = target * (1 - tolerance / 100) if target is not None else None
     verdict = "无数值目标" if threshold is None else ("达到容差阈值" if energy >= threshold else "未达标")
-    lines = [f"**目标判定：{verdict}。当前选定候选折算比能量 {energy:.1f} Wh/kg。**"]
+    lines = [f"**目标判定：{verdict}。当前选定候选折算比能量 {energy:.1f} Wh/kg。** "]
     if threshold is not None:
         lines.append(f"目标 {target:g} Wh/kg；容差 {tolerance:g}%；下限 {threshold:.1f} Wh/kg；距下限缺口 {max(0, threshold-energy):.1f} Wh/kg。")
     lines += ["", "**能量计算口径**", "",
@@ -109,6 +120,9 @@ def render_energy(context: dict, target: float | None, tolerance: float) -> str:
 
 def render_recipe(context: dict) -> str:
     """确定性实验参数基线（第五部分回退路径使用）; 未知制备条件留空, 不引入固定数值配方。"""
+    if context.get("ledger_view"):
+        from .scheme_ledger import render_experiment
+        return render_experiment(context["ledger_view"], context["result"])
     g, eff, s = context["geometry"], context["effective"], context["scheme"]
     cond = context["condition"]
     raw_cond = g.get("condition") or {}

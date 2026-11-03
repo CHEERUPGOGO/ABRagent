@@ -302,17 +302,9 @@ def test_complete_stage_cascade_triggers_stage5_extraction(tmp_path):
 
     ok, res = mgr.complete_stage(4)
     assert ok is True, res.get("error")
-    assert mgr.get_stage_by_id(5).status == "SKIPPED"
-
-    # 级联跳过兜底: 参数提取落盘 + Stage 5 journal 补记
-    spec_file = mgr.get_task_output_dir(goal) / "pinn_input_spec.json"
-    assert spec_file.exists()
-    payload = json.loads(spec_file.read_text(encoding="utf-8"))
-    assert payload["cell_spec"]["cathode"]["material"]["formula"] == "LiNi0.8Co0.1Mn0.1O2"
-    journals = mgr.get_all_stage_journal()
-    s5_rows = [j for j in journals if j.get("stage_id") == 5]
-    assert len(s5_rows) == 1
-    assert s5_rows[0]["deliverables"] == [str(spec_file)]
+    assert mgr.get_stage_by_id(5).status == "IN_PROGRESS"
+    assert mgr.get_current_stage().id == 5
+    assert not (mgr.get_task_output_dir(goal) / "experiment_plan.json").exists()
 
 
 # ════════════════ geometry 契约 v1.1: 幂等 / 非法值 fail-closed / c_rate ════════════════

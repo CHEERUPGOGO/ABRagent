@@ -5,8 +5,10 @@
 2. 调度 Planner $\rightarrow$ Retrieval $\rightarrow$ Writer $\rightarrow$ Reviewer 四大智能体协同生成五段式方案。
 3. 执行 C1-C8 热力学与化学相容性硬约束审查（如高压正极与碳酸酯不兼容检测）。
 
+Stage 4 不生成实验方案；材料设计通过后在 Stage 5B 参考最终参数做轻量工艺检索和实验推荐。
+
 ## 验收门禁 (RAGDesignChecker)
-- `output/auto_battery_research/design_scheme.md` 存在且字数 $\ge 200$ 字符。
+- 课题目录 `output/tasks/<goal>/design_scheme.md` 存在且字数 $\ge 200$ 字符。
 - 完整包含五段式核心章节（目标与设计路线、推荐组合、预期关键指标、可行性依据、风险与数据缺口）。
 
 

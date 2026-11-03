@@ -52,7 +52,7 @@ STAGE_ALLOWED_DOMAIN_TOOLS: Dict[int, List[str]] = {
     2: ["InspectVectorDB", "IndexSemanticVectors"],
     3: ["InspectCellEntities", "ExtractAndAssembleCells"],
     4: ["RunRAGDesign", "QueryMaterialsProject"],
-    5: ["RunPhysicsSimulation", "ReviseGeometry"],
+    5: ["RunPhysicsSimulation", "ReviseGeometry", "FinalizeStage5"],
     6: ["SynthesizeResearchReport"],
 }
 
@@ -221,7 +221,7 @@ class ABRAgent:
             "   - Stage 2: 使用 `InspectVectorDB` 探测向量库，若缺失则调用 `IndexSemanticVectors`。\n"
             "   - Stage 3: 使用 `InspectCellEntities` 探测电芯，若缺失则调用 `ExtractAndAssembleCells`。\n"
             "   - Stage 4: 调用一次 `RunRAGDesign` 单链路服务 (内部完成 Planner -> Retrieval -> Writer -> Reviewer 与 RelationEngine 硬约束核算)。仅当问题明确给出化学式、化学体系或 mp-id，且确实需要晶体结构、相稳定性、形成能、凸包能或带隙等计算属性时，才考虑 `QueryMaterialsProject`；只问实验容量、循环寿命、电解液配方、包覆工艺或界面抑氧效果时不要调用。`RunRAGDesign` 内部已按需查询 MP，同一问题不要预先重复调用。\n"
-            "   - Stage 5: 调用 `RunPhysicsSimulation` 执行 P2D/PINN 物理验证（若未跳过）。\n"
+            "   - Stage 5: 调用 `RunPhysicsSimulation` 执行匹配体系的 PINN 物理验证，最后调用 FinalizeStage5 完成必做实验设计。\n"
             "   - Stage 6: 调用 `SynthesizeResearchReport` 整合全流程成果并生成最终综合研报。\n"
             "3. **确定性门禁质检 (Check & Complete)**：\n"
             "   - 完成当前阶段工作后，必须调用 `Check` 进行严格自检。\n"
@@ -309,7 +309,7 @@ class ABRAgent:
             base_ratio = stage_idx / total_stages
 
             # 1. 检查是否跳过
-            if curr_stage.skip:
+            if curr_stage.skip and curr_stage.id != 5:
                 append_log(f"\n>>> [Stage {curr_stage.id}/{total_stages}] {curr_stage.name} (Key: {curr_stage.key})")
                 append_log(f"[SKIP] 阶段已跳过: {curr_stage.skip_reason or '默认加速模式'}")
                 skip_deliverables: list = []
@@ -383,6 +383,9 @@ class ABRAgent:
                     f"【研发总目标】{self.goal}\n"
                     f"【阶段指引与验收指标】\n{tips}\n"
                 )
+                from auto_battery_research.util.scheme_ledger import ensure, render
+                current_ledger = ensure(self.manager.get_task_output_dir(self.goal), self.goal)
+                prompt_content += "\n【当前统一方案表：用户锁定值不可覆盖；缺失值不编造】\n" + render(current_ledger) + "\n"
                 if last_failure:
                     prompt_content += (
                         f"\n【上一轮门禁驳回 (Self-Correction)】\n"
@@ -467,10 +470,11 @@ class ABRAgent:
                         time.sleep(1)
 
             elapsed_stage = time.time() - t0
-            curr_stage.finish_running(status="PASSED" if stage_passed else "FAILED", duration=elapsed_stage)
+            terminal = "FALLBACK" if stage_passed and curr_stage.status == "FALLBACK" else ("PASSED" if stage_passed else "FAILED")
+            curr_stage.finish_running(status=terminal, duration=elapsed_stage)
 
             # 4. 记录日志与推进阶段
-            if stage_passed or curr_stage.skip:
+            if stage_passed or (curr_stage.skip and curr_stage.id != 5):
                 append_log(f"[JOURNAL] 记录 Stage {curr_stage.id} 研发日志...")
                 notes = f"Stage {curr_stage.id} ({curr_stage.name}) 顺利完成，通过确定性门禁质检 (耗时: {elapsed_stage:.1f}s)"
                 delivs = curr_stage.expected_outputs
@@ -487,7 +491,12 @@ class ABRAgent:
                 else:
                     comp_ok = True
                     comp_res = {"message": f"Stage {curr_stage.id} 状态已固化，成功推进至下一阶段"}
-                self._notify(curr_stage.id, "PASSED", elapsed_stage)
+                if curr_stage.status == "FALLBACK":
+                    findings["status"] = "FALLBACK"
+                    self.manager.set_stage_journal(stage_id=curr_stage.id,
+                        notes=f"Stage {curr_stage.id} 附条件交付；审核或物理验证限制见报告及子步骤记录。",
+                        deliverables=delivs, key_findings=findings)
+                self._notify(curr_stage.id, curr_stage.status, elapsed_stage)
                 append_log(f"[COMPLETE] {comp_res.get('message', '阶段成功推进')}")
 
                 yield {
@@ -510,7 +519,8 @@ class ABRAgent:
         all_done = self.manager.is_all_completed()
 
         append_log("\n" + "=" * 75)
-        append_log(f"[{'DONE' if all_done else 'INCOMPLETE'}] ABRAgent 执行结束: {'全流程成功闭环' if all_done else '部分完成'}")
+        delivery_summary = "附条件交付，验证限制见报告" if any(s.status == "FALLBACK" for s in self.manager.stages) else "全流程成功闭环"
+        append_log(f"[{'DONE' if all_done else 'INCOMPLETE'}] ABRAgent 执行结束: {delivery_summary if all_done else '部分完成'}")
         append_log(f"总耗时: {total_elapsed:.1f}s")
 
         task_dir = self.manager.get_task_output_dir(self.goal)
@@ -519,7 +529,7 @@ class ABRAgent:
         found_rf = resolve_final_report(
             task_dir,
             is_legacy=self.manager.is_legacy_goal(self.goal),
-            scheme_fallback=True,
+            scheme_fallback=False,
             global_dir=ROOT_DIR / "output" / "auto_battery_research",
         )
         final_report_text = ""
@@ -608,7 +618,14 @@ class ABRAgent:
                 and str(openai_api_key).strip() not in ("dummy_key", "none", "None", "")
                 and not str(openai_api_key).startswith("$(")
             )
-            if is_valid_key:
+            delivery_managed = stage_id == 4 and self.config.get("runtime_options", {}).get("report_first", True)
+            if stage_id in (5, 6) and hasattr(self.manager, "get_task_output_dir"):
+                try:
+                    delivery_doc = json.loads((self.manager.get_task_output_dir() / "design_scheme.json").read_text(encoding="utf-8"))
+                    delivery_managed = delivery_doc.get("delivery_contract") == 1
+                except (OSError, ValueError):
+                    pass
+            if is_valid_key and not delivery_managed:
                 stage = self.manager.get_stage_by_id(stage_id)
                 stage_name = stage.name if stage else f"Stage {stage_id}"
                 call_msgs = stage_messages or self.messages
@@ -669,7 +686,7 @@ class ABRAgent:
             t_inspect = self.tool_map.get("InspectCellEntities")
             t_mine = self.tool_map.get("ExtractAndAssembleCells")
 
-            rel_task_dir = str(task_cell_dir.relative_to(ROOT_DIR)).replace("\\", "/")
+            rel_task_dir = str(task_cell_dir)
             insp_res = json.loads(t_inspect._run(cell_dir=rel_task_dir) if t_inspect else "{}")
             executed_actions.append(f"InspectCellEntities -> task_cells={has_task_cells}")
 
@@ -702,15 +719,11 @@ class ABRAgent:
                     )
 
         elif stage_id == 5:
-            # 已有可验收结果或本轮已经运行工具时，不重复执行仿真。
-            t_pinn = self.tool_map.get("RunPhysicsSimulation")
-            from auto_battery_research.checkers.pinn_physics_checker import PINNPhysicsChecker
-            checker = PINNPhysicsChecker()
-            checker.on_init(self.manager, {"id": 5}, self.manager.config)
-            valid, _ = checker.do_check()
-            if t_pinn and not valid and not any("RunPhysicsSimulation" in a for a in executed_actions):
-                t_pinn._run(target_goal=self.goal)
-                executed_actions.append("RunPhysicsSimulation")
+            from auto_battery_research.util.stage5_execution import finalize_stage5
+            result = finalize_stage5(self.manager)
+            executed_actions.append("FinalizeStage5")
+            if not result.get("success"):
+                self.log(str(result.get("error") or result.get("key_findings")))
 
         elif stage_id == 6:
             # Stage 6: 综合研报生成 (若大模型已调用则不重复执行)

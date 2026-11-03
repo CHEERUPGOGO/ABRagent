@@ -199,7 +199,7 @@ class LLMClient:
             """有限重试：扩大正文预算并要求精简；每次响应分别留痕。"""
             nonlocal active_prompt, budget, attempt, _t0
             from langchain_core.messages import SystemMessage, HumanMessage
-            for attempt in (1, 2):
+            for attempt in ((1,) if getattr(self, "single_attempt", False) else (1, 2)):
                 if _t0 is not None:
                     _t0 = time.monotonic()
                 bound = llm.bind(max_tokens=budget, temperature=temp) if hasattr(llm, "bind") else llm
@@ -226,7 +226,7 @@ class LLMClient:
                 _record(backend, text, resp=resp, error=error)
                 if error is None:
                     return text
-                if attempt == 2:
+                if attempt == 2 or getattr(self, "single_attempt", False):
                     raise error
                 budget = min(budget * 2, self.output_max_tokens)
                 active_prompt = user_prompt + "\n\n上次输出未完成。请精简推理和重复表述，先保证全部必需章节/JSON完整，正文不超过2500中文字；禁止省略结尾。"

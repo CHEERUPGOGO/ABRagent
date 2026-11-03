@@ -17,6 +17,7 @@ from __future__ import annotations
 import json
 import re
 import threading
+import unicodedata
 from typing import Dict, Any, List, Optional, Type
 from pydantic import BaseModel, Field
 from langchain_core.tools import BaseTool
@@ -48,6 +49,18 @@ def set_stage_manager(mgr: StageManager):
         _GLOBAL_MANAGER = mgr
 
 
+def normalize_goal_identity(goal: str) -> str:
+    """只用于比较，不改变持久化课题名称、目录哈希或原始要求。"""
+    value = unicodedata.normalize("NFKC", goal or "").casefold()
+    value = value.translate(str.maketrans({"–": "-", "—": "-", "−": "-", "‐": "-", "‑": "-"}))
+    return re.sub(r"[\s_，,。、；;！!？?“”‘’\"'（）()【】\[\]]", "", value).strip(".")
+
+
+def bind_active_goal(target_goal: Optional[str] = None, active_goal: Optional[str] = None) -> str:
+    """运行中工具只能操作当前课题；切换任务必须经工作流正式入口。"""
+    return active_goal or get_stage_manager().target_goal
+
+
 def resolve_effective_goal(target_goal: Optional[str] = None, active_goal: Optional[str] = None) -> str:
     """解析生效课题目标: 优先使用显式课题，但若与当前活跃课题语义同义(如大小写/空格/电池后缀差异)则对齐回当前课题，防止分叉."""
     g = (target_goal or "").strip()
@@ -56,8 +69,8 @@ def resolve_effective_goal(target_goal: Optional[str] = None, active_goal: Optio
         return a or "general_research_task"
     if not a:
         return g
-    na = re.sub(r"[\s_，。、]", "", a.lower())
-    ng = re.sub(r"[\s_，。、]", "", g.lower())
+    na = normalize_goal_identity(a)
+    ng = normalize_goal_identity(g)
     if na == ng:
         return a
     if len(na) >= 6 and len(ng) >= 6:
@@ -85,6 +98,9 @@ def get_stage_manager_for_goal(target_goal: Optional[str] = None) -> StageManage
             return _GLOBAL_MANAGER
     key = (target_goal or "").strip() or "general_research_task"
     with _MANAGER_LOCK:
+        for cached_key, cached_mgr in _GOAL_MANAGER_CACHE.items():
+            if normalize_goal_identity(cached_key) == normalize_goal_identity(key):
+                return cached_mgr
         mgr = _GOAL_MANAGER_CACHE.get(key)
         if mgr is None:
             mgr = StageManager(target_goal=key)

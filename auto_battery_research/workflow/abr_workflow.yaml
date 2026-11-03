@@ -95,19 +95,23 @@ stages:
 
   - id: 5
     key: "pinn_physics_simulation"
-    name: "PINN 物理仿真校验"
+    name: "物理仿真与实验设计"
+    allow_skip: false
     description: "SPM PINN 放电仿真 + 材料物理参数提取 + 几何反馈修订：从 Stage 4 design_scheme.json 提取正极/负极/电解液及可获得的物理量，落盘 pinn_input_spec.json；若方案 (cathode, anode) 匹配已训练的 PINN 体系且总开关开启，则执行 SPM PINN 放电仿真。仿真结果带带容差的达标判定 (key_findings.target, 容差 runtime_options.target_energy_tolerance_pct 默认 ±5%)：未达标时调用 ReviseGeometry 修订 scheme.geometry (两电极厚度/孔隙率/粒径/扩散系数, 预算 max_geometry_revisions 默认 3 轮) 后重跑仿真；完成时仍未达标则自动择优回滚至能量最高一轮，不依赖 LLM 自觉。"
     skip: false
-    skip_reason: "用户手动跳过 (快速研发模式)；跳过时材料参数提取仍会执行，但不做 PINN 仿真。"
+    skip_reason: "仅关闭物理子步骤；参数提取和实验设计仍会执行。"
     reference_files:
       - "auto_battery_research/doc/Guide_Doc/stage5_pinn_simulation.md"
     checkers:
-      - name: "PINNPhysicsChecker"
-        class: "auto_battery_research.checkers.pinn_physics_checker.PINNPhysicsChecker"
+      - name: "Stage5Checker"
+        class: "auto_battery_research.checkers.stage5_checker.Stage5Checker"
         strict: true   # 硬门禁: 触发命中 (体系匹配+总开关) 必须有 CONVERGED 且 spec_hash 一致的仿真结果; 未匹配/总开关关闭的提取-only 合法放行
     expected_outputs:
       - "output/tasks/<goal>/pinn_input_spec.json"   # 课题专属目录 (全局 output/auto_battery_research/ 仅历史课题可读)
       - "output/tasks/<goal>/pinn_simulation_result.json"   # 体系匹配到 PINN 时生成的仿真结果
+
+      - "output/tasks/<goal>/experiment_plan.json"
+      - "output/tasks/<goal>/experiment_evidence.json"
 
   - id: 6
     key: "synthesis_report_generation"

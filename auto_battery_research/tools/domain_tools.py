@@ -264,9 +264,9 @@ class ExtractAndAssembleCellsTool(BaseTool):
     args_schema: Type[BaseModel] = ExtractAndAssembleCellsArgs
 
     def _run(self, sample_limit: Optional[int] = 10, target_query: Optional[str] = "") -> str:
-        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        from auto_battery_research.tools.stage_tools import get_stage_manager, bind_active_goal
         active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
-        goal = resolve_effective_goal(target_query, active_goal)
+        goal = bind_active_goal(target_query, active_goal)
         log_tool_call(self.name, f"sample_limit={sample_limit}, target_query='{goal}'")
         res = run_data_mining(max_files=sample_limit or 10, target_query=goal)
         return json.dumps(res, ensure_ascii=False, indent=2)
@@ -279,7 +279,7 @@ class ExtractAndAssembleCellsTool(BaseTool):
 class RunRAGDesignArgs(BaseModel):
     target_goal: Optional[str] = Field(
         default="",
-        description="课题目标 (留空则取当前工作流活跃课题)"
+        description="兼容字段：运行中固定绑定当前课题，不能通过此参数切换任务；修改设计内容请用 design_query"
     )
     design_query: Optional[str] = Field(
         default="",
@@ -305,9 +305,9 @@ class RunRAGDesignTool(BaseTool):
     args_schema: Type[BaseModel] = RunRAGDesignArgs
 
     def _run(self, target_goal: Optional[str] = "", design_query: Optional[str] = "") -> str:
-        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        from auto_battery_research.tools.stage_tools import get_stage_manager, bind_active_goal
         active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
-        goal = resolve_effective_goal(target_goal, active_goal)
+        goal = bind_active_goal(target_goal, active_goal)
         dq = (design_query or "").strip() or None
         log_tool_call(self.name, f"target_goal='{goal}', design_query='{dq}'")
         res = run_rag_design(target_query=goal, design_query=dq)
@@ -349,9 +349,9 @@ class RunPhysicsSimulationTool(BaseTool):
     args_schema: Type[BaseModel] = RunPhysicsSimulationArgs
 
     def _run(self, target_goal: Optional[str] = "", current_rate: Optional[str] = "0.5C") -> str:
-        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        from auto_battery_research.tools.stage_tools import get_stage_manager, bind_active_goal
         active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
-        goal = resolve_effective_goal(target_goal, active_goal)
+        goal = bind_active_goal(target_goal, active_goal)
         c_rate = _parse_c_rate(current_rate)
         log_tool_call(self.name, f"target_goal='{goal}', current_rate='{current_rate}' -> c_rate={c_rate}")
         res = run_pinn_simulation(target_query=goal, c_rate=c_rate)
@@ -394,9 +394,9 @@ class ReviseGeometryTool(BaseTool):
     def _run(self, target_goal: Optional[str] = "", revisions: Optional[Dict[str, Any]] = None, reason: str = "",
              base_revision: Optional[int] = None, base_geometry_hash: Optional[str] = None,
              evidence_claims: Optional[Dict[str, Any]] = None) -> str:
-        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        from auto_battery_research.tools.stage_tools import get_stage_manager, bind_active_goal
         active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
-        goal = resolve_effective_goal(target_goal, active_goal)
+        goal = bind_active_goal(target_goal, active_goal)
         log_tool_call(self.name, f"target_goal='{goal}', reason='{str(reason)[:60]}'")
         res = revise_geometry(revisions=dict(revisions or {}), reason=str(reason or ""), target_query=goal,
                               base_revision=base_revision, base_geometry_hash=base_geometry_hash,
@@ -422,9 +422,9 @@ class SynthesizeResearchReportTool(BaseTool):
     args_schema: Type[BaseModel] = SynthesizeResearchReportArgs
 
     def _run(self, target_goal: Optional[str] = "") -> str:
-        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        from auto_battery_research.tools.stage_tools import get_stage_manager, bind_active_goal
         active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
-        goal = resolve_effective_goal(target_goal, active_goal)
+        goal = bind_active_goal(target_goal, active_goal)
         log_tool_call(self.name, f"target_goal='{goal}'")
         res = generate_synthesis_report(target_query=goal)
         return json.dumps(res, ensure_ascii=False, indent=2)
@@ -433,6 +433,18 @@ class SynthesizeResearchReportTool(BaseTool):
 # =============================================================================
 # 导出全量领域工具实例列表 (Export Domain Tools)
 # =============================================================================
+
+class FinalizeStage5Tool(BaseTool):
+    name: str = "FinalizeStage5"
+    description: str = "Stage 5 收尾：复用物理检查点并择优，始终执行轻量工艺检索和实验设计。失败只重试实验子步骤，不重跑材料 RAG。"
+    args_schema: Type[BaseModel] = SynthesizeResearchReportArgs
+
+    def _run(self, target_goal: Optional[str] = "") -> str:
+        from .stage_tools import get_stage_manager_for_goal, get_stage_manager
+        from auto_battery_research.util.stage5_execution import finalize_stage5
+        mgr = get_stage_manager()
+        return json.dumps(finalize_stage5(mgr), ensure_ascii=False)
+
 
 def get_all_domain_tools() -> List[BaseTool]:
     """获取所有电池科研领域工具实例."""
@@ -453,6 +465,7 @@ def get_all_domain_tools() -> List[BaseTool]:
         QueryMaterialsProjectTool(),
         # Stage 5
         RunPhysicsSimulationTool(),
+        FinalizeStage5Tool(),
         ReviseGeometryTool(),
         # Stage 6
         SynthesizeResearchReportTool(),

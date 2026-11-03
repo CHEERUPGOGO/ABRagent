@@ -121,7 +121,7 @@ def main():
     parser.add_argument("--skip-stage", type=int, help="动态跳过指定 Stage ID (如 Stage 5)")
     parser.add_argument("--enable-stage", type=int, help="动态激活已跳过的 Stage ID")
     parser.add_argument("--with-pinn", action="store_true", help="激活 Stage 5 (PINN 物理仿真)")
-    parser.add_argument("--skip-pinn", action="store_true", help="跳过 Stage 5 (PINN 物理仿真)")
+    parser.add_argument("--skip-pinn", action="store_true", help="仅关闭 Stage 5A 物理仿真，Stage 5B 实验设计仍执行")
     parser.add_argument("--run", action="store_true", help="启动 ABRAgent 进行全自动端到端自主执行")
     parser.add_argument("--goal", type=str, default=DEFAULT_GOAL, help="指定电池设计研发目标")
     parser.add_argument("--journal", action="store_true", help="查看所有阶段的历史研发日志")
@@ -139,6 +139,12 @@ def main():
     parser.add_argument("--host", type=str, default="127.0.0.1", help="Web 监控大屏监听地址 (默认 127.0.0.1 安全本地回环)")
     parser.add_argument("--port", type=int, default=7865, help="Web 监控大屏端口 (默认 7865)")
     parser.add_argument("--share", action="store_true", help="创建公共分享链接 (仅旧版 Gradio 后备入口支持)")
+    parser.add_argument("--scheme-show", action="store_true", help="显示当前统一方案表")
+    parser.add_argument("--rebuild-stage4", action="store_true", help="显式归档修复检查点并允许重新设计 Stage 4；之后用 --run 执行")
+    parser.add_argument("--regenerate-experiment-plan", action="store_true", help="基于已有 Stage 4 设计和文献生成首轮实验推荐")
+    parser.add_argument("--scheme-update", type=Path, help="按 JSON 文件批量更新方案表，用户值默认锁定")
+    parser.add_argument("--scheme-unlock", help="解除指定方案字段的用户锁定")
+    parser.add_argument("--scheme-history", action="store_true", help="显示方案修订历史")
 
     args = parser.parse_args()
 
@@ -166,8 +172,52 @@ def main():
     elif args.skip_pinn:
         skip_pinn_val = True
 
-    mgr = StageManager(skip_pinn=skip_pinn_val, target_goal=args.goal)
+    from auto_battery_research.tools.stage_tools import get_stage_manager_for_goal
+    mgr = get_stage_manager_for_goal(args.goal)
+    if skip_pinn_val is not None:
+        mgr.set_stage_skip(5, skip=skip_pinn_val, reason="CLI 显式设置")
     set_stage_manager(mgr)
+    if args.rebuild_stage4:
+        import json
+        from auto_battery_research.util.scheme_ledger import atomic_write, digest
+        task_dir = mgr.get_task_output_dir()
+        checkpoint = task_dir / "stage4_repair_checkpoint.json"
+        if checkpoint.exists():
+            content = checkpoint.read_text(encoding="utf-8")
+            atomic_write(task_dir / "stage4_repair_history" / (digest(content)[:16] + ".json"), content)
+        atomic_write(task_dir / "stage4_rebuild_requested.json", json.dumps({"requested": True}))
+        mgr.reset_workflow(start_stage_id=4)
+        print("Stage 4 已准备显式重新设计，历史修复记录已保留；请使用 --run 执行。")
+        return
+    if args.regenerate_experiment_plan:
+        import json
+        from auto_battery_research.util.stage5_execution import finalize_stage5
+        result = finalize_stage5(mgr, design_only=True)
+        if not result.get("success"):
+            parser.error(result.get("error", "实验设计失败"))
+        if all(mgr.get_stage_by_id(i).status in ("PASSED", "FALLBACK") for i in range(1, 5)):
+            mgr.reset_workflow(start_stage_id=5)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return
+    if args.scheme_show or args.scheme_update or args.scheme_unlock or args.scheme_history:
+        import json
+        from auto_battery_research.util.scheme_ledger import ensure, update, render
+        task_dir = mgr.get_task_output_dir()
+        data = ensure(task_dir, args.goal)
+        try:
+            if args.scheme_update:
+                patch = json.loads(args.scheme_update.read_text(encoding="utf-8-sig"))
+                data = update(task_dir, patch["changes"], patch["base_revision"], actor="user",
+                              reason=patch.get("reason", "用户命令行更新"))
+                mgr.reset_workflow(start_stage_id=4)
+            if args.scheme_unlock:
+                data = update(task_dir, {}, data["revision"], actor="user", reason="用户解除锁定",
+                              unlock=[args.scheme_unlock])
+                mgr.reset_workflow(start_stage_id=4)
+        except (ValueError, KeyError, OSError) as exc:
+            parser.error(str(exc))
+        print(json.dumps(data["history"], ensure_ascii=False, indent=2) if args.scheme_history else render(data))
+        return
 
     # 4. Gradio 旧版仪表盘 (后备入口, 需要 Manager 驱动交互操作)
     if args.web_gradio:

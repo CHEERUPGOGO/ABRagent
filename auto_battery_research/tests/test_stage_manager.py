@@ -23,7 +23,7 @@ def test_stage_skip_override(tmp_path):
     # 测试动态跳过与激活
     mgr.set_stage_skip(5, skip=True, reason="测试跳过")
     assert mgr.stages[4].skip is True
-    assert mgr.stages[4].status == "SKIPPED"
+    assert mgr.stages[4].status == "PENDING"
 
     mgr.set_stage_skip(5, skip=False)
     assert mgr.stages[4].skip is False

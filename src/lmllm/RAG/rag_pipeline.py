@@ -501,6 +501,9 @@ class RAGPipeline:
                 "timestamp": str,
             }
         """
+        from auto_battery_research.util.design_repair import resume_pipeline
+        if getattr(self, "repair_resume", None):
+            return resume_pipeline(self, self.repair_resume, question, history_context, top_k)
         question = question.strip()
         if not question:
             return {
@@ -565,9 +568,19 @@ class RAGPipeline:
         # ── Stage 3: Writer ──
         print("  [3/4] Writer 生成中...")
         _writer_scheme = self._extract_scheme(question, plan)
+        inherited_design = getattr(self, "inherited_design", None)
+        if inherited_design:
+            _writer_scheme = _writer_scheme or {}
+            for component in ("cathode", "anode", "electrolyte"):
+                if not _writer_scheme.get(component):
+                    _writer_scheme[component] = inherited_design.get(component)
         geometry_candidate = None
         geometry_error = None
         writer_question = question
+        scheme_context = getattr(self, "scheme_context", None)
+        if scheme_context:
+            from auto_battery_research.util.scheme_ledger import render
+            writer_question += "\n当前方案表（用户锁定值不可修改；有冲突只提出候选）：\n" + render(scheme_context)
         # 工作流设计模式：先冻结结构化参数，再供 Writer/Reviewer 引用。
         if getattr(self, "structured_geometry_enabled", False):
             try:
@@ -576,12 +589,18 @@ class RAGPipeline:
                 from auto_battery_research.tools.geometry_revision import resolve_input_ranges
                 from .llm_client import safe_json_loads
                 materials = {k: (_writer_scheme or {}).get(k) for k in ("cathode", "anode", "electrolyte")}
-                raw = self.writer_llm.chat(GEOMETRY_SYSTEM_PROMPT, json.dumps({
-                    "design_request": question, "materials": materials, "evidence": evidence[:25],
-                    "ranges_SI": resolve_input_ranges(materials.get("cathode"), materials.get("anode")),
-                }, ensure_ascii=False), temperature=0.1, trace_tag="geometry_design")
-                geometry_candidate = constrain_generated_np(safe_json_loads(raw), getattr(self, "original_design_request", question))
-                geometry = build_geometry_contract(geometry_candidate, materials, evidence)
+                inherited = getattr(self, "inherited_design", None)
+                if inherited and all(inherited.get(k) == materials.get(k) for k in ("cathode", "anode", "electrolyte")):
+                    geometry = inherited["geometry"]
+                    geometry_candidate = {c: {f: geometry[c].get(f) for f in ("L_um", "porosity", "R_s_um", "D_s_m2s")} for c in ("cathode", "anode")}
+                else:
+                    raw = self.writer_llm.chat(GEOMETRY_SYSTEM_PROMPT, json.dumps({
+                        "design_request": question, "materials": materials, "evidence": evidence[:25],
+                        "current_scheme_table": scheme_context,
+                        "ranges_SI": resolve_input_ranges(materials.get("cathode"), materials.get("anode")),
+                    }, ensure_ascii=False), temperature=0.1, trace_tag="geometry_design")
+                    geometry_candidate = constrain_generated_np(safe_json_loads(raw), getattr(self, "original_design_request", question))
+                    geometry = build_geometry_contract(geometry_candidate, materials, evidence)
                 writer_question += "\n【已校验结构化几何，正文不得变更；工程候选不是用户实测值】\n" + json.dumps(geometry, ensure_ascii=False)
             except Exception as exc:
                 geometry_error = str(exc)
@@ -595,102 +614,32 @@ class RAGPipeline:
         print(f"  -> {'规则回退' if writer_output.get('fallback') else 'LLM 生成'}")
 
         # ── Stage 4: Reviewer (带分层回退) ──
-        max_review_rounds = 3
-        _draft = writer_output.get("draft_answer", "")
-        _current_plan = dict(plan)
-        _current_queries = list(_current_plan.get("retrieval_queries", [question]))
-        _current_evidence = list(evidence)
-        _final = None
-        review_passed = False
-        for _round in range(max_review_rounds):
-            print(f"  [4/4] Reviewer 审核中 (第{_round+1}轮)...")
-            _scheme = self._extract_scheme(question, _current_plan, draft_text=_draft)
-            _claimed_energy = self._extract_energy_claim(_draft)
-            structure_errors = []
-            if getattr(self, "structured_geometry_enabled", False):
-                from auto_battery_research.util.design_sections import design_output_issues
-                structure_errors = design_output_issues(_draft)
-            if structure_errors:
-                reviewer_output = {"confidence": "low", "error_type": "writing", "issues": structure_errors}
-            else:
-                reviewer_output = self.reviewer.run(
-                    question=writer_question, evidence=_current_evidence, draft_answer=_draft,
-                    history_context=history_context, scheme=_scheme, claimed_energy=_claimed_energy,
-                )
-
-            _confidence = reviewer_output.get("confidence", "low")
-            _issues = reviewer_output.get("issues", [])
-            _error_type = reviewer_output.get("error_type", "writing")
-            print(f"  -> 置信度: {_confidence}, 错误类型: {_error_type}, 问题数: {len(_issues)}")
-
-            # 审核"响应失败"(空输出/JSON 截断/调用异常) 与"审核已执行并给出意见"
-            # 必须分开: 前者不算通过, 后者是正常审核结果 —— 否则方案永远无法推进。
-            if _error_type == "reviewer":
-                if _round == max_review_rounds - 1:
-                    break  # 审核始终失败: review_passed 保持 False, 由门禁拒绝
-                continue  # 重试审核, 不要求 Writer 为 JSON 故障重写全文
-
-            # 审核已成功执行: 若还有预算, 依据意见尝试改进; 最后一轮直接验收当前草稿。
-            if _round == max_review_rounds - 1 or not _issues:
-                _final = _draft
-                review_passed = not structure_errors and _confidence in ("high", "medium") and not _issues
-                break
-
-            if _error_type == "retrieval" and _issues:
-                # ── 缺证据 → 回退到检索（追加，保留已有证据）──
-                print(f"  -> 证据不足,回退检索 (第{_round+2}轮)...")
-                new_queries = self._issues_to_queries(_issues)
-                _current_queries = list(set(_current_queries + new_queries))
-                _current_plan["retrieval_queries"] = _current_queries
-                _retry_retrieval = self.retrieve_context(
-                    db_type=_db_type,
-                    question=question,
-                    queries=_current_queries,
-                    focus_component=_current_plan.get("focus_component"),
-                    focus_labels=_current_plan.get("focus_labels"),
-                    use_label_filter=not _current_plan.get("needs_reasoning", False),
-                    previous_evidence=previous_evidence,
-                    top_k=top_k,
-                )
-                # 合并新旧证据，去重
-                _merged: Dict[str, Any] = {e["passage_id"]: e for e in _current_evidence}
-                for e in _retry_retrieval.get("results", []):
-                    if e["passage_id"] not in _merged:
-                        _merged[e["passage_id"]] = e
-                _current_evidence = sorted(_merged.values(), key=lambda x: x.get("score", 0), reverse=True)[:top_k]
-                print(f"  -> 合并后共 {len(_current_evidence)} 条")
-                # 重新 reranker
-                if self._reranker_enabled and self.reranker and _current_evidence:
-                    _current_evidence = self.reranker.rerank(
-                        query=question, passages=_current_evidence,
-                        top_k=RERANKER_TOP_K, alpha=RERANKER_ALPHA,
-                    )
-                # 补检索只更新证据；所有写作轮次复用首次冻结的结构化参数上下文。
-                _retry_writer = self.writer.run(
-                    question=writer_question, plan=_current_plan,
-                    evidence=_current_evidence, history_context=history_context,
-                )
-                _draft = _retry_writer.get("draft_answer", _draft)
-            elif _error_type == "writing" and _issues:
-                # ── 文字/学术错误 → 回退到 Writer 修正 ──
-                print(f"  -> 文字修正,回退 Writer (第{_round+2}轮)...")
-                _draft = self.writer.revise(
-                    question=writer_question, plan=_current_plan,
-                    evidence=_current_evidence, draft_answer=_draft,
-                    feedback=_issues, history_context=history_context,
-                )
-            else:
-                break
-
-        final_answer = _final if _final is not None else _draft
-        evidence = _current_evidence
+        from auto_battery_research.util.design_repair import review_design
+        from auto_battery_research.util.design_sections import design_output_issues
+        baseline_scheme = self._extract_scheme(question, plan, writer_output.get("draft_answer", "")) or _writer_scheme
+        for component in ("cathode", "anode", "electrolyte"):
+            if (_writer_scheme or {}).get(component):
+                baseline_scheme[component] = _writer_scheme[component]
+        if baseline_scheme and locals().get("geometry"):
+            baseline_scheme["geometry"] = geometry
+        seed = {"question": question, "draft": writer_output.get("draft_answer", ""), "evidence": evidence,
+                "plan": plan, "retrieval": retrieval, "db_type": _db_type,
+                "writer_output": writer_output, "scheme": baseline_scheme,
+                "geometry_candidate": geometry_candidate, "geometry_error": geometry_error,
+                "checkpoint_identity": getattr(self, "repair_checkpoint_identity", None)}
+        _draft, reviewer_output, evidence, repair_parameters, repair_audit = review_design(
+            self, seed, writer_question, history_context, top_k)
+        final_answer = _draft
+        structure_errors = design_output_issues(_draft) if getattr(self, "structured_geometry_enabled", False) else []
+        _error_type = reviewer_output.get("error_type")
+        review_passed = not structure_errors and _error_type != "reviewer" and not reviewer_output.get("issues")
 
         # 追加参考来源
         ref_section = self._build_reference_section(evidence)
         final_answer = final_answer + ref_section
 
         # 提取结构化材料组合方案 (供 Stage 5 物理仿真与门禁检查消费)
-        extracted_scheme = self._extract_scheme(question, plan, final_answer)
+        extracted_scheme = seed.get("scheme") or _writer_scheme or self._extract_scheme(question, plan, writer_output.get("draft_answer", ""))
         rule_checks = {}
         if self.relation_engine:
             if extracted_scheme:
@@ -742,6 +691,8 @@ class RAGPipeline:
             "confidence": confidence,
             "scheme": extracted_scheme or {},
             "geometry_candidate": geometry_candidate,
+            "repair_parameters": repair_parameters,
+            "repair_audit": repair_audit,
             "geometry_error": geometry_error,
             "rule_checks": rule_checks,
             "timestamp": datetime.now().isoformat(),

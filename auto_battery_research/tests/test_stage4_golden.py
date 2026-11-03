@@ -197,6 +197,13 @@ def _install_scripted_llm(monkeypatch, writer_draft: str):
     call_log = []
 
     def fake_chat(self, system_prompt, user_prompt, temperature=None, trace_tag=None):
+        if trace_tag == "experiment_design":
+            from auto_battery_research.tests.test_experiment_design import recipe_payload
+            payload = recipe_payload()
+            evidence = json.loads(user_prompt).get("evidence") or []
+            if evidence:
+                payload["citations"] = [evidence[0]["passage_id"]]
+            return json.dumps(payload, ensure_ascii=False)
         if trace_tag == "geometry_design":
             return json.dumps({
                 "cathode": {"L_um": 70., "porosity": .31, "R_s_um": 5.34, "D_s_m2s": None},
@@ -267,7 +274,7 @@ def _gate_check(task_dir, goal, root_dir):
 
 
 def _run_adapter(pipeline, task_dir, goal=GOLDEN_GOAL):
-    adapter = AbrRagAdapter(config={"paths": {}}, pipeline=pipeline)
+    adapter = AbrRagAdapter(config={"paths": {}, "runtime_options": {"report_first": False}}, pipeline=pipeline)
     return adapter.run_rag_design(target_query=goal, task_dir=task_dir)
 
 

@@ -43,6 +43,16 @@ class RAGDesignChecker(BaseChecker):
                     scheme_md_file = rag_mds[0]
 
         # 1. 存在性检查
+        if scheme_json_file.exists() and scheme_md_file.exists():
+            payload, error = self.load_json_safe(str(scheme_json_file))
+            if not error and isinstance(payload, dict) and payload.get("delivery_contract") == 1:
+                from auto_battery_research.util.report_readiness import check
+                failures = check(scheme_json_file.parent, payload)
+                if failures:
+                    return False, self.build_diagnostic(passed=False, error_code="REPORT_SCHEME_INCONSISTENT",
+                        error_msg="; ".join(failures), next_action="恢复一致方案快照后生成诊断报告")
+                return True, self.build_diagnostic(passed=True, observed={"is_fallback": payload["report_readiness"]["category"] != "COMPLETE",
+                    "report_readiness": payload["report_readiness"]}, next_action="继续实验设计与报告，保留未解决问题")
         if not scheme_json_file.exists() and not scheme_md_file.exists():
             current_goal = self.stage_manager.target_goal if self.stage_manager else ""
             call_hint = f"RunRAGDesign(target_goal='{current_goal}')" if current_goal else "RunRAGDesign()"
@@ -80,20 +90,8 @@ class RAGDesignChecker(BaseChecker):
             )
 
         # 提取真正的 Markdown 标题行进行结构树校验 (AST/Heading-level parsing)
-        headings = re.findall(r"^#{1,4}\s+(.+)$", md_content, re.MULTILINE)
-        missing_sections = []
-        found_sections = []
-        for sec_name, keywords in REQUIRED_SECTIONS:
-            # 要求关键词必须命中真实的标题行或顶级粗体章节
-            matched = any(any(kw.lower() in h.lower() for kw in keywords) for h in headings)
-            if not matched:
-                # 兼容一级/二级带序号的加粗标题
-                matched = any(re.search(rf"\*\*\s*\d?\.?\s*({kw})\s*\*\*", md_content, re.IGNORECASE) for kw in keywords)
-            
-            if matched:
-                found_sections.append(sec_name)
-            else:
-                missing_sections.append(sec_name)
+        from auto_battery_research.util.design_sections import design_sections
+        headings, found_sections, missing_sections = design_sections(md_content)
 
         if len(missing_sections) >= 1:
             return False, self.build_diagnostic(
@@ -126,6 +124,11 @@ class RAGDesignChecker(BaseChecker):
             )
 
         # 3.1 证据与段落溯源及化学体系相关性检查
+        from auto_battery_research.util.scheme_ledger import projection_errors
+        ledger_errors = projection_errors(scheme_json_file.parent, json_data)
+        if ledger_errors:
+            return False, self.build_diagnostic(passed=False, error_code="SCHEME_LEDGER_STALE",
+                error_msg="; ".join(ledger_errors), next_action="按当前方案表重新生成设计")
         evidence_list = json_data.get("evidence", [])
         valid_evidence_count = 0
         relevant_evidence_count = 0

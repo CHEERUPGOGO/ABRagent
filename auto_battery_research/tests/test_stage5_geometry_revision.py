@@ -538,6 +538,14 @@ def test_clear_pinn_history_removes_sidecars(tmp_path):
 def test_check_and_complete_select_same_round_once(tmp_path):
     """Check 已完成回滚后 Complete 不再次回滚、不重复追加选择日志。"""
     mgr = _selection_fixture(tmp_path, "一致收尾400Wh/kg", energies=(370., 350.))
+    from auto_battery_research.util import experiment_design as recipes
+    from auto_battery_research.tests.test_experiment_design import scripted_client
+    task_dir = mgr.get_task_output_dir()
+    path = task_dir / "design_scheme.json"
+    design = json.loads(path.read_text(encoding="utf-8"))
+    recipe = recipes.generate(task_dir, design, scripted_client())
+    design.update(experiment_contract=2, experiment_plan_hash=recipe["plan_hash"])
+    path.write_text(json.dumps(design), encoding="utf-8")
     mgr.current_stage_idx = 4
     for stage in mgr.stages[:4]:
         stage.status = "PASSED"
