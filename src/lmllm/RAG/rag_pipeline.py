@@ -752,16 +752,29 @@ class RAGPipeline:
     # 防止泛正文中的对比性提及 (如"对比锂金属") 抢走材料位
     _ANCHOR_KEYWORDS: Dict[str, Dict[str, Tuple[str, ...]]] = {
         "cathode": {
-            "NCM811": ("ncm811",),
-            "LRMO": ("lrmo", "富锂"),
-            "LNMO": ("lnmo", "尖晶石"),
+            "NCM811": ("ncm811", "811", "ni90", "高镍"),
+            "LRMO": ("lrmo", "富锂", "无钴富锂", "li1.2mn0.6ni0.2o2", "li1.2ni0.2mn0.6o2"),
+            "LNMO": ("lnmo", "尖晶石", "高压尖晶石", "lini0.5mn1.5o4"),
             "LFP": ("lfp", "磷酸铁锂"),
             "LCO": ("lco", "钴酸锂"),
         },
         "anode": {
             "si_base": ("硅", "si-c", "si/c", "silicon", "si anode"),
-            "li_metal": ("锂金属", "li metal", "li-metal", "lithium metal"),
+            "li_metal": ("锂金属", "金属锂", "li metal", "li-metal", "lithium metal", "锂箔", "li箔"),
             "graphite": ("石墨", "graphite"),
+        },
+        "electrolyte": {
+            "carbonate_ec": (
+                "lipf6", "lipf₆", "ec/dmc", "ec+dmc", "ec/emc", "ec+emc",
+                "碳酸酯", "常规碳酸酯", "carbonate", "1 mol/l", "1m lipf6", "1m lipf₆",
+            ),
+            "lhce": ("lhce", "局部高浓", "localized high-concentration"),
+            "high_concentration": ("高浓", "hce", "high-concentration"),
+            "fluorinated": ("含氟", "氟化", "fluorinated"),
+            "ether_ec": ("醚类", "ether", "dol", "dme"),
+            "solid_sulfide": ("硫化物", "sulfide"),
+            "solid_oxide": ("氧化物", "oxide"),
+            "polymer": ("聚合物", "polymer"),
         },
     }
 
@@ -780,14 +793,28 @@ class RAGPipeline:
         if self.relation_engine is None:
             return None
         try:
+            # 1. 优先提取用户课题 (goal/question) 中显式指定的材料组件（用户输入具有最高权威）
+            q_entities = self.relation_engine.extract_entities(question) if question else {}
+
             combined = f"{question}\n{draft_text}"
             entities = self.relation_engine.extract_entities(combined)
             scheme = {}
             for cat in ("cathode", "anode", "electrolyte"):
+                # 优先级 1: 用户课题 (goal) 明确点名指定了该组件 → 直接锁定，绝不允许正文/文献对比提及抢位
+                q_ids = q_entities.get(cat) or []
+                if q_ids:
+                    anchored_q = self._anchored_pick(cat, q_ids, question)
+                    scheme[cat] = anchored_q or q_ids[0]
+                    continue
+
+                # 优先级 2: 用户课题未直接命名组件，但包含锚定关键词，从整体候选集合中锚定
                 ids = entities.get(cat) or []
                 if ids:
-                    if cat == "electrolyte":
-                        # 针对电解液，若同时出现局部高浓/含氟与常规碳酸酯别名，优先采用特化体系
+                    anchored = self._anchored_pick(cat, ids, question)
+                    if anchored:
+                        scheme[cat] = anchored
+                    elif cat == "electrolyte":
+                        # 若问题完全未指定电解液，按正文推荐次序
                         if "lhce" in ids:
                             scheme[cat] = "lhce"
                         elif "fluorinated" in ids:
@@ -797,11 +824,7 @@ class RAGPipeline:
                         else:
                             scheme[cat] = ids[0]
                     elif cat == "cathode":
-                        # 优先与用户问题 (goal) 点名的正极一致，其次按高比能正极排序
-                        anchored = self._anchored_pick("cathode", ids, question)
-                        if anchored:
-                            scheme[cat] = anchored
-                        elif "NCM811" in ids:
+                        if "NCM811" in ids:
                             scheme[cat] = "NCM811"
                         elif "LRMO" in ids:
                             scheme[cat] = "LRMO"
@@ -814,12 +837,7 @@ class RAGPipeline:
                         else:
                             scheme[cat] = ids[0]
                     elif cat == "anode":
-                        # 优先与用户问题 (goal) 点名的负极一致——问题点名"硅"时,
-                        # 禁止泛正文中的对比性提及 ("对比锂金属") 抢走负极位
-                        anchored = self._anchored_pick("anode", ids, question)
-                        if anchored:
-                            scheme[cat] = anchored
-                        elif "li_metal" in ids:
+                        if "li_metal" in ids:
                             scheme[cat] = "li_metal"
                         elif "si_base" in ids:
                             scheme[cat] = "si_base"
