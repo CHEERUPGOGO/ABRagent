@@ -25,7 +25,10 @@ def diagnose(record, doc):
     current = effective_data(doc)["parameters"]
     from .research_experiments import diagnose_links, validate_parameter
     errors.extend(diagnose_links(record, doc))
-    bad = set()
+    from .experiment_consistency import parameter_issues, stamp, paragraph_issues
+    consistency_errors = parameter_issues(record, doc)
+    errors.extend(consistency_errors)
+    bad = {e["path"][1] for e in consistency_errors}
     for key, row in params.items():
         reason = None
         if not isinstance(row, dict):
@@ -70,11 +73,18 @@ def diagnose(record, doc):
                 sections={s: ["保留当前方案并在小批验证中记录测量口径及实验条件。" * 6] for s in SECTIONS})
             probe["sections"][section] = [text]
             if doc.get("requirements"):
-                from .research_experiments import fallback_links
-                fallback_links(probe, doc)
+                from .research_experiments import recover_links
+                recover_links(probe, doc)
+            if "consistency" in record:
+                stamp(probe, doc)
             probe["plan_hash"] = plan_hash(probe)
             try:
-                validate(probe, doc)
+                bindings = validate(probe, doc)
+                from .experiment_protocol import assignment_issues
+                conflicts = assignment_issues(text, bindings)
+                conflicts += paragraph_issues(record, section, text, bindings)
+                if conflicts:
+                    raise ValueError("；".join(conflicts) + "；分组变化须单独声明，不能重复改写参数引用")
             except (ValueError, TypeError, KeyError) as exc:
                 errors.append({"path": ["sections", section, n], "reason": str(exc)})
                 if isinstance(text, str):
@@ -120,7 +130,20 @@ def repair_record(record, doc, client, task_dir, fingerprint):
                     "scheme": doc.get("scheme"), "ledger": doc.get("ledger_view"), "evidence": doc.get("evidence")}, ensure_ascii=False),
                 temperature=0.1, trace_tag="experiment_repair")
             patch = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
-            record = apply_local(record, patch, errors)
+            updated = apply_local(record, patch, errors)
+            if doc.get("requirements"):
+                from .research_experiments import recover_links
+                valid_links = copy.deepcopy(record)
+                recover_links(valid_links, doc)
+                for collection, key in (("groups", "id"), ("requirement_tests", "requirement_id")):
+                    for row in valid_links[collection]:
+                        if row in (record.get(collection) or []) and not any(v == row for v in updated.get(collection, [])):
+                            raise ValueError("局部修复不得修改已通过的" + collection + "记录：" + row[key])
+            record = updated
+            if "consistency" in record:
+                from .experiment_consistency import stamp
+                stamp(record, doc)
+                record["plan_hash"] = plan_hash(record)
             audit["patch"] = patch
         except Exception as exc:
             audit["repair_error"] = str(exc)
@@ -136,10 +159,20 @@ def repair_record(record, doc, client, task_dir, fingerprint):
                 key = path[1]
                 original = record["parameters"].get(key) or {}
                 canonical = original.get("canonical_path", overlap_key(key))
+                if not isinstance(canonical, str):
+                    canonical = overlap_key(key)
                 declared = current.get(canonical) or {}
-                if declared.get("value") is not None:
+                if original.get("scope") == "control":
+                    # 失效对照不能悄悄退回主组值；仅撤下该参数及依赖它的步骤。
+                    record["parameters"].pop(key, None)
+                    for section, paragraphs in record["sections"].items():
+                        record["sections"][section] = ["本项操作尚未定案：对照参数与分组登记不一致，先核对该对照的独立组成与条件。"
+                            if "{{" + key + "}}" in p else p for p in paragraphs]
+                elif declared.get("value") is not None:
                     record["parameters"][key] = {"ref": canonical}
-                elif doc.get("requirements") and (original.get("role") == "recipe" or any(w in key for w in ("formula", "doping", "dopant", "composition"))):
+                elif (doc.get("requirements") or "consistency" in record) and (original.get("role") == "recipe"
+                        or canonical.startswith("electrolyte.") or canonical.endswith(".material")
+                        or any(w in key for w in ("formula", "doping", "dopant", "composition", "coating"))):
                     record["parameters"].pop(key, None)
                     for section, paragraphs in record["sections"].items():
                         record["sections"][section] = [p.replace("{{" + key + "}}", "（主方案尚未声明，待Stage 4明确）") for p in paragraphs]
@@ -156,12 +189,13 @@ def repair_record(record, doc, client, task_dir, fingerprint):
                 else:
                     record["sections"][path[1]] = [text]
             elif path[0] in ("groups", "requirement_tests"):
-                from .research_experiments import fallback_links
-                fallback = {}
-                fallback_links(fallback, doc, error["reason"])
-                record[path[0]] = fallback[path[0]]
+                from .research_experiments import recover_links
+                recover_links(record, doc, error["reason"])
             elif path[0] == "extensions":
                 record["extensions"] = []
+        if "consistency" in record:
+            from .experiment_consistency import stamp
+            stamp(record, doc)
         pending = diagnose(record, doc)
         if not pending:
             break

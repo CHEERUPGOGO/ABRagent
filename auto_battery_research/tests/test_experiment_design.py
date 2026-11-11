@@ -94,7 +94,7 @@ def test_report_steps_preserve_recipe_and_separate_suggestions(tmp_path):
     doc, recipe = setup_design(tmp_path)
     before = copy.deepcopy(recipe)
     body = recipes.render(recipe, doc)
-    assert "1. **" in body and "76.85 ℃" in body and "96%" in body
+    assert "#### 5.2.1" in body and "1. " in body and "76.85 ℃" in body and "96%" in body
     assert "**方案绑定。**" in body and "首轮实验建议" in body
     assert "本轮验证对象：" not in body and "{{" not in body
     assert "先进行100轮" in body and recipe == before

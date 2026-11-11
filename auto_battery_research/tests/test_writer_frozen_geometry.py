@@ -66,6 +66,11 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
     pipeline.structured_geometry_enabled = structured
     pipeline._reranker_enabled = False
     pipeline.relation_engine = None
+    pipeline.scheme_context = {"revision": 1, "goal": question, "derived": {}, "issues": [], "parameters": {
+        "cathode.material": {"value": "NCM811", "unit": ""},
+        "anode.material": {"value": "si_base", "unit": ""},
+        "electrolyte.material": {"value": "lhce", "unit": ""},
+    }}
     pipeline.planner = SimpleNamespace(run=lambda *args: {
         "db_type": "literature", "retrieval_queries": [question], "answer_outline": ["方案"],
         "requirements": {"status": "unparsed", "source": question, "items": [{"id": "r1", "kind": "objective", "status": "clear", "quote": question,
@@ -106,7 +111,8 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
         assert json.loads(writing_calls[1][1])["read_only_context"] == review_questions[0]
         assert json.loads(writing_calls[2][1])["context"] == review_questions[0]
     else:
-        assert all(q == question for q in review_questions)
+        assert len(set(review_questions)) == 1 and all(q.startswith(question) for q in review_questions)
+        assert all("当前方案表" in q for q in review_questions)
         assert all(marker not in prompt for _, prompt in writing_calls)
     assert any(e["text"] == "证据2" for e in json.loads(writing_calls[1][1])["evidence"])
     assert json.loads(writing_calls[2][1])["issues"][0]["suggestion"] == "注明待验证"

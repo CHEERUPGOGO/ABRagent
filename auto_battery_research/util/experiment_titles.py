@@ -88,6 +88,11 @@ def lead_title(paragraph):
         title = checked_title(match[1], paragraph)
         if title:
             return title
+    methods = re.match(r"(循环(?:前后|前|后))做([A-Za-z][A-Za-z0-9/-]*)(?:（[^）]*）|\([^)]*\))?(?:和|与)([A-Za-z][A-Za-z0-9/-]*)", text)
+    if methods:
+        title = checked_title(methods[1] + methods[2] + "与" + methods[3] + "表征", paragraph)
+        if title:
+            return title
     # 已明确写在句首的动作可沿用；跨任务的陌生方法仍由显式主题或中性编号承接。
     starts = (
         (r"合成(?:采用|路线|方法)", "合成路线"),

@@ -1022,7 +1022,7 @@ class ReviewerAgent:
                 data["confidence"] = "medium"
 
         data["fallback"] = False
-        if requirements and requirements.get("status") == "parsed":
+        if requirements:
             review = data.get("requirement_review") or {}
             known_ids = {r["id"] for r in requirements["items"]}
             valid = (review.get("source_checked") is True

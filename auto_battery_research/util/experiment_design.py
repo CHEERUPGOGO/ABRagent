@@ -10,13 +10,15 @@ from pathlib import Path
 
 from .scheme_ledger import atomic_write, digest, flatten_scheme, validate_field, calculate
 from .report_narrative import amount
-from .experiment_titles import INSTRUCTIONS as TITLE_INSTRUCTIONS, normalize_step_titles, paragraph_title
+from .experiment_titles import INSTRUCTIONS as TITLE_INSTRUCTIONS, normalize_step_titles
+from .experiment_protocol import STYLE_INSTRUCTIONS
+from .experiment_consistency import INSTRUCTIONS as CONSISTENCY_INSTRUCTIONS
 
 FILENAME = "experiment_plan.json"
 REPORT_FILENAME = "experiment_report.json"
-SECTIONS = {"groups": "5.1 实验目标与分组", "fabrication": "5.2 材料制备与极片加工",
-            "assembly": "5.3 电芯组装与化成", "testing": "5.4 性能测试与模型对照",
-            "criteria": "5.5 结果判定与下一轮迭代", "gaps": "5.6 关键数据缺口"}
+SECTIONS = {"groups": "5.1 实验设计与样品分组", "fabrication": "5.2 材料制备与极片加工",
+            "assembly": "5.3 电池制作与装配", "testing": "5.4 电化学测试与材料表征",
+            "criteria": "5.5 数据处理与结果判定", "gaps": "5.6 待确认条件与获取方法"}
 ROLES = {"recipe", "processing", "assembly", "formation", "testing"}
 TOKEN = re.compile(r"\{\{([A-Za-z0-9_.-]+)\}\}")
 SYSTEM_PROMPT = '''你负责 Stage 5B 的轻量首轮电池实验设计。参考给定文献、最终设计及物理结果，给出可执行推荐。
@@ -27,7 +29,7 @@ parameters 的键为字段路径，值有两种：
 重点保持与方案表已有非空值一致；其他工艺值可合理推荐，不要求每项都有直接文献。配方、加工、装配、化成、测试应尽量具体，不强制每类都有数值。允许 budget_assumption 类型的设计容量等预算假设，注明用途和实测替换方法；不能冒充实测或写入 PINN。本征扩散系数仍需证据。对照变化用 scope=control 单独声明，不能混入主方案。推荐数值用 engineering_proposal。比例说明分母，温度 K。
 sections 每项为中文段落数组。所有参数值通过 {{字段路径}} 引入，不在段落中直接复制数值，便于后续几何修订同步。各引用必须在 parameters 声明。材料选择也使用引用，不能擅换当前材料。
 给一个主推荐组、少量对照组、平行样数量和固定条件。选择采购或自制路线，不要混写多条路线。说明配浆、涂布、干燥、辊压、装配、注液、化成和测试的具体安排。建议须形成一致方案，不是散乱参数清单。
-保持当前材料和电压窗口；对照改变要单独声明。推荐条件不同于未来仿真条件时不能沿用其性能。文献只引用输入中真实 passage_id，用 [passage_id]，并在 citations 列出；没有直接文献支持的操作允许按工程起点推荐，但不能冒充文献实测。gaps 只保留必要物性获取和后续优化，不阻止首轮操作。''' + TITLE_INSTRUCTIONS
+保持当前材料和电压窗口；对照改变要单独声明。推荐条件不同于未来仿真条件时不能沿用其性能。文献只引用输入中真实 passage_id，用 [passage_id]，并在 citations 列出；没有直接文献支持的操作允许按工程起点推荐，但不能冒充文献实测。gaps 只保留必要物性获取和后续优化，不阻止首轮操作。''' + TITLE_INSTRUCTIONS + STYLE_INSTRUCTIONS + CONSISTENCY_INSTRUCTIONS
 
 
 def effective_data(doc):
@@ -63,11 +65,16 @@ def validate(record, doc):
         raise ValueError("缺少 Stage 5B 已生成的实验推荐，请基于已有设计及文献重新生成")
     if record.get("plan_hash") != plan_hash(record):
         raise ValueError("实验方案内容指纹不一致")
+    from .experiment_consistency import validate_snapshot, parameter_issues, paragraph_issues
     data = effective_data(doc)
     current = data["parameters"]
     for key, value in record.get("fixed_fields", {}).items():
         if value is not None and (current.get(key) or {}).get("value") != value:
             raise ValueError(f"实验推荐的材料或固定条件已变更: {key}，需重新生成 Stage 5B 实验方案")
+    validate_snapshot(record, doc)
+    conflicts = parameter_issues(record, doc)
+    if conflicts:
+        raise ValueError("；".join(e["reason"] for e in conflicts))
     parameters = record.get("parameters")
     sections = record.get("sections")
     if not isinstance(parameters, dict) or not isinstance(sections, dict):
@@ -116,6 +123,9 @@ def validate(record, doc):
             if not refs.issubset(bindings):
                 raise ValueError("段落引用未声明的实验参数")
             used.update(refs)
+            conflicts = paragraph_issues(record, section, paragraph, bindings)
+            if conflicts:
+                raise ValueError("；".join(conflicts))
             cited.update(re.findall(r"\[([A-Za-z0-9_-]+)\]", paragraph))
             remainder = TOKEN.sub("", paragraph)
             if not any(word in paragraph for word in ("对照", "梯度", "化成", "预算假设")):
@@ -145,9 +155,11 @@ def load(task_dir):
 
 def generate(task_dir, doc, client, scheme_md=""):
     """调用点只在 Stage 5B；失败记录不覆盖已有有效实验方案。"""
+    from .experiment_consistency import preflight, stamp
+    consistency = preflight(doc)
     fingerprint = digest({"scheme": doc.get("scheme"), "ledger": doc.get("ledger_hash"),
                           "evidence": doc.get("evidence"), "physics": doc.get("physics_context"), "analysis": scheme_md,
-                          "requirements": doc.get("requirements"), "research": doc.get("research"), "version": 6})
+                          "requirements": doc.get("requirements"), "research": doc.get("research"), "consistency": consistency, "version": 7})
     old = load(task_dir)
     if old and old.get("generated_stage") == 4:
         try:
@@ -169,9 +181,10 @@ def generate(task_dir, doc, client, scheme_md=""):
         client.single_attempt = True
     for _ in range(1) if client is not None and getattr(client, "available", False) else ():
         try:
-            from .research_experiments import INSTRUCTIONS
+            from .research_experiments import INSTRUCTIONS, required_tests
             raw = client.chat(SYSTEM_PROMPT + (INSTRUCTIONS if doc.get("requirements") else ""), json.dumps({"goal": doc.get("target"), "scheme": doc.get("scheme"),
-                "requirements": doc.get("requirements"), "research": doc.get("research"),
+                "requirements": doc.get("requirements"), "required_tests": required_tests(doc),
+                "research": doc.get("research"), "consistency": consistency,
                 "ledger": doc.get("ledger_view"), "analysis": scheme_md, "review": doc.get("reviewer_output"),
                 "evidence": doc.get("evidence"), "physics_context": doc.get("physics_context"), "last_error": error}, ensure_ascii=False),
                 temperature=0.2, trace_tag="experiment_design")
@@ -181,6 +194,7 @@ def generate(task_dir, doc, client, scheme_md=""):
                           fixed_fields={k: v.get("value") for k, v in effective_data(doc)["parameters"].items()
                             if k not in {f"{c}.{f}" for c in ("cathode", "anode") for f in ("L_um", "porosity", "R_s_um", "D_s_m2s")}})
             record["warnings"] = normalize_step_titles(record, bind_unbound=True)
+            stamp(record, doc)
             record["plan_hash"] = plan_hash(record)
             from .experiment_repair import repair_record
             record = repair_record(record, doc, client, Path(task_dir), fingerprint)
@@ -246,6 +260,8 @@ def engineering_fallback(task_dir, doc, fingerprint, error):
         from .research_experiments import fallback_links
         fallback_links(record, doc, error)
         record["schema_version"] = 4
+    from .experiment_consistency import stamp
+    stamp(record, doc)
     record["plan_hash"] = plan_hash(record)
     record["bindings"] = validate(record, doc)
     atomic_write(Path(task_dir) / FILENAME, json.dumps(record, ensure_ascii=False, indent=2))
@@ -266,9 +282,12 @@ def sync(task_dir, doc, dry_run=False):
 
 
 def render(record, doc, result=None):
-    from .report_narrative import substitute_parameters, numbered_detail
+    from .experiment_protocol import render_methods, render_group_notes, consistency_notice
     bindings = validate(record, doc)
     sections = ["以下为首轮实验推荐，补充的操作参数属于工程建议，尚不代表实测或性能已验证。"]
+    notice = consistency_notice(doc, record.get("consistency"))
+    if notice:
+        sections.append(notice)
     assumptions = [(k, row) for k, row in record.get("parameters", {}).items() if row.get("basis") == "budget_assumption"]
     if assumptions:
         sections.append("预算假设：" + "；".join(f"{row.get('meaning', '设计估算')}取{amount(k, row)}" for k, row in assumptions)
@@ -277,15 +296,17 @@ def render(record, doc, result=None):
         sections.append("### " + heading)
         if doc.get("requirements") and key == "groups":
             from .research_experiments import render_groups
+            sections.append("**表5-1 实验样品与分组设计**")
             sections.append(render_groups(record, doc))
+            notes = render_group_notes(record, bindings)
+            if notes:
+                sections.append(notes)
+        else:
+            sections.append(render_methods(record, key, heading.split()[0], bindings, doc))
         if doc.get("requirements") and key == "testing" and record.get("requirement_tests"):
             from .research_experiments import render_tests
+            sections.append("**课题目标与测试判据对照**")
             sections.append(render_tests(record, doc, bindings))
-        for index, paragraph in enumerate(record["sections"][key], 1):
-            body = substitute_parameters(paragraph, bindings)
-            # 一个标题对应一个原段落；不拆分、改写正文或推断新的操作顺序。
-            title = paragraph_title(record, key, index, paragraph)
-            sections.append(numbered_detail(index, title, body))
         if key == "groups":
             sections.append("> **方案绑定。** 本轮材料沿用第 3 节的当前方案。第 3 节尚未声明的操作条件如在本节给出，均为首轮实验建议；对照组的变更仅适用于对应分组，不改变主方案或仿真输入。")
         if key == "testing":

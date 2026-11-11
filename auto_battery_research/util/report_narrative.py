@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import re
 
-RENDER_VERSION = 13
+RENDER_VERSION = 15
 GROUPS = {"cathode": "正极", "anode": "负极", "electrolyte": "电解液",
           "separator": "隔膜", "current_collector": "集流体", "packaging": "封装",
           "process": "制备与装配", "condition": "测试条件", "requirements": "研发目标"}

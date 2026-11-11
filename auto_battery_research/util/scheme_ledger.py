@@ -386,11 +386,13 @@ def commit_design(task_dir, doc, reason="Stage 4 方案定案", base_revision=No
 
 def collect_parameters(doc, client):
     """把方案正文转为明确的当前值/候选；只接受可定位的声明，不把文献数值直接定案。"""
-    from .research_contract import COLLECTION_INSTRUCTIONS, bindings, fallback_research, validate_research
+    from .research_contract import COLLECTION_INSTRUCTIONS, bindings, fallback_research
+    from .research_records import collect_research
     from .parameter_presentation import INSTRUCTIONS as PARAMETER_INSTRUCTIONS, normalize_metadata
     requirements = doc.get("requirements")
     if requirements:
-        doc["research"] = fallback_research(requirements, "结构化研究回答尚未生成")
+        existing = doc.get("research")
+        doc["research"] = collect_research(existing, doc, (doc.get("ledger_view") or {}).get("parameters", {})) if existing else fallback_research(requirements, "结构化研究回答尚未生成")
     if client is None or not getattr(client, "available", False):
         return
     prompt = """你维护电池方案表。仅输出 JSON {"parameters":{},"candidates":[]}。
@@ -454,15 +456,19 @@ source_quote 必须是输入正文中逐字存在的支持句；literature 还�
                     for key, value in flatten_scheme(doc.get("scheme") or {}).items():
                         current.setdefault(key, {"value": value, "unit": ""})
                     current.update(bindings(requirements))
-                    doc["research"] = validate_research(proposed.get("research"), doc, current)
-                    research_diagnostics = []
+                    doc["research"] = collect_research(proposed.get("research"), doc, current, previous=doc.get("research"))
+                    research_diagnostics = doc["research"].get("diagnostics", [])
+                    if research_diagnostics:
+                        errors.append({"path": "$research", "reason": "研究记录部分验收失败",
+                            "record_errors": doc["research"]["record_errors"], "suggestion": "仅返回失败记录，其他已通过记录不可改写"})
                 except (ValueError, TypeError, KeyError) as exc:
                     research_diagnostics.append(str(exc))
                     errors.append({"path": "$research", "reason": str(exc), "suggestion": "仅修复research，复用已通过参数"})
             if not errors:
                 return
             diagnostics.append(errors)
-            payload.update(repair_errors=errors, accepted_fields=accepted, instruction="只返回出错字段，其他字段无修改权限；research可以引用accepted_fields")
+            payload.update(repair_errors=errors, accepted_fields=accepted,
+                accepted_research=doc.get("research"), instruction="只返回出错字段/研究记录，其他通过项无修改权限；research可以引用accepted_fields")
         except (ValueError, TypeError, KeyError, AttributeError) as exc:
             diagnostics.append([{"path": "$", "reason": str(exc), "suggestion": "返回合法参数 JSON"}])
             payload["repair_errors"] = diagnostics[-1]

@@ -16,7 +16,7 @@ recipe类型的新参数须声明canonical_path对应规范方案字段；主方
 requirement_tests=[{"requirement_id":"需要验证的要求ID","status":"planned|gap|not_applicable",
 "method":"测试/分析方法", "conditions":"{{参数引用}}", "baseline":"比较对象", "criterion":"用户目标或明确标注的工程判据",
 "next_step":"结果不满足时的下一步", "reason":"缺口/不适用的理由"}]。
-所有verification_needed=true且非background要求都必须有一条关联；没有可执行方法时给gap及原因和获取方法。
+所有verification_needed=true或null且非background要求都必须有一条关联；未知验证责任给gap，先明确验证方法，不能默认为无需验证。
 用户阈值不能改写为工程阈值；工程建议须明确标记。组名和正文不得暗含另一套主方案。
 首轮采用一条可执行路线，给分组表和目标测试矩阵所需字段；扩展表征或采购细节放extensions段落数组。
 sections中的数值与材料引用parameters；分类名称不能作为unit。'''
@@ -35,7 +35,13 @@ def identity_fields(doc):
 
 
 def required_tests(doc):
-    return [r for r in doc.get("requirements", {}).get("items", []) if r.get("verification_needed") and r["kind"] != "background"]
+    contract = doc.get("requirements") or {}
+    rows = []
+    for row in contract.get("items", []):
+        legacy_unknown = contract.get("status") == "unparsed" and row.get("status") == "ambiguous"
+        if row["kind"] != "background" and (row.get("verification_needed") is not False or legacy_unknown):
+            rows.append(dict(row, verification_needed=None) if legacy_unknown else row)
+    return rows
 
 
 def fallback_links(record, doc, reason="实验关联尚未完成"):
@@ -65,40 +71,91 @@ def diagnose_links(record, doc):
         error(["groups"], "必须声明唯一主组及其方案表引用")
     else:
         ids = set()
-        for group in groups:
+        for index, group in enumerate(groups):
             if not isinstance(group, dict) or not isinstance(group.get("id"), str) or group["id"] in ids or group.get("scope") not in ("main", "control"):
-                error(["groups"], "分组身份或范围不合法")
-                break
+                error(["groups", index], "分组身份或范围不合法")
+                continue
             ids.add(group["id"])
             refs = group.get("parameter_refs", [])
             changes = group.get("changes", {})
             if not isinstance(refs, list) or any(p not in current for p in refs) or not isinstance(changes, dict):
-                error(["groups"], "实验分组引用未知主方案字段")
-                break
+                error(["groups", index], "实验分组引用未知主方案字段")
+                continue
             if group["scope"] == "main":
                 if set(refs) != set(identity_fields(doc)) or changes or group.get("candidate_id") != (doc.get("research") or {}).get("selected_candidate_id"):
-                    error(["groups"], "实验主组必须完整引用当前唯一主方案，不能重定义组成")
+                    error(["groups", index], "实验主组必须完整引用当前唯一主方案，不能重定义组成")
             elif not changes or any(k not in current or not isinstance(v, dict) or "value" not in v or not v.get("reason") for k, v in changes.items()):
-                error(["groups"], "对照必须用主方案规范字段声明变化及目的")
+                error(["groups", index], "对照必须用主方案规范字段声明变化及目的")
     tests = record.get("requirement_tests")
     expected = {r["id"] for r in required_tests(doc)}
     if not isinstance(tests, list) or any(not isinstance(t, dict) for t in tests) or len(tests) != len(expected) or {t.get("requirement_id") for t in tests} != expected:
         error(["requirement_tests"], "实验安排遗漏、重复或新增了研究目标")
     else:
-        for t in tests:
+        for index, t in enumerate(tests):
             if t.get("status") not in ("planned", "gap", "not_applicable"):
-                error(["requirement_tests"], "实验目标状态非法")
+                error(["requirement_tests", index], "实验目标状态非法")
+            requirement = next(r for r in required_tests(doc) if r["id"] == t["requirement_id"])
+            if t.get("status") == "not_applicable" and (requirement.get("verification_needed") is None or doc["requirements"].get("status") == "unparsed"):
+                error(["requirement_tests", index], "未知验证责任不能直接标为不适用，应保留gap并明确验证方法")
             keys = ("method", "conditions", "baseline", "criterion", "next_step") if t.get("status") == "planned" else ("reason", "next_step")
             if any(not isinstance(t.get(k), str) or not t[k].strip() for k in keys):
-                error(["requirement_tests"], "测试安排须含方法、条件、基线、判据和下一步；缺口须含原因与获取路径")
+                error(["requirement_tests", index], "测试安排须含方法、条件、基线、判据和下一步；缺口须含原因与获取路径")
             for value in t.values():
                 if isinstance(value, str) and set(TOKEN.findall(value)) - set(record.get("parameters", {})):
-                    error(["requirement_tests"], "测试矩阵引用未声明参数")
+                    error(["requirement_tests", index], "测试矩阵引用未声明参数")
     extensions = record.get("extensions", [])
     allowed = {e.get("passage_id") for e in (doc.get("evidence") or []) + (doc.get("experiment_evidence") or [])}
     if not isinstance(extensions, list) or any(not isinstance(p, str) or TOKEN.search(p) or set(re.findall(r"\[([\w:-]+)\]", p)) - allowed for p in extensions):
         error(["extensions"], "扩展说明须为中文段落且使用归档引用，不得含未绑定占位符")
     return errors
+
+
+def recover_links(record, doc, reason="实验关联尚待确认"):
+    """独立保留有效组别和测试，不因一个坏对照或一个遗漏目标整表回退。"""
+    import copy
+    from collections import Counter
+    if not doc.get("requirements"):
+        return
+    base = {"parameters": record.get("parameters", {})}
+    fallback_links(base, doc, reason)
+    raw_groups = record.get("groups", [])
+    raw_groups = raw_groups if isinstance(raw_groups, list) else []
+    counts = Counter(g.get("id") for g in raw_groups if isinstance(g, dict) and isinstance(g.get("id"), str))
+    kept, pending = [], []
+    for group in raw_groups:
+        valid = isinstance(group, dict) and isinstance(group.get("id"), str) and counts[group["id"]] == 1
+        probe = copy.deepcopy(base)
+        if valid:
+            probe["groups"] = [group] if group.get("scope") == "main" else base["groups"] + [group]
+            valid = not any(e["path"][0] == "groups" for e in diagnose_links(probe, doc))
+        (kept if valid else pending).append(copy.deepcopy(group))
+    mains = [g for g in kept if g["scope"] == "main"]
+    if doc["requirements"].get("scheme_required") is False:
+        pending.extend(kept); kept = []
+    else:
+        main = mains[0] if len(mains) == 1 else base["groups"][0]
+        if len(mains) > 1:
+            pending.extend(mains)
+        controls = [g for g in kept if g["scope"] == "control" and g["id"] != main["id"]]
+        kept = [main] + controls
+    record["groups"] = kept
+    for group in pending:
+        entry = {"record": group, "reason": reason}
+        if entry not in record.setdefault("pending_groups", []):
+            record["pending_groups"].append(entry)
+    raw_tests = record.get("requirement_tests", [])
+    raw_tests = raw_tests if isinstance(raw_tests, list) else []
+    counts = Counter(t.get("requirement_id") for t in raw_tests if isinstance(t, dict) and isinstance(t.get("requirement_id"), str))
+    tests = copy.deepcopy(base["requirement_tests"])
+    for index, fallback in enumerate(tests):
+        row = next((t for t in raw_tests if isinstance(t, dict) and t.get("requirement_id") == fallback["requirement_id"]), None)
+        if not row or counts[row["requirement_id"]] != 1:
+            continue
+        probe = copy.deepcopy(base)
+        probe["requirement_tests"][index] = row
+        if not any(e["path"][0] == "requirement_tests" for e in diagnose_links(probe, doc)):
+            tests[index] = copy.deepcopy(row)
+    record["requirement_tests"] = tests
 
 
 def validate_parameter(key, row, doc):
@@ -121,11 +178,11 @@ def validate_parameter(key, row, doc):
 def render_groups(record, doc):
     if not record.get("groups"):
         return "本课题以研究分析为主，未安排新的电芯主组；验证方法按课题目标列出。"
-    parts = ["| 分组 | 范围 | 变化与目的 |", "|---|---|---|"]
+    parts = ["| 样品编号 | 分组名称 | 组别 | 组成、变量与目的 |", "|---|---|---|---|"]
     from .report_narrative import describe
     for group in record.get("groups", []):
         changes = "；".join(describe(k, v) + "；" + v["reason"] for k, v in group.get("changes", {}).items())
-        parts.append(f"| {cell(group.get('name') or group['id'])} | {'主组' if group['scope'] == 'main' else '对照'} | {cell(changes or '完整采用第3节主方案；材料、组成和固定条件不另行变更')} |")
+        parts.append(f"| {cell(group['id'])} | {cell(group.get('name') or group['id'])} | {'主组' if group['scope'] == 'main' else '对照'} | {cell(changes or '完整采用第3节主方案；材料、组成和固定条件不另行变更')} |")
     return "\n".join(parts)
 
 

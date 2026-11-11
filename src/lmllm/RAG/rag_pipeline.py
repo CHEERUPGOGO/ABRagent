@@ -729,7 +729,7 @@ class RAGPipeline:
         # ── Stage 3: Writer ──
         print("  [3/4] Writer 生成中...")
         _writer_scheme = self._extract_scheme(question, plan)
-        if plan.get("requirements", {}).get("status") == "parsed":
+        if plan.get("requirements"):
             # 语义指定值和已定方案优先；问题中的对照、否定或背景提及不自动成为选型。
             from auto_battery_research.util.research_contract import bindings as requirement_bindings
             declared = dict((getattr(self, "scheme_context", None) or {}).get("parameters", {}))
@@ -754,7 +754,7 @@ class RAGPipeline:
             writer_question += "\n当前方案表（用户锁定值不可修改；有冲突只提出候选）：\n" + render(scheme_context)
         # 工作流设计模式：先冻结结构化参数，再供 Writer/Reviewer 引用。
         if (getattr(self, "structured_geometry_enabled", False) and plan.get("requirements", {}).get("scheme_required", True)
-                and (plan.get("requirements", {}).get("status") != "parsed"
+                and (not plan.get("requirements")
                      or all((_writer_scheme or {}).get(c) for c in ("cathode", "anode", "electrolyte")))):
             try:
                 import json
@@ -790,7 +790,7 @@ class RAGPipeline:
         from auto_battery_research.util.design_repair import review_design, review_verdict
         baseline_scheme = self._extract_scheme(question, plan, writer_output.get("draft_answer", "")) or _writer_scheme
         # 新课题主方案由已审核声明维护；正文候选不决定电解液或添加剂。
-        if plan.get("requirements", {}).get("status") == "parsed":
+        if plan.get("requirements"):
             baseline_scheme = dict(_writer_scheme or {})
             baseline_scheme.pop("additives", None)
         for component in ("cathode", "anode", "electrolyte"):

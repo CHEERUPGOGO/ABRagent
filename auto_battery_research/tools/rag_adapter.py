@@ -377,7 +377,7 @@ class AbrRagAdapter:
                             extras[key]["value"] = scheme[comp]
                     if "electrolyte.additives" in extras:
                         scheme["additives"] = extras["electrolyte.additives"]["value"]
-                    elif contract_payload["requirements"].get("status") == "parsed":
+                    else:
                         scheme.pop("additives", None)
                 if report_first:
                     import copy

@@ -58,7 +58,7 @@ def test_titles_generated_in_existing_call_and_included_in_hash(tmp_path):
     assert len(calls) == 1 and calls[0][1]["trace_tag"] == "experiment_design"
     assert "step_titles" in calls[0][0]
     assert record["step_titles"]["testing"] == [{"title": "结构与成分", "paragraph_hash": digest(payload["sections"]["testing"][0])}]
-    assert "1. **结构与成分**" in recipes.render(record, doc)
+    assert "#### 5.4.1 结构与成分" in recipes.render(record, doc)
     changed = copy.deepcopy(record)
     changed["step_titles"]["testing"][0]["title"] = "XRD表征"
     assert recipes.plan_hash(changed) != record["plan_hash"]
@@ -78,7 +78,7 @@ def test_malformed_optional_titles_do_not_block_legacy_render(tmp_path, metadata
     record["plan_hash"] = recipes.plan_hash(record)
     before = copy.deepcopy(record)
     body = recipes.render(record, doc)
-    assert "1. **结构与成分**" in body and record == before
+    assert "#### 5.4.1 结构与成分" in body and record == before
     normalize_step_titles(record)
     assert "step_titles" not in record
 
@@ -97,8 +97,8 @@ def test_local_paragraph_repair_invalidates_only_changed_title(tmp_path):
     assert updated["parameters"] == before["parameters"] and record == before
     updated["plan_hash"] = recipes.plan_hash(updated)
     body = recipes.render(updated, doc)
-    assert "1. **结构与成分**" in body and "2. **抑氧验证**" in body
-    assert "1. **循环测试**" not in body
+    assert "#### 5.4.1 结构与成分" in body and "#### 5.4.2 抑氧验证" in body
+    assert "#### 5.4.1 循环测试" not in body
 
 
 def test_deterministic_failed_repair_drops_title_without_new_call(tmp_path):
@@ -121,11 +121,14 @@ def test_legacy_render_keeps_paragraphs_order_and_markdown(tmp_path):
     record["plan_hash"] = recipes.plan_hash(record)
     before = copy.deepcopy(record)
     body = recipes.render(record, doc)
-    assert "1. **步骤1**" in body and "11. **待确认事项11**\n\n    缺少第11项" in body
-    assert len(re.findall(r"^\d+\. \*\*", body, re.M)) == sum(map(len, record["sections"].values()))
+    assert "#### 5.4.1 实验操作" in body and "11. 缺少第11项" in body
+    assert len(re.findall(r"^### 5\.[1-6] ", body, re.M)) == 6
     bindings = recipes.validate(record, doc)
+    from auto_battery_research.util.experiment_protocol import split_operations, protocol_parameters
+    bindings = protocol_parameters(bindings)
     for section in record["sections"].values():
-        positions = [body.index(substitute_parameters(p, bindings)) for p in section]
+        fragments = [substitute_parameters(p, bindings) for paragraph in section for p in split_operations(paragraph)]
+        positions = [body.index(p.rstrip("，；。")) for p in fragments]
         assert positions == sorted(positions)
     assert record == before
 
@@ -137,7 +140,8 @@ def test_same_topic_can_legitimately_repeat(tmp_path):
     normalize_step_titles(record, bind_unbound=True)
     record["plan_hash"] = recipes.plan_hash(record)
     body = recipes.render(record, doc)
-    assert "1. **结构与成分**" in body and "2. **结构与成分**" in body
+    assert body.count("#### 5.4.1 结构与成分") == 1
+    assert "1. 结构与成分：循环前XRD" in body and "2. 结构与成分：循环后XRD" in body
 
 
 def test_report_final_gate_covers_bound_titles_and_deterministic_projection(tmp_path, monkeypatch):
@@ -163,9 +167,9 @@ def test_report_final_gate_covers_bound_titles_and_deterministic_projection(tmp_
     assert result["success"], result
     path = tmp_path / "final_research_report.md"
     text = path.read_text(encoding="utf-8")
-    assert "1. **结构与成分**" in text and (tmp_path / recipes.FILENAME).read_bytes() == before
+    assert "#### 5.4.1 结构与成分" in text and (tmp_path / recipes.FILENAME).read_bytes() == before
     checker = FinalReportChecker()
     checker.on_init(mgr, {"id": 6}, mgr.config)
     assert checker.do_check(is_complete=True)[0]
-    path.write_text(text.replace("1. **结构与成分**", "1. **循环测试**"), encoding="utf-8")
+    path.write_text(text.replace("#### 5.4.1 结构与成分", "#### 5.4.1 循环测试"), encoding="utf-8")
     assert not checker.do_check(is_complete=True)[0]

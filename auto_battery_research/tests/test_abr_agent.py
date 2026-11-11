@@ -33,11 +33,14 @@ def test_abr_agent_run_loop(tmp_path, monkeypatch):
 
     # 显式提供离线脚本审核产物，不依赖过去落盘的“Reviewer异常却high”旧文件。
     from auto_battery_research.tests.test_stage4_golden import (
-        _install_scripted_llm, _build_seeded_pipeline, _run_adapter, GOLDEN_WRITER_DRAFT,
+        _install_scripted_llm, _build_seeded_pipeline, GOLDEN_WRITER_DRAFT,
     )
     _install_scripted_llm(monkeypatch, GOLDEN_WRITER_DRAFT)
     pipeline = _build_seeded_pipeline(tmp_path)
-    prepared = _run_adapter(pipeline, agent.manager.get_task_output_dir(), agent.goal)
+    from auto_battery_research.tools.rag_adapter import AbrRagAdapter
+    # 本例故意保留脚本目标与实际目标的解析缺口，走默认报告优先模式验证附条件交付。
+    prepared = AbrRagAdapter(config={"paths": {}, "runtime_options": {"report_first": True}}, pipeline=pipeline).run_rag_design(
+        target_query=agent.goal, task_dir=agent.manager.get_task_output_dir())
     assert prepared["success"], prepared.get("error")
 
     events = list(agent.run_stream())
@@ -49,6 +52,9 @@ def test_abr_agent_run_loop(tmp_path, monkeypatch):
 
     # 验证是否全部通过
     assert agent.manager.is_all_completed() is True
+    import json
+    execution = json.loads((agent.manager.get_task_output_dir() / "stage5_execution.json").read_text(encoding="utf-8"))
+    assert execution["experiment"]["status"] == "CONDITIONAL"
 
 
 def test_completed_stage_does_not_run_simulation_again():

@@ -18,12 +18,14 @@ PLANNER_INSTRUCTIONS = '''
 "items":[{"id":"r1","quote":"用户原文逐字摘录", "start":可选原文起点,
 "kind":"objective|constraint|preference|deliverable|background", "subject":"研究对象", "description":"单项要求",
 "conditions":["条件原文"], "quantity":null或{"value":数值,"unit":"原文单位","operator":">等原文运算符"},
-"related_ids":[], "status":"clear|ambiguous|conflicting", "verification_needed":true或false, "evidence_needed":true或false,
+"related_ids":[], "status":"clear|ambiguous|conflicting", "verification_needed":true或false或null, "evidence_needed":true或false,
 "binding":null或{"path":"electrolyte.salt等方案字段","value":"用户明确给定的值","unit":"规范单位"}}],
 "query_links":[{"query_index":0,"requirement_ids":["r1"]}]}。
 按语义识别所有要求，不以材料/指标词典限制范围；陌生材料、设备、工艺、成本、排除项和交付形式也须保留。
 并列要求分别列出，共享条件通过conditions/related_ids绑定；背景文献结果不是用户目标。
 区分必须、偏好、备选、对照和否定；只有用户明确指定的正向固定值可有binding，禁止给偏好或排除项绑定材料。
+未提及某组分不等于禁止使用，也不授权将其加入主方案；“EC+DMC”本身不能改写为“禁止FEC/VC”。排除项须有明确否定原句。
+verification_needed=null表示尚不能判断，不等于无需验证；只有明确无需验证时才写false。
 不把“显著改善”“低成本”等转成数值，不推定未给定的圈数、比例、阈值。条件须逐字来自原文。
 quote必须可定位；同一quote可拆多项，id唯一。未确定语义标ambiguous，不忽略。研究对象、指标名称、描述均为开放文本。
 查询可覆盖多个要求；2–4个查询只是常用建议，不限制要求条数。不强加比能量、材料排行或配方设计任务。
@@ -42,7 +44,8 @@ summary, rationale, risks, citations[], parameter_refs[]。仅选一个探索性
 改性元素/位点/掺量及口径、电解液组成须在parameters中声明，selected_candidate_id指向它。
 主方案parameters包括cathode.nominal_formula、cathode.doping.*等开放字段；比例注明分母，添加剂候选不能进入主方案。
 选中项不复制独立配方，只通过parameter_refs引用parameters或已有方案表；其他候选保留各自原文，禁止充当当前值。
-arguments每项：requirement_ids[],title,text,source_quote,citations[],basis(literature/inference),parameter_refs[]。
+arguments每项：id,requirement_ids[],title,text,source_quote,citations[],basis(literature/inference),parameter_refs[]。
+各集合按记录独立验收；局部重试保留已通过记录，只返回record_errors指明的失败记录，沿用其id或requirement_id。
 保留有来源和适用条件的数值论证，按措施→机制→证据→验证组织。不恢复原文主观分数。
 response/summary/rationale/risks/text/reason/next_step须摘自已审核正文，不创作新结论；主方案数值用{{字段路径}}引用。
 非设计问题允许无候选、无选中项；没有证据时保留缺口，不填示例材料。'''
@@ -78,7 +81,7 @@ def fallback_requirements(goal, reason="语义解析未完成"):
             items.append({"id": _id(quote, quote, start), "quote": quote, "start": start,
                 "end": start + len(quote), "kind": "deliverable", "subject": "",
                 "description": quote, "conditions": [], "quantity": None, "related_ids": [],
-                "status": "ambiguous", "verification_needed": False, "binding": None})
+                "status": "ambiguous", "verification_needed": None, "binding": None})
     return {"version": VERSION, "source": goal, "status": "unparsed", "items": items,
             "task_type": "other", "scheme_required": True, "query_links": [], "diagnostics": [reason]}
 
@@ -134,9 +137,12 @@ def normalize_requirements(raw, goal, queries=()):
             if raw_value is None or normalized(token) not in normalized(quote):
                 raise ValueError("固定值必须直接出现在用户原句，不能用候选或推断值")
             validate_field(path, dict(binding, basis="user_requirement", source=quote))
+        verification = row.get("verification_needed")
+        if verification is not None and not isinstance(verification, bool):
+            raise ValueError("verification_needed须为布尔值或null，未知不能写成无需验证")
         row.update(id=stable, start=start, end=start + len(quote), status=row.get("status", "clear"),
                    conditions=conditions, quantity=quantity, binding=binding,
-                   verification_needed=row.get("verification_needed") is True)
+                   verification_needed=verification)
         if "evidence_needed" in row and not isinstance(row["evidence_needed"], bool):
             raise ValueError("evidence_needed须为布尔值")
         items.append(row)
@@ -163,18 +169,25 @@ def attach_requirements(plan, goal, client=None):
         return plan
     except (ValueError, TypeError, KeyError) as exc:
         error = str(exc)
+    from .requirement_recovery import recover_requirements, merge_requirement_patch
+    raw = plan.get("requirements")
+    recovered, accepted = recover_requirements(raw, goal, plan.get("retrieval_queries", []), error)
     if client is not None and getattr(client, "available", False):
         try:
-            raw = client.chat("仅修复requirements JSON，其他规划没有修改权限。" + PLANNER_INSTRUCTIONS,
+            response = client.chat("仅修复requirements JSON，其他规划没有修改权限。" + PLANNER_INSTRUCTIONS,
                 json.dumps({"goal": goal, "queries": plan.get("retrieval_queries", []),
-                            "requirements": plan.get("requirements"), "error": error}, ensure_ascii=False),
+                            "requirements": raw, "error": error, "accepted_items": accepted,
+                            "repair_errors": recovered["diagnostics"],
+                            "instruction": "已通过items不得修改；只返回失败或遗漏条目的修复，保留其id。"}, ensure_ascii=False),
                 temperature=0.1, trace_tag="requirements_repair")
-            fixed = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
-            plan["requirements"] = normalize_requirements(fixed.get("requirements", fixed), goal, plan.get("retrieval_queries", []))
+            fixed = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", response.strip()))
+            merged = merge_requirement_patch(raw, fixed.get("requirements", fixed), accepted)
+            plan["requirements"], _ = recover_requirements(merged, goal, plan.get("retrieval_queries", []))
             return plan
         except Exception as exc:
             error += "; " + str(exc)
-    plan["requirements"] = fallback_requirements(goal, error)
+    recovered["diagnostics"] = list(dict.fromkeys(recovered["diagnostics"] + [error]))
+    plan["requirements"] = recovered
     return plan
 
 
@@ -209,92 +222,31 @@ TOKEN = re.compile(r"\{\{([A-Za-z0-9_.-]+)\}\}")
 
 def validate_research(raw, doc, parameters):
     """只接受可定位于已审核正文的摘录，选中项数值通过方案表引用。"""
+    from .research_records import validate_record, validate_selection, identity_bindings
     if not isinstance(raw, dict):
         raise ValueError("缺少research结构化课题回答")
     contract = doc["requirements"]
     required = {i["id"] for i in contract["items"] if i["kind"] != "background"}
-    known = {str(e.get("passage_id")) for e in doc.get("evidence", [])}
-    narrative = doc.get("final_answer", "")
-    from .report_narrative import amount
-    def check(row, fields):
-        if not isinstance(row, dict):
-            raise ValueError("研究记录必须为对象")
-        quote = row.get("source_quote", "")
-        if not quote or quote not in narrative:
-            raise ValueError("研究记录缺少已审核正文中的source_quote")
-        refs = row.get("parameter_refs", [])
-        if not isinstance(refs, list) or any(p not in parameters or parameters[p].get("value") is None for p in refs):
-            raise ValueError("研究记录引用未知主方案参数")
-        for key in fields:
-            value = row.get(key, "")
-            if not isinstance(value, str):
-                raise ValueError("研究记录文本非法")
-            if set(TOKEN.findall(value)) - set(refs):
-                raise ValueError("研究文本引用未声明的主方案字段")
-            # 只允许摘录或参数替换；不允许维护模型另写新的科学结论。
-            chunks = TOKEN.split(value)
-            if any(part.strip() and normalized(part) not in normalized(quote) for part in chunks[::2]):
-                raise ValueError("研究结论必须摘自支持原句: " + key)
-            for path in chunks[1::2]:
-                v = parameters[path]
-                if normalized(v["value"]) not in normalized(quote) and normalized(amount(path, v)) not in normalized(quote):
-                    raise ValueError("参数引用与支持原句不一致: " + path)
-        cites = row.get("citations", [])
-        if not isinstance(cites, list) or any(not isinstance(c, str) for c in cites) or set(cites) - known:
-            raise ValueError("研究记录引用未归档文献")
-        if any("[" + c + "]" not in quote for c in cites):
-            raise ValueError("引用必须同时出现于支持原句，不能挪用其他证据")
-        if set(re.findall(r"\[([\w:-]+)\]", quote)) - known - {"FSI", "TFSI", "PF6", "BF4"}:
-            raise ValueError("支持原句含未知引用")
     answers = raw.get("answers")
     if not isinstance(answers, list) or any(not isinstance(a, dict) for a in answers) or len(answers) != len(required) or {a.get("requirement_id") for a in answers} != required:
         raise ValueError("研究回答遗漏或重复课题要求")
     for row in answers:
-        if row.get("status") not in RESPONSES or row.get("verification") not in VERIFICATIONS:
-            raise ValueError("回应与验证状态非法")
-        check(row, ("response", "reason", "next_step"))
-        if row["status"] == "answered" and len(row.get("response", "").strip()) < 8:
-            raise ValueError("只有标题不能算实质回应")
-        if row["status"] in ("gap", "partial") and not (row.get("reason") and row.get("next_step")):
-            raise ValueError("缺口必须包含原因及获取/验证方法")
-        if row["verification"] in ("calculation", "experiment"):
-            raise ValueError("Stage 4 不得宣称本课题计算或实验已验证")
-        if row["verification"] == "literature" and not row.get("citations"):
-            raise ValueError("文献支持须引用归档证据")
+        validate_record(row, "answers", doc, parameters)
     candidates, arguments = raw.get("candidates", []), raw.get("arguments", [])
     if not isinstance(candidates, list) or not isinstance(arguments, list):
         raise ValueError("候选与论证必须为数组")
     ids = set()
     for row in candidates:
-        check(row, ("summary", "rationale", "risks"))
-        if not isinstance(row.get("id"), str) or row["id"] in ids or row.get("scope") not in ("candidate", "control", "literature"):
+        validate_record(row, "candidates", doc, parameters)
+        if row["id"] in ids:
             raise ValueError("候选身份或范围非法")
         ids.add(row["id"])
-        if not row.get("name") or normalized(row["name"]) not in normalized(row["source_quote"]):
-            raise ValueError("候选名称须来自支持原句")
-        if row.get("rank") is not None and (not isinstance(row["rank"], int) or row["rank"] < 1 or str(row["rank"]) not in row["source_quote"]):
-            raise ValueError("候选顺序须来自已审核正文")
     selected = raw.get("selected_candidate_id")
-    if selected is not None:
-        current = next((c for c in candidates if c["id"] == selected), None)
-        if not current or current["scope"] != "candidate" or not current.get("parameter_refs"):
-            raise ValueError("探索性首选必须引用当前主方案参数")
-        identity = {p for p in parameters if p.endswith(".material") or p.startswith("electrolyte.")
-                    or any(t in p for t in (".doping.", ".dopant", ".nominal_formula", ".composition", ".coating"))}
-        if not identity.issubset(current["parameter_refs"]):
-            raise ValueError("探索性首选没有引用完整主方案身份")
+    validate_selection(selected, candidates, parameters)
     for row in arguments:
-        check(row, ("text",))
-        if not row.get("requirement_ids") or set(row["requirement_ids"]) - required or row.get("basis") not in ("literature", "inference"):
-            raise ValueError("论证缺少有效课题关联或依据类型")
-        if row["basis"] == "literature" and not row.get("citations"):
-            raise ValueError("文献论证缺少引用")
-        if not isinstance(row.get("title", ""), str) or row.get("title") and normalized(row["title"]) not in normalized(row["source_quote"]):
-            raise ValueError("论证标题须摘自支持原句或留空")
+        validate_record(row, "arguments", doc, parameters)
     result = copy.deepcopy(raw)
-    identity = {p: copy.deepcopy(v) for p, v in parameters.items() if p.endswith(".material") or p.startswith("electrolyte.")
-                or any(t in p for t in (".doping.", ".dopant", ".nominal_formula", ".composition", ".coating"))}
-    result["bound_fields"] = {p: {"value": v.get("value"), "unit": v.get("unit", "")} for p, v in identity.items()}
+    result["bound_fields"] = identity_bindings(parameters)
     result.update(version=VERSION, status="complete" if all(a["status"] == "answered" for a in answers) else "partial", diagnostics=[])
     return result
 
@@ -377,6 +329,18 @@ def _document_errors(doc):
     for row in research.get("candidates", []) + research.get("arguments", []) + answers:
         if any(p not in params for p in row.get("parameter_refs", [])):
             errors.append("研究记录引用的方案字段不存在")
+    from .research_records import validate_record
+    for collection in ("answers", "candidates", "arguments"):
+        for row in research.get(collection, []):
+            generated_gap = (collection == "answers" and row.get("status") == "gap" and row.get("response") == "待补充"
+                and not row.get("source_quote") and row.get("verification") == "unverified"
+                and not row.get("citations") and not row.get("parameter_refs"))
+            if generated_gap:
+                continue
+            try:
+                validate_record(row, collection, doc, params)
+            except (ValueError, TypeError, KeyError) as exc:
+                errors.append("研究记录验收失败：" + str(exc))
     if research.get("status") == "complete" and contract.get("status") != "parsed":
         errors.append("未解析的课题不能宣称覆盖完成")
     for path, bound in research.get("bound_fields", {}).items():
@@ -410,8 +374,11 @@ def finalize_research(doc):
             research["answers"][n] = gap_answer(item, "审核指出要求误读或回答不完整，修复预算已耗尽")
     issues = document_errors(doc)
     if issues:
+        from .research_records import collect_research
+        recovered = collect_research(research, doc, (doc.get("ledger_view") or {}).get("parameters", {}))
+        recovered["diagnostics"] = list(dict.fromkeys(recovered["diagnostics"] + issues))
         research.clear()
-        research.update(fallback_research(contract, "；".join(issues)))
+        research.update(recovered)
     reviewed = review.get("source_checked") is True and not review.get("missing_quotes") and not review.get("misread_ids") and not review.get("unanswered_ids")
     research["coverage_reviewed"] = reviewed
     if not reviewed:
@@ -423,7 +390,7 @@ def finalize_research(doc):
                 state["category"] = "CONDITIONAL"
             state["issues"].append("部分课题要求尚待证据补充或语义复核，逐项回应与获取路径见第1、2节。")
         doc["review_status"] = "REVIEWED_WITH_ISSUES"
-    research["status"] = "complete" if reviewed and contract.get("status") == "parsed" and all(a["status"] == "answered" for a in research["answers"]) else "partial"
+    research["status"] = "complete" if reviewed and contract.get("status") == "parsed" and not research.get("diagnostics") and all(a["status"] == "answered" for a in research["answers"]) else "partial"
 
 
 def requires_scheme(doc):

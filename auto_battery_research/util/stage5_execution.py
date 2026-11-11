@@ -141,9 +141,21 @@ def finalize_stage5(mgr, design_only=False, client=None):
             doc["experiment_extensions"] = recipe.get("extensions", [])
         doc.update(stage5_contract=2, experiment_contract=2, experiment_plan_hash=recipe["plan_hash"])
         atomic_write(doc_path, json.dumps(doc, ensure_ascii=False, indent=2))
-        state["experiment"] = {"status": "PASSED", "plan_hash": recipe["plan_hash"], "duration_seconds": time.monotonic()-started}
+        conditional = (recipe.get("consistency", {}).get("status") == "PENDING"
+                       or recipe.get("repair_status") == "PARTIAL" or bool(recipe.get("pending_groups"))
+                       or any(t.get("status") == "gap" for t in recipe.get("requirement_tests", [])))
+        state["experiment"] = {"status": "CONDITIONAL" if conditional else "PASSED", "plan_hash": recipe["plan_hash"],
+            "pending_fields": recipe.get("consistency", {}).get("pending_fields", []), "duration_seconds": time.monotonic()-started}
+        if conditional and doc.get("report_readiness"):
+            if doc["report_readiness"]["category"] == "COMPLETE":
+                doc["report_readiness"]["category"] = "CONDITIONAL"
+            message = "实验方案含待定字段、分组或目标验证缺口；相应操作须先确认，其他有效内容已保留。"
+            if message not in doc["report_readiness"]["issues"]:
+                doc["report_readiness"]["issues"].append(message)
+            atomic_write(doc_path, json.dumps(doc, ensure_ascii=False, indent=2))
         save()
-        return {"success": bool(valid or design_only or doc.get("delivery_contract") == 1), "key_findings": state, "message": "Stage 5B 实验推荐已完成"}
+        return {"success": bool(valid or design_only or doc.get("delivery_contract") == 1), "key_findings": state,
+                "message": "Stage 5B 附条件实验方案已生成，待定项确认后实施" if conditional else "Stage 5B 实验推荐已完成"}
     except Exception as exc:
         state["experiment"] = {"status": "FAILED", "error": str(exc)}
         save()

@@ -10,7 +10,9 @@ Core design principle: **"LLM in the brain seat, workflow in the referee seat"**
 
 Comments, log messages, and docs are in Chinese; match that style.
 
-新生成课题增加通用研究契约v1（`util/research_contract.py`）：Planner语义提取原文要求，程序验证位置/条件/引用，Reviewer独立检查原始课题覆盖。方案维护在审核前记录完整主方案与结构化回应，已有局部修复机制仍负责变更；Stage 5B v4用主方案ref、分组与目标测试关联，Stage 6确定性输出覆盖表和候选表。完整审核在新报告第6节附录，旧无requirements产物保留第2.6节路径。渲染版本12，论证、条件、实验步骤使用序号及语义缩进；参数通过`parameter_presentation`只读归并，摘要精简、完整来源留附录，掺量口径含混时不换算百分比；纯分析任务不强行补全电芯或仿真。详见 `docs/research_report_contract.md`。
+新生成课题增加通用研究契约v1（`util/research_contract.py`）：Planner语义提取原文要求，程序验证位置/条件/引用，Reviewer独立检查原始课题覆盖。方案维护在审核前记录完整主方案与结构化回应，已有局部修复机制仍负责变更；Stage 5B v4用主方案ref、分组与目标测试关联，Stage 6确定性输出覆盖表和候选表。完整审核在新报告第6节附录，旧无requirements产物保留第2.6节路径。渲染版本15，论证、条件、实验步骤使用序号及语义缩进；参数通过`parameter_presentation`只读归并，摘要精简、完整来源留附录，掺量口径含混时不换算百分比；纯分析任务不强行补全电芯或仿真。详见 `docs/research_report_contract.md`。
+
+P0可靠性：需求逐项保留，verification_needed=null为未知且仍需测试关联/缺口说明，历史unparsed中的false不免除验证；research记录逐项验收及重试，只有失败记录降级，不清空其他有效回答/候选/论证。部分解析同样用已声明字段建立主方案，禁止回到关键词猜配方。Stage 5B前生成consistency与pending_operations，材料身份只读引用，对照必须绑定group_id及规范变化；有效组别与目标测试在局部修复中保留。待定实验标CONDITIONAL，报告优先模式可披露交付，严格门禁不视为可执行。详见`docs/p0_reliability.md`。
 
 Stage 4通过`util/adaptive_retrieval.py`有限改善证据：默认补检索2轮、首次整体严重偏差最多重建1轮、每轮3查询，原策略服务重试全任务最多1次。首次评估/首个有效审核才允许重建，至少一半且不少于两项核心证据要求受影响；`evidence_needed=false`不计分母。后续失败不升级完整检索。预算、签名、窗口和增益在检索/修复检查点持久化，中断不自动重发；文本修复3轮、审核6轮独立计数。完整档案与25段模型包分开，问题引用/有效新增证据优先，修复和复核共享预选包；检索不授予主方案修改权限。有效待补动作会阻止Stage 4提前推进；陈旧缓存拒绝恢复，停止/耗尽后附条件交付。报告指纹含检索状态，附录完整披露。
 
@@ -23,6 +25,8 @@ Stage 6 正文由确定性视图组织：摘要先给候选与结果；材料论
 选材理由渲染v13：通用课题第2.4节明确呈现首选的rationale、引用和risks；结构化arguments缺失时，第2.3节通过material_arguments只读恢复原文论证，并保留同段体系/条件限定。未知引用、旧规格和单列装配条件不纳入理由；摘录不提升为已审核结论，不恢复首选或排名。只需重渲染Stage 6；旧无requirements路径保持兼容。
 
 第5节段落主题由Stage 5B在原调用中生成可选`step_titles`，程序以原段落哈希绑定；局部修复改写正文后旧标题自动失效。`util/experiment_titles.py`校验短标题及正文术语，拒绝标题中的数值结果、额外声明和Markdown。旧记录或无效标题只读回退到明确的开头主题/动作，无法确认时用中性编号，不扫描前45字关键词；同主题分段允许重名。标题纳入实验哈希，Stage 6不增加模型调用，不变更配方与正文。
+
+实验方法排版v14：`util/experiment_protocol.py`参考示例文档的分级方法标题与悬挂编号步骤，连续同主题段落归并，只在明确标点/顺序动作边界分步，条件句、括号、来源和原顺序保留。样品编号/组成来自结构化groups；未登记对照单列待确认，不让主组引用被写成“0.03=0”。新稿的重复赋值冲突进入既有局部修复，旧稿只读提示；审核已声明的配方冲突在操作前与相关方法旁标注。直径可等值显示为mm，源参数不变。详见`docs/experimental_protocol_format.md`。
 
 第三部分为“电芯总体方案与关键匹配”：总体组合、极片与容量匹配、电解液与配套、预算与待决事项。条件性基线不能拼接成定案配方；缺少 N/P 不以厚度推断匹配成功。方案表中的 R_s / D_s 在第四部分统一声明，即使未仿真也保留，由报告检查器验收。
 
