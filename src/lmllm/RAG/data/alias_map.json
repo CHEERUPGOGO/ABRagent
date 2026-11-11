@@ -19,7 +19,13 @@
   "LRMO": [
     "Li-rich layered oxide",
     "富锂锰基",
+    "无钴富锂",
+    "无钴富锂正极",
+    "富锂",
+    "富锂材料",
+    "富锂晶相",
     "Li1.2Ni0.2Mn0.6O2",
+    "Li1.2Mn0.6Ni0.2O2",
     "Li-rich Mn-based",
     "LRLO"
   ],
@@ -67,10 +73,25 @@
   "carbonate_ec": [
     "碳酸酯",
     "常规碳酸酯",
+    "常规低浓碳酸酯",
+    "碳酸酯电解液",
     "EC/DMC",
+    "EC+DMC",
     "EC/EMC",
+    "EC+EMC",
+    "EC/DEC",
+    "EC+DEC",
     "carbonate electrolyte",
-    "LiPF6"
+    "LiPF6",
+    "LiPF₆",
+    "1 mol/L LiPF6",
+    "1 mol/L LiPF₆",
+    "1M LiPF6",
+    "1M LiPF₆",
+    "LiPF6/EC+DMC",
+    "LiPF₆/EC+DMC",
+    "LiPF6/EC/DMC",
+    "LiPF₆/EC/DMC"
   ],
   "fluorinated": [
     "含氟溶剂",
