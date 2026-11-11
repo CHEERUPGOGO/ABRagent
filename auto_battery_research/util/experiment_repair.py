@@ -4,6 +4,7 @@ import json
 import re
 
 from .scheme_ledger import digest, atomic_write
+from .experiment_titles import normalize_step_titles
 
 
 def normalize_citations(record):
@@ -22,6 +23,8 @@ def diagnose(record, doc):
     if not isinstance(params, dict) or not isinstance(sections, dict):
         return [{"path": ["parameters" if not isinstance(params, dict) else "sections"], "reason": "实验结构须为对象"}]
     current = effective_data(doc)["parameters"]
+    from .research_experiments import diagnose_links, validate_parameter
+    errors.extend(diagnose_links(record, doc))
     bad = set()
     for key, row in params.items():
         reason = None
@@ -44,6 +47,12 @@ def diagnose(record, doc):
         if reason:
             errors.append({"path": ["parameters", key], "reason": reason})
             bad.add(key)
+        elif isinstance(row, dict):
+            try:
+                validate_parameter(key, row, doc)
+            except ValueError as exc:
+                errors.append({"path": ["parameters", key], "reason": str(exc)})
+                bad.add(key)
     allowed = {e.get("passage_id") for e in (doc.get("evidence") or []) + (doc.get("experiment_evidence") or [])}
     cites = record.get("citations") or []
     if not isinstance(cites, list) or any(not isinstance(i, str) or i not in allowed for i in cites):
@@ -60,6 +69,9 @@ def diagnose(record, doc):
             probe = dict(record, parameters=good_params, citations=[c for c in cites if isinstance(c, str) and c in allowed] if isinstance(cites, list) else [],
                 sections={s: ["保留当前方案并在小批验证中记录测量口径及实验条件。" * 6] for s in SECTIONS})
             probe["sections"][section] = [text]
+            if doc.get("requirements"):
+                from .research_experiments import fallback_links
+                fallback_links(probe, doc)
             probe["plan_hash"] = plan_hash(probe)
             try:
                 validate(probe, doc)
@@ -89,6 +101,7 @@ def apply_local(record, patch, errors):
             parent = parent[key]
         parent[path[-1]] = copy.deepcopy(change["value"])
         touched.add(path)
+    updated.setdefault("warnings", []).extend(normalize_step_titles(updated))
     return updated
 
 
@@ -96,6 +109,7 @@ def repair_record(record, doc, client, task_dir, fingerprint):
     from .experiment_design import plan_hash, validate, overlap_key, effective_data
     original = copy.deepcopy(record)
     record = normalize_citations(record)
+    record.setdefault("warnings", []).extend(normalize_step_titles(record))
     errors = diagnose(record, doc)
     audit = {"input_fingerprint": fingerprint, "base_hash": digest(record), "errors": errors}
     atomic_write(task_dir / "experiment_draft.json", json.dumps({"audit": audit, "original": original, "record": record}, ensure_ascii=False, indent=2))
@@ -120,9 +134,15 @@ def repair_record(record, doc, client, task_dir, fingerprint):
             path = error["path"]
             if path[0] == "parameters" and len(path) == 2:
                 key = path[1]
-                declared = current.get(overlap_key(key)) or {}
+                original = record["parameters"].get(key) or {}
+                canonical = original.get("canonical_path", overlap_key(key))
+                declared = current.get(canonical) or {}
                 if declared.get("value") is not None:
-                    record["parameters"][key] = {"ref": overlap_key(key)}
+                    record["parameters"][key] = {"ref": canonical}
+                elif doc.get("requirements") and (original.get("role") == "recipe" or any(w in key for w in ("formula", "doping", "dopant", "composition"))):
+                    record["parameters"].pop(key, None)
+                    for section, paragraphs in record["sections"].items():
+                        record["sections"][section] = [p.replace("{{" + key + "}}", "（主方案尚未声明，待Stage 4明确）") for p in paragraphs]
                 else:
                     record["parameters"][key] = {"value": "待确定，须核对原始文献或小批实验后定案", "unit": "",
                         "basis": "engineering_proposal", "source": "局部校验未通过，不能作为已确定操作值", "meaning": key, "role": "testing"}
@@ -135,11 +155,18 @@ def repair_record(record, doc, client, task_dir, fingerprint):
                     record["sections"][path[1]][path[2]] = text
                 else:
                     record["sections"][path[1]] = [text]
+            elif path[0] in ("groups", "requirement_tests"):
+                from .research_experiments import fallback_links
+                fallback = {}
+                fallback_links(fallback, doc, error["reason"])
+                record[path[0]] = fallback[path[0]]
+            elif path[0] == "extensions":
+                record["extensions"] = []
         pending = diagnose(record, doc)
         if not pending:
             break
         remaining += [e for e in pending if e not in remaining]
-    record["warnings"] = list(record.get("warnings") or []) + ["局部待确定：" + str(e) for e in remaining]
+    record["warnings"] = list(record.get("warnings") or []) + normalize_step_titles(record) + ["局部待确定：" + str(e) for e in remaining]
     record["repair_status"] = "REPAIRED" if not remaining else "PARTIAL"
     record["plan_hash"] = plan_hash(record)
     record["bindings"] = validate(record, doc)

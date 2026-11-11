@@ -59,6 +59,14 @@ runtime_options:
   enable_llm_checker: true
   strict_mode: true
   max_retries_per_stage: 3
+  # 只有首次整体检索偏差才能重建策略；局部证据缺口有限补检索，预算跨重启保持。
+  stage4_retrieval:
+    supplement_rounds: 2
+    rebuild_rounds: 1
+    queries_per_round: 3
+    context_passages: 25
+    context_chars: 60000
+    service_retries: 1
   # LLM 全量轨迹记录 (opt-in, 默认关): 开启后完整保留每次 LLM 调用的输入/输出/token/耗时
   # 与提示组装过程, 按行写入课题目录 llm_trace/trace_<会话>.jsonl。开启方式优先级:
   # abr-cli --trace > 本开关 > 环境变量 LLM_TRACE (覆盖 MCP/TUI 等无 CLI 进程)。

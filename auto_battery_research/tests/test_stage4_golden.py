@@ -200,7 +200,12 @@ def _install_scripted_llm(monkeypatch, writer_draft: str):
         if trace_tag == "experiment_design":
             from auto_battery_research.tests.test_experiment_design import recipe_payload
             payload = recipe_payload()
-            evidence = json.loads(user_prompt).get("evidence") or []
+            request = json.loads(user_prompt)
+            evidence = request.get("evidence") or []
+            if request.get("requirements"):
+                from auto_battery_research.util.research_experiments import fallback_links
+                payload["parameters"]["cathode.active_fraction"]["canonical_path"] = "cathode.active_fraction"
+                fallback_links(payload, {"requirements": request["requirements"], "research": request.get("research"), "ledger_view": request["ledger"]})
             if evidence:
                 payload["citations"] = [evidence[0]["passage_id"]]
             return json.dumps(payload, ensure_ascii=False)
@@ -211,14 +216,38 @@ def _install_scripted_llm(monkeypatch, writer_draft: str):
             })
         if system_prompt is PLANNER_SYSTEM_PROMPT:
             call_log.append({"agent": "planner", "temperature": temperature, "prompt_head": user_prompt[:120]})
-            return json.dumps(GOLDEN_PLAN, ensure_ascii=False)
+            plan = dict(GOLDEN_PLAN)
+            plan["requirements"] = {"items": [{"id": "r1", "quote": GOLDEN_GOAL,
+                "kind": "objective", "description": "设计高比能液态锂金属电池", "status": "clear",
+                "verification_needed": True, "conditions": []}]}
+            return json.dumps(plan, ensure_ascii=False)
+        if trace_tag == "scheme_maintenance":
+            request = json.loads(user_prompt)
+            from auto_battery_research.rag import RelationEngine
+            entities = RelationEngine().extract_entities(writer_draft)
+            parameters = {}
+            for comp in ("cathode", "anode", "electrolyte"):
+                values = entities.get(comp) or []
+                if values:
+                    parameters[comp + ".material"] = {"value": values[0], "unit": "", "basis": "engineering_proposal",
+                        "source": "脚本化设计声明", "source_quote": writer_draft.strip(), "meaning": {"cathode": "正极材料", "anode": "负极材料", "electrolyte": "电解液"}[comp]}
+            if "FEC" in writer_draft:
+                parameters["electrolyte.additives"] = {"value": ["FEC"], "unit": "", "basis": "engineering_proposal",
+                    "source": "脚本化设计声明", "source_quote": writer_draft.strip(), "meaning": "添加剂"}
+            requirement_id = request["requirements"]["items"][0]["id"]
+            quote = writer_draft.splitlines()[1]
+            research = {"answers": [{"requirement_id": requirement_id, "status": "answered", "response": quote,
+                "source_quote": quote, "verification": "unverified", "citations": [], "parameter_refs": [],
+                "reason": "", "next_step": ""}], "candidates": [], "arguments": [], "selected_candidate_id": None}
+            return json.dumps({"parameters": parameters, "candidates": [], "research": research}, ensure_ascii=False)
         if system_prompt is WRITER_SYSTEM_PROMPT:
             call_log.append({"agent": "writer", "temperature": temperature, "prompt_head": user_prompt[:120]})
             return writer_draft
         if system_prompt is REVIEWER_SYSTEM_PROMPT:
             call_log.append({"agent": "reviewer", "temperature": temperature, "prompt_head": user_prompt[:120]})
             return json.dumps(
-                {"issues": [], "revised_answer": writer_draft, "confidence": "high"},
+                {"issues": [], "revised_answer": writer_draft, "confidence": "high",
+                 "requirement_review": {"source_checked": True, "missing_quotes": [], "misread_ids": [], "unanswered_ids": []}},
                 ensure_ascii=False,
             )
         raise AssertionError(f"脚本化 LLM 收到未识别的 system_prompt: {str(system_prompt)[:80]}")

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import re
 
-RENDER_VERSION = 7
+RENDER_VERSION = 13
 GROUPS = {"cathode": "正极", "anode": "负极", "electrolyte": "电解液",
           "separator": "隔膜", "current_collector": "集流体", "packaging": "封装",
           "process": "制备与装配", "condition": "测试条件", "requirements": "研发目标"}
@@ -18,6 +18,8 @@ NAMES = {
     "temperature_K": "测试温度", "temperature_C": "测试温度", "drying_temperature_K": "干燥温度",
     "drying_time_h": "干燥时间", "formation": "化成制度", "synthesis": "合成路线",
     "coating": "涂层", "target_energy_wh_kg": "电芯比能量目标",
+    "nominal_formula": "名义化学式", "element": "元素", "site": "占位",
+    "amount": "掺量", "basis": "计量口径", "concentration": "锂盐浓度",
     "li_filling_fraction": "载锂孔隙填充率", "porosity_basis": "孔隙率定义",
     "li_density_g_cm3": "锂密度", "li_capacity_mAh_g": "锂比容量",
     "density_g_cm3": "材料密度", "mass_mg_cm2": "面质量", "composite_mass_mg_cm2": "复合层面质量",
@@ -46,36 +48,51 @@ def label(key, row=None):
     if isinstance(meaning, str) and re.search(r"[\u4e00-\u9fff]", meaning) and key not in meaning:
         return meaning.strip().rstrip("。")
     # 未注册的新字段不能在报告中暴露程序路径；保留其值及明确的待完善语义。
-    return "补充参数（含义需进一步明确）"
+    return "未命名参数（见参数附录）"
 
 
 def text(value):
     if isinstance(value, dict):
-        return "、".join(f"{label(str(k))}为{text(v)}" for k, v in value.items())
+        from .parameter_presentation import render_conditions
+        return render_conditions(value)
     if isinstance(value, (list, tuple)):
         return "、".join(text(v) for v in value)
     if value is None:
         return "未确定"
+    if isinstance(value, bool):
+        return "是" if value else "否"
     if isinstance(value, float):
         return f"{value:.6g}"
     return ALIASES.get(str(value), str(value)).replace("\n", " ")
 
 
 def amount(key, row):
-    value, unit = row.get("value"), row.get("unit", "")
-    if isinstance(value, (float, int)) and unit == "K":
-        return f"{value - 273.15:.6g} ℃"
-    if isinstance(value, (float, int)) and ("fraction" in key or key.split(".")[-1] == "porosity"):
-        return f"{value * 100:.6g}%"
-    if unit in ("1", "N/A", "formula", "cells"):
-        unit = "只" if unit == "cells" else ""
-    return text(value) + (" " + UNITS.get(unit, unit) if unit else "")
+    from .parameter_presentation import value_text
+    return value_text(key, row)
 
 
 def readable_units(body):
     """仅改变明确标注的温标，不猜测无单位数字的物理含义。"""
-    return re.sub(r"(?<![\w.])(-?\d+(?:\.\d+)?)\s*K\b",
+    return re.sub(r"(?<![\w.])(-?\d+(?:\.\d+)?)\s*K\b(?!\s*/)",
                   lambda m: f"{float(m[1]) - 273.15:.6g} ℃", body)
+
+
+def substitute_parameters(paragraph, bindings):
+    """先处理原文温标再替换字段；吞掉紧随占位符的重复单位，不对全句猜测。"""
+    from .research_contract import TOKEN
+    original = readable_units(paragraph)
+    pattern = re.compile(TOKEN.pattern + r"(?P<tail>\s*(?:K/min|K/s|K/h|mol/L|formula_unit|solvent_system|cell_type|cycles|cycle|cells|cell|material|element|salt|formula|chemical|species|methods|atmosphere|count|℃|°C|K|V|C|h|min|ppm|vol%|wt%|%|只|圈|个))?(?![A-Za-z_])")
+    def replace(match):
+        key = match[1]
+        row = bindings[key]
+        tail = (match["tail"] or "").strip()
+        declared = row.get("unit", "")
+        rendered = amount(key, row)
+        equivalent = {"cycles": "圈", "cycle": "圈", "cells": "只", "cell": "只", "K": "℃", "count": "个"}
+        if tail and tail != declared and equivalent.get(tail, tail) != equivalent.get(declared, declared):
+            rendered += " " + tail
+        return rendered
+    return pattern.sub(replace, original)
 
 
 def describe(key, row):
@@ -84,8 +101,26 @@ def describe(key, row):
         return f"{name}尚未确定"
     status = "（文献参考值，须核对材料及工况）" if row.get("basis") in ("literature", "literature_measurement") else ""
     conditions = row.get("conditions") or {}
-    condition_text = "，适用条件为" + text(conditions) if conditions else ""
+    from .parameter_presentation import render_conditions
+    displayed_conditions = render_conditions(conditions)
+    condition_text = "，适用条件为" + displayed_conditions if displayed_conditions else ""
     return f"{name}为{amount(key, row)}{status}{condition_text}"
+
+
+def numbered_detail(index, title, body, details=()):
+    """Markdown有序条目：续行按数字宽度缩进，子项保持正文层级。"""
+    prefix = f"{index}. "
+    indent = " " * len(prefix)
+    parts = [prefix + f"**{title}**"]
+    if body:
+        parts.append("\n".join(indent + line if line else "" for line in str(body).splitlines()))
+    for label_text, value in details:
+        lines = str(value).splitlines()
+        if not lines:
+            continue
+        parts.append(indent + f"- **{label_text}：** " + lines[0]
+                     + "".join("\n" + indent + "  " + line if line else "\n" for line in lines[1:]))
+    return "\n\n".join(parts)
 
 
 def component_paragraph(data, group, material_only=False):
@@ -108,12 +143,23 @@ def component_paragraph(data, group, material_only=False):
 def render_design(data):
     """以匹配关系组织方案表，模型参数由第四部分统一回显。"""
     params = data.get("parameters", {})
+    from .parameter_presentation import parameter_view, combined_rows, displayed_row
+    view = parameter_view(data)
     def rows(group):
-        return [(k, v) for k, v in params.items() if k.startswith(group + ".")
-                and not k.endswith(".original_request") and v.get("value") is not None]
+        return [(row["canonical_key"], row) for row in view if row["canonical_key"].startswith(group + ".")
+                and not row["canonical_key"].endswith(".original_request") and row.get("value") is not None]
     def clauses(items, emphasize=False):
-        return "；".join(describe(k, v).replace(amount(k, v), f"**{amount(k, v)}**", 1)
-                        if emphasize else describe(k, v) for k, v in items)
+        prepared = []
+        for key, original in items:
+            row = dict(original)
+            row.setdefault("canonical_key", key)
+            row.setdefault("source_fields", [key])
+            row.setdefault("sources", [])
+            prepared.append(row)
+        combined = combined_rows(prepared)
+        values = [displayed_row(v, params).replace(amount(v["canonical_key"], v), f"**{amount(v['canonical_key'], v)}**", 1)
+                  if emphasize and "range_values" not in v else displayed_row(v, params) for v in combined]
+        return "；".join(dict.fromkeys(values))
     parts = ["### 3.1 总体方案", "> **当前组合。** " + "".join(
         component_paragraph(data, g, material_only=True) for g in ("cathode", "anode", "electrolyte"))]
     if rows("requirements"):
@@ -122,6 +168,12 @@ def render_design(data):
               "### 3.2 正负极配置与容量匹配"]
     for group in ("cathode", "anode"):
         specs = [(k, v) for k, v in rows(group) if k.split(".")[-1] not in ("material", "R_s_um", "D_s_m2s", "n_p_ratio")]
+        identity = [(k, v) for k, v in specs if any(t in k for t in ("formula", "doping.", "dopant", "coating", "composition"))]
+        specs = [(k, v) for k, v in specs if (k, v) not in identity]
+        if identity:
+            details = [("规格" + str(i), displayed_row(row, params)) for i, row in enumerate(combined_rows([v for _, v in identity]), 1)]
+            parts.append(numbered_detail(1, f"{GROUPS[group]}组成与改性", "以下为当前声明；含混计量口径先确认，不自动换算。", details))
+        specs = [(k, v) for k,v in specs if k.split(".")[-1] in ("L_um", "porosity", "loading_mg_cm2", "compaction_g_cm3", "active_fraction", "conductive_fraction", "binder_fraction", "capacity_mAh_g")]
         parts.append(f"**{GROUPS[group]}配置。** " + (clauses(specs, True) + "。" if specs else "具体极片规格尚未确定。"))
     ratios = [(k, v) for k, v in list(params.items()) + list(data.get("derived", {}).items())
               if k.split(".")[-1] == "n_p_ratio" and v.get("value") is not None]
@@ -129,7 +181,8 @@ def render_design(data):
         parts.append("**容量匹配。** " + clauses(ratios) + "。该值为设计声明或预算，仍需按同一工况的可逆面容量及锂库存实测核验。")
     else:
         parts.append("**容量匹配尚未闭合。** 当前没有可采用的 N/P 值，不能仅凭正负极厚度判断匹配成功；应按同一工况的可逆面容量及锂库存核验，获取安排见第 5 节。")
-    conditions = rows("condition")
+    operating = {"v_min", "v_max", "c_rate", "temperature_K", "temperature_C", "cycle_c_rate", "1c_current_density", "report_cycles_100", "report_cycles_200"}
+    conditions = [(k,v) for k,v in rows("condition") if k.split(".")[-1] in operating]
     if conditions:
         parts.append("**已声明工况。** " + clauses(conditions) + "。未声明的工况不能由实验建议或模型默认值自动补为定案。")
     parts += ["颗粒半径、固相扩散系数及模型实际输入统一见第 4 节。",
@@ -138,7 +191,8 @@ def render_design(data):
     # 相同适用条件合并展示；不把条件性基线配方拼成已验证的主方案。
     scoped = {}
     for k, v in electrolyte:
-        condition = text(v.get("conditions")) if v.get("conditions") else ""
+        from .parameter_presentation import render_conditions
+        condition = render_conditions(v.get("conditions"), parameters=params) if v.get("conditions") else ""
         scoped.setdefault(condition, []).append((k, dict(v, conditions={})))
     for condition, items in scoped.items():
         parts.append("**配方声明。** " + clauses(items) + "。" + ("适用范围：" + condition + "。" if condition else ""))
@@ -170,16 +224,28 @@ def render_design(data):
     for group, names in gaps.items():
         parts.append(f"- **{group}待补数据。** " + "、".join(names) + "；获取与验证安排见第 5 节。")
     parts.append("以上为设计声明或预算，尚需实验核验及完整电芯质量闭合；完整审核意见见第 2.6 节。")
-    return "\n\n".join(p for p in parts if p)
+    numbered, index = [], 0
+    for part in parts:
+        if part.startswith("### "):
+            index = 0
+        match = re.match(r"\*\*([^*]+)\*\*\s+([\s\S]+)", part)
+        if match:
+            index += 1
+            part = numbered_detail(index, match[1], match[2])
+        elif re.match(r"^\d+\. \*\*", part):
+            index += 1
+            part = re.sub(r"^\d+\.", f"{index}.", part, count=1)
+        numbered.append(part)
+    return "\n\n".join(p for p in numbered if p)
 
 
 def render_model_parameters(data):
     parts = ["### 模型参数声明", "以下为方案表中的模型参数，声明值不等于本批材料的实测物性，也不表示本次已完成仿真。"]
-    for group in ("cathode", "anode"):
+    for index, group in enumerate(("cathode", "anode"), 1):
         rows = [(k, v) for k, v in data.get("parameters", {}).items()
                 if k.startswith(group + ".") and k.split(".")[-1] in ("R_s_um", "D_s_m2s")]
         if rows:
-            parts.append(f"**{GROUPS[group]}模型参数。** " + "；".join(describe(k, v) for k, v in rows) + "。")
+            parts.append(numbered_detail(index, f"{GROUPS[group]}模型参数。", "；".join(describe(k, v) for k, v in rows) + "。"))
     return "\n\n".join(parts)
 
 

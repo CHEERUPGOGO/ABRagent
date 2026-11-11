@@ -2209,6 +2209,31 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
 
 [详细阶段日志](stage_journals.json)
 """
+    if scheme_data.get("requirements"):
+        from auto_battery_research.util.research_reporting import render_summary, render_review_appendix
+        from auto_battery_research.util.report_readiness import notice
+        # 保留六节布局，用课题回应取代默认的比能量摘要；能量块仍受指纹验收。
+        start = report_content.index("## 1. 研发摘要")
+        end = report_content.index("## 2. 材料选择与文献依据", start)
+        report_content = (report_content[:start] + "## 1. 研发摘要 (Executive Summary)\n\n"
+            + render_summary(scheme_data) + "\n\n" + notice(scheme_data) + "\n\n---\n\n" + report_content[end:])
+        start = report_content.index("## 4. 仿真与优化分析")
+        end = report_content.index("## 5. 实验路线与验证计划", start)
+        physics_state = scheme_data.get("report_readiness", {}).get("physics_status")
+        physics_text = ("当前材料体系没有匹配的PINN模型，本次未执行有效放电仿真。课题中的循环、工艺和机理目标按第5节实验验证。"
+                        if physics_state == "NOT_APPLICABLE" else physics_summary)
+        block = "## 4. 仿真与优化分析\n\n" + physics_text + "\n\n"
+        if s5_pinn or _target is not None:
+            block += f"<!-- abr-energy:start -->\n{energy_text}\n<!-- abr-energy:end -->\n\n"
+            block += "模型仅覆盖对应输入的单次放电，不能验证循环寿命、首效或实际工艺。\n\n"
+        else:
+            block += f"<!-- abr-energy:start -->\n{energy_text}\n<!-- abr-energy:end -->\n\n"
+        block += s5_geometry_block + s5_revision_block + s5_curve_block
+        if s5_pinn:
+            block += "\n\n" + history_text
+        report_content = report_content[:start] + block + "\n\n---\n\n" + report_content[end:]
+        report_content += "\n\n" + render_review_appendix(scheme_data) + "\n"
+        report_content = report_content.replace("流程完成，物理验证仅为代理估算", "流程完成，研究验证状态见正文")
     # 4. 原子安全写入课题专属规范文件 (final_research_report.md 为唯一规范命名；
     #    final_report.md / battery_research_synthesis_report.md 仅为读侧历史别名兼容，
     #    不再重复写出 —— 避免同一课题目录下出现三份内容相同的研报)

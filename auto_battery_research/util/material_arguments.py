@@ -6,7 +6,7 @@ from .report_narrative import component_paragraph, describe, text, GROUPS
 VERSION = 2
 CATEGORIES = (
     ("cathode", "正极与改性路线", ("正极", "富锂", "NCM", "掺杂", "占位", "电荷", "半径", "畸变", "晶格", "氧释放", "氧化还原", "氧空位", "M–O", "redox", "支柱", "Na", "Zn", "Cu")),
-    ("anode", "负极及容量匹配", ("负极", "锂金属", "锂库存", "硅碳", "SiOx", "Si/C", "碳宿主", "石墨", "预锂化", "膨胀", "SEI")),
+    ("anode", "负极及容量匹配", ("负极", "锂金属", "金属锂", "对电极", "锂库存", "硅碳", "SiOx", "Si/C", "碳宿主", "石墨", "预锂化", "膨胀", "SEI")),
     ("electrolyte", "电解液与界面匹配", ("电解液", "溶剂", "锂盐", "FEC", "VC", "LiPF", "LHCE", "CEI", "HF")),
     ("separator", "隔膜选择", ("隔膜", "Celgard", "separator")),
     ("current_collector", "集流体选择", ("集流体", "铜箔", "铝箔", "Al 箔", "Cu 箔", "PET-Cu")),
@@ -65,7 +65,7 @@ def _units(text):
     return result
 
 
-def _claims(block, known):
+def _claims(block, known, *, rationale_only=False):
     # 逐句筛选，避免混合段落中的旧几何、制备条件进入当前选型论证。
     fragments, pending, depth = [], [], 0
     for char in block:
@@ -79,11 +79,21 @@ def _claims(block, known):
             pending.clear()
     if pending:
         fragments.append("".join(pending).strip())
+    if rationale_only and not PARAMETER_SENTENCE.search(block):
+        # 安全的纯论证段保持完整，不能拆掉同段的研究对象、引用或跨体系限定。
+        fragments = [block.strip()]
     claims = []
     for fragment in fragments:
         fragment = _plain(fragment)
         if not fragment or PARAMETER_SENTENCE.search(fragment):
             continue
+        if rationale_only and re.search(r"过量\s*\d", fragment):
+            continue
+        if rationale_only and not re.search(
+            r"理由|依据|机理|作用|有助|抑制|降低|提高|改善|支撑|证据|风险|局限|"
+            r"不能|不同|缺少|缺乏|因此|由于|但|用户.{0,8}(?:指定|锁定)", fragment
+        ):
+            continue  # 单列材料名、候选化学式或装配条件不是选择理由。
         if re.fullmatch(r"\*\*[^*]+\*\*[:：]?", fragment):
             continue  # 仅有段首标签而无论证内容，不单独生成空泛段落。
         if fragment.startswith(("---", "database/", "/home/", "**验证优先级")):
@@ -98,14 +108,22 @@ def _claims(block, known):
         if not ids and re.search(r"(?:mol/L|[\d.]\s*M\s*Li|EC\s*[:：/]\s*(?:DMC|DEC|EMC))", fragment):
             continue  # 未带文献的旧配方不再作为当前电解液推荐进入论证。
         explicit = any(word in fragment for word in ("推断", "假设", "候选", "需验证", "待验证", "无直接", "无实测", "风险", "应优先", "因此", "而不是", "补偿", "占位", "失配", "缺口"))
+        if rationale_only:
+            explicit = explicit or any(w in fragment for w in ("不能", "不同", "无证据", "无任何", "证据上", "无本证据", "用户锁定", "用户指定"))
         if ids or explicit:
             claims.append({"text": fragment, "citations": ids, "inference": not bool(ids) or any(w in fragment for w in ("推断", "假设", "迁移至", "跨体系"))})
     return claims
 
 
-def build_arguments(doc):
+def build_arguments(doc, *, rationale_only=False):
     known = {str(e.get("passage_id")): e for e in doc.get("evidence") or [] if e.get("passage_id")}
     blocks = _units(doc.get("final_answer") or "")
+    if rationale_only:
+        # 列表中的不同材料各自保留完整论证，不能让某一项引用为整组装配条件背书。
+        blocks = [unit for block in blocks for unit in (
+            [block] if block["table"] else
+            [dict(block, text=part) for part in re.split(r"\n(?=\s*(?:[-*+]\s+|\d+[.、]\s+))", block["text"]) if part.strip()]
+        )]
     result = {"version": VERSION, "components": {}, "comparisons": []}
     used = set()
     for comp, title, terms in CATEGORIES:
@@ -127,7 +145,7 @@ def build_arguments(doc):
                             if item not in result["comparisons"]:
                                 result["comparisons"].append(item)
                 continue
-            for claim in _claims(block["text"], known):
+            for claim in _claims(block["text"], known, rationale_only=rationale_only):
                 # 逐句识别组件，混合段落中的集流体与电解液论证不再互相吞并。
                 scores = [(sum(term.casefold() in claim["text"].casefold() for term in ts), c) for c, _, ts in CATEGORIES]
                 best_score = max(s for s, _ in scores)
@@ -146,6 +164,10 @@ def build_arguments(doc):
                     continue
                 used.add(claim["text"])
                 claim["priority"] = int(any(w in block["heading"] for w in ("依据", "机理", "可行性", "取舍", "风险")))
+                if rationale_only and any(w in block["heading"] for w in ("选材", "筛选", "选择", "取舍")):
+                    claim["priority"] += 2
+                if rationale_only and any(w in claim["text"] for w in ("推理", "外推", "间接证据", "机理旁证")):
+                    claim["inference"] = True
                 claims.append(claim)
         # 优先保留有引用的机理链，同时保留取舍与候选推断，避免开头的泛论占满配额。
         evidence_claims = sorted((claim for claim in claims if claim["citations"]), key=lambda c: -c["priority"])

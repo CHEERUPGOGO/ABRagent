@@ -20,6 +20,9 @@ def report_identity(doc: dict, result: dict | None, spec: dict | None) -> str:
     payload = {"render_version": RENDER_VERSION, "experiment_plan_hash": doc.get("experiment_plan_hash"), "scheme": doc.get("scheme") or {}, "ledger_hash": doc.get("ledger_hash"), "reviewer_output": doc.get("reviewer_output") or {},
                "result": result or {}, "spec": spec or {},
                "materials_input": {"analysis": doc.get("final_answer"), "evidence": doc.get("evidence")},
+               "requirements": doc.get("requirements"), "research": doc.get("research"),
+               "retrieval_state": doc.get("retrieval_state"),
+               "experiment_extensions": doc.get("experiment_extensions"),
                "report_readiness": doc.get("report_readiness")}
     digest = hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False, allow_nan=False).encode("utf-8")).hexdigest()
     return f"<!-- abr-report-identity:{digest} -->"
@@ -32,6 +35,21 @@ def validate_report_blocks(text: str, context: dict, target: float | None, toler
     存在时按同一视图重算, 缺失时交给实验方案生成记录单独校验。
     """
     errors = []
+    if context.get("requirements"):
+        from .research_reporting import render_summary, render_review_appendix
+        from .research_contract import document_errors
+        doc = context["research_doc"]
+        research_errors = document_errors(doc)
+        if doc.get("report_readiness", {}).get("category") == "DIAGNOSTIC":
+            research_errors = [e for e in research_errors if "用户固定要求与主方案不一致" not in e]
+        errors.extend(research_errors)
+        from .parameter_presentation import presentation_conflicts
+        conflicts = presentation_conflicts(doc.get("ledger_view") or {})
+        if doc.get("report_readiness", {}).get("category") != "DIAGNOSTIC":
+            errors.extend(conflicts)
+        for expected in (render_summary(doc), render_review_appendix(doc)):
+            if expected not in text:
+                errors.append("课题回应摘要或完整审核附录与归档不一致")
     required = {"final-design": render_selected_design(context), "energy": render_energy(context, target, tolerance)}
     for key, value in required.items():
         if f"<!-- abr-{key}:start -->\n{value}\n<!-- abr-{key}:end -->" not in text:
@@ -148,6 +166,7 @@ def report_context(doc: dict, result: dict | None, spec: dict | None = None) -> 
         accounting = {"method": "fixed_material_to_cell_ratio", "material_energy_wh_kg": material,
                       "cell_energy_wh_kg": energy, "cell_energy_ratio": energy / material}
     return {"scheme": scheme, "geometry": scheme.get("geometry") or {},
+            "requirements": doc.get("requirements"), "research_doc": doc,
             "ledger_view": doc.get("ledger_view"),
             "effective": (result.get("pinn") or {}).get("design") or {},
             "condition": ((spec or {}).get("cell_spec") or {}).get("condition") or {},
@@ -338,10 +357,15 @@ def render_selected_design(context: dict) -> str:
     """正文只渲染最终版本；初始提案链接留档，不能混入当前配方。"""
     if context.get("ledger_view"):
         from .report_narrative import render_design
+        if (context.get("requirements") or {}).get("scheme_required") is False:
+            return "本课题以研究分析为主，未要求完整电芯设计。当前已知材料与条件仅用于限定研究对象；研究回答及验证路径见第2、5节，不补造主配方。"
         body = render_design(context["ledger_view"])
+        if context.get("requirements"):
+            body = body.replace("第 2.6 节", "第6节附录")
         issues = (context.get("reviewer_output") or {}).get("issues") or []
         if issues:
-            body += "\n\n**适用边界。** 本方案仍有未解决的审核意见，完整内容见第 2.6 节；相关判断不能作为已验证结论。"
+            section = "6节附录" if context.get("requirements") else "2.6 节"
+            body += f"\n\n**适用边界。** 本方案仍有未解决的审核意见，完整内容见第 {section}；相关判断不能作为已验证结论。"
         return body
     s, g = context["scheme"], context["geometry"]
     if not s:
@@ -425,6 +449,8 @@ def render_selected_design(context: dict) -> str:
 def render_energy(context: dict, target: float | None, tolerance: float) -> str:
     r, a = context["result"], context["energy_accounting"]
     energy = r.get("energy_wh_kg")
+    if context.get("requirements") and target is None and not isinstance(energy, (int, float)):
+        return "本课题没有已声明的电芯比能量目标或有效能量计算结果；课题目标的回应与验证安排见第1、2、5节。"
     if not isinstance(energy, (int, float)):
         return "**目标判定：未完成有效仿真，不能判定达标。** \n\n" + ENERGY_SCOPE
     threshold = target * (1 - tolerance / 100) if target is not None else None

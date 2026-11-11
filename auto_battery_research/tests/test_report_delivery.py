@@ -67,7 +67,7 @@ def test_report_delivery_end_to_end(tmp_path, monkeypatch, diagnostic_mode, matc
     text = (tmp_path / "final_research_report.md").read_text(encoding="utf-8")
     label = "问题诊断报告" if diagnostic_mode else "有条件候选报告"
     assert label in text and "审核服务失败" in text
-    assert ("物理验证未通过" if matched_mode else "NOT_APPLICABLE") in text
+    assert ("物理验证未通过" if matched_mode else "当前体系无匹配模型") in text
     assert text.count("审核服务失败") == 1
     checker = FinalReportChecker()
     checker.on_init(mgr, {"id": 6}, mgr.config)

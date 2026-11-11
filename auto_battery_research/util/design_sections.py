@@ -32,11 +32,11 @@ def design_sections(text: str) -> tuple[list, list, list]:
     return headings, found, missing
 
 
-def design_output_issues(text: str) -> list[str]:
+def design_output_issues(text: str, requirements=None) -> list[str]:
     errors = []
     if len(text.strip()) < 200:
         errors.append("设计正文不足200字符")
-    missing = design_sections(text)[2]
+    missing = design_sections(text)[2] if (requirements or {}).get("scheme_required", True) else []
     if missing:
         errors.append("缺少五段式章节：" + "、".join(missing))
     if len(re.findall(r"^\s*```", text, re.M)) % 2:

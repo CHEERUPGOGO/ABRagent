@@ -7,9 +7,9 @@ from .scheme_ledger import digest, validate_field
 from .design_sections import design_output_issues, design_sections, normalize_titles
 
 
-def review_verdict(text, review):
+def review_verdict(text, review, requirements=None):
     """区分审核服务失败、带保留意见的有效审核和无保留通过。"""
-    completed = not design_output_issues(text) and review.get("error_type") not in ("reviewer", "structure")
+    completed = not design_output_issues(text, requirements) and review.get("error_type") not in ("reviewer", "structure")
     passed = completed and not review.get("issues") and review.get("confidence") in ("high", "medium")
     return completed, passed
 
@@ -151,7 +151,7 @@ def scheme_with_fields(scheme, fields):
     return scheme
 
 
-def repair(writer, text, review, evidence, parameters, read_only_context="", verifier=None, geometry_validator=None):
+def repair(writer, text, review, evidence, parameters, read_only_context="", verifier=None, geometry_validator=None, evidence_selection=None):
     issues = review_issues(review, text)
     permit = authorize(text, issues, parameters)
     permit["missing_sections"] = design_sections(text)[2]
@@ -159,13 +159,15 @@ def repair(writer, text, review, evidence, parameters, read_only_context="", ver
     if issues:
         from .repair_interfaces import execute
         changed, fields, entry = execute(writer, verifier or writer.llm, text, parameters, permit, issues, evidence,
-                                        read_only_context, geometry_validator, review.get("repair_feedback"))
+                                        read_only_context, geometry_validator, review.get("repair_feedback"), evidence_selection)
         entry["unmapped_summaries"] = list(review.get("issues", []))[len(issues):]
         return changed, fields, entry
     if not permit["grants"] and not permit["missing_sections"]:
         return text, parameters, {"status": "SCOPE_UNRESOLVED", "issues": issues}
+    from .adaptive_retrieval import evidence_package
+    package, selection = (evidence, evidence_selection) if evidence_selection is not None else evidence_package(evidence, text=text, issues=issues)
     prompt = {"read_only_context": read_only_context, "draft_blocks": blocks(text)[1], "permission": permit, "issues": issues,
-              "parameters": parameters, "evidence": evidence[:25],
+              "parameters": parameters, "evidence": package, "evidence_context": selection,
               "return_object_example_do_not_wrap": {"base_hash": permit["base_hash"], "edits": [{"issue_id": "issue-0", "block_id": "b0", "text": "替换段落"}],
                          "parameters": [], "append_sections": []}}
     for attempt in range(2):
@@ -186,9 +188,15 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
     """可恢复的三轮审核；正文问题只产生补丁，审核异常不改正文。"""
     from .scheme_ledger import atomic_write, flatten_scheme, canonical_unit
     question = seed.setdefault("review_context", question)
+    requirements = (seed.get("plan") or {}).get("requirements")
+    pipeline.reviewer.requirements = requirements
+    if seed.get("research_draft"):
+        pipeline.reviewer.research_draft = seed["research_draft"]
     text = normalize_titles(seed["draft"])
     evidence = seed["evidence"]
     parameters = copy.deepcopy(seed.get("parameters") or (getattr(pipeline, "scheme_context", None) or {}).get("parameters", {}))
+    from .adaptive_retrieval import init_state, select_context, after_review, options as retrieval_options
+    retrieval_state = init_state(seed)
     for key, value in flatten_scheme(seed.get("scheme") or {}).items():
         parameters.setdefault(key, {"value": value, "unit": canonical_unit(key) or "", "basis": "engineering_proposal", "source": "初始设计"})
     audit = list(seed.get("repair_audit", []))
@@ -220,6 +228,8 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
     def save():
         seed.update(draft=text, evidence=evidence, parameters=parameters, repair_audit=audit, reviewer_output=review,
                     scheme=scheme_with_fields(seed.get("scheme"), parameters))
+        if seed.get("research_draft"):
+            pipeline.reviewer.research_draft = {"research": seed["research_draft"].get("research"), "parameters": parameters}
         candidate = seed.get("geometry_candidate")
         if isinstance(candidate, dict):
             for key, field in parameters.items():
@@ -233,18 +243,25 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
         if path:
             atomic_write(path, json.dumps(seed, ensure_ascii=False, indent=2))
             path.with_name("stage4_rebuild_requested.json").unlink(missing_ok=True)
+        pipeline.reviewer.retrieval_context = {"window_open": retrieval_state["window_open"],
+            "initial_strategy": retrieval_state["initial_strategy"], "rounds": retrieval_state["rounds"],
+            "archive_manifest": [{"passage_id": e.get("passage_id"), "source": e.get("source"), "preview": e.get("text", "")[:300]} for e in evidence]}
     save()
     # 持久化预算，工具重复调用和进程重启均不能重置。
-    while seed.get("repair_rounds", 0) < 3 and not seed.get("protocol_exhausted") and not (getattr(pipeline, "report_first", False) and seed.get("review_service_failures", 0) >= 2):
-        seed["repair_rounds"] = seed.get("repair_rounds", 0) + 1
+    # 审核、检索和正文修复分别计数；没有修补正文的检索不消耗正文预算。
+    while (seed.get("repair_rounds", 0) < 3 and seed.get("review_rounds", 0) < 6
+           and not seed.get("protocol_exhausted")
+           and seed.get("review_service_failures", 0) < (2 if getattr(pipeline, "report_first", False) else 3)):
+        seed["review_rounds"] = seed.get("review_rounds", 0) + 1
         save()
-        errors = design_output_issues(text)
+        errors = design_output_issues(text, requirements)
         if seed.get("pending_review") and not errors:
             review = seed.pop("pending_review")
         elif errors:
             review = {"issues": errors, "repair_issues": [], "confidence": "low", "error_type": "structure", "review_status": "STRUCTURE_INVALID"}
         else:
-            review = pipeline.reviewer.run(question=question, evidence=evidence, draft_answer=text,
+            package = select_context(seed, purpose="reviewer", text=text, issues=review.get("repair_issues", []), config=retrieval_options(pipeline))
+            review = pipeline.reviewer.run(question=question, evidence=package, draft_answer=text,
                 history_context=history_context, scheme=seed.get("scheme"), claimed_energy=pipeline._extract_energy_claim(text))
             review["review_status"] = "SERVICE_ERROR" if review.get("error_type") == "reviewer" else ("REVIEWED_WITH_ISSUES" if review.get("issues") else "APPROVED")
             seed["reviewed_hash"] = digest(text)
@@ -255,27 +272,19 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
             if getattr(pipeline, "report_first", False) and seed["review_service_failures"] >= 2:
                 break
             continue
+        retrieval_improved = after_review(pipeline, seed, review, save)
+        evidence = seed["evidence"]
         if not review.get("issues"):
+            if retrieval_improved:
+                continue  # 新证据须先重新审核，不把取回证据冒充正文已修复。
             break
-        supplemented_now = False
-        if review.get("error_type") == "retrieval" and not seed.get("supplemented"):
-            seed["supplemented"] = True
-            save()
-            queries = pipeline._issues_to_queries(review["issues"])[:3]
-            plan = seed.get("plan") or {}
-            extra = pipeline.retrieve_context(db_type=seed.get("db_type", "literature"), question=seed.get("question", question),
-                queries=queries, previous_evidence=evidence, top_k=top_k,
-                focus_component=plan.get("focus_component"), focus_labels=plan.get("focus_labels"),
-                use_label_filter=not plan.get("needs_reasoning", False), **(seed.get("retrieval_weights") or {}))
-            merged = {e["passage_id"]: e for e in evidence}
-            size = len(merged)
-            for passage in extra.get("results", []):
-                merged.setdefault(passage["passage_id"], passage)
-            supplemented_now = len(merged) > size
-            evidence = list(merged.values())
-        changed, fields, entry = repair(pipeline.writer, text, review, evidence, parameters, question,
+        package = select_context(seed, purpose="repair", text=text, issues=review.get("repair_issues", []), config=retrieval_options(pipeline))
+        seed["repair_rounds"] = seed.get("repair_rounds", 0) + 1
+        save()
+        changed, fields, entry = repair(pipeline.writer, text, review, package, parameters, question,
             verifier=getattr(pipeline.reviewer, "llm", None),
-            geometry_validator=lambda fields: validate_repair_geometry(fields, parameters, seed, evidence))
+            geometry_validator=lambda fields: validate_repair_geometry(fields, parameters, seed, evidence),
+            evidence_selection=retrieval_state["context_history"][-1])
         if entry["status"] == "APPLIED" and fields != parameters:
             try:
                 from auto_battery_research.simulation.geometry_contract import build_geometry_contract, validate_geometry_contract
@@ -317,8 +326,8 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
             break
         if entry["status"] in ("SCOPE_UNRESOLVED", "NO_CHANGE"):
             save()
-            if supplemented_now:
-                continue  # 有新证据时重新审核，但不重写正文或扩大写权限。
+            if retrieval_improved:
+                continue
             break
         if entry["status"] == "APPLIED":
             text, parameters = changed, fields
@@ -337,11 +346,15 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
                 break
         save()
     # 最后一轮修改后仍须复核，不能把修改前审核冒充修改后通过。
-    if audit and audit[-1].get("status") == "APPLIED" and seed.get("reviewed_hash") != digest(text):
-        if not design_output_issues(text):
-            review = pipeline.reviewer.run(question=question, evidence=evidence, draft_answer=text,
+    if audit and audit[-1].get("status") == "APPLIED" and (seed.get("reviewed_hash") != digest(text) or requirements):
+        if not design_output_issues(text, requirements):
+            package = select_context(seed, purpose="final_review", text=text, issues=review.get("repair_issues", []), config=retrieval_options(pipeline))
+            review = pipeline.reviewer.run(question=question, evidence=package, draft_answer=text,
                 history_context=history_context, scheme=seed.get("scheme"), claimed_energy=pipeline._extract_energy_claim(text))
             seed["reviewed_hash"] = digest(text)
+            # 最终复核仅记录决策和关闭窗口，不再开启无法用于正文修复的检索。
+            retrieval_state["window_open"] = False
+            retrieval_state["pending_diagnostics"] = review.get("retrieval_diagnostics", [])
         save()
     return text, review, evidence, parameters, audit
 
@@ -380,7 +393,7 @@ def resume_pipeline(pipeline, seed, question, history_context="", top_k=50):
         if not validate_geometry_contract(scheme["geometry"], scheme, evidence):
             pipeline.inherited_design = scheme
     rules = pipeline.relation_engine.check_scheme(scheme, claimed_energy=pipeline._extract_energy_claim(text), answer_text=text) if pipeline.relation_engine else {}
-    completed, passed = review_verdict(text, review)
+    completed, passed = review_verdict(text, review, (seed.get("plan") or {}).get("requirements"))
     return dict(seed, final_answer=text + pipeline._build_reference_section(evidence), evidence=evidence,
         reviewer_output=review, review_completed=completed,
         review_passed=passed, confidence=review.get("confidence", "low"),

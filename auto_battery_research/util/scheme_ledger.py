@@ -186,6 +186,8 @@ def calculate(data):
         fractions = [value(f"{comp}.{key}_fraction") for key in ("active", "conductive", "binder")]
         if all(v is not None for v in fractions) and not math.isclose(sum(fractions), 1, abs_tol=.001):
             issues.append(f"{comp} 活性物、导电剂、粘结剂质量分数之和不为一")
+    from .parameter_presentation import presentation_conflicts
+    issues.extend(presentation_conflicts(data))
     put("packaging.stack_mass_mg_cm2", ["cathode.loading_mg_cm2", "anode.composite_mass_mg_cm2",
         "current_collector.cathode_mass_mg_cm2", "current_collector.anode_mass_mg_cm2",
         "separator.mass_mg_cm2", "electrolyte.mass_mg_cm2"], lambda *v: sum(v), "mg/cm2")
@@ -254,11 +256,16 @@ def update(task_dir, changes, base_revision, actor="agent", reason="", unlock=()
             field.setdefault("meaning", key)
             field.setdefault("conditions", {})
             validate_field(key, field)
-            if actor == "agent" and previous.get("locked") and previous.get("value") != field.get("value"):
+            from .research_contract import field_equal
+            if actor == "agent" and previous.get("locked") and not field_equal(key, previous.get("value"), field.get("value")):
                 raise ValueError(f"用户锁定字段禁止覆盖: {key}")
             if actor == "agent" and previous.get("locked"):
                 continue
-            field["locked"] = actor == "user" or previous.get("locked", False)
+            # 程序校验过的课题原文绑定也受锁定保护；一般Agent字段不能自行加锁。
+            requirement_lock = (field.get("basis") == "user_requirement" and field.get("requirement_id")
+                                and isinstance(field.get("source_quote"), str) and field["source_quote"]
+                                and field["source_quote"] in data.get("goal", ""))
+            field["locked"] = bool(actor == "user" or previous.get("locked", False) or requirement_lock)
             data["parameters"][key] = field
             if key.endswith(".material") and previous.get("value") != field.get("value"):
                 comp = key.split(".")[0]
@@ -366,6 +373,8 @@ def commit_design(task_dir, doc, reason="Stage 4 方案定案", base_revision=No
         if key in flatten_scheme(doc.get("scheme") or {}):
             if field.get("value") != flatten_scheme(doc["scheme"])[key]:
                 raise ValueError(f"补充参数与几何契约冲突: {key}")
+            if field.get("basis") == "user_requirement" and field.get("requirement_id"):
+                changes[key] = field
             continue
         changes[key] = field
     data = update(task_dir, changes, data["revision"], reason=reason,
@@ -377,6 +386,11 @@ def commit_design(task_dir, doc, reason="Stage 4 方案定案", base_revision=No
 
 def collect_parameters(doc, client):
     """把方案正文转为明确的当前值/候选；只接受可定位的声明，不把文献数值直接定案。"""
+    from .research_contract import COLLECTION_INSTRUCTIONS, bindings, fallback_research, validate_research
+    from .parameter_presentation import INSTRUCTIONS as PARAMETER_INSTRUCTIONS, normalize_metadata
+    requirements = doc.get("requirements")
+    if requirements:
+        doc["research"] = fallback_research(requirements, "结构化研究回答尚未生成")
     if client is None or not getattr(client, "available", False):
         return
     prompt = """你维护电池方案表。仅输出 JSON {"parameters":{},"candidates":[]}。
@@ -388,10 +402,15 @@ source_quote 必须是输入正文中逐字存在的支持句；literature 还�
 比例统一 0–1，长度 um，密度 g/cm3，面载 mg/cm2，浓度 mol/L；不得改写已有几何字段。
 孔隙率须注明载锂前/后；掺量和添加剂须注明分母；无明确口径则放候选。
 材料模型物性不可标为实测。输出最多六十个参数。"""
+    prompt += PARAMETER_INSTRUCTIONS
     payload = {"scheme": doc.get("scheme"), "text": doc.get("final_answer"),
                "issues": (doc.get("reviewer_output") or {}).get("issues"),
                "evidence_ids": [e.get("passage_id") for e in doc.get("evidence") or []]}
+    if requirements:
+        prompt += COLLECTION_INSTRUCTIONS
+        payload.update(requirements=requirements, current_parameters=(doc.get("ledger_view") or {}).get("parameters", {}))
     accepted, diagnostics = {}, []
+    research_diagnostics = []
     for _ in range(2):
         try:
             raw = client.chat(prompt, json.dumps(payload, ensure_ascii=False), temperature=0.1,
@@ -404,11 +423,12 @@ source_quote 必须是输入正文中逐字存在的支持句；literature 还�
                 raise ValueError("方案扩展结构错误")
             errors = []
             if diagnostics:
-                for missing in {e["path"] for e in diagnostics[-1]} - set(parameters) - set(accepted) - {"$"}:
+                for missing in {e["path"] for e in diagnostics[-1]} - set(parameters) - set(accepted) - {"$", "$research"}:
                     errors.append({"path": missing, "reason": "重试未返回待修复字段", "suggestion": "仅修复指定字段"})
             for key, field in parameters.items():
                 try:
                     field = normalize_source_field(field)
+                    field = normalize_metadata(key, field, {**((doc.get("ledger_view") or {}).get("parameters", {})), **accepted})
                     if key in accepted:
                         if accepted[key] != field:
                             raise ValueError("已通过字段禁止修改")
@@ -427,10 +447,22 @@ source_quote 必须是输入正文中逐字存在的支持句；literature 还�
                 except (ValueError, TypeError, KeyError) as exc:
                     errors.append({"path": key, "reason": str(exc), "suggestion": "仅修复该字段，引用放在参数对象顶层"})
             doc["scheme_parameters"], doc["scheme_candidates"] = accepted, candidates
+            if requirements:
+                try:
+                    current = copy.deepcopy((doc.get("ledger_view") or {}).get("parameters", {}))
+                    current.update(accepted)
+                    for key, value in flatten_scheme(doc.get("scheme") or {}).items():
+                        current.setdefault(key, {"value": value, "unit": ""})
+                    current.update(bindings(requirements))
+                    doc["research"] = validate_research(proposed.get("research"), doc, current)
+                    research_diagnostics = []
+                except (ValueError, TypeError, KeyError) as exc:
+                    research_diagnostics.append(str(exc))
+                    errors.append({"path": "$research", "reason": str(exc), "suggestion": "仅修复research，复用已通过参数"})
             if not errors:
                 return
             diagnostics.append(errors)
-            payload.update(repair_errors=errors, accepted_fields=list(accepted), instruction="只返回出错字段，其他字段无修改权限")
+            payload.update(repair_errors=errors, accepted_fields=accepted, instruction="只返回出错字段，其他字段无修改权限；research可以引用accepted_fields")
         except (ValueError, TypeError, KeyError, AttributeError) as exc:
             diagnostics.append([{"path": "$", "reason": str(exc), "suggestion": "返回合法参数 JSON"}])
             payload["repair_errors"] = diagnostics[-1]
@@ -439,6 +471,8 @@ source_quote 必须是输入正文中逐字存在的支持句；literature 还�
             return
         finally:
             doc["parameter_diagnostics"] = diagnostics
+            if requirements and research_diagnostics:
+                doc["research"]["diagnostics"] = research_diagnostics
 
 
 def normalize_source_field(field):

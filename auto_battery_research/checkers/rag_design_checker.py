@@ -46,6 +46,14 @@ class RAGDesignChecker(BaseChecker):
         if scheme_json_file.exists() and scheme_md_file.exists():
             payload, error = self.load_json_safe(str(scheme_json_file))
             if not error and isinstance(payload, dict) and payload.get("delivery_contract") == 1:
+                from auto_battery_research.util.adaptive_retrieval import has_pending
+                checkpoint = scheme_json_file.parent / "stage4_repair_checkpoint.json"
+                if checkpoint.exists():
+                    saved, load_error = self.load_json_safe(str(checkpoint))
+                    if not load_error and isinstance(saved, dict) and has_pending(saved):
+                        return False, self.build_diagnostic(passed=False, error_code="STAGE4_RETRIEVAL_PENDING",
+                            error_msg="存在有预算且尚未执行的针对性补检索，不能提前推进",
+                            next_action="调用RunRAGDesign恢复当前检查点，仅补证据及局部修复")
                 from auto_battery_research.util.report_readiness import check
                 failures = check(scheme_json_file.parent, payload)
                 if failures:

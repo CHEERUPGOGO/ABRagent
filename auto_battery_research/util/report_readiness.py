@@ -44,7 +44,8 @@ def prepare(doc, ledger, warnings, candidate=None):
     if not doc.get("review_completed"):
         issues.append("未完成有效学术审核，须人工复核；确定性检查不能替代学术审核。")
     category = "CONDITIONAL" if issues else "COMPLETE"
-    if not all(scheme.get(c) for c in ("cathode", "anode", "electrolyte")):
+    from .research_contract import requires_scheme
+    if requires_scheme(doc) and not all(scheme.get(c) for c in ("cathode", "anode", "electrolyte")):
         category = "DIAGNOSTIC"
     doc["report_readiness"] = {"category": category, "issues": issues,
         "review_status": "REVIEWED" if doc.get("review_completed") else "UNREVIEWED",
@@ -59,12 +60,14 @@ def notice(doc):
     names = {"COMPLETE": "研究候选报告", "CONDITIONAL": "有条件候选报告", "DIAGNOSTIC": "问题诊断报告"}
     review = {"REVIEWED": "已完成审核", "UNREVIEWED": "尚未完成审核"}
     physics = {"PASSED": "阶段门禁通过，具体仿真与达标结论见第 4 节", "NOT_EVALUATED": "尚未评估",
+               "NOT_APPLICABLE": "当前体系无匹配模型，不影响其他研究目标的实验验证",
                "FALLBACK": "附条件交付，物理验证未通过或未完成", "FAILED": "物理验证未通过",
                "SKIPPED": "已跳过物理仿真"}
     lines = ["**交付状态：** " + names.get(state.get("category"), "有条件候选报告") + "。交付不代表性能达标或实验验证通过。",
              "**验证进度：** " + review.get(state.get("review_status"), "尚未完成审核") + "；" + physics.get(state.get("physics_status"), "尚未完成物理验证") + "。"]
     if unresolved_issues(doc):
-        lines.append(f"**关键限制：** 尚有 {len(unresolved_issues(doc))} 项待复核事项，完整意见集中列于第 2.6 节。")
+        location = "6节附录" if doc.get("requirements") else "2.6 节"
+        lines.append(f"**关键限制：** 尚有 {len(unresolved_issues(doc))} 项待复核事项，完整意见集中列于第 {location}。")
         lines.append("存在未解决相容性或硬约束的配置不能作为已认可的实验推荐；应先验证相应对策。")
     return "\n\n".join(lines)
 
@@ -79,6 +82,12 @@ def unresolved_issues(doc):
 
 def check(task_dir, doc):
     errors = projection_errors(task_dir, doc)
+    if doc.get("requirements"):
+        from .research_contract import document_errors
+        research_errors = document_errors(doc)
+        if doc.get("report_readiness", {}).get("category") == "DIAGNOSTIC":
+            research_errors = [e for e in research_errors if "用户固定要求与主方案不一致" not in e]
+        errors.extend(research_errors)
     from .scheme_ledger import load
     if not load(task_dir):
         errors.append("缺少当前统一方案表，无法确认参数一致性")
@@ -112,3 +121,6 @@ def restore_diagnostic(doc, ledger, reason):
     doc["report_readiness"]["issues"].append("一致性冲突，已保留方案表而未采用冲突候选：" + reason)
     doc["report_readiness"]["issues"].extend(ledger.get("issues", []))
     doc["final_answer"] = "本轮候选与当前方案存在未解决冲突，未将该候选作为推荐。原始文献与失败设计保留在RAG档案；须先核对明确材料与参数，再开展定量性能验证。"
+    if doc.get("requirements"):
+        from .research_contract import fallback_research
+        doc["research"] = fallback_research(doc["requirements"], "当前方案存在冲突：" + reason)

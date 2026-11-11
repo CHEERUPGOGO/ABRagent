@@ -19,12 +19,14 @@ for _extra in (str(ROOT_DIR), str(ROOT_DIR / "src")):
 # 从旧实现位置再导出 (lmllm 单一命名空间：仓库态解析到 src/lmllm，安装态解析到
 # wheel 内 lmllm 包；chromadb 等重依赖在源模块内延迟加载)
 from lmllm.RAG import RAGPipeline
+from lmllm.RAG.agents import PlannerAgent
 from lmllm.RAG.relation_engine import RelationEngine, RULES_VERSION
 from lmllm.RAG.llm_client import LLMClient, strip_think_blocks
 from lmllm.RAG.energy_model import estimate_scheme_energy, check_energy_claim
 
 __all__ = [
     "RAGPipeline",
+    "PlannerAgent",
     "RelationEngine",
     "RULES_VERSION",
     "LLMClient",

@@ -233,6 +233,7 @@ class MultiRetrieval:
         """
         use_comp = component.strip().lower() if (component and source_type == "literature") else None
         k_chroma = max(top_k, 20)
+        diagnostics = getattr(self, "last_diagnostics", [])
 
         # ── Chroma 通道 ──
         raw_chroma: List[Tuple[Any, float]] = []
@@ -260,7 +261,10 @@ class MultiRetrieval:
                 else:
                     raw_chroma = list(store.similarity_search_with_score(query, k=k_chroma))
             except Exception as e:
+                diagnostics.append({"query": query, "source_type": source_type, "channel": "vector", "status": "ERROR", "error": str(e)})
                 print(f"[MultiRetrieval] Chroma 检索失败: {e}")
+            else:
+                diagnostics.append({"query": query, "source_type": source_type, "channel": "vector", "status": "OK", "hits": len(raw_chroma)})
 
         # ── BM25 通道 ──
         raw_bm25: List[Tuple[Any, float]] = []
@@ -283,7 +287,11 @@ class MultiRetrieval:
                 else:
                     raw_bm25 = hits[:max(top_k, 20)]
             except Exception as e:
+                diagnostics.append({"query": query, "source_type": source_type, "channel": "bm25", "status": "ERROR", "error": str(e)})
                 print(f"[MultiRetrieval] BM25 检索失败: {e}")
+            else:
+                diagnostics.append({"query": query, "source_type": source_type, "channel": "bm25", "status": "OK", "hits": len(raw_bm25)})
+        self.last_diagnostics = diagnostics
 
         # ── 汇总同论文题名映射 ──
         cache = getattr(self, "_chroma_title_cache", None)

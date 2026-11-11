@@ -10,6 +10,7 @@ from pathlib import Path
 
 from .scheme_ledger import atomic_write, digest, flatten_scheme, validate_field, calculate
 from .report_narrative import amount
+from .experiment_titles import INSTRUCTIONS as TITLE_INSTRUCTIONS, normalize_step_titles, paragraph_title
 
 FILENAME = "experiment_plan.json"
 REPORT_FILENAME = "experiment_report.json"
@@ -26,7 +27,7 @@ parameters 的键为字段路径，值有两种：
 重点保持与方案表已有非空值一致；其他工艺值可合理推荐，不要求每项都有直接文献。配方、加工、装配、化成、测试应尽量具体，不强制每类都有数值。允许 budget_assumption 类型的设计容量等预算假设，注明用途和实测替换方法；不能冒充实测或写入 PINN。本征扩散系数仍需证据。对照变化用 scope=control 单独声明，不能混入主方案。推荐数值用 engineering_proposal。比例说明分母，温度 K。
 sections 每项为中文段落数组。所有参数值通过 {{字段路径}} 引入，不在段落中直接复制数值，便于后续几何修订同步。各引用必须在 parameters 声明。材料选择也使用引用，不能擅换当前材料。
 给一个主推荐组、少量对照组、平行样数量和固定条件。选择采购或自制路线，不要混写多条路线。说明配浆、涂布、干燥、辊压、装配、注液、化成和测试的具体安排。建议须形成一致方案，不是散乱参数清单。
-保持当前材料和电压窗口；对照改变要单独声明。推荐条件不同于未来仿真条件时不能沿用其性能。文献只引用输入中真实 passage_id，用 [passage_id]，并在 citations 列出；没有直接文献支持的操作允许按工程起点推荐，但不能冒充文献实测。gaps 只保留必要物性获取和后续优化，不阻止首轮操作。'''
+保持当前材料和电压窗口；对照改变要单独声明。推荐条件不同于未来仿真条件时不能沿用其性能。文献只引用输入中真实 passage_id，用 [passage_id]，并在 citations 列出；没有直接文献支持的操作允许按工程起点推荐，但不能冒充文献实测。gaps 只保留必要物性获取和后续优化，不阻止首轮操作。''' + TITLE_INSTRUCTIONS
 
 
 def effective_data(doc):
@@ -58,7 +59,7 @@ def overlap_key(key):
 
 
 def validate(record, doc):
-    if not isinstance(record, dict) or record.get("schema_version") not in (2, 3) or record.get("generated_stage") not in (4, 5):
+    if not isinstance(record, dict) or record.get("schema_version") not in (2, 3, 4) or record.get("generated_stage") not in (4, 5):
         raise ValueError("缺少 Stage 5B 已生成的实验推荐，请基于已有设计及文献重新生成")
     if record.get("plan_hash") != plan_hash(record):
         raise ValueError("实验方案内容指纹不一致")
@@ -82,6 +83,8 @@ def validate(record, doc):
                 raise ValueError(f"引用的当前参数缺失: {ref}")
             bindings[key] = copy.deepcopy(value)
         else:
+            from .research_experiments import validate_parameter
+            validate_parameter(key, row, doc)
             validation_key = overlap_key(key)
             declared = current.get(validation_key) or {}
             if declared.get("value") is not None and row.get("scope") != "control":
@@ -127,6 +130,11 @@ def validate(record, doc):
         raise ValueError("段落引用未归档文献")
     if not used and len("".join(p for ps in sections.values() for p in ps)) < 100:
         raise ValueError("实验方案缺少可执行内容")
+    if doc.get("requirements"):
+        from .research_experiments import diagnose_links
+        errors = diagnose_links(record, doc)
+        if errors:
+            raise ValueError("; ".join(e["reason"] for e in errors))
     return bindings
 
 
@@ -138,7 +146,8 @@ def load(task_dir):
 def generate(task_dir, doc, client, scheme_md=""):
     """调用点只在 Stage 5B；失败记录不覆盖已有有效实验方案。"""
     fingerprint = digest({"scheme": doc.get("scheme"), "ledger": doc.get("ledger_hash"),
-                          "evidence": doc.get("evidence"), "physics": doc.get("physics_context"), "analysis": scheme_md, "version": 4})
+                          "evidence": doc.get("evidence"), "physics": doc.get("physics_context"), "analysis": scheme_md,
+                          "requirements": doc.get("requirements"), "research": doc.get("research"), "version": 6})
     old = load(task_dir)
     if old and old.get("generated_stage") == 4:
         try:
@@ -160,17 +169,19 @@ def generate(task_dir, doc, client, scheme_md=""):
         client.single_attempt = True
     for _ in range(1) if client is not None and getattr(client, "available", False) else ():
         try:
-            raw = client.chat(SYSTEM_PROMPT, json.dumps({"goal": doc.get("target"), "scheme": doc.get("scheme"),
+            from .research_experiments import INSTRUCTIONS
+            raw = client.chat(SYSTEM_PROMPT + (INSTRUCTIONS if doc.get("requirements") else ""), json.dumps({"goal": doc.get("target"), "scheme": doc.get("scheme"),
+                "requirements": doc.get("requirements"), "research": doc.get("research"),
                 "ledger": doc.get("ledger_view"), "analysis": scheme_md, "review": doc.get("reviewer_output"),
                 "evidence": doc.get("evidence"), "physics_context": doc.get("physics_context"), "last_error": error}, ensure_ascii=False),
                 temperature=0.2, trace_tag="experiment_design")
             record = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
-            record.update(schema_version=3, generated_stage=5, input_fingerprint=fingerprint,
+            record.update(schema_version=4 if doc.get("requirements") else 3, generated_stage=5, input_fingerprint=fingerprint,
                           generated_at=datetime.now().isoformat(), base_ledger_hash=doc.get("ledger_hash"),
                           fixed_fields={k: v.get("value") for k, v in effective_data(doc)["parameters"].items()
                             if k not in {f"{c}.{f}" for c in ("cathode", "anode") for f in ("L_um", "porosity", "R_s_um", "D_s_m2s")}})
+            record["warnings"] = normalize_step_titles(record, bind_unbound=True)
             record["plan_hash"] = plan_hash(record)
-            record["warnings"] = []
             from .experiment_repair import repair_record
             record = repair_record(record, doc, client, Path(task_dir), fingerprint)
             for key, row in record["parameters"].items():
@@ -218,10 +229,23 @@ def engineering_fallback(task_dir, doc, fingerprint, error):
     if doc.get("report_readiness", {}).get("category") == "DIAGNOSTIC":
         for section in ("fabrication", "assembly", "testing", "criteria"):
             sections[section] = ["当前尚无可被接受的一致材料方案，暂停投料、装配和定量性能判断。先核对正负极与电解液的明确声明、组成及工况，解决方案表中的冲突；保留原始文献与失败原因，完成定案后再生成具体实验路线。"]
+    if doc.get("requirements", {}).get("scheme_required") is False:
+        parameters = {}
+        sections = {
+            "groups": ["本课题以研究分析为主，不新增电芯配方；比较对象及条件沿用用户原始要求。"],
+            "fabrication": ["不安排新的材料制备。先收集对应研究对象的文献、已有样品记录与实验条件，核对证据适用范围。"],
+            "assembly": ["本次不要求组装新电芯。若后续需判别实验，应先依据研究假设明确样品、仪器与对照条件。"],
+            "testing": ["围绕课题中的每个待验证判断，比较已有证据与替代解释；实验方法和设备条件未明确的项按目标关联表补充。"],
+            "criteria": ["仅在证据对应相同对象和可比条件时形成结论；没有直接支持的解释保留为假设，不用通用性能指标替代课题目标。"],
+            "gaps": ["分析或实验设计服务未成功，需补充逐项研究方法与证据；不因此编造配方或未经执行的结果。"]}
     record = {"schema_version": 3, "generated_stage": 5, "input_fingerprint": fingerprint,
         "base_ledger_hash": doc.get("ledger_hash"), "parameters": parameters, "sections": sections,
         "citations": [], "fixed_fields": {k: v["value"] for k, v in current.items() if v.get("value") is not None},
         "origin": "engineering_fallback", "warnings": [error], "sync_history": []}
+    if doc.get("requirements"):
+        from .research_experiments import fallback_links
+        fallback_links(record, doc, error)
+        record["schema_version"] = 4
     record["plan_hash"] = plan_hash(record)
     record["bindings"] = validate(record, doc)
     atomic_write(Path(task_dir) / FILENAME, json.dumps(record, ensure_ascii=False, indent=2))
@@ -242,11 +266,8 @@ def sync(task_dir, doc, dry_run=False):
 
 
 def render(record, doc, result=None):
-    from .report_narrative import readable_units
+    from .report_narrative import substitute_parameters, numbered_detail
     bindings = validate(record, doc)
-    def substitute(match):
-        key = match[1]
-        return amount(key, bindings[key])
     sections = ["以下为首轮实验推荐，补充的操作参数属于工程建议，尚不代表实测或性能已验证。"]
     assumptions = [(k, row) for k, row in record.get("parameters", {}).items() if row.get("basis") == "budget_assumption"]
     if assumptions:
@@ -254,34 +275,19 @@ def render(record, doc, result=None):
             + "。这些假设仅用于实验预算与容量匹配，不作为材料实测值或 PINN 物性输入，须按首轮实测修正。")
     for key, heading in SECTIONS.items():
         sections.append("### " + heading)
+        if doc.get("requirements") and key == "groups":
+            from .research_experiments import render_groups
+            sections.append(render_groups(record, doc))
+        if doc.get("requirements") and key == "testing" and record.get("requirement_tests"):
+            from .research_experiments import render_tests
+            sections.append(render_tests(record, doc, bindings))
         for index, paragraph in enumerate(record["sections"][key], 1):
-            body = readable_units(TOKEN.sub(substitute, paragraph))
-            if key in ("fabrication", "assembly", "testing"):
-                # 只添加步骤标记，不改变已通过校验的操作内容及先后顺序。
-                titles = (("配浆|浆料|混料", "配浆与分散"), ("涂布|干燥|烘烤", "涂布与干燥"),
-                          ("辊压", "辊压与检查"), ("注液|浸润", "注液与浸润"),
-                          ("化成|老化", "化成与老化"), ("容量标定|标定", "容量标定"),
-                          ("循环", "循环测试"), ("阻抗|内阻", "阻抗表征"), ("拆解|称量", "拆解与质量核算"))
-                # 用开头动作识别段落主题，不借格式化推断新的操作步骤。
-                hits = [(m.start(), title) for pattern, title in titles
-                        if (m := re.search(pattern, body[:45]))]
-                title = min(hits)[1] if hits else {"fabrication": "极片制备", "assembly": "电芯装配", "testing": "性能验证"}[key]
-                body = body.replace("\n", "\n   ")
-                sections.append(f"{index}. **{title}：** " + body)
-            elif key == "criteria":
-                sections.append(f"- {body}")
-            elif key == "groups":
-                chunks = re.split(r"(?<=[。；])(?=(?:对照组\s*[A-Z]\d|固定条件|两组对照))", body)
-                for chunk in chunks:
-                    control = re.match(r"对照组\s*[A-Z]\d+", chunk)
-                    title = (control[0] if control else "固定条件" if chunk.startswith("固定条件") else
-                             "容量匹配" if chunk.startswith("主组") else "分组安排")
-                    sections.append(f"**{title}。** " + chunk)
-            else:
-                sections.append(body)
+            body = substitute_parameters(paragraph, bindings)
+            # 一个标题对应一个原段落；不拆分、改写正文或推断新的操作顺序。
+            title = paragraph_title(record, key, index, paragraph)
+            sections.append(numbered_detail(index, title, body))
         if key == "groups":
-            data = effective_data(doc)
-            sections.append("**方案绑定。** 本轮材料沿用第 3 节的当前方案。第 3 节尚未声明的操作条件如在本节给出，均为首轮实验建议；对照组的变更仅适用于对应分组，不改变主方案或仿真输入。")
+            sections.append("> **方案绑定。** 本轮材料沿用第 3 节的当前方案。第 3 节尚未声明的操作条件如在本节给出，均为首轮实验建议；对照组的变更仅适用于对应分组，不改变主方案或仿真输入。")
         if key == "testing":
             if (result or {}).get("status") == "CONVERGED":
                 sections.append("现有模型仅验证对应输入下的单次放电。推荐实验新增的配方、工艺和测试条件未因此得到验证，不能沿用模型结果作为实验性能。")

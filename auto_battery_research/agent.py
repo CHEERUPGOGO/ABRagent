@@ -706,6 +706,11 @@ class ABRAgent:
                         sd = json.load(f)
                         if len(sd.get("evidence", [])) > 0 and sd.get("review_status") in ("APPROVED", "REVIEWED_WITH_ISSUES"):
                             scheme_valid = True
+                            checkpoint = task_dir / "stage4_repair_checkpoint.json"
+                            if checkpoint.exists():
+                                from auto_battery_research.util.adaptive_retrieval import has_pending
+                                if has_pending(json.loads(checkpoint.read_text(encoding="utf-8"))):
+                                    scheme_valid = False
                 except Exception:
                     pass
 

@@ -26,6 +26,13 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
             calls.append((trace_tag, user_prompt))
             if trace_tag == "geometry_design":
                 return json.dumps(candidate)
+            if trace_tag == "retrieval_assess":
+                return json.dumps({"retrieval_diagnostics": []})
+            if trace_tag == "retrieval_gain":
+                return json.dumps({"gains": [{"requirement_id": "r1", "kind": "conditions", "passage_id": "p2",
+                    "quote": "证据2", "reason": "补充验证条件"}]})
+            if trace_tag == "scheme_maintenance":
+                return json.dumps({"parameters": {}, "candidates": []})
             if trace_tag == "writer_patch":
                 payload = json.loads(user_prompt)
                 iid, interface = next(iter(payload["interface_contract"]["interfaces"].items()))
@@ -50,17 +57,22 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
         review_questions.append(kwargs["question"])
         return {"confidence": "low", "issues": ["需要补充或修正文献依据"],
                 "repair_issues": [{"quote": "可行性依据需要进一步证据支持", "reason": "需补证据", "suggestion": "注明待验证"}],
-                "error_type": "retrieval" if len(review_questions) == 1 else "writing"}
+                "error_type": "retrieval" if len(review_questions) == 1 else "writing",
+                "retrieval_diagnostics": [{"requirement_id": "r1", "action": "supplement", "cause": "missing_conditions",
+                    "gap": "NCM811循环条件缺失", "reason": "须验证循环条件", "evidence_ids": [],
+                    "queries": ["NCM811循环测试条件"], "db_type": "literature"}] if len(review_questions) == 1 else []}
 
     pipeline = RAGPipeline.__new__(RAGPipeline)
     pipeline.structured_geometry_enabled = structured
     pipeline._reranker_enabled = False
     pipeline.relation_engine = None
     pipeline.planner = SimpleNamespace(run=lambda *args: {
-        "db_type": "literature", "retrieval_queries": [question], "answer_outline": ["方案"]})
+        "db_type": "literature", "retrieval_queries": [question], "answer_outline": ["方案"],
+        "requirements": {"status": "unparsed", "source": question, "items": [{"id": "r1", "kind": "objective", "status": "clear", "quote": question,
+            "description": "核对NCM811循环条件", "conditions": []}]}})
     pipeline.writer_llm = ScriptedLLM()
     pipeline.writer = WriterAgent(pipeline.writer_llm)
-    pipeline.reviewer = SimpleNamespace(run=review)
+    pipeline.reviewer = SimpleNamespace(run=review, llm=pipeline.writer_llm)
     pipeline.retrieve_context = retrieve
     pipeline._extract_scheme = lambda *args, **kwargs: {
         "cathode": "NCM811", "anode": "si_base", "electrolyte": "lhce"}
@@ -71,13 +83,13 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
                         lambda retrieval, plan, top_k: retrieval)
 
     result = pipeline.run(question)
-    writing_calls = [(tag, prompt) for tag, prompt in calls if tag != "geometry_design"]
+    writing_calls = [(tag, prompt) for tag, prompt in calls if tag in ("writer", "writer_patch", "repair_verify")]
     assert [tag for tag, _ in writing_calls] == ["writer", "writer_patch", "repair_verify"]
     # 完成审核不等于审核通过：末轮意见保留，不能伪装成已解决。
     assert result["review_completed"] is True
-    assert result["review_passed"] is True
-    assert result["confidence"] == "medium"
-    assert retrieval_questions == [question, question]
+    assert result["review_passed"] is False
+    assert result["confidence"] == "low"
+    assert retrieval_questions == [question, "NCM811循环测试条件"]
     assert result["question"] == question
     assert result["geometry_error"] is None
     marker = "【已校验结构化几何，正文不得变更；工程候选不是用户实测值】\n"
@@ -94,7 +106,7 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
         assert json.loads(writing_calls[1][1])["read_only_context"] == review_questions[0]
         assert json.loads(writing_calls[2][1])["context"] == review_questions[0]
     else:
-        assert review_questions == [question]
+        assert all(q == question for q in review_questions)
         assert all(marker not in prompt for _, prompt in writing_calls)
     assert any(e["text"] == "证据2" for e in json.loads(writing_calls[1][1])["evidence"])
     assert json.loads(writing_calls[2][1])["issues"][0]["suggestion"] == "注明待验证"

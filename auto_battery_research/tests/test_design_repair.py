@@ -91,7 +91,7 @@ def test_collect_parameters_accepts_nested_quote_without_retry():
     calls = []
     def chat(*args, **kwargs):
         calls.append(1)
-        return json.dumps({"parameters": {"cathode.coating": {"value": "Al2O3", "unit": "", "basis": "engineering_proposal", "source": {"source_quote": "采用Al2O3"}}}})
+        return json.dumps({"parameters": {"cathode.coating": {"value": "Al2O3", "unit": "", "meaning": "正极包覆材料", "basis": "engineering_proposal", "source": {"source_quote": "采用Al2O3"}}}})
     doc = {"final_answer": "采用Al2O3", "evidence": []}
     collect_parameters(doc, SimpleNamespace(available=True, chat=chat))
     assert len(calls) == 1

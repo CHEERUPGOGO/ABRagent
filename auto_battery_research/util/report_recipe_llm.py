@@ -82,6 +82,7 @@ def input_fingerprint(doc, context, result, spec, scheme_md):
     """第五部分输入指纹：方案文本、证据、最终设计、仿真与测试条件。"""
     return canonical_hash({
         "render_version": RENDER_VERSION,
+        "requirements": doc.get("requirements"), "research": doc.get("research"),
         "scheme_md": scheme_md,
         "scheme": doc.get("scheme") or {},
         "ledger_hash": doc.get("ledger_hash"),

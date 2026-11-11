@@ -356,6 +356,9 @@ def _render_missing_material_contract(name: str, scheme: dict, doc: dict) -> str
 
 
 def render_materials(doc):
+    if doc.get("requirements"):
+        from .research_reporting import render_research
+        return render_research(doc)
     if doc.get("ledger_view"):
         from .material_arguments import render_material_arguments
         return render_material_arguments(doc)

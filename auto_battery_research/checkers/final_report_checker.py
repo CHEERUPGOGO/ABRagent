@@ -176,7 +176,10 @@ class FinalReportChecker(BaseChecker):
                         if render_model_parameters(doc["ledger_view"]) not in content:
                             raise ValueError("第四部分模型参数声明缺失或与方案表不一致")
                     from auto_battery_research.util.report_analysis import render_materials, render_sources, render_history
-                    for expected in (render_materials(doc), render_sources(doc), render_history(report_file.parent)):
+                    expected_blocks = [render_materials(doc), render_sources(doc)]
+                    if not doc.get("requirements") or result.get("status") == "CONVERGED":
+                        expected_blocks.append(render_history(report_file.parent))
+                    for expected in expected_blocks:
                         if expected not in content:
                             raise ValueError("材料分析、引用或历史与归档数据不一致")
                     from auto_battery_research.util import report_recipe_llm as plan_mod

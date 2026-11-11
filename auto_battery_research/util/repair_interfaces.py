@@ -158,14 +158,16 @@ def stage_groups(text, parameters, permit, contract, submissions):
     return candidates, diagnostics
 
 
-def execute(writer, verifier, text, parameters, permit, issues, evidence, context="", geometry_validator=None, feedback=None):
+def execute(writer, verifier, text, parameters, permit, issues, evidence, context="", geometry_validator=None, feedback=None, evidence_selection=None):
     contract = build_interfaces(text, parameters, issues, permit)
     contract["issues"] = issues
     if not contract["interfaces"]:
         return text, parameters, {"status": "SCOPE_UNRESOLVED", "interfaces": contract}
     from .design_repair import blocks
+    from .adaptive_retrieval import evidence_package
+    package, evidence_selection = (evidence, evidence_selection) if evidence_selection is not None else evidence_package(evidence, text=text, issues=issues)
     prompt = {"read_only_context": context, "draft_blocks": blocks(text)[1], "previous_failures": feedback or [],
-        "permission": permit, "interface_contract": contract, "parameters": parameters, "evidence": evidence[:25],
+        "permission": permit, "interface_contract": contract, "parameters": parameters, "evidence": package, "evidence_context": evidence_selection,
         "parameter_change_format": {"path": "只能取接口fields中的字段", "field": {
             "value": "按问题和证据填写，数值须用JSON数字", "unit": "沿用规范单位", "basis": "engineering_proposal或literature",
             "source": "真实来源描述", "source_quote": "合成后的正文中逐字存在的声明", "passage_id": "literature必须为已归档段落ID"}},
@@ -186,7 +188,7 @@ def execute(writer, verifier, text, parameters, permit, issues, evidence, contex
             return text, parameters, {"status": "REJECTED", "reason": str(exc), "interfaces": contract, "error_type": "protocol" if protocol else "validation"}
     if staged:
         request = {"issues": issues, "transactions": {g: {"issue_ids": c["issue_ids"], "paragraphs": c["blocks"], "parameter_changes": c["patch"]["parameters"]} for g, c in staged.items()},
-            "parameters": parameters, "original_blocks": prompt["draft_blocks"], "evidence": evidence[:25], "context": context}
+            "parameters": parameters, "original_blocks": prompt["draft_blocks"], "evidence": package, "evidence_context": evidence_selection, "context": context}
         try:
             raw = verifier.chat('只复核本批问题是否在候选段落中解决以及是否产生新矛盾，不修改正文。输出JSON {"verdicts":[{"group_id":"事务编号","issue_id":"问题编号","resolved":true,"reason":"依据"}],"new_issues":[]}。new_issues每项含group_id和reason。', json.dumps(request, ensure_ascii=False), temperature=0.1, trace_tag="repair_verify")
             verification = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
@@ -245,6 +247,7 @@ def execute(writer, verifier, text, parameters, permit, issues, evidence, contex
             value["status"] = "COMMITTED"
     remaining = [i for i in issues if i["id"] not in resolved]
     return merged, fields, {"status": "APPLIED" if selected and (merged != text or fields != parameters) else ("REJECTED" if diagnostics and not selected else "NO_CHANGE"),
+        "evidence_context": evidence_selection,
         "permission": permit, "interfaces": contract, "transactions": diagnostics, "verification": verification,
         "submissions": submissions, "remaining_issues": remaining, "resolved_issue_ids": sorted(resolved),
         "before": digest(text), "after": digest(merged), "patch": combined}

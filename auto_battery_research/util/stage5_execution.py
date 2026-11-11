@@ -83,6 +83,9 @@ def finalize_stage5(mgr, design_only=False, client=None):
         identity = digest(doc.get("scheme"))
         try:
             if doc.get("delivery_contract") == 1:
+                from .research_contract import requires_scheme
+                if not requires_scheme(doc):
+                    raise ValueError("NOT_APPLICABLE：分析类课题未要求电芯放电仿真")
                 from auto_battery_research.tools.workflow_actions import _match_pinn_system_for_scheme
                 match = _match_pinn_system_for_scheme(doc.get("scheme") or {})
                 if not match.get("matched"):
@@ -119,10 +122,11 @@ def finalize_stage5(mgr, design_only=False, client=None):
         if doc.get("delivery_contract") == 1:
             readiness = doc["report_readiness"]
             readiness["physics_status"] = state["physics"]["status"]
-            if not valid:
+            not_applicable = "NOT_APPLICABLE" in str(state["physics"].get("diagnostic"))
+            if not valid and not not_applicable:
                 readiness["category"] = "CONDITIONAL" if readiness["category"] != "DIAGNOSTIC" else "DIAGNOSTIC"
                 readiness["issues"].append("物理验证未完成：" + str(state["physics"].get("diagnostic")))
-            if "NOT_APPLICABLE" in str(state["physics"].get("diagnostic")):
+            if not_applicable:
                 state["physics"]["status"] = readiness["physics_status"] = "NOT_APPLICABLE"
         started = time.monotonic()
         recipe_doc = copy.deepcopy(doc)
@@ -133,6 +137,8 @@ def finalize_stage5(mgr, design_only=False, client=None):
         # 补检索证据属于实验推荐，不改写材料设计或方案表。
         doc["experiment_evidence"] = recipe_doc["evidence"]
         recipe = recipes.generate(task_dir, recipe_doc, client if client is not None else _llm_client(mgr), doc.get("final_answer", "")[:12000])
+        if doc.get("requirements"):
+            doc["experiment_extensions"] = recipe.get("extensions", [])
         doc.update(stage5_contract=2, experiment_contract=2, experiment_plan_hash=recipe["plan_hash"])
         atomic_write(doc_path, json.dumps(doc, ensure_ascii=False, indent=2))
         state["experiment"] = {"status": "PASSED", "plan_hash": recipe["plan_hash"], "duration_seconds": time.monotonic()-started}
