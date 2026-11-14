@@ -103,7 +103,7 @@ EBOOK_COLLECTION_NAME = os.getenv("EBOOK_COLLECTION_NAME", "ebook_chunks")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "qwen3-embedding:8b")
 EMBEDDING_BASE_URL = os.getenv("EMBEDDING_BASE_URL", "http://localhost:11434")
 
-# 检索模式: "chroma" | "hybrid" | "tfidf"
+# 检索模式: "chroma" | "hybrid" | "tfidf"（"tfidf" 为兼容保留值，底层实际使用 BM25 检索）
 RETRIEVAL_MODE = os.getenv("RETRIEVAL_MODE", "hybrid")
 
 CHROMA_TOP_K = 15

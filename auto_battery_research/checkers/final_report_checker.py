@@ -139,14 +139,15 @@ class FinalReportChecker(BaseChecker):
             )
 
         # 严格门禁：必须确保阶段日志已同步持久化且非空
+        doc: dict = {}
         if "<!-- abr-report-contract:2 -->" in content or "<!-- abr-report-identity:" in content:
             from auto_battery_research.util.report_contract import report_context, report_identity, validate_report_blocks
             from auto_battery_research.tools.workflow_actions import extract_energy_target_wh_kg, get_target_energy_tolerance_pct
             try:
                 if "<!-- abr-report-contract:2 -->" not in content:
                     raise ValueError("报告契约标记缺失")
-                doc, error = self.load_json_safe(str(report_file.parent / "design_scheme.json"))
-                doc = doc or {}
+                loaded_doc, error = self.load_json_safe(str(report_file.parent / "design_scheme.json"))
+                doc = loaded_doc or {}
                 result, spec = {}, {}
                 stage5 = self.stage_manager.get_stage_by_id(5) if self.stage_manager else None
                 if stage5 is None or (stage5.status == "PASSED" and not stage5.skip):
@@ -194,6 +195,66 @@ class FinalReportChecker(BaseChecker):
                 next_action="在各阶段推进前调用 SetStageJournal 记录研发日志",
             )
 
+        pinn_spec_path = report_file.parent / "pinn_input_spec.json"
+        pinn_res_path = report_file.parent / "pinn_simulation_result.json"
+        if pinn_spec_path.exists() and not pinn_res_path.exists():
+            from auto_battery_research.tools.workflow_actions import (
+                _JOURNAL_TEXT_FIELDS,
+                _pinn_spec_triggered,
+                has_false_pinn_claim,
+                has_false_pinn_deliverable_in_md,
+            )
+            spec_obj, spec_err = self.load_json_safe(str(pinn_spec_path))
+            journal_obj, journal_err = self.load_json_safe(str(journal_file))
+            if not spec_err and _pinn_spec_triggered(spec_obj) is False and not journal_err:
+                entries = (
+                    journal_obj if isinstance(journal_obj, list)
+                    else (journal_obj.get("stages") if isinstance(journal_obj, dict) and isinstance(journal_obj.get("stages"), list) else [])
+                )
+                for entry in entries:
+                    if not isinstance(entry, dict):
+                        continue
+                    if any("pinn_simulation_result.json" in str(d) for d in (entry.get("deliverables") or [])):
+                        return False, self.build_diagnostic(
+                            passed=False,
+                            error_code="STAGE_JOURNAL_PINN_MISMATCH",
+                            error_msg="pinn_input_spec.triggered=False 且无 pinn_simulation_result.json，但 stage_journals 仍声称交付该文件",
+                            observed={"triggered": False, "sim_result_exists": False},
+                            expected="未触发 PINN 时阶段日志不得虚列 pinn_simulation_result.json 交付物",
+                            next_action="修正 stage_journals.json 中的 deliverables 后重新终审",
+                        )
+                    if any(has_false_pinn_claim(entry.get(k)) for k in _JOURNAL_TEXT_FIELDS):
+                        return False, self.build_diagnostic(
+                            passed=False,
+                            error_code="STAGE_JOURNAL_PINN_MISMATCH",
+                            error_msg="pinn_input_spec.triggered=False 且未运行放电仿真，但 stage_journals 声称已完成放电仿真校验",
+                            observed={"triggered": False, "sim_result_exists": False},
+                            expected="未触发 PINN 时阶段日志不得宣称已完成放电仿真校验",
+                            next_action="清洗或重写 stage_journals.json 中的放电仿真表述后重新终审",
+                        )
+                md_journal_path = report_file.parent / "stage_journals.md"
+                if md_journal_path.exists():
+                    md_journal_text = md_journal_path.read_text(encoding="utf-8")
+                    if has_false_pinn_deliverable_in_md(md_journal_text):
+                        return False, self.build_diagnostic(
+                            passed=False,
+                            error_code="STAGE_JOURNAL_PINN_MISMATCH",
+                            error_msg="pinn_input_spec.triggered=False 且无 pinn_simulation_result.json，但 stage_journals.md 交付物栏仍虚列该文件",
+                            observed={"triggered": False, "sim_result_exists": False},
+                            expected="未触发 PINN 时 stage_journals.md 交付物栏不得虚列 pinn_simulation_result.json",
+                            next_action="清洗 stage_journals.md 中的交付物栏后重新终审",
+                        )
+                    if has_false_pinn_claim(md_journal_text):
+                        return False, self.build_diagnostic(
+                            passed=False,
+                            error_code="STAGE_JOURNAL_PINN_MISMATCH",
+                            error_msg="pinn_input_spec.triggered=False 且未运行放电仿真，但 stage_journals.md 仍声称已完成放电仿真校验",
+                            observed={"triggered": False, "sim_result_exists": False},
+                            expected="未触发 PINN 时 stage_journals.md 不得宣称已完成放电仿真校验",
+                            next_action="清洗或重写 stage_journals.md 中的放电仿真表述后重新终审",
+                        )
+
+        open_review_caveats = len((doc.get("reviewer_output") or {}).get("issues") or [])
         return True, self.build_diagnostic(
             passed=True,
             observed={
@@ -201,7 +262,9 @@ class FinalReportChecker(BaseChecker):
                 "report_length": len(content),
                 "sections_covered": found_sections,
                 "journal_file_exists": journal_exists,
+                "review_status": doc.get("review_status"),
+                "open_review_caveats": open_review_caveats,
             },
-            expected="全阶段工作流完成，综合研报与阶段日志验收合格",
+            expected="全阶段工作流完成，综合研报契约/一致性/证据溯源门禁验收合格（流程 PASSED 不等同于科学审稿保留项或实验室实证闭环）",
             details={"output_path": str(report_file)},
         )

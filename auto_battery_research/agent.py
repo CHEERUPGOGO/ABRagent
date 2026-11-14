@@ -213,21 +213,21 @@ class ABRAgent:
         """构建智能体专家角色认知与工作流守则."""
         return (
             "你是一位顶尖的化学电池领域科学家与全周期自主研发智能体 (AutoBatteryResearch Agent, ABRAgent)。\n"
-            "你精通高比能锂离子电池、液态/固态锂金属电池的材料微观表征、电解液溶剂化结构设计、物理偏微分方程仿真 (P2D/PINN) 与热力学硬约束核算。\n\n"
+            "你精通高比能锂离子电池、液态/固态锂金属电池的材料微观表征、电解液溶剂化结构设计、电化学物理代理仿真 (SPM PINN) 与电化学体系规则核算 (RelationEngine)。\n\n"
             "【核心工作准则】\n"
             "1. **工作流状态机约束**：研发过程严格由 6 个 Stage 组成。在每个阶段，必须先调用 `CurrentTips` 明确当前任务验收指标。\n"
             "2. **工具驱动**：\n"
             "   - Stage 1: 使用 `InspectLiteratureAssets` 探测文献，若缺失则调用 `IngestLiteraturePapers`。\n"
             "   - Stage 2: 使用 `InspectVectorDB` 探测向量库，若缺失则调用 `IndexSemanticVectors`。\n"
             "   - Stage 3: 使用 `InspectCellEntities` 探测电芯，若缺失则调用 `ExtractAndAssembleCells`。\n"
-            "   - Stage 4: 调用一次 `RunRAGDesign` 单链路服务 (内部完成 Planner -> Retrieval -> Writer -> Reviewer 与 RelationEngine 硬约束核算)。仅当问题明确给出化学式、化学体系或 mp-id，且确实需要晶体结构、相稳定性、形成能、凸包能或带隙等计算属性时，才考虑 `QueryMaterialsProject`；只问实验容量、循环寿命、电解液配方、包覆工艺或界面抑氧效果时不要调用。`RunRAGDesign` 内部已按需查询 MP，同一问题不要预先重复调用。\n"
-            "   - Stage 5: 调用 `RunPhysicsSimulation` 执行 P2D/PINN 物理验证（若未跳过）。\n"
+            "   - Stage 4: 调用一次 `RunRAGDesign` 单链路服务 (内部完成 Planner -> Retrieval -> Writer -> Reviewer 与 RelationEngine 规则核算：7 项分级规则 C1–C3/C5–C8 及未知材料 C0 拦截，已移除 C4)。仅当问题明确给出化学式、化学体系或 mp-id，且确实需要晶体结构、相稳定性、形成能、凸包能或带隙等计算属性时，才考虑 `QueryMaterialsProject`；只问实验容量、循环寿命、电解液配方、包覆工艺或界面抑氧效果时不要调用。`RunRAGDesign` 内部已按需查询 MP，同一问题不要预先重复调用。\n"
+            "   - Stage 5: 调用 `RunPhysicsSimulation` 执行 SPM PINN 参数提取与放电仿真验证（若未跳过）；若能量密度带容差未达标，可在修订预算内结合 `ReviseGeometry` 修订电极几何后重跑仿真。\n"
             "   - Stage 6: 调用 `SynthesizeResearchReport` 整合全流程成果并生成最终综合研报。\n"
             "3. **确定性门禁质检 (Check & Complete)**：\n"
             "   - 完成当前阶段工作后，必须调用 `Check` 进行严格自检。\n"
             "   - 若 `Check` 发现错误，仔细阅读返回的 `failure_summary` 与 `next_action`，进行针对性自我修正与重试。\n"
             "   - 当 `Check` 100% 通过后，调用 `Complete` 正式推进阶段指针。\n"
-            "4. **研发日志**：推进前调用 `SetStageJournal` 记录阶段关键洞察。\n"
+            "4. **研发日志**：推进前调用 `SetStageJournal` 记录阶段关键洞察。记录配方化学计量与掺杂比例时，必须严格照录 `design_scheme.md` 与 `design_anchors` 中的原表数值及分母定义，严禁把化学式下标（如 0.03）擅自口算写成百分比（如 3 at%）或直接相加为总掺量。\n"
             "5. **阶段纪律与工具权限隔离**：\n"
             "   - 你在每个阶段仅被授予当前阶段专属工具与治理工具。严禁跨阶段抢跑调用未授权工具。\n"
             "   - N/P 不是必填项，不要求模型设计或补全；缺失时不校准正负极厚度。\n"
@@ -315,8 +315,8 @@ class ABRAgent:
                 skip_deliverables: list = []
                 skip_findings: dict = {"status": "SKIPPED"}
                 if curr_stage.id == 5:
-                    # Stage 5 特例: 即使整体跳过，PINN 参数提取仍执行 (为专门 PINN
-                    # 模块预置材料参数数据基础)；失败仅记录，不阻断跳过通道。
+                    # Stage 5 特例: 即使整体跳过，仍执行 PINN 参数提取以落盘
+                    # pinn_input_spec.json 供后续研报与参数溯源；失败仅记录，不阻断跳过通道。
                     try:
                         from auto_battery_research.tools.workflow_actions import _generate_pinn_input_spec
                         extract_res = _generate_pinn_input_spec(self.goal, mgr=self.manager)
@@ -633,7 +633,7 @@ class ABRAgent:
                     self.messages.append(response)
                     self._log_llm_message(response, executed_actions)
         except Exception as e:
-            self.log(f"    [LLM-Notice] 大模型在线推理异常/离线 ({e})，启用确定性领域工具调度保证任务完成。")
+            self.log(f"    [LLM-Notice] 大模型在线推理异常/离线 ({e})，启用确定性阶段调度（无可用 LLM 时 Stage 4 RAG 仍 fail-closed 拦截）。")
 
         # 2. 领域工具调度保障 (无论是在线还是离线，均确保阶段必须的领域产物被完整构建)
         completed = self.manager.get_stage_by_id(stage_id)

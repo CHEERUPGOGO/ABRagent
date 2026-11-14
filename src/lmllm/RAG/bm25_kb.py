@@ -9,7 +9,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 try:
     from rank_bm25 import BM25Okapi
@@ -30,6 +30,71 @@ except ImportError:
                 scores.append(float(score))
             return scores
 
+
+
+def normalize_source_path(source: str) -> str:
+    """规范化文献路径: 去除 database/ 或 papers/ 之前的历史前缀并统一为 `/`."""
+    return re.sub(r"^.*?(?=(?:database|papers)[/\\])", "", str(source or "")).replace("\\", "/")
+
+
+def resolve_paper_title_map(
+    vector_store: Any,
+    kb: Optional["BM25KnowledgeBase"],
+    chroma_hits: List[Tuple[Any, float]],
+    bm25_hits: List[Tuple[Any, float]],
+    title_cache: Optional[Dict[str, str]] = None,
+) -> Dict[str, str]:
+    """汇总 kb.paper_title_map、当前命中同论文段落及 Chroma sibling chunks 的题名映射."""
+    title_map = dict(getattr(kb, "paper_title_map", None) or {})
+    missing_sp: set[str] = set()
+
+    def _collect(meta: dict, raw_src: str = "") -> None:
+        t = str(meta.get("title") or "").strip()
+        sp = str(meta.get("source_paper") or "").strip()
+        sf = normalize_source_path(str(meta.get("source_file") or raw_src or ""))
+        if t:
+            if sp and sp not in title_map:
+                title_map[sp] = t
+            if sf and sf not in title_map:
+                title_map[sf] = t
+        elif sp and sp not in title_map:
+            missing_sp.add(sp)
+
+    for doc, _ in chroma_hits:
+        _collect(getattr(doc, "metadata", None) or {})
+    for passage, _ in bm25_hits:
+        _collect(getattr(passage, "metadata", None) or {}, str(getattr(passage, "source", "") or ""))
+
+    if missing_sp and vector_store is not None:
+        cache = title_cache if title_cache is not None else {}
+        collection = getattr(vector_store, "_collection", None)
+        kb_map = getattr(kb, "paper_title_map", None)
+        for sp in list(missing_sp):
+            if sp in title_map:
+                continue
+            if sp in cache:
+                if cache[sp]:
+                    title_map[sp] = cache[sp]
+                continue
+            found_title = ""
+            if collection is not None and hasattr(collection, "get"):
+                try:
+                    got = collection.get(where={"source_paper": sp}, include=["metadatas"])
+                    for m in (got.get("metadatas") or []) if isinstance(got, dict) else []:
+                        if isinstance(m, dict):
+                            cand = str(m.get("title") or "").strip()
+                            if cand:
+                                found_title = cand
+                                break
+                except Exception:
+                    found_title = ""
+            cache[sp] = found_title
+            if found_title:
+                title_map[sp] = found_title
+                if isinstance(kb_map, dict) and sp not in kb_map:
+                    kb_map[sp] = found_title
+
+    return title_map
 
 
 @dataclass
@@ -55,6 +120,7 @@ class BM25KnowledgeBase:
         self.passages: List[Passage] = []
         self.bm25: Optional[BM25Okapi] = None
         self._tokenized_corpus: List[List[str]] = []
+        self.paper_title_map: Dict[str, str] = {}
         if kb_dir:
             self.refresh()
 
@@ -97,6 +163,20 @@ class BM25KnowledgeBase:
             self.bm25 = None
             self._tokenized_corpus = []
             return
+
+        for p in self.passages:
+            meta = p.metadata if isinstance(p.metadata, dict) else {}
+            title = str(meta.get("title") or "").strip()
+            if title:
+                sp = str(meta.get("source_paper") or "").strip()
+                sf = normalize_source_path(str(meta.get("source_file") or ""))
+                src = normalize_source_path(str(p.source or ""))
+                if sp and sp not in self.paper_title_map:
+                    self.paper_title_map[sp] = title
+                if sf and sf not in self.paper_title_map:
+                    self.paper_title_map[sf] = title
+                if src and src not in ("inline", "chroma", "unknown", "Academic Paper") and src not in self.paper_title_map:
+                    self.paper_title_map[src] = title
 
         self._tokenized_corpus = [self._tokenize(p.text) for p in self.passages]
         self.bm25 = BM25Okapi(self._tokenized_corpus)
@@ -180,6 +260,7 @@ class BM25KnowledgeBase:
         if not self.kb_dir:
             return
         self.passages.clear()
+        self.paper_title_map.clear()
         files = sorted([f for f in self.kb_dir.iterdir() if f.is_file()])
         for file_path in files:
             try:

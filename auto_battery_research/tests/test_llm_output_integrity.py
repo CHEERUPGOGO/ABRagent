@@ -90,3 +90,37 @@ def test_full_headings_do_not_hide_truncated_body():
         "目标与设计路线", "推荐组合", "预期关键指标", "可行性依据", "风险与数据缺口"))
     assert not design_output_issues(draft)
     assert any("截断" in e for e in design_output_issues(draft + "但**电芯级"))
+
+
+def test_offline_writer_and_reviewer_do_not_fabricate_or_rubber_stamp(tmp_path, monkeypatch):
+    """LLM 不可用时，Writer 禁止返回硬编码虚构方案，Reviewer 禁止给出高置信度，RAGPipeline 应 fail-closed."""
+    from auto_battery_research.tests.test_stage4_golden import _build_seeded_pipeline
+
+    offline_llm = SimpleNamespace(available=False)
+    evidence = [{"passage_id": "p1", "source": "s", "text": "NCM811 200 mAh/g"}]
+
+    writer = WriterAgent(offline_llm)
+    w_out = writer.run("设计 400 Wh/kg 电池方案", {}, evidence)
+    assert w_out["draft_answer"] == ""
+    assert w_out["fallback"] is True and w_out["error"]
+
+    reviewer = ReviewerAgent(offline_llm)
+    r_out = reviewer.run("设计电池", evidence, "任意文本")
+    assert r_out["confidence"] == "low"
+    assert r_out["error_type"] == "reviewer"
+
+    pipeline = _build_seeded_pipeline(tmp_path)
+    pipeline.planner_llm = offline_llm
+    pipeline.writer_llm = offline_llm
+    pipeline.reviewer_llm = offline_llm
+    pipeline.writer = WriterAgent(offline_llm)
+    pipeline.reviewer = ReviewerAgent(offline_llm, relation_engine=pipeline.relation_engine)
+    monkeypatch.setattr("auto_battery_research.tools.materials_project.augment_mp_evidence",
+                        lambda retrieval, plan, top_k: retrieval)
+
+    res = pipeline.run("设计400Wh/kg高比能液态锂金属电池方案")
+    assert res["final_answer"] == ""
+    assert res["review_passed"] is False
+    assert res["review_completed"] is False
+    assert res["confidence"] == "low"
+    assert "SC-NCM90" not in res["final_answer"]

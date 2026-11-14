@@ -1593,6 +1593,221 @@ def _generate_dynamic_recipe_roadmap(
     return render_recipe(report_context(scheme_data, result, spec))
 
 
+_PINN_SIM_CLAIM_RE = re.compile(
+    r"(?:(?:已)?(?:完成|通过|执行了|运行了)\s*(?:了)?\s*(?:Stage\s*\d*\s*)?(?:SPM\s*PINN\s*)?放电仿真(?:校验|验证|计算)?"
+    r"|(?:Stage\s*\d*\s*)?SPM\s*PINN\s*放电仿真(?:校验|验证))",
+    re.I,
+)
+_PINN_NEG_PRE_RE = re.compile(
+    r"(?:未|没有|未曾|无需|不得|严禁|禁止|跳过|免于|不进行|不执行|并非|未触发|非必须|取消)[^\n。；;，,]{0,8}$"
+)
+_PINN_NEG_POST_RE = re.compile(r"^\s*(?:未触发|未执行|已跳过|跳过|豁免)")
+_JOURNAL_TEXT_FIELDS = ("notes", "summary", "reasoning", "conclusion", "findings", "key_findings", "open_questions")
+
+
+def _is_false_pinn_match(text: str, match: re.Match) -> bool:
+    pre = text[max(0, match.start() - 18):match.start()]
+    post = text[match.end():match.end() + 18]
+    return not (_PINN_NEG_PRE_RE.search(pre) or _PINN_NEG_POST_RE.search(post))
+
+
+def has_false_pinn_claim(value: Any) -> bool:
+    """递归检测阶段日志字段（str / list / dict）中是否存在未否定的放电仿真完成宣称。"""
+    if isinstance(value, str):
+        return any(_is_false_pinn_match(value, m) for m in _PINN_SIM_CLAIM_RE.finditer(value))
+    if isinstance(value, list):
+        return any(has_false_pinn_claim(item) for item in value)
+    if isinstance(value, dict):
+        return any(has_false_pinn_claim(v) for v in value.values())
+    return False
+
+
+def _sanitize_false_pinn_value(value: Any) -> tuple[Any, bool]:
+    if isinstance(value, str):
+        if not has_false_pinn_claim(value):
+            return value, False
+        cleaned = _PINN_SIM_CLAIM_RE.sub(
+            lambda m: "未执行 SPM PINN 放电仿真（PINN 未触发）" if _is_false_pinn_match(value, m) else m.group(0),
+            value,
+        )
+        return cleaned, cleaned != value
+    if isinstance(value, list):
+        changed = False
+        new_list = []
+        for item in value:
+            new_item, item_changed = _sanitize_false_pinn_value(item)
+            new_list.append(new_item)
+            changed = changed or item_changed
+        return new_list, changed
+    if isinstance(value, dict):
+        changed = False
+        for k, v in list(value.items()):
+            new_v, v_changed = _sanitize_false_pinn_value(v)
+            if v_changed:
+                value[k] = new_v
+                changed = True
+        return value, changed
+    return value, False
+
+
+def _strip_pinn_sim_deliverable_text(raw_val: str) -> str:
+    text = raw_val.strip()
+    has_outer_bt = len(text) >= 2 and text.startswith("`") and text.endswith("`") and text.count("`") == 2
+    inner = text[1:-1].strip() if has_outer_bt else text
+    items = [it.strip() for it in re.split(r"\s*[,、]\s*", inner) if it.strip() and "pinn_simulation_result.json" not in it]
+    new_inner = ", ".join(items) if items else "无"
+    return f"`{new_inner}`" if has_outer_bt else new_inner
+
+
+def sanitize_stage_journals_md_deliverables(md_text: str) -> tuple[str, bool]:
+    """剥离 stage_journals.md 交付物栏（表格/交付物条目）中虚列的 pinn_simulation_result.json，保留正文否定说明。"""
+    if not isinstance(md_text, str) or "pinn_simulation_result.json" not in md_text:
+        return md_text, False
+    out_lines: list[str] = []
+    deliv_col_idx: int | None = None
+    changed = False
+    for raw_line in md_text.splitlines(keepends=True):
+        eol = "\r\n" if raw_line.endswith("\r\n") else ("\n" if raw_line.endswith("\n") else "")
+        line = raw_line[:-len(eol)] if eol else raw_line
+        stripped = line.strip()
+        if stripped.startswith("|"):
+            cells = line.split("|")
+            if all(re.fullmatch(r":?-{2,}:?", c.strip()) or c.strip() == "" for c in cells):
+                out_lines.append(raw_line)
+                continue
+            if deliv_col_idx is None:
+                found_idx = next(
+                    (
+                        i for i, c in enumerate(cells)
+                        if re.search(r"交付物|deliverables", c, re.I) and len(c.strip()) <= 24
+                    ),
+                    None,
+                )
+                if found_idx is not None:
+                    deliv_col_idx = found_idx
+                    out_lines.append(raw_line)
+                    continue
+            target_indices = (
+                [deliv_col_idx]
+                if (deliv_col_idx is not None and deliv_col_idx < len(cells))
+                else [
+                    i for i, c in enumerate(cells[:-1])
+                    if "pinn_simulation_result.json" in c
+                    and re.fullmatch(r"\s*`?(?:[^|`\s]+(?:\s*[,、]\s*[^|`\s]+)*)`?\s*", c)
+                ]
+            )
+            for idx in target_indices:
+                if "pinn_simulation_result.json" in cells[idx]:
+                    orig_cell = cells[idx].strip()
+                    cleaned_cell = _strip_pinn_sim_deliverable_text(orig_cell)
+                    if cleaned_cell != orig_cell:
+                        cells[idx] = f" {cleaned_cell} "
+                        changed = True
+            line = "|".join(cells)
+        else:
+            deliv_col_idx = None
+            m = re.match(r"^(\s*(?:[-*]\s*)?(?:\*\*)?(?:交付物|deliverables)(?:\*\*)?\s*[:：]\s*)(.+)$", line, re.I)
+            if m and "pinn_simulation_result.json" in m.group(2):
+                orig_val = m.group(2).strip()
+                cleaned_val = _strip_pinn_sim_deliverable_text(orig_val)
+                if cleaned_val != orig_val:
+                    line = f"{m.group(1)}{cleaned_val}"
+                    changed = True
+        out_lines.append(line + eol)
+    new_text = "".join(out_lines)
+    return new_text, changed
+
+
+def has_false_pinn_deliverable_in_md(md_text: str) -> bool:
+    _, changed = sanitize_stage_journals_md_deliverables(md_text)
+    return changed
+
+
+def sanitize_stage_journals_md_text(md_text: str) -> tuple[str, bool]:
+    cleaned_deliv, deliv_changed = sanitize_stage_journals_md_deliverables(md_text)
+    cleaned_claims, claim_changed = _sanitize_false_pinn_value(cleaned_deliv)
+    return cleaned_claims, bool(deliv_changed or claim_changed)
+
+
+def _pinn_spec_triggered(spec_obj: Any) -> bool | None:
+    """兼容真实 pinn_input_spec.json (`trigger.triggered`) 与旧扁平键 (`triggered`)."""
+    if not isinstance(spec_obj, dict):
+        return None
+    trig_block = spec_obj.get("trigger")
+    if isinstance(trig_block, dict) and trig_block.get("triggered") is not None:
+        return trig_block.get("triggered")
+    return spec_obj.get("triggered")
+
+
+def sanitize_stage_journals_for_pinn_state(task_dir: Path, journals: list[dict] | None = None) -> list[dict]:
+    """当 PINN 未触发且不存在 pinn_simulation_result.json 时，清洗阶段日志中的失真交付物与仿真完成宣称。"""
+    pinn_spec_path = task_dir / PINN_INPUT_SPEC_FILENAME
+    pinn_res_path = task_dir / PINN_SIM_RESULT_FILENAME
+    sim_exists = pinn_res_path.exists()
+    triggered: bool | None = None
+    if pinn_spec_path.exists():
+        try:
+            spec_obj = json.loads(pinn_spec_path.read_text(encoding="utf-8"))
+            triggered = _pinn_spec_triggered(spec_obj)
+        except (OSError, json.JSONDecodeError):
+            pass
+
+    journal_path = task_dir / "stage_journals.json"
+    disk_data = None
+    disk_entries: list[dict] | None = None
+    if journal_path.exists():
+        try:
+            disk_data = json.loads(journal_path.read_text(encoding="utf-8"))
+            if isinstance(disk_data, list):
+                disk_entries = disk_data
+            elif isinstance(disk_data, dict) and isinstance(disk_data.get("stages"), list):
+                disk_entries = disk_data["stages"]
+        except (OSError, json.JSONDecodeError):
+            disk_data = None
+
+    def _clean_entries(entries: list[dict] | None) -> bool:
+        if not isinstance(entries, list) or sim_exists or triggered is not False:
+            return False
+        changed = False
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            deliv = entry.get("deliverables")
+            if isinstance(deliv, list):
+                filtered = [d for d in deliv if "pinn_simulation_result.json" not in str(d)]
+                if len(filtered) != len(deliv):
+                    entry["deliverables"] = filtered
+                    changed = True
+            for field in _JOURNAL_TEXT_FIELDS:
+                if field in entry and entry[field] is not None:
+                    new_val, val_changed = _sanitize_false_pinn_value(entry[field])
+                    if val_changed:
+                        entry[field] = new_val
+                        changed = True
+        return changed
+
+    if _clean_entries(disk_entries) and disk_data is not None:
+        try:
+            journal_path.write_text(json.dumps(disk_data, ensure_ascii=False, indent=2), encoding="utf-8")
+        except OSError:
+            pass
+
+    md_path = task_dir / "stage_journals.md"
+    if not sim_exists and triggered is False and md_path.exists():
+        try:
+            md_text = md_path.read_text(encoding="utf-8")
+            cleaned_md, md_changed = sanitize_stage_journals_md_text(md_text)
+            if md_changed:
+                md_path.write_text(cleaned_md, encoding="utf-8")
+        except OSError:
+            pass
+
+    if journals is not None:
+        _clean_entries(journals)
+        return journals
+    return disk_entries or []
+
+
 def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = None, **kwargs) -> Dict[str, Any]:
     """执行 Stage 6: 汇总全生命周期综合研发报告 (读取 StageJournal 进行全链路审计与一致性前置核验)."""
     from auto_battery_research.tools.stage_tools import get_stage_manager, get_stage_manager_for_goal
@@ -1642,7 +1857,7 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
         except Exception:
             pass
 
-    all_journals = mgr.get_all_stage_journal()
+    all_journals = sanitize_stage_journals_for_pinn_state(task_dir, mgr.get_all_stage_journal())
     stage_statuses = {s.id: s.status for s in mgr.stages}
     from auto_battery_research.util.report_contract import (
         report_context, report_identity, render_selected_design, render_recipe, render_energy, render_evidence,
@@ -1780,16 +1995,8 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     if fallback_stages:
         audit_summary += f"；Stage {fallback_stages} FALLBACK (代理估算)"
 
-    journal_table_rows = []
-    for j in all_journals:
-        s_id = j.get("stage_id", 0)
-        s_name = j.get("stage_name", "")
-        # 详细发现保留在日志文件；报告履历只呈现执行状态，不复述未经核实的性能结论。
-        s_notes = f"状态 {stage_statuses.get(s_id, '未知')}；耗时 {j.get('duration_seconds', 0):.1f}s；详细记录见 stage_journals.json"
-        s_deliv = ", ".join([Path(d).name for d in j.get("deliverables", [])]) or "无"
-        journal_table_rows.append(f"| Stage {s_id} | {s_name} | {s_notes} | `{s_deliv}` |")
-
-    journal_table_str = "\n".join(journal_table_rows) if journal_table_rows else "| — | 阶段履历 | 尚无阶段日志，无法确认执行履历 | 无 |"
+    from auto_battery_research.util.reports import render_stage_journal_table
+    journal_table_str = render_stage_journal_table(mgr.stages, all_journals)
 
     # 真实读取当前配置的大模型后端，禁止在研报中硬编码声明模型
     llm_cfg = mgr.config.get("llm") or {}
@@ -1845,6 +2052,14 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
         log_observation("实验方案回退为确定性渲染 (LLM 不可用或未通过验收)")
 
 
+    s4_review = str(scheme_data.get("review_status") or "").strip()
+    s4_issues = (scheme_data.get("reviewer_output") or {}).get("issues") or []
+    s4_caveat_note = (
+        f"；审稿状态 {s4_review or 'REVIEWED_WITH_ISSUES'}，含 {len(s4_issues)} 条审稿保留意见（非流程阻塞项；需实验室阶段闭环验证，见第 3 节）"
+        if (s4_issues or s4_review == "REVIEWED_WITH_ISSUES")
+        else ""
+    )
+
     report_content = f"""# 化学电池全生命周期研发与设计综合研报
 <!-- abr-report-contract:2 -->
 <!-- abr-report-layout:6 -->
@@ -1890,9 +2105,9 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
 - Stage 1 (文献解析): 状态 [{stage_statuses.get(1, 'PASSED')}] (IngestionChecker 验收)
 - Stage 2 (向量库检索): 状态 [{stage_statuses.get(2, 'PASSED')}] (VectorDBChecker 验收)
 - Stage 3 (材料挖掘组装): 状态 [{stage_statuses.get(3, 'PASSED')}] (CellAssemblyChecker 验收)
-- Stage 4 (多智能体 RAG): 状态 [{stage_statuses.get(4, 'PASSED')}] (RAGDesignChecker 验收, 真实证据数: {evidence_count} 条)
+- Stage 4 (多智能体 RAG): 状态 [{stage_statuses.get(4, 'PASSED')}] (RAGDesignChecker 验收, 真实证据数: {evidence_count} 条{s4_caveat_note})
 - Stage 5 (PINN 物理仿真): {s5_status_desc}{s5_geometry_block}{s5_revision_block}{s5_curve_block}
-- Stage 6 (综合研报生成): 状态 [{stage_statuses.get(6, 'PASSED')}] (FinalReportChecker 终审验收)
+- Stage 6 (综合研报生成): 状态 [{stage_statuses.get(6, 'PASSED')}] (FinalReportChecker 终审验收：流程 PASSED 表示契约、一致性与证据溯源门禁通过，非性能/实验定论)
 
 ### 验证层级与计算方法透明化说明
 1. **SPM PINN**：单粒子模型代理推理，非本次运行 P2D 求解；训练参考 RMS 不等于当前工况新求得的 PDE 残差。
@@ -1902,7 +2117,7 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
 {history_text}
 
 > **⚠️ 科研可信度声明与使用边界 (Scientific Credibility & Disclaimer)**:
-> 本研报由多智能体文献 RAG、热力学硬约束求解器与数值代理模型协同生成。输出的配方选型、理论能量密度与工作电压区间供内部研发参考、文献方案编排与实验设计探索；未在实体实验室经过全流程物理装配与 ARC 热失控验证前，不应直接作为工业量产或高安全领域的唯一定论。
+> 本研报由多智能体文献 RAG、电化学规则引擎 (RelationEngine) 与 SPM PINN 数值代理模型协同生成。输出的配方选型、理论能量密度与工作电压区间供内部研发参考、文献方案编排与实验设计探索；未在实体实验室经过全流程物理装配与 ARC 热失控验证前，不应直接作为工业量产或高安全领域的唯一定论。
 
 ---
 

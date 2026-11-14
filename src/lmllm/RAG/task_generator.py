@@ -91,13 +91,13 @@ def gen_combination_tasks(engine: RelationEngine, cands: Dict,
 
 
 def gen_constraint_tasks(engine: RelationEngine, cands: Dict) -> List[Dict]:
-    """约束验证（负样本）：每条 exclude 规则构造一个违反它的组合。"""
+    """约束验证（负样本）：每条 exclude / challenge / coin_cell_eval 规则构造一个触发违规的组合。"""
     tasks = []
     cathode_ids = [m["id"] for m in cands.get("cathode", [])]
     anode_ids = [m["id"] for m in cands.get("anode", [])]
     electrolyte_ids = [m["id"] for m in cands.get("electrolyte", [])]
     for rule in engine.constraints.get("rules", []):
-        if rule.get("action") != "exclude":
+        if rule.get("action") not in ("exclude", "challenge", "coin_cell_eval"):
             continue
         # 构造触发该规则的方案：用默认组合，检查哪条 violate
         made = False

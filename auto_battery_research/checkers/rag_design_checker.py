@@ -219,13 +219,13 @@ class RAGDesignChecker(BaseChecker):
             return False, self.build_diagnostic(
                 passed=False,
                 error_code="RELATION_ENGINE_VIOLATION",
-                error_msg=f"RelationEngine 硬约束校验失败: violations={violations}, rejects={rejects}, unverified={unverified}, energy_check={energy_check}",
+                error_msg=f"RelationEngine 规则校验失败: violations={violations}, rejects={rejects}, unverified={unverified}, energy_check={energy_check}",
                 observed={"rule_checks": rule_checks, "unverified": unverified},
-                expected="材料组合符合热力学硬约束、无未知材料违规且能量密度核算相符",
-                next_action="调整正极/负极/电解液搭配，排除不相容或未经验证的组分",
+                expected="材料组合通过 RelationEngine 规则检验（C1–C3 无未缓解违规、C7 扣电选材匹配、无 C0 未知材料违规且能量密度核算相符，置信度非 low）",
+                next_action="调整正极/负极/电解液搭配，补充有效缓解措施或排除不相容/未经验证的组分",
             )
 
-        # 3.5 几何声明门禁 (产物契约 v1.1): 正/负极厚度/孔隙率/粒径/扩散系数 8 个设计值
+        # 3.5 几何声明门禁 (schema v1.1 / 证据与哈希契约 v2.0): 正/负极厚度/孔隙率/粒径/扩散系数 8 个设计值
         #     必须由方案显式给出 (provenance ∈ {stage4_recipe, stage5_revision}), 全部
         #     提供值经物理/registry 范围校验 —— 杜绝"静默回退训练基准冒充设计点"。
         #     runtime_options.geometry_gate: enforce (默认, 硬失败) | warn (灰度, 降级为警告不阻断)。
@@ -261,6 +261,10 @@ class RAGDesignChecker(BaseChecker):
                 "v1.1 归一化块 (由 RunRAGDesign 归一化写入 design_scheme.json)",
                 "重新执行 RunRAGDesign 生成 v1.1 几何声明块")
 
+        from auto_battery_research.tools.geometry_revision import collect_geometry_violations, resolve_input_ranges
+        ranges = resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"))
+        range_violations = collect_geometry_violations(geo, ranges, anode_id=scheme.get("anode"))
+
         geo_prov = geo.get("provenance") if isinstance(geo.get("provenance"), dict) else {}
         if geo.get("contract_version") == "2.0":
             from auto_battery_research.simulation.geometry_contract import validate_geometry_contract, geometry_hash
@@ -271,9 +275,11 @@ class RAGDesignChecker(BaseChecker):
                 actual_hash = None
             if actual_hash is None or scheme.get("geometry_hash") != actual_hash:
                 contract_errors.append("geometry_hash 与实际内容不一致")
-            if contract_errors:
-                return _geo_fail("GEOMETRY_CONTRACT_INVALID", "; ".join(contract_errors),
-                                 {"errors": contract_errors}, "结构化几何来源与输入身份可验证", "修复指定字段的结构化契约")
+            range_set = set(range_violations)
+            non_range_contract_errors = [e for e in contract_errors if e not in range_set]
+            if non_range_contract_errors:
+                return _geo_fail("GEOMETRY_CONTRACT_INVALID", "; ".join(non_range_contract_errors),
+                                 {"errors": non_range_contract_errors}, "结构化几何来源与输入身份可验证", "修复指定字段的结构化契约")
         # 硬字段 8 项: 两电极各自的厚度/孔隙率/粒径/扩散系数; 显式声明 provenance
         # 接受 stage4_recipe (Stage 4 叙事提取) 与 stage5_revision (Stage 5 反馈修订)
         from auto_battery_research.tools.geometry_revision import EXPLICIT_PROVENANCE_TAGS
@@ -281,6 +287,7 @@ class RAGDesignChecker(BaseChecker):
             (comp, field) for comp in ("cathode", "anode")
             for field in ("L_um", "porosity", "R_s_um", "D_s_m2s")
         )
+        is_li_metal_anode = str(scheme.get("anode") or "") == "li_metal"
         missing, not_explicit, illegal = [], [], []
         for comp, field in hard_fields:
             comp_block = geo.get(comp) if isinstance(geo.get(comp), dict) else {}
@@ -288,6 +295,8 @@ class RAGDesignChecker(BaseChecker):
             path = f"{comp}.{field}"
             structured = geo.get("contract_version") == "2.0"
             source = (geo.get("parameter_sources") or {}).get(path, {})
+            if comp == "anode" and is_li_metal_anode and field in ("R_s_um", "D_s_m2s") and val is None:
+                continue
             if structured and field in ("R_s_um", "D_s_m2s"):
                 if source.get("origin") == "model_baseline" and geo_prov.get(path) == "params_baseline":
                     continue
@@ -319,9 +328,7 @@ class RAGDesignChecker(BaseChecker):
 
         # 全部提供值的范围校验 (registry input_ranges 对齐, 未匹配体系退物理常识;
         # 范围逻辑统一承载于 geometry_revision, 与 ReviseGeometry 共用避免双份漂移)
-        from auto_battery_research.tools.geometry_revision import collect_geometry_violations, resolve_input_ranges
-        ranges = resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"))
-        illegal = list(dict.fromkeys(illegal + collect_geometry_violations(geo, ranges)))
+        illegal = list(dict.fromkeys(illegal + range_violations))
         if illegal:
             return _geo_fail(
                 "GEOMETRY_VALUE_ILLEGAL",

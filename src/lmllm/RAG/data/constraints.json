@@ -21,7 +21,14 @@
       "name": "超高压体系相容性质询",
       "trigger": {"field": "cathode.voltage_limit", "op": "gt", "value": 4.6},
       "condition": {"field": "electrolyte", "op": "eq", "value": "carbonate_ec"},
-      "action": "warn",
+      "mitigation_whitelist": [
+        "additive:FEC", "additive:LiPO2F2", "additive:DTD",
+        "coating:LPO", "coating:Al2O3"
+      ],
+      "retrieval_boost": [
+        "electrolyte:high_concentration", "electrolyte:lhce", "electrolyte:fluorinated"
+      ],
+      "action": "challenge",
       "reason": ">4.6V 超高压扣电测试中，未改性纯常规碳酸酯易发生剧烈氧化分解导致阻抗激增，建议采用高浓溶剂化物或全氟化溶剂体系。",
       "source": "前沿文献共识（Super-high voltage electrolyte）"
     },

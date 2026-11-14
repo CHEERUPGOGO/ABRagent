@@ -49,24 +49,34 @@ def set_stage_manager(mgr: StageManager):
 
 
 def resolve_effective_goal(target_goal: Optional[str] = None, active_goal: Optional[str] = None) -> str:
-    """解析生效课题目标: 优先使用显式课题，但若与当前活跃课题语义同义(如大小写/空格/电池后缀差异)则对齐回当前课题，防止分叉."""
+    """解析生效课题目标: 优先使用显式课题，但若与当前活跃课题语义同义(如大小写/空格/标点/化学式/n-gram相似)则对齐回当前课题，防止分叉."""
     g = (target_goal or "").strip()
     a = (active_goal or "").strip()
     if not g:
         return a or "general_research_task"
     if not a:
         return g
-    na = re.sub(r"[\s_，。、]", "", a.lower())
-    ng = re.sub(r"[\s_，。、]", "", g.lower())
+    na = re.sub(r"[\s_，。、：:；;（）()【】\[\]·\-]+", "", a.lower())
+    ng = re.sub(r"[\s_，。、：:；;（）()【】\[\]·\-]+", "", g.lower())
     if na == ng:
         return a
     if len(na) >= 6 and len(ng) >= 6:
-        if na in ng or ng in na:
-            return a
         ma = re.search(r"\d+wh[/-]?kg", na)
         mg = re.search(r"\d+wh[/-]?kg", ng)
-        if ma and mg and ma.group(0) == mg.group(0):
+        if ma and mg:
+            return a if ma.group(0) == mg.group(0) else g
+        if na in ng or ng in na:
             return a
+        chem_re = re.compile(r"(?:li|na)\d*(?:\.\d+)?(?:[a-z]{1,2}\d*(?:\.\d+)?){2,}")
+        ca = set(chem_re.findall(na))
+        cg = set(chem_re.findall(ng))
+        if ca and cg and (ca & cg):
+            return a
+        short_s, long_s = (na, ng) if len(na) <= len(ng) else (ng, na)
+        if len(short_s) >= 8:
+            grams = {short_s[i : i + 3] for i in range(len(short_s) - 2)}
+            if grams and sum(1 for gr in grams if gr in long_s) / len(grams) >= 0.5:
+                return a
     return g
 
 
@@ -141,6 +151,12 @@ def tool_complete_stage(stage_id: Optional[int] = None) -> Dict[str, Any]:
     """执行阶段终审并通过：通过后自动推进至下一阶段."""
     mgr = get_stage_manager()
     passed, res = mgr.complete_stage(stage_id=stage_id)
+    if passed and isinstance(res, dict):
+        directive = (
+            "（当前阶段已终审通过；请立即结束本轮回复，不要在本轮继续调用下一阶段工具，"
+            "系统主循环将自动切换并挂载下一阶段专属工具集。）"
+        )
+        res["message"] = f"{res.get('message', '')} {directive}".strip()
     return res
 
 

@@ -7,7 +7,7 @@ Gradio 5/6 的 SSR 渲染在部分 Windows 环境下会出现"tab 栏渲染但�
 
 支持通过 `--web-gradio` 命令行参数一键启动，提供：
 - 📊 智能体 6 阶段全流程工作流大屏与实时门禁审计
-- 🧪 多智能体 RAG 电池方案设计与 C1-C8 规则审查
+- 🧪 多智能体 RAG 电池方案设计与 RelationEngine 规则审查 (C1–C3, C5–C8 分级)
 - 📚 文献资产库与电芯数据挖掘全景
 - ⚡ SPM PINN 物理仿真与放电曲线绘制
 """
@@ -371,7 +371,7 @@ def create_web_app(manager: Optional[StageManager] = None):
             # =================================================================
             with gr.Tab("🧪 多智能体 RAG 方案设计 (Multi-Agent RAG)"):
                 gr.Markdown(
-                    "### 4-Agent 协同规划：Planner → Retrieval → Writer → Reviewer (C1-C8 校验)\n"
+                    "### 4-Agent 协同规划：Planner → Retrieval → Writer → Reviewer (RelationEngine C1–C3, C5–C8 校验)\n"
                     "> 方案产物写入左侧【🎯 电池研发目标】所属课题的任务目录；生成后回到工作流页"
                     "对 Stage 4 执行 Check / Complete 即可推进门禁。"
                 )
@@ -384,7 +384,7 @@ def create_web_app(manager: Optional[StageManager] = None):
                     rag_gen_btn = gr.Button("⚡ 生成 RAG 方案", variant="primary")
 
                 rag_result_md = gr.Markdown(label="设计方案报告")
-                rag_rule_checks = gr.JSON(label="C1-C8 规则硬约束审查结果")
+                rag_rule_checks = gr.JSON(label="RelationEngine 规则审查结果 (C1–C3, C5–C8 分级)")
 
                 def on_gen_rag(query, goal):
                     from auto_battery_research.tools.workflow_actions import run_rag_design

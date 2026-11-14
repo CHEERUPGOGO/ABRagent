@@ -3,7 +3,7 @@
 ## 任务目标
 1. 【触发判定】触发 = `setting.yaml` 顶层 `pinn_trigger.enabled` 总开关 AND 方案 (cathode, anode) 匹配 `pinn/models/registry.json` 中已训练的 PINN 体系。关闭开关或未命中体系都只做参数提取，不视为错误。
 2. 【参数提取】从 Stage 4 `design_scheme.json` 提取当前方案选中的正极/负极/电解液/添加剂，组装 CellSpec 物理契约 (candidates.json 材料级覆盖；提取不到的物理量保持 null，由 spec 显式输入或体系 params.json 基准提供)，落盘 `pinn_input_spec.json`。
-3. 【PINN 仿真】Stage 5 激活 (非 skip) 且体系匹配命中时，调用 `RunPhysicsSimulation` 执行 SPM PINN 放电仿真 (纯 numpy，`pinn/spm_runner.py`)，产物 `pinn_simulation_result.json`。仿真是 **spec 驱动**的：R_s、D_s、电极厚度、孔隙率、C-rate 五个设计参数从 `pinn_input_spec.json` 的 cell_spec 显式输入——全部来自 Stage 4 方案的 `scheme.geometry`（产物契约 v1.1 显式完整声明块：L_um/porosity/R_s_um/D_s_m2s/condition.v_min/v_max，逐字段 provenance=stage4_recipe|stage5_revision|params_baseline）。其中电极厚度/孔隙率/颗粒粒径/固相扩散系数共 8 个字段为 Stage 4 门禁硬性声明项（`RAGDesignChecker` geometry 门禁：`GEOMETRY_DECLARATION_INCOMPLETE`/`GEOMETRY_VALUE_ILLEGAL`），其余字段可选——声明则采用并校验；`scheme.geometry.condition.c_rate` 为可选声明位（声明则 `c_rate_source=spec`，优先于工具入参）。每个 PINN 体系在 registry `input_ranges` 中声明各输入的有效范围——逐参数越界 (OUT_OF_RANGE) 或组合越界 (训练包络 OUT_OF_ENVELOPE) 都在调用网络之前拦截，不产出仿真结果，错误信息会点名越界字段与合法范围。
+3. 【PINN 仿真】Stage 5 激活 (非 skip) 且体系匹配命中时，调用 `RunPhysicsSimulation` 执行 SPM PINN 放电仿真 (纯 numpy，`pinn/spm_runner.py`)，产物 `pinn_simulation_result.json`。仿真是 **spec 驱动**的：R_s、D_s、电极厚度、孔隙率、C-rate 五个设计参数从 `pinn_input_spec.json` 的 cell_spec 显式输入——来源自 Stage 4 方案的 `scheme.geometry`（数值布局兼容 v1.1，现行协议 `contract_version="2.0"`：包含 `L_um`/`porosity`/`R_s_um`/`D_s_m2s`/`condition.v_min`/`v_max` 与 `parameter_sources`、`design_revision`、`geometry_hash`）。其中正/负极 `L_um`（电极厚度）与 `porosity`（孔隙率）为 Stage 4 门禁必填显式设计项，`R_s_um`（颗粒半径）与 `D_s_m2s`（固相扩散系数）在契约 v2.0 下可由程序按证据校验标注为显式设计或 `model_baseline`/`missing`（见 `RAGDesignChecker` geometry 门禁）；其余字段可选——声明则采用并校验；`scheme.geometry.condition.c_rate` 为可选声明位（声明则 `c_rate_source=spec`，优先于工具入参）。每个 PINN 体系在 registry `input_ranges` 中声明各输入的有效范围——逐参数越界 (OUT_OF_RANGE) 或组合越界 (训练包络 OUT_OF_ENVELOPE) 都在调用网络之前拦截，不产出仿真结果，错误信息会点名越界字段与合法范围。
 
 ## 反馈修订回路（ReviseGeometry）与收尾择优
 1. 【达标判定】`RunPhysicsSimulation` 返回 `key_findings.target`：目标能量从课题文本数值提取（如 "400Wh/kg" → 400），容差取 `runtime_options.target_energy_tolerance_pct`（默认 ±5%），阈值 = 目标×(1−容差)；`met=true` 即达标 —— **停止修订**，走 Check → Complete。`met` 是确定性主判据，避免容差内微小差距空转；课题无数值化目标时由 LLM 综合曲线/终止模式定性判断。
@@ -41,7 +41,7 @@ PINN 链路：`match_pinn_system(cathode, anode)` → 体系 `params.json` + pOC
   2. **提取-only 模式** (`trigger.triggered == false`，未匹配体系/总开关关闭)：`pinn_input_spec.json` 结构完整即通过——这是规范降级路径，不算错误；`triggered=true` 却无结果文件 → `PINN_TRIGGERED_RESULT_MISSING` 硬失败。
 - 输入/模型身份绑定：spec 落盘时写入 `cell_spec_hash`（对 cell_spec 规范化 json 的 md5）；结果 payload 的 `pinn` 块统一注记 `spec_hash / scheme_hash / model_version` (体系 + 放电权重内容指纹) `/ run_id`。
 - 失效语义：非 CONVERGED 重跑以失败态覆写旧结果并删除旧曲线 PNG；未匹配/总开关关闭时陈旧 result+PNG 一并移除；Stage 6 报告仅在 stage PASSED 且指纹守卫 (`_pinn_result_identity_ok`) 通过时才嵌入数值/几何/曲线。
-# 结构化几何修订（新增契约 2.0）
+## 结构化几何修订（契约 v2.0）
 
 N/P 是可选输入，不要求模型提供；未提供时正负极厚度独立采用声明值，不做容量比校准。
 Check 与 Complete 在验收前共用同一择优收尾，已选定结果不会重复回滚。

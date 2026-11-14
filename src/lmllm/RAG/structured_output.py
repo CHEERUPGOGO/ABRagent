@@ -15,8 +15,9 @@ from __future__ import annotations
 import re
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
+from .bm25_kb import normalize_source_path
 from .config import QTYPE_KEYWORDS, LABEL_KEYWORDS, COMPONENT_KEYWORDS
 
 # ── 问题类型分类(材料筛选专用)──
@@ -97,6 +98,53 @@ def extract_materials_screening_data(answer_text: str, evidence: List[Dict[str, 
         return "## 定量数据摘要(材料筛选)\n" + "\n".join(lines)
     return ""
 
+def _build_evidence_title_map(items: List[Dict[str, Any]]) -> Dict[str, str]:
+    """从同批证据汇总 paper -> title 映射（不以空题名覆盖已有题名）."""
+    title_map: Dict[str, str] = {}
+    for e in items or []:
+        if not isinstance(e, dict):
+            continue
+        meta = e.get("metadata") if isinstance(e.get("metadata"), dict) else {}
+        title = str(e.get("title") or meta.get("title") or "").strip()
+        if not title:
+            continue
+        for key in (
+            e.get("doi"),
+            meta.get("source_paper"),
+            meta.get("doi"),
+            normalize_source_path(str(meta.get("source_file") or "")),
+            normalize_source_path(str(e.get("source") or "")),
+        ):
+            k = str(key or "").strip()
+            if k and k not in ("未知", "unknown", "chroma") and k not in title_map:
+                title_map[k] = title
+    return title_map
+
+
+def _normalize_evidence_source_title(
+    item: Dict[str, Any],
+    title_map: Optional[Dict[str, str]] = None,
+) -> Tuple[str, str]:
+    """规范化单条证据的 source 路径并按同论文回填缺失题名."""
+    meta = item.get("metadata") if isinstance(item.get("metadata"), dict) else {}
+    raw_source = item.get("source") or meta.get("source_file") or meta.get("source_paper") or ""
+    source = normalize_source_path(str(raw_source)) or "未知"
+    title = str(item.get("title") or meta.get("title") or "").strip()
+    if not title and title_map:
+        for key in (
+            item.get("doi"),
+            meta.get("source_paper"),
+            meta.get("doi"),
+            normalize_source_path(str(meta.get("source_file") or "")),
+            source,
+        ):
+            k = str(key or "").strip()
+            if k and k in title_map:
+                title = title_map[k]
+                break
+    return source, title
+
+
 # ── 结构化 Markdown 生成 ──
 
 def build_answer_markdown(
@@ -151,12 +199,16 @@ def build_answer_markdown(
     # 证据引用
     lines.extend(["", "---", "", "## 参考来源(材料筛选证据)"])
     if evidence:
+        title_map = _build_evidence_title_map(evidence)
         seen_sources = set()
         for i, e in enumerate(evidence[:8], 1):
             pid = e.get("passage_id", f"E{i}")
-            source = e.get("source", "未知")
+            source, title = _normalize_evidence_source_title(e, title_map)
             text_preview = normalize_latex(e.get("text", ""))[:150]
-            lines.append(f"{i}. **[{pid}]** `{source}`")
+            header = f"{i}. **[{pid}]** `{source}`"
+            if title and title not in source:
+                header += f" — {title}"
+            lines.append(header)
             lines.append(f"   > {text_preview}...")
             lines.append("")
             seen_sources.add(source)
@@ -201,21 +253,27 @@ def format_evidence_display(retrieval: Dict[str, Any]) -> str:
         "### 子检索日志",
     ]
 
+    title_map = _build_evidence_title_map(results)
+
     for q in search_logs:
         lines.append(f"#### 子问题: {q['query']}")
         if not q.get("hits"):
             lines.append("- 无命中")
         else:
             for hit in q["hits"]:
-                lines.append(f"- 命中: {hit['passage_id']} | {hit['source']} | score={hit['score']}")
+                hit_source = normalize_source_path(str(hit.get("source", "")))
+                lines.append(f"- 命中: {hit['passage_id']} | {hit_source} | score={hit['score']}")
 
     lines.append("")
     lines.append("### 证据详情")
 
     for idx, item in enumerate(results[:10], start=1):
+        source, title = _normalize_evidence_source_title(item, title_map)
         snippet = normalize_latex(item.get("text", ""))[:300]
         lines.append(f"**证据 {idx}** [{item['passage_id']}]")
-        lines.append(f"- 来源: {item['source']}")
+        if title:
+            lines.append(f"- 标题: {title}")
+        lines.append(f"- 来源: {source}")
         lines.append(f"- 评分: {item['score']}")
         lines.append(f"- 内容: {snippet}...")
 

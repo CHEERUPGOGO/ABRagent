@@ -197,8 +197,11 @@ def complete_geometry_block(
             if por is None and b.get("porosity") is not None:
                 por = num(b.get("porosity"))
                 por_source = "params_baseline"
-        if por is not None and not (0.0 < float(por) < 1.0):
-            por_source = "invalid"
+        if por is not None:
+            is_li_metal_anode = (comp == "anode" and str(anode_id or "") == "li_metal")
+            por_ok = (0.0 <= float(por) < 1.0) if is_li_metal_anode else (0.0 < float(por) < 1.0)
+            if not por_ok:
+                por_source = "invalid"
         out["porosity"] = por
         block["provenance"][f"{comp}.porosity"] = por_source or "unmatched"
 
@@ -355,10 +358,19 @@ def _apply_recipe_geometry(cell_spec: Dict[str, Any], geometry: Dict[str, Any]) 
             else:
                 illegal.append(f"{comp}.{field}={g[field]!r} ({label})")
 
+        is_li_metal_anode = (
+            comp == "anode" and (
+                str((electrode.get("material") or {}).get("name") or "") == "li_metal"
+                or ((geometry.get("parameter_sources") or {}).get("anode.R_s_um", {}).get("material_id") == "li_metal")
+                or ((geometry.get("parameter_sources") or {}).get("anode.porosity", {}).get("basis") == "dense_metal_foil")
+            )
+        )
         put("L_um", lambda x: x > 0, lambda x: electrode.__setitem__("L", x * 1e-6),
             "厚度须为 >0 的数值 (μm)", "L_um", f"{comp}.L")
-        put("porosity", lambda x: 0.0 < x < 1.0, lambda x: electrode.__setitem__("epsilon", x),
-            "孔隙率须为 (0,1) 内的数值", "porosity", f"{comp}.epsilon")
+        por_ok = (lambda x: 0.0 <= x < 1.0) if is_li_metal_anode else (lambda x: 0.0 < x < 1.0)
+        por_label = "孔隙率须为 [0,1) 内的数值" if is_li_metal_anode else "孔隙率须为 (0,1) 内的数值"
+        put("porosity", por_ok, lambda x: electrode.__setitem__("epsilon", x),
+            por_label, "porosity", f"{comp}.epsilon")
         put("R_s_um", lambda x: x > 0, lambda x: material.__setitem__("R_p", x * 1e-6),
             "颗粒半径须为 >0 的数值 (μm)", "R_s_um", f"{comp}.material.R_p")
         put("D_s_m2s", lambda x: x > 0, lambda x: material.__setitem__("D_s", x),
@@ -374,9 +386,11 @@ def _apply_recipe_geometry(cell_spec: Dict[str, Any], geometry: Dict[str, Any]) 
                     electrode["L"] = ld / cd * 1e-5
                     cell_spec["provenance"][f"{comp}.L"] = src(comp, "loading_mg_cm2")
         if electrode.get("epsilon") is None:
-            put("porosity_pct", lambda x: 0.0 < x < 100.0,
+            por_pct_ok = (lambda x: 0.0 <= x < 100.0) if is_li_metal_anode else (lambda x: 0.0 < x < 100.0)
+            por_pct_label = "孔隙率须为 [0,100) 内的数值 (%)" if is_li_metal_anode else "孔隙率须为 (0,100) 内的数值 (%)"
+            put("porosity_pct", por_pct_ok,
                 lambda x: electrode.__setitem__("epsilon", x / 100.0),
-                "孔隙率须为 (0,100) 内的数值 (%)", "porosity_pct", f"{comp}.epsilon")
+                por_pct_label, "porosity_pct", f"{comp}.epsilon")
         # 面载量/压实 (信息性): 合法值回写 mass_loading; 非法值记入 illegal
         ld, cd = _num(g.get("loading_mg_cm2")), _num(g.get("compaction_g_cm3"))
         if g.get("loading_mg_cm2") is not None and (ld is None or ld <= 0):

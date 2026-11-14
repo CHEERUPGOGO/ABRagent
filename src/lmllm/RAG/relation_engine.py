@@ -1,15 +1,17 @@
-"""关系绑定引擎 — 高比能液态锂电池设计方案系统（阶段 0，纯规则，无 LLM 依赖）
+"""关系绑定引擎 — 高比能液态锂电池设计方案系统（纯规则，无 LLM 依赖）
 
 承载三类关系数据（JSON 表形式）：
   - alias_map.json      实体归一化（谁对应谁）
   - candidates.json     候选材料属性（谁有哪些参数）
-  - constraints.json    硬约束（谁排除谁 / 谁纳入谁）
+  - constraints.json    层级约束规则（v2.1: C1–C3, C5–C8 共 7 条规则，C4 已移除；
+                        支持 challenge / recommend / audit_note / coin_cell_eval /
+                        flag_frontier 与兼容动作，及 C0_UNVERIFIED_MATERIAL 校验）
 
-管线中的两个插桩点（阶段 3 接入 RAG）：
-  插桩 A（检索前）: query_modifiers()   → exclude_terms / boost_terms 过滤检索结果
-  插桩 B（生成后）: check_scheme()      → Reviewer 硬规则校验（violation / energy_mismatch / condition_missing）
+管线中的两个插桩点（接入 RAG 管线）：
+  插桩 A（检索前）: query_modifiers()   → 生成 exclude_terms / boost_terms 检索修饰词
+  插桩 B（生成后）: check_scheme()      → Reviewer 规则校验（rule_checks / energy_check / condition_missing / confidence）
 
-所有方法失败时返回保守结果，不抛异常阻断调用方（降级策略）。
+所有方法失败时返回保守结果，不抛异常阻断调用方（fail-closed 降级策略）。
 """
 
 from __future__ import annotations
@@ -146,7 +148,14 @@ class RelationEngine:
                 return attrs.get(attr)
             return None
         if field in ("target_energy", "target_energy_density"):
-            for k in ("target_energy", "target_energy_density", "claimed_energy", "energy_density_wh_kg", "theoretical_energy_density"):
+            for k in (
+                "target_energy",
+                "target_energy_wh_kg",
+                "target_energy_density",
+                "claimed_energy",
+                "energy_density_wh_kg",
+                "theoretical_energy_density",
+            ):
                 if resolved.get(k) is not None:
                     return resolved.get(k)
         return resolved.get(field)
@@ -180,19 +189,28 @@ class RelationEngine:
         """检查方案中是否包含白名单中声明的改性策略/添加剂/界面工程."""
         matched = []
         texts_to_check = []
-        for k in ("cathode", "anode", "electrolyte", "additives", "additive", "notes", "strategy", "modifications"):
+
+        def _append_val(val: object) -> None:
+            if isinstance(val, (list, tuple, set)):
+                for item in val:
+                    _append_val(item)
+            elif isinstance(val, dict):
+                for dk, dv in val.items():
+                    if dv is not None:
+                        texts_to_check.append(f"{dk}:{dv}".lower())
+            elif val:
+                texts_to_check.append(str(val).lower())
+
+        for k in (
+            "cathode", "anode", "electrolyte", "additives", "additive",
+            "notes", "strategy", "modifications", "user_locked_components", "design_anchors",
+        ):
             v = scheme.get(k)
             if v:
-                if isinstance(v, list):
-                    texts_to_check.extend([str(item).lower() for item in v])
-                else:
-                    texts_to_check.append(str(v).lower())
+                _append_val(v)
             v_res = resolved.get(k)
             if v_res and v_res != v:
-                if isinstance(v_res, list):
-                    texts_to_check.extend([str(item).lower() for item in v_res])
-                else:
-                    texts_to_check.append(str(v_res).lower())
+                _append_val(v_res)
 
         full_text = " ".join(texts_to_check)
 
@@ -222,13 +240,22 @@ class RelationEngine:
                     matched.append(item)
                     break
 
+        if not matched:
+            has_interface_whitelist = any(
+                str(w).startswith(("additive:", "coating:", "morphology:", "anode_mod:", "anode:", "electrolyte:"))
+                for w in (whitelist or [])
+            )
+            user_locked = scheme.get("user_locked_components") or []
+            if has_interface_whitelist and "electrolyte" in user_locked and bool(scheme.get("modifications")):
+                return True, ["user_locked_baseline_with_modification"]
+
         return len(matched) > 0, matched
 
     def evaluate(self, scheme: Dict) -> Dict:
         """对方案求值全部约束 (软质询矩阵 · 实验室扣电科研版).
 
         Returns:
-          feasible:        bool，无 reject 且无 exclude/硬挑战违规命中 → True
+          feasible:        bool，无 reject（含未登记材料）且无违规（exclude / 未缓解 challenge / coin_cell_eval 命中）→ True
           violations:      [{"rule_id", "reason", "excluded"}]
           inclusions:      [{"rule_id", "required"}]
           rejects:         [{"rule_id", "reason"}]
@@ -311,7 +338,7 @@ class RelationEngine:
                         })
 
             elif action == "challenge":
-                # 自洽性质询（C1, C3）
+                # 自洽性质询（C1, C2, C3）：声明白名单对策即放行，纯裸体系且无保护措施则硬拦截
                 whitelist = rule.get("mitigation_whitelist", [])
                 has_mit, matched = self._has_mitigation(scheme, resolved, whitelist)
                 if has_mit:
@@ -321,20 +348,26 @@ class RelationEngine:
                         "mitigated_by": matched,
                         "note": f"检测到相应界面/改性对策: {matched}",
                     })
+                    if matched == ["user_locked_baseline_with_modification"]:
+                        audit_reason = (
+                            "用户课题显式锁定常规碳酸酯作为改性正极扣电测试基线；"
+                            "鉴于 >4.3V 及锂金属界面副反应，建议以同批未掺杂样品为相对基准评估保持率，"
+                            "并将 LHCE/含氟添加剂列为界面对照体系"
+                        )
+                        if not any(n.get("reason") == audit_reason for n in out["audit_notes"]):
+                            out["audit_notes"].append({
+                                "rule_id": rule_id,
+                                "reason": audit_reason,
+                            })
                 else:
-                    if rule_id == "C3":
-                        # C3: 金属锂负极搭配纯常规碳酸酯且完全未声明任何界面/添加剂保护措施
-                        out["violations"].append({
-                            "rule_id": rule_id,
-                            "reason": reason,
-                            "excluded": ["carbonate_ec"],
-                        })
-                        out["feasible"] = False
-                    else:
-                        out["warnings"].append({
-                            "rule_id": rule_id,
-                            "reason": reason,
-                        })
+                    cond_val = str((cond or {}).get("value", ""))
+                    excluded = ["carbonate_ec"] if "carbonate" in cond_val else ([cond_val] if cond_val else [])
+                    out["violations"].append({
+                        "rule_id": rule_id,
+                        "reason": reason,
+                        "excluded": excluded,
+                    })
+                    out["feasible"] = False
 
             elif action == "warn":
                 out["warnings"].append({
@@ -434,7 +467,7 @@ class RelationEngine:
     def _targets_missing(
         targets: List[Tuple[str, str]], resolved: Dict
     ) -> List[str]:
-        """include 目标中方案缺失的项（列表 target 语义：至少命中一个）。"""
+        """include / recommend 目标中方案缺失的项（列表 target 语义：至少命中一个）。"""
         groups: Dict[str, List[str]] = {}
         for cat, tid in targets:
             groups.setdefault(cat, []).append(tid)
@@ -469,22 +502,47 @@ class RelationEngine:
             cond = rule.get("condition")
             if cond:
                 cond_actual = self._resolve_field(resolved, cond.get("field", ""))
-                if not self._op_matches(cond.get("op", "eq"), cond_actual, cond.get("value")):
+                # 检索前置阶段（如问题只给正负极、未选定电解液）允许条件字段缺省时仍生成引导修饰词
+                if cond_actual is not None and not self._op_matches(
+                    cond.get("op", "eq"), cond_actual, cond.get("value")
+                ):
                     continue
-            if rule.get("action") == "exclude":
+
+            action = rule.get("action")
+            if action == "exclude":
                 exclude_ids.update(t for _, t in self._parse_targets(rule.get("target", "")))
-            elif rule.get("action") in ("include", "recommend"):
+            elif action in ("include", "recommend"):
                 boost_ids.update(t for _, t in self._parse_targets(rule.get("target", "")))
+            elif action in ("challenge", "warn"):
+                whitelist = rule.get("mitigation_whitelist", [])
+                has_mit, _ = self._has_mitigation(scheme, resolved, whitelist)
+                if not has_mit and cond and cond.get("field") == "electrolyte" and "carbonate" in str(cond.get("value", "")):
+                    exclude_ids.add("carbonate_ec")
+                for item in list(whitelist) + list(rule.get("retrieval_boost", [])):
+                    for cat, tid in self._parse_targets(item):
+                        if cat in ("electrolyte", "additive") and tid in self.alias_map:
+                            boost_ids.add(tid)
+            elif action == "coin_cell_eval":
+                if resolved.get("anode") in (None, "graphite"):
+                    exclude_ids.add("graphite")
+                if resolved.get("anode") is None:
+                    boost_ids.update(["li_metal", "si_base"])
+
         return {
             "exclude_terms": self._ids_to_terms(exclude_ids),
             "boost_terms": self._ids_to_terms(boost_ids),
         }
 
     def _ids_to_terms(self, ids) -> List[str]:
-        terms = []
-        for cid in ids:
-            terms.append(cid)
-            terms.extend(self.alias_map.get(cid, []))
+        terms: List[str] = []
+        seen = set()
+        for cid in sorted(ids):
+            for candidate in [cid, *self.alias_map.get(cid, [])]:
+                clean = str(candidate).strip()
+                # 过滤过短别名（如 graphite 的 "C"），防止在检索文本匹配中全域误杀
+                if len(clean) >= 2 and clean not in seen:
+                    seen.add(clean)
+                    terms.append(clean)
         return terms
 
     # ────────────────────────── 插桩 B：方案校验 ──────────────────────────
@@ -495,10 +553,10 @@ class RelationEngine:
         claimed_energy: Optional[float] = None,
         answer_text: Optional[str] = None,
     ) -> Dict:
-        """Reviewer 硬规则校验（LLM 审核之前执行）。
+        """Reviewer 规则校验（LLM 审核之前执行）。
 
         Returns:
-          rule_checks: {"violations": [...], "inclusions": [...]}
+          rule_checks: 规则评估结果字典（含 violations / inclusions 等字段）
           energy_check: ok / energy_mismatch / na
           condition_missing: bool
           confidence: high / medium / low（强制降级依据）
@@ -560,7 +618,7 @@ class RelationEngine:
 
 
 if __name__ == "__main__":
-    # ── 自测：3 个已知错误方案必须被拦截，1 个正确方案必须通过 ──
+    # ── 自测：校验违规拦截、缓解/frontier 放行与 check_scheme 行为 ──
     eng = RelationEngine()
 
     cases = [
@@ -570,12 +628,14 @@ if __name__ == "__main__":
         ("错误3: 400Wh/kg 用石墨负极", {"cathode": "NCM811", "anode": "graphite", "electrolyte": "carbonate_ec", "target_energy": 400}, False),
         ("正确: NCM811 + 石墨 + 碳酸酯", {"cathode": "NCM811", "anode": "graphite", "electrolyte": "carbonate_ec", "additives": ["VC"]}, True),
         ("正确: LRMO + 锂金属 + LHCE", {"cathode": "LRMO", "anode": "li_metal", "electrolyte": "lhce", "target_energy": 400}, True),
-        ("500Wh/kg 拒绝", {"cathode": "LRMO", "anode": "li_metal", "electrolyte": "lhce", "target_energy": 500}, False),
+        ("前沿标记: 500Wh/kg 放行并标记 C8", {"cathode": "LRMO", "anode": "li_metal", "electrolyte": "lhce", "target_energy": 500}, True),
     ]
     n_pass = 0
     for name, scheme, expect in cases:
         ev = eng.evaluate(scheme)
         ok = ev["feasible"] == expect
+        if "C8" in name:
+            ok = ok and any(f.get("rule_id") == "C8" for f in ev.get("frontier_flags", []))
         n_pass += ok
         print(f"[{'OK' if ok else 'FAIL'}] {name}")
         if ev["violations"]:

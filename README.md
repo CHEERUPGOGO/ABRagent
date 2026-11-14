@@ -2,7 +2,7 @@
 
 **全生命周期化学电池研究自主智能体与科研工程平台**
 
-AutoBatteryResearch Agent (ABRAgent) 是专为高比能化学电池（锂金属电池、固态电池、高镍三元体系等）研发设计的自主 AI 智能体系统。系统采用 **Agent-Centric（智能体主控）设计哲学**：由全局顶层智能体（`ABRAgent`）驱动 LangChain/LangGraph ReAct 认知循环，融合**学术文献感知、语义向量入库、微观材料与电芯组装挖掘、多智能体 RAG 方案设计（Planner/Retrieval/Writer/Reviewer）、热力学硬约束规则引擎（RelationEngine C1–C8）以及 SPM PINN 物理仿真（纯 numpy 推理）**，实现从海量学术论文到结构化电芯配方方案、物理验证及综合科研研报的端到端自主闭环。
+AutoBatteryResearch Agent (ABRAgent) 是专为高比能化学电池（锂金属电池、固态电池、高镍三元体系等）研发设计的自主 AI 智能体系统。系统采用 **Agent-Centric（智能体主控）设计哲学**：由全局顶层智能体（`ABRAgent`）驱动 LangChain/LangGraph ReAct 认知循环，融合**学术文献感知、语义向量入库、微观材料与电芯组装挖掘、多智能体 RAG 方案设计（Planner/Retrieval/Writer/Reviewer）、热力学分级约束规则引擎（RelationEngine C1–C3, C5–C8）以及 SPM PINN 物理仿真（纯 numpy 推理）**，实现从海量学术论文到结构化电芯配方方案、物理验证及综合科研研报的端到端自主闭环。
 
 ---
 
@@ -26,9 +26,11 @@ AutoBatteryResearch Agent (ABRAgent) 是专为高比能化学电池（锂金属�
       │  ├── InspectVectorDB / IndexSemanticVectors           ──▶ Agent 判定向量库与语义打标    │
       │  └── InspectCellEntities / ExtractAndAssembleCells    ──▶ Agent 判定电芯三元组与ML资产  │
       │                                                                                         │
-      │  [Stage 4: 多智能体 RAG 单链路设计服务]                                                   │
-      │  └── RunRAGDesignTool                     ──▶ 单链路: Planner→Retrieval→Writer→Reviewer  │
-      │                                              + RelationEngine 硬约束 (C1-C8) 核算与溯源   │
+      │  [Stage 4~6: RAG 方案设计、PINN 仿真与研报编译]                                           │
+      │  ├── RunRAGDesign / QueryMaterialsProject ──▶ 单链路: Planner→Retrieval(+MP)→Writer→Reviewer│
+      │  │                                           + RelationEngine 分级规则 (C1–C3, C5–C8) & 契约 v2.0│
+      │  ├── RunPhysicsSimulation / ReviseGeometry ──▶ SPM PINN 放电仿真与几何反馈修订          │
+      │  └── SynthesizeResearchReport             ──▶ 六节结构化科研研报 + 指纹一致性核验        │
       │                                                                                         │
       │  [阶段门禁与状态流转工具]                                                                  │
       │  ├── CurrentTips: 读取当前阶段任务指标规范 (防止走偏)                                       │
@@ -37,11 +39,11 @@ AutoBatteryResearch Agent (ABRAgent) 是专为高比能化学电池（锂金属�
       └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-1. **智能体主控架构**：顶层 `ABRAgent` 掌控 ReAct 主循环（Thought → Action → Observation），六个阶段全部由大模型自主决策；工作流（`StageManager`）与确定性校验器（`Checkers`）作为外部护栏——**大模型在大脑主控位，工作流在规则裁判位**。确定性执行器作为离线/异常兜底，保证无 API Key 时任务仍可闭环。
+1. **智能体主控架构**：顶层 `ABRAgent` 掌控 ReAct 主循环（Thought → Action → Observation），六个阶段全部由大模型自主决策；工作流（`StageManager`）与确定性校验器（`Checkers`）作为外部护栏——**大模型在大脑主控位，工作流在规则裁判位**。Stage 1–3、5、6 提供确定性执行器离线兜底，而 Stage 4 RAG 在无可用 LLM 时严格执行 fail-closed 拦截（绝不编造虚假配方）。
 2. **确定性门禁与自愈反思**：`Check` 自检不通过时输出 `failure_summary`（error_code / error / next_action），回注重试轮提示词驱动针对性修复；同一阶段多次重试共享 LangGraph 线程记忆。
-3. **真实数据铁律**："有则提取、无则留空、禁止编造"。设计方案必须通过 RelationEngine 的全部热力学硬约束（C1–C8）与能量密度核算；证据链必须携带真实 DOI 溯源。
+3. **真实数据与分级约束铁律**：「有则提取、无则留空、禁止编造」。设计方案需通过 `RelationEngine` **7 条分级规则**（**C1–C3, C5–C8**，**C4 已永久移除**，`RULES_VERSION="C1-C8/v2.1-coincell"`）：包含未验证材料 `C0_UNVERIFIED_MATERIAL` 前置 fail-closed 拒绝、`C1–C3` 带 `mitigation_whitelist` 缓解白名单审查、`C5` 推荐、 `C6` 审计批注、`C7` $\ge 400$ Wh/kg 石墨负极排除、`C8` $\ge 500$ Wh/kg 前沿目标放行并标记；证据链必须携带真实 DOI 或 Materials Project (`MP:`) 溯源标识。
 4. **课题级产物隔离**：每个研究课题的产物（设计方案、电芯组装、综合研报、状态文件）独立存放在 `output/tasks/<课题>/`，多课题并行互不污染。
-5. **四维交互入口**：CLI 命令行、Rich TUI 终端面板、FastAPI Web 监控大屏（Gradio 后备）、领域专家 MCP Server（支持 Streamable HTTP / stdio）。
+5. **四维交互入口**：CLI 命令行、Textual/Rich TUI 终端面板、FastAPI Web 监控大屏（Gradio 后备）、领域专家 MCP Server（支持 Streamable HTTP / stdio）。
 
 ---
 
@@ -52,9 +54,9 @@ AutoBatteryResearch Agent (ABRAgent) 是专为高比能化学电池（锂金属�
 | 1 | 文献解析与组件分类 | `database/type/` 分类文献库 | `IngestionChecker`（三大组件分类完备性） |
 | 2 | 语义标注与向量入库 | `miner/chroma/paragraphs_q` 段落向量库 | `VectorDBChecker` |
 | 3 | 材料挖掘与电芯组装 | `<task>/cell_assembly/` 结构化电芯实体 | `CellAssemblyChecker`（材料+电芯+溯源完备） |
-| 4 | 多智能体 RAG 方案设计 | `<task>/design_scheme.md/.json` | `RAGDesignChecker`（五段式+证据+RelationEngine） |
-| 5 | PINN 触发判定与参数提取 | `<task>/pinn_input_spec.json` | `PINNPhysicsChecker`（**默认跳过**，skip 时仍提取参数） |
-| 6 | 综合研报生成 | `<task>/final_research_report.md` | `FinalReportChecker`（五大章节+阶段日志） |
+| 4 | 多智能体 RAG 方案设计 | `<task>/design_scheme.md/.json`、`rag_result.json`、`research_context.json`、`design_revisions/` | `RAGDesignChecker`（五段式+真实证据+RelationEngine C1–C3/C5–C8+几何契约 v2.0） |
+| 5 | PINN 触发判定、参数提取与 SPM 仿真 | `<task>/pinn_input_spec.json`（命中体系时产出 `pinn_simulation_result.json`、`pinn_simulation_curve.png`） | `PINNPhysicsChecker`（**默认启用**，未匹配体系平滑回退参数提取-only；支持 `ReviseGeometry` 反馈修订或 `--skip-pinn` 跳过） |
+| 6 | 综合研报生成 | `<task>/final_research_report.md`、`experiment_plan.json` | `FinalReportChecker`（六节结构+契约/指纹校验+阶段日志；兼容历史五段式） |
 
 阶段与 Checker 均在 `auto_battery_research/workflow/abr_workflow.yaml` 中声明式定义，`StageManager` 从中加载；工作流状态按课题持久化于 `output/tasks/<课题>/.stage_state.json`，跨 CLI 调用续跑。
 
@@ -62,7 +64,7 @@ AutoBatteryResearch Agent (ABRAgent) 是专为高比能化学电池（锂金属�
 
 ## 📦 安装指南
 
-推荐 **Python 3.10 ~ 3.12**（Windows / Linux / macOS 均可；3.13 可运行核心功能，物理仿真除外）：
+要求 **Python >= 3.10**（Windows / Linux / macOS 均可，CI 固定 **Python 3.12**；若启用 `.[mp]` Materials Project MCP extra 需 **Python 3.11+**）：
 
 ```bash
 git clone https://github.com/CHEERUPGOGO/AutoBatteryResearch.git
@@ -74,7 +76,7 @@ python -m venv .venv
 # Linux / macOS:
 # source .venv/bin/activate
 
-# 基础安装 (核心智能体与 CLI)
+# 基础安装 (核心智能体、CLI 与 FastAPI Web 监控)
 pip install -e .
 
 # 可复现安装 (锁定已验证版本，作为约束不引入额外包)
@@ -82,8 +84,10 @@ pip install -e ".[all]" -c requirements-lock.txt
 
 # 按需扩展
 pip install -e ".[rag]"       # Chroma 向量知识库 + Ollama 检索
-pip install -e ".[ui]"        # Rich TUI + Gradio Web
-pip install -e ".[dev]"       # pytest 测试
+pip install -e ".[ui]"        # Textual TUI + Gradio 后备 Web
+pip install -e ".[mcp]"       # 领域专家 MCP Server (Streamable HTTP / stdio)
+pip install -e ".[mp]"        # Materials Project 官方 MCP Client (需 Python 3.11+)
+pip install -e ".[dev]"       # pytest 测试与打包工具
 pip install -e ".[all]"       # 一键全功能
 ```
 
@@ -144,10 +148,10 @@ cp .env.example .env   # 然后编辑填写
 
 | 服务 | 用途 | 说明 |
 |---|---|---|
-| **Ollama** (`localhost:11434`) | Stage 2/4 向量检索 (`qwen3-embedding:8b`) | 不可用时检索自动降级为 TF-IDF/BM25 |
+| **Ollama** (`localhost:11434`) | Stage 2/4 向量检索 (`qwen3-embedding:8b`) | 不可用时检索降级为本地 BM25 词法检索（配置键 `RETRIEVAL_MODE` 支持 `hybrid`/`chroma`/`tfidf`） |
 | **MinerU Cloud API** | Stage 1 新增 PDF → Markdown 解析 | 云端服务需配置 token；已有文献资产无需触发 |
 
-> 未配置 API Key 时系统自动进入确定性流水线模式（离线兜底），各阶段门禁仍可正常推进。
+> 未配置 API Key 时，Stage 1–3 与 Stage 5–6 可通过确定性逻辑/本地求解执行；**Stage 4 RAG 采用严格 fail-closed 策略**——LLM 不可用时不会编造兜底配方，产物标记 `REJECTED` 并由 `RAGDesignChecker` 拦截。
 
 ### Materials Project 官方 MCP（可选）
 
@@ -169,10 +173,13 @@ Stage 4 的 Planner **仅在两个条件同时成立时**生成 `mp_queries`：�
 ### 模式 1：CLI 命令行（`abr-cli` 或 `python auto_battery_research_cli.py`）
 
 ```bash
-# 一键全自动端到端执行 (Stage 5 物理仿真默认快速跳过)
+# 一键全自动端到端执行 (Stage 5 默认启用；未匹配 PINN 注册表体系时自动仅提取参数)
 abr-cli --run --goal "设计400Wh/kg高比能液态锂金属电池方案"
 
-# 全自动执行并显式激活 Stage 5 物理仿真
+# 跳过 Stage 5 物理仿真（快速方案生成模式，仍提取 pinn_input_spec.json）
+abr-cli --run --goal "设计400Wh/kg高比能液态锂金属电池方案" --skip-pinn
+
+# 显式强制激活 Stage 5 物理仿真 (等同默认配置)
 abr-cli --run --goal "设计400Wh/kg高比能液态锂金属电池方案" --with-pinn
 
 # 分步调试与门禁交互
@@ -194,7 +201,7 @@ from auto_battery_research.agent import ABRAgent
 
 agent = ABRAgent(
     goal="设计400Wh/kg高比能液态锂金属电池方案",
-    skip_pinn=True,
+    skip_pinn=False,
     verbose=True,
 )
 
@@ -205,7 +212,7 @@ if agent.manager.is_all_completed():
     print("研发任务全部完成！研报已生成。")
 ```
 
-### 模式 3：Rich TUI 多面板交互控制台
+### 模式 3：Textual / Rich TUI 多面板交互控制台
 
 ```bash
 abr-cli --tui
@@ -224,9 +231,11 @@ abr-cli --web-gradio                          # 旧版交互式 Gradio 仪表盘
 ```bash
 pip install -e ".[mcp]"
 python -m auto_battery_research.mcp.server --transport streamable-http
+# 或通过控制台入口:
+auto-battery-research-mcp --transport stdio
 ```
 
-默认端点为 `http://127.0.0.1:8000/mcp`，也支持 `--transport stdio`。对外提供轻量文本咨询 `battery_consult` 和完整实验方案 `design_battery_experiment`；内部科研工具不直接暴露。接口与返回约定见 [MCP Server 说明](auto_battery_research/mcp/README.md)。原有 `abr-cli --mcp` stdio 入口仍保留。
+默认 HTTP 端点为 `http://127.0.0.1:8000/mcp`，也支持 `--transport stdio`。对外提供轻量文本咨询 `battery_consult` 和完整实验方案 `design_battery_experiment`；内部科研工具不直接暴露。接口与返回约定见 [MCP Server 说明](auto_battery_research/mcp/README.md)。原有 `abr-cli --mcp` 14 工具 stdio 入口仍保留。
 
 ---
 
@@ -248,11 +257,15 @@ papers/pdf ──(MinerU 解析+合并+分类)──▶ papers/merged → databa
               │  .stage_state.json          工作流状态 (跨调用持久化)            │
               │  stage_journals.json        阶段研发日志                        │
               │  cell_assembly/             Stage 3 电芯组装产物                │
-              │  design_scheme.md/.json     Stage 4 设计方案 (五段式+证据链)     │
+              │  design_scheme.md/.json     Stage 4 设计方案 (五段式+证据链+几何v2.0)│
+              │  design_revisions/          Stage 4/5 几何设计与修订快照        │
               │  rag_result.json            Stage 4 原始 RAG 结果               │
-              │  research_context.json      知识资产溯源快照 (corpus哈希/向量库/规则版本) │
-              │  pinn_input_spec.json      Stage 5 PINN 触发判定+材料参数提取清单 │
-              │  final_research_report.md   Stage 6 综合研报                    │
+              │  research_context.json      知识资产溯源快照 (corpus哈希/向量库/规则版本)│
+              │  pinn_input_spec.json       Stage 5 PINN 触发判定+材料参数提取清单 │
+              │  pinn_simulation_result.json Stage 5 SPM PINN 仿真结果 (命中体系)│
+              │  pinn_simulation_curve.png  Stage 5 V-Q 放电曲线图 (命中体系)   │
+              │  experiment_plan.json       Stage 6 实验方案生成记录与指纹      │
+              │  final_research_report.md   Stage 6 综合研报 (六节结构)         │
               └───────────────────────────────────────────────────────────────┘
 ```
 
@@ -270,22 +283,23 @@ auto_battery_research/        # Layer 1: 智能体编排
 │   └── llm_client.py         #   OpenAI 兼容 LLM 客户端
 ├── workflow/stage_manager.py #   StageManager 6 阶段状态机 (声明式: abr_workflow.yaml)
 ├── checkers/                 #   每阶段一个确定性门禁 Checker
+├── simulation/               #   几何契约 (geometry_contract.py) 与 SPM 仿真门面
 ├── tools/
-│   ├── domain_tools.py       #   10 个阶段领域工具 (含 Materials Project MCP 查询)
-│   ├── stage_tools.py        #   工作流护栏工具 (Tips/Status/Check/Complete/...)
+│   ├── domain_tools.py       #   11 个阶段领域工具 (含 QueryMaterialsProject 与 ReviseGeometry)
+│   ├── stage_tools.py        #   6 个工作流护栏工具 (CurrentTips/Status/Check/Complete/SetStageJournal/AllStageJournal)
 │   ├── workflow_actions.py   #   工具 → 真实流水线桥接 (增量调度 legacy 脚本)
-│   ├── rag_adapter.py        #   Stage 4 → RAG 引擎适配器 (输出契约规范化)
-│   └── mcp_server.py         #   原有 stdio MCP 入口
+│   ├── rag_adapter.py        #   Stage 4 → RAG 引擎适配器 (契约规范化与 fail-closed 审查)
+│   └── mcp_server.py         #   原有 14 工具 stdio MCP 入口
 ├── mining/ · pipeline/       #   统一门面: 再导出 agent/* 挖掘实现与增量流水线核心
-├── rag/ · simulation/        #   统一门面: 再导出 src/lmllm/RAG/* 与 pinn/* 物理求解器
+├── rag/                      #   统一门面: 再导出 src/lmllm/RAG/*
 ├── mcp/                      #   领域专家 MCP Server（Streamable HTTP / stdio）
 └── tui/ · web/               #   Textual TUI; FastAPI 只读监控 (--web) + Gradio 后备 (--web-gradio)
 
 src/lmllm/RAG/                # Layer 2: 多智能体 RAG 引擎
 ├── agents.py                 #   Planner → Retrieval → Writer → Reviewer
-├── rag_pipeline.py           #   流水线编排
-├── multi_retrieval.py        #   混合检索 (Chroma + BM25/TF-IDF 降级)
-├── relation_engine.py        #   热力学硬约束 C1–C8
+├── rag_pipeline.py           #   流水线编排 (单链路设计 + target_energy_wh_kg 提取)
+├── multi_retrieval.py        #   双库混合检索 (Chroma + BM25 + RRF，降级本地 BM25)
+├── relation_engine.py        #   热力学分级约束 C1–C3, C5–C8 (C4 已移除；v2.1-coincell)
 └── prompts.py                #   中央提示词注册表
 
 preprocessing/                # Layer 3: legacy 阶段脚本 (preprocessing/miner 由子进程调度)
@@ -299,7 +313,7 @@ pinn/                         #   Stage 5 SPM PINN 仿真 (经 simulation 门面
 ## ✅ 测试与质量保障
 
 ```bash
-# 全量离线单元测试 (无需 API Key / 外部服务，约 5 分钟)
+# 全量离线单元测试 (无需 API Key / 外部服务)
 pytest -m "unit or not external"
 
 # 单文件 / 单用例
@@ -311,28 +325,16 @@ pytest auto_battery_research/tests/test_checkers.py::test_pinn_checker_skip_logi
 pytest -m "unit"
 ```
 
-当前基线：**85 passed, 1 deselected, 0 warnings**（含课题隔离回归 `test_task_isolation.py`、Stage 4 离线 golden `test_stage4_golden.py`、FastAPI Web 监控 `test_web_server.py`、MCP 协议层 `test_mcp_server.py` 与包级惰性导入 `test_package_init.py`）。单测通过注入 dummy key 保持零外部依赖；确定性 Checker 对空数据、编造数据、异质体系文献均有严格拦截用例。注：Python 3.14 环境可能出现 Pydantic v1 兼容 warning 与依赖缺省导致的 skip，建议 CI 固定 Python 3.12。
+离线单测与回归测试集通过注入 dummy key 保持零外部依赖（覆盖课题隔离 `test_task_isolation.py`、Stage 4 离线 golden `test_stage4_golden.py`、几何契约 `test_geometry_contract.py`、Stage 5 仿真与几何修订 `test_stage5_pinn_inference.py` / `test_stage5_geometry_revision.py` / `test_stage5_param_extraction.py`、Stage 6 研报契约 `test_final_design_reporting.py`、FastAPI Web 监控 `test_web_server.py`、MCP 协议层 `test_mcp_server.py` 与包级惰性导入 `test_package_init.py` 等）；确定性 Checker 对空数据、编造数据、异质体系文献与几何越界均有严格拦截用例。CI 固定运行在 **Python 3.12**。
 
 ---
 
 ## 📌 重要行为说明
 
-- **Stage 5 默认启用**（`runtime_options.skip_pinn_default: false`）：方案体系匹配 `pinn/models/registry.json` 即执行纯 numpy SPM PINN 放电仿真，未匹配体系平滑回退参数提取-only；`--skip-pinn` 或 `abr-cli --skip-stage 5` 可手动跳过（参数提取仍执行）。Stage 4 门禁同时要求方案显式声明电极厚度/孔隙率（`scheme.geometry` 契约 v1.1，`RAGDesignChecker` geometry 硬门禁，`runtime_options.geometry_gate: enforce|warn`）。
+- **Stage 5 默认启用**（`runtime_options.skip_pinn_default: false` 且 `pinn_trigger.enabled: true`）：方案体系匹配 `pinn/models/registry.json`（如 `GrSi_NMC811`）即执行纯 numpy SPM PINN 放电仿真，未匹配体系平滑回退参数提取-only；`--skip-pinn` 或 `abr-cli --skip-stage 5` 可手动跳过（参数提取仍执行）。Stage 5 仿真未达目标能量容差时，可通过 `ReviseGeometry`（默认最多 3 轮，携带 `base_revision` 与 `base_geometry_hash` 校验）反馈修订几何，Check/Complete 共用择优收尾逻辑（阶段完成后不再重复仿真）。
+- **结构化几何参数通道与 Stage 4 契约 v2.0**：Stage 4 在 Writer 生成正文前独立生成并校验结构化几何候选，参数声明表由程序渲染，`Writer` 阶段冻结且禁止从改写后的正文回写覆盖输入。`scheme.geometry` 保留 v1.1 数值布局兼容仿真，并以 `contract_version="2.0"`、`parameter_sources`、`design_revision` 与 `geometry_hash` 标识新通道：正/负极厚度 `L_um` 与孔隙率 `porosity` 必须显式设计；颗粒**半径** `R_s_um` 可采用设计值或标注 `model_baseline`/`missing`；`D_s_m2s` 仅在课题证据支持下修改，否则标注匹配模型基准/缺失，不伪装成文献实测。`N/P` 为可选参数，缺失时保持正负极声明厚度而不反向校准。设计快照存于课题 `design_revisions/`，门禁由 `RAGDesignChecker`（`runtime_options.geometry_gate: enforce|warn`，默认 `enforce`）校验。
+- **Stage 4 离线/异常 fail-closed 与 Stage 6 六节研报契约**：当 LLM 不可用或 Reviewer 响应无效时，Stage 4 不编造兜底配方且绝不标定为 `APPROVED`（标记 `REJECTED` 并由门禁拦截）。Stage 6 最终报告采用六节结构（`<!-- abr-report-contract:2 -->` 与 `<!-- abr-report-layout:6 -->`），以选定设计、实际生效几何及指纹匹配的仿真产物为准，明确目标容差判定与固定系数能量折算口径；第五部分实验路线由大模型综合完整方案/证据/仿真生成并通过引用与参数一致性校验（`experiment_plan.json` 记录输入指纹），不可用或未过验收时回退确定性渲染（不补入无来源固定工艺数值）。
 - **工作流状态按课题持久化**：修改阶段交付物或代码后，用 `abr-cli --reset` 让该课题从 Stage 1 重新评估。
 - **严格模式**（`runtime_options.strict_mode: true`）下任何 Checker 错误即判失败；`max_retries_per_stage: 3` 约束自愈重试上限。
 - **Windows 为主开发平台**：入口脚本自动将 stdout/stderr 重配置为 UTF-8。
 - 更多操作细节见 [USAGE.md](USAGE.md)，工程结构与开发约定见 [CLAUDE.md](CLAUDE.md)。
-# 结构化几何参数通道
-
-最终报告以选定设计及匹配仿真为准，明确标注目标是否达到容差阈值及固定系数能量折算口径。
-N/P 不再要求模型生成；没有显式值时保持正负极声明厚度。Check/Complete 共用择优收尾，
-阶段完成后不重复仿真。审核响应失效不会标为 APPROVED；报告不会补入无来源的固定数值工艺。
-报告采用六节结构；第五部分实验方案由大模型综合"完整 design_scheme.md + 最终设计 + 证据原文 + 仿真结果"生成，
-程序侧校验引用真实性与参数一致性（`experiment_plan.json` 记录输入指纹），失败时回退确定性渲染。
-
-Stage 4 工作流现在独立生成并校验结构化几何候选，再传入正文写作。
-参数声明表由程序渲染；`scheme.geometry.contract_version=2.0` 标识新通道，
-保留 v1.1 数值字段兼容仿真。厚度、孔隙率和颗粒**半径** R_s 可作为设计变量；
-D_s 只有在任务中保存的明确证据支持时才允许修改，否则保留准确标注的模型基准。
-Stage 5 修订需基准版本及几何哈希，防止旧结果驱动错误参数版本；设计快照存放于
-课题的 `design_revisions/`。无结构化候选且 LLM 不可用时，阶段明确报告缺口。

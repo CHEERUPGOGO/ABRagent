@@ -24,7 +24,7 @@ def run_baseline_a(question: str, output_dir: Path | None = None) -> str:
     return md
 
 def run_baseline_b(question: str, output_dir: Path | None = None) -> str:
-    """运行 Baseline B(TF-IDF 检索 + 拼接摘要),返回 Markdown."""
+    """运行 Baseline B(BM25 检索 + 拼接摘要),返回 Markdown."""
     kb = BM25KnowledgeBase()
     baseline = BaselineB(kb)
     md, results = baseline.retrieve(question, top_k=10)
