@@ -1,20 +1,21 @@
 # Stage 6: 综合研发报告生成指引
 
 ## 任务目标
-报告采用六节结构：研发摘要、材料选择与文献依据、最终设计方案、仿真与优化分析、实验路线与验证计划、参考来源附录。归档 RAG 论证以候选/待验证摘录呈现，不作为最终参数；文献工艺原文注明迁移边界。参考来源按 DOI 或文件归并，同篇段落不能算作独立验证。
+报告采用六节结构（契约标记 `<!-- abr-report-contract:2 -->` 与 `<!-- abr-report-layout:6 -->`）：`1. 研发摘要`、`2. 材料选择与文献依据`、`3. 电芯总体方案与关键匹配`、`4. 仿真与优化分析`、`5. 实验路线与验证计划`、`6. 参考来源附录`。归档 RAG 论证以候选/待验证摘录呈现，不作为最终参数；文献工艺原文注明迁移边界。参考来源按 DOI 或文件归并，同篇段落不能算作独立验证。
 
 第二部分由 `util/material_arguments.py` 读取 Stage 4 的 `final_answer`、`evidence` 和审核意见，恢复材料机理、候选比较与取舍，保留可定位的段落引用，以文字表达。当前选材与已声明改性参数仍从方案表读取；旧几何和工艺条件不混入当前规格，候选表不转录主观评分。无直接证据及跨体系推断须标明边界，未解决的审核意见一并展示。此过程只使用归档信息，不额外检索或调用模型；缺少论证时如实说明，不用通用优点补造依据。
 
 第五部分读取 Stage 5B 已生成的 `experiment_plan.json`，程序校验文献、方案及绑定后渲染中文实验步骤。Stage 6 不调用模型重新设计路线，也不覆盖推荐主体；渲染缓存保存在 `experiment_report.json`。没有有效推荐时返回明确诊断，旧任务使用 `--regenerate-experiment-plan` 基于已有设计及文献迁移。第 3 节与第 4 节的最终参数、目标判定和仿真结果始终由程序直接渲染。
+
 1. 聚合前 5 个阶段的全流程日志、文献证据、电芯挖掘数据、RAG 方案与物理仿真结论。
 2. 输出排版规整、技术机理扎实的 Markdown 综合研报与全流程研发日志。
 3. 正文以最终选定的 `design_scheme.json` 与匹配的 `pinn_input_spec.json` / `pinn_simulation_result.json` 为准；初始 RAG 提案只作为链接档案，不混入最终参数。
 4. 摘要明确目标、容差阈值、选定候选结果及达标判定。电芯比能量为材料级值乘固定系数折算，未逐项核算非活性质量；候选最好结果不是物理上限。
 5. 实验建议引用当前声明的几何、电压和倍率；浆料、注液、化成等缺省操作参数采用 Stage 5B 归档的具体工程推荐，不冒充已验证规格。推荐与实际仿真条件不同时须说明差异，不沿用仿真性能作为实验结论。缺少物性时给获取方法，不阻止合理的首轮实验。
 
-## 验收门禁 (FinalReportChecker)
-- `output/tasks/<task_slug>/final_research_report.md` (或 `output/auto_battery_research/final_research_report.md`) 存在且字数 $\ge 400$ 字符。
-- 完整包含研发摘要、文献与电芯数据概况、电池体系设计方案、物理仿真与验证、实验配方与落地建议五大核心模块。
+## 验收门禁 (`FinalReportChecker`)
+- `output/tasks/<task_slug>/final_research_report.md` (或 legacy 默认课题 `output/auto_battery_research/final_research_report.md`) 存在且字数 $\ge 400$ 字符。
+- 完整包含六大核心章节（同时保留对历史五段式报告的兼容校验）。
 - 研发日志 `stage_journals.json` / `abr_agent_journal.json` 同步持久化。
-- 新报告的输入指纹及最终设计、实验建议、能量结论块必须与当前产物一致；输入变更后须重新编译。
+- 新报告携带 `<!-- abr-report-contract:2 -->` 与 `report_identity` 输入指纹，最终设计（`abr-final-design`）、实验建议（`experiment_plan.json` 与 `experiment_report.json`）及能量结论（`abr-energy`）必须与当前产物一致；输入变更后须重新编译。已绑定 Stage 5B 推荐的报告不能改用 `abr-experiment-plan-fallback`。
 

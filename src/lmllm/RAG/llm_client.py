@@ -47,7 +47,7 @@ class LLMOutputError(RuntimeError):
 class LLMClient:
     """统一的 LLM 客户端, 自动选择后端.
 
-    优先级: OpenAI/MiniMax API > DeepSeek API > Ollama 本地 > 规则回退
+    优先级: OpenAI/MiniMax API > DeepSeek API > Ollama 本地 > 规则模式（供 Planner 拆解或保守结构化回退；Writer/Reviewer 离线 fail-closed）
     """
 
     def __init__(

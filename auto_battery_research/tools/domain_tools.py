@@ -1,11 +1,11 @@
-"""DomainTools — 面向 ABRAgent 的电池科研领域工具集 (Stage 1 ~ Stage 6).
+"""DomainTools — 面向 ABRAgent 的电池科研领域工具集 (Stage 1 ~ Stage 6，共 11 个).
 
 包含：
 - Stage 1: InspectLiteratureAssetsTool, IngestLiteraturePapersTool
 - Stage 2: InspectVectorDBTool, IndexSemanticVectorsTool
 - Stage 3: InspectCellEntitiesTool, ExtractAndAssembleCellsTool
-- Stage 4: RunRAGDesignTool (单链路服务; Planner/Retrieval/Writer/Reviewer 为管线内部能力)
-- Stage 5: RunPhysicsSimulationTool
+- Stage 4: RunRAGDesignTool (单链路服务; Planner/Retrieval/Writer/Reviewer 为管线内部能力), QueryMaterialsProjectTool
+- Stage 5: RunPhysicsSimulationTool, ReviseGeometryTool
 - Stage 6: SynthesizeResearchReportTool
 """
 
@@ -298,7 +298,7 @@ class RunRAGDesignTool(BaseTool):
     name: str = "RunRAGDesign"
     description: str = (
         "【Stage 4 服务工具】执行多智能体 RAG 电池方案设计单链路流水线 "
-        "(Planner -> Retrieval -> Writer -> Reviewer + RelationEngine C1-C8 硬约束核算)，"
+        "(Planner -> Retrieval -> Writer -> Reviewer + RelationEngine 7 项分级规则 C1–C3/C5–C8 核算，含 C0 未知材料拦截、C1–C3 缓解白名单挑战、C5 建议、C6 审计提示、C7 扣电选材与 C8 前沿标记)，"
         "生成 design_scheme.md/.json 与 rag_result.json 并写入课题任务目录。"
         "证据检索、方案撰写与规则审查在管线内部完成，无需单独调用其他 Stage 4 工具。"
     )
@@ -314,7 +314,7 @@ class RunRAGDesignTool(BaseTool):
         return json.dumps(res, ensure_ascii=False, indent=2)
 
 # =============================================================================
-# Stage 5: PINN / P2D 物理仿真工具 (Stage 5 Domain Tools)
+# Stage 5: SPM PINN 物理仿真与几何修订工具 (Stage 5 Domain Tools)
 # =============================================================================
 
 class RunPhysicsSimulationArgs(BaseModel):

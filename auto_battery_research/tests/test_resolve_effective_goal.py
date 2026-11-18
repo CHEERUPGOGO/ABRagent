@@ -178,3 +178,25 @@ def test_no_global_manager_creates_per_goal_cache_entry():
     assert mgr.target_goal == goal
     assert stage_tools._GLOBAL_MANAGER is None
     assert stage_tools._GOAL_MANAGER_CACHE.get(goal) is mgr
+
+
+def test_multiclause_cathode_paraphrase_aligns_to_active():
+    """长多句正极/材料课题在 LLM 改写缩写后应通过化学式或 3-gram 重叠收敛回活跃课题，真异课题保留."""
+    active = "双位点共掺杂改进无钴富锂 Li1.2Mn0.6Ni0.2O2正极。以抑制氧释放、1 C 保持率 ≥88%、首周库仑效率 ≥85%为目标，输出推荐合成工艺及全电池验证测试流程。"
+    paraphrase_1 = "双位点共掺杂无钴富锂 Li1.2Mn0.6Ni0.2O2 正极材料设计及全电池验证"
+    paraphrase_2 = "针对无钴富锂层状氧化物正极 Li1.2Mn0.6Ni0.2O2 抑制氧释放与提升首周库仑效率方案"
+    different_goal = "高镍三元 LiNi0.8Mn0.1Co0.1O2 表面包覆抑制相变与产气研究"
+
+    assert resolve_effective_goal(paraphrase_1, active) == active
+    assert resolve_effective_goal(paraphrase_2, active) == active
+    assert resolve_effective_goal(different_goal, active) == different_goal
+
+
+def test_complete_stage_appends_turn_end_directive(tmp_path):
+    """tool_complete_stage 通过时附带结束本轮回复指令，防止 LLM 在旧阶段工具集内继续调用下一阶段工具."""
+    mgr = StageManager(workspace_root=str(tmp_path), target_goal="测试指令注入")
+    set_stage_manager(mgr)
+    mgr.stages[0].status = "PASSED"
+    mgr.check_stage = lambda stage_id=None, is_complete=False: (True, {"status": "PASSED"})
+    res = stage_tools.tool_complete_stage(1)
+    assert "请立即结束本轮回复" in res["message"]

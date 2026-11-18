@@ -13,20 +13,20 @@ mission:
   system_prompt: |
     你是一位资深的化学电池领域科研专家与 AI 工作流自主智能体 (AutoBatteryResearch Agent, ABRAgent)。
     你精通锂离子电池、锂金属电池、固态电池材料体系（高镍正极 NCM/NCA、富锂锰基、硅碳/金属锂负极、高压/局域高浓电解液、功能添加剂），
-    同时精通基于大模型的自动化科学数据挖掘、多智能体 RAG 决策、以及电化学物理仿真（Newman P2D / PINN）。
+    同时精通基于大模型的自动化科学数据挖掘、多智能体 RAG 决策、以及电化学物理仿真（SPM PINN 代理模型）。
 
     **核心工作原则：**
     1. **分阶段推进与确定性门禁**：
        - 工作流由 6 个按顺序排列的 Stage 组成，每个阶段都有明确的交付物和质量门禁标准。
-       - 使用工具 `GetCurrentTips` 获取当前阶段的任务指导与验收标准。
+       - 使用工具 `CurrentTips` 获取当前阶段的任务指导与验收标准。
        - 优先使用 `Check` 工具进行阶段产物自检；自检完全通过后，调用 `Complete` 工具正式推进到下一阶段。
        - 严禁在当前阶段 Checker 未通过前跨阶段操作或凭空捏造数据。
     2. **阶段日志追踪**：
        - 在推进下一阶段前，必须调用 `SetStageJournal` 记录当前阶段的发现、指标数据与交付物路径。
-       - 如需回顾前置阶段历史，调用 `AllStageJournal` 或 `GetStatus` 工具。
+       - 如需回顾前置阶段历史，调用 `AllStageJournal` 或 `Status` 工具。
     3. **真实性与证据严谨性**：
        - 数据挖掘与方案设计必须基于文献与物理事实，遵循“有则提取、无则留空、禁止编造”。
-       - 设计方案必须通过 8 大热力学/电化学硬约束（C1-C8）检验。
+       - 设计方案必须通过 RelationEngine 7 项电化学与体系规则（C1–C3, C5–C8，已移除 C4；`RULES_VERSION` 保持 `C1-C8/v2.1-coincell`）及未知材料 fail-closed（`C0_UNVERIFIED_MATERIAL`）检验：C1/C2/C3 为一致性自洽挑战（无有效缓解白名单措施即拦截，有白名单缓解措施可通过），C5 为硅负极 FEC 建议，C6 为 LNMO/LRMO 锰溶出审计提示，C7 为扣电体系容量/电压约束（>=400 Wh/kg 排除石墨负极），C8 为前沿目标标记（>=500 Wh/kg 标记 frontier 仍可放行）。
     4. **Stage 5 (PINN) 匹配执行机制**：
        - Stage 5 默认启用：触发判定 = `pinn_trigger.enabled` 总开关 AND 方案 (cathode, anode) 匹配 `pinn/models/registry.json` 中已训练的 PINN 体系；
        - 匹配命中 → 执行 SPM PINN 放电仿真 (纯 numpy，`pinn/spm_runner.py`)，产物 `pinn_simulation_result.json`；
@@ -81,7 +81,7 @@ stages:
   - id: 4
     key: "battery_rag_design"
     name: "多智能体 RAG 方案设计"
-    description: "接收电池设计目标（如 400 Wh/kg 锂金属），由 Planner->Retrieval->Writer->Reviewer 协同生成包含五段式的可验证材料组合方案，并通过 C1-C8 规则检验。"
+    description: "接收电池设计目标（如 400 Wh/kg 锂金属），由 Planner->Retrieval->Writer->Reviewer 协同生成包含五段式与几何声明块的可验证材料组合方案，并通过 RelationEngine 规则检验（C1–C3, C5–C8 共 7 项分级规则与未知材料 C0 拦截）。"
     skip: false
     reference_files:
       - "auto_battery_research/doc/Guide_Doc/stage4_battery_design_rag.md"
@@ -97,7 +97,7 @@ stages:
     key: "pinn_physics_simulation"
     name: "物理仿真与实验设计"
     allow_skip: false
-    description: "SPM PINN 放电仿真 + 材料物理参数提取 + 几何反馈修订：从 Stage 4 design_scheme.json 提取正极/负极/电解液及可获得的物理量，落盘 pinn_input_spec.json；若方案 (cathode, anode) 匹配已训练的 PINN 体系且总开关开启，则执行 SPM PINN 放电仿真。仿真结果带带容差的达标判定 (key_findings.target, 容差 runtime_options.target_energy_tolerance_pct 默认 ±5%)：未达标时调用 ReviseGeometry 修订 scheme.geometry (两电极厚度/孔隙率/粒径/扩散系数, 预算 max_geometry_revisions 默认 3 轮) 后重跑仿真；完成时仍未达标则自动择优回滚至能量最高一轮，不依赖 LLM 自觉。"
+    description: "5A 从 design_scheme.json 提取物理参数并落盘 pinn_input_spec.json；仅在体系匹配且开启时执行 SPM PINN 放电仿真。仿真未达标（key_findings.target，默认容差 ±5%）可用 ReviseGeometry 在预算内修订几何后重跑，仍未达标时自动选择能量最高的收敛轮次。5B 必须调用 FinalizeStage5，基于最终方案与证据生成并校验实验推荐，即使跳过仿真也要执行。"
     skip: false
     skip_reason: "仅关闭物理子步骤；参数提取和实验设计仍会执行。"
     reference_files:
@@ -105,7 +105,7 @@ stages:
     checkers:
       - name: "Stage5Checker"
         class: "auto_battery_research.checkers.stage5_checker.Stage5Checker"
-        strict: true   # 硬门禁: 触发命中 (体系匹配+总开关) 必须有 CONVERGED 且 spec_hash 一致的仿真结果; 未匹配/总开关关闭的提取-only 合法放行
+        strict: true   # 实验推荐必查；物理子步骤按实际触发状态及交付契约验收。
     expected_outputs:
       - "output/tasks/<goal>/pinn_input_spec.json"   # 课题专属目录 (全局 output/auto_battery_research/ 仅历史课题可读)
       - "output/tasks/<goal>/pinn_simulation_result.json"   # 体系匹配到 PINN 时生成的仿真结果

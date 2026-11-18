@@ -93,13 +93,21 @@ def build_geometry_contract(candidate: dict, scheme: dict, evidence: list) -> di
         for field in FIELDS:
             value = block.get(field)
             path = f"{comp}.{field}"
+            is_li_anode = (comp == "anode" and str(scheme.get("anode") or "") == "li_metal")
             if value is None:
+                if is_li_anode and field == "porosity":
+                    raw[comp][field] = 0.0
+                    raw["provenance"][path] = "stage4_recipe"
+                    sources[path] = {"origin": "llm_design", "basis": "dense_metal_foil", "material_id": "li_metal"}
+                    continue
                 if field in ("L_um", "porosity"):
                     raise ValueError(f"{path} 必须显式给出")
                 continue
             if not strict_number(value):
                 raise ValueError(f"{path} 必须是有限 JSON 数值")
             source = {"origin": "llm_design", "basis": "engineering_proposal"}
+            if is_li_anode and field == "porosity" and float(value) == 0.0:
+                source = {"origin": "llm_design", "basis": "dense_metal_foil", "material_id": "li_metal"}
             if field == "D_s_m2s":
                 source = validate_diffusion_evidence(
                     (candidate.get("diffusion_evidence") or {}).get(path), value,
@@ -119,16 +127,22 @@ def build_geometry_contract(candidate: dict, scheme: dict, evidence: list) -> di
             raise ValueError(f"condition.{field} 必须为有限数值")
     raw["condition"] = cond
     geo = complete_geometry_block(raw, scheme.get("cathode"), scheme.get("anode"))
-    errors = collect_geometry_violations(geo, resolve_input_ranges(scheme.get("cathode"), scheme.get("anode")))
+    errors = collect_geometry_violations(
+        geo, resolve_input_ranges(scheme.get("cathode"), scheme.get("anode")),
+        anode_id=scheme.get("anode"),
+    )
     if errors:
         raise ValueError("; ".join(errors))
     for comp in COMPONENTS:
         for field in FIELDS:
             path = f"{comp}.{field}"
             if path not in sources:
-                sources[path] = {"origin": "model_baseline" if geo[comp][field] is not None else "missing",
-                                 "basis": "model_reference" if geo[comp][field] is not None else "unresolved",
-                                 "material_id": scheme.get(comp)}
+                if comp == "anode" and str(scheme.get("anode") or "") == "li_metal" and field in ("R_s_um", "D_s_m2s") and geo[comp][field] is None:
+                    sources[path] = {"origin": "not_applicable", "basis": "dense_metal_foil", "material_id": "li_metal"}
+                else:
+                    sources[path] = {"origin": "model_baseline" if geo[comp][field] is not None else "missing",
+                                     "basis": "model_reference" if geo[comp][field] is not None else "unresolved",
+                                     "material_id": scheme.get(comp)}
     from pinn.spm_runner import match_pinn_system, load_system_params
     system = match_pinn_system(str(scheme.get("cathode") or ""), str(scheme.get("anode") or ""))
     if system:
@@ -167,7 +181,9 @@ def validate_geometry_contract(geo: dict, scheme: dict, evidence: list) -> list:
                 errors.append(f"{path} 缺少来源")
                 continue
             if value is None:
-                if field in ("L_um", "porosity") or baseline is not None or source.get("origin") != "missing":
+                is_li_anode = (comp == "anode" and str(scheme.get("anode") or "") == "li_metal")
+                allowed_null_origins = ("missing", "not_applicable") if is_li_anode else ("missing",)
+                if field in ("L_um", "porosity") or baseline is not None or source.get("origin") not in allowed_null_origins:
                     errors.append(f"{path} 不允许缺失")
                 continue
             if not strict_number(value):
@@ -188,7 +204,10 @@ def validate_geometry_contract(geo: dict, scheme: dict, evidence: list) -> list:
                     errors.append(f"{path}: {exc}")
             elif source.get("origin") != "llm_design":
                 errors.append(f"{path} 不支持的来源类型")
-    errors.extend(collect_geometry_violations(geo, resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"))))
+    errors.extend(collect_geometry_violations(
+        geo, resolve_input_ranges(scheme.get("cathode"), scheme.get("anode")),
+        anode_id=scheme.get("anode"),
+    ))
     return errors
 
 
@@ -199,6 +218,7 @@ N/P 不是必填项，不要自行提出或补全 n_p_ratio；仅在输入明确
 缺少 N/P 时两电极厚度独立采用声明值，不执行容量比厚度校准。
 两电极字段仅允许 L_um(厚度μm)、porosity(0~1)、R_s_um(颗粒半径μm)、D_s_m2s(m²/s)。
 厚度和孔隙率必须给出；R_s 可提出工程设计值，禁止将直径/D50直接当半径。
+当 materials.anode == "li_metal"（致密金属锂箔，真密度 0.534 g/cm³）时，负极为致密金属沉积/剥离电极而非多孔嵌脱颗粒涂布电极：除非明确研究多孔 3D 亲锂骨架，否则 anode.porosity 应为 0.0（不得套用常规涂布极片的孔隙率），且 anode.R_s_um 与 anode.D_s_m2s 必须为 null（不得编造等效颗粒半径或固相扩散系数）。
 D_s 没有精确材料、25°C条件下恒定/全SOC固相扩散证据时必须为 null，由程序标注模型基准。
 不要为了满足设计目标编造 D_s。所有工程候选都不是实测数据。
 condition 仅含 v_min/v_max/c_rate；未指定的条件可为 null。

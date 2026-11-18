@@ -204,15 +204,15 @@ class AbrRagAdapter:
         violations = rule_checks.get("rule_checks", {}).get("violations") or rule_checks.get("violations", [])
         rejects = rule_checks.get("rule_checks", {}).get("rejects") or rule_checks.get("rejects", [])
         if violations or rejects:
-            errors.append(f"RelationEngine 硬约束校验不通过: {violations or rejects}")
+            errors.append(f"RelationEngine 规则校验不通过: {violations or rejects}")
         unverified = rule_checks.get("rule_checks", {}).get("unverified") or rule_checks.get("unverified", [])
         if not rule_checks or unverified or rule_checks.get("energy_check") == "energy_mismatch" or rule_checks.get("confidence") == "low":
             errors.append("RelationEngine 校验缺失、存在未知材料或能量核算不一致")
 
         review_status = "REJECTED" if errors else "APPROVED"
 
-        # 2.5 几何声明块归一化 (产物契约 v1.1): scheme.geometry 从叙事稀疏提取
-        # 升级为显式完整声明 (逐字段值 + provenance: stage4_recipe/params_baseline)。
+        # 2.5 几何声明块归一化 (schema_version="1.1" / contract_version="2.0"):
+        # scheme.geometry 必须显式给出 (逐字段值 + provenance: stage4_recipe/model_baseline)。
         # 归一化结果同步进 scheme (design_scheme.json 与 rag_result.json 共用同一 dict)。
         geometry_md = ""
         try:

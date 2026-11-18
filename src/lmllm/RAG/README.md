@@ -1,214 +1,155 @@
-# LMLLM RAG 模块 — 高比能锂电池材料筛选多智能体 RAG 系统
+# 高比能液态锂电池多智能体 RAG 系统（`src/lmllm/RAG/`）
 
-## 概述
-
-基于 NLP 课程 Demo 的多智能体架构，为**高比能锂电池材料筛选**场景提供 **Planner → Retrieval → Writer → Reviewer** 四阶段检索增强问答系统。
-
-**核心特点:**
-- **材料筛选导向**: Prompt、检索策略、输出格式全部围绕高比能锂电池候选材料的性能对比与筛选
-- **多智能体协同**: 问题拆解（Planner）→ 多维度检索（Retrieval）→ 证据答案生成（Writer）→ 幻觉审核（Reviewer）
-- **多模型隔离**: 每个 Agent 可独立绑定不同 LLM（Planner 用 flash、Writer/Reviewer 用 pro）
-- **双检索后端**: Chroma 向量检索（主流） + TF-IDF 文本检索（fallback）
-- **Prompt 审计**: 所有系统 Prompt 集中在 `prompts.py`，可通过界面查阅
-- **规则回退**: LLM 不可用时自动降级为关键词匹配和证据拼接
-- **基线对比**: 内置 Baseline A（直接问答）和 Baseline B（仅检索拼接）
-- **两种交互模式**: 导出所有核心类
-├── README.md            # 本文件
-├── config.py            # 统一配置（LLM、标签、路径、多模型环境变量）
-├── prompts.py           # Prompt 注册表（材料筛选场景，支持审计）
-├── llm_client.py        # LLM 客户端（DeepSeek API + Ollama，自动选择后端）
-├── tfidf_kb.py          # TF-IDF 轻量检索器（段落分割 + 向量化）
-├── agents.py            # 四大 Agent（Planner / Retrieval / Writer / Reviewer）
-├── rag_pipeline.py      # 主 Pipeline 编排器（单轮 + 多轮 + 导出）
-├── structured_output.py # 结构化输出（材料筛选 Markdown + 定量数据提取）
-├── baselines.py         # Baseline A/B 对比（单模型 / 仅检索）
-│
-├── single_turn/         # 含对话导出）
-│   └── baseline_runner.py  # Baseline 批量运行器（三种方案对比）
-│
-└── output/              # 输出目录（Markdown 导出文件）
-```
+面向高比能液态锂电池**材料筛选**与**体系设计**的多智能体 RAG 模块，集成了混合检索（Chroma + BM25 + RRF + 可选 Qwen3 重排序）、Materials Project MCP 物性增强、基于 `RelationEngine` 的领域约束评估（v2.1 软质询矩阵），以及下游与根目录 `pinn/`（SPM PINN）和 `auto_battery_research/` 对接的方案结构化输出能力。
 
 ---
 
-## 快速使用
+## 1. 核心架构与数据流
 
-### 安装依赖
-
-```bash
-pip install scikit-learn langchain-openai langchain-core langchain-chroma chromadb gradio
-# Ollama 需要单独安装并拉取模型:
-# ollama pull qwen3:8b
-# ollama pull qwen3-embedding:8b
+```
+用户问题 / 设计目标
+   │
+   ▼
+[1. PlannerAgent] ──(LLM 拆解；离线可用 rule_decompose_question 保底)
+   │
+   ▼
+[2. RetrievalAgent / MultiRetrieval]
+   ├── Chroma 向量检索 (qwen3-embedding:8b) + BM25KnowledgeBase (BM25Okapi)
+   ├── RRF 倒数排名融合 (_RRF_K=60, max_passages=10000) + 可选 Qwen3Reranker
+   ├── RelationEngine 插桩 A (query_modifiers：条件降权词 & 缓解白名单加权词)
+   └── auto_battery_research.tools.materials_project.augment_mp_evidence (MP MCP)
+   │
+   ▼
+[3. WriterAgent]
+   ├── 依据检索证据 + RelationEngine 约束评估生成答案（设计题支持五段式输出）
+   ├── 支持可选 structured_geometry_enabled 几何参数冻结契约
+   └── 离线 fail-closed：LLM 不可用时返回 draft_answer="", fallback=True（无伪造配方）
+   │
+   ▼
+[4. ReviewerAgent] ──(草稿为空时管线直接 fail-closed 跳过审核)
+   ├── RelationEngine 插桩 B (check_scheme 规则与能量校验 + confidence 否决权)
+   ├── 最多 max_review_rounds=3 轮检索重试（透传 lit_weight / ebook_weight / _writer_scheme）
+   └── 离线 fail-closed：返回 confidence="low", error_type="reviewer", fallback=True
 ```
 
-### 环境变量
+### 离线降级语义（Fail-Closed）
+- `PlannerAgent`：唯一保留 `rule_decompose_question` 纯规则问题拆解的路径。
+- `WriterAgent`：当后端 LLM 不可用、返回空内容或耗尽重试时 **fail-closed**，返回空草稿与显式错误状态，不再输出硬编码替代方案。
+- `ReviewerAgent`：当草稿为空或审核 LLM 不可用时 **fail-closed**，强制降级为 `confidence="low"`、`fallback=True`，禁止伪装高置信度放行。
 
-```bash
-export DEEPSEEK_API_KEY="your-key"          # DeepSeek API（至少设置一项）
-# 或启动 Ollama 服务（默认 http://127.0.0.1:11434）
+---
 
-# 每个 Agent 可独立指定模型（留空则使用统一模型）:
-export PLANNER_MODEL="deepseek-v4-flash"    # 规划用轻量模型
-export WRITER_MODEL="deepseek-v4-pro"       # 生成用强模型
-export REVIEWER_MODEL="deepseek-v4-pro"     # 审核用强模型
-```
+## 2. 检索、多轮对话与能量/规则引擎
 
-### 命令行问答
+### 2.1 检索后端与重排序
+- **检索模式**（`config.RETRIEVAL_MODE`，默认 `"hybrid"`）：
+  - `"hybrid"`：Chroma 向量检索 + `BM25KnowledgeBase` 稀疏检索，经 RRF 融合；`both` / `textbook` 场景通过 `MultiRetrieval` 联合文献与教材双库，并支持按 `lit_weight` / `ebook_weight` 加权。
+  - `"chroma"`：仅使用 Chroma 向量检索。
+  - `"tfidf"`：兼容保留参数名，底层实际路由至 `BM25KnowledgeBase`（`BM25Okapi`）。
+- **重排序**：可选启用 `Qwen3Reranker`（`reranker.py`，基于 `Qwen3-Reranker-4B`）。
+
+### 2.2 多轮会话裁剪
+- `RAGPipeline.chat()` 使用 `tiktoken`（`cl100k_base`）统计并裁剪历史上下文：默认 `MAX_HISTORY_TOKENS = 4000`、`OVERLAP_TOKENS = 500`。
+- `multi_turn/` 子模块提供基于 `SQLite` 的 `HistoryStore` 持久化与批量对比运行器（`baseline_runner.py`）。
+
+### 2.3 领域约束引擎（`RelationEngine`，规则集 v2.1）
+- 数据源：
+  - `data/constraints.json`（`2.1-coincell-academic`，`2026-10-29`，对外保留 `RULES_VERSION = "C1-C8/v2.1-coincell"`）：共 **7 条生效规则**（`C1–C3, C5–C8`，原 `C4` 已永久移除），外加内置 `C0_UNVERIFIED_MATERIAL` 未登记材料 fail-closed 拦截。
+  - `data/candidates.json`（`0.4-llm-registered`，`2026-08-28`）：9 正极、6 负极、49 电解液（7 手工 + 42 LLM 登记）、23 添加剂（6 手工 + 17 LLM 登记）。
+  - `data/alias_map.json`（`0.3-llm-registered`，`2026-08-28`）：86 个规范实体键。
+- 分级规则动作（`evaluate()` / `check_scheme()`）：
+
+| 规则编号 | 动作类型 (`action`) | 核心语义 |
+|---|---|---|
+| `C1` / `C2` / `C3` | `challenge` | 裸碳酸酯体系与高压正极/锂金属配对未含 `mitigation_whitelist` 缓解措施时判违规（`feasible=False`）；存在白名单缓解措施时通过质询（`challenges` 记为 `passed`，`feasible=True`） |
+| `C5` | `recommend` | 硅基负极（`si_base`）推荐使用 `FEC` 添加剂；缺失时记入 `inclusions` 建议 |
+| `C6` | `audit_note` | `LNMO` / `LRMO` 体系记录锰溶出风险审计备注（`audit_notes`，不阻断 `feasible`） |
+| `C7` | `coin_cell_eval` | 目标能量 `>= 400 Wh/kg` 时排除 `graphite` 负极（记入 `violations` 并置 `feasible=False`）；非石墨体系记录材料级扣电比能量评估（`coin_cell_evals`） |
+| `C8` | `flag_frontier` | 目标能量 `>= 500 Wh/kg` 时记录 `frontier_flags` 前沿探索标记，保留 `feasible=True` |
+
+### 2.4 能量估算模型（`energy_model.py`）
+- 提供材料级与电芯级估算（`estimate_scheme_energy`）及活性物质比例校准（`calibrate_active_ratios`）。
+- 默认活性物质质量占比 `DEFAULT_ACTIVE_RATIOS`：`graphite: 0.50`、`si_base: 0.45`、`li_metal: 0.50`、`default: 0.48`；合理性校验容差 `ENERGY_TOLERANCE = 0.35`。
+- `data/calibrated/energy_ranges.json` 汇总 BetterBat v6 的 141 颗电芯 / 4 类体系实测区间（Nickel rich 实测 `50.0–350.0 Wh/kg`）。
+
+---
+
+## 3. 配置与快速上手
+
+### 3.1 LLM 与检索配置（`config.py`）
+`config.py` 会读取环境变量及项目配置 YAML（`setting.yaml` / `miner/config.yaml`）：
+- **LLM 后端优先级**：`OpenAI / MiniMax API`（`OPENAI_API_KEY` / `OPENAI_BASE_URL` / `MINIMAX_API_KEY`）→ `DeepSeek API`（`DEEPSEEK_API_KEY`）→ `Ollama` 本地服务 → `rule` 模式。
+- **主要检索默认参数**：`RETRIEVAL_MODE = "hybrid"`、`DEFAULT_TOP_K = 50`、`SEARCH_K = 20`、`RETRIEVAL_TOP_K_PER_QUERY = 40`、`PRIMARY_LABELS`（6 类一级段落标签）。
+
+### 3.2 Python 调用与 CLI / Web 入口
 
 ```python
 from src.lmllm.RAG import RAGPipeline
 
 pipeline = RAGPipeline()
-result = pipeline.run("NCM811和LRMO哪个能量密度更高？")
-print(result["final_answer"])   # 材料筛选对比答案
-print(result["evidence"])       # 检索到的证据段落
-
-# 导出结构化 Markdown 报告（含证据引用、定量数据、过程日志）
-md, path = pipeline.run_with_export("固态电解质的离子电导率对比")
-# 文件保存到 src/lmllm/RAG/output/
+result = pipeline.run("目标 450 Wh/kg 的高镍三元正极配什么负极和电解液？")
+print(result["final_answer"])
 ```
 
-### 多轮对话
-
-```python
-result = pipeline.chat(
-    "那它的循环稳定性怎么样？",     # 追问（"它"关联上文材料名）
-    chat_history=[
-        ("NCM811和LRMO哪个能量密度更高？", "NCM811 在 0.1C 下约 200 mAh/g..."),
-    ]
-)
-```
-
-### 启动 Gradio 界面
-
+常用命令行入口：
 ```bash
-# 单轮版（端口 7860，3
+# 1. RelationEngine 约束与 check_scheme 自测
+python -m src.lmllm.RAG.relation_engine
 
-# 代码对比
-from src.lmllm.RAG import RAGPipeline, BaselineA, BaselineB, run_comparison
-pipeline = RAGPipeline()
-baseline_a = BaselineA(pipeline.llm)
-baseline_b = BaselineB(pipeline.kb)
-comp = run_comparison("高电压正极材料的容量衰减", baseline_a, baseline_b, pipeline)
-print(comp["comparison_markdown"])
+# 2. 启动单轮 / 多轮 Gradio Web 界面
+python -m src.lmllm.RAG.single_turn.app   # 默认端口 7860
+python -m src.lmllm.RAG.multi_turn.app    # 默认端口 7861
+
+# 3. 规则自洽性评测与端到端管线评测
+python -m src.lmllm.RAG.evaluate_design_tasks --mode rule               # 秒级（会更新 data/tasks/eval_report.json）
+python -m src.lmllm.RAG.evaluate_design_tasks --mode pipeline --limit 3 # 慢（eval_report.json 实测约 10–17 分钟/题）
+
+# 4. 生成设计任务集 / 抽取单句关系
+python -m src.lmllm.RAG.task_generator
+python -m src.lmllm.RAG.extractor "句子文本" --type performance
 ```
 
 ---
 
-## 两种交互模式对比
+## 4. 目录结构
 
-| 维度 | single_turn/ | multi_turn/ |
-|------|-------------|------------|
-| **每次独立处理 | 多轮，上下文记忆（最近 3 轮） |
-| **Gradio 端口** | 7860 | 7861 |
-| **输出面板** | 回答 / 证据 / 日志 / 状态 / Prompt | 对话气泡 + 证据 / 日志 / 状态 / Prompt + 导出 |
-| **证据留存** | 仅实时展示 | 实时展示 + 一键导出 Markdown |
-| **Baseline** | CLI 单问题 | CLI 批量运行 |
-| **适用场景** | 独立问答、实验对比 | 追问链、方案讨论、汇报导出 |
-
----
-
-## 证据留存与上下文管理
-
-### 证据留存方式
-
-| 方式 | 触发 | 输出位置 |
-|------|------|---------|
-| `run_with_export()` | 代码调用 | `output/rag_materials_screening_*.md` |
-| 多轮版「导出对话」按钮 | Gradio 手动点击 | `output/multi_turn_dialogue_*.md` |
-| `baseline_cli.py --save` | CLI 参数 | `output/baseline_A_*.md` 或 `baseline_B_*.md` |
-| `baseline_runner.py` | 批量运行 | `output/baseline_{A/B}_Q{1-5}_*.md` + `ABOurs_comparison_*.md` |
-
-导出内容包含：问题、答案、定量数据摘要、置信度、审核意见、证据段落 + 引用来源、过程日志。
-
-### 上下文历史（仅多轮版）
-
+```text
+src/lmllm/RAG/
+├── __init__.py                 # 模块导出与说明
+├── config.py                   # 环境变量/YAML 配置、模型与检索常量
+├── llm_client.py               # 多后端 LLM 客户端、JSON 解析与离线降级工具
+├── prompts.py                  # Planner / Writer / Reviewer / BaselineA 系统 Prompt 注册表
+├── agents.py                   # PlannerAgent / RetrievalAgent / WriterAgent / ReviewerAgent
+├── rag_pipeline.py             # 多智能体主调度、方案/能量/几何解析、chat() 上下文管理
+├── bm25_kb.py                  # BM25KnowledgeBase (BM25Okapi) 稀疏检索与词元归一化
+├── multi_retrieval.py          # 文献+教材双库 Chroma+BM25+RRF 混合检索引擎
+├── reranker.py                 # Qwen3Reranker 重排序封装
+├── relation_engine.py          # RelationEngine 约束绑定与校验引擎 (v2.1)
+├── energy_model.py             # 材料级/电芯级比能量估算与校准模型
+├── structured_output.py        # 证据表与定量汇总 Markdown 格式化
+├── extractor.py                # RelationExtractor (NERRE ICL 关系抽取)
+├── task_generator.py           # 四类设计评测任务生成器
+├── evaluate_design_tasks.py    # 规则自洽性 (rule) 与端到端管线 (pipeline) 评测器
+├── baselines.py                # BaselineA (直答) 与 BaselineB (BM25 拼接)
+├── PROJECT_STATUS.md           # 模块阶段实施状态与基线记录
+├── README.md                   # 本文档
+├── schemas/
+│   └── battery_relations.py    # doping / compatibility / performance 关系 Schema
+├── single_turn/
+│   ├── __init__.py
+│   ├── app.py                  # 单轮 Gradio UI (端口 7860)
+│   └── baseline_cli.py         # 单轮对比 CLI 工具
+├── multi_turn/
+│   ├── __init__.py
+│   ├── app.py                  # 多轮 Gradio UI (端口 7861)
+│   ├── baseline_runner.py      # 批量基线对比运行器
+│   └── history_store.py        # SQLite 会话历史持久化
+├── data/
+│   ├── alias_map.json          # 86 个实体规范键与别名表 (v0.3)
+│   ├── candidates.json         # 候选材料与电化学参数库 (v0.4)
+│   ├── constraints.json        # 7 条层级约束规则 C1–C3, C5–C8 (v2.1)
+│   ├── calibrated/             # energy_ranges.json (BetterBat v6), mp_crosscheck.json
+│   ├── seed/                   # relations_seed.json (36 条), candidate_sentences.json, review_report.md
+│   └── tasks/                  # design_tasks.json (26 题快照), eval_report.json
+└── scripts/                    # 数据抓取、种子审核、批量抽取与历史验证/修复脚本
 ```
-用户追问
-  → Gradio chat_history 状态（保留所有轮次）
-    → pipeline.chat(question, chat_history=tuples)
-      → 提取最近 3 轮 → 构建 history_context 文本
-        → 传入 Planner（拆解问题时理解上文指代）
-        → 传入 Writer（生成答案时参考上文材料名）
-        → 传入 Reviewer（审核上下文连续性）
-```
-
-- 保留轮次：**最近 3 轮**（兼顾上下文和 token）
-- 每轮截断：**200 字符**
-- 示例：先问"NCM811 和 LRMO 哪个能量密度更高？"，再追问"那它的循环稳定性呢？"——系统自动理解"它"指上文材料
-
----
-
-## 智能体详解
-
-### Planner Agent
-- 材料筛选导向的问题拆解（按材料体系/组件拆分子检索问题）
-- 检测涉及的标签和组件（cathode/anode/electrolyte）
-- 规划回答结构（结论摘要 → 性能对比 → 条件标注 → 筛选建议 → 数据缺口）
-
-### Retrieval Agent
-- 三阶段检索：组件过滤 → 标签缺失补检索 → 无限制兜底搜索
-- Chroma 向量 + TF-IDF 混合融合（默认权重 0.6:0.4）
-- 加权排序：标签匹配加分 + 数值密度加分 + 组件匹配加分 + 文档类型加分
-- 同文献压制：同一文献超过 2 段降权 20%
-
-### Writer Agent
-- 只依据给定证据生成材料筛选对比答案
-- 要求标注测试条件（倍率、温度、电解液）
-- 关键结论后标注 `[passage_id]` 引用
-
-### Reviewer Agent
-- 审核数值准确性 + 条件完整性 + 比较公平性
-- 幻觉删除 + 保守答案降级
-- 输出置信度（high / medium / low）
-
----
-
-## 配置项
-
-| 环境变量 | 默认值 | 说明 |
-|----------|--------|------|
-| `DEEPSEEK_API_KEY` | `""` | DeepSeek API Key |
-| `OLLAMA_BASE_URL` | `http://127.0.0.1:11434` | Ollama 地址 |
-| `OLLAMA_MODEL` | `qwen3:8b` | 统一 Ollama 模型 |
-| `PLANNER_MODEL` | `""` | Planner 专用模型 |
-| `WRITER_MODEL` | `""` | Writer 专用模型 |
-| `REVIEWER_MODEL` | `""` | Reviewer 专用模型 |
-| `CHROMA_DIR` | `miner/chroma/paragraphs_q` | Chroma 向量库路径 |
-| `EMBEDDING_MODEL` | `qwen3-embedding:8b` | 嵌入模型 |
-| `DEFAULT_TOP_K` | `10` | 返回证据数 |
-| `SEARCH_K` | `20` | 检索上限 |
-
----
-
-## 预设问题集（多轮批量对比用）
-
-`multi_turn/baseline_runner.py` 内置 5 个高比能锂电池材料筛选问题：
-
-1. NCM811 和 LRMO 哪个能量密度更高？对比它们的首次放电容量和工作电压。
-2. 下一代高比能锂电池用什么负极材料？对比硅基负极和锂金属负极的优劣势。
-3. 固态电解质的离子电导率和电化学窗口对比，哪种更适用于高比能锂电池？
-4. 高电压正极材料（NCM811/LRMO/LNMO）在 4.5V 以上的容量衰减原因是什么？
-5. 从文献证据出发，推荐一套高比能锂电池正极/负极/电解液的材料组合方案。
-
----
-
-#
-| RAG 模块 | NLP 来源 | 借鉴内容 |
-|---------|---------|---------|
-| `single_turn/app.py` | `` | 单轮多智能体 Gradio 界面 |
-| `single_turn/baseline_cli.py` | `baseline_*.py` | Baseline CLI 工具 |
-| `multi_turn/app.py` | `ours_multiturn.py` | 多轮对话 Gradio + 导出 |
-| `multi_turn/baseline_runner.py` | `baseline_A/B.py` | 批量 Baseline 运行器 |
-| `prompts.py` | `` PROMPT_REGISTRY | Prompt 注册表 + 审计 |
-| `rag_pipeline.py` (多模型) | `` MultiAgentQASystem | 每 Agent 独立 LLM |
-| `agents.py` (保守答案) | `` _build_conservative_answer | 保守答案降级 |
-| `agents.py` (检索策略) | `chat_rag_v3_optimized.py` | 标签加权 + 兜底搜索 |
-| `config.py` (标签体系) | `miner/paragraph_metadata_pipeline_v5_qwen.py` | 6 类标签 + 高比能关键词扩充 |
-
----
-
-## 许可
-
-与 LMLLM 项目一致。

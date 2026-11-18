@@ -1,8 +1,12 @@
 # 化学电池全生命周期研发与设计综合研报模板
 
+<!-- abr-report-contract:2 -->
+<!-- abr-report-layout:6 -->
+
+> **说明**：Stage 6 运行时 (`run_synthesis_report`) 直接按契约渲染六节结构化报告并嵌入指纹校验锚点；本模板仅作结构参考，与 `FinalReportChecker` (`<!-- abr-report-layout:6 -->`) 保持一致。  
 > **任务目标**：{{ TARGET_QUERY }}  
 > **生成时间**：{{ TIMESTAMP }}  
-> **执行引擎**：AutoBatteryResearch Agent (ABRAgent)  
+> **执行引擎**：AutoBatteryResearch Agent (ABRAgent) + src/lmllm/RAG 引擎  
 
 ---
 
@@ -11,20 +15,25 @@
 
 ---
 
-## 2. 文献与电芯数据概况 (Literature & Cell Mining Overview)
-{{ MINING_OVERVIEW }}
+## 2. 材料选择与文献依据
+{{ MATERIALS_AND_LITERATURE_EVIDENCE }}
 
 ---
 
-## 3. 电池体系设计方案 (Battery System Design Scheme)
-{{ DESIGN_SCHEME_MD }}
+## 3. 最终设计方案
+{{ FINAL_DESIGN_SCHEME }}
 
 ---
 
-## 4. 物理仿真与验证 (Physics Simulation & Verification)
-{{ SIMULATION_RESULTS }}
+## 4. 仿真与优化分析
+{{ SIMULATION_AND_OPTIMIZATION_ANALYSIS }}
 
 ---
 
-## 5. 实验配方与落地建议 (Experimental Recipe & Roadmap)
-{{ EXPERIMENTAL_ROADMAP }}
+## 5. 实验路线与验证计划
+{{ EXPERIMENTAL_ROADMAP_AND_VALIDATION_PLAN }}
+
+---
+
+## 6. 参考来源附录
+{{ REFERENCES_AND_STAGE_JOURNALS }}

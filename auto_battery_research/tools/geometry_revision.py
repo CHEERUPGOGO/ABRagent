@@ -44,7 +44,7 @@ def resolve_input_ranges(cathode_id: Any, anode_id: Any) -> Dict[str, Any]:
     return (system or {}).get("input_ranges") or {}
 
 
-def _value_in_range(path: str, value: float, ranges: Dict[str, Any]) -> bool:
+def _value_in_range(path: str, value: float, ranges: Dict[str, Any], anode_id: Optional[str] = None) -> bool:
     """单字段范围校验 (registry input_ranges 对齐, 未声明范围退物理常识).
 
     逻辑与 RAGDesignChecker 原内联 _range_ok 一致 (现统一由本模块承载)。
@@ -63,7 +63,11 @@ def _value_in_range(path: str, value: float, ranges: Dict[str, Any]) -> bool:
         return value > 0
     if field == "porosity":
         r = side_ranges.get("porosity")
-        return (float(r["min"]) <= value <= float(r["max"])) if isinstance(r, dict) else 0.0 < value < 1.0
+        if isinstance(r, dict):
+            return float(r["min"]) <= value <= float(r["max"])
+        if path == "anode.porosity" and str(anode_id or "") == "li_metal":
+            return 0.0 <= value < 1.0
+        return 0.0 < value < 1.0
     if field == "D_s_m2s":
         r = side_ranges.get("D_s")
         return (float(r["min"]) <= value <= float(r["max"])) if isinstance(r, dict) else value > 0
@@ -79,27 +83,56 @@ def _value_in_range(path: str, value: float, ranges: Dict[str, Any]) -> bool:
     return True
 
 
-def collect_geometry_violations(geo: Dict[str, Any], ranges: Dict[str, Any]) -> List[str]:
+def collect_geometry_violations(
+    geo: Dict[str, Any],
+    ranges: Dict[str, Any],
+    anode_id: Optional[str] = None,
+) -> List[str]:
     """收集 v1.1 几何块的全部越界/非法值 (含 invalid provenance 保留值), 去重保序."""
     illegal: List[str] = []
     prov = geo.get("provenance") if isinstance(geo.get("provenance"), dict) else {}
+    param_sources = geo.get("parameter_sources") if isinstance(geo.get("parameter_sources"), dict) else {}
+    is_li_metal = (
+        str(anode_id or "") == "li_metal"
+        or ((param_sources.get("anode.R_s_um") or {}).get("material_id") == "li_metal")
+        or ((param_sources.get("anode.porosity") or {}).get("basis") == "dense_metal_foil")
+    )
+    effective_anode_id = "li_metal" if is_li_metal else anode_id
     for comp in ("cathode", "anode"):
         comp_block = geo.get(comp) if isinstance(geo.get(comp), dict) else {}
         for field in ("L_um", "porosity", "R_s_um", "D_s_m2s", "loading_mg_cm2", "compaction_g_cm3"):
             val = comp_block.get(field)
             if isinstance(val, (int, float)) and not isinstance(val, bool):
                 path = f"{comp}.{field}"
-                if prov.get(path) == "invalid" or not _value_in_range(path, float(val), ranges):
+                if prov.get(path) == "invalid" or not _value_in_range(path, float(val), ranges, anode_id=effective_anode_id):
                     illegal.append(f"{path}={val}")
+    if is_li_metal:
+        anode_block = geo.get("anode") if isinstance(geo.get("anode"), dict) else {}
+        comp_val = anode_block.get("compaction_g_cm3")
+        if isinstance(comp_val, (int, float)) and not isinstance(comp_val, bool) and math.isfinite(float(comp_val)) and float(comp_val) > 0.55:
+            illegal.append(f"anode.compaction_g_cm3={comp_val}(超出金属锂真密度0.534)")
+        por_val = anode_block.get("porosity")
+        l_val = anode_block.get("L_um")
+        load_val = anode_block.get("loading_mg_cm2")
+        if (
+            isinstance(por_val, (int, float)) and not isinstance(por_val, bool) and float(por_val) == 0.0
+            and isinstance(l_val, (int, float)) and not isinstance(l_val, bool) and math.isfinite(float(l_val)) and float(l_val) > 0
+            and isinstance(load_val, (int, float)) and not isinstance(load_val, bool) and math.isfinite(float(load_val))
+        ):
+            L_um = float(l_val)
+            loading = float(load_val)
+            expected_mg_cm2 = 0.0534 * L_um
+            if abs(loading - expected_mg_cm2) / expected_mg_cm2 > 0.25:
+                illegal.append(f"anode.loading_mg_cm2={loading}(与{L_um}μm致密锂理论面载{expected_mg_cm2:.3f}不符)")
     n_p_val = geo.get("n_p_ratio")
     if isinstance(n_p_val, (int, float)) and not isinstance(n_p_val, bool):
-        if prov.get("n_p_ratio") == "invalid" or not _value_in_range("n_p_ratio", float(n_p_val), ranges):
+        if prov.get("n_p_ratio") == "invalid" or not _value_in_range("n_p_ratio", float(n_p_val), ranges, anode_id=effective_anode_id):
             illegal.append(f"n_p_ratio={n_p_val}")
     cond_block = geo.get("condition") if isinstance(geo.get("condition"), dict) else {}
     for field in ("v_min", "v_max", "c_rate"):
         val = cond_block.get(field)
         if isinstance(val, (int, float)) and not isinstance(val, bool):
-            if prov.get(f"condition.{field}") == "invalid" or not _value_in_range(field, float(val), ranges):
+            if prov.get(f"condition.{field}") == "invalid" or not _value_in_range(field, float(val), ranges, anode_id=effective_anode_id):
                 illegal.append(f"condition.{field}={val}")
     if isinstance(cond_block.get("v_min"), (int, float)) and isinstance(cond_block.get("v_max"), (int, float)) \
             and float(cond_block["v_max"]) <= float(cond_block["v_min"]):
@@ -219,7 +252,7 @@ def apply_geometry_revision(
 
     # 3. 范围校验 (registry input_ranges 对齐) —— 越界拒绝并点名字段与合法范围
     ranges = resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"))
-    illegal = collect_geometry_violations(normalized, ranges)
+    illegal = collect_geometry_violations(normalized, ranges, anode_id=scheme.get("anode"))
     if illegal:
         range_hint = format_range_hint(ranges)
         return {"ok": False, "error_code": "GEOMETRY_VALUE_ILLEGAL",

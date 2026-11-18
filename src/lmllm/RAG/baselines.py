@@ -3,7 +3,7 @@
 提供两种基线用于与多智能体 RAG 方案对比.
 
 Baseline A: 单模型直接回答,不依赖知识库检索
-Baseline B: TF-IDF 检索 + 简单拼接,不使用 LLM 生成
+Baseline B: BM25 检索 + 简单拼接,不使用 LLM 生成
 """
 
 from __future__ import annotations
@@ -130,7 +130,7 @@ class BaselineB:
     def __init__(self, kb):
         """
         Args:
-            kb: TFIDFKnowledgeBase 实例
+            kb: BM25KnowledgeBase 实例
         """
         self.kb = kb
 

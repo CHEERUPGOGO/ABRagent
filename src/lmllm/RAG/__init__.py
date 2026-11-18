@@ -1,9 +1,10 @@
-"""LMLLM RAG 模块 — 高比能锂电池材料筛选多智能体 RAG 系统
+"""LMLLM RAG 模块 — 高比能锂电池材料筛选与方案设计多智能体 RAG 系统
 
-为高比能锂电池材料筛选场景提供:
+为高比能锂电池材料筛选与方案设计场景提供:
 - Planner → Retrieval → Writer → Reviewer 四阶段流水线
-- 每个 Agent 可独立绑定不同 LLM 模型
-- Chroma 向量检索 + TF-IDF 双后端
+- 每个 Agent 可独立绑定不同 LLM 模型（Writer / Reviewer 离线 fail-closed）
+- Chroma 向量检索 + BM25 稀疏检索（支持 RRF 混合检索与可选 Qwen3 重排序）
+- RelationEngine 约束校验、energy_model 能量估算与 MP MCP 物性交叉验证
 
 子模块:
 - single_turn/  — 单轮 Gradio 问答 + Baseline CLI

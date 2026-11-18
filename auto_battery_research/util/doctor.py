@@ -198,7 +198,7 @@ def run_doctor_checks() -> List[Tuple[str, str, str, str]]:
     if key and key not in ("dummy_key",):
         results.append(("LLM API Key", OK, f"{_mask(key)} · 来源: {'环境变量' if os.environ.get('OPENAI_API_KEY') else 'setting.yaml'}", ""))
     else:
-        results.append(("LLM API Key", WARN, "未配置", "将进入确定性离线流水线模式 (门禁仍可推进)；配置 OPENAI_API_KEY 启用 ReAct 主控"))
+        results.append(("LLM API Key", WARN, "未配置", "部分离线阶段可运行，但 Stage 4 RAG 需可用 LLM (无 Key 时 fail-closed)；配置 OPENAI_API_KEY 启用完整工作流与 ReAct 主控"))
 
     # 4. LLM 端点与模型
     base = (os.environ.get("OPENAI_API_BASE") or (cfg.get("llm") or {}).get("base_url")

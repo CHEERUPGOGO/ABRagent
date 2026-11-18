@@ -4,7 +4,14 @@ import json
 import re
 
 from .scheme_ledger import digest, validate_field
-from .design_sections import design_sections, normalize_titles
+from .design_sections import design_output_issues, design_sections, normalize_titles
+
+
+def review_verdict(text, review):
+    """区分审核服务失败、带保留意见的有效审核和无保留通过。"""
+    completed = not design_output_issues(text) and review.get("error_type") not in ("reviewer", "structure")
+    passed = completed and not review.get("issues") and review.get("confidence") in ("high", "medium")
+    return completed, passed
 
 
 def blocks(text):
@@ -186,6 +193,9 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
         parameters.setdefault(key, {"value": value, "unit": canonical_unit(key) or "", "basis": "engineering_proposal", "source": "初始设计"})
     audit = list(seed.get("repair_audit", []))
     review = seed.get("reviewer_output") or {"issues": ["尚未审核"], "error_type": "reviewer", "confidence": "low"}
+    if not text.strip():
+        reason = (seed.get("writer_output") or {}).get("error") or "Writer 未能生成有效方案草稿"
+        return text, {"issues": [reason], "confidence": "low", "error_type": "structure"}, evidence, parameters, audit
     path = getattr(pipeline, "repair_checkpoint_path", None)
     # 历史格式错误可离线重放；仍使用当时程序签发的权限，不能扩大范围。
     if path and not seed.get("protocol_replayed") and audit:
@@ -228,7 +238,6 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
     while seed.get("repair_rounds", 0) < 3 and not seed.get("protocol_exhausted") and not (getattr(pipeline, "report_first", False) and seed.get("review_service_failures", 0) >= 2):
         seed["repair_rounds"] = seed.get("repair_rounds", 0) + 1
         save()
-        from .design_sections import design_output_issues
         errors = design_output_issues(text)
         if seed.get("pending_review") and not errors:
             review = seed.pop("pending_review")
@@ -248,14 +257,21 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
             continue
         if not review.get("issues"):
             break
+        supplemented_now = False
         if review.get("error_type") == "retrieval" and not seed.get("supplemented"):
             seed["supplemented"] = True
             save()
             queries = pipeline._issues_to_queries(review["issues"])[:3]
+            plan = seed.get("plan") or {}
             extra = pipeline.retrieve_context(db_type=seed.get("db_type", "literature"), question=seed.get("question", question),
-                queries=queries, previous_evidence=evidence, top_k=top_k)
+                queries=queries, previous_evidence=evidence, top_k=top_k,
+                focus_component=plan.get("focus_component"), focus_labels=plan.get("focus_labels"),
+                use_label_filter=not plan.get("needs_reasoning", False), **(seed.get("retrieval_weights") or {}))
             merged = {e["passage_id"]: e for e in evidence}
-            merged.update({e["passage_id"]: e for e in extra.get("results", [])})
+            size = len(merged)
+            for passage in extra.get("results", []):
+                merged.setdefault(passage["passage_id"], passage)
+            supplemented_now = len(merged) > size
             evidence = list(merged.values())
         changed, fields, entry = repair(pipeline.writer, text, review, evidence, parameters, question,
             verifier=getattr(pipeline.reviewer, "llm", None),
@@ -301,6 +317,8 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
             break
         if entry["status"] in ("SCOPE_UNRESOLVED", "NO_CHANGE"):
             save()
+            if supplemented_now:
+                continue  # 有新证据时重新审核，但不重写正文或扩大写权限。
             break
         if entry["status"] == "APPLIED":
             text, parameters = changed, fields
@@ -320,7 +338,6 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
         save()
     # 最后一轮修改后仍须复核，不能把修改前审核冒充修改后通过。
     if audit and audit[-1].get("status") == "APPLIED" and seed.get("reviewed_hash") != digest(text):
-        from .design_sections import design_output_issues
         if not design_output_issues(text):
             review = pipeline.reviewer.run(question=question, evidence=evidence, draft_answer=text,
                 history_context=history_context, scheme=seed.get("scheme"), claimed_energy=pipeline._extract_energy_claim(text))
@@ -363,9 +380,8 @@ def resume_pipeline(pipeline, seed, question, history_context="", top_k=50):
         if not validate_geometry_contract(scheme["geometry"], scheme, evidence):
             pipeline.inherited_design = scheme
     rules = pipeline.relation_engine.check_scheme(scheme, claimed_energy=pipeline._extract_energy_claim(text), answer_text=text) if pipeline.relation_engine else {}
-    from .design_sections import design_output_issues
-    completed = not design_output_issues(text) and review.get("error_type") not in ("reviewer", "structure")
+    completed, passed = review_verdict(text, review)
     return dict(seed, final_answer=text + pipeline._build_reference_section(evidence), evidence=evidence,
         reviewer_output=review, review_completed=completed,
-        review_passed=completed and not review.get("issues"), confidence=review.get("confidence", "low"),
+        review_passed=passed, confidence=review.get("confidence", "low"),
         scheme=scheme, rule_checks=rules, repair_parameters=fields, repair_audit=audit)

@@ -6,7 +6,7 @@
 
 ```
 ABRAgent (ReAct 主循环)
-   │  全局维护 16 个 LangChain BaseTool (10 领域 + 6 护栏)
+   │  全局维护 17 个 LangChain BaseTool (11 领域 + 6 护栏)
    │  运行时由 backend.bind_stage_tools 按 Stage 1~6 物理隔离与动态裁剪
    ▼
 ┌────────────────┐    真正干活     ┌──────────────────────┐
@@ -20,11 +20,12 @@ ABRAgent (ReAct 主循环)
 
 | 文件 | 角色 | 说明 |
 |:---|:---|:---|
-| `domain_tools.py` | Agent 领域工具集 | 10 个 Stage 1~6 业务工具 (LangChain `BaseTool`)，入参动态绑定当前活跃课题 |
+| `domain_tools.py` | Agent 领域工具集 | 11 个 Stage 1~6 业务工具 (LangChain `BaseTool`)，入参动态绑定当前活跃课题 |
 | `materials_project.py` | MP Client 与工具 | FastMCP stdio Client，调用官方 `mp-api` Server；[配置指南](../../docs/materials_project_mcp.md) |
+| `geometry_revision.py` | Stage 5 几何修订 | 校验 `base_revision`/`base_geometry_hash`、`D_s` 证据与参数范围，同步修订 `design_scheme.json/.md` |
 | `stage_tools.py` | 工作流护栏工具集 | 6 个门禁/状态/日志工具 + 供 CLI/MCP/Web 直接调用的函数层 |
 | `workflow_actions.py` | 干活桥接层 | 工具 → 真实流水线的唯一入口，fail-closed：资产缺失时实际执行流水线而非报空 |
-| `rag_adapter.py` | Stage 4 适配器 | 桥接 `src/lmllm/RAG` 引擎，转换并校验 Stage 4 输出契约 (design_scheme + provenance 溯源) |
+| `rag_adapter.py` | Stage 4 适配器 | 桥接 `src/lmllm/RAG` 引擎，转换并校验 Stage 4 输出契约 (design_scheme + geometry v1.1/v2.0 + provenance 溯源) |
 | `file_tools.py` | 安全文件工具 | 带 Workspace 路径沙箱的读/写/替换，杜绝路径穿越 |
 | `knowledge_retriever.py` | 轻量知识检索 | 跨语言化学概念映射 + 5471+ 真实学术段落的关键词检索 |
 | `mcp_server.py` | MCP stdio 服务 | 向 IDE 暴露 14 个工具 (`abr-cli --mcp`) |
@@ -32,7 +33,7 @@ ABRAgent (ReAct 主循环)
 
 ---
 
-## 一、领域工具集 (domain_tools.py · 10 个)
+## 一、领域工具集 (domain_tools.py · 11 个)
 
 按 6 阶段工作流划分，每阶段包含"感知探测 (Inspect*)" 与 "执行落地"两类。
 `agent.py` 启动时通过 `STAGE_ALLOWED_DOMAIN_TOOLS` 为各阶段独立裁剪并编译隔离的 ReAct Agent，**杜绝跨阶段抢跑与工具幻觉**。
@@ -43,11 +44,12 @@ ABRAgent (ReAct 主循环)
 | `IngestLiteraturePapers` | Stage 1 | 增量文献解析流水线：PDF → DOI 提取 → MinerU Markdown → 分类入库 | `input_pdf_dir` (默认 `papers/pdf`), `max_files` (默认 5) |
 | `InspectVectorDB` | Stage 2 | 探测 Chroma 向量库与段落标注元数据：向量数、6 类语义标签分布 | `chroma_dir` (默认 `miner/chroma/paragraphs_q`) |
 | `IndexSemanticVectors` | Stage 2 | 段落 6 类语义打标 + Qwen3-Embedding 向量化持久化入库 | `max_papers` (默认 5), `incremental` (默认 True) |
-| `InspectCellEntities` | Stage 3 | 探测已挖掘材料数据与已组装电芯实体：电芯数、正负极/电解液三元组分布 | `cell_dir` (留空由 StageManager 解析) |
+| `InspectCellEntities` | Stage 3 | 探测已挖掘材料数据与已组装电芯实体：电芯数、正负极/电解液三元组分布 | `cell_dir` (留空回退默认目录；Stage 3 运行时由 `agent.py` 传入课题 `cell_assembly/`) |
 | `ExtractAndAssembleCells` | Stage 3 | 材料微观表征挖掘 + 三层归一化 + 电芯实体组装流水线 | `sample_limit` (默认 10), `target_query` (留空动态绑定当前活跃课题) |
-| `RunRAGDesign` | Stage 4 | **Stage 4 唯一落盘入口**：单链路 Planner → Retrieval → Writer → Reviewer + RelationEngine C1–C8 硬约束核算，产出 `design_scheme.md/.json`、`rag_result.json` | `target_goal` (留空动态绑定当前活跃课题), `design_query` |
+| `RunRAGDesign` | Stage 4 | **Stage 4 唯一落盘入口**：单链路 Planner → Retrieval → Writer → Reviewer + RelationEngine 7 项分级规则核算（C1–C3 缓解白名单挑战、C5 建议、C6 审计提示、C7 扣电选材、C8 前沿标记及 C0 未知材料拦截；`RULES_VERSION=C1-C8/v2.1-coincell`），产出 `design_scheme.md/.json`、`rag_result.json` | `target_goal` (留空动态绑定当前活跃课题), `design_query` |
 | `QueryMaterialsProject` | Stage 4 | 查询官方 MP 计算材料属性并返回来源；主 RAG 链路也根据 Planner 的 `mp_queries` 自动补充证据 | `query`, `mode` (`search` / `fetch`) |
-| `RunPhysicsSimulation` | Stage 5 | SPM PINN 放电仿真 (纯 numpy)：方案 (cathode, anode) 匹配 `pinn/models/registry.json` 已训练体系时执行，产出充放电曲线与能量密度标定；未匹配体系平滑回退参数提取 | `target_goal` (留空动态绑定当前活跃课题), `current_rate` (默认 "0.5C") |
+| `RunPhysicsSimulation` | Stage 5 | 参数提取 + SPM PINN 放电仿真 (纯 numpy)：先落盘 `pinn_input_spec.json`；若激活且体系匹配 `pinn/models/registry.json` 则执行仿真并返回带容差达标判定 `target`、`revision_budget` 与 `geometry_context`，未匹配平滑回退参数提取 | `target_goal` (留空动态绑定当前活跃课题), `current_rate` (默认 "0.5C") |
+| `ReviseGeometry` | Stage 5 | 依据仿真结果在预算轮数内修订 `scheme.geometry`（两电极厚度/孔隙率/颗粒半径/扩散系数，其中 `D_s` 须附可核查任务证据），校验版本与范围并同步更新 `design_scheme.json/.md` | `revisions`, `reason`, `base_revision`, `base_geometry_hash`, `evidence_claims`, `target_goal` |
 | `SynthesizeResearchReport` | Stage 6 | 汇总全链路产物编译最终综合研报 `final_research_report.md` | `target_goal` (留空动态绑定当前活跃课题) |
 
 > ⚠️ **Stage 4 收敛与抢跑防御**：
@@ -84,14 +86,15 @@ CLI / Web / TUI / MCP 不经过 LLM 直接调用的函数，与上述 BaseTool �
 
 | 函数 | 阶段 | 实际驱动 |
 |:---|:---|:---|
-| `run_literature_ingestion` | Stage 1 | `step_mineru/step_merge/step_classify` (pipeline_incremental) |
+| `run_literature_ingestion` | Stage 1 | `auto_battery_research.pipeline.incremental` (`step_mineru/step_merge/step_classify` / `pipeline_incremental.py`) |
 | `run_vector_indexing` | Stage 2 | 子进程 `paragraph_metadata_pipeline_v5_qwen.py --incremental` |
-| `run_data_mining` | Stage 3 | `agent/pipeline_tok2000.run` |
-| `run_rag_design` | Stage 4 | 经 `rag_adapter` → `src/lmllm/RAG` 引擎 |
-| `run_pinn_simulation` | Stage 5 | `pinn/spm_runner` (默认启用, 未匹配回退提取) |
-| `run_synthesis_report` | Stage 6 | 模板 + LLM 动态生成第 5 章 → 只写规范名 `final_research_report.md` |
+| `run_data_mining` | Stage 3 | `auto_battery_research.mining.run_tok2000` (`agent/pipeline_tok2000.py`) |
+| `run_rag_design` | Stage 4 | `AbrRagAdapter` (`rag_adapter.py`) → `src/lmllm/RAG` 引擎 + `RelationEngine` |
+| `run_pinn_simulation` | Stage 5 | `pinn/spm_runner.py` + `pinn/input_spec.py` (默认启用，未匹配体系回退参数提取) |
+| `run_synthesis_report` | Stage 6 | 6 章节结构化渲染 + `report_recipe_llm`（无可用 LLM 时第 5 章回退确定性兜底渲染）→ 只写规范名 `final_research_report.md` |
 
 别名兼容：`generate_synthesis_report` / `run_generate_synthesis_report` 均指向 `run_synthesis_report`。
+几何修订入口：`geometry_revision.py` 中的 `revise_geometry` 供 `ReviseGeometry` 工具调用并同步重渲染 `design_scheme.json/.md`。
 
 ## 五、MCP 工具面 (mcp_server.py · 14 个)
 
@@ -114,5 +117,4 @@ CLI / Web / TUI / MCP 不经过 LLM 直接调用的函数，与上述 BaseTool �
   严格位于仓库根内，拦截 `../` 路径穿越。
 - **阶段工具物理隔离 (防抢跑机制)**：`ABRAgent` 运行时在各 Stage 仅向大模型暴露当前阶段授权的领域工具与通用治理工具 (`Check`, `Complete`, `CurrentTips`, `Status`, `SetStageJournal`, `RoleInfo`)。例如在 Stage 4 中，Stage 6 研报工具被物理剔除，从认知层面彻底杜绝大模型“提前把后续阶段工具一并调用”的越界幻觉。
 - **课题目标动态绑定 (零硬编码)**：所有领域工具 (`SynthesizeResearchReport`, `RunPhysicsSimulation`, `ExtractAndAssembleCells` 等) 的课题入参默认值均为 `""`。执行时自动动态回退至 `get_stage_manager().target_goal`，杜绝任何硬编码（如 400Wh）导致的跨课题参数污染。
-- **离线可用**：无有效 API Key 时工具链走确定性回退 (规则模板/TF-IDF 检索)，
-  门禁仍可推进，单测 (`tests/`) 全程离线。
+- **离线边界与单测**：无可用 LLM 时，Stage 1/2/5（参数提取与纯 numpy SPM PINN 前向）/Stage 6（第 5 章确定性兜底渲染）可离线运行，检索降级本地 BM25；但 **Stage 4 RAG（Writer/Reviewer）严格 fail-closed**（无可用 LLM 时返回 `REJECTED` 并在 `RAGDesignChecker` 拦截，不会虚构硬编码规则方案）。单测 (`tests/`) 通过桩模型与模拟 LLM 夹具全程离线运行。

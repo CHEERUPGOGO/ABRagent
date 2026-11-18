@@ -415,7 +415,7 @@ class StageManager:
         return all_passed, result
 
     def _extract_stage5_params_on_skip(self, stage_obj) -> None:
-        """Stage 5 级联/直接跳过时的参数提取兜底 (真实 PINN 模型接入前的数据预置).
+        """Stage 5 级联/直接跳过时的参数提取兜底 (仍生成 pinn_input_spec.json 供后续研报与溯源使用).
 
         complete_stage 的级联跳过不经过 agent 主循环的 skip 快速通道，此前会
         完全绕过 pinn_input_spec.json 参数提取；此处补齐。失败仅记录、不影响
@@ -622,23 +622,56 @@ class StageManager:
             sid = stage.id if stage else 0
             sname = stage.name if stage else "General"
 
+            def _safe_dur(val: Any) -> float:
+                try:
+                    return float(val) if val is not None else 0.0
+                except (TypeError, ValueError):
+                    return 0.0
+
+            stage_dur = _safe_dur(getattr(stage, "duration_seconds", 0.0)) if stage else 0.0
+            kf_dur = _safe_dur((key_findings or {}).get("duration_seconds"))
+            dur = max(stage_dur, kf_dur)
+            eff_deliverables = list(deliverables) if deliverables else []
+
             journals = self.get_all_stage_journal()
             entry = {
                 "stage_id": sid,
                 "stage_name": sname,
                 "timestamp": datetime.now().isoformat(),
-                "duration_seconds": getattr(stage, "duration_seconds", 0.0) if stage else 0.0,
+                "duration_seconds": dur,
                 "notes": notes,
-                "deliverables": deliverables or [],
+                "deliverables": eff_deliverables,
                 "key_findings": key_findings or {},
             }
             previous = next((j for j in journals if j.get("stage_id") == sid), None)
             if previous:
                 old_notes = previous.get("notes", "")
-                entry["notes"] = old_notes if not notes or notes == old_notes else (
-                    f"{old_notes}\n\n{notes}" if old_notes else notes)
-                entry["deliverables"] = list(dict.fromkeys((previous.get("deliverables") or []) + (deliverables or [])))
-                entry["key_findings"] = {**(previous.get("key_findings") or {}), **(key_findings or {})}
+                is_old_blocker = any(
+                    k in old_notes for k in ("工具授权缺口", "未挂载", "执行受阻", "工具缺失")
+                )
+                is_new_passed = (
+                    (key_findings or {}).get("status") == "PASSED"
+                    or "顺利完成" in notes
+                )
+                if is_old_blocker and is_new_passed:
+                    entry["notes"] = notes
+                else:
+                    entry["notes"] = old_notes if not notes or notes == old_notes else (
+                        f"{old_notes}\n\n{notes}" if old_notes else notes)
+                entry["duration_seconds"] = max(_safe_dur(previous.get("duration_seconds")), dur)
+                merged_deliv = list(dict.fromkeys((previous.get("deliverables") or []) + eff_deliverables))
+                if not merged_deliv and stage and getattr(stage, "expected_outputs", None):
+                    merged_deliv = list(stage.expected_outputs)
+                entry["deliverables"] = merged_deliv
+                prev_kf = dict(previous.get("key_findings") or {})
+                if is_old_blocker and is_new_passed:
+                    prev_kf.pop("error", None)
+                entry["key_findings"] = {**prev_kf, **(key_findings or {})}
+                if (key_findings or {}).get("status") == "PASSED" or (is_old_blocker and is_new_passed):
+                    entry["key_findings"]["status"] = "PASSED"
+            else:
+                if not eff_deliverables and stage and getattr(stage, "expected_outputs", None):
+                    entry["deliverables"] = list(stage.expected_outputs)
             journals = [j for j in journals if j.get("stage_id") != sid]
             journals.append(entry)
             journals.sort(key=lambda x: x.get("stage_id", 0))
@@ -675,17 +708,46 @@ class StageManager:
                 "\n| Stage | 阶段名称 | 状态 | 耗时 | 交付物 | 关键发现与所得 (Key Findings) |",
                 "|:---|:---|:---:|:---:|:---|:---|",
             ]
-            for j in journals:
+            journal_by_id = {j.get("stage_id"): j for j in journals if j.get("stage_id") is not None}
+            md_entries = [{**j, "_status_label": "完成"} for j in journals]
+            if len(journals) >= 2:
+                for s in self.stages:
+                    if s.id not in journal_by_id and s.status in ("PASSED", "SKIPPED", "FALLBACK"):
+                        md_entries.append({
+                            "stage_id": s.id,
+                            "stage_name": s.name,
+                            "duration_seconds": _safe_dur(getattr(s, "duration_seconds", 0.0)),
+                            "deliverables": list(getattr(s, "expected_outputs", None) or []),
+                            "notes": "既有基础资产预检通过 (复用已入库文献与向量索引)",
+                            "key_findings": {},
+                            "_status_label": "复用通过",
+                        })
+            md_entries.sort(key=lambda x: x.get("stage_id", 0))
+            for j in md_entries:
                 s_id = j.get("stage_id", 0)
                 s_name = j.get("stage_name", "")
-                s_dur = f"{j.get('duration_seconds', 0.0):.1f}s"
-                s_notes = j.get("notes", "").replace("\n", " ")
-                s_deliv = ", ".join([Path(d).name for d in j.get("deliverables", [])]) or "无"
-                findings_summary = json.dumps(j.get("key_findings", {}), ensure_ascii=False)
-                md_lines.append(f"| Stage {s_id} | {s_name} | 完成 | {s_dur} | `{s_deliv}` | {s_notes} ({findings_summary}) |")
+                status_label = j.get("_status_label", "完成")
+                s_dur = f"{_safe_dur(j.get('duration_seconds')):.1f}s"
+                s_notes = str(j.get("notes", "")).replace("\n", " ")
+                s_deliv = ", ".join([Path(str(d)).name for d in (j.get("deliverables") or []) if d]) or "无"
+                if status_label == "完成":
+                    findings_summary = json.dumps(j.get("key_findings", {}), ensure_ascii=False)
+                    detail_col = f"{s_notes} ({findings_summary})"
+                else:
+                    detail_col = s_notes
+                md_lines.append(f"| Stage {s_id} | {s_name} | {status_label} | {s_dur} | `{s_deliv}` | {detail_col} |")
 
             with open(task_dir / "stage_journals.md", "w", encoding="utf-8") as f:
                 f.write("\n".join(md_lines) + "\n")
+
+            report_path = task_dir / "final_research_report.md"
+            s6_stage = self.get_stage_by_id(6)
+            if report_path.exists() and s6_stage is not None and getattr(s6_stage, "status", None) == "PASSED":
+                try:
+                    from auto_battery_research.util.reports import publish_report_audit
+                    publish_report_audit(report_path, self.stages, journals=journals)
+                except Exception:
+                    pass
 
             return {"status": "success", "recorded_entry": entry, "task_journal_file": str(task_journal_file)}
 

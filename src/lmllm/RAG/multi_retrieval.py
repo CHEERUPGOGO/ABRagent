@@ -17,7 +17,7 @@ import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from .bm25_kb import BM25KnowledgeBase
+from .bm25_kb import BM25KnowledgeBase, normalize_source_path, resolve_paper_title_map
 
 # ── 默认配置（与现有文献库和电子书库路径一致） ──
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
@@ -119,6 +119,7 @@ class MultiRetrieval:
         """
         import json
         kb = BM25KnowledgeBase()
+        paper_title_map: Dict[str, str] = {}
         loaded = False
         try:
             import chromadb
@@ -138,9 +139,20 @@ class MultiRetrieval:
                     docs = batch.get("documents", [])
                     metas = batch.get("metadatas", [])
                     for i, text in enumerate(docs):
-                        pid = hashlib.md5(text.encode()).hexdigest()[:12]
-                        meta = metas[i] if i < len(metas) and metas[i] else {}
-                        source = str(meta.get("source_file", meta.get("source_paper", "chroma")))
+                        meta = dict(metas[i]) if i < len(metas) and metas[i] else {}
+                        if meta.get("source_file"):
+                            meta["source_file"] = normalize_source_path(str(meta["source_file"]))
+                        raw_source = meta.get("source_file") or meta.get("source_paper") or "chroma"
+                        source = normalize_source_path(str(raw_source)) or "chroma"
+                        pid = str(meta.get("passage_id") or meta.get("chunk_id") or hashlib.md5(text.encode()).hexdigest()[:12])
+                        title = str(meta.get("title") or "").strip()
+                        sp = str(meta.get("source_paper") or "").strip()
+                        sf = str(meta.get("source_file") or "").strip()
+                        if title:
+                            if sp and sp not in paper_title_map:
+                                paper_title_map[sp] = title
+                            if sf and sf not in paper_title_map:
+                                paper_title_map[sf] = title
                         kb.add_passage(passage_id=pid, text=text, source=source, metadata=meta)
                     offset += curr_limit
                 loaded = True
@@ -162,13 +174,35 @@ class MultiRetrieval:
                             for idx, item in enumerate(data[:3000]):
                                 txt = item.get("paragraph_context") or item.get("text", "")
                                 if txt:
-                                    pid = item.get("_id") or item.get("passage_id") or hashlib.md5(txt.encode()).hexdigest()[:12]
-                                    src = item.get("source_paper") or item.get("source") or "Academic Paper"
-                                    kb.add_passage(passage_id=pid, text=txt, source=str(src), metadata=item)
+                                    meta = dict(item)
+                                    if meta.get("source_file"):
+                                        meta["source_file"] = normalize_source_path(str(meta["source_file"]))
+                                    pid = str(meta.get("_id") or meta.get("passage_id") or hashlib.md5(txt.encode()).hexdigest()[:12])
+                                    raw_src = meta.get("source_file") or meta.get("source_paper") or meta.get("source") or "Academic Paper"
+                                    src = normalize_source_path(str(raw_src)) or "Academic Paper"
+                                    title = str(meta.get("title") or "").strip()
+                                    sp = str(meta.get("source_paper") or "").strip()
+                                    sf = str(meta.get("source_file") or "").strip()
+                                    if title:
+                                        if sp and sp not in paper_title_map:
+                                            paper_title_map[sp] = title
+                                        if sf and sf not in paper_title_map:
+                                            paper_title_map[sf] = title
+                                    kb.add_passage(passage_id=pid, text=txt, source=src, metadata=meta)
                 except Exception:
                     pass
 
+        for p in kb.passages:
+            meta = p.metadata if isinstance(p.metadata, dict) else {}
+            if not str(meta.get("title") or "").strip():
+                sp = str(meta.get("source_paper") or "").strip()
+                sf = normalize_source_path(str(meta.get("source_file") or p.source or ""))
+                backfilled = paper_title_map.get(sp) or paper_title_map.get(sf) or ""
+                if backfilled:
+                    meta["title"] = backfilled
+                    p.metadata = meta
 
+        kb.paper_title_map = paper_title_map
         kb.build_index()
         return kb
 
@@ -182,6 +216,7 @@ class MultiRetrieval:
         query: str,
         top_k: int,
         source_type: str = "literature",
+        component: Optional[str] = None,
     ) -> List[Dict[str, Any]]:
         """单库：Chroma + BM25 双路召回，RRF 融合。
 
@@ -191,48 +226,119 @@ class MultiRetrieval:
             query: 检索问题
             top_k: 返回前 k 条
             source_type: 来源标记（"literature" / "ebook"）
+            component: 可选组件过滤（"cathode" / "anode" / "electrolyte"），仅对 literature 生效
 
         Returns:
             按 RRF 分数降序的结果列表
         """
+        use_comp = component.strip().lower() if (component and source_type == "literature") else None
+        k_chroma = max(top_k, 20)
+
         # ── Chroma 通道 ──
-        chroma_results: List[Dict[str, Any]] = []
-        try:
-            raw = store.similarity_search_with_score(query, k=max(top_k, 20))
-            for doc, score in raw:
-                meta = doc.metadata
-                sim = max(0.0, 1.0 - score / 2.0)
-                chroma_results.append({
-                    "passage_id": meta.get("passage_id")
-                                  or meta.get("chunk_id")
-                                  or hashlib.md5(doc.page_content.encode()).hexdigest()[:12],
-                    "source": meta.get("source_file", meta.get("source_paper", "unknown")),
-                    "score": sim,
-                    "text": doc.page_content,
-                    "metadata": dict(meta),
-                    "_source_type": source_type,
-                })
-        except Exception as e:
-            print(f"[MultiRetrieval] Chroma 检索失败: {e}")
+        raw_chroma: List[Tuple[Any, float]] = []
+        if store is not None:
+            try:
+                if use_comp:
+                    try:
+                        raw_chroma = list(store.similarity_search_with_score(
+                            query, k=k_chroma, filter={"component": use_comp}
+                        ))
+                        filter_accepted = True
+                    except TypeError:
+                        raw_chroma = list(store.similarity_search_with_score(query, k=k_chroma))
+                        filter_accepted = False
+                    if not raw_chroma and filter_accepted:
+                        raw_chroma = list(store.similarity_search_with_score(query, k=k_chroma))
+                    if raw_chroma:
+                        comp_filtered = [
+                            (doc, sc) for doc, sc in raw_chroma
+                            if not ((getattr(doc, "metadata", None) or {}).get("component"))
+                            or str((getattr(doc, "metadata", None) or {}).get("component")).strip().lower() == use_comp
+                        ]
+                        if comp_filtered:
+                            raw_chroma = comp_filtered
+                else:
+                    raw_chroma = list(store.similarity_search_with_score(query, k=k_chroma))
+            except Exception as e:
+                print(f"[MultiRetrieval] Chroma 检索失败: {e}")
 
         # ── BM25 通道 ──
-        bm25_results: List[Dict[str, Any]] = []
+        raw_bm25: List[Tuple[Any, float]] = []
         if bm25 is not None:
             try:
-                hits = bm25.search(query, top_k=max(top_k, 20))
-                for passage, _score in hits:
-                    pid = passage.passage_id
-                    meta = passage.metadata or {}
-                    bm25_results.append({
-                        "passage_id": pid,
-                        "source": passage.source,
-                        "score": 1.0,  # RRF 会覆盖
-                        "text": passage.text,
-                        "metadata": dict(meta),
-                        "_source_type": source_type,
-                    })
+                bm25_fetch_k = max(top_k * 5, 300) if use_comp else max(top_k, 20)
+                hits = bm25.search(query, top_k=bm25_fetch_k)
+                if use_comp and hits:
+                    filtered_hits = [
+                        (p, s) for p, s in hits
+                        if not ((getattr(p, "metadata", None) or {}).get("component"))
+                        or str((getattr(p, "metadata", None) or {}).get("component")).strip().lower() == use_comp
+                    ]
+                    if filtered_hits:
+                        raw_bm25 = filtered_hits[:max(top_k, 20)]
+                    elif not raw_chroma:
+                        raw_bm25 = hits[:max(top_k, 20)]
+                    else:
+                        raw_bm25 = []
+                else:
+                    raw_bm25 = hits[:max(top_k, 20)]
             except Exception as e:
                 print(f"[MultiRetrieval] BM25 检索失败: {e}")
+
+        # ── 汇总同论文题名映射 ──
+        cache = getattr(self, "_chroma_title_cache", None)
+        if cache is None:
+            cache = {}
+            self._chroma_title_cache = cache
+        paper_title_map = resolve_paper_title_map(
+            store,
+            bm25,
+            raw_chroma,
+            raw_bm25,
+            title_cache=cache,
+        )
+
+        def _build_hit(pid: str, raw_source: str, score: float, text: str, raw_meta: Optional[dict]) -> Dict[str, Any]:
+            meta = dict(raw_meta) if isinstance(raw_meta, dict) else {}
+            if meta.get("source_file"):
+                meta["source_file"] = normalize_source_path(str(meta["source_file"]))
+            source = normalize_source_path(str(meta.get("source_file") or raw_source or meta.get("source_paper") or "unknown"))
+            sp = str(meta.get("source_paper") or "").strip()
+            doi = str(meta.get("doi") or sp or "")
+            title = str(meta.get("title") or "").strip()
+            if not title:
+                title = (
+                    paper_title_map.get(sp)
+                    or paper_title_map.get(meta.get("source_file", ""))
+                    or paper_title_map.get(source)
+                    or ""
+                )
+                if title:
+                    meta["title"] = title
+            source_display = f"{title} (DOI: {doi})" if title and doi else (title or source)
+            return {
+                "passage_id": pid,
+                "source": source,
+                "source_display": source_display,
+                "doi": doi,
+                "title": title,
+                "score": score,
+                "text": text,
+                "metadata": meta,
+                "_source_type": source_type,
+            }
+
+        chroma_results: List[Dict[str, Any]] = []
+        for doc, score in raw_chroma:
+            meta = getattr(doc, "metadata", None) or {}
+            pid = meta.get("passage_id") or meta.get("chunk_id") or hashlib.md5(doc.page_content.encode()).hexdigest()[:12]
+            sim = max(0.0, 1.0 - score / 2.0)
+            chroma_results.append(_build_hit(str(pid), str(meta.get("source_paper") or "unknown"), sim, doc.page_content, meta))
+
+        bm25_results: List[Dict[str, Any]] = []
+        for passage, _score in raw_bm25:
+            meta = getattr(passage, "metadata", None) or {}
+            bm25_results.append(_build_hit(str(passage.passage_id), str(getattr(passage, "source", "unknown")), 1.0, passage.text, meta))
 
         # ── 单通道退化 ──
         if not bm25_results:
@@ -249,7 +355,22 @@ class MultiRetrieval:
 
         all_by_pid: Dict[str, Dict[str, Any]] = {}
         for r in chroma_results + bm25_results:
-            all_by_pid[r["passage_id"]] = r
+            pid = r["passage_id"]
+            if pid not in all_by_pid:
+                all_by_pid[pid] = r
+            else:
+                prev = all_by_pid[pid]
+                prev_title = str(prev.get("title") or (prev.get("metadata") or {}).get("title") or "").strip()
+                new_title = str(r.get("title") or (r.get("metadata") or {}).get("title") or "").strip()
+                if prev_title and not new_title:
+                    r = dict(r)
+                    r["title"] = prev_title
+                    r_meta = dict(r.get("metadata") or {})
+                    r_meta["title"] = prev_title
+                    r["metadata"] = r_meta
+                    doi = r.get("doi") or r_meta.get("source_paper") or ""
+                    r["source_display"] = f"{prev_title} (DOI: {doi})" if doi else prev_title
+                all_by_pid[pid] = r
 
         fused = []
         for pid, r in all_by_pid.items():
@@ -262,12 +383,13 @@ class MultiRetrieval:
     # ── 单库混合检索（对外接口） ──────────────────────────────
 
     def search_literature(
-        self, query: str, top_k: int = 20,
+        self, query: str, top_k: int = 20, component: Optional[str] = None,
     ) -> List[Dict[str, Any]]:
         """文献库单库：Chroma + BM25 + RRF。"""
         return self._search_hybrid_rrf(
             self.lit_store, self.lit_bm25, query, top_k,
             source_type="literature",
+            component=component,
         )
 
     def search_ebook(
@@ -292,6 +414,7 @@ class MultiRetrieval:
         top_k_final: int = 25,
         lit_weight: Optional[float] = None,
         ebook_weight: Optional[float] = None,
+        component: Optional[str] = None,
     ) -> List[Dict[str, Any]]:
         """双库检索 → 各库 RRF → 加权融合 → 最终排序。
 
@@ -302,6 +425,7 @@ class MultiRetrieval:
             top_k_final: 最终返回前几条
             lit_weight:   (可选)覆写文献库权重,默认 self.lit_weight
             ebook_weight: (可选)覆写电子书权重,默认 self.ebook_weight
+            component:    (可选)文献库组件过滤(cathode/anode/electrolyte)
 
         Returns:
             按融合分数降序排列的结果列表。
@@ -312,6 +436,7 @@ class MultiRetrieval:
         lit_results = self._search_hybrid_rrf(
             self.lit_store, self.lit_bm25, query, top_k_lit,
             source_type="literature",
+            component=component,
         )
 
         ebook_results = []
