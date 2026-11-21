@@ -12,7 +12,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from pinn.spm_runner import run_pinn_discharge, run_pinn_charge, match_pinn_system, load_registry
+from pinn.spm_runner import run_pinn_discharge, run_pinn_charge, match_pinn_system, load_registry, preflight_pinn_inputs
 from pinn.input_spec import build_cell_spec
 
 __all__ = [
@@ -21,4 +21,5 @@ __all__ = [
     "match_pinn_system",
     "load_registry",
     "build_cell_spec",
+    "preflight_pinn_inputs",
 ]

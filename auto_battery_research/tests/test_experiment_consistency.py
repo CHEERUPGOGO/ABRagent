@@ -5,7 +5,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from auto_battery_research.tests.test_experiment_design import setup_design, recipe_payload
+from auto_battery_research.tests.test_experiment_design import setup_design, recipe_payload, slot_response
 from auto_battery_research.tests.test_partial_recovery import two_answer_doc
 from auto_battery_research.util import experiment_design as recipes
 from auto_battery_research.util.experiment_consistency import preflight, stamp
@@ -36,7 +36,7 @@ def test_generation_receives_preflight_and_only_affected_methods_are_pending(tmp
     calls = []
     def chat(system, user, **kwargs):
         calls.append(json.loads(user))
-        return json.dumps(payload)
+        return slot_response(payload, user, kwargs["trace_tag"])
     record = recipes.generate(tmp_path, doc, SimpleNamespace(available=True, chat=chat), "新实验")
     assert len(calls) == 1 and calls[0]["consistency"]["pending_fields"] == ["electrolyte.additives"]
     assert record["pending_operations"] == {"assembly:0": ["electrolyte.additives"]}
@@ -131,7 +131,7 @@ def test_unknown_verification_cannot_be_dismissed_as_not_applicable():
     assert any("未知验证责任" in e["reason"] for e in diagnose_links(record, doc))
 
 
-def test_stage5_delivery_is_conditional_when_recipe_has_pending_fields(tmp_path, monkeypatch):
+def test_stage5_review_concerns_do_not_block_consistent_experiment_parameters(tmp_path, monkeypatch):
     from auto_battery_research.tests.test_stage5_execution import manager
     from auto_battery_research.tests.test_experiment_design import scripted_client
     from auto_battery_research.util.stage5_execution import finalize_stage5
@@ -144,12 +144,12 @@ def test_stage5_delivery_is_conditional_when_recipe_has_pending_fields(tmp_path,
     monkeypatch.setattr(PINNPhysicsChecker, "do_check", lambda *a, **k: (True, {}))
     mgr = manager(tmp_path)
     outcome = finalize_stage5(mgr, design_only=True, client=scripted_client())
-    assert outcome["success"] and outcome["key_findings"]["experiment"]["status"] == "CONDITIONAL"
+    assert outcome["success"] and outcome["key_findings"]["experiment"]["status"] == "PASSED"
     checker = Stage5Checker()
     checker.on_init(mgr, {"id": 5}, mgr.config)
     passed, diagnostic = checker.do_check()
-    assert passed and diagnostic["observed"]["experiment_ready"] is False
+    assert passed and not diagnostic.get("observed", {}).get("is_fallback", False)
     saved = json.loads((tmp_path / "design_scheme.json").read_text(encoding="utf-8"))
     saved.pop("delivery_contract")
     (tmp_path / "design_scheme.json").write_text(json.dumps(saved), encoding="utf-8")
-    assert not checker.do_check()[0]
+    assert checker.do_check()[0]

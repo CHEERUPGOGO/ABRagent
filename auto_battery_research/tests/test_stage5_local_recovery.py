@@ -43,8 +43,10 @@ def test_failed_local_repair_keeps_detailed_good_parts(tmp_path):
     result = recipes.generate(tmp_path, doc, SimpleNamespace(available=True, chat=chat))
     assert result["repair_status"] == "PARTIAL"
     assert result.get("origin") != "engineering_fallback"
-    assert result["sections"] == original["sections"]
-    assert "待确定" in result["parameters"]["process.formation_c_rate"]["value"]
+    assert result["sections"]["fabrication"] == original["sections"]["fabrication"]
+    assert "process.formation_c_rate" not in result["parameters"]
+    assert result["pending_parameters"]["process.formation_c_rate"]["record"] == original["parameters"]["process.formation_c_rate"]
+    assert "assembly:0" in result["pending_sections"]
     assert (tmp_path / "experiment_draft.json").exists()
 
 

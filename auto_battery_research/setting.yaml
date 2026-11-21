@@ -72,7 +72,7 @@ runtime_options:
   # abr-cli --trace > 本开关 > 环境变量 LLM_TRACE (覆盖 MCP/TUI 等无 CLI 进程)。
   # 轨迹含完整提示词 (可能含文献证据全文), 仅建议在本地调试/审计场景开启。
   llm_trace: false
-  # Stage 5 反馈回路: 几何修订轮数预算 (ReviseGeometry 工具) 与达标判定容差。
+  # Stage 5 输入修复/能量优化共用修订预算；拒绝和中断也计次，验证仿真不另计次。
   # 目标能量从课题文本提取 (如 "设计400Wh/kg..." → 400)；能量 ≥ 目标×(1-容差)
   # 即视为达标，LLM 停止修订；收尾仍未达标时自动择优回滚至能量最高一轮。
   max_geometry_revisions: 3

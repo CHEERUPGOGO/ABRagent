@@ -43,8 +43,9 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
                 return json.dumps({"verdicts": [{"group_id": g, "issue_id": i, "resolved": True, "reason": "已注明待验证"}
                     for g, c in payload["transactions"].items() for i in c["issue_ids"]], "new_issues": []})
             # 草稿刻意不复述参数，防止测试仅因旧草稿保留参数而误通过。
-            return "\n\n".join(f"## {title}\n\n" + title + "需要进一步证据支持。" * 5
-                             for title in ("目标与设计路线", "推荐组合", "预期关键指标", "可行性依据", "风险与数据缺口"))
+            from auto_battery_research.util.design_structure import SECTION_TITLES
+            return json.dumps({"version": 2, "parameters": {}, "sections": {
+                key: {"body": title + "需要进一步证据支持。" * 5} for key, title in SECTION_TITLES.items()}})
 
     def retrieve(**kwargs):
         retrieval_questions.append(kwargs["question"])

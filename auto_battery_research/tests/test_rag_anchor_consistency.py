@@ -347,7 +347,8 @@ def test_prompts_and_agents_stage4_consistency_guidance():
                         "error_type": "none",
                     }
                 )
-            return "1. **目标**\n---\n2. **推荐** [p1]\n---\n3. **指标**\n---\n4. **机理**\n---\n5. **风险**"
+            from auto_battery_research.util.design_structure import SECTION_IDS
+            return json.dumps({"version": 2, "parameters": {}, "sections": {key: {"body": "对应证据仍需核对适用体系与条件。[p1]"} for key in SECTION_IDS}})
 
     scheme = {
         "cathode": "lrmo",

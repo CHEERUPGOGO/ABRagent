@@ -21,8 +21,13 @@ def report_identity(doc: dict, result: dict | None, spec: dict | None) -> str:
                "result": result or {}, "spec": spec or {},
                "materials_input": {"analysis": doc.get("final_answer"), "evidence": doc.get("evidence")},
                "requirements": doc.get("requirements"), "research": doc.get("research"),
+               "research_narrative": doc.get("research_narrative"),
                "retrieval_state": doc.get("retrieval_state"),
+               "numeric_contract": doc.get("numeric_contract"),
+               "rule_material_matches": (doc.get("rule_checks") or {}).get("material_matches"),
                "experiment_extensions": doc.get("experiment_extensions"),
+               "physics_input_diagnostic": doc.get("physics_input_diagnostic"),
+               "pinn_attempt_summary": doc.get("pinn_attempt_summary"),
                "report_readiness": doc.get("report_readiness")}
     digest = hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False, allow_nan=False).encode("utf-8")).hexdigest()
     return f"<!-- abr-report-identity:{digest} -->"
@@ -35,6 +40,11 @@ def validate_report_blocks(text: str, context: dict, target: float | None, toler
     存在时按同一视图重算, 缺失时交给实验方案生成记录单独校验。
     """
     errors = []
+    numeric_doc = context.get("research_doc") or {}
+    if numeric_doc.get("numeric_contract"):
+        from .numeric_consistency import document_audit, render_audit as render_numeric
+        if render_numeric(document_audit(numeric_doc)) not in text:
+            errors.append("数值一致性核对附录与当前参数/正文不一致")
     if context.get("requirements"):
         from .research_reporting import render_summary, render_review_appendix
         from .research_contract import document_errors
@@ -51,6 +61,10 @@ def validate_report_blocks(text: str, context: dict, target: float | None, toler
             if expected not in text:
                 errors.append("课题回应摘要或完整审核附录与归档不一致")
     required = {"final-design": render_selected_design(context), "energy": render_energy(context, target, tolerance)}
+    from auto_battery_research.simulation.geometry_contract import render_input_diagnostic
+    diagnostic = render_input_diagnostic(context.get("research_doc") or {})
+    if diagnostic and not context.get("result") and diagnostic not in text:
+        errors.append("报告缺少当前材料匹配与物理输入阻断说明")
     for key, value in required.items():
         if f"<!-- abr-{key}:start -->\n{value}\n<!-- abr-{key}:end -->" not in text:
             errors.append(f"{key} 与最终设计/仿真不一致")
@@ -447,6 +461,27 @@ def render_selected_design(context: dict) -> str:
 
 
 def render_energy(context: dict, target: float | None, tolerance: float) -> str:
+    body = _render_energy(context, target, tolerance)
+    summary = (context.get("research_doc") or {}).get("pinn_attempt_summary") or {}
+    if summary:
+        rounds = summary.get("rounds") or []
+        repair = sum(r.get("mode") == "input_repair" for r in rounds)
+        optimization = sum(r.get("mode") == "energy_optimization" for r in rounds)
+        failed = sum(r.get("status") in ("REJECTED", "INTERRUPTED", "SIMULATION_FAILED") for r in rounds)
+        body += (f"\n\n**PINN 修订机会。** 已用 {summary['used']}/{summary['max']} 次，剩余 {summary['remaining']} 次；"
+                 f"其中输入修复 {repair} 次、能量优化 {optimization} 次、失败或中断 {failed} 次。首次仿真及修订后的验证仿真不另计次。")
+        labels = {"INPUT_BLOCKED": "输入仍受契约或权限阻断", "LLM_UNAVAILABLE": "输入修复服务不可用，保留剩余机会",
+                  "BUDGET_EXHAUSTED": "修订预算已耗尽", "SIMULATION_FAILED": "验证仿真失败", "NO_VALID_SIMULATION": "没有有效验证仿真"}
+        if summary.get("status") in labels:
+            body += "\n\n" + labels[summary["status"]] + "。"
+            diagnostic = summary.get("diagnostic") or {}
+            reason = diagnostic.get("error") or "; ".join(diagnostic.get("errors") or [])
+            if reason:
+                body += "当前阻断原因：" + display(reason) + "。"
+    return body
+
+
+def _render_energy(context: dict, target: float | None, tolerance: float) -> str:
     r, a = context["result"], context["energy_accounting"]
     energy = r.get("energy_wh_kg")
     if context.get("requirements") and target is None and not isinstance(energy, (int, float)):

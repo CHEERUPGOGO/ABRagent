@@ -72,7 +72,7 @@ def wheel_names(tmp_path_factory) -> list:
 
 def test_wheel_contains_rag_runtime_data(wheel_names):
     """RelationEngine 三张核心数据表及 data 子目录必须入包，缺失即门禁空转."""
-    for required in ("alias_map.json", "candidates.json", "constraints.json"):
+    for required in ("alias_map.json", "candidates.json", "constraints.json", "electrolyte_families.json"):
         assert f"lmllm/RAG/data/{required}" in wheel_names, f"核心数据表漏打包: {required}"
     nested = [
         n for n in wheel_names

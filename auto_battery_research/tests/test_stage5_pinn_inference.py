@@ -349,10 +349,10 @@ def test_rag_adapter_normalizes_geometry_into_artifacts(tmp_path, monkeypatch):
         available = True
 
         def chat(self, *args, **kwargs):
-            from auto_battery_research.tests.test_experiment_design import recipe_payload
+            from auto_battery_research.tests.test_experiment_design import recipe_payload, slot_response
             payload = recipe_payload()
-            payload["citations"] = ["ev_001"]
-            return json.dumps(payload, ensure_ascii=False)
+            payload["sections"]["testing"][0] += "参考[ev_001]。"
+            return slot_response(payload, args[1], kwargs["trace_tag"])
 
     class _StubPipeline:
         writer_llm = _RecipeClient()

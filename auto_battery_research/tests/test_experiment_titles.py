@@ -6,7 +6,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from auto_battery_research.tests.test_experiment_design import recipe_payload, setup_design
+from auto_battery_research.tests.test_experiment_design import recipe_payload, setup_design, slot_response
 from auto_battery_research.util import experiment_design as recipes
 from auto_battery_research.util import experiment_repair as repair
 from auto_battery_research.util.experiment_titles import checked_title, lead_title, normalize_step_titles
@@ -53,9 +53,9 @@ def test_titles_generated_in_existing_call_and_included_in_hash(tmp_path):
     calls = []
     def chat(system, user, **kwargs):
         calls.append((system, kwargs))
-        return json.dumps(payload, ensure_ascii=False)
+        return slot_response(payload, user, kwargs["trace_tag"])
     record = recipes.generate(tmp_path, doc, SimpleNamespace(available=True, chat=chat), "新实验分析")
-    assert len(calls) == 1 and calls[0][1]["trace_tag"] == "experiment_design"
+    assert [kw["trace_tag"] for _, kw in calls] == ["experiment_design"]
     assert "step_titles" in calls[0][0]
     assert record["step_titles"]["testing"] == [{"title": "结构与成分", "paragraph_hash": digest(payload["sections"]["testing"][0])}]
     assert "#### 5.4.1 结构与成分" in recipes.render(record, doc)

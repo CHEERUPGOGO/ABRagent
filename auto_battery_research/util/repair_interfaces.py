@@ -7,22 +7,24 @@ from .scheme_ledger import digest
 
 
 def build_interfaces(text, parameters, issues, permit):
-    from .design_repair import blocks
+    from .design_repair import blocks, issue_quotes
     units = blocks(text)[1]
     spans, unresolved = {}, []
     for issue in issues:
         grant = permit["grants"].get(issue["id"])
-        quote = issue.get("quote")
-        matches = [(bid, value.index(quote)) for bid, value in units.items()
-                   if isinstance(quote, str) and quote and value.count(quote) == 1]
-        if not grant or len(matches) != 1:
+        quotes = issue_quotes(issue)
+        matches = [[(bid, value.index(quote)) for bid, value in units.items() if value.count(quote) == 1] for quote in quotes]
+        if not grant or not quotes or any(len(m) != 1 for m in matches):
             unresolved.append(issue["id"])
             continue
-        bid, start = matches[0]
-        spans.setdefault(bid, []).append({"start": start, "end": start + len(quote),
-            "issue_ids": [issue["id"]], "fields": grant["fields"]})
+        primary = set()
+        for quote, found in zip(quotes, matches):
+            bid, start = found[0]
+            primary.add(bid)
+            spans.setdefault(bid, []).append({"start": start, "end": start + len(quote),
+                "issue_ids": [issue["id"]], "fields": grant["fields"]})
         for dep in grant["blocks"]:
-            if dep != bid:
+            if dep not in primary:
                 # 显式字段引用的依赖段落纳入同一事务；不自动扩展到其他章节。
                 spans.setdefault(dep, []).append({"start": 0, "end": len(units[dep]),
                     "issue_ids": [issue["id"]], "fields": grant["fields"]})
@@ -102,7 +104,7 @@ def normalize_submissions(patch, contract, text):
 
 
 def stage_groups(text, parameters, permit, contract, submissions):
-    from .design_repair import blocks, apply_patch
+    from .design_repair import blocks, apply_patch, issue_quotes
     units = blocks(text)[1]
     supplied, duplicates = {}, set()
     for row in submissions:
@@ -120,7 +122,7 @@ def stage_groups(text, parameters, permit, contract, submissions):
                 raise ValueError("事务接口未收齐或重复提交")
             affected = {contract["interfaces"][i]["block_id"] for i in ids}
             # 可定位到本段但未能签发接口的问题，同样阻止提交该段。
-            if any(issue_map[i].get("quote") and any(issue_map[i]["quote"] in units[b] for b in affected) for i in contract["unresolved"]):
+            if any(any(q in units[b] for q in issue_quotes(issue_map[i]) for b in affected) for i in contract["unresolved"]):
                 raise ValueError("该段仍有未定位或未授权问题")
             writes, changes, field_values = {}, [], {}
             for iid in ids:
@@ -152,7 +154,7 @@ def stage_groups(text, parameters, permit, contract, submissions):
             merged, fields = apply_patch(text, parameters, synthetic_permit, patch)
             candidates[gid] = {"patch": patch, "permit": synthetic_permit, "text": merged, "parameters": fields,
                 "issue_ids": sorted({issue for i in ids for issue in contract["interfaces"][i]["issue_ids"]}),
-                "blocks": {e["block_id"]: e["text"] for e in edits}}
+                "blocks": {bid: value for bid, value in blocks(merged)[1].items() if units.get(bid) != value}}
         except (ValueError, TypeError, KeyError) as exc:
             diagnostics[gid] = {"status": "REJECTED", "reason": str(exc)}
     return candidates, diagnostics
@@ -171,6 +173,7 @@ def execute(writer, verifier, text, parameters, permit, issues, evidence, contex
         "parameter_change_format": {"path": "只能取接口fields中的字段", "field": {
             "value": "按问题和证据填写，数值须用JSON数字", "unit": "沿用规范单位", "basis": "engineering_proposal或literature",
             "source": "真实来源描述", "source_quote": "合成后的正文中逐字存在的声明", "passage_id": "literature必须为已归档段落ID"}},
+        "numeric_binding_instruction": "abr-param/abr-derived标记及其中显示值保留原样；改数值只提交已授权parameter_changes，程序统一刷新所有显式引用及派生量。文献数字不自动改。",
         "return_object_example_do_not_wrap": {"base_hash": contract["base_hash"], "submissions": [
             {"interface_id": "使用接口清单中的编号", "replacement": "仅替换接口original对应的文字", "parameter_changes": []}]}}
     for attempt in range(2):
@@ -187,10 +190,14 @@ def execute(writer, verifier, text, parameters, permit, issues, evidence, contex
                 continue
             return text, parameters, {"status": "REJECTED", "reason": str(exc), "interfaces": contract, "error_type": "protocol" if protocol else "validation"}
     if staged:
-        request = {"issues": issues, "transactions": {g: {"issue_ids": c["issue_ids"], "paragraphs": c["blocks"], "parameter_changes": c["patch"]["parameters"]} for g, c in staged.items()},
+        staged_issue_ids = {issue_id for candidate in staged.values() for issue_id in candidate["issue_ids"]}
+        request = {"issues": [issue for issue in issues if issue["id"] in staged_issue_ids],
+            "transactions": {g: {"issue_ids": c["issue_ids"], "paragraphs": c["blocks"], "parameter_changes": c["patch"]["parameters"]} for g, c in staged.items()},
             "parameters": parameters, "original_blocks": prompt["draft_blocks"], "evidence": package, "evidence_context": evidence_selection, "context": context}
         try:
-            raw = verifier.chat('只复核本批问题是否在候选段落中解决以及是否产生新矛盾，不修改正文。输出JSON {"verdicts":[{"group_id":"事务编号","issue_id":"问题编号","resolved":true,"reason":"依据"}],"new_issues":[]}。new_issues每项含group_id和reason。', json.dumps(request, ensure_ascii=False), temperature=0.1, trace_tag="repair_verify")
+            raw = verifier.chat('只复核transactions列出的候选事务，不返回其他问题编号。逐项核对是否解决问题以及是否产生新矛盾，不修改正文。'
+                'parameters中的locked条件不能改写、否定、换材料或转为仅对照；重复提到同一材料可以，但须核对完整声明仍与锁定值一致。'
+                '输出JSON {"verdicts":[{"group_id":"事务编号","issue_id":"问题编号","resolved":true,"reason":"依据"}],"new_issues":[]}。new_issues每项含group_id和reason。', json.dumps(request, ensure_ascii=False), temperature=0.1, trace_tag="repair_verify")
             verification = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
             verdicts = verification["verdicts"]
             if not isinstance(verdicts, list) or not isinstance(verification.get("new_issues"), list):

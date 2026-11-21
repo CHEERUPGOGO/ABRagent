@@ -490,15 +490,21 @@ def _match_pinn_system_for_scheme(scheme: Dict[str, Any]) -> Dict[str, Any]:
     if not isinstance(scheme, dict) or not scheme:
         result["reasons"].append("Stage 4 方案未读取到，无法匹配 PINN 体系")
         return result
+    from auto_battery_research.util.material_ids import canonical_scheme
+    scheme = canonical_scheme(scheme)
     cathode_id = str(scheme.get("cathode") or "")
     anode_id = str(scheme.get("anode") or "")
+    if not cathode_id or not anode_id:
+        result["reasons"].append("正负极材料身份不完整，无法匹配 PINN 体系")
+        return result
     try:
-        from pinn.spm_runner import match_pinn_system
+        from auto_battery_research.simulation import match_pinn_system
         system = match_pinn_system(cathode_id, anode_id)
     except Exception as e:
         result["reasons"].append(f"PINN 注册表读取失败: {type(e).__name__}: {e}")
         return result
     if system is None:
+        result["status"] = "NO_MATCH"
         result["reasons"].append(
             f"cathode={cathode_id!r} / anode={anode_id!r} 未匹配注册表任何 PINN 体系 (仅参数提取)")
         return result
@@ -1136,6 +1142,35 @@ def _render_pinn_geometry_block(summary: Optional[Dict[str, Any]]) -> str:
 
 
 def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, target_query: str = "", stage_manager: Optional[Any] = None, **kwargs) -> Dict[str, Any]:
+    """仿真不扣修订机会；成功和输入失败均回显共用预算及最新几何诊断。"""
+    if stage_manager is None:
+        from auto_battery_research.tools.stage_tools import get_stage_manager, get_stage_manager_for_goal
+        stage_manager = get_stage_manager_for_goal((target_query or "").strip() or get_stage_manager().target_goal)
+    mgr = stage_manager
+    response = _run_pinn_simulation_impl(c_rate, ambient_temp, mgr.target_goal, mgr, **kwargs)
+    doc_path = mgr.get_task_output_dir() / "design_scheme.json"
+    if doc_path.exists():
+        from auto_battery_research.util import stage5_attempts as attempts
+        from auto_battery_research.util.pinn_inputs import diagnose
+        from auto_battery_research.simulation.geometry_contract import geometry_hash
+        doc = json.loads(doc_path.read_text(encoding="utf-8"))
+        geo = doc.get("scheme", {}).get("geometry")
+        if isinstance(geo, dict):
+            findings = response.setdefault("key_findings", {})
+            findings["revision_budget"] = attempts.budget(mgr, doc)
+            findings["input_diagnostic"] = diagnose(doc, c_rate)
+            try:
+                findings["geometry_context"] = {"base_revision": doc["scheme"].get("design_revision", 0),
+                    "base_geometry_hash": geometry_hash(geo), "geometry": geo,
+                    "diffusion_policy": "D_s 仅依据任务证据修订，自动修复只允许六项未锁定几何",
+                    "evidence": doc.get("evidence", [])[:25]}
+                attempts.simulation_completed(mgr, response)
+            except (ValueError, TypeError):
+                pass  # 非有限输入保留原始失败诊断，不伪造可用哈希。
+    return response
+
+
+def _run_pinn_simulation_impl(c_rate: float = 0.5, ambient_temp: float = 298.15, target_query: str = "", stage_manager: Optional[Any] = None, **kwargs) -> Dict[str, Any]:
     """执行 Stage 5: PINN 触发判定 + 材料物理参数提取落盘 + (激活且匹配时) PINN 放电仿真.
 
     1. 按 setting.yaml `pinn_trigger` 配置做触发判定 (总开关 AND 体系匹配，
@@ -1213,7 +1248,7 @@ def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, targe
         # 目标达标判定块 (带容差): 目标能量取课题文本数值 (如 "400Wh/kg")，容差取
         # runtime_options.target_energy_tolerance_pct (默认 ±5%)。确定性 met 字段是
         # LLM 停止修订的主判据，避免容差内微小差距反复空转。
-        from auto_battery_research.tools.geometry_revision import count_geometry_revisions
+        from auto_battery_research.util.stage5_attempts import budget as attempt_budget
         goal_text = (target_query or "").strip() or getattr(mgr, "target_goal", "") or ""
         tolerance_pct = get_target_energy_tolerance_pct(mgr)
         energy_target = extract_energy_target_wh_kg(goal_text)
@@ -1221,7 +1256,7 @@ def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, targe
         max_revisions = get_max_geometry_revisions(mgr)
         try:
             scheme_doc_file, scheme_doc = _load_design_scheme_doc(target_query, task_dir, mgr)
-            revisions_used = count_geometry_revisions(scheme_doc.get("scheme") or {}) if scheme_doc else 0
+            revisions_used = attempt_budget(mgr, scheme_doc)["used"] if scheme_doc else 0
         except Exception:
             revisions_used = 0
         revisions_remaining = max(0, max_revisions - revisions_used)
@@ -1272,12 +1307,12 @@ def run_pinn_simulation(c_rate: float = 0.5, ambient_temp: float = 298.15, targe
         # (如 "c_rate=10 超出体系有效范围 [0.1, 3]")；NO_MATCH/PINN_DISABLED/SKIPPED
         # 是合法回退, 保持提取成功的 success=True 语义
         result["success"] = False
-        from auto_battery_research.tools.geometry_revision import count_geometry_revisions
-        exhausted = count_geometry_revisions((current_doc or {}).get("scheme") or {}) >= get_max_geometry_revisions(mgr)
+        from auto_battery_research.util.stage5_attempts import budget as attempt_budget
+        exhausted = attempt_budget(mgr, current_doc)["remaining"] == 0
         result["message"] = (
             f"PINN 放电仿真未完成 ({pinn_run.get('status')}): {pinn_run.get('error', '')}；"
             + ("修订预算已耗尽，请调用 Check 选定最佳历史结果并验收，再 Complete；无需重复仿真。" if exhausted else
-               "参数提取产物已保留，可调用 ReviseGeometry 把越界的几何/倍率输入修正到合法范围后重跑")
+               "可调用 FinalizeStage5 使用剩余机会修复未锁定几何；D_s、倍率及锁定值沿用原规则")
         )
         result["journal_notes"] = (
             f"PINN 放电仿真未完成 ({pinn_run.get('status')}): {pinn_run.get('error', '')}"
@@ -1343,7 +1378,65 @@ def _update_design_scheme_md(md_path: Path, geometry_md: str, revision_md: str) 
         return False
 
 
-def revise_geometry(
+def revise_geometry(revisions: Dict[str, Any], reason: str = "", target_query: str = "",
+                    stage_manager: Optional[Any] = None, **kwargs) -> Dict[str, Any]:
+    """共用尝试预算；失败候选只写审计记录，不覆盖当前设计。"""
+    from auto_battery_research.util import stage5_attempts as attempts
+    from auto_battery_research.simulation.geometry_contract import geometry_hash
+    if stage_manager is None:
+        from auto_battery_research.tools.stage_tools import get_stage_manager, get_stage_manager_for_goal
+        stage_manager = get_stage_manager_for_goal((target_query or "").strip() or get_stage_manager().target_goal)
+    mgr = stage_manager
+    path, doc = _load_design_scheme_doc(mgr.target_goal, mgr.get_task_output_dir(), mgr)
+    if doc is None:
+        return {"success": False, "error_code": "DESIGN_SCHEME_MISSING", "error": "未找到 design_scheme.json"}
+    record = None
+    try:
+        from auto_battery_research.util.scheme_ledger import require_current
+        require_current(mgr.get_task_output_dir(), doc)
+        geo = doc["scheme"].get("geometry") or {}
+        current_hash = geometry_hash(geo)
+        if geo.get("contract_version") == "2.0" and (kwargs.get("base_revision") != doc["scheme"].get("design_revision", 0)
+                or kwargs.get("base_geometry_hash") != current_hash):
+            return {"success": False, "error_code": "GEOMETRY_REVISION_STALE", "error": "修改请求版本或几何哈希失配"}
+        attempt_id = kwargs.get("attempt_id")
+        if attempt_id:
+            state = attempts.load(mgr, doc)
+            record = next((r for r in state["rounds"] if r.get("attempt_id") == attempt_id), None)
+            if not record or record.get("status") not in ("RESERVED", "PROPOSED") or record.get("base_geometry_hash") != current_hash:
+                record = None  # 拒绝重复使用时不得把既有成功记录改为失败。
+                raise ValueError("PINN 尝试已使用或与当前几何不一致")
+        else:
+            record = attempts.reserve(mgr, "direct_revision", current_hash)
+        attempts.update(mgr, record["attempt_id"], status="PROPOSED", revisions=revisions, reason=reason)
+        if record.get("mode") in ("input_repair", "energy_optimization"):
+            flat = {f"{comp}.{field}" for comp, fields in revisions.items() for field in fields} if isinstance(revisions, dict) else set()
+            if not flat or not flat <= set(record.get("allowed_fields", [])):
+                raise ValueError("候选包含未授权字段或为空")
+        response = _revise_geometry_impl(revisions, reason, mgr.target_goal, mgr, **dict(kwargs, attempt_id=record["attempt_id"]))
+        if response.get("success"):
+            saved = json.loads(path.read_text(encoding="utf-8"))
+            attempts.update(mgr, record["attempt_id"], status="COMMITTED", geometry_hash=saved["scheme"]["geometry_hash"],
+                            design_revision=saved["scheme"]["design_revision"])
+        else:
+            attempts.update(mgr, record["attempt_id"], status="REJECTED", error=response.get("error"))
+        response["revision_budget"] = attempts.budget(mgr)
+        response["revisions_used"] = response["revision_budget"]["used"]
+        response.setdefault("key_findings", {})["revision_budget"] = response["revision_budget"]
+        if response.get("success"):
+            response["message"] = (f"第 {record['attempt']}/{response['revision_budget']['max']} 次修订已落盘，"
+                                   f"剩余 {response['revision_budget']['remaining']} 次。请重跑 RunPhysicsSimulation 验证当前几何。")
+            response["journal_notes"] = f"PINN 第 {record['attempt']}/{response['revision_budget']['max']} 次修订，剩余 {response['revision_budget']['remaining']} 次；" + reason
+        response["attempt_id"] = record["attempt_id"]
+        return response
+    except Exception as exc:
+        if record:
+            attempts.update(mgr, record["attempt_id"], status="REJECTED", error=str(exc))
+        return {"success": False, "error_code": "REVISION_BUDGET_EXHAUSTED" if "BUDGET_EXHAUSTED" in str(exc) else "REVISION_REJECTED",
+                "error": str(exc), "revision_budget": attempts.budget(mgr)}
+
+
+def _revise_geometry_impl(
     revisions: Dict[str, Any],
     reason: str = "",
     target_query: str = "",
@@ -1385,7 +1478,10 @@ def revise_geometry(
     from auto_battery_research.simulation.geometry_contract import validate_geometry_contract
     existing_geo = doc["scheme"].get("geometry") or {}
     if existing_geo.get("contract_version") == "2.0":
-        contract_errors = validate_geometry_contract(existing_geo, doc["scheme"], doc.get("evidence") or [])
+        contract_errors = validate_geometry_contract(existing_geo, doc["scheme"], doc.get("evidence") or [], check_ranges=False)
+        from auto_battery_research.simulation.geometry_contract import geometry_hash
+        if doc["scheme"].get("geometry_hash") != geometry_hash(existing_geo):
+            contract_errors.append("设计几何哈希失配")
         if contract_errors:
             return {"success": False, "error_code": "GEOMETRY_CONTRACT_INVALID",
                     "error": "; ".join(contract_errors)}
@@ -1409,11 +1505,32 @@ def revise_geometry(
             "key_findings": {"status": rev_res.get("error_code"), "error": rev_res.get("error")},
         }
 
+    # 接受前重新核验完整来源、用户锁定及有效训练包络；不把已越界的当前值先行拒绝。
+    try:
+        from auto_battery_research.util.pinn_inputs import validate_candidate
+        from auto_battery_research.util.scheme_ledger import load as read_ledger, flatten_scheme
+        ledger = read_ledger(task_dir) or doc.get("ledger_view") or {}
+        values = flatten_scheme(doc["scheme"])
+        for change in rev_res.get("changes", []):
+            row = ledger.get("parameters", {}).get(change["field"], {})
+            if row.get("locked") and row.get("value") != values[change["field"]]:
+                raise ValueError("用户锁定字段禁止覆盖：" + change["field"])
+        validate_candidate(doc, doc["scheme"], kwargs.get("c_rate", .5))
+        rev_res["revision_entry"]["attempt_id"] = kwargs.get("attempt_id")
+        from auto_battery_research.util.stage5_attempts import load as read_attempts
+        attempt = next((r for r in read_attempts(mgr).get("rounds", []) if r.get("attempt_id") == kwargs.get("attempt_id")), {})
+        rev_res["revision_entry"].update(attempt=attempt.get("attempt"), mode=attempt.get("mode"))
+    except Exception as exc:
+        return {"success": False, "error_code": "REVISION_INPUT_INVALID", "error": str(exc)}
+
     # 原子落盘 json + 就地更新 md (声明表 + 修订记录)
     try:
         from auto_battery_research.util.scheme_ledger import align_geometry_parameters
         align_geometry_parameters(doc, [change["field"] for change in rev_res.get("changes", [])],
                                   "Stage 5 已校验几何修订：" + reason)
+        if doc.get("experiment_contract"):
+            doc["experiment_plan_pending"] = doc.pop("experiment_plan_hash", None)
+            doc.pop("experiment_contract", None)
         from auto_battery_research.util.experiment_design import sync
         sync(task_dir, doc, dry_run=True)
         from auto_battery_research.util.scheme_ledger import load as load_ledger, commit_design
@@ -1912,12 +2029,17 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     except ValueError as exc:
         return {"success": False, "error_code": "SCHEME_LEDGER_STALE", "error": str(exc)}
     all_journals = sanitize_stage_journals_for_pinn_state(task_dir, mgr.get_all_stage_journal())
+    if (task_dir / "pinn_optimization_state.json").exists() and isinstance(scheme_data.get("scheme", {}).get("geometry"), dict):
+        from auto_battery_research.util.stage5_attempts import publish_summary
+        scheme_data = publish_summary(mgr)
     stage_statuses = {s.id: s.status for s in mgr.stages}
     from auto_battery_research.util.report_contract import (
         report_context, report_identity, render_selected_design, render_recipe, render_energy, render_evidence,
     )
     final_result, final_spec = {}, {}
-    if stage_statuses.get(5) == "PASSED":
+    from auto_battery_research.util.stage5_execution import report_without_simulation
+    no_simulation = report_without_simulation(scheme_data, task_dir)
+    if stage_statuses.get(5) == "PASSED" and not no_simulation:
         for filename, destination in ((PINN_SIM_RESULT_FILENAME, final_result), (PINN_INPUT_SPEC_FILENAME, final_spec)):
             path = task_dir / filename
             if path.exists():
@@ -1953,6 +2075,8 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
         except Exception:
             pass
         s5_status_desc = f"FAILED (Stage 5 门禁未通过{s5_failure_desc})"
+    elif stage_statuses.get(5) == "PASSED" and no_simulation:
+        s5_status_desc = "PASSED（物理仿真不适用，实验参数核对通过）"
     elif stage_statuses.get(5) == "PASSED":
         s5_pinn = _load_pinn_result_summary(mgr)
         if s5_pinn and not _pinn_result_identity_ok(mgr, s5_pinn):
@@ -2122,10 +2246,14 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
     candidate_summary = " / ".join(narrative_text(selected_scheme.get(k)) for k in ("cathode", "anode", "electrolyte"))
     physics_summary = (f"已完成 {s5_pinn['c_rate']:g}C 单次放电仿真，比容量 {s5_pinn['specific_capacity_mAh_g']:.1f} mAh/g，平均电压 {s5_pinn['average_voltage_V']:.2f} V。"
                        if s5_pinn else "本次未获得可采信的匹配放电仿真，不能据此判定性能达标。")
+    if not s5_pinn:
+        from auto_battery_research.simulation.geometry_contract import render_input_diagnostic
+        physics_summary = render_input_diagnostic(scheme_data) or physics_summary
     s4_review = str(scheme_data.get("review_status") or "").strip()
     s4_issues = (scheme_data.get("reviewer_output") or {}).get("issues") or []
+    caveat_section = "第 6 节附录" if scheme_data.get("requirements") else "第 2 节"
     s4_caveat_note = (
-        f"；审稿状态 {s4_review or 'REVIEWED_WITH_ISSUES'}，含 {len(s4_issues)} 条审稿保留意见（详见第 2 节）"
+        f"；审稿状态 {s4_review or 'REVIEWED_WITH_ISSUES'}，含 {len(s4_issues)} 条审稿保留意见（详见{caveat_section}）"
         if (s4_issues or s4_review == "REVIEWED_WITH_ISSUES")
         else ""
     )
@@ -2234,6 +2362,9 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
         report_content = report_content[:start] + block + "\n\n---\n\n" + report_content[end:]
         report_content += "\n\n" + render_review_appendix(scheme_data) + "\n"
         report_content = report_content.replace("流程完成，物理验证仅为代理估算", "流程完成，研究验证状态见正文")
+    elif scheme_data.get("numeric_contract"):
+        from auto_battery_research.util.numeric_consistency import document_audit, render_audit as render_numeric
+        report_content += "\n\n" + render_numeric(document_audit(scheme_data)) + "\n"
     # 4. 原子安全写入课题专属规范文件 (final_research_report.md 为唯一规范命名；
     #    final_report.md / battery_research_synthesis_report.md 仅为读侧历史别名兼容，
     #    不再重复写出 —— 避免同一课题目录下出现三份内容相同的研报)

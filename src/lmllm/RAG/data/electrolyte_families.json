@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "note": "只声明程序可识别的规则范围，不表示配方性能或相容性已验证。当前carbonate_ec条目明确以1M LiPF6常规碳酸酯为例；未覆盖的浓度和多盐体系留待登记，不外推高浓/LHCE。",
+  "families": [
+    {
+      "id": "lipf6_1M_carbonates",
+      "rule_material_id": "carbonate_ec",
+      "salts": ["LiPF6"],
+      "concentration": {"unit": "mol/L", "values": [1.0]},
+      "solvents": ["EC", "DMC", "EMC", "DEC"],
+      "additives": ["FEC", "VC", "LiDFOB", "LiBOB", "LiPO2F2", "LiNO3", "DTD", "PS"],
+      "source": "candidates.json:carbonate_ec；添加剂单独保留，规则白名单只提供质询对策，不证明性能"
+    }
+  ]
+}

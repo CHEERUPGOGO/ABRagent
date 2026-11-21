@@ -642,6 +642,9 @@ class RAGPipeline:
         plan = saved_retrieval["plan"] if saved_retrieval else self.planner.run(getattr(self, "requirement_source", None) or question, history_context)
         from auto_battery_research.util.research_contract import bindings, field_equal
         self.reviewer.requirements = plan.get("requirements")
+        persist_requirements = getattr(self, "persist_requirements", None)
+        if callable(persist_requirements) and plan.get("requirements"):
+            self.scheme_context = persist_requirements(plan["requirements"])
         if getattr(self, "scheme_context", None) is not None and plan.get("requirements"):
             import copy
             self.scheme_context = copy.deepcopy(self.scheme_context)
@@ -734,17 +737,19 @@ class RAGPipeline:
             from auto_battery_research.util.research_contract import bindings as requirement_bindings
             declared = dict((getattr(self, "scheme_context", None) or {}).get("parameters", {}))
             declared.update(requirement_bindings(plan["requirements"]))
-            _writer_scheme = {}
-            for comp in ("cathode", "anode", "electrolyte"):
-                value = declared.get(comp + ".material", {}).get("value")
-                if value is not None:
-                    _writer_scheme[comp] = (self.relation_engine.normalize(str(value)) if self.relation_engine else None) or value
+            from auto_battery_research.util.material_ids import assemble_components
+            _writer_scheme = assemble_components({}, declared, strict=False)
         inherited_design = getattr(self, "inherited_design", None)
         if inherited_design:
             _writer_scheme = _writer_scheme or {}
             for component in ("cathode", "anode", "electrolyte"):
                 if not _writer_scheme.get(component):
                     _writer_scheme[component] = inherited_design.get(component)
+                    identity = (inherited_design.get("component_identities") or {}).get(component)
+                    if identity:
+                        _writer_scheme.setdefault("component_identities", {})[component] = dict(identity)
+        from auto_battery_research.util.material_ids import canonical_scheme
+        _writer_scheme = canonical_scheme(_writer_scheme)
         geometry_candidate = None
         geometry_error = None
         writer_question = question
@@ -767,16 +772,44 @@ class RAGPipeline:
                     geometry = inherited["geometry"]
                     geometry_candidate = {c: {f: geometry[c].get(f) for f in ("L_um", "porosity", "R_s_um", "D_s_m2s")} for c in ("cathode", "anode")}
                 else:
-                    raw = self.writer_llm.chat(GEOMETRY_SYSTEM_PROMPT, json.dumps({
+                    from auto_battery_research.util.physical_parameters import (
+                        INSTRUCTIONS, fixed_geometry, fill_missing_candidate, record_geometry_sources,
+                    )
+                    fixed = fixed_geometry((scheme_context or {}).get("parameters", {}))
+                    raw = self.writer_llm.chat(GEOMETRY_SYSTEM_PROMPT + "\n" + INSTRUCTIONS, json.dumps({
+                        "fixed_geometry": fixed,
                         "design_request": question, "materials": materials, "evidence": evidence[:25],
                         "current_scheme_table": scheme_context,
                         "ranges_SI": resolve_input_ranges(materials.get("cathode"), materials.get("anode")),
                     }, ensure_ascii=False), temperature=0.1, trace_tag="geometry_design")
                     geometry_candidate = constrain_generated_np(safe_json_loads(raw), getattr(self, "original_design_request", question))
+                    geometry_candidate = fill_missing_candidate(geometry_candidate, fixed)
                     geometry = build_geometry_contract(geometry_candidate, materials, evidence)
+                    record_geometry_sources(geometry, fixed)
                 writer_question += "\n【已校验结构化几何，正文不得变更；工程候选不是用户实测值】\n" + json.dumps(geometry, ensure_ascii=False)
             except Exception as exc:
                 geometry_error = str(exc)
+        from auto_battery_research.util.scheme_ledger import project_scheme_parameters
+        self.writer.current_parameters = project_scheme_parameters(
+            dict(_writer_scheme or {}, **({"geometry": geometry} if locals().get("geometry") else {})),
+            (scheme_context or {}).get("parameters", {}), "Writer前已声明参数")
+        import json
+        from auto_battery_research.util.scheme_ledger import atomic_write
+        protocol_seed = {"question": question, "draft": "", "evidence": evidence, "plan": plan,
+            "retrieval": retrieval, "db_type": _db_type, "scheme": dict(_writer_scheme or {}, **({"geometry": geometry} if locals().get("geometry") else {})),
+            "geometry_candidate": geometry_candidate, "geometry_error": geometry_error,
+            "checkpoint_identity": getattr(self, "repair_checkpoint_identity", None), "retrieval_state": retrieval_seed["retrieval_state"],
+            "writer_protocol": {}, "writer_parameters": self.writer.current_parameters,
+            "writer_request": {"question": writer_question, "plan": plan, "evidence": writer_evidence,
+                               "history_context": history_context, "scheme": _writer_scheme}}
+        self.writer.protocol_state = protocol_seed["writer_protocol"]
+        def save_protocol():
+            path = getattr(self, "repair_checkpoint_path", None)
+            if path:
+                atomic_write(path, json.dumps(protocol_seed, ensure_ascii=False, indent=2))
+                path.with_name("stage4_rebuild_requested.json").unlink(missing_ok=True)
+        self.writer.save_protocol = save_protocol
+        save_protocol()
         writer_output = self.writer.run(
             question=writer_question,
             plan=plan,
@@ -801,8 +834,12 @@ class RAGPipeline:
         seed = {"question": question, "draft": writer_output.get("draft_answer", ""), "evidence": evidence,
                 "plan": plan, "retrieval": retrieval, "db_type": _db_type,
                 "writer_output": writer_output, "scheme": baseline_scheme,
+                "design_structure": writer_output.get("design_structure"),
+                "numeric_contract": writer_output.get("numeric_contract"),
+                "parameters": writer_output.get("numeric_parameters", {}),
                 "geometry_candidate": geometry_candidate, "geometry_error": geometry_error,
                 "checkpoint_identity": getattr(self, "repair_checkpoint_identity", None)}
+        seed.update({k: protocol_seed[k] for k in ("writer_protocol", "writer_parameters", "writer_request")})
         seed["retrieval_state"] = retrieval_seed["retrieval_state"]
         from auto_battery_research.util.research_contract import prepare_review
         prepare_review(self, seed)
@@ -860,6 +897,9 @@ class RAGPipeline:
             "db_type": retrieval.get("db_type", _db_type),
             "retrieval": retrieval,
             "writer_output": writer_output,
+            "design_structure": seed.get("design_structure"),
+            "numeric_contract": seed.get("numeric_contract"),
+            "numeric_consistency": seed.get("numeric_consistency"),
             "reviewer_output": reviewer_output,
             "review_passed": review_passed,
             "review_completed": review_completed,

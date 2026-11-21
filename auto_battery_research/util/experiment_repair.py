@@ -8,7 +8,8 @@ from .experiment_titles import normalize_step_titles
 
 
 def normalize_citations(record):
-    record = copy.deepcopy(record)
+    from .material_ids import canonical_experiment
+    record = canonical_experiment(record)
     values = record.get("citations", [])
     if isinstance(values, list):
         record["citations"] = [v.get("passage_id") if isinstance(v, dict) else v for v in values]
@@ -25,14 +26,27 @@ def diagnose(record, doc):
     current = effective_data(doc)["parameters"]
     from .research_experiments import diagnose_links, validate_parameter
     errors.extend(diagnose_links(record, doc))
+    from .experiment_values import control_value_issues
+    bad_groups = {record["groups"][e["path"][1]].get("id")
+                  for e in control_value_issues(record, current) if len(e["path"]) == 2
+                  and isinstance(record["groups"][e["path"][1]], dict)}
     from .experiment_consistency import parameter_issues, stamp, paragraph_issues
     consistency_errors = parameter_issues(record, doc)
     errors.extend(consistency_errors)
     bad = {e["path"][1] for e in consistency_errors}
     for key, row in params.items():
         reason = None
+        from .experiment_values import validate_value
+        try:
+            validate_value(key, row)
+        except (ValueError, TypeError) as exc:
+            errors.append({"path": ["parameters", key], "reason": str(exc)})
+            bad.add(key)
+            continue
         if not isinstance(row, dict):
             reason = "参数须为对象"
+        elif row.get("scope") == "control" and row.get("group_id") in bad_groups:
+            reason = "参数所属对照变化未通过校验，不能用于操作"
         elif "ref" in row:
             if not isinstance(row["ref"], str) or (current.get(row["ref"]) or {}).get("value") is None:
                 reason = "ref必须指向已有非空参数"
@@ -69,12 +83,12 @@ def diagnose(record, doc):
         for n, text in enumerate(paragraphs):
             if isinstance(text, str) and set(TOKEN.findall(text)) & bad:
                 continue  # 等待对应参数修复，不扩大正文修改权限。
-            probe = dict(record, parameters=good_params, citations=[c for c in cites if isinstance(c, str) and c in allowed] if isinstance(cites, list) else [],
-                sections={s: ["保留当前方案并在小批验证中记录测量口径及实验条件。" * 6] for s in SECTIONS})
+            probe = copy.deepcopy(record)
+            probe.update(parameters=good_params, citations=[c for c in cites if isinstance(c, str) and c in allowed] if isinstance(cites, list) else [],
+                         sections={s: ["保留当前方案并在小批验证中记录测量口径及实验条件。" * 6] for s in SECTIONS})
             probe["sections"][section] = [text]
-            if doc.get("requirements"):
-                from .research_experiments import recover_links
-                recover_links(probe, doc)
+            from .research_experiments import recover_links
+            recover_links(probe, doc)
             if "consistency" in record:
                 stamp(probe, doc)
             probe["plan_hash"] = plan_hash(probe)
@@ -111,24 +125,44 @@ def apply_local(record, patch, errors):
             parent = parent[key]
         parent[path[-1]] = copy.deepcopy(change["value"])
         touched.add(path)
+    from .material_ids import canonical_experiment
+    updated = canonical_experiment(updated)
     updated.setdefault("warnings", []).extend(normalize_step_titles(updated))
     return updated
 
 
 def repair_record(record, doc, client, task_dir, fingerprint):
     from .experiment_design import plan_hash, validate, overlap_key, effective_data
-    original = copy.deepcopy(record)
-    record = normalize_citations(record)
-    record.setdefault("warnings", []).extend(normalize_step_titles(record))
-    errors = diagnose(record, doc)
-    audit = {"input_fingerprint": fingerprint, "base_hash": digest(record), "errors": errors}
-    atomic_write(task_dir / "experiment_draft.json", json.dumps({"audit": audit, "original": original, "record": record}, ensure_ascii=False, indent=2))
+    initial = copy.deepcopy(record)
+    audit = {"input_fingerprint": fingerprint, "base_hash": digest(record), "errors": []}
+    def save():
+        atomic_write(task_dir / "experiment_draft.json", json.dumps({"audit": audit, "original": initial, "record": record}, ensure_ascii=False, indent=2))
+    save()
+    try:
+        record = normalize_citations(record)
+        from .experiment_values import separate_pending
+        record, audit["value_gaps"] = separate_pending(record)
+        if "consistency" in record:
+            from .experiment_consistency import stamp
+            stamp(record, doc)
+        record.setdefault("warnings", []).extend(normalize_step_titles(record))
+        errors = diagnose(record, doc)
+        audit.update(base_hash=digest(record), errors=errors)
+    except Exception as exc:
+        audit["validation_error"] = str(exc)
+        save()
+        raise
+    save()
     if errors and client is not None and getattr(client, "available", False):
         try:
+            audit["repair_attempted"] = True
+            save()
             raw = client.chat('仅返回局部JSON补丁 {"base_hash":"输入哈希","changes":[{"path":["parameters","字段路径"],"value":修复后的参数对象}]}。只能替换errors中列出的路径，保留其他所有参数和段落。修复引用、来源属性及缺失值；source用于来源描述，操作建议basis用engineering_proposal，文献出处仍保留。段落路径为["sections","节名",索引]。',
                 json.dumps({"base_hash": digest(record), "record": record, "errors": errors,
                     "scheme": doc.get("scheme"), "ledger": doc.get("ledger_view"), "evidence": doc.get("evidence")}, ensure_ascii=False),
                 temperature=0.1, trace_tag="experiment_repair")
+            audit["repair_raw_response"] = raw
+            save()
             patch = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
             updated = apply_local(record, patch, errors)
             if doc.get("requirements"):
@@ -147,44 +181,53 @@ def repair_record(record, doc, client, task_dir, fingerprint):
             audit["patch"] = patch
         except Exception as exc:
             audit["repair_error"] = str(exc)
+        save()
     remaining = diagnose(record, doc)
     audit["remaining"] = remaining
     # 修复失败只处理错误单元，保存详细方案中的其他已通过内容。
     current = effective_data(doc)["parameters"]
+    def withdraw(key, reason):
+        """失效单元移入待定档案；引用它的操作单独保留，不把字符串塞回数值字段。"""
+        from .experiment_design import TOKEN
+        old = record["parameters"].pop(key, None)
+        record.setdefault("pending_parameters", {}).setdefault(key, {"record": old, "reason": reason})
+        for section, paragraphs in record["sections"].items():
+            for index, paragraph in enumerate(paragraphs):
+                if key in TOKEN.findall(paragraph):
+                    location = f"{section}:{index}"
+                    record.setdefault("pending_sections", {}).setdefault(location, {"text": paragraph, "reason": reason})
+                    paragraphs[index] = "本项操作尚未定案：相关参数缺少可用声明，先核对来源或小批验证；原步骤和失败原因保留于待定档案。"
+        for test in record.get("requirement_tests", []):
+            if any(key in TOKEN.findall(v) for v in test.values() if isinstance(v, str)):
+                record.setdefault("pending_tests", []).append(copy.deepcopy(test))
+                test.update(status="gap", method="", conditions="", baseline="", criterion="",
+                            reason=reason, next_step="先确认本项操作参数，再恢复对应测试安排。")
     pending = remaining
     for _ in range(2):
         for error in pending:
             path = error["path"]
             if path[0] == "parameters" and len(path) == 2:
                 key = path[1]
-                original = record["parameters"].get(key) or {}
-                canonical = original.get("canonical_path", overlap_key(key))
+                invalid = record["parameters"].get(key) or {}
+                canonical = invalid.get("canonical_path", overlap_key(key))
                 if not isinstance(canonical, str):
                     canonical = overlap_key(key)
                 declared = current.get(canonical) or {}
-                if original.get("scope") == "control":
+                if invalid.get("scope") == "control":
                     # 失效对照不能悄悄退回主组值；仅撤下该参数及依赖它的步骤。
-                    record["parameters"].pop(key, None)
-                    for section, paragraphs in record["sections"].items():
-                        record["sections"][section] = ["本项操作尚未定案：对照参数与分组登记不一致，先核对该对照的独立组成与条件。"
-                            if "{{" + key + "}}" in p else p for p in paragraphs]
+                    withdraw(key, error["reason"])
                 elif declared.get("value") is not None:
                     record["parameters"][key] = {"ref": canonical}
-                elif (doc.get("requirements") or "consistency" in record) and (original.get("role") == "recipe"
-                        or canonical.startswith("electrolyte.") or canonical.endswith(".material")
-                        or any(w in key for w in ("formula", "doping", "dopant", "composition", "coating"))):
-                    record["parameters"].pop(key, None)
-                    for section, paragraphs in record["sections"].items():
-                        record["sections"][section] = [p.replace("{{" + key + "}}", "（主方案尚未声明，待Stage 4明确）") for p in paragraphs]
                 else:
-                    record["parameters"][key] = {"value": "待确定，须核对原始文献或小批实验后定案", "unit": "",
-                        "basis": "engineering_proposal", "source": "局部校验未通过，不能作为已确定操作值", "meaning": key, "role": "testing"}
+                    withdraw(key, error["reason"])
             elif path[0] == "citations":
                 allowed = {e.get("passage_id") for e in (doc.get("evidence") or []) + (doc.get("experiment_evidence") or [])}
                 record["citations"] = [i for i in record.get("citations", []) if isinstance(i, str) and i in allowed]
             elif path[0] == "sections" and len(path) >= 2:
                 text = "本项操作尚未定案：" + error["reason"] + "。保留当前材料及固定条件，先核对原始文献或开展小批对照后确定本项，不将未确认条件作为已验证工艺。"
                 if len(path) == 3:
+                    record.setdefault("pending_sections", {}).setdefault(f"{path[1]}:{path[2]}", {
+                        "text": record["sections"][path[1]][path[2]], "reason": error["reason"]})
                     record["sections"][path[1]][path[2]] = text
                 else:
                     record["sections"][path[1]] = [text]
@@ -197,12 +240,20 @@ def repair_record(record, doc, client, task_dir, fingerprint):
             from .experiment_consistency import stamp
             stamp(record, doc)
         pending = diagnose(record, doc)
+        save()
         if not pending:
             break
         remaining += [e for e in pending if e not in remaining]
     record["warnings"] = list(record.get("warnings") or []) + normalize_step_titles(record) + ["局部待确定：" + str(e) for e in remaining]
-    record["repair_status"] = "REPAIRED" if not remaining else "PARTIAL"
+    record["repair_status"] = "PARTIAL" if remaining or record.get("pending_parameters") else "REPAIRED"
+    audit["remaining"] = remaining
+    audit["unresolved"] = pending
     record["plan_hash"] = plan_hash(record)
-    record["bindings"] = validate(record, doc)
-    atomic_write(task_dir / "experiment_draft.json", json.dumps({"audit": audit, "original": original, "record": record}, ensure_ascii=False, indent=2))
+    try:
+        record["bindings"] = validate(record, doc)
+    except Exception as exc:
+        audit["final_error"] = str(exc)
+        raise
+    finally:
+        save()
     return record

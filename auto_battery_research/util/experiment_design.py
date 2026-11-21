@@ -8,9 +8,9 @@ import math
 from datetime import datetime
 from pathlib import Path
 
-from .scheme_ledger import atomic_write, digest, flatten_scheme, validate_field, calculate
+from .scheme_ledger import atomic_write, digest, flatten_scheme
 from .report_narrative import amount
-from .experiment_titles import INSTRUCTIONS as TITLE_INSTRUCTIONS, normalize_step_titles
+from .experiment_titles import INSTRUCTIONS as TITLE_INSTRUCTIONS
 from .experiment_protocol import STYLE_INSTRUCTIONS
 from .experiment_consistency import INSTRUCTIONS as CONSISTENCY_INSTRUCTIONS
 
@@ -19,7 +19,6 @@ REPORT_FILENAME = "experiment_report.json"
 SECTIONS = {"groups": "5.1 实验设计与样品分组", "fabrication": "5.2 材料制备与极片加工",
             "assembly": "5.3 电池制作与装配", "testing": "5.4 电化学测试与材料表征",
             "criteria": "5.5 数据处理与结果判定", "gaps": "5.6 待确认条件与获取方法"}
-ROLES = {"recipe", "processing", "assembly", "formation", "testing"}
 TOKEN = re.compile(r"\{\{([A-Za-z0-9_.-]+)\}\}")
 SYSTEM_PROMPT = '''你负责 Stage 5B 的轻量首轮电池实验设计。参考给定文献、最终设计及物理结果，给出可执行推荐。
 只输出 JSON：{"parameters":{},"sections":{"groups":[],"fabrication":[],"assembly":[],"testing":[],"criteria":[],"gaps":[]},"citations":[]}。
@@ -60,7 +59,8 @@ def overlap_key(key):
     return key
 
 
-def validate(record, doc):
+def validate(record, doc, *, delivery=False):
+    """生成时检查实验设计完整性，交付时核对归档、方案绑定及参数一致性。"""
     if not isinstance(record, dict) or record.get("schema_version") not in (2, 3, 4) or record.get("generated_stage") not in (4, 5):
         raise ValueError("缺少 Stage 5B 已生成的实验推荐，请基于已有设计及文献重新生成")
     if record.get("plan_hash") != plan_hash(record):
@@ -79,7 +79,12 @@ def validate(record, doc):
     sections = record.get("sections")
     if not isinstance(parameters, dict) or not isinstance(sections, dict):
         raise ValueError("实验方案参数或章节结构不完整")
-    roles, bindings = set(), {}
+    from .experiment_values import validate_value, validate_pending, validate_scalar_fields, control_value_issues
+    validate_pending(record)
+    control_errors = control_value_issues(record, current)
+    if control_errors:
+        raise ValueError("实验对照变化未通过校验：" + "；".join(e["reason"] for e in control_errors))
+    bindings = {}
     for key, row in parameters.items():
         if not isinstance(row, dict):
             raise ValueError("实验参数必须为结构化记录")
@@ -90,6 +95,9 @@ def validate(record, doc):
                 raise ValueError(f"引用的当前参数缺失: {ref}")
             bindings[key] = copy.deepcopy(value)
         else:
+            validate_value(key, row)
+            if row.get("value_type") in ("range", "sequence"):
+                validate_scalar_fields(key, row)
             from .research_experiments import validate_parameter
             validate_parameter(key, row, doc)
             validation_key = overlap_key(key)
@@ -105,15 +113,30 @@ def validate(record, doc):
                 raise ValueError("推荐操作参数须有具体值且标为工程建议")
             bindings[key] = row
             data["parameters"][validation_key] = row
-        if isinstance(bindings[key].get("value"), (int, float)) and row.get("role") in ROLES:
-            roles.add(row["role"])
+
+    if delivery:
+        from .physical_parameters import physical_declarations, identity
+        physical_rows = dict(current)
+        for key, row in parameters.items():
+            if "ref" in row or row.get("scope") == "control":
+                continue
+            physical = identity(overlap_key(key), row)
+            if physical:
+                physical_rows["experiment." + key] = dict(row, canonical_path=physical[0])
+        _, issues = physical_declarations(physical_rows)
+        if issues:
+            raise ValueError("实验参数与方案表冲突：" + "；".join(issues))
     allowed_ids = {str(e.get("passage_id")) for e in (doc.get("evidence") or []) + (doc.get("experiment_evidence") or [])}
     cited = set(record.get("citations") or [])
     if not cited.issubset(allowed_ids):
         raise ValueError("实验推荐引用未归档文献")
     used = set()
+    if delivery and not any(sections.get(k) for k in SECTIONS):
+        raise ValueError("实验方案缺少正文")
     for section in SECTIONS:
         paragraphs = sections.get(section)
+        if delivery and not paragraphs:
+            continue
         if not isinstance(paragraphs, list) or not paragraphs or not all(isinstance(p, str) and p.strip() for p in paragraphs):
             raise ValueError(f"实验方案缺少可执行章节: {section}")
         for paragraph in paragraphs:
@@ -138,11 +161,23 @@ def validate(record, doc):
             # 非重叠操作值允许直接叙述，不因表达形式反复生成。
     if not cited.issubset(allowed_ids):
         raise ValueError("段落引用未归档文献")
-    if not used and len("".join(p for ps in sections.values() for p in ps)) < 100:
+    if not delivery and not used and len("".join(p for ps in sections.values() for p in ps)) < 100:
         raise ValueError("实验方案缺少可执行内容")
     if doc.get("requirements"):
         from .research_experiments import diagnose_links
         errors = diagnose_links(record, doc)
+        if delivery:
+            # 主组不可改写当前参数，对照只允许独立变更。覆盖率、重复数及解释完整度留在设计审核。
+            for group in record.get("groups") or []:
+                if not isinstance(group, dict) or not group.get("id") or group.get("scope") not in ("main", "control"):
+                    raise ValueError("实验参数所属分组不明确")
+                changes = group.get("changes") or {}
+                if any(key not in current or not isinstance(row, dict) or 'value' not in row
+                       or row.get('unit', '') != current[key].get('unit', '')
+                       or group['scope'] == 'main' and row['value'] != current[key].get('value')
+                       for key, row in changes.items()):
+                    raise ValueError("实验分组的参数、值或单位与方案表冲突")
+            errors = [item for item in errors if item["reason"] in ("实验分组引用未知主方案字段", "测试矩阵引用未声明参数")]
         if errors:
             raise ValueError("; ".join(e["reason"] for e in errors))
     return bindings
@@ -153,15 +188,62 @@ def load(task_dir):
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
 
 
-def generate(task_dir, doc, client, scheme_md=""):
-    """调用点只在 Stage 5B；失败记录不覆盖已有有效实验方案。"""
+def delivery_status(record, pending_fields=(), *, doc=None):
+    """模板交付、局部待定与完整实验推荐分别标记，不能由空pending清单冒充成功。"""
+    reasons = []
+    if record.get("origin") == "engineering_fallback":
+        return "FALLBACK", ["实验生成失败，当前为工程回退模板"] + list(record.get("warnings") or [])
+    if record.get("repair_status") == "PARTIAL" or record.get("pending_parameters") or record.get("pending_sections"):
+        reasons.append("实验局部参数或步骤仍待确认，已保留其余有效内容")
+    if record.get("pending_groups"):
+        reasons.append("部分实验对照分组尚未完成登记")
+    if any(row.get("status") == "gap" for row in record.get("requirement_tests", []) if isinstance(row, dict)):
+        reasons.append("部分课题目标保留待补充说明，具体方法与限制见目标记录")
+    if pending_fields:
+        reasons.append("实验参数与当前方案仍有待核对项")
+    if record.get("generation_pending"):
+        reasons.append("部分实验内容尚未通过分项验收，原响应及原因已保存")
+    from .experiment_values import validate_value, validate_pending
+    try:
+        validate_pending(record)
+        for key, row in record.get("parameters", {}).items():
+            validate_value(key, row)
+    except (ValueError, TypeError):
+        reasons.append("实验参数值、缺项记录或引用未通过校验")
+    from .experiment_values import control_value_issues
+    if control_value_issues(record, effective_data(doc)["parameters"] if doc is not None else None):
+        reasons.append("实验对照变化未通过值校验，相关组别尚未就绪")
+    from .experiment_review import status as review_status
+    _, review_reasons = review_status(record, doc)
+    reasons.extend(review_reasons)
+    return ("CONDITIONAL" if reasons else "PASSED"), reasons
+
+
+def input_fingerprint(doc, scheme_md="", *, version=9):
+    """生成与同义迁移共用输入身份，迁移不因此重新调用实验模型。"""
+    from .experiment_consistency import preflight
+    value = {"scheme": doc.get("scheme"), "ledger": doc.get("ledger_hash"),
+                   "evidence": doc.get("evidence"), "physics": doc.get("physics_context"), "analysis": scheme_md,
+                   "requirements": doc.get("requirements"), "research": doc.get("research"),
+                   "consistency": preflight(doc), "version": version}
+    if version >= 8:
+        value.update(target=doc.get("target"), parameters=effective_data(doc)["parameters"],
+                     stage4_review={k: doc.get(k) for k in ("review_completed", "review_passed", "reviewer_output")})
+    return digest(value)
+
+
+def generate(task_dir, doc, client, scheme_md="", *, restart=False):
+    """恢复完整JSON初稿加一次局部补丁；已有产物兼容读取，显式重建才重新生成。"""
     from .experiment_consistency import preflight, stamp
-    consistency = preflight(doc)
-    fingerprint = digest({"scheme": doc.get("scheme"), "ledger": doc.get("ledger_hash"),
-                          "evidence": doc.get("evidence"), "physics": doc.get("physics_context"), "analysis": scheme_md,
-                          "requirements": doc.get("requirements"), "research": doc.get("research"), "consistency": consistency, "version": 7})
+    from .experiment_titles import normalize_step_titles
+    from .experiment_repair import repair_record
+    from .research_experiments import INSTRUCTIONS, required_tests
+    from .scheme_ledger import task_lock
+    task_dir = Path(task_dir)
+    task_dir.mkdir(parents=True, exist_ok=True)
+    fingerprint = input_fingerprint(doc, scheme_md)
     old = load(task_dir)
-    if old and old.get("generated_stage") == 4:
+    if old and old.get("generated_stage") == 4 and not restart:
         try:
             bindings = validate(old, doc)
             old.update(origin_stage=4, generated_stage=5, schema_version=3,
@@ -171,50 +253,87 @@ def generate(task_dir, doc, client, scheme_md=""):
             return old
         except (ValueError, TypeError):
             pass
-    if old and old.get("input_fingerprint") == fingerprint:
-        validate(old, doc)
+    compatible = {fingerprint}
+    if old:
+        compatible.add(input_fingerprint(doc, scheme_md, version=8))
+        if not old.get("generation_contract"):
+            compatible.add(input_fingerprint(doc, scheme_md, version=7))
+    if old and old.get("input_fingerprint") in compatible and not restart:
+        validate(old, doc, delivery=True)
         return old
+    def source_identity():
+        return {name: digest((task_dir / name).read_bytes().hex()) if (task_dir / name).exists() else None
+                for name in ("scheme_ledger.json", "design_scheme.json")}
+    sources = source_identity()
+    if restart:
+        for name in (FILENAME, "experiment_generation_checkpoint.json"):
+            path = task_dir / name
+            if path.exists():
+                archive = task_dir / "experiment_generation_history" / ("before_whole_json_" + digest(path.read_text(encoding="utf-8"))[:20] + "_" + name)
+                if not archive.exists():
+                    atomic_write(archive, path.read_text(encoding="utf-8"))
     error = "实验设计模型不可用"
-    if client is not None and hasattr(client, "max_tokens"):
-        client.max_tokens = min(client.max_tokens, 6000)
+    attrs = {}
+    try:
+        if client is None or not getattr(client, "available", False):
+            raise ValueError(error)
+        attrs = {key: (hasattr(client, key), getattr(client, key, None))
+                 for key in ("max_tokens", "output_max_tokens", "single_attempt")}
+        client.max_tokens = min(getattr(client, "max_tokens", 6000), 6000)
         client.output_max_tokens = 6000
         client.single_attempt = True
-    for _ in range(1) if client is not None and getattr(client, "available", False) else ():
-        try:
-            from .research_experiments import INSTRUCTIONS, required_tests
-            raw = client.chat(SYSTEM_PROMPT + (INSTRUCTIONS if doc.get("requirements") else ""), json.dumps({"goal": doc.get("target"), "scheme": doc.get("scheme"),
-                "requirements": doc.get("requirements"), "required_tests": required_tests(doc),
-                "research": doc.get("research"), "consistency": consistency,
-                "ledger": doc.get("ledger_view"), "analysis": scheme_md, "review": doc.get("reviewer_output"),
-                "evidence": doc.get("evidence"), "physics_context": doc.get("physics_context"), "last_error": error}, ensure_ascii=False),
-                temperature=0.2, trace_tag="experiment_design")
-            record = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
-            record.update(schema_version=4 if doc.get("requirements") else 3, generated_stage=5, input_fingerprint=fingerprint,
-                          generated_at=datetime.now().isoformat(), base_ledger_hash=doc.get("ledger_hash"),
-                          fixed_fields={k: v.get("value") for k, v in effective_data(doc)["parameters"].items()
-                            if k not in {f"{c}.{f}" for c in ("cathode", "anode") for f in ("L_um", "porosity", "R_s_um", "D_s_m2s")}})
-            record["warnings"] = normalize_step_titles(record, bind_unbound=True)
-            stamp(record, doc)
-            record["plan_hash"] = plan_hash(record)
-            from .experiment_repair import repair_record
-            record = repair_record(record, doc, client, Path(task_dir), fingerprint)
-            for key, row in record["parameters"].items():
-                if "ref" not in row and (effective_data(doc)["parameters"].get(overlap_key(key)) or {}).get("value") is None:
-                    try:
-                        validate_field(parameter_validation_key(key), row)
-                    except ValueError as exc:
-                        record["warnings"].append(str(exc))
-            record["plan_hash"] = plan_hash(record)
-            record["bindings"] = validate(record, doc)
-            record["sync_history"] = []
-            atomic_write(Path(task_dir) / FILENAME, json.dumps(record, ensure_ascii=False, indent=2))
-            atomic_write(Path(task_dir) / "experiment_plan_failure.json", json.dumps({"resolved": record.get("repair_status") != "PARTIAL",
-                "repair_status": record.get("repair_status"), "warnings": record.get("warnings", [])}, ensure_ascii=False))
-            return record
-        except Exception as exc:
-            error = str(exc)
+        raw = client.chat(SYSTEM_PROMPT + (INSTRUCTIONS if doc.get("requirements") else ""),
+            json.dumps({"goal": doc.get("target"), "scheme": doc.get("scheme"), "requirements": doc.get("requirements"),
+                        "required_tests": required_tests(doc), "research": doc.get("research"), "consistency": preflight(doc),
+                        "ledger": doc.get("ledger_view"), "analysis": scheme_md, "review": doc.get("reviewer_output"),
+                        "evidence": doc.get("evidence"), "physics_context": doc.get("physics_context"), "last_error": error}, ensure_ascii=False),
+            temperature=0.2, trace_tag="experiment_design")
+        atomic_write(task_dir / "experiment_draft.json", json.dumps({"audit": {"input_fingerprint": fingerprint,
+            "raw_response": raw, "generation_method": "whole_json"}}, ensure_ascii=False, indent=2))
+        record = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
+        allowed = {"parameters", "sections", "citations", "groups", "requirement_tests", "extensions", "step_titles"}
+        if not isinstance(record, dict) or set(record) - allowed:
+            raise ValueError("完整实验方案只能声明参数、正文、分组、目标安排、引用及可选步骤标题")
+        record.update(schema_version=4 if doc.get("requirements") else 3, generated_stage=5,
+                      input_fingerprint=fingerprint, generated_at=datetime.now().isoformat(),
+                      base_ledger_hash=doc.get("ledger_hash"), sync_history=[],
+                      fixed_fields={k: v.get("value") for k, v in effective_data(doc)["parameters"].items()
+                                    if k not in {f"{c}.{f}" for c in ("cathode", "anode") for f in ("L_um", "porosity", "R_s_um", "D_s_m2s")}})
+        record["warnings"] = normalize_step_titles(record, bind_unbound=True)
+        stamp(record, doc)
+        record["plan_hash"] = plan_hash(record)
+        record = repair_record(record, doc, client, task_dir, fingerprint)
+        draft_path = task_dir / "experiment_draft.json"
+        draft = json.loads(draft_path.read_text(encoding="utf-8"))
+        draft["audit"].update(raw_response=raw, generation_method="whole_json")
+        atomic_write(draft_path, json.dumps(draft, ensure_ascii=False, indent=2))
+        record["plan_hash"] = plan_hash(record)
+        record["bindings"] = validate(record, doc, delivery=True)
+        with task_lock(task_dir):
+            if source_identity() != sources:
+                raise RuntimeError("发布前方案表或设计已更新，拒绝写入过期实验方案")
+            atomic_write(task_dir / FILENAME, json.dumps(record, ensure_ascii=False, indent=2))
+            # 原程序化检查点只作历史档案，不能再进入默认实验生成。
+            if restart:
+                (task_dir / "experiment_generation_checkpoint.json").unlink(missing_ok=True)
+        outcome, reasons = delivery_status(record, doc=doc)
+        atomic_write(Path(task_dir) / "experiment_plan_failure.json", json.dumps({"resolved": outcome == "PASSED",
+            "repair_status": record.get("repair_status"), "warnings": reasons}, ensure_ascii=False, indent=2))
+        return record
+    except Exception as exc:
+        error = str(exc)
+        if source_identity() != sources:
+            raise ValueError("生成期间方案表或设计输入已变化，拒绝发布旧稿或回退模板") from exc
+    finally:
+        for key, (had, value) in attrs.items():
+            if had:
+                setattr(client, key, value)
+            else:
+                delattr(client, key)
     atomic_write(Path(task_dir) / "experiment_plan_failure.json", json.dumps({"resolved": False, "error": error,
         "input_fingerprint": fingerprint}, ensure_ascii=False, indent=2))
+    if old and old.get("origin") != "engineering_fallback":
+        raise ValueError("Stage 5B 新方案生成失败，原实验产物已保留：" + error)
     if doc.get("delivery_contract") == 1:
         return engineering_fallback(task_dir, doc, fingerprint, error)
     raise ValueError("Stage 5B 实验推荐生成失败: " + error)
@@ -283,8 +402,15 @@ def sync(task_dir, doc, dry_run=False):
 
 def render(record, doc, result=None):
     from .experiment_protocol import render_methods, render_group_notes, consistency_notice
-    bindings = validate(record, doc)
+    bindings = validate(record, doc, delivery=True)
     sections = ["以下为首轮实验推荐，补充的操作参数属于工程建议，尚不代表实测或性能已验证。"]
+    status, reasons = delivery_status(record, doc=doc)
+    if status != "PASSED":
+        sections.append("**实验交付状态：** " + ("工程回退模板" if status == "FALLBACK" else "附条件实验方案") + "。" + "；".join(reasons) + "。")
+    from .experiment_review import render_notice
+    review_notice = render_notice(record, doc)
+    if review_notice:
+        sections.append(review_notice)
     notice = consistency_notice(doc, record.get("consistency"))
     if notice:
         sections.append(notice)
@@ -301,11 +427,21 @@ def render(record, doc, result=None):
             notes = render_group_notes(record, bindings)
             if notes:
                 sections.append(notes)
+        elif record.get("generation_contract") == 1 and key == "groups":
+            from .report_narrative import describe
+            for group in record.get("groups", []):
+                detail = "；".join(describe(path, row) + "；改变目的：" + row["reason"]
+                                   for path, row in group.get("changes", {}).items())
+                sections.append(group["id"] + "（" + group["name"] + "）："
+                                + (detail or "完整采用第3节当前主方案，材料与固定条件不另行变更") + "。")
+            notes = render_group_notes(record, bindings)
+            if notes:
+                sections.append(notes)
         else:
             sections.append(render_methods(record, key, heading.split()[0], bindings, doc))
         if doc.get("requirements") and key == "testing" and record.get("requirement_tests"):
             from .research_experiments import render_tests
-            sections.append("**课题目标与测试判据对照**")
+            sections.append("**各目标的方法与待解决事项**")
             sections.append(render_tests(record, doc, bindings))
         if key == "groups":
             sections.append("> **方案绑定。** 本轮材料沿用第 3 节的当前方案。第 3 节尚未声明的操作条件如在本节给出，均为首轮实验建议；对照组的变更仅适用于对应分组，不改变主方案或仿真输入。")
@@ -316,11 +452,15 @@ def render(record, doc, result=None):
                 sections.append("本次未完成有效放电仿真，不存在可用于性能判断的仿真值。")
     if record.get("citations"):
         sections.append("本节参考的归档文献证据为" + "、".join(f"[{pid}]" for pid in record["citations"]) + "。具体工程推荐仍需通过首轮实验验证。")
+    from .experiment_values import render_pending
+    pending_notice = render_pending(record)
+    if pending_notice:
+        sections.append(pending_notice)
     return "\n\n".join(sections)
 
 
 def require_current(task_dir, doc):
     record = load(task_dir)
-    bindings = validate(record, doc)
+    bindings = validate(record, doc, delivery=True)
     if record["plan_hash"] != doc.get("experiment_plan_hash") or bindings != record.get("bindings"):
         raise ValueError("实验推荐与当前设计或参数绑定不一致，请先同步 Stage 5B 实验方案")

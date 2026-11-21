@@ -119,7 +119,7 @@ def protocol_parameters(bindings):
 def render_methods(record, key, section_number, bindings, doc=None):
     """连续同主题段落归于一个方法，保留原操作顺序及参数绑定。"""
     methods = []
-    for index, paragraph in enumerate(record["sections"][key], 1):
+    for index, paragraph in enumerate(record["sections"].get(key) or [], 1):
         title = paragraph_title(record, key, index, paragraph)
         if re.fullmatch(r"(?:步骤|待确认事项)\d+", title):
             title = "实验操作" if key not in ("criteria", "gaps") else "判定说明" if key == "criteria" else "待确认事项"
@@ -131,6 +131,7 @@ def render_methods(record, key, section_number, bindings, doc=None):
     display_bindings = protocol_parameters(bindings)
     for index, (title, paragraphs) in enumerate(methods, 1):
         result.append(f"#### {section_number}.{index} {title}")
+        from .experiment_values import substitute_pending
         from .experiment_consistency import paragraph_pending
         pending = record.get("consistency", {}).get("pending_fields") and any(
             paragraph_pending(p, key, doc or {}, record["consistency"]) for p in paragraphs)
@@ -142,9 +143,9 @@ def render_methods(record, key, section_number, bindings, doc=None):
             if issues:
                 units.append("本项条件待确认：" + "；".join(issues) + "。先核对该样品的独立参数，原建议保留在实验方案档案中。")
                 continue
-            units.extend(substitute_parameters(p.replace("}}{{", "}} {{"), display_bindings) for p in split_operations(paragraph))
+            units.extend(substitute_parameters(substitute_pending(p.replace("}}{{", "}} {{"), record), display_bindings) for p in split_operations(paragraph))
         result.append(ordered_steps(units))
-    return "\n\n".join(result)
+    return "\n\n".join(result) or "本节安排待补充。"
 
 
 def render_group_notes(record, bindings):
@@ -155,7 +156,7 @@ def render_group_notes(record, bindings):
     mentions = re.compile(r"(?<![A-Za-z0-9_])" + group_pattern + r"(?![A-Za-z0-9_])")
     declared = re.compile(r"^\s*(?:\*\*)?" + group_pattern + r"(?![A-Za-z0-9_])")
     notes, pending = [], []
-    for paragraph in record["sections"]["groups"]:
+    for paragraph in record["sections"].get("groups") or []:
         identifiers = set(mentions.findall(paragraph))
         if identifiers:
             unknown = sorted(identifiers - registered)
@@ -171,7 +172,8 @@ def render_group_notes(record, bindings):
         if issues:
             notes.append("分组条件待确认：" + "；".join(issues) + "。")
         else:
-            notes.append(substitute_parameters(paragraph, bindings))
+            from .experiment_values import substitute_pending
+            notes.append(substitute_parameters(substitute_pending(paragraph, record), bindings))
     if pending:
         notes.append("**待登记对照。** 下列名称来自原实验草稿，具体组成和变量尚未通过分组登记；补齐后再投料，不能把主组参数直接用于这些对照。")
         table = ["| 对照名称 | 当前状态 |", "|---|---|"]
@@ -182,7 +184,8 @@ def render_group_notes(record, bindings):
 
 def _conflicts(doc):
     from .report_readiness import unresolved_issues
-    return [issue for issue in unresolved_issues(doc) if any(w in issue for w in ("冲突", "错绑", "固定条件不一致"))]
+    return [issue for issue in unresolved_issues(doc) if not issue.startswith("实验交付限制：")
+            and any(w in issue for w in ("冲突", "错绑", "固定条件不一致"))]
 
 
 def affected_by_conflict(paragraphs, doc):

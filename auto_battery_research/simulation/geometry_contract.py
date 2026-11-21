@@ -6,6 +6,7 @@ import json
 import math
 import re
 from typing import Any
+from auto_battery_research.util.material_ids import canonical_id, canonical_scheme, source_matches
 
 FIELDS = ("L_um", "porosity", "R_s_um", "D_s_m2s")
 COMPONENTS = ("cathode", "anode")
@@ -47,7 +48,7 @@ def validate_diffusion_evidence(claim: dict, value: float, material_id: str,
     quote = claim["quote"]
     if not source or not isinstance(quote, str) or not quote.strip() or quote not in source.get("text", ""):
         raise ValueError("D_s 证据引用不存在或摘录不是保存原文的连续片段")
-    if claim["material_id"] != material_id or material_id.casefold() not in quote.casefold():
+    if canonical_id(claim["material_id"]) != canonical_id(material_id) or not source_matches("cathode.material", material_id, quote):
         raise ValueError("D_s 原文未明确匹配当前材料 ID；需补充精确材料证据")
     if claim["parameter"] != "solid_diffusion_coefficient" or not re.search(
             r"solid[ -]?(?:phase|state).*?diffus|固相.*?扩散", quote, re.I | re.S):
@@ -71,8 +72,10 @@ def validate_diffusion_evidence(claim: dict, value: float, material_id: str,
         raise ValueError("D_s 数值与单位无法在原文联合定位（支持十进制/e 记数法）")
     if not math.isclose(claim["value"] * scale, value, rel_tol=1e-9):
         raise ValueError("D_s 修改值与证据换算后的数值不一致")
+    normalized_claim = copy.deepcopy(claim)
+    normalized_claim["material_id"] = canonical_id(claim["material_id"])
     return {"origin": "literature", "basis": "evidence_verified",
-            "evidence": copy.deepcopy(claim), "source_text_hash": hashlib.sha256(
+            "evidence": normalized_claim, "source_text_hash": hashlib.sha256(
                 source["text"].encode("utf-8")).hexdigest()}
 
 
@@ -83,6 +86,7 @@ def build_geometry_contract(candidate: dict, scheme: dict, evidence: list) -> di
 
     if not isinstance(candidate, dict) or set(candidate) - {"cathode", "anode", "n_p_ratio", "condition", "diffusion_evidence"}:
         raise ValueError("几何候选不是对象或包含未知字段")
+    scheme = canonical_scheme(scheme)
     raw = {"schema_version": "1.1", "provenance": {}}
     sources = {}
     for comp in COMPONENTS:
@@ -153,14 +157,172 @@ def build_geometry_contract(candidate: dict, scheme: dict, evidence: list) -> di
                                "params_hash": params_hash})
     geo["contract_version"] = "2.0"
     geo["parameter_sources"] = sources
+    geo["material_ids"] = {comp: scheme.get(comp) for comp in COMPONENTS}
     return geo
 
 
-def validate_geometry_contract(geo: dict, scheme: dict, evidence: list) -> list:
+def geometry_from_declared_parameters(parameters: dict, scheme: dict, evidence: list):
+    """恢复只重建已声明主工况，不调用模型、不覆盖非法/缺失的显式输入。"""
+    from auto_battery_research.util.physical_parameters import fixed_geometry, record_geometry_sources
+    from auto_battery_research.util.numeric_consistency import context
+    fixed = fixed_geometry(parameters)
+    if not all(scheme.get(c) for c in ("cathode", "anode", "electrolyte")):
+        raise ValueError("恢复几何前须有完整材料身份")
+    prior = scheme.get("geometry") or {}
+    if prior.get("contract_version") == "2.0":
+        errors = validate_geometry_contract(prior, scheme, evidence)
+        if errors:
+            raise ValueError("已有几何契约失效，不能用恢复覆盖：" + "；".join(errors))
+    for path, row in fixed.items():
+        comp, name = path.split(".")
+        old = (prior.get(comp) or {}).get(name)
+        if old is not None and old != row["value"]:
+            raise ValueError("已有几何与声明冲突：" + path)
+    candidate = {c: {} for c in COMPONENTS}
+    model_values = {}
+    for comp in COMPONENTS:
+        for name in ("L_um", "porosity"):
+            if f"{comp}.{name}" not in fixed:
+                raise ValueError(f"恢复缺少已声明主工况 {comp}.{name}")
+        for name in ("L_um", "porosity", "R_s_um"):
+            declaration = fixed.get(f"{comp}.{name}")
+            if declaration is not None:
+                candidate[comp][name] = declaration["value"]
+        path = comp + ".D_s_m2s"
+        row = parameters.get(path) or {}
+        if row.get("value") is not None:
+            if context(row) != ("main", "main", "[]") or row.get("unit") != "m2/s":
+                raise ValueError(path + " 恢复时须有同工况规范单位声明")
+            if row.get("basis") == "model_reference":
+                model_values[path] = row["value"]
+            else:
+                candidate[comp]["D_s_m2s"] = row["value"]
+                candidate.setdefault("diffusion_evidence", {})[path] = row.get("evidence")
+    candidate["condition"] = {key.split(".")[1]: value["value"] for key, value in fixed.items()
+                              if key in ("condition.v_min", "condition.v_max", "condition.c_rate")}
+    for path in ("anode.n_p_ratio", "condition.n_p_ratio"):
+        row = parameters.get(path) or {}
+        if row.get("value") is not None:
+            if context(row) != ("main", "main", "[]"):
+                raise ValueError("N/P恢复不能使用对照工况")
+            if "n_p_ratio" in candidate and candidate["n_p_ratio"] != row["value"]:
+                raise ValueError("N/P声明冲突")
+            candidate["n_p_ratio"] = row["value"]
+    geo = build_geometry_contract(candidate, scheme, evidence)
+    for path, row in parameters.items():
+        comp, _, name = path.partition(".")
+        if comp in COMPONENTS and name in FIELDS:
+            if row.get("locked") and row.get("value") is None and geo[comp].get(name) is not None:
+                raise ValueError(path + " 用户锁定为空，恢复不得回填模型基准")
+    for path, value in model_values.items():
+        comp, name = path.split(".")
+        if geo[comp].get(name) != value or geo["parameter_sources"][path].get("origin") != "model_baseline":
+            raise ValueError(path + " 已有模型基准与当前材料不一致")
+    record_geometry_sources(geo, fixed)
+    errors = validate_geometry_contract(geo, scheme, evidence)
+    if errors:
+        raise ValueError("；".join(errors))
+    return candidate, geo
+
+
+def synchronize_material_baselines(geo: dict, scheme: dict) -> dict:
+    """显式迁移用：补缺失模型基准并重绑材料来源，保留全部显式值（包括越界值）。"""
+    from pinn.input_spec import complete_geometry_block
+    from pinn.spm_runner import match_pinn_system, load_system_params
+    scheme = canonical_scheme(scheme)
+    if not isinstance(geo, dict) or geo.get("contract_version") != "2.0":
+        raise ValueError("迁移需要已有结构化几何契约，不从正文重建参数")
+    if geo.get("material_ids") and {comp: canonical_id(value) for comp, value in geo["material_ids"].items()} != {comp: scheme.get(comp) for comp in COMPONENTS}:
+        raise ValueError("几何对应的是其他材料，不能按名称迁移当前模型参数")
+    for comp in COMPONENTS:
+        if any(not strict_number((geo.get(comp) or {}).get(field)) for field in ("L_um", "porosity")):
+            raise ValueError(f"{comp} 厚度或孔隙率缺少原设计声明，不能在迁移中补造")
+    normalized = complete_geometry_block(geo, scheme.get("cathode"), scheme.get("anode"))
+    result = copy.deepcopy(geo)
+    system = match_pinn_system(str(scheme.get("cathode") or ""), str(scheme.get("anode") or ""))
+    params_hash = hashlib.sha256(json.dumps(load_system_params(system), sort_keys=True).encode()).hexdigest() if system else None
+    sources = result.setdefault("parameter_sources", {})
+    for comp in COMPONENTS:
+        for field in FIELDS:
+            path = f"{comp}.{field}"
+            source = copy.deepcopy(sources.get(path) or {})
+            if "material_id" in source:
+                source["material_id"] = canonical_id(source["material_id"])
+            missing = (geo.get(comp) or {}).get(field) is None
+            if missing and field in ("R_s_um", "D_s_m2s") and normalized[comp][field] is not None:
+                result[comp][field] = normalized[comp][field]
+                result.setdefault("provenance", {})[path] = "params_baseline"
+                source = {"origin": "model_baseline", "basis": "model_reference", "material_id": scheme.get(comp),
+                          "system_id": system["system_id"], "params_path": system["params"], "params_hash": params_hash}
+            elif source.get("origin") == "model_baseline" and system:
+                # 只同义归一来源，不将旧版本基准静默替换为新版本。
+                if source.get("system_id") != system["system_id"] or source.get("params_hash") != params_hash:
+                    raise ValueError(f"{path} 模型基准版本不一致，迁移不能重置已有基准")
+            elif source.get("origin") == "literature" and field == "D_s_m2s":
+                claim = source.get("evidence") or {}
+                if "material_id" in claim:
+                    claim["material_id"] = canonical_id(claim["material_id"])
+            sources[path] = source
+    result["material_ids"] = {comp: scheme.get(comp) for comp in COMPONENTS}
+    return result
+
+
+def input_diagnostic(scheme: dict, evidence: list) -> dict:
+    """匹配和输入校验的独立事实记录，便于报告披露；不运行推理或修改设计。"""
+    from auto_battery_research.simulation import match_pinn_system
+    from auto_battery_research.tools.geometry_revision import resolve_input_ranges
+    from auto_battery_research.util.scheme_ledger import digest
+    from auto_battery_research.util.hashing import stage5_scheme_projection
+    scheme = canonical_scheme(scheme)
+    system = match_pinn_system(str(scheme.get("cathode") or ""), str(scheme.get("anode") or ""))
+    geometry = scheme.get("geometry") or {}
+    errors = validate_geometry_contract(geometry, scheme, evidence) if geometry.get("contract_version") == "2.0" else ["缺少有效结构化几何契约"]
+    ranges = resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"))
+    violations = []
+    for comp, side in (("cathode", "pe"), ("anode", "ne")):
+        for field, range_key, factor, unit in (("L_um", "thickness", 1e6, "μm"), ("porosity", "porosity", 1, ""),
+            ("R_s_um", "R_s", 1e6, "μm"), ("D_s_m2s", "D_s", 1, "m²/s")):
+            value = (geometry.get(comp) or {}).get(field)
+            bounds = (ranges.get(side) or {}).get(range_key) or {}
+            if strict_number(value) and bounds and (value < bounds["min"] * factor or value > bounds["max"] * factor):
+                violations.append({"path": comp + "." + field, "value": value, "min": float(f"{bounds['min'] * factor:.12g}"),
+                                   "max": float(f"{bounds['max'] * factor:.12g}"), "unit": unit})
+    return {"matched": bool(system), "system_id": (system or {}).get("system_id"),
+            "scheme_hash": digest(stage5_scheme_projection(scheme)),
+            "error_code": "GEOMETRY_CONTRACT_INVALID" if errors else None, "errors": errors, "violations": violations}
+
+
+def render_input_diagnostic(doc: dict) -> str:
+    """仅显示与当前方案指纹相符的输入阻断原因，不将陈旧诊断写成当前结论。"""
+    from auto_battery_research.util.hashing import stage5_scheme_projection
+    from auto_battery_research.util.scheme_ledger import digest
+    diagnostic = doc.get("physics_input_diagnostic") or {}
+    if (diagnostic.get("scheme_hash") != digest(stage5_scheme_projection(doc.get("scheme") or {}))
+            or not diagnostic.get("matched") or not diagnostic.get("errors")):
+        return ""
+    reasons = []
+    for violation in diagnostic.get("violations", []):
+        names = {"L_um": "厚度", "porosity": "孔隙率", "R_s_um": "颗粒半径", "D_s_m2s": "固相扩散系数"}
+        comp, _, field = violation["path"].partition(".")
+        label = "正极" if comp == "cathode" else "负极"
+        reasons.append(f"{label}{names.get(field, field)}为 {violation['value']:g} {violation['unit']}，超出模型范围 [{violation['min']:g}, {violation['max']:g}] {violation['unit']}")
+    if not reasons:
+        reasons = diagnostic["errors"]
+    return (f"已匹配 **{diagnostic['system_id']}** 模型，但当前输入未通过校验，未执行放电仿真。"
+            + "；".join(reasons) + "。当前声明值保持不变，课题性能目标仍待验证。")
+
+
+def validate_geometry_contract(geo: dict, scheme: dict, evidence: list, *, check_ranges: bool = True) -> list:
     """共享落盘验收：重算基准、来源证据及范围，不信任客户端的来源标签。"""
     from pinn.input_spec import complete_geometry_block
     from auto_battery_research.tools.geometry_revision import collect_geometry_violations, resolve_input_ranges
     errors = []
+    canonical = canonical_scheme(scheme)
+    for comp in COMPONENTS:
+        if canonical.get(comp) != scheme.get(comp):
+            errors.append(f"{comp} 材料标识未归一化")
+    if "material_ids" in geo and geo["material_ids"] != {comp: canonical.get(comp) for comp in COMPONENTS}:
+        errors.append("几何契约与当前材料标识不一致")
     baseline = complete_geometry_block({}, scheme.get("cathode"), scheme.get("anode"))
     from pinn.spm_runner import match_pinn_system, load_system_params
     system = match_pinn_system(str(scheme.get("cathode") or ""), str(scheme.get("anode") or ""))
@@ -195,6 +357,8 @@ def validate_geometry_contract(geo: dict, scheme: dict, evidence: list) -> list:
                     errors.append(f"{path} 与模型基准不一致")
                 if system and (source.get("system_id") != system["system_id"] or source.get("params_hash") != params_hash):
                     errors.append(f"{path} 模型基准版本指纹失配")
+                if system and source.get("material_id") != canonical.get(comp):
+                    errors.append(f"{path} 模型基准材料标识失配")
             elif field == "D_s_m2s":
                 try:
                     verified = validate_diffusion_evidence(source.get("evidence"), value, str(scheme.get(comp)), evidence)
@@ -204,10 +368,11 @@ def validate_geometry_contract(geo: dict, scheme: dict, evidence: list) -> list:
                     errors.append(f"{path}: {exc}")
             elif source.get("origin") != "llm_design":
                 errors.append(f"{path} 不支持的来源类型")
-    errors.extend(collect_geometry_violations(
-        geo, resolve_input_ranges(scheme.get("cathode"), scheme.get("anode")),
-        anode_id=scheme.get("anode"),
-    ))
+    if check_ranges:
+        errors.extend(collect_geometry_violations(
+            geo, resolve_input_ranges(scheme.get("cathode"), scheme.get("anode")),
+            anode_id=scheme.get("anode"),
+        ))
     return errors
 
 

@@ -220,7 +220,8 @@ class LLMClient:
                 # 缺 finish_reason 的网关按达到预算保守判截断；有明确 stop 时不猜测。
                 truncated = reason in ("length", "max_tokens") or (
                     reason is None and isinstance(output_tokens, int) and output_tokens >= budget)
-                self.last_response = {"finish_reason": reason, "reasoning_tokens": reasoning,
+                self.last_response = {"finish_reason": reason, "reasoning_tokens": reasoning, "attempt": attempt,
+                                      "max_tokens": budget,
                                       "truncated": truncated, "empty": not bool(text.strip())}
                 error = LLMOutputError("LLM 输出截断或为空，未获得完整正文") if truncated or not text.strip() else None
                 _record(backend, text, resp=resp, error=error)
@@ -340,16 +341,16 @@ def safe_json_loads(text: str) -> Optional[Dict[str, Any]]:
         except json.JSONDecodeError:
             pass
 
-    # 3) 用 JSONDecoder 从每个 { 位置尝试提取合法 JSON 对象
+    # 3) 只尝试首个对象起点；外层损坏不能把内部coverage等对象冒充完整响应。
     decoder = json.JSONDecoder()
-    for i, ch in enumerate(text):
-        if ch == "{":
-            try:
-                obj, _ = decoder.raw_decode(text[i:])
-                if isinstance(obj, dict):
-                    return obj
-            except json.JSONDecodeError:
-                pass
+    i = text.find("{")
+    if i >= 0:
+        try:
+            obj, _ = decoder.raw_decode(text[i:])
+            if isinstance(obj, dict):
+                return obj
+        except json.JSONDecodeError:
+            pass
 
     return None
 

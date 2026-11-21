@@ -36,6 +36,11 @@ def preflight(doc):
         actual = params.get(path, {})
         if not field_equal(path, actual.get("value"), expected["value"]) or actual.get("unit", "") != expected.get("unit", ""):
             add(path, "用户明确固定值与当前方案不一致", "user_requirement")
+    from .physical_parameters import physical_declarations
+    _, physical_issues = physical_declarations(params)
+    for reason in physical_issues:
+        for path in sorted(set(re.findall(r"[a-z_]+(?:\.[A-Za-z0-9_]+)+", reason)) & params.keys()):
+            add(path, reason, "physical_quantity")
     canonical = {}
     for path, row in params.items():
         key = (ALIASES.get(path, path), row.get("quantity_kind"), row.get("denominator"), semantic_conditions(row.get("conditions") or {}))
@@ -49,11 +54,18 @@ def preflight(doc):
             canonical[key] = (path, value)
     from .report_readiness import unresolved_issues
     for issue in unresolved_issues(doc):
+        if issue.startswith("实验交付限制："):
+            continue  # 本轮输出的科研意见只披露，不作为下一轮输入冲突重新建快照。
         if not any(w in issue for w in ("冲突", "错绑", "不一致")):
             continue
         for path in re.findall(r"[a-z_]+(?:\.[A-Za-z0-9_]+)+", issue):
             if path in params:
                 add(path, "已有审核提出声明冲突，尚待核对：" + issue, "review")
+    if doc.get("numeric_contract"):
+        from .numeric_consistency import document_audit
+        for issue in document_audit(doc)["issues"]:
+            for path in issue["paths"]:
+                add(path, issue["message"], "numeric_consistency")
     result = {"version": VERSION, "status": "PENDING" if issues else "READY", "issues": issues,
               "pending_fields": sorted({i["path"] for i in issues})}
     result["fingerprint"] = digest(result)
@@ -78,6 +90,12 @@ def paragraph_pending(paragraph, section, doc, snapshot):
     return pending
 
 
+def parameter_pending_fields(doc):
+    """Stage 5 门禁只采用当前数值/绑定冲突，科学审核意见仍在快照和报告披露。"""
+    snapshot = preflight(doc)
+    return sorted({item["path"] for item in snapshot["issues"] if item["source"] != "review"})
+
+
 def stamp(record, doc):
     record["consistency"] = preflight(doc)
     pending = {}
@@ -96,7 +114,15 @@ def validate_snapshot(record, doc):
     if "consistency" not in record:
         return  # 旧实验记录沿用原门禁；重新生成时建立快照。
     expected = stamp({"sections": record.get("sections", {})}, doc)
-    if record.get("consistency") != expected["consistency"] or record.get("pending_operations") != expected["pending_operations"]:
+    operations = record.get("pending_operations")
+    if record.get("parameter_value_contract") == 1 and isinstance(operations, dict):
+        # 只读兼容旧版混入的缺项引用；实际方案冲突仍必须完整保留，不改旧内容或审核。
+        from .experiment_values import pending_rows
+        value_gaps = pending_rows(record).keys() - set(expected["consistency"]["pending_fields"])
+        operations = {key: [field for field in fields if field not in value_gaps]
+                      for key, fields in operations.items()}
+        operations = {key: fields for key, fields in operations.items() if fields}
+    if record.get("consistency") != expected["consistency"] or operations != expected["pending_operations"]:
         raise ValueError("实验一致性核对已过期或待定操作标记缺失，须重新核对当前方案")
 
 
@@ -105,6 +131,7 @@ def parameter_issues(record, doc):
     if "consistency" not in record:
         return []
     from .experiment_design import overlap_key, effective_data
+    from .physical_parameters import identity as physical_identity
     current = effective_data(doc)["parameters"]
     groups = {g.get("id"): g for g in record.get("groups", []) if isinstance(g, dict) and isinstance(g.get("id"), str)}
     errors = []
@@ -119,8 +146,13 @@ def parameter_issues(record, doc):
             reference = row["ref"]
             if not isinstance(reference, str):
                 reason = "ref必须为规范字段字符串"
-            elif canonical in current and ALIASES.get(reference, reference) != ALIASES.get(canonical, canonical):
-                reason = "已声明字段不能引用另一项主方案参数"
+            elif canonical in current and reference != canonical:
+                expected = physical_identity(canonical, current[canonical])
+                if expected is not None:
+                    if reference not in current or physical_identity(reference, current[reference]) != expected:
+                        reason = "已声明字段不能引用另一项物理量或工况"
+                elif ALIASES.get(reference, reference) != ALIASES.get(canonical, canonical):
+                    reason = "已声明字段不能引用另一项主方案参数"
         elif row.get("scope") == "control":
             group = groups.get(row.get("group_id"), {}) if isinstance(row.get("group_id"), str) else {}
             changed = group.get("changes", {}).get(canonical, {})

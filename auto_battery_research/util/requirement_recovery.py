@@ -34,6 +34,11 @@ def merge_requirement_patch(original, patch, accepted):
         if not valid:
             merged[key] = patch.get(key, "other" if key == "task_type" else True)
     merged["items"] = rows
+    for key in ("task", "split_version", "hierarchy_version", "groups"):
+        if (key not in merged or merged.get(key) is None) and key in patch:
+            merged[key] = copy.deepcopy(patch[key])
+    if "groups" in patch:
+        merged["groups"] = copy.deepcopy(patch["groups"])
     if "query_links" in patch:
         merged["query_links"] = patch["query_links"]
     return merged
@@ -47,6 +52,14 @@ def recover_requirements(raw, goal, queries=(), reason=""):
     counts = Counter(r.get("id") for r in rows if isinstance(r, dict) and isinstance(r.get("id"), str))
     items, accepted, diagnostics, mapping = [], [], [], {}
     task_type = raw.get("task_type", "other")
+    from .requirement_sources import task_record, SPLIT_VERSION, locate_quotes, meaningful_gap
+    task = None
+    try:
+        task = task_record(raw.get("task"), goal)
+        if raw.get("split_version") == SPLIT_VERSION and task is None:
+            raise ValueError("新版拆分缺少总任务原文")
+    except ValueError as exc:
+        diagnostics.append(str(exc))
     if task_type not in ("design", "comparison", "process", "mechanism", "experiment", "query", "other"):
         task_type = "other"; diagnostics.append("任务类型待复核")
     scheme_required = raw.get("scheme_required", True)
@@ -58,7 +71,14 @@ def recover_requirements(raw, goal, queries=(), reason=""):
                 raise ValueError("要求id缺失或重复")
             single = copy.deepcopy(row)
             single["related_ids"] = []
+            single.pop("group_id", None)  # 逐项验收时层级引用留到全集校验。
             item = normalize_requirements({"items": [single], "scheme_required": scheme_required}, goal)["items"][0]
+            if row.get("group_id"):
+                item["group_id"] = row["group_id"]
+            if raw.get("hierarchy_version") == 1 and item["kind"] == "constraint":
+                from .requirement_structure import item_bindings
+                if not item_bindings(item) and item.get("binding_status") != "pending":
+                    raise ValueError("固定条件必须绑定规范字段或明确披露待绑定原因")
             if any(i["id"] == item["id"] for i in items):
                 raise ValueError("重复要求")
             items.append(item); accepted.append(copy.deepcopy(row)); mapping[row["id"]] = item["id"]
@@ -72,7 +92,22 @@ def recover_requirements(raw, goal, queries=(), reason=""):
                         continue
                     start = goal.index(quote)
                 pending = fallback_requirements(quote)["items"][0]
-                pending.update(quote=quote, description=quote, start=start, end=start+len(quote), id=_id(quote, quote, start))
+                # 数量错误不删除其他已定位的语义/条件；错误数量本身留空。
+                if "数量" in str(exc) and isinstance(row, dict):
+                    pending.update({k: copy.deepcopy(row[k]) for k in ("kind", "subject", "description", "conditions", "evidence_needed") if k in row})
+                    pending["quantity"] = None
+                    try:
+                        pending["source_quotes"] = row.get("source_quotes", [])
+                        if pending["source_quotes"]:
+                            pending["source_spans"] = locate_quotes(pending["source_quotes"], goal)
+                    except ValueError:
+                        pending.pop("source_quotes", None)
+                pending.update(quote=quote, start=start, end=start+len(quote), id=_id(quote, pending["description"], start))
+                if isinstance(row, dict) and row.get("group_id"):
+                    pending["group_id"] = row["group_id"]
+                if raw.get("hierarchy_version") == 1 and row.get("kind") == "constraint":
+                    pending.update(kind="constraint", subject=row.get("subject", ""), description=row.get("description", quote))
+                    pending.update(binding_status="pending", binding_reason="固定字段解析失败，须复核用户原句：" + str(exc))
                 if not any(i["id"] == pending["id"] for i in items):
                     items.append(pending)
                 if isinstance(row.get("id"), str) and counts[row["id"]] == 1:
@@ -81,6 +116,13 @@ def recover_requirements(raw, goal, queries=(), reason=""):
     covered = [False] * len(goal)
     for item in items:
         covered[item["start"]:item["end"]] = [True] * (item["end"]-item["start"])
+        for span in item.get("source_spans", []):
+            covered[span["start"]:span["end"]] = [True] * (span["end"]-span["start"])
+        for condition in item.get("conditions", []):
+            for match in re.finditer(re.escape(condition), goal):
+                covered[match.start():match.end()] = [True] * (match.end()-match.start())
+    for span in (task or {}).get("source_spans", []):
+        covered[span["start"]:span["end"]] = [True] * (span["end"]-span["start"])
     for match in re.finditer(r"[^。；;\n]+[。；;]?", goal):
         segments = []
         for position in range(match.start(), match.end()):
@@ -90,7 +132,7 @@ def recover_requirements(raw, goal, queries=(), reason=""):
                 segments[-1].append(position)
         for segment in segments:
             quote = goal[segment[0]:segment[-1]+1].strip(" ，,。；;\n\t")
-            if not quote or not re.search(r"[\w\u4e00-\u9fff]", quote):
+            if not meaningful_gap(quote) or not re.search(r"[\w\u4e00-\u9fff]", quote):
                 continue
             start = goal.index(quote, segment[0])
             pending = fallback_requirements(quote)["items"][0]
@@ -116,6 +158,13 @@ def recover_requirements(raw, goal, queries=(), reason=""):
             links.append({"query_index": link["query_index"], "requirement_ids": [mapping[i] for i in link["requirement_ids"]]})
         else:
             diagnostics.append("检索关联尚待修复")
-    return {"version": 1, "source": goal, "status": "parsed" if not diagnostics else "partial" if accepted else "unparsed",
+    from .requirement_structure import normalize_groups
+    try:
+        groups = normalize_groups(raw, goal, items)
+    except ValueError as exc:
+        groups = []
+        diagnostics.append(str(exc))
+    diagnostics.extend("固定条件待绑定：" + r["description"] + "；" + r.get("binding_reason", "原因待补") for r in items if r.get("binding_status") == "pending")
+    return {"version": 1, "split_version": raw.get("split_version", 1), "hierarchy_version": raw.get("hierarchy_version", 0), "groups": groups, "task": task, "source": goal, "status": "parsed" if not diagnostics else "partial" if accepted else "unparsed",
             "items": sorted(items, key=lambda i: i["start"]), "task_type": task_type,
             "scheme_required": scheme_required, "query_links": links, "diagnostics": list(dict.fromkeys(diagnostics))}, locked

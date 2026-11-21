@@ -329,7 +329,7 @@ def render_revision_log_markdown(revisions: List[Dict[str, Any]]) -> str:
     for entry in revisions:
         if not isinstance(entry, dict):
             continue
-        kind_cn = "修订" if entry.get("kind") == "revision" else "择优回滚"
+        kind_cn = ("输入修复" if entry.get("mode") == "input_repair" else "修订") if entry.get("kind") == "revision" else "择优回滚"
         changes = entry.get("changes") or []
         ch_txt = "; ".join(
             f"{c.get('field')}: {c.get('old')} → {c.get('new')}" if isinstance(c, dict) else str(c)
@@ -337,6 +337,6 @@ def render_revision_log_markdown(revisions: List[Dict[str, Any]]) -> str:
         ) or "—"
         reason = re.sub(r"[\r\n|]+", " ", str(entry.get("reason") or "—")) or "—"
         lines.append(
-            f"| {entry.get('round', '—')} | {entry.get('timestamp', '—')} | {kind_cn} | {ch_txt} | {reason} |"
+            f"| {entry.get('attempt') or entry.get('round', '—')} | {entry.get('timestamp', '—')} | {kind_cn} | {ch_txt} | {reason} |"
         )
     return "\n".join(lines)

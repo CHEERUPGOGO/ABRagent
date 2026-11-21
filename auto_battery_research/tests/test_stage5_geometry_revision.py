@@ -552,6 +552,8 @@ def test_check_and_complete_select_same_round_once(tmp_path):
     mgr.stages[4].status = "FAILED"
     ok, diagnostic = mgr.check_stage(5)
     assert ok, diagnostic
+    # 完整JSON方案跟随正式几何同步，不需要程序化模式的额外审核调用。
+    assert not recipes.load(task_dir).get("generation_contract")
     task_dir = mgr.get_task_output_dir()
     before = (task_dir / "pinn_simulation_result.json").read_bytes()
     ok, result = mgr.complete_stage(5)

@@ -3,8 +3,8 @@
 ## 任务目标
 1. 通过唯一设计入口 `RunRAGDesign` → `AbrRagAdapter` → `RAGPipeline` 接收具体化学电池设计目标（如 400 Wh/kg 锂金属电池），并自动从 query/目标提取 `target_energy_wh_kg`（缺失时允许后续结构化补充）。
 2. 调度 `Planner`（含 `mp_queries` 规划）→ `Retrieval`（`MultiRetrieval` Chroma+BM25+RRF 双库混合检索 + Materials Project MCP `augment_mp_evidence` 证据补充 + 可选 Reranker）→ 独立结构化几何候选生成 → `Writer`（生成五段式方案，冻结几何字段）→ `Reviewer` + `RelationEngine` 协同审查。
-3. 执行 **`RelationEngine` 7 条分级规则 C1–C3, C5–C8**（**C4 已永久移除**；代码常量保留兼容标签 `RULES_VERSION = "C1-C8/v2.1-coincell"`，规则配置见 `src/lmllm/RAG/data/constraints.json` `version="2.1-coincell-academic"`）：
-   - **前置 fail-closed (`C0_UNVERIFIED_MATERIAL`)**：未在已验证材料词典/库中登记的材料直接拒绝（`feasible=False`）。
+3. 执行 **`RelationEngine` 7 条分级规则 C1–C3, C5–C8**（**C4 已永久移除**；`RULES_VERSION = "C1-C8/v2.3-electrolyte-family"`，规则配置见 `src/lmllm/RAG/data/constraints.json` `version="2.1-coincell-academic"`）：
+   - **前置材料识别 (`C0_UNVERIFIED_MATERIAL`)**：电极可按当前声明的母体匹配材料类别和相容性规则，掺杂名义式无需单独登记，完整配方仍保留。位点、掺量、机理与性能独立审核，不继承母体容量/物性或PINN资格。电解液可按完整解析的盐/浓度/溶剂/添加成分在`electrolyte_families.json`覆盖范围内分类，或匹配已登记具体配方；未识别部分保留诊断，mol/kg不当mol/L，不猜溶剂比例或LHCE。C0仅表示规则适用范围不足，不等于科学上不可行。
    - **分级动作机制**：
      - `C1–C3` (`action: "challenge"`): 带 `mitigation_whitelist` 缓解白名单审查（如高浓/局部高浓或全氟溶剂、LiDFOB/FEC 界面成膜、NCM811 掺杂/包覆或温和上限、金属锂保护层/3D 骨架等）；声明匹配缓解措施则放行，未声明缓解措施的裸配组合判定违规（`feasible=False`；其中 C2 同时带 `retrieval_boost` 检索加权）。
      - `C5` (`action: "recommend"`): 硅基负极推荐补充 `additive:FEC`（记录推荐项与缺失提示）。
@@ -15,6 +15,16 @@
 Stage 4 不生成实验方案。材料设计通过后，由 Stage 5B 根据最终参数补检索工艺证据并生成实验推荐。
 
 Reviewer 对待修问题提供可唯一定位的原句和字段路径。程序签发局部写权限，Writer 只提交补丁，不重写全文或修改锁定字段。补检索保留原引用，审核和修复预算随方案检查点续跑。
+
+格式与科学修复分开：可唯一定位、只需增删 `**` 的局部格式错误由程序修补，不阻断科学审核。`format_repair_rounds` 最多三次，独立于科学正文 `repair_rounds` 三轮和审核六轮；格式失败仍保留科学审核结果及格式诊断，不能无保留通过。末尾疑似截断、未闭合代码围栏或章节缺失仍先恢复正文完整性，不允许用格式修补放行缺失内容。旧预算不自动退还，同版本格式失败不自动重试。
+
+## 收尾论证整合
+
+最终正文、结构化研究记录与支持性审核稳定后，按原始课题组织面向读者的连贯论证。
+内部逐项回答、候选、论证和所有科学限制保留；整合段落关联需求、来源、参数、引用和限制。
+Reviewer独立审核覆盖、逐段支持与限制是否真实保留，不能把跨体系推断或待验证观点升级为实证。
+生成及审核各最多两次，调用前记录检查点预算。通过后写入`research_narrative`，交Stage 6只读展示。
+整合审核未整体通过时，第二部分逐段展示：通过部分正常呈现，有问题的段落以原稿引用块标明待复核原因；不得因此丢弃其他有效段落或改写原审核状态。输入变化使旧审核失效时，旧稿及完整逐项内容保留在附录，不作为当前已确认结论。
 
 ## 离线与异常 Fail-Closed 行为
 - LLM 不可用或结构化 JSON 输出校验失败时，**严禁编造兜底配方**：`PlannerAgent` 可退化为规则拆解，`WriterAgent` 返回空草案（不填充硬编码模板配方），`ReviewerAgent` 返回 `confidence="low"`、`error_type="reviewer"`、`fallback=True`。

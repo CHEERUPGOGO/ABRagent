@@ -28,8 +28,26 @@ def recipe_payload():
             "gaps": ["本征物性尚需独立测量，不用工程建议代替实测。"]}, "citations": []}
 
 
-def scripted_client():
-    return SimpleNamespace(available=True, chat=lambda *a, **kw: json.dumps(recipe_payload(), ensure_ascii=False))
+def slot_response(payload, user, trace_tag):
+    """离线模型按程序签发的内容槽填写，科学审核独立返回完整覆盖。"""
+    request = json.loads(user)
+    if trace_tag != "experiment_design":
+        return json.dumps(payload, ensure_ascii=False)
+    value = copy.deepcopy(payload)
+    if request.get("requirements") and "groups" not in value:
+        from auto_battery_research.util.research_experiments import fallback_links
+        tests = value.get("requirement_tests")
+        fallback_links(value, {"requirements": request["requirements"], "research": request.get("research"),
+                              "ledger_view": request["ledger"]})
+        if tests is not None:
+            value["requirement_tests"] = tests
+    elif "groups" not in value:
+        value["groups"] = [{"id": "G1", "scope": "main", "name": "主组", "changes": {}, "parameter_refs": []}]
+    return json.dumps(value, ensure_ascii=False)
+
+
+def scripted_client(payload=None):
+    return SimpleNamespace(available=True, chat=lambda system, user, **kw: slot_response(payload or recipe_payload(), user, kw["trace_tag"]))
 
 
 def setup_design(tmp_path):

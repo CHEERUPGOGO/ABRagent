@@ -13,13 +13,14 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from agent.pipeline_tok2000 import run as run_tok2000
-from agent.material_norm import MaterialNormalizer
+from agent.material_norm import MaterialNormalizer, parse_formulation_structured
 from agent.label_norm import LabelNormalizer
 from agent.cell_assembler import assemble_cells
 
 __all__ = [
     "run_tok2000",
     "MaterialNormalizer",
+    "parse_formulation_structured",
     "LabelNormalizer",
     "assemble_cells",
 ]

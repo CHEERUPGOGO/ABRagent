@@ -3,11 +3,12 @@ from __future__ import annotations
 
 import re
 
-RENDER_VERSION = 15
+RENDER_VERSION = 33
 GROUPS = {"cathode": "正极", "anode": "负极", "electrolyte": "电解液",
           "separator": "隔膜", "current_collector": "集流体", "packaging": "封装",
           "process": "制备与装配", "condition": "测试条件", "requirements": "研发目标"}
 NAMES = {
+    "calculated_pore_volume_uL": "单片正极孔体积", "calculated_electrolyte_to_cathode_pore_ratio": "注液量与单片正极孔体积之比",
     "material": "材料", "L_um": "涂层厚度", "porosity": "孔隙率", "R_s_um": "颗粒半径",
     "D_s_m2s": "固相扩散系数", "loading_mg_cm2": "涂层面载量", "compaction_g_cm3": "压实密度",
     "capacity_mAh_g": "比容量", "active_fraction": "活性物质量占比", "conductive_fraction": "导电剂质量占比",
@@ -99,7 +100,8 @@ def describe(key, row):
     name = label(key, row)
     if row.get("value") is None:
         return f"{name}尚未确定"
-    status = "（文献参考值，须核对材料及工况）" if row.get("basis") in ("literature", "literature_measurement") else ""
+    status = ("（模型基准，非本批材料实测）" if row.get("basis") == "model_reference" else
+              "（文献参考值，须核对材料及工况）" if row.get("basis") in ("literature", "literature_measurement") else "")
     conditions = row.get("conditions") or {}
     from .parameter_presentation import render_conditions
     displayed_conditions = render_conditions(conditions)
@@ -123,11 +125,41 @@ def numbered_detail(index, title, body, details=()):
     return "\n\n".join(parts)
 
 
+def component_identity_text(data, group, emphasize=False):
+    """只读显示已接受的完整身份；不依赖 .material、不猜配方或改写方案表。"""
+    from .material_ids import assemble_components, identity_path
+    params = data.get("parameters", {})
+    scheme = assemble_components({}, params, strict=False)
+    identity = (scheme.get("component_identities") or {}).get(group)
+    if not identity:
+        return ""
+    refs = identity["parameter_refs"]
+    source = params[refs[0]]["value"]
+    value = text(source)
+    if emphasize:
+        value = "**" + value.replace("**", "") + "**"
+    if identity["kind"] == "nominal_formula":
+        return f"{GROUPS[group]}名义组成为{value}。"
+    if identity["kind"] == "formulation":
+        return f"{GROUPS[group]}配方为{value}。"
+    full = {p: r for p, r in params.items() if identity_path(p, r)
+            and identity_path(p, r)[0] == group and identity_path(p, r)[1] != "material"}
+    if full:
+        complete = assemble_components({}, full, strict=False)
+        detail = (complete.get("component_identities") or {}).get(group)
+        if detail:
+            raw = text(full[detail["parameter_refs"][0]]["value"])
+            raw = "**" + raw.replace("**", "") + "**" if emphasize else raw
+            kind = "名义组成" if detail["kind"] == "nominal_formula" else "配方"
+            return f"{GROUPS[group]}采用{value}，{kind}为{raw}。"
+    return f"{GROUPS[group]}采用{value}。"
+
+
 def component_paragraph(data, group, material_only=False):
     params = data.get("parameters", {})
     selected = [(k, v) for k, v in params.items() if k.startswith(group + ".") and not k.endswith(".original_request")]
     if material_only:
-        selected = [(k, v) for k, v in selected if k.endswith(".material")]
+        return component_identity_text(data, group) or f"{GROUPS[group]}的具体规格尚未确定。"
     if not selected:
         if group == "requirements":
             return ""
@@ -141,102 +173,8 @@ def component_paragraph(data, group, material_only=False):
 
 
 def render_design(data):
-    """以匹配关系组织方案表，模型参数由第四部分统一回显。"""
-    params = data.get("parameters", {})
-    from .parameter_presentation import parameter_view, combined_rows, displayed_row
-    view = parameter_view(data)
-    def rows(group):
-        return [(row["canonical_key"], row) for row in view if row["canonical_key"].startswith(group + ".")
-                and not row["canonical_key"].endswith(".original_request") and row.get("value") is not None]
-    def clauses(items, emphasize=False):
-        prepared = []
-        for key, original in items:
-            row = dict(original)
-            row.setdefault("canonical_key", key)
-            row.setdefault("source_fields", [key])
-            row.setdefault("sources", [])
-            prepared.append(row)
-        combined = combined_rows(prepared)
-        values = [displayed_row(v, params).replace(amount(v["canonical_key"], v), f"**{amount(v['canonical_key'], v)}**", 1)
-                  if emphasize and "range_values" not in v else displayed_row(v, params) for v in combined]
-        return "；".join(dict.fromkeys(values))
-    parts = ["### 3.1 总体方案", "> **当前组合。** " + "".join(
-        component_paragraph(data, g, material_only=True) for g in ("cathode", "anode", "electrolyte"))]
-    if rows("requirements"):
-        parts.append("**研发目标。** " + clauses(rows("requirements")) + "。目标属于设计要求，不代表已实现。")
-    parts += ["选材依据见第 2 节；本节仅说明当前已声明的设计与匹配边界，首轮实验建议见第 5 节。",
-              "### 3.2 正负极配置与容量匹配"]
-    for group in ("cathode", "anode"):
-        specs = [(k, v) for k, v in rows(group) if k.split(".")[-1] not in ("material", "R_s_um", "D_s_m2s", "n_p_ratio")]
-        identity = [(k, v) for k, v in specs if any(t in k for t in ("formula", "doping.", "dopant", "coating", "composition"))]
-        specs = [(k, v) for k, v in specs if (k, v) not in identity]
-        if identity:
-            details = [("规格" + str(i), displayed_row(row, params)) for i, row in enumerate(combined_rows([v for _, v in identity]), 1)]
-            parts.append(numbered_detail(1, f"{GROUPS[group]}组成与改性", "以下为当前声明；含混计量口径先确认，不自动换算。", details))
-        specs = [(k, v) for k,v in specs if k.split(".")[-1] in ("L_um", "porosity", "loading_mg_cm2", "compaction_g_cm3", "active_fraction", "conductive_fraction", "binder_fraction", "capacity_mAh_g")]
-        parts.append(f"**{GROUPS[group]}配置。** " + (clauses(specs, True) + "。" if specs else "具体极片规格尚未确定。"))
-    ratios = [(k, v) for k, v in list(params.items()) + list(data.get("derived", {}).items())
-              if k.split(".")[-1] == "n_p_ratio" and v.get("value") is not None]
-    if ratios:
-        parts.append("**容量匹配。** " + clauses(ratios) + "。该值为设计声明或预算，仍需按同一工况的可逆面容量及锂库存实测核验。")
-    else:
-        parts.append("**容量匹配尚未闭合。** 当前没有可采用的 N/P 值，不能仅凭正负极厚度判断匹配成功；应按同一工况的可逆面容量及锂库存核验，获取安排见第 5 节。")
-    operating = {"v_min", "v_max", "c_rate", "temperature_K", "temperature_C", "cycle_c_rate", "1c_current_density", "report_cycles_100", "report_cycles_200"}
-    conditions = [(k,v) for k,v in rows("condition") if k.split(".")[-1] in operating]
-    if conditions:
-        parts.append("**已声明工况。** " + clauses(conditions) + "。未声明的工况不能由实验建议或模型默认值自动补为定案。")
-    parts += ["颗粒半径、固相扩散系数及模型实际输入统一见第 4 节。",
-              "### 3.3 电解液与电芯配套"]
-    electrolyte = [(k, v) for k, v in rows("electrolyte") if not k.endswith(".material")]
-    # 相同适用条件合并展示；不把条件性基线配方拼成已验证的主方案。
-    scoped = {}
-    for k, v in electrolyte:
-        from .parameter_presentation import render_conditions
-        condition = render_conditions(v.get("conditions"), parameters=params) if v.get("conditions") else ""
-        scoped.setdefault(condition, []).append((k, dict(v, conditions={})))
-    for condition, items in scoped.items():
-        parts.append("**配方声明。** " + clauses(items) + "。" + ("适用范围：" + condition + "。" if condition else ""))
-    if not electrolyte:
-        parts.append("电解液的锂盐、溶剂及添加剂配方尚未完整声明，不能据体系名称推定具体组成。")
-    if any(any(w in scope for w in ("冲突", "基线", "候选")) for scope in scoped):
-        parts.append("**配方边界。** 上述声明含基线或候选适用条件，不能自动拼接为已确定的统一配方；须先确认其与当前电解液类别的一致性。")
-    missing_components = []
-    for group in ("separator", "current_collector", "packaging"):
-        if rows(group):
-            parts.append(f"**{GROUPS[group]}。** " + clauses(rows(group)) + "。")
-        else:
-            missing_components.append(GROUPS[group])
-    if missing_components:
-        parts.append("**配套待定。** " + "、".join(missing_components) + "的具体规格尚未确定；第 5 节如给出推荐，仅作为首轮实验起点。")
-    parts.append("### 3.4 设计预算与待决事项")
-    computed = [(k, v) for k, v in data.get("derived", {}).items() if v.get("value") is not None and k.split(".")[-1] != "n_p_ratio"]
-    for key, row in computed:
-        parts.append("- **设计预算。** " + GROUPS.get(key.split(".")[0], "") + describe(key, row) + "。")
-    if not computed:
-        parts.append("当前没有可直接引用的完整设计预算，不据材料组合推定容量匹配或比能量达标。")
-    if any("pore_volume" in k for k, _ in computed):
-        parts.append("孔隙体积仅为注液与浸润核算线索，不能单独证明容量匹配或高比能目标可达。")
-    gaps = {}
-    for k, v in params.items():
-        group, _, leaf = k.partition(".")
-        if v.get("value") is None and group in ("cathode", "anode", "electrolyte", "condition") and leaf not in ("R_s_um", "D_s_m2s", "original_request"):
-            gaps.setdefault(GROUPS[group], []).append(label(k, v))
-    for group, names in gaps.items():
-        parts.append(f"- **{group}待补数据。** " + "、".join(names) + "；获取与验证安排见第 5 节。")
-    parts.append("以上为设计声明或预算，尚需实验核验及完整电芯质量闭合；完整审核意见见第 2.6 节。")
-    numbered, index = [], 0
-    for part in parts:
-        if part.startswith("### "):
-            index = 0
-        match = re.match(r"\*\*([^*]+)\*\*\s+([\s\S]+)", part)
-        if match:
-            index += 1
-            part = numbered_detail(index, match[1], match[2])
-        elif re.match(r"^\d+\. \*\*", part):
-            index += 1
-            part = re.sub(r"^\d+\.", f"{index}.", part, count=1)
-        numbered.append(part)
-    return "\n\n".join(p for p in numbered if p)
+    from .design_presentation import render_design as render
+    return render(data)
 
 
 def render_model_parameters(data):

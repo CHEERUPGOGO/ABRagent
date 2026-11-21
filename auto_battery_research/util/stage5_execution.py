@@ -54,7 +54,32 @@ def retrieve_process_evidence(mgr, doc, task_dir):
     return selected
 
 
-def finalize_stage5(mgr, design_only=False, client=None):
+def physics_exemption(doc):
+    """只在方案明确免仿真或注册表确认没有匹配模型时返回原因。"""
+    from .research_contract import requires_scheme
+    from auto_battery_research.tools.workflow_actions import _match_pinn_system_for_scheme
+    if not requires_scheme(doc):
+        return "分析类课题未要求电芯放电仿真"
+    match = _match_pinn_system_for_scheme(doc.get("scheme") or {})
+    if match.get("status") == "NO_MATCH":
+        return "当前材料组合没有匹配的 PINN，未执行放电仿真"
+    if not match.get("matched"):
+        raise ValueError("；".join(match.get("reasons") or ["PINN 体系匹配未完成"]))
+    return None
+
+
+def report_without_simulation(doc, task_dir):
+    """重验已记录的不适用判定，避免旧曲线或旧输入进入研报。"""
+    recorded = (doc.get("report_readiness") or {}).get("physics_status") == "NOT_APPLICABLE"
+    if not recorded:
+        path = Path(task_dir) / "stage5_execution.json"
+        if path.exists():
+            physics = json.loads(path.read_text(encoding="utf-8")).get("physics") or {}
+            recorded = physics.get("status") == "NOT_APPLICABLE" and physics.get("input_hash") == digest(doc.get("scheme"))
+    return recorded and bool(physics_exemption(doc))
+
+
+def finalize_stage5(mgr, design_only=False, client=None, *, restart_experiment=False):
     from auto_battery_research.checkers.pinn_physics_checker import PINNPhysicsChecker
     from auto_battery_research.tools.workflow_actions import run_pinn_simulation, select_best_stage5_result
     from . import experiment_design as recipes
@@ -82,80 +107,100 @@ def finalize_stage5(mgr, design_only=False, client=None):
         started = time.monotonic()
         identity = digest(doc.get("scheme"))
         try:
-            if doc.get("delivery_contract") == 1:
-                from .research_contract import requires_scheme
-                if not requires_scheme(doc):
-                    raise ValueError("NOT_APPLICABLE：分析类课题未要求电芯放电仿真")
-                from auto_battery_research.tools.workflow_actions import _match_pinn_system_for_scheme
-                match = _match_pinn_system_for_scheme(doc.get("scheme") or {})
-                if not match.get("matched"):
-                    raise ValueError("NOT_APPLICABLE：当前体系没有匹配的 PINN；不要求补齐仿真专用参数")
-                if (doc.get("scheme", {}).get("geometry") or {}).get("contract_version") != "2.0":
+            exemption = physics_exemption(doc)
+            if exemption:
+                valid = True
+                state["physics"] = {"status": "NOT_APPLICABLE", "passed": True, "input_hash": identity,
+                                    "reason": exemption, "duration_seconds": time.monotonic()-started}
+            else:
+                if doc.get("delivery_contract") == 1 and (doc.get("scheme", {}).get("geometry") or {}).get("contract_version") != "2.0":
                     raise ValueError("物理输入尚未形成有效结构化契约；不使用训练默认值代替当前设计声明")
-            valid, diagnostic = checker.do_check()
-            identity = digest(doc.get("scheme"))
-            already_failed = prior.get("physics", {}).get("input_hash") == identity and prior.get("physics", {}).get("status") == "FAILED"
-            needs_extraction = mgr.get_stage_by_id(5).skip
-            if (not valid or needs_extraction) and not design_only and not already_failed:
-                run_pinn_simulation(target_query=mgr.target_goal, stage_manager=mgr)
-            if not mgr.get_stage_by_id(5).skip and not design_only:
-                valid_now, _ = checker.do_check()
-                if valid_now:
+                valid, diagnostic = checker.do_check()
+                identity = digest(doc.get("scheme"))
+                already_failed = prior.get("physics", {}).get("input_hash") == identity and prior.get("physics", {}).get("status") == "FAILED"
+                needs_extraction = mgr.get_stage_by_id(5).skip
+                if needs_extraction and not design_only and not already_failed:
+                    run_pinn_simulation(target_query=mgr.target_goal, stage_manager=mgr)
+                if not mgr.get_stage_by_id(5).skip and not design_only:
                     from .pinn_optimization import optimize
-                    state["optimization"] = optimize(mgr, client=client if client is not None else _llm_client(mgr))
-                select_best_stage5_result(mgr)
-                identity = digest(json.loads(doc_path.read_text(encoding="utf-8")).get("scheme"))
-            valid, diagnostic = checker.do_check()
-            state["physics"] = {"status": "SKIPPED" if mgr.get_stage_by_id(5).skip else ("PASSED" if valid else "FAILED"),
-                                "passed": valid, "input_hash": identity, "diagnostic": diagnostic, "duration_seconds": time.monotonic()-started}
-            spec_path = task_dir / "pinn_input_spec.json"
-            if valid and spec_path.exists():
-                spec = json.loads(spec_path.read_text(encoding="utf-8"))
-                if not (spec.get("trigger") or {}).get("triggered"):
-                    state["physics"].update(status="SKIPPED", reason=(spec.get("trigger") or {}).get("reasons"))
+                    from auto_battery_research.tools.workflow_actions import _match_pinn_system_for_scheme
+                    if _match_pinn_system_for_scheme(doc.get("scheme") or {}).get("matched") and mgr.config.get("pinn_trigger", {}).get("enabled", False):
+                        state["optimization"] = optimize(mgr, client=client if client is not None else _llm_client(mgr))
+                    elif (not valid) and not already_failed:
+                        run_pinn_simulation(target_query=mgr.target_goal, stage_manager=mgr)
+                    select_best_stage5_result(mgr)
+                    identity = digest(json.loads(doc_path.read_text(encoding="utf-8")).get("scheme"))
+                valid, diagnostic = checker.do_check()
+                state["physics"] = {"status": "SKIPPED" if mgr.get_stage_by_id(5).skip else ("PASSED" if valid else "FAILED"),
+                                    "passed": valid, "input_hash": identity, "diagnostic": diagnostic, "duration_seconds": time.monotonic()-started}
+                spec_path = task_dir / "pinn_input_spec.json"
+                if valid and spec_path.exists():
+                    spec = json.loads(spec_path.read_text(encoding="utf-8"))
+                    if not (spec.get("trigger") or {}).get("triggered"):
+                        state["physics"].update(status="SKIPPED", reason=(spec.get("trigger") or {}).get("reasons"))
         except Exception as exc:
             valid = False
             state["physics"] = {"status": "FAILED", "passed": False, "input_hash": identity,
                 "diagnostic": {"error": str(exc)}, "duration_seconds": time.monotonic()-started}
         save()
         doc = json.loads(doc_path.read_text(encoding="utf-8"))
+        if (doc.get("scheme", {}).get("geometry") or {}).get("contract_version") == "2.0":
+            from auto_battery_research.simulation.geometry_contract import input_diagnostic
+            doc["physics_input_diagnostic"] = input_diagnostic(doc["scheme"], doc.get("evidence") or [])
+        if state.get("optimization"):
+            from .stage5_attempts import summary
+            doc["pinn_attempt_summary"] = summary(mgr, doc)
         if doc.get("delivery_contract") == 1:
             readiness = doc["report_readiness"]
             readiness["physics_status"] = state["physics"]["status"]
-            not_applicable = "NOT_APPLICABLE" in str(state["physics"].get("diagnostic"))
-            if not valid and not not_applicable:
+            # 替换本轮已重验的旧物理诊断，保留独立审核和实验问题。
+            readiness["issues"] = [issue for issue in readiness.get("issues", [])
+                                   if not str(issue).startswith(("物理验证未完成：", "物理输入仍待修复："))]
+            if not valid:
                 readiness["category"] = "CONDITIONAL" if readiness["category"] != "DIAGNOSTIC" else "DIAGNOSTIC"
                 readiness["issues"].append("物理验证未完成：" + str(state["physics"].get("diagnostic")))
-            if not_applicable:
-                state["physics"]["status"] = readiness["physics_status"] = "NOT_APPLICABLE"
         started = time.monotonic()
         recipe_doc = copy.deepcopy(doc)
         recipe_doc["evidence"] = retrieve_process_evidence(mgr, doc, task_dir)
         result_path = task_dir / "pinn_simulation_result.json"
-        result = json.loads(result_path.read_text(encoding="utf-8")) if result_path.exists() and valid and state["physics"]["status"] != "SKIPPED" else {}
+        result = json.loads(result_path.read_text(encoding="utf-8")) if result_path.exists() and valid and state["physics"]["status"] == "PASSED" else {}
         recipe_doc["physics_context"] = {"status": state["physics"]["status"], "result": result}
+        recipe_doc["experiment_physics_context"] = recipe_doc["physics_context"]
         # 补检索证据属于实验推荐，不改写材料设计或方案表。
         doc["experiment_evidence"] = recipe_doc["evidence"]
-        recipe = recipes.generate(task_dir, recipe_doc, client if client is not None else _llm_client(mgr), doc.get("final_answer", "")[:12000])
+        doc["experiment_physics_context"] = recipe_doc["physics_context"]
+        if restart_experiment:
+            recipe = recipes.generate(task_dir, recipe_doc, client if client is not None else _llm_client(mgr), doc.get("final_answer", "")[:12000], restart=True)
+        else:
+            recipe = recipes.generate(task_dir, recipe_doc, client if client is not None else _llm_client(mgr), doc.get("final_answer", "")[:12000])
         if doc.get("requirements"):
             doc["experiment_extensions"] = recipe.get("extensions", [])
         doc.update(stage5_contract=2, experiment_contract=2, experiment_plan_hash=recipe["plan_hash"])
         atomic_write(doc_path, json.dumps(doc, ensure_ascii=False, indent=2))
-        conditional = (recipe.get("consistency", {}).get("status") == "PENDING"
-                       or recipe.get("repair_status") == "PARTIAL" or bool(recipe.get("pending_groups"))
-                       or any(t.get("status") == "gap" for t in recipe.get("requirement_tests", [])))
-        state["experiment"] = {"status": "CONDITIONAL" if conditional else "PASSED", "plan_hash": recipe["plan_hash"],
-            "pending_fields": recipe.get("consistency", {}).get("pending_fields", []), "duration_seconds": time.monotonic()-started}
-        if conditional and doc.get("report_readiness"):
-            if doc["report_readiness"]["category"] == "COMPLETE":
-                doc["report_readiness"]["category"] = "CONDITIONAL"
-            message = "实验方案含待定字段、分组或目标验证缺口；相应操作须先确认，其他有效内容已保留。"
-            if message not in doc["report_readiness"]["issues"]:
-                doc["report_readiness"]["issues"].append(message)
+        from .experiment_consistency import parameter_pending_fields
+        pending_fields = sorted(set(parameter_pending_fields(doc)) | set(recipe.get("pending_parameters") or {}))
+        recipes.require_current(task_dir, doc)
+        experiment_status, reasons = recipes.delivery_status(recipe, pending_fields, doc=doc)
+        conditional = experiment_status != "PASSED"
+        state["experiment"] = {"status": experiment_status, "plan_hash": recipe["plan_hash"],
+            "pending_fields": pending_fields, "reasons": reasons, "origin": recipe.get("origin"),
+            "duration_seconds": time.monotonic()-started}
+        if doc.get("report_readiness"):
+            readiness = doc["report_readiness"]
+            previous = "实验方案含待定字段、分组或目标验证缺口；相应操作须先确认，其他有效内容已保留。"
+            message = "实验交付限制：" + "；".join(reasons)
+            readiness["issues"] = [item for item in readiness.get("issues", []) if item not in (previous, "实验方案与方案表存在待核对的参数。")
+                                   and not str(item).startswith("实验交付限制：")]
+            readiness["experiment_status"] = experiment_status
+            if conditional:
+                if readiness["category"] == "COMPLETE":
+                    readiness["category"] = "CONDITIONAL"
+                readiness["issues"].append(message)
             atomic_write(doc_path, json.dumps(doc, ensure_ascii=False, indent=2))
         save()
         return {"success": bool(valid or design_only or doc.get("delivery_contract") == 1), "key_findings": state,
-                "message": "Stage 5B 附条件实验方案已生成，待定项确认后实施" if conditional else "Stage 5B 实验推荐已完成"}
+                "message": ("Stage 5B 仅交付工程回退模板，具体实验方案尚未生成" if experiment_status == "FALLBACK" else
+                            "Stage 5B 附条件实验方案已生成，待定项确认后实施" if conditional else "Stage 5B 实验推荐已完成")}
     except Exception as exc:
         state["experiment"] = {"status": "FAILED", "error": str(exc)}
         save()

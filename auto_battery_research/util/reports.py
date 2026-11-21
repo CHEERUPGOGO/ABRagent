@@ -94,10 +94,10 @@ def render_stage_journal_table(
             )
         if s_id == 5 and task_dir is not None:
             # 配置中的仿真交付物是条件产物，只有实际存在时才能展示。
-            optional = {"pinn_simulation_result.json", "pinn_simulation_curve.png"}
+            optional = {"pinn_input_spec.json", "pinn_simulation_result.json", "pinn_simulation_curve.png"}
             deliv_list = [d for d in deliv_list if Path(str(d)).name not in optional
                           or (task_dir / Path(str(d)).name).is_file()]
-        s_deliv = ", ".join([Path(str(d)).name for d in deliv_list if d]) or "无"
+        s_deliv = ", ".join(dict.fromkeys(Path(str(d)).name for d in deliv_list if d)) or "无"
 
         if s_id in journal_by_id:
             s_notes = f"状态 {status_str}；耗时 {dur:.1f}s；详细记录见 stage_journals.json"

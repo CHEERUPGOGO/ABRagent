@@ -98,7 +98,7 @@ class ABRConfigLoader:
         self.raw_workflow: Dict[str, Any] = {}
         self.resolved_config: Dict[str, Any] = {}
 
-    def load(self, target_goal: str = DEFAULT_GOAL) -> Dict[str, Any]:
+    def load(self, target_goal: str = DEFAULT_GOAL, *, persist_snapshot: bool = True) -> Dict[str, Any]:
         """执行完整分层加载与模板渲染流水线."""
         # 1. 加载 setting.yaml
         if self.setting_file.exists():
@@ -134,7 +134,8 @@ class ABRConfigLoader:
         self.resolved_config = render_templates(merged, context)
 
         # 7. 保存非机密运行时快照
-        self.save_runtime_snapshot()
+        if persist_snapshot:
+            self.save_runtime_snapshot()
 
         return self.resolved_config
 

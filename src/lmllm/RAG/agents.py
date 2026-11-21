@@ -717,7 +717,7 @@ class WriterAgent:
         outline = plan.get("answer_outline", ["材料概述", "核心性能指标", "筛选建议", "数据缺口"])
 
         # LLM 不可用时禁止回退为写死的虚构材料配方，显式失败并交由上游门禁拦截
-        if not self.llm.available:
+        if not self.llm.available and "raw_response" not in getattr(self, "protocol_state", {}):
             return {
                 "draft_answer": "",
                 "fallback": True,
@@ -734,6 +734,7 @@ class WriterAgent:
         )
         if plan.get("requirements"):
             user_prompt += "\n【原始课题要求，逐项回应】\n" + json.dumps(plan["requirements"], ensure_ascii=False)
+            user_prompt += "\n按groups组织论述，items逐项回应；上层分组不另生成重复答案。复合固定条件的全部bindings必须执行，不把用户条件写成工程偏好。"
             user_prompt += "\n对每项明确回答，或写出缺口、原因与获取/验证方法。给出主方案的完整材料组成、改性规格和口径；候选与对照单列。分析类课题不补造电芯。"
 
         # ── 方案模式: 注入约束评估 + 五段式指示 ──
@@ -754,21 +755,30 @@ class WriterAgent:
             except Exception as e:
                 print(f"[WriterAgent] 约束评估失败(降级): {type(e).__name__}: {e}")
         user_prompt += _build_scheme_consistency_note(scheme, design_mode=design_mode, for_reviewer=False)
-        if design_mode or scheme:
+        structured_design = bool(design_mode or scheme or plan.get("requirements", {}).get("scheme_required") is True)
+        structured_design = structured_design and plan.get("requirements", {}).get("scheme_required") is not False
+        if design_mode or scheme or structured_design:
             if plan.get("requirements", {}).get("scheme_required") is False:
                 user_prompt += "\n【分析类任务】按课题大纲回答；不要求完整电芯，不新增配方、几何和比能量目标。"
             else:
-                user_prompt += (
-                "\n\n【输出要求】这是设计/方案类问题,请按 WRITER_SYSTEM_PROMPT 中"
-                "『设计任务输出结构』的五段式组织答案(目标/推荐组合/预期指标/可行性依据/风险与数据缺口),"
-                "段间用 --- 分隔."
-                )
+                from auto_battery_research.util.design_structure import writer_instructions
+                user_prompt += writer_instructions()
+                from auto_battery_research.util.numeric_bindings import INSTRUCTIONS as NUMERIC_INSTRUCTIONS
+                user_prompt += NUMERIC_INSTRUCTIONS + "\ncurrent_parameters：\n" + json.dumps(getattr(self, "current_parameters", {}), ensure_ascii=False)
 
+        raw = ""
         try:
+            if structured_design:
+                from auto_battery_research.util.writer_protocol import produce
+                result = produce(self.llm, WRITER_SYSTEM_PROMPT, user_prompt,
+                    getattr(self, "current_parameters", {}), getattr(self, "protocol_state", {}),
+                    getattr(self, "save_protocol", lambda: None))
+                result["evidence_context"] = evidence_context
+                return result
             raw = self.llm.chat(WRITER_SYSTEM_PROMPT, user_prompt, temperature=0.2, trace_tag="writer")
             return {"draft_answer": raw, "fallback": False, "evidence_context": evidence_context}
         except Exception as exc:
-            return {"draft_answer": "", "fallback": True, "error": str(exc)}
+            return {"draft_answer": "", "raw_response": raw, "fallback": True, "error": str(exc)}
 
     def revise(
         self,
@@ -805,6 +815,18 @@ class ReviewerAgent:
     def __init__(self, llm_client, relation_engine=None):
         self.llm = llm_client
         self.relation_engine = relation_engine
+
+    def review_research_narrative(self, *, doc, narrative, evidence):
+        """独立审核Stage 4收尾论证，不修改原方案或逐项研究审核。"""
+        from auto_battery_research.util.research_narrative import REVIEW_PROMPT, source_context, decode_review_response
+        context = source_context(doc)
+        context["evidence"] = evidence
+        context["narrative"] = narrative
+        context["input_fingerprint"] = narrative["input_fingerprint"]
+        context["narrative_fingerprint"] = narrative["narrative_fingerprint"]
+        raw = self.llm.chat(REVIEW_PROMPT, json.dumps(context, ensure_ascii=False),
+                            temperature=0.1, trace_tag="research_narrative_review")
+        return decode_review_response(raw, narrative, doc)
 
     def _build_conservative_answer(
         self,
@@ -927,8 +949,20 @@ class ReviewerAgent:
             f"指出需修复的问题，仅返回简短审核 JSON，不生成或改写正文。"
             f"同时返回 repair_issues 数组，每项包含 type、severity、quote（草稿中的精确原句，必须唯一定位）、reason（错误原因）、suggestion（修改建议）、parameter_paths（仅确需更改的方案字段路径）。"
             f"同段多个问题逐项列出，quote尽量采用能唯一定位的最短原文；重叠问题由程序合并为联合接口，不要返回改写后的段落。"
+            f"同一问题涉及多行或多段时必须另外提供quotes数组，逐处列出全部需要联动修改的精确原句（如排行#3和#4各自的完整问题句）；quote保留首句。"
+            f"不能只定位一行却要求修改另一行；缺失或不唯一的范围不授权，由程序将全部quotes组成同一事务。"
             f"issues 仍为字符串摘要。无精确定位的问题不会获得写权限。"
         )
+        if getattr(self, "numeric_consistency", None):
+            user_prompt += "\n【程序数值一致性核对】\n" + json.dumps(self.numeric_consistency, ensure_ascii=False)
+            user_prompt += "\n逐项核对冲突的对象、工况、分母及来源。INCOMPLETE不是通过，不得凭计算结果判断科学结论成立。数值修复需定位所有相关原句；abr-param/abr-derived显示值由程序维护，只提授权字段修改，不直接改标记或显示值。"
+        from auto_battery_research.util.design_sections import classify_design_output
+        local_format = classify_design_output(draft_answer, getattr(self, "requirements", None))["format_issues"]
+        if local_format:
+            user_prompt += ("\n【独立格式诊断】下列问题只涉及可唯一定位的Markdown标记，不是正文截断。"
+                "格式修复由程序按独立预算处理；继续完整核对全部科学问题，不因这些标记停止审核，"
+                "也不要把这些纯格式问题写入repair_issues占用科学内容修复预算：\n"
+                + json.dumps(local_format, ensure_ascii=False))
         if scheme:
             user_prompt += _build_scheme_consistency_note(scheme, design_mode=False, for_reviewer=True)
         requirements = getattr(self, "requirements", None)
@@ -942,9 +976,18 @@ class ReviewerAgent:
                 "\"source_checked\":true,\"missing_quotes\":[],\"misread_ids\":[],\"unanswered_ids\":[]}。"
                 "missing_quotes只放用户原文中的遗漏要求，misread_ids为误读的要求ID。只有实质回答或原因+验证方法才算回应。"
                 "覆盖问题也写入issues和repair_issues，缺失内容的建议须说明追加位置；不把回应完整等同于性能达标。")
+            user_prompt += ("\n拆分审核按独立验收内容：task保留泛泛研究动作/对象，不当成未回答项；items保留独立目标、约束、偏好和明确交付。"
+                "检查同义目标被重复拆项、数值/单位/条件被拆散或不同工况被合并；错误项放misread_ids。"
+                "即使task引用覆盖全文也须按语义检查遗漏，不能以字符已覆盖代替要求完整。未写比较关系的目标值不补>=，也不判为语义错误。")
+            user_prompt += "\ngroups仅组织上层目标，子指标逐项验收；检查上层与子指标重复计数、同义制备/合成或实验要求未合并、固定条件bindings不完整或路径不规范。发现缺绑定须局部修复或明确待绑定原因，不能仅因正文数值一致就认可约束可靠。"
+            from auto_battery_research.util.requirement_review import INSTRUCTIONS as REQUIREMENT_REVIEW_INSTRUCTIONS
+            user_prompt += REQUIREMENT_REVIEW_INSTRUCTIONS
             if getattr(self, "research_draft", None):
-                user_prompt += "\n【待审结构化主方案与研究回答】\n" + json.dumps(self.research_draft, ensure_ascii=False)
+                from auto_battery_research.util.research_support import review_payload
+                user_prompt += "\n【待审结构化主方案与研究回答】\n" + json.dumps(review_payload(self.research_draft), ensure_ascii=False)
                 user_prompt += "\n核对字段是否确实被正文采用、候选是否错入主方案、名义式/位点/掺量口径是否一致。所有问题进入repair_issues，不能因原句可定位就视为科学上已验证。"
+                from auto_battery_research.util.research_support import REVIEW_INSTRUCTIONS
+                user_prompt += REVIEW_INSTRUCTIONS
         if rule_result is not None:
             rule_note = (
                 "\n\n【硬规则检查结果（来自约束表+能量模型，不可推翻，仅可引用）】\n"
@@ -952,8 +995,15 @@ class ReviewerAgent:
                 f"rejects: {rule_result['rule_checks'].get('rejects', [])}\n"
                 f"energy_check: {rule_result.get('energy_check')}\n"
                 f"condition_missing: {rule_result.get('condition_missing')}\n"
+                f"material_matches: {json.dumps(rule_result.get('material_matches', {}), ensure_ascii=False)}\n"
+                "basis=parent表示按明确母体执行材料类别和相容性规则，掺杂名义式无需另行登记，不得仅因其未入词表否决；"
+                "位点、掺量、机理与性能仍须独立审核，母体匹配不表示掺杂配方已验证。\n"
+                "basis=composition表示电解液按完整解析的组成分类；保留真实浓度、各溶剂、比例和添加成分，"
+                "不得仅因完整配方未独立登记否决，也不得把分类成功说成性能/相容性已验证。"
+                "composition中的未声明比例保持空白，不把mol/kg当mol/L，不凭高浓度推断LHCE。\n"
                 "若 violations/rejects 非空或 energy_check=energy_mismatch，"
-                "issues 必须指出该方案不可行，confidence 必须为 low；只返回判定，不生成正文。"
+                "issues 必须逐项说明规则未通过的原因，confidence 必须为 low；C0登记缺口仅说明规则适用性待确认，"
+                "不能据此断言材料在科学上不可行；只返回判定，不生成正文。"
             )
             user_prompt += rule_note
 
@@ -1029,10 +1079,14 @@ class ReviewerAgent:
                 and isinstance(review.get("missing_quotes"), list)
                 and all(isinstance(q, str) and q and q in requirements["source"] for q in review.get("missing_quotes", []))
                 and all(isinstance(review.get(k), list) and all(i in known_ids for i in review[k]) for k in ("misread_ids", "unanswered_ids")))
+            from auto_battery_research.util.requirement_review import normalize_review
+            review_doc = dict(getattr(self, "research_draft", None) or {})
+            review_doc.update(requirements=requirements, final_answer=draft_answer, scheme=scheme or {})
+            review = normalize_review(data, review_doc)
             if not valid:
                 data["issues"].append("课题原文与需求清单尚未完成有效覆盖审核")
             elif any(review[k] for k in ("missing_quotes", "misread_ids", "unanswered_ids")):
                 data["issues"].append("课题覆盖待修复：" + json.dumps(review, ensure_ascii=False))
-            if not valid or any(review.get(k) for k in ("missing_quotes", "misread_ids", "unanswered_ids")):
+            if not valid or review.get("misread_diagnostics") or any(review.get(k) for k in ("missing_quotes", "misread_ids", "unanswered_ids")):
                 data.update(confidence="low", error_type="writing")
         return data

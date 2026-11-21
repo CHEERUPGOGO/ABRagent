@@ -73,3 +73,42 @@ def test_physics_exception_does_not_skip_experiment(tmp_path, monkeypatch):
     assert result["key_findings"]["physics"]["status"] == "FAILED"
     assert result["key_findings"]["experiment"]["status"] == "PASSED"
     assert not result["success"]
+
+
+def test_unmatched_physics_and_partial_plan_pass_without_inference(tmp_path, monkeypatch):
+    from auto_battery_research.checkers.stage5_checker import Stage5Checker
+    from auto_battery_research.tools import workflow_actions as actions
+    from auto_battery_research.util.stage5_execution import report_without_simulation
+    doc, recipe = setup_design(tmp_path)
+    doc["delivery_contract"] = 1
+    doc["report_readiness"] = {"category": "CONDITIONAL", "issues": [], "review_status": "REVIEWED"}
+    # 替换注册表查询结果，维持真实方案表和实验指纹。
+    monkeypatch.setattr(actions, "_match_pinn_system_for_scheme", lambda scheme: {"matched": False, "status": "NO_MATCH"})
+    recipe.update(repair_status="PARTIAL", pending_groups=[{"record": {"id": "G2"}}],
+                  requirement_tests=[{"status": "gap"}])
+    recipe["plan_hash"] = recipes.plan_hash(recipe)
+    doc["experiment_plan_hash"] = recipe["plan_hash"]
+    (tmp_path / "design_scheme.json").write_text(json.dumps(doc), encoding="utf-8")
+    (tmp_path / "experiment_plan.json").write_text(json.dumps(recipe), encoding="utf-8")
+    monkeypatch.setattr(recipes, "generate", lambda *args: recipe)
+    monkeypatch.setattr(actions, "run_pinn_simulation", lambda **kw: pytest.fail("无模型时不可执行仿真"))
+    mgr = manager(tmp_path)
+    outcome = finalize_stage5(mgr, client=scripted_client())
+    assert outcome["success"] and outcome["key_findings"]["physics"]["status"] == "NOT_APPLICABLE"
+    assert outcome["key_findings"]["experiment"]["status"] == "CONDITIONAL"
+    assert report_without_simulation(doc, tmp_path)
+    checker = Stage5Checker()
+    checker.on_init(mgr, {"id": 5}, {})
+    ok, diagnostic = checker.do_check()
+    assert ok and diagnostic["observed"]["is_fallback"]
+    monkeypatch.setattr(actions, "_match_pinn_system_for_scheme", lambda scheme: {"matched": False, "reasons": ["注册表读取失败"]})
+    assert checker.do_check()[1]["observed"]["physics_passed"] is False
+
+
+def test_experiment_delivery_checks_physical_alias_even_without_quality_metadata(tmp_path):
+    doc, recipe = setup_design(tmp_path)
+    recipe["parameters"]["cathode.electrode_thickness"] = {
+        "value": 90, "unit": "um", "basis": "engineering_proposal", "meaning": "干涂层厚度"}
+    recipe["plan_hash"] = recipes.plan_hash(recipe)
+    with pytest.raises(ValueError, match="实验参数与方案表冲突"):
+        recipes.validate(recipe, doc, delivery=True)

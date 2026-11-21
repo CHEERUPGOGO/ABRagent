@@ -188,6 +188,15 @@ NO_ELECTROLYTE_DRAFT = """## 目标与设计路线
 """
 
 
+def _writer_sections(draft):
+    """将测试中固定的五段语料装入真实Writer协议，不使用生产关键词推断。"""
+    from auto_battery_research.util.design_structure import SECTION_IDS
+    sections = draft.strip().split("\n\n---\n\n")
+    assert len(sections) == 5
+    return {"version": 2, "parameters": {}, "sections": {key: {"body": block.split("\n", 1)[1].strip()}
+                                       for key, block in zip(SECTION_IDS, sections)}}
+
+
 def _install_scripted_llm(monkeypatch, writer_draft: str):
     """类级 monkeypatch LLMClient: 走真实 Agent 代码路径的确定性脚本回放.
 
@@ -195,10 +204,28 @@ def _install_scripted_llm(monkeypatch, writer_draft: str):
     每次 LLM 调用记录到调用日志，供溯源断言。
     """
     call_log = []
+    from auto_battery_research.util.design_structure import render_design
+    structured_writer = _writer_sections(writer_draft)
+    writer_draft, _ = render_design(structured_writer)
 
     def fake_chat(self, system_prompt, user_prompt, temperature=None, trace_tag=None):
+        if trace_tag == "research_narrative":
+            request = json.loads(user_prompt)
+            source = next(s for s in request["sources"] if s["id"].startswith("answers:") and s["text"])
+            return json.dumps({"sections": [{"id": "s1", "title": "设计依据与研究边界", "paragraphs": [{
+                "id": "p1", "text": source["text"], "source_ids": [source["id"]],
+                "requirement_ids": [i["id"] for i in request["requirements"]["items"] if i["kind"] != "background"],
+                "parameter_refs": [], "citations": source["citations"], "limitation_ids": []}]}]}, ensure_ascii=False)
+        if trace_tag == "research_narrative_review":
+            request = json.loads(user_prompt)
+            return json.dumps({"input_fingerprint": request["input_fingerprint"],
+                "narrative_fingerprint": request["narrative_fingerprint"],
+                "coverage": {"status": "supported", "reason": "脚本化原始课题覆盖核验"},
+                "paragraphs": [{"id": p["id"], "status": "supported", "reason": "原句与条件一致"}
+                    for s in request["narrative"]["sections"] for p in s["paragraphs"]],
+                "limitations": [], "issues": []}, ensure_ascii=False)
         if trace_tag == "experiment_design":
-            from auto_battery_research.tests.test_experiment_design import recipe_payload
+            from auto_battery_research.tests.test_experiment_design import recipe_payload, slot_response
             payload = recipe_payload()
             request = json.loads(user_prompt)
             evidence = request.get("evidence") or []
@@ -207,8 +234,8 @@ def _install_scripted_llm(monkeypatch, writer_draft: str):
                 payload["parameters"]["cathode.active_fraction"]["canonical_path"] = "cathode.active_fraction"
                 fallback_links(payload, {"requirements": request["requirements"], "research": request.get("research"), "ledger_view": request["ledger"]})
             if evidence:
-                payload["citations"] = [evidence[0]["passage_id"]]
-            return json.dumps(payload, ensure_ascii=False)
+                payload["sections"]["testing"][0] += "参考[" + evidence[0]["passage_id"] + "]。"
+            return slot_response(payload, user_prompt, trace_tag)
         if trace_tag == "geometry_design":
             return json.dumps({
                 "cathode": {"L_um": 70., "porosity": .31, "R_s_um": 5.34, "D_s_m2s": None},
@@ -235,18 +262,33 @@ def _install_scripted_llm(monkeypatch, writer_draft: str):
                 parameters["electrolyte.additives"] = {"value": ["FEC"], "unit": "", "basis": "engineering_proposal",
                     "source": "脚本化设计声明", "source_quote": writer_draft.strip(), "meaning": "添加剂"}
             requirement_id = request["requirements"]["items"][0]["id"]
-            quote = writer_draft.splitlines()[1]
+            quote = structured_writer["sections"]["goals"]["body"].splitlines()[0]
             research = {"answers": [{"requirement_id": requirement_id, "status": "answered", "response": quote,
-                "source_quote": quote, "verification": "unverified", "citations": [], "parameter_refs": [],
+                "source_quotes": [quote], "field_support": {"response": [0]}, "verification": "unverified",
+                "citations": [e["passage_id"] for e in GOLDEN_PASSAGES if "[" + e["passage_id"] + "]" in quote], "parameter_refs": [],
                 "reason": "", "next_step": ""}], "candidates": [], "arguments": [], "selected_candidate_id": None}
             return json.dumps({"parameters": parameters, "candidates": [], "research": research}, ensure_ascii=False)
         if system_prompt is WRITER_SYSTEM_PROMPT:
             call_log.append({"agent": "writer", "temperature": temperature, "prompt_head": user_prompt[:120]})
-            return writer_draft
+            return json.dumps(structured_writer, ensure_ascii=False)
         if system_prompt is REVIEWER_SYSTEM_PROMPT:
             call_log.append({"agent": "reviewer", "temperature": temperature, "prompt_head": user_prompt[:120]})
+            support_review = []
+            marker = "【待审结构化主方案与研究回答】\n"
+            if marker in user_prompt:
+                structured, _ = json.JSONDecoder().raw_decode(user_prompt.split(marker, 1)[1])
+                from auto_battery_research.util.research_support import FIELDS
+                for collection, fields in FIELDS.items():
+                    for record in structured["research"][collection]:
+                        if "support_fingerprint" in record:
+                            support_review.append({"collection": collection,
+                                "id": record.get("requirement_id") or record.get("id"),
+                                "fingerprint": record["support_fingerprint"],
+                                "fields": {field: {"status": "supported", "reason": "脚本化离线原句核对通过"}
+                                           for field in fields if record.get(field)}})
             return json.dumps(
                 {"issues": [], "revised_answer": writer_draft, "confidence": "high",
+                 "research_support_review": support_review,
                  "requirement_review": {"source_checked": True, "missing_quotes": [], "misread_ids": [], "unanswered_ids": []}},
                 ensure_ascii=False,
             )
@@ -339,12 +381,15 @@ def test_offline_golden_approved_contract(tmp_path, monkeypatch):
     assert contract["rule_checks"]["rule_checks"]["rejects"] == []
     assert contract["provenance"]["rules_version"] == RULES_VERSION
     assert len(contract["provenance"]["corpus"]["manifest_hash"]) == 32
+    from auto_battery_research.util.research_narrative import current_narrative
+    assert current_narrative(contract), "Stage 4整合审核应在适配入库后仍绑定当前输入"
 
     # 4. rag_result.json: 规划/检索日志/Writer/Reviewer 全链路在案
     rag_raw = json.loads((task_dir / "rag_result.json").read_text(encoding="utf-8"))
     logged_queries = {log["query"] for log in rag_raw["retrieval"].get("search_logs", [])}
     assert set(GOLDEN_PLAN["retrieval_queries"]) <= logged_queries
-    assert rag_raw["writer_output"]["draft_answer"] == GOLDEN_WRITER_DRAFT
+    from auto_battery_research.util.design_structure import render_design
+    assert rag_raw["writer_output"]["draft_answer"] == render_design(_writer_sections(GOLDEN_WRITER_DRAFT))[0]
     assert rag_raw["reviewer_output"]["confidence"] == "high"
     assert rag_raw["confidence"] in ("high", "medium")
 

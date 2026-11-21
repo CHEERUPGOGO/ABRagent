@@ -343,8 +343,8 @@ class RunPhysicsSimulationTool(BaseTool):
         "【Stage 5 PINN 工具】执行 PINN 触发判定 + Stage 4 方案材料物理参数提取，落盘 pinn_input_spec.json "
         "(提取不到的字段为 null)；若 Stage 5 激活且方案体系匹配已训练的 PINN 模型 "
         "(pinn/models/registry.json)，则执行 SPM PINN 放电仿真并落盘 pinn_simulation_result.json。"
-        "返回含带容差的达标判定 (key_findings.target) 与修订预算——未达标时可调用 ReviseGeometry "
-        "修订几何后重跑本工具。"
+        "返回达标判定、输入诊断与共用修订预算；输入范围/训练包络越界可由 FinalizeStage5 "
+        "调用 LLM 修复六项未锁定几何，修复与能量优化合计最多三次。"
     )
     args_schema: Type[BaseModel] = RunPhysicsSimulationArgs
 
@@ -375,7 +375,7 @@ class ReviseGeometryArgs(BaseModel):
     )
     reason: str = Field(
         default="",
-        description="修订理由 (须引用仿真结果数据, 如能量缺口/截止模式/限流电极)"
+        description="修订理由：输入修复引用实际范围/包络诊断；能量优化引用有效仿真结果"
     )
 
 
@@ -384,7 +384,7 @@ class ReviseGeometryTool(BaseTool):
     description: str = (
         "【Stage 5 反馈工具】依据 RunPhysicsSimulation 的仿真结果修订 Stage 4 方案的电极几何声明 "
         "(scheme.geometry v1.1: 两电极厚度/孔隙率/颗粒粒径/扩散系数共 8 字段, provenance=stage5_revision)。"
-        "修订值经 registry 合法范围校验 (越界拒绝并返回合法范围), 有修订轮数预算 (默认 3 轮); "
+        "修订值先在副本通过范围、来源和训练包络校验；与输入修复、能量优化共用预算 (默认 3 次)，拒绝也计次; "
         "R_s是颗粒半径，可提出工程设计；D_s必须提供可定位任务证据，不得为提高性能任意增大。"
         "新契约必须透传仿真 geometry_context 的 base_revision/base_geometry_hash。"
         "成功后 design_scheme.json/md 同步更新并留痕, 必须重跑 RunPhysicsSimulation 对齐仿真结果。"

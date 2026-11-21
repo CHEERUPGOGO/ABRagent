@@ -152,9 +152,14 @@ class FinalReportChecker(BaseChecker):
                     raise ValueError("Stage 5B 实验推荐必须完整渲染，不能用缺口清单替代")
                 from auto_battery_research.util.scheme_ledger import require_current
                 require_current(report_file.parent, doc)
+                if self.stage_manager and (report_file.parent / "pinn_optimization_state.json").exists():
+                    from auto_battery_research.util.stage5_attempts import summary
+                    if doc.get("pinn_attempt_summary") != summary(self.stage_manager, doc):
+                        raise ValueError("报告内 PINN 修订预算与当前尝试记录不一致，请重新生成报告")
                 result, spec = {}, {}
                 stage5 = self.stage_manager.get_stage_by_id(5) if self.stage_manager else None
-                if stage5 is None or (stage5.status == "PASSED" and (not stage5.skip or doc.get("stage5_contract"))):
+                from auto_battery_research.util.stage5_execution import report_without_simulation
+                if not report_without_simulation(doc, report_file.parent) and (stage5 is None or (stage5.status == "PASSED" and (not stage5.skip or doc.get("stage5_contract")))):
                     for filename, destination in (("pinn_simulation_result.json", result), ("pinn_input_spec.json", spec)):
                         path = report_file.parent / filename
                         if path.exists():

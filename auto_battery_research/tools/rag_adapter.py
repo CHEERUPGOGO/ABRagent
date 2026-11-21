@@ -96,8 +96,16 @@ class AbrRagAdapter:
         from auto_battery_research.util.adaptive_retrieval import VERSION as RETRIEVAL_VERSION
         repair_provenance["adaptive_retrieval_version"] = RETRIEVAL_VERSION
         repair_provenance.pop("recorded_at", None)
-        self.pipeline.repair_checkpoint_identity = digest({"goal": task_goal or target_query,
-            "ledger": ledger, "provenance": repair_provenance})
+        from auto_battery_research.util.material_ids import checkpoint_identity
+        self.pipeline.repair_checkpoint_identity = checkpoint_identity(task_goal or target_query, ledger, repair_provenance)
+        def persist_requirements(requirements):
+            nonlocal ledger
+            from auto_battery_research.util.scheme_ledger import persist_requirement_bindings
+            ledger = persist_requirement_bindings(task_dir, requirements, ledger["revision"])
+            self.pipeline.scheme_context = ledger
+            self.pipeline.repair_checkpoint_identity = checkpoint_identity(task_goal or target_query, ledger, repair_provenance)
+            return ledger
+        self.pipeline.persist_requirements = persist_requirements
         self.pipeline.repair_resume = None
         self.pipeline.retrieval_resume = None
         self.pipeline.retrieval_options = (self.config.get("runtime_options") or {}).get("stage4_retrieval", {})
@@ -111,8 +119,13 @@ class AbrRagAdapter:
                 if isinstance(ready, dict) and ready.get("delivery_contract") == 1 and not check(task_dir, ready):
                     from auto_battery_research.util.adaptive_retrieval import has_pending, cache_resume_matches
                     saved = json.loads(self.pipeline.repair_checkpoint_path.read_text(encoding="utf-8")) if self.pipeline.repair_checkpoint_path.exists() else {}
-                    if has_pending(saved):
+                    from auto_battery_research.util.design_repair import structure_recovery_available
+                    structure_pending = structure_recovery_available(task_dir, ready, saved)
+                    if structure_pending or has_pending(saved):
                         if not cache_resume_matches(saved, ready, repair_provenance):
+                            if structure_pending:
+                                return {"success": False, "error_code": "REPAIR_CHECKPOINT_STALE",
+                                        "error": "正文修复检查点与已归档方案或证据版本不一致"}
                             return {"success": False, "error_code": "RETRIEVAL_CHECKPOINT_STALE", "error": "待补检索检查点与当前方案或证据版本不一致，不能复用"}
                         self.pipeline.repair_resume = saved
                     else:
@@ -187,8 +200,9 @@ class AbrRagAdapter:
             try:
                 from auto_battery_research.simulation.geometry_contract import build_geometry_contract
                 params = ledger["parameters"]
-                materials = {k: (params.get(f"{k}.material") or {}).get("value") for k in ("cathode", "anode", "electrolyte")}
-                if all(materials.values()):
+                from auto_battery_research.util.material_ids import assemble_components
+                materials = assemble_components({}, params)
+                if all(materials.get(k) for k in ("cathode", "anode", "electrolyte")):
                     candidate = {c: {f: (params.get(f"{c}.{f}") or {}).get("value") for f in ("L_um", "porosity", "R_s_um")} for c in ("cathode", "anode")}
                     candidate["condition"] = {k: (params.get(f"condition.{k}") or {}).get("value") for k in ("v_min", "v_max", "c_rate")}
                     geo = build_geometry_contract(candidate, materials, [])
@@ -205,7 +219,21 @@ class AbrRagAdapter:
         reviewer_output = rag_raw.get("reviewer_output", {})
         rule_checks = rag_raw.get("rule_checks", {})
         confidence = rag_raw.get("confidence", "high")
-        scheme = rag_raw.get("scheme", {})
+        if plan.get("requirements"):
+            # 注入/恢复管线同样登记；候选提交失败不能撤销经原文核验的用户条件。
+            persist_requirements(plan["requirements"])
+        from auto_battery_research.util.material_ids import canonical_parameters, assemble_components, component_signature, declared_anode_parameters, VERSION as MATERIAL_ID_VERSION
+        accepted_parameters = canonical_parameters({**((rag_raw.get("research_draft") or {}).get("scheme_parameters") or {}),
+                                                    **(rag_raw.get("repair_parameters") or {})})
+        accepted_parameters.update(declared_anode_parameters({"final_answer": final_answer}, {**ledger["parameters"], **accepted_parameters}))
+        scheme = assemble_components(rag_raw.get("scheme", {}), {**ledger["parameters"], **accepted_parameters}, strict=False)
+        if component_signature(scheme) != component_signature(rag_raw.get("scheme")):
+            engine = getattr(self.pipeline, "relation_engine", None)
+            # 投影改变后不得复用旧材料上的通过结果；无引擎时保持 fail-closed。
+            energy_parser = getattr(self.pipeline, "_extract_energy_claim", None)
+            rule_checks = engine.check_scheme(scheme, claimed_energy=energy_parser(final_answer) if callable(energy_parser) else None,
+                                              answer_text=final_answer) if engine else {}
+        rag_raw["scheme"] = scheme
 
         log_observation(
             f"RAGPipeline 执行完成: 召回 {len(evidence)} 条证据, 综合置信度 [{confidence}], Reviewer [{reviewer_output.get('confidence', '未提供')}], "
@@ -214,6 +242,7 @@ class AbrRagAdapter:
 
         # 2. 严格 Fail-Closed 门禁校验 (先校验后落盘，结果以 review_status 固化进契约)
         errors = []
+        errors.extend(scheme.get("component_identity_errors") or [])
         from auto_battery_research.util.design_sections import design_output_issues
         errors.extend(design_output_issues(final_answer, plan.get("requirements")))
         if len(evidence) < 1:
@@ -240,7 +269,7 @@ class AbrRagAdapter:
         # scheme.geometry 必须显式给出 (逐字段值 + provenance: stage4_recipe/model_baseline)。
         # 归一化结果同步进 scheme (design_scheme.json 与 rag_result.json 共用同一 dict)。
         geometry_md = ""
-        if needs_scheme:
+        if needs_scheme and final_answer.strip():
             try:
                 from pinn.input_spec import complete_geometry_block, format_geometry_markdown
                 from auto_battery_research.simulation.geometry_contract import (
@@ -253,23 +282,40 @@ class AbrRagAdapter:
                 can_inherit = inherited and all(inherited.get(k) == scheme.get(k) for k in ("cathode", "anode", "electrolyte"))
                 if rag_raw.get("geometry_error") and not can_inherit:
                     raise ValueError(rag_raw["geometry_error"])
-                if candidate is None and not can_inherit:
-                    if self.pipeline.repair_resume:
-                        raise ValueError("局部修复基线缺少有效几何，不能在未授权情况下重新生成几何")
+                generated_here = candidate is None and not can_inherit
+                if generated_here and self.pipeline.repair_resume:
+                    from auto_battery_research.simulation.geometry_contract import geometry_from_declared_parameters
+                    candidate, recovered = geometry_from_declared_parameters(
+                        {**ledger["parameters"], **accepted_parameters}, scheme, evidence)
+                    # 只继承本次验证的声明，不将恢复视为新的几何设计机会。
+                    inherited = dict(scheme, geometry=recovered)
+                    can_inherit, generated_here = True, False
+                    rag_raw["geometry_candidate"] = candidate
+                if generated_here:
                     llm = getattr(self.pipeline, "writer_llm", None)
                     if llm is None or not llm.available:
                         raise ValueError("结构化几何候选缺失且 LLM 不可用；请提供 geometry_candidate")
+                    from auto_battery_research.util.physical_parameters import (
+                        INSTRUCTIONS, fixed_geometry, fill_missing_candidate, record_geometry_sources,
+                    )
+                    fixed = fixed_geometry({**ledger["parameters"], **accepted_parameters})
                     request = {
+                        "fixed_geometry": fixed,
                         "design_request": target_query,
                         "materials": {k: scheme.get(k) for k in ("cathode", "anode", "electrolyte")},
                         "ranges_SI": resolve_input_ranges(scheme.get("cathode"), scheme.get("anode")),
                         "evidence": evidence[:25],
                     }
-                    raw = llm.chat(GEOMETRY_SYSTEM_PROMPT, json.dumps(request, ensure_ascii=False),
+                    raw = llm.chat(GEOMETRY_SYSTEM_PROMPT + "\n" + INSTRUCTIONS, json.dumps(request, ensure_ascii=False),
                                    temperature=0.1, trace_tag="geometry_design")
                     from auto_battery_research.simulation.geometry_contract import constrain_generated_np
-                    candidate = constrain_generated_np(safe_json_loads(raw), self.pipeline.original_design_request)
+                    candidate = fill_missing_candidate(constrain_generated_np(safe_json_loads(raw), self.pipeline.original_design_request), fixed)
                 normalized = json.loads(json.dumps(inherited["geometry"])) if can_inherit else build_geometry_contract(candidate, scheme, evidence)
+                if generated_here:
+                    record_geometry_sources(normalized, fixed)
+                elif not can_inherit and rag_raw.get("scheme", {}).get("geometry", {}).get("contract_version") == "2.0":
+                    from auto_battery_research.util.physical_parameters import fixed_geometry, record_geometry_sources
+                    record_geometry_sources(normalized, fixed_geometry(ledger["parameters"]))
                 contract_errors = validate_geometry_contract(normalized, scheme, evidence)
                 if contract_errors:
                     raise ValueError("; ".join(contract_errors))
@@ -304,6 +350,8 @@ class AbrRagAdapter:
             "review_passed": rag_raw.get("review_passed"),
             "review_completed": rag_raw.get("review_completed", rag_raw.get("review_passed")),
             "final_answer": final_answer,
+            "design_structure": rag_raw.get("design_structure"),
+            "numeric_contract": rag_raw.get("numeric_contract"),
             "plan": plan,
             "retrieval": {
                 "db_type": retrieval.get("db_type", "hybrid"),
@@ -317,6 +365,7 @@ class AbrRagAdapter:
             "rule_checks": rule_checks,
             "confidence": confidence,
             "scheme": scheme,
+            "scheme_parameters": accepted_parameters,
             "provenance": provenance,
             "artifacts": {
                 "markdown": "design_scheme.md",
@@ -325,6 +374,7 @@ class AbrRagAdapter:
                 "research_context": "research_context.json",
             },
             "generated_at": datetime.now().isoformat(),
+            "material_id_version": MATERIAL_ID_VERSION,
         }
         if plan.get("requirements"):
             import copy
@@ -340,25 +390,26 @@ class AbrRagAdapter:
             if delivery_warnings:
                 geometry_md = ""
         if not errors:
-            from auto_battery_research.util.scheme_ledger import commit_design, collect_parameters
+            from auto_battery_research.util.scheme_ledger import commit_design, collect_parameters, restore_research_cache
             try:
                 cached = rag_raw.get("research_draft")
-                if cached and (cached.get("final_answer") or "").strip() == final_answer.split("\n\n## 参考来源")[0].strip():
-                    import copy
-                    for key in ("research", "scheme_parameters", "scheme_candidates", "parameter_diagnostics"):
-                        if key in cached:
-                            contract_payload[key] = copy.deepcopy(cached[key])
-                else:
-                    collect_parameters(contract_payload, getattr(self.pipeline, "writer_llm", None) or getattr(self.pipeline, "llm", None))
+                restored = restore_research_cache(contract_payload, cached)
+                used = (cached or {}).get("maintenance_calls", 0)
+                if final_answer.strip() and (not restored or (contract_payload.get("research") or {}).get("record_errors")):
+                    collect_parameters(contract_payload, getattr(self.pipeline, "writer_llm", None) or getattr(self.pipeline, "llm", None),
+                                       max_attempts=max(0, 2 - used))
+                    contract_payload["maintenance_calls"] = used + contract_payload.get("maintenance_calls", 0)
                 for key, field in (rag_raw.get("repair_parameters") or {}).items():
                     if field != ledger["parameters"].get(key) and field.get("source_quote"):
                         contract_payload.setdefault("scheme_parameters", {})[key] = field
+                contract_payload["scheme_parameters"] = canonical_parameters(contract_payload.get("scheme_parameters"))
                 if contract_payload.get("requirements"):
                     from auto_battery_research.util.research_contract import bindings
                     fixed = bindings(contract_payload["requirements"])
-                    misread = set((reviewer_output.get("requirement_review") or {}).get("misread_ids", []))
-                    if any(f.get("requirement_id") in misread for f in fixed.values()):
-                        raise ValueError("需求审核发现固定字段含语义误读，不能将误读绑定写入主方案")
+                    from auto_battery_research.util.requirement_review import normalize_review
+                    requirement_review = normalize_review(reviewer_output, contract_payload)
+                    if requirement_review["blocked_fields"]:
+                        raise ValueError("用户固定字段误读证据已核验，禁止提交对应字段：" + ", ".join(requirement_review["blocked_fields"]))
                     extras = contract_payload.setdefault("scheme_parameters", {})
                     # 主方案只由已定位声明和用户固定值组成，候选全文提及不补写配方。
                     from auto_battery_research.util.research_contract import field_equal
@@ -367,29 +418,40 @@ class AbrRagAdapter:
                         if previous.get("locked") and not field_equal(path, previous.get("value"), field["value"]):
                             raise ValueError("课题与已锁定字段冲突: " + path)
                     extras.update(fixed)
-                    from auto_battery_research.rag import RelationEngine
-                    engine = RelationEngine()
-                    for comp in ("cathode", "anode", "electrolyte", "separator", "current_collector"):
-                        key = comp + ".material"
-                        if key in extras:
-                            value = extras[key]["value"]
-                            scheme[comp] = engine.normalize(str(value)) or value
-                            extras[key]["value"] = scheme[comp]
+                # 无 requirements 的旧路径也不能在维护后复用旧材料上的约束结果。
+                projected = assemble_components(scheme, {**ledger["parameters"], **contract_payload["scheme_parameters"]})
+                if component_signature(projected) != component_signature(scheme):
+                    engine = getattr(self.pipeline, "relation_engine", None)
+                    energy_parser = getattr(self.pipeline, "_extract_energy_claim", None)
+                    current_rules = engine.check_scheme(projected, claimed_energy=energy_parser(final_answer) if callable(energy_parser) else None,
+                                                       answer_text=final_answer) if engine else {}
+                    rule_errors = current_rules.get("rule_checks") or {}
+                    if not current_rules or rule_errors.get("violations") or rule_errors.get("rejects") or current_rules.get("confidence") == "low":
+                        raise ValueError("组件身份更新后材料约束未通过或尚未验证")
+                    contract_payload["rule_checks"] = current_rules
+                    if projected.get("geometry", {}).get("contract_version") == "2.0":
+                        from auto_battery_research.simulation.geometry_contract import validate_geometry_contract
+                        geometry_errors = validate_geometry_contract(projected["geometry"], projected, evidence)
+                        if geometry_errors:
+                            raise ValueError("; ".join(geometry_errors))
+                scheme.clear()
+                scheme.update(projected)
+                if contract_payload.get("requirements"):
                     if "electrolyte.additives" in extras:
                         scheme["additives"] = extras["electrolyte.additives"]["value"]
                     else:
                         scheme.pop("additives", None)
                 if report_first:
                     import copy
-                    from auto_battery_research.util.scheme_ledger import calculate, flatten_scheme
+                    from auto_battery_research.util.scheme_ledger import calculate, project_scheme_parameters
                     preview = copy.deepcopy(ledger)
                     preview["parameters"].update(contract_payload.get("scheme_parameters") or {})
-                    for key, value in flatten_scheme(scheme).items():
-                        preview["parameters"].setdefault(key, {})["value"] = value
+                    preview["parameters"] = project_scheme_parameters(scheme, preview["parameters"])
                     _, conflicts = calculate(preview)
                     if conflicts:
                         raise ValueError("; ".join(conflicts))
                 commit_design(task_dir, contract_payload, base_revision=ledger["revision"])
+                scheme = contract_payload["scheme"]
                 if contract_payload.get("requirements"):
                     from auto_battery_research.util.research_contract import finalize_research
                     finalize_research(contract_payload)
@@ -416,6 +478,8 @@ class AbrRagAdapter:
             json.dump(contract_payload, f, ensure_ascii=False, indent=2)
 
         # 原始 RAG 结果
+        rag_raw["scheme"] = scheme
+        rag_raw["rule_checks"] = contract_payload["rule_checks"]
         with open(raw_rag_file, "w", encoding="utf-8") as f:
             json.dump(rag_raw, f, ensure_ascii=False, indent=2)
 
@@ -461,11 +525,15 @@ class AbrRagAdapter:
             "scheme_file": str(scheme_md_file),
             "scheme_json": str(scheme_json_file),
             "raw_rag_file": str(raw_rag_file),
-            "message": "多智能体 RAG 方案设计完成并已通过规则校验" + (
+            "message": ("Stage 4 仅生成诊断交付，Writer正文或学术审核未完成" if not contract_payload.get("review_completed") else
+                        "Stage 4 已生成附条件候选，未解决审核与规则意见见报告" if review_status == "REVIEWED_WITH_ISSUES" else
+                        "多智能体 RAG 方案设计完成并已通过规则校验") + (
                 "；审核仍有未解决意见，仅作为待验证候选推进，不能称为审核通过" if review_status == "REVIEWED_WITH_ISSUES" else ""),
             "journal_notes": (
                 f"基于 RAGPipeline ({len(evidence)} 证据段落, 置信度 {confidence}) "
-                f"完成多智能体方案设计，RelationEngine 规则审查通过。"
+                + ("生成诊断交付，设计正文或学术审核尚未完成。" if not contract_payload.get("review_completed") else
+                   "生成附条件候选，未解决意见随报告保留。" if review_status == "REVIEWED_WITH_ISSUES" else
+                   "完成多智能体方案设计，RelationEngine 规则审查通过。")
             ),
             "deliverables": [str(scheme_md_file), str(scheme_json_file), str(raw_rag_file)],
             "key_findings": {

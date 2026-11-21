@@ -256,7 +256,7 @@ def complete_geometry_block(
     block["provenance"]["condition.v_max"] = v_max_source
     block["provenance"]["condition.c_rate"] = c_rate_source
     # 新契约附加信息幂等携带；数值布局维持 v1.1，兼容历史仿真与归档。
-    for key in ("contract_version", "parameter_sources"):
+    for key in ("contract_version", "parameter_sources", "material_ids"):
         if key in raw:
             import copy
             block[key] = copy.deepcopy(raw[key])

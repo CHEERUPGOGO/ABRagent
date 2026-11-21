@@ -58,16 +58,18 @@ def test_report_delivery_end_to_end(tmp_path, monkeypatch, diagnostic_mode, matc
     mgr.stages[3].status = "FALLBACK"
     monkeypatch.setattr("auto_battery_research.util.report_recipe_llm._llm_client", lambda *a: None)
     assert finalize_stage5(mgr, client=SimpleNamespace(available=False))["success"]
-    mgr.stages[4].status = "FALLBACK"
+    mgr.stages[4].status = "FALLBACK"  # 本例模型不可用，实验只交付工程模板。
     stage5 = Stage5Checker()
     stage5.on_init(mgr, {"id": 5}, mgr.config)
-    assert stage5.do_check()[0]
+    ok, diag = stage5.do_check()
+    assert ok and diag["observed"]["is_fallback"]
+    assert diag["observed"]["experiment_status"] == "FALLBACK"
     result = run_synthesis_report(mgr.target_goal, stage_manager=mgr)
     assert result["success"], result
     text = (tmp_path / "final_research_report.md").read_text(encoding="utf-8")
     label = "问题诊断报告" if diagnostic_mode else "有条件候选报告"
     assert label in text and "审核服务失败" in text
-    assert ("物理验证未通过" if matched_mode else "当前体系无匹配模型") in text
+    assert ("物理验证未通过" if matched_mode or diagnostic_mode else "当前体系无匹配模型") in text
     assert text.count("审核服务失败") == 1
     checker = FinalReportChecker()
     checker.on_init(mgr, {"id": 6}, mgr.config)

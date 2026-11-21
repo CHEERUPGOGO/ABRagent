@@ -17,6 +17,9 @@ requirement_tests=[{"requirement_id":"需要验证的要求ID","status":"planned
 "method":"测试/分析方法", "conditions":"{{参数引用}}", "baseline":"比较对象", "criterion":"用户目标或明确标注的工程判据",
 "next_step":"结果不满足时的下一步", "reason":"缺口/不适用的理由"}]。
 所有verification_needed=true或null且非background要求都必须有一条关联；未知验证责任给gap，先明确验证方法，不能默认为无需验证。
+planned仅表示已有方法安排，不表示条件齐全或验证完成。缺项影响及暂定结论边界由模型在reason、conditions与next_step说明，Reviewer结合全文核对；程序不按缺项引用自动改变目标状态。
+gap仍保留已有方法和判据；not_applicable须说明不适用原因，不将未知参数本身视为整项目标不适用。
+requirements.groups只是上层目标分组，不是样品groups，也不新增测试行；共享方法可以关联多个独立指标，但不得把容量保持与电压衰减合成一个判据。复合固定条件须遵守全部bindings。
 用户阈值不能改写为工程阈值；工程建议须明确标记。组名和正文不得暗含另一套主方案。
 首轮采用一条可执行路线，给分组表和目标测试矩阵所需字段；扩展表征或采购细节放extensions段落数组。
 sections中的数值与材料引用parameters；分类名称不能作为unit。'''
@@ -57,9 +60,12 @@ def fallback_links(record, doc, reason="实验关联尚未完成"):
 
 
 def diagnose_links(record, doc):
+    from .experiment_values import control_value_issues
+    from .experiment_design import effective_data
+    control_errors = control_value_issues(record, effective_data(doc)["parameters"])
     if not doc.get("requirements"):
-        return []
-    errors = []
+        return control_errors
+    errors = list(control_errors)
     def error(path, reason):
         errors.append({"path": path, "reason": reason})
     groups = record.get("groups")
@@ -115,6 +121,21 @@ def recover_links(record, doc, reason="实验关联尚待确认"):
     import copy
     from collections import Counter
     if not doc.get("requirements"):
+        from .experiment_values import control_value_issues
+        from .experiment_design import effective_data
+        bad = {e["path"][1]: e["reason"] for e in control_value_issues(record, effective_data(doc)["parameters"]) if len(e["path"]) == 2}
+        kept = []
+        groups = record.get("groups", [])
+        if not isinstance(groups, list):
+            return  # 顶层结构非法仍由终验拒绝，不能猜测整表。
+        for index, group in enumerate(groups):
+            if index not in bad:
+                kept.append(group)
+                continue
+            entry = {"record": copy.deepcopy(group), "reason": bad[index]}
+            if entry not in record.setdefault("pending_groups", []):
+                record["pending_groups"].append(entry)
+        record["groups"] = kept
         return
     base = {"parameters": record.get("parameters", {})}
     fallback_links(base, doc, reason)
@@ -160,18 +181,25 @@ def recover_links(record, doc, reason="实验关联尚待确认"):
 
 def validate_parameter(key, row, doc):
     """参数可开放扩展，但实验不能另建主配方；组成字段需引用当前方案。"""
-    if not doc.get("requirements") or "ref" in row or row.get("scope") == "control":
+    if "ref" in row or row.get("scope") == "control":
+        return
+    from .experiment_design import overlap_key
+    canonical = row.get("canonical_path", overlap_key(key))
+    current = (doc.get("ledger_view") or {}).get("parameters", {})
+    declared = current.get(canonical) or {}
+    if declared.get("locked") and declared.get("value") is None:
+        raise ValueError("用户锁定的空字段须先明确，不能由实验建议填充: " + canonical)
+    if not doc.get("requirements"):
         return
     identity = identity_fields(doc)
-    canonical = row.get("canonical_path", key)
-    current = (doc.get("ledger_view") or {}).get("parameters", {})
     if canonical in identity:
         raise ValueError("实验主方案字段必须ref引用: " + canonical)
     if row.get("role") == "recipe" and not row.get("canonical_path"):
         raise ValueError("新增配方参数须声明canonical_path，不能绕过主方案检查")
     if row.get("unit") in ("formula", "formula_unit", "element", "salt", "solvent_system") or re.search(r"(?:^|\.)(?:formula|nominal_formula|doping|dopant|composition)(?:\.|$)", key):
         raise ValueError("材料组成或掺量须先进入Stage 4主方案，再供实验引用")
-    if canonical in current and row.get("value") != current[canonical].get("value"):
+    if declared.get("value") is not None and (row.get("value") != declared["value"]
+                                              or (row.get("unit") or "") != (declared.get("unit") or "")):
         raise ValueError("实验规范字段与主方案冲突: " + canonical)
 
 
@@ -181,18 +209,22 @@ def render_groups(record, doc):
     parts = ["| 样品编号 | 分组名称 | 组别 | 组成、变量与目的 |", "|---|---|---|---|"]
     from .report_narrative import describe
     for group in record.get("groups", []):
-        changes = "；".join(describe(k, v) + "；" + v["reason"] for k, v in group.get("changes", {}).items())
+        changes = "；".join(describe(k, v) + ("；" + v["reason"] if v.get("reason") else "") for k, v in group.get("changes", {}).items())
         parts.append(f"| {cell(group['id'])} | {cell(group.get('name') or group['id'])} | {'主组' if group['scope'] == 'main' else '对照'} | {cell(changes or '完整采用第3节主方案；材料、组成和固定条件不另行变更')} |")
     return "\n".join(parts)
 
 
 def render_tests(record, doc, bindings):
     from .report_narrative import substitute_parameters
+    from .experiment_values import substitute_pending
     labels = {r["id"]: r["description"] for r in doc["requirements"]["items"]}
-    lines = ["| 课题目标 | 方法与条件 | 比较基线 / 判据 | 下一步 |", "|---|---|---|---|"]
+    lines = ["方法安排不代表条件齐全或验证完成；具体限制与后续工作见各项目标说明及科学审核。", "",
+             "| 课题目标 | 方法与条件 | 比较基线 / 判据 | 说明与待解决事项 | 下一步 |", "|---|---|---|---|---|"]
     for t in record.get("requirement_tests", []):
         def show(key):
-            return cell(substitute_parameters(t.get(key, ""), bindings))
-        method = show("method") + "；" + show("conditions") if t["status"] == "planned" else "待补充：" + show("reason")
-        lines.append(f"| {cell(labels[t['requirement_id']])} | {method} | {show('baseline')} / {show('criterion')} | {show('next_step')} |")
+            return cell(substitute_parameters(substitute_pending(t.get(key, ""), record), bindings))
+        method = "；".join(show(key) for key in ("method", "conditions") if t.get(key)) or "—"
+        prefix = {"gap": "待补充说明：", "not_applicable": "不适用说明："}.get(t.get("status"), "")
+        note = prefix + show("reason")
+        lines.append(f"| {cell(labels.get(t.get('requirement_id'), '待关联课题要求'))} | {method} | {show('baseline')} / {show('criterion')} | {note} | {show('next_step')} |")
     return "\n".join(lines)

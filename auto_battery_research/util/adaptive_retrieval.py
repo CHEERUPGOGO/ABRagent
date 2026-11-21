@@ -161,8 +161,12 @@ def evidence_package(evidence, *, text="", issues=(), requirement_items=(), pref
 def select_context(seed, *, purpose, text="", issues=(), config=None):
     state = init_state(seed)
     config = config or DEFAULTS
+    preferred_ids = state["preferred_ids"]
+    if purpose in ("reviewer", "final_review"):
+        from .research_support import cited_evidence_ids
+        preferred_ids = list(dict.fromkeys(cited_evidence_ids(seed.get("research_draft")) + preferred_ids))
     pack, selection = evidence_package(seed.get("evidence", []), text=text, issues=issues,
-        requirement_items=list(requirements(seed).values()), preferred_ids=state["preferred_ids"],
+        requirement_items=list(requirements(seed).values()), preferred_ids=preferred_ids,
         working_ids=state["working_ids"], limit=config["context_passages"], char_limit=config["context_chars"])
     selection["purpose"] = purpose
     state["context_history"].append(selection)
@@ -606,6 +610,9 @@ def source_neighbours(pipeline, seed, action):
 
 
 def has_pending(seed):
+    # 正文生成失败时，补证据不能恢复正文；保留预算与诊断，避免空跑耗尽阶段重试。
+    if not (seed.get("draft") or "").strip() and (seed.get("writer_output") or {}).get("error"):
+        return False
     state = seed.get("retrieval_state")
     if not isinstance(state, dict) or state.get("version") != VERSION or state.get("inflight") is not None:
         return False
@@ -625,7 +632,7 @@ def cache_resume_matches(seed, doc, provenance):
         return False
     if digest(seed.get("evidence", [])) != digest(doc.get("evidence", [])):
         return False
-    if seed.get("draft") is not None and seed["draft"].strip() != (doc.get("final_answer") or "").split("\n\n## 参考来源")[0].strip():
+    if seed.get("draft") is not None and seed["draft"].strip() != re.split(r"\n+## 参考来源(?:\r?\n|$)", doc.get("final_answer") or "", maxsplit=1)[0].strip():
         return False
     ledger = doc.get("ledger_view") or {}
     from .research_contract import field_equal

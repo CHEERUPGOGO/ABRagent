@@ -31,9 +31,9 @@ def test_missing_structured_research_preserves_archived_rationale_without_promot
     body = render_materials(doc)
     assert "Na 的层间支柱作用" in body and "[na]" in body
     assert "钠电体系" in body and "[cu]" in body
-    assert "Zn–Na 为探索候选" in body and "推断与待验证判断" in body
+    assert "Zn–Na 为探索候选" in body and "待验证判断" in body
     assert "引用可定位不等于结论已验证" in body and "第6节附录" in body
-    assert "尚无通过结构化校验的首选" in body
+    assert "当前方案" in body and "尚未归档可明确对应当前组成的选择理由" in body
     assert "999" not in body and "unknown" not in body
     assert doc == before
 
@@ -45,7 +45,7 @@ def test_selected_reason_and_risk_are_explicit_and_parameter_bound():
     chosen["citations"] = ["p1"]
     body = render_materials(doc)
     choice = body.split("### 2.4", 1)[1]
-    assert "为什么优先选择" in choice and "采用配方A用于对照验证" in choice
+    assert "选材考虑" in choice and "采用配方A用于对照验证" in choice
     assert "[p1]" in choice and "暂不能确定最优" in choice
     assert "尚无其他候选的同条件比较" in choice
     assert "{{" not in choice

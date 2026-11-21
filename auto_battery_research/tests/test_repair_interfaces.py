@@ -59,6 +59,34 @@ def test_nonoverlapping_issues_merge_in_one_paragraph():
     assert [c[0] for c in script.calls] == ["writer_patch", "repair_verify"]
 
 
+def test_multi_quote_issue_repairs_two_rows_in_one_atomic_transaction():
+    text = "#3 保持率≥80%。\n\n#4 保持率≥80%。\n\n未授权说明不变。"
+    item = dict(issue("i", "#3 保持率≥80%"), quotes=["#3 保持率≥80%", "#4 保持率≥80%"])
+    script = Script({q: q + "（未验证工程目标）" for q in item["quotes"]})
+    result, _, entry = run(text, [item], script)
+    assert result.count("未验证工程目标") == 2
+    assert len(entry["interfaces"]["transactions"]) == 1 and len(entry["interfaces"]["interfaces"]) == 2
+    assert entry["resolved_issue_ids"] == ["i"] and result.endswith("未授权说明不变。")
+    assert [tag for tag, _ in script.calls] == ["writer_patch", "repair_verify"]
+
+
+def test_multi_quote_issue_missing_location_has_no_partial_permission():
+    text = "#3 保持率≥80%。"
+    item = dict(issue("i", "#3 保持率≥80%"), quotes=["#3 保持率≥80%", "不存在的#4行"])
+    permit = permit_for(text, [item])
+    assert not permit["grants"]
+    assert build_interfaces(text, {}, [item], permit)["unresolved"] == ["i"]
+
+
+def test_multi_quote_transaction_requires_all_rows_and_rolls_back_together():
+    text = "#3 保持率≥80%。\n\n#4 保持率≥80%。"
+    item = dict(issue("i", "#3 保持率≥80%"), quotes=["#3 保持率≥80%", "#4 保持率≥80%"])
+    def omit(patch, data):
+        patch["submissions"] = patch["submissions"][:1]
+    result, _, entry = run(text, [item], Script({}, mutate=omit))
+    assert result == text and not entry["resolved_issue_ids"] and entry["status"] == "REJECTED"
+
+
 def test_overlapping_issues_get_single_joint_interface():
     text = "Na半径34%，需验证。"
     issues = [issue("i1", "Na半径34%"), issue("i2", "半径34%")]
@@ -132,6 +160,22 @@ def test_missing_interface_holds_whole_paragraph():
     result, _, entry = run(text, [issue("i1", "错误一"), issue("i2", "错误二")],
         Script({}, mutate=lambda patch, data: patch["submissions"].pop()))
     assert result == text and entry["status"] == "REJECTED"
+
+
+def test_semantic_verifier_only_receives_program_validated_transactions():
+    text = "错误甲。\n\n错误乙。"
+
+    def remove_one_submission(patch, data):
+        patch["submissions"] = [row for row in patch["submissions"]
+                                if data["interface_contract"]["interfaces"][row["interface_id"]]["original"] != "错误甲"]
+
+    script = Script({}, mutate=remove_one_submission)
+    result, _, entry = run(text, [issue("i1", "错误甲"), issue("i2", "错误乙")], script)
+    verification = next(data for tag, data in script.calls if tag == "repair_verify")
+    assert [i["id"] for i in verification["issues"]] == ["i2"]
+    assert {i for group in verification["transactions"].values() for i in group["issue_ids"]} == {"i2"}
+    assert result == "错误甲。\n\n错误乙（待验证）。"
+    assert entry["resolved_issue_ids"] == ["i2"]
 
 
 def test_eight_issues_in_three_paragraphs_do_not_submit_duplicate_blocks():

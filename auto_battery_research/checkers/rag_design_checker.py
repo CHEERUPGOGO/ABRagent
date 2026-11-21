@@ -50,12 +50,26 @@ class RAGDesignChecker(BaseChecker):
                 checkpoint = scheme_json_file.parent / "stage4_repair_checkpoint.json"
                 if checkpoint.exists():
                     saved, load_error = self.load_json_safe(str(checkpoint))
+                    from auto_battery_research.util.design_repair import structure_recovery_available
+                    structure_pending = (not load_error and isinstance(saved, dict)
+                                         and structure_recovery_available(scheme_json_file.parent, payload, saved))
+                    if structure_pending:
+                        from auto_battery_research.util.adaptive_retrieval import cache_resume_matches
+                        if not cache_resume_matches(saved, payload, payload.get("provenance") or {}):
+                            return False, self.build_diagnostic(passed=False, error_code="REPAIR_CHECKPOINT_STALE",
+                                error_msg="结构修复检查点与当前正文、方案或证据不一致", next_action="核对当前修复检查点")
+                        return False, self.build_diagnostic(passed=False, error_code="STAGE4_STRUCTURE_REPAIR_PENDING",
+                            error_msg="正文存在可定位的格式错误，独立格式预算和审核预算尚未耗尽",
+                            next_action="调用RunRAGDesign恢复检查点，格式修补不占科学内容修复预算并继续学术审核")
                     if not load_error and isinstance(saved, dict) and has_pending(saved):
                         return False, self.build_diagnostic(passed=False, error_code="STAGE4_RETRIEVAL_PENDING",
                             error_msg="存在有预算且尚未执行的针对性补检索，不能提前推进",
                             next_action="调用RunRAGDesign恢复当前检查点，仅补证据及局部修复")
                 from auto_battery_research.util.report_readiness import check
                 failures = check(scheme_json_file.parent, payload)
+                if payload.get("design_structure"):
+                    from auto_battery_research.util.design_structure import structure_issues
+                    failures.extend(structure_issues(scheme_md_file.read_text(encoding="utf-8"), payload["design_structure"]))
                 if failures:
                     return False, self.build_diagnostic(passed=False, error_code="REPORT_SCHEME_INCONSISTENT",
                         error_msg="; ".join(failures), next_action="恢复一致方案快照后生成诊断报告")
@@ -130,6 +144,13 @@ class RAGDesignChecker(BaseChecker):
                 error_msg=f"设计方案 JSON 文件解析异常: {err}",
                 next_action="重新执行 Stage 4 生成结构化契约 JSON",
             )
+
+        if json_data.get("design_structure"):
+            from auto_battery_research.util.design_structure import structure_issues
+            structure_errors = structure_issues(md_content, json_data["design_structure"])
+            if structure_errors:
+                return False, self.build_diagnostic(passed=False, error_code="DESIGN_STRUCTURE_INVALID",
+                    error_msg="；".join(structure_errors), next_action="按已登记章节结构修复正文，不能猜测改名")
 
         # 3.1 证据与段落溯源及化学体系相关性检查
         from auto_battery_research.util.scheme_ledger import projection_errors

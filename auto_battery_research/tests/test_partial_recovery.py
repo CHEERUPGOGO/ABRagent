@@ -179,5 +179,7 @@ def test_partial_requirements_reach_writer_without_guessing_materials_or_additiv
     pipeline._build_reference_section = lambda e: ""
     monkeypatch.setattr("auto_battery_research.tools.materials_project.augment_mp_evidence", lambda retrieval, plan, top_k: retrieval)
     result = pipeline.run(goal)
-    assert received == [{"cathode": "NCM811"}]
+    assert len(received) == 1
+    assert {k: v for k, v in received[0].items() if k != "component_identities"} == {"cathode": "NCM811"}
+    assert received[0]["component_identities"]["cathode"]["parameter_refs"] == ["cathode.material"]
     assert "additives" not in result["scheme"] and result["scheme"]["cathode"] == "NCM811"

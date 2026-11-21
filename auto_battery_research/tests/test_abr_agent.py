@@ -55,6 +55,8 @@ def test_abr_agent_run_loop(tmp_path, monkeypatch):
     import json
     execution = json.loads((agent.manager.get_task_output_dir() / "stage5_execution.json").read_text(encoding="utf-8"))
     assert execution["experiment"]["status"] == "CONDITIONAL"
+    assert execution["experiment"]["reasons"]
+    assert not execution["experiment"]["pending_fields"]
 
 
 def test_completed_stage_does_not_run_simulation_again():

@@ -37,6 +37,13 @@ def test_conditions_are_named_separately_and_flags_not_printed():
     assert amount("condition.temperature_C", row(25, "°C")) == "25 ℃"
 
 
+def test_null_unit_is_displayed_as_empty_without_changing_source():
+    value = row("1 mol/L LiPF6/DMC–EMC（体积比1:1）", None)
+    before = copy.deepcopy(value)
+    assert amount("electrolyte.formulation", value) == value["value"]
+    assert value == before
+
+
 def test_unseen_conditions_explicit_name_or_pending_appendix():
     conditions = [{"name": "脉冲恢复时间", "value": 8, "unit": "ms"}]
     assert view.render_conditions(conditions) == "脉冲恢复时间：8 ms"
@@ -97,7 +104,7 @@ def test_summary_is_brief_and_detailed_values_appear_once_in_main():
     appendix = render_review_appendix(doc)
     assert len(summary) < 260 and "x_min" not in summary and "3×3" not in summary
     assert "规格" in body and "0.02–0.03（计量口径待确认）" in body
-    assert "放电截止电压为2 V" in body and "充电截止电压为4.6 V" in body
+    assert "放电截止电压为**2 V**" in body and "充电截止电压为**4.6 V**" in body
     assert "静置" not in body and "24 h" not in body
     assert "90 ℃" in appendix and "30 ℃" in appendix and "24 h" in appendix
     assert "补充参数" not in summary + body + appendix and "True" not in summary + body + appendix
@@ -163,4 +170,4 @@ def test_parameter_appendix_is_part_of_final_report_validation():
 def test_markdown_tables_and_numbering_are_valid():
     parser = pytest.importorskip("markdown_it").MarkdownIt().enable("table")
     html = parser.render(render_design(data()) + "\n\n" + view.render_parameter_appendix(data()))
-    assert "<table>" in html and "<ol>" in html and "<pre>" not in html
+    assert "<table>" in html and "<ul>" in html and "<strong>" in html and "<pre>" not in html

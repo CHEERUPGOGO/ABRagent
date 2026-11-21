@@ -78,71 +78,26 @@ def _formula_id(salts: List[str], solvents: List[str], additives: List[str],
     # 非常规浓度（仅单盐且 ≠1M）标注，1M 省略（1.0M/1 M 等同 1M）
     if len(salts) == 1 and concs:
         c0 = re.sub(r"\s+", "", concs[0])
-        cm = re.match(r"^([\d.]+)m$", c0, re.I)
+        cm = re.match(r"^([\d.]+)M$", c0)
         if not (cm and abs(float(cm.group(1)) - 1.0) < 1e-6):
             base = c0 + "_" + base
     return base
 
 
-def parse_formulation(name: str, formula=None) -> Optional[str]:
-    """配方串 → 唯一 id（LiPF6_EC-DMC_VC 模式）。无法解析返回 None。
-
-    formula 为结构化 dict（phase0 输出）时直接取字段；
-    否则对 name/公式字符串用正则拆盐/溶剂/添加剂。
-    """
-    # 1) 结构化 dict
-    if isinstance(formula, dict):
-        salts = _names_from_dict_field(formula.get("salt") or formula.get("salts"))
-        solv = _names_from_dict_field(formula.get("solvents"))
-        add = _names_from_dict_field(formula.get("additives"))
-        dil = _names_from_dict_field(formula.get("diluents"))
-        concs = []
-        sf = formula.get("salt")
-        if isinstance(sf, dict):
-            sf = [sf]
-        for s in (sf or []):
-            if isinstance(s, dict) and s.get("concentration"):
-                concs.append(str(s["concentration"]))
-        fid = _formula_id(salts, solv, add, dil, concs)
-        if fid:
-            return fid
-        # dict 解析失败退回字符串路径（formula 字段是 dict 时 name 用不上，直接 None）
-        return None
-
 def _parse_composition_text(text: str):
-    """解析单个配方字符串 → (salts, solvents, additives, diluents, concs) | None。"""
-    text = (text or "").strip()
-    m = re.search(r"\s+in\s+", text, re.I)
-    if m:
-        head, tail = text[:m.start()].strip(), text[m.end():].strip()
-    else:
-        # 无 "in" 的写法："1.15M LiPF6 EC/DEC (v/v=1/1)"
-        m2 = re.match(r"^([\d.]+\s*[Mm]\s+[A-Za-z][A-Za-z0-9]*)\s+(.*)$", text)
-        if not m2:
-            return None
-        head, tail = m2.group(1), m2.group(2)
-    salt_ms = _FORM_SALT_RE.findall(head)
-    if not salt_ms:
+    """共用完整配方解析；EC+DMC均为溶剂，不把加号后的溶剂当添加剂。"""
+    from auto_battery_research.util.electrolyte_composition import parse_electrolyte
+    composition = parse_electrolyte(text)
+    if not composition["complete"]:
         return None
-    salts = [s for _, s in salt_ms]
-    concs = [c for c, _ in salt_ms]
-    # 尾部分拆：+ 前为主体溶剂，+ 后为添加剂
-    parts = re.split(r"\s*\+\s*", tail)
-    # 去"比例括号"（含 : / v/v / vol / wt）与无括号比例段（1:4），保留名称括号如 Di-(CF3)-EC
-    main = re.sub(r"\([^)]*(?:v/v|vol|wt|:)[^)]*\)", " ", parts[0])
-    main = re.sub(r"\d+\s*:\s*\d+", " ", main)
-    solv = [s.strip().strip("()") for s in re.split(r"[/:,，、]", main)
-            if s.strip().strip("()") and
-            re.fullmatch(r"[A-Za-z0-9\-()]*[A-Za-z][A-Za-z0-9\-()]*", s.strip().strip("()"))]
-    adds = []
-    for p in parts[1:]:
-        p = re.sub(r"\([^)]*(?:v/v|vol|wt|:)[^)]*\)", " ", p)
-        # 数字+单位前缀只清一次（count=1），避免误删 CF3-EC 的 "3"
-        p = re.sub(r"^[\d.]+\s*(?:wt\.?%|vol\.?%|v/v|%|wt|mM|M)?\s*", "", p, count=1)
-        p = p.strip().strip("()").rstrip(";,")
-        if p and re.fullmatch(r"[A-Za-z0-9\-()]*[A-Za-z][A-Za-z0-9\-()]*", p):
-            adds.append(p)
-    return salts, solv, adds, [], concs
+    concentrations = []
+    for salt in composition["salts"]:
+        q = salt["concentration"]
+        if q:
+            unit = "M" if q["unit"] == "mol/L" else q["unit"]
+            concentrations.append(f"{q['value']:g}{unit}")
+    return ([s["name"] for s in composition["salts"]], [s["name"] for s in composition["solvents"]],
+            [s["name"] for s in composition["additives"]], [s["name"] for s in composition["diluents"]], concentrations)
 
 
 def parse_formulation(name: str, formula=None) -> Optional[str]:
@@ -205,8 +160,9 @@ def parse_formulation_structured(name: str, formula=None):
             salts, solv, add, dil, concs = comp
             fid = _formula_id(salts, solv, add, dil, concs)
             if fid:
+                from auto_battery_research.util.electrolyte_composition import parse_electrolyte
                 return fid, {"salts": salts, "solvents": solv, "additives": add,
-                             "diluents": dil, "concentration": concs}
+                             "diluents": dil, "concentration": concs, "composition": parse_electrolyte(text)}
     return None, None
 
 
@@ -409,7 +365,8 @@ class MaterialNormalizer:
             return NormResult(None, "none")
 
         # 1. 配方串（电解液）：结构化组成 + 配方 id
-        if _FORMULATION_RE.search(name) or re.search(r"\s+in\s+", name, re.I):
+        from auto_battery_research.util.electrolyte_composition import looks_like_formulation
+        if looks_like_formulation(name) or _FORMULATION_RE.search(name) or re.search(r"\s+in\s+", name, re.I):
             fid, comp = parse_formulation_structured(name, formula)
             if fid and fid in self._id_category:
                 return NormResult(fid, "formulation", name, base_id=fid, mods=comp)

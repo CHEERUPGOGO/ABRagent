@@ -18,16 +18,18 @@ from __future__ import annotations
 
 import json
 import re
+import unicodedata
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 from .energy_model import estimate_scheme_energy, check_energy_claim
+from auto_battery_research.util.electrolyte_composition import classify_electrolyte, looks_like_formulation, recipe_literal_key
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 
 # 规则版本标识：修改 alias_map/candidates/constraints 数据或约束求值逻辑时务必同步递增，
 # 供 Stage 4 方案产物固化溯源 (design_scheme.json 的 provenance.rules_version)。
-RULES_VERSION = "C1-C8/v2.1-coincell"
+RULES_VERSION = "C1-C8/v2.3-electrolyte-family"
 
 # 数值-条件绑定检测：出现数值单位但全文无任何条件词 → condition_missing
 _NUM_UNIT_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:mAh/g|mAh g|Wh/kg|Wh kg|%)", re.I)
@@ -42,6 +44,7 @@ class RelationEngine:
         self.alias_map: Dict[str, List[str]] = {}
         self.candidates: Dict = {}
         self.constraints: Dict = {}
+        self.electrolyte_families: Dict = {}
         self._alias_index: Dict[str, str] = {}  # 小写别名 → canonical id
         self._load()
 
@@ -63,6 +66,10 @@ class RelationEngine:
                 (self.data_dir / "constraints.json").read_text(encoding="utf-8"))
         except Exception as e:
             print(f"[relation_engine] constraints 加载失败: {e}")
+        try:
+            self.electrolyte_families = json.loads((self.data_dir / "electrolyte_families.json").read_text(encoding="utf-8"))
+        except (OSError, ValueError) as e:
+            print(f"[relation_engine] 电解液组成分类表不可用，保持精确登记检查: {e}")
         self._build_alias_index()
 
     def _build_alias_index(self) -> None:
@@ -118,6 +125,55 @@ class RelationEngine:
 
     # ────────────────────────── 约束求值 ──────────────────────────
 
+    def _exact_id(self, value):
+        """母体及完整组成按精确别名识别，允许空白/全半角差异。"""
+        def token(v):
+            return re.sub(r"\s+", "", unicodedata.normalize("NFKC", str(v))).casefold()
+        matches = {canonical for alias, canonical in self._alias_index.items() if token(alias) == token(value)}
+        return next(iter(matches)) if len(matches) == 1 else None
+
+    def _parent_id(self, scheme: Dict, field: str):
+        parent = (scheme.get("rule_parents") or {}).get(field)
+        if field not in ("cathode", "anode") or not isinstance(parent, dict):
+            return None
+        refs, sources = parent.get("parameter_refs") or [], parent.get("source_values") or {}
+        if (not isinstance(refs, list) or not isinstance(sources, dict)
+                or any(not isinstance(p, str) for p in refs)):
+            return None
+        canonical = self._exact_id(parent.get("value"))
+        if (parent.get("material_value") != scheme.get(field) or not refs or set(refs) != set(sources)
+                or not canonical or self._category_of(canonical) != field
+                or any(self._exact_id(sources[p]) != canonical for p in refs)):
+            return None
+        return canonical
+
+    def _scheme_material_id(self, scheme: Dict, field: str):
+        """电极按母体、完整电解液按已覆盖组成分类；未命中禁止盐子串回退。"""
+        if field in ("cathode", "anode") and field in (scheme.get("rule_parents") or {}):
+            return self._parent_id(scheme, field)
+        value = scheme.get(field)
+        identity = (scheme.get("component_identities") or {}).get(field, {})
+        if field == "electrolyte" and looks_like_formulation(value):
+            return self._electrolyte_match(value)[0]
+        if identity.get("kind") in ("nominal_formula", "formulation"):
+            return self._exact_id(value)
+        return self.normalize(str(value)) if value is not None else None
+
+    def _electrolyte_match(self, value):
+        composition = classify_electrolyte(value, self.electrolyte_families)
+        family = composition.get("rule_material_id")
+        if family and self._category_of(family) == "electrolyte":
+            return family, "composition", composition
+        token = recipe_literal_key(value)
+        exact_matches = {canonical for canonical, aliases in self.alias_map.items() if isinstance(aliases, list)
+                         and any(recipe_literal_key(alias) == token for alias in [canonical] + aliases)}
+        exact = next(iter(exact_matches)) if len(exact_matches) == 1 else None
+        # 精确登记的具体配方继续可用；盐/浓度的宽类别别名不能绕过组成解析。
+        generic = {"carbonate_ec", "high_concentration", "lhce", "fluorinated", "ether_ec", "dilute_aqueous", "water_in_salt"}
+        if exact and exact not in generic and self._category_of(exact) == "electrolyte":
+            return exact, "direct", composition
+        return None, "composition", composition
+
     def resolve_scheme(self, scheme: Dict) -> Dict:
         """归一方案中的材料 id，并注入候选表属性（供 trigger 点路径求值）。"""
         resolved: Dict = dict(scheme)
@@ -125,11 +181,14 @@ class RelationEngine:
             v = scheme.get(field)
             if v is None:
                 continue
-            canonical = self.normalize(str(v)) or v
+            canonical = self._scheme_material_id(scheme, field) or v
             resolved[field] = canonical
             mat = self._material(canonical)
             if mat:
                 resolved[f"{field}_attrs"] = mat
+            if field == "electrolyte" and looks_like_formulation(v):
+                _, _, composition = self._electrolyte_match(v)
+                resolved["electrolyte_composition"] = composition
         return resolved
 
     def _material(self, canonical: str) -> Optional[Dict]:
@@ -205,6 +264,15 @@ class RelationEngine:
             "cathode", "anode", "electrolyte", "additives", "additive",
             "notes", "strategy", "modifications", "user_locked_components", "design_anchors",
         ):
+            if k == "electrolyte" and resolved.get("electrolyte_composition") is not None:
+                composition = resolved["electrolyte_composition"]
+                if composition.get("complete"):
+                    # 仅明确的正加量成分可作为质询对策；未知尾部不参与子串匹配。
+                    _append_val([r["name"] for r in composition["additives"] if r.get("amount", {}).get("value", 0) > 0])
+                    _append_val([r["name"] for r in composition["solvents"]])
+                if resolved.get("electrolyte") != scheme.get("electrolyte"):
+                    _append_val(resolved.get("electrolyte"))
+                continue
             v = scheme.get(k)
             if v:
                 _append_val(v)
@@ -280,22 +348,46 @@ class RelationEngine:
             "coin_cell_evals": [],
             "frontier_flags": [],
             "unverified": [],
+            "material_matches": {},
         }
 
-        # 严格科研约束：未知材料 Fail-Closed 机制（非受控体系必须标记 UNVERIFIED 并拒绝）
+        # 登记范围检查：电极可按声明母体匹配，不能把未登记解释为实验不可行。
         unverified_mats = []
         for field in ("cathode", "anode", "electrolyte"):
             raw_val = scheme.get(field)
             if raw_val is not None:
-                canonical = self.normalize(str(raw_val))
+                canonical = self._scheme_material_id(scheme, field)
+                parent = (scheme.get("rule_parents") or {}).get(field)
+                recognized = bool(canonical and self._material(canonical))
+                composition, basis = None, "parent" if parent else "direct"
+                if field == "electrolyte" and looks_like_formulation(raw_val):
+                    _, basis, composition = self._electrolyte_match(raw_val)
+                out["material_matches"][field] = {"declared_value": raw_val, "rule_material_id": canonical,
+                    "basis": basis, "matched": recognized,
+                    "parent_declaration": parent}
+                if composition is not None:
+                    out["material_matches"][field]["composition"] = composition
+                if basis == "composition" and recognized:
+                    out["audit_notes"].append({"rule_id": "C0_COMPOSITION_MATCH", "component": field,
+                        "reason": f"电解液按已解析组成归类为 {canonical}，原配方、浓度、比例和添加成分保留；"
+                                  "只用于相容性规则，不代表完整配方已验证或获得PINN适用性。"})
+                if parent and recognized:
+                    out["audit_notes"].append({"rule_id": "C0_PARENT_MATCH", "component": field,
+                        "reason": f"{field} 按声明母体 {canonical} 匹配材料类别与相容性规则，掺杂配方无需单独登记；"
+                                  "母体匹配不验证掺杂位点、性能或协同效应，不将母体物性或PINN模型用于该掺杂配方。"})
                 if not canonical or not self._material(canonical):
-                    unverified_mats.append(f"{field}:{raw_val}")
+                    label = f"{raw_val}（声明母体：{parent.get('value')}）" if isinstance(parent, dict) else raw_val
+                    unverified_mats.append(f"{field}:{label}")
         if unverified_mats:
             out["unverified"] = unverified_mats
             out["rejects"].append({
                 "rule_id": "C0_UNVERIFIED_MATERIAL",
-                "reason": f"方案包含未经验证的材料体系 [{', '.join(unverified_mats)}]，科研引擎拒绝盲目放行 (Fail-Closed)",
+                "reason": f"材料或声明母体未匹配规则库 [{', '.join(unverified_mats)}]，无法完成规则判定；未登记不等于实验不可行。",
             })
+            out["feasible"] = False
+        if scheme.get("component_identity_errors"):
+            out["rejects"].append({"rule_id": "C0_DECLARATION_CONFLICT",
+                                   "reason": "; ".join(scheme["component_identity_errors"])})
             out["feasible"] = False
 
         for rule in self.constraints.get("rules", []):
@@ -409,6 +501,10 @@ class RelationEngine:
                         "excluded": ["graphite"],
                     })
                     out["feasible"] = False
+                elif self._parent_id(scheme, "cathode") and resolved.get("cathode") != scheme.get("cathode"):
+                    out["coin_cell_evals"].append({"rule_id": rule_id, "material_energy_wh_kg": None,
+                        "assessment": "not_evaluated", "basis": "parent_classification_only",
+                        "note": "母体仅用于材料类别规则；掺杂后的容量与平均电压未由母体继承，不能据母体数值认定能量目标可行。"})
                 else:
                     cat_mat = resolved.get("cathode_attrs") or {}
                     cap = (cat_mat.get("capacity") or {}).get("value") or 200
@@ -582,6 +678,7 @@ class RelationEngine:
             confidence = "high"
 
         return {
+            "rules_version": RULES_VERSION,
             "rule_checks": {
                 "violations": ev["violations"],
                 "inclusions": ev["inclusions"],
@@ -592,6 +689,7 @@ class RelationEngine:
                 "audit_notes": ev.get("audit_notes", []),
                 "coin_cell_evals": ev.get("coin_cell_evals", []),
                 "frontier_flags": ev.get("frontier_flags", []),
+                "material_matches": ev["material_matches"],
             },
             "energy_check": energy_check,
             "condition_missing": condition_missing,
@@ -602,6 +700,7 @@ class RelationEngine:
             "audit_notes": ev.get("audit_notes", []),
             "coin_cell_evals": ev.get("coin_cell_evals", []),
             "frontier_flags": ev.get("frontier_flags", []),
+            "material_matches": ev["material_matches"],
         }
 
     @staticmethod

@@ -300,6 +300,131 @@ def _range_violations(
 # 放电仿真主入口
 # ══════════════════════════════════════════════════════════════
 
+def _prepare_pinn_inputs(cell_spec, system, models_dir, c_rate):
+    """仿真与候选预检共享有效几何、容量映射及训练包络，不加载权重。"""
+    params = load_system_params(system, models_dir)
+    envelope = system.get("envelope", {})
+    bc_lo = float(envelope.get("bc_lo", DEFAULT_BC_LO))
+    bc_hi = float(envelope.get("bc_hi", DEFAULT_BC_HI))
+    band_margin = float(envelope.get("band_margin", DEFAULT_BAND_MARGIN))
+
+    ref = {s: _electrode_constants(params, s) for s in ("ne", "pe")}
+    spec_inputs, spec_sources = _spec_design_inputs(cell_spec)
+    c_rate_eff, c_rate_source = _resolve_c_rate(cell_spec, c_rate)
+    eff: Dict[str, Dict[str, float]] = {}
+    for side in ("ne", "pe"):
+        base, si = ref[side], spec_inputs[side]
+        por = si["porosity"] if si["porosity"] is not None else base["eps0"]
+        eps_s = 1.0 - base["frac_inert"] - por
+        if eps_s <= 0:
+            return {"status": "ERROR", "error": f"{side} 孔隙率输入导致活性体积分数 <= 0"}
+        eff[side] = {
+            "L": si["thickness"] if si["thickness"] is not None else base["L0"],
+            "porosity": por,
+            "eps_s": eps_s,
+            "R_s": si["R_s"] if si["R_s"] is not None else base["R_s"],
+            "D_s": si["D_s"] if si["D_s"] is not None else base["D_s"],
+        }
+
+    # N/P 一致性: 声明 n_p_ratio 时, 负极厚度按容量比 Q_n/Q_p = N/P 推导
+    # （声明几何与 N/P 自相矛盾时以 N/P 为准——系统级约束; 调整记录进 warnings）
+    sim_warnings: List[str] = []
+    n_p_declared = _spec_get(cell_spec, "anode.N_P_ratio")
+    if isinstance(n_p_declared, (int, float)) and n_p_declared > 0:
+        F0 = ref["ne"]["F"]
+        q_ne = (ref["ne"]["A"] * F0 * eff["ne"]["L"] * eff["ne"]["eps_s"]
+                * ref["ne"]["c_max"] * abs(ref["ne"]["stoi1"] - ref["ne"]["stoi0"]))
+        q_pe = (ref["pe"]["A"] * F0 * eff["pe"]["L"] * eff["pe"]["eps_s"]
+                * ref["pe"]["c_max"] * abs(ref["pe"]["stoi1"] - ref["pe"]["stoi0"]))
+        if q_ne > 0 and q_pe > 0:
+            implied = q_ne / q_pe
+            if abs(implied - float(n_p_declared)) / float(n_p_declared) > 0.05:
+                eff["ne"]["L"] = eff["ne"]["L"] * (float(n_p_declared) / implied)
+                sim_warnings.append(
+                    f"声明几何的隐含 N/P={implied:.2f} 与声明 N/P={float(n_p_declared):g} 不一致, "
+                    f"负极厚度已按 N/P 调整为 {eff['ne']['L'] * 1e6:.1f} μm (系统级约束优先)")
+
+    # 容量、电流、bc（容量与 R_s/D_s 无关）
+    F = ref["ne"]["F"]
+    Q = {}
+    for side in ("ne", "pe"):
+        b, e = ref[side], eff[side]
+        Q[side] = b["A"] * F * e["L"] * e["eps_s"] * b["c_max"] * abs(b["stoi1"] - b["stoi0"])
+    I = min(Q["ne"], Q["pe"]) / 3600.0 * c_rate_eff
+    limiting = "ne" if Q["ne"] <= Q["pe"] else "pe"
+    bc = {}
+    for side in ("ne", "pe"):
+        b, e = ref[side], eff[side]
+        bc[side] = b["sign"] * e["R_s"] ** 2 * I / (
+            e["D_s"] * 3 * e["eps_s"] * e["L"] * b["c_max"] * F * b["A"])
+
+    # 工作点 u（对照参考电极固定 bc_ref）——两层拦截都要用，先于拦截计算
+    u = {side: abs(bc[side]) / abs(ref[side]["bc_ref"]) for side in ("ne", "pe")}
+
+    def _intercept_payload(status: str, violations: List[str]) -> Dict[str, Any]:
+        """网络前向之前的拦截产物（越界不执行仿真，诊断回显辅助定位）。"""
+        return {
+            "status": status,
+            "error": "；".join(violations),
+            "pinn": {
+                "system_id": system["system_id"], "direction": "discharge",
+                "envelope_ok": False, "violations": violations,
+                "u_n": u["ne"], "u_p": u["pe"], "bc_n": float(bc["ne"]), "bc_p": float(bc["pe"]),
+                "c_rate": c_rate_eff, "c_rate_source": c_rate_source,
+                "spec_inputs": {
+                    side: {f: {"value": spec_inputs[side][f], "source": spec_sources[side][f]}
+                           for f in spec_inputs[side] if spec_inputs[side][f] is not None}
+                    for side in ("ne", "pe")
+                },
+                "design": {s: dict(eff[s]) for s in ("ne", "pe")},
+            },
+        }
+
+    # 第一层拦截：逐参数有效范围（registry input_ranges 显式声明）
+    range_violations = _range_violations(eff, c_rate_eff, system["system_id"],
+                                         system.get("input_ranges"))
+    if range_violations:
+        return _intercept_payload("OUT_OF_RANGE", range_violations)
+
+    # 第二层拦截：训练包络组合约束（防"单参数合规、组合越界"逃过第一层；
+    # 含相对容差，边界值不因浮点表示漂移而误判）
+    violations = []
+    env_tol = 1e-9
+    for side in ("ne", "pe"):
+        if not (bc_lo * (1 - env_tol) <= u[side] <= bc_hi * (1 + env_tol)):
+            violations.append(
+                f"{side}: |bc|/|bc_ref| = {u[side]:.4g} 超出训练包络 [{bc_lo}, {bc_hi}]（外推无精度保证）")
+    if violations:
+        return _intercept_payload("OUT_OF_ENVELOPE", violations)
+
+    return {"status": "VALID", "params": params, "ref": ref, "eff": eff, "Q": Q, "I": I,
+            "F": F, "bc": bc, "u": u, "limiting": limiting, "sim_warnings": sim_warnings,
+            "bc_lo": bc_lo, "bc_hi": bc_hi, "band_margin": band_margin,
+            "spec_inputs": spec_inputs, "spec_sources": spec_sources,
+            "c_rate_eff": c_rate_eff, "c_rate_source": c_rate_source}
+
+
+def preflight_pinn_inputs(cell_spec, scheme=None, c_rate=None, system=None, models_dir=None):
+    """只校验有效输入和组合训练包络，绝不执行网络前向或生成曲线。"""
+    models_dir = Path(models_dir or MODELS_DIR)
+    scheme = scheme or {}
+    try:
+        system = system or match_pinn_system(
+            scheme.get("cathode") or _spec_get(cell_spec, "cathode.material.name") or "",
+            scheme.get("anode") or _spec_get(cell_spec, "anode.material.name") or "", models_dir)
+        if system is None:
+            return {"status": "NO_MATCH", "error": "材料体系未匹配注册表 PINN"}
+        prepared = _prepare_pinn_inputs(cell_spec, system, models_dir, c_rate)
+        if prepared["status"] != "VALID":
+            return prepared
+        return {"status": "VALID", "pinn": {
+            "system_id": system["system_id"], "envelope_ok": True,
+            "design": prepared["eff"], "c_rate": prepared["c_rate_eff"],
+            "u_n": prepared["u"]["ne"], "u_p": prepared["u"]["pe"]}}
+    except Exception as exc:
+        return {"status": "ERROR", "error": f"{type(exc).__name__}: {exc}"}
+
+
 def run_pinn_discharge(
     cell_spec: Any,
     scheme: Optional[Dict[str, Any]] = None,
@@ -332,100 +457,14 @@ def run_pinn_discharge(
             system = match_pinn_system(cathode_id, anode_id, models_dir)
             if system is None:
                 return {"status": "NO_MATCH", "error": "cell_spec 材料体系未匹配任何注册表 PINN"}
-        params = load_system_params(system, models_dir)
-        envelope = system.get("envelope", {})
-        bc_lo = float(envelope.get("bc_lo", DEFAULT_BC_LO))
-        bc_hi = float(envelope.get("bc_hi", DEFAULT_BC_HI))
-        band_margin = float(envelope.get("band_margin", DEFAULT_BAND_MARGIN))
-
-        ref = {s: _electrode_constants(params, s) for s in ("ne", "pe")}
-        spec_inputs, spec_sources = _spec_design_inputs(cell_spec)
-        c_rate_eff, c_rate_source = _resolve_c_rate(cell_spec, c_rate)
-        eff: Dict[str, Dict[str, float]] = {}
-        for side in ("ne", "pe"):
-            base, si = ref[side], spec_inputs[side]
-            por = si["porosity"] if si["porosity"] is not None else base["eps0"]
-            eps_s = 1.0 - base["frac_inert"] - por
-            if eps_s <= 0:
-                return {"status": "ERROR", "error": f"{side} 孔隙率输入导致活性体积分数 <= 0"}
-            eff[side] = {
-                "L": si["thickness"] if si["thickness"] is not None else base["L0"],
-                "porosity": por,
-                "eps_s": eps_s,
-                "R_s": si["R_s"] if si["R_s"] is not None else base["R_s"],
-                "D_s": si["D_s"] if si["D_s"] is not None else base["D_s"],
-            }
-
-        # N/P 一致性: 声明 n_p_ratio 时, 负极厚度按容量比 Q_n/Q_p = N/P 推导
-        # （声明几何与 N/P 自相矛盾时以 N/P 为准——系统级约束; 调整记录进 warnings）
-        sim_warnings: List[str] = []
-        n_p_declared = _spec_get(cell_spec, "anode.N_P_ratio")
-        if isinstance(n_p_declared, (int, float)) and n_p_declared > 0:
-            F0 = ref["ne"]["F"]
-            q_ne = (ref["ne"]["A"] * F0 * eff["ne"]["L"] * eff["ne"]["eps_s"]
-                    * ref["ne"]["c_max"] * abs(ref["ne"]["stoi1"] - ref["ne"]["stoi0"]))
-            q_pe = (ref["pe"]["A"] * F0 * eff["pe"]["L"] * eff["pe"]["eps_s"]
-                    * ref["pe"]["c_max"] * abs(ref["pe"]["stoi1"] - ref["pe"]["stoi0"]))
-            if q_ne > 0 and q_pe > 0:
-                implied = q_ne / q_pe
-                if abs(implied - float(n_p_declared)) / float(n_p_declared) > 0.05:
-                    eff["ne"]["L"] = eff["ne"]["L"] * (float(n_p_declared) / implied)
-                    sim_warnings.append(
-                        f"声明几何的隐含 N/P={implied:.2f} 与声明 N/P={float(n_p_declared):g} 不一致, "
-                        f"负极厚度已按 N/P 调整为 {eff['ne']['L'] * 1e6:.1f} μm (系统级约束优先)")
-
-        # 容量、电流、bc（容量与 R_s/D_s 无关）
-        F = ref["ne"]["F"]
-        Q = {}
-        for side in ("ne", "pe"):
-            b, e = ref[side], eff[side]
-            Q[side] = b["A"] * F * e["L"] * e["eps_s"] * b["c_max"] * abs(b["stoi1"] - b["stoi0"])
-        I = min(Q["ne"], Q["pe"]) / 3600.0 * c_rate_eff
-        limiting = "ne" if Q["ne"] <= Q["pe"] else "pe"
-        bc = {}
-        for side in ("ne", "pe"):
-            b, e = ref[side], eff[side]
-            bc[side] = b["sign"] * e["R_s"] ** 2 * I / (
-                e["D_s"] * 3 * e["eps_s"] * e["L"] * b["c_max"] * F * b["A"])
-
-        # 工作点 u（对照参考电极固定 bc_ref）——两层拦截都要用，先于拦截计算
-        u = {side: abs(bc[side]) / abs(ref[side]["bc_ref"]) for side in ("ne", "pe")}
-
-        def _intercept_payload(status: str, violations: List[str]) -> Dict[str, Any]:
-            """网络前向之前的拦截产物（越界不执行仿真，诊断回显辅助定位）。"""
-            return {
-                "status": status,
-                "error": "；".join(violations),
-                "pinn": {
-                    "system_id": system["system_id"], "direction": "discharge",
-                    "envelope_ok": False, "violations": violations,
-                    "u_n": u["ne"], "u_p": u["pe"], "bc_n": float(bc["ne"]), "bc_p": float(bc["pe"]),
-                    "c_rate": c_rate_eff, "c_rate_source": c_rate_source,
-                    "spec_inputs": {
-                        side: {f: {"value": spec_inputs[side][f], "source": spec_sources[side][f]}
-                               for f in spec_inputs[side] if spec_inputs[side][f] is not None}
-                        for side in ("ne", "pe")
-                    },
-                    "design": {s: dict(eff[s]) for s in ("ne", "pe")},
-                },
-            }
-
-        # 第一层拦截：逐参数有效范围（registry input_ranges 显式声明）
-        range_violations = _range_violations(eff, c_rate_eff, system["system_id"],
-                                             system.get("input_ranges"))
-        if range_violations:
-            return _intercept_payload("OUT_OF_RANGE", range_violations)
-
-        # 第二层拦截：训练包络组合约束（防"单参数合规、组合越界"逃过第一层；
-        # 含相对容差，边界值不因浮点表示漂移而误判）
-        violations = []
-        env_tol = 1e-9
-        for side in ("ne", "pe"):
-            if not (bc_lo * (1 - env_tol) <= u[side] <= bc_hi * (1 + env_tol)):
-                violations.append(
-                    f"{side}: |bc|/|bc_ref| = {u[side]:.4g} 超出训练包络 [{bc_lo}, {bc_hi}]（外推无精度保证）")
-        if violations:
-            return _intercept_payload("OUT_OF_ENVELOPE", violations)
+        prepared = _prepare_pinn_inputs(cell_spec, system, models_dir, c_rate)
+        if prepared["status"] != "VALID":
+            return prepared
+        params, ref, eff, Q = (prepared[k] for k in ("params", "ref", "eff", "Q"))
+        I, F, bc, u, limiting = (prepared[k] for k in ("I", "F", "bc", "u", "limiting"))
+        sim_warnings, bc_lo, bc_hi, band_margin = (prepared[k] for k in ("sim_warnings", "bc_lo", "bc_hi", "band_margin"))
+        spec_inputs, spec_sources = prepared["spec_inputs"], prepared["spec_sources"]
+        c_rate_eff, c_rate_source = prepared["c_rate_eff"], prepared["c_rate_source"]
 
         # 每电极时间带 → 表面化学计量（网络前向 ρ=1）
         surf: Dict[str, Tuple[np.ndarray, np.ndarray]] = {}

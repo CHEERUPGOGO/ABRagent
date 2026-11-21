@@ -27,6 +27,7 @@ ALIASES = {
     "current_collector.cathode_material": "current_collector.cathode", "current_collector.anode_material": "current_collector.anode",
     "packaging.type": "packaging.cell_format", "packaging.cell_type": "packaging.cell_format",
     "condition.voltage_min": "condition.v_min", "condition.voltage_max": "condition.v_max",
+    "condition.voltage_window_lower": "condition.v_min", "condition.voltage_window_upper": "condition.v_max",
     "electrolyte.conc_M": "electrolyte.concentration", "electrolyte.concentration_M": "electrolyte.concentration",
 }
 PSEUDO_UNITS = {"formula", "formula_unit", "element", "material", "salt", "solvent", "solvent_system", "chemical",
@@ -40,6 +41,7 @@ conditions优先使用 [{"name":"中文条件名","value":明确值,"unit":"真�
 unit只放单位，禁止fraction of Li sites、formula_unit、cell type等说明性伪单位；公式和材料unit为空。
 化学式变量x/y是每化学式单位系数时用formula_coefficient，不得写成位点分数。位点分数必须明确分母，
 质量/体积分数与化学式系数分开记录；原文口径含混时放candidates并说明需确认，不自行换算百分比。
+压实后单面干涂层厚度使用cathode.L_um或anode.L_um；电压窗口使用condition.v_min/v_max。主循环、窄窗对照、化成和首圈测氧须分别注明用途。专属工况使用独立路径、canonical_path及conditions中明确的用途。
 字段名尽量复用current_parameters及常见规范字段；上下限用同一字段族，不重复母体/封装/工况声明。
 '''
 
@@ -72,11 +74,20 @@ def ambiguous_ratio(row):
 def value_text(key, row):
     """旧的含混比例原值保留；百分比转换必须有明确口径。"""
     from .report_narrative import text
-    value, raw_unit = row.get("value"), str(row.get("unit", ""))
+    value, raw_unit = row.get("value"), str(row.get("unit") or "")
     if value is None:
         return "未确定"
     if isinstance(value, bool):
         return "是" if value else "否"
+    if row.get("value_type") in ("range", "sequence"):
+        from .experiment_values import validate_value
+        validate_value(key, row)
+        scalar = {k: v for k, v in row.items() if k != "value_type"}
+        values = [value["min"], value["max"]] if row["value_type"] == "range" else value
+        if row["value_type"] == "range" and row.get("range_order") == "descending":
+            values = list(reversed(values))
+        joiner = " 至 " if row["value_type"] == "range" else "、"
+        return joiner.join(value_text(key, dict(scalar, value=item)) for item in values)
     if ambiguous_ratio(row):
         return text(value) + "（计量口径待确认）"
     kind = row.get("quantity_kind")
@@ -162,10 +173,20 @@ def canonical_key(key, row=None):
 
 def parameter_view(data):
     """每条声明仅在值、单位、计量语义、条件均相同时归并，保存全部源键。"""
+    from .physical_parameters import identity
     groups = {}
     for key, original in data.get("parameters", {}).items():
         row = copy.deepcopy(original)
         canonical = canonical_key(key, row)
+        physical = identity(key, row)
+        if physical:
+            canonical = physical[0]
+            row.setdefault("quantity_kind", "physical")
+            row.setdefault("denominator", "")
+            if row.get("scope") or row.get("group_id") or row.get("purpose"):
+                items = condition_entries(row.get("conditions") or {})
+                row["conditions"] = [{"name": name, "value": value, "unit": u} for name, value, u, *_ in items]
+                row["conditions"] += [{"name": k, "value": v} for k, v in (("样品", physical[1]), ("用途", physical[2])) if v != "main"]
         signature = (canonical, normalized(row.get("value")), unit(row.get("unit")),
                      row.get("quantity_kind"), row.get("denominator"), semantic_conditions(row.get("conditions") or {}))
         if signature not in groups:
@@ -352,7 +373,7 @@ def render_parameter_appendix(data):
             origins = []
             for source in row["sources"]:
                 basis = {"engineering_proposal": "工程声明", "literature": "文献参考", "user_requirement": "用户要求",
-                         "legacy_declaration": "历史声明"}.get(source.get("basis"), "依据待确认")
+                         "legacy_declaration": "历史声明", "model_reference": "模型基准，非本批实测"}.get(source.get("basis"), "依据待确认")
                 pid = source.get("passage_id")
                 origin = str(source.get("source") or "来源待补") + "（" + basis + ("，用户锁定" if source.get("locked") else "") + "）"
                 if pid:

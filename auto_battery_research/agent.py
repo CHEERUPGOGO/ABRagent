@@ -709,7 +709,9 @@ class ABRAgent:
                             checkpoint = task_dir / "stage4_repair_checkpoint.json"
                             if checkpoint.exists():
                                 from auto_battery_research.util.adaptive_retrieval import has_pending
-                                if has_pending(json.loads(checkpoint.read_text(encoding="utf-8"))):
+                                from auto_battery_research.util.design_repair import structure_recovery_available
+                                saved = json.loads(checkpoint.read_text(encoding="utf-8"))
+                                if has_pending(saved) or structure_recovery_available(task_dir, sd, saved):
                                     scheme_valid = False
                 except Exception:
                     pass

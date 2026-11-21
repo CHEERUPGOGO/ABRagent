@@ -26,6 +26,21 @@ def test_patch_changes_only_authorized_block():
     assert blocks(result)[1]["b4"] == blocks(text)[1]["b4"]
 
 
+def test_locked_numeric_tokens_do_not_match_unrelated_larger_numbers():
+    text = "500 ℃工艺需验证，100圈容量需验证。\n\n后续说明。"
+    fields = {"process.time": {"value": 5, "locked": True}, "anode.porosity": {"value": 0, "locked": True}}
+    issue = {"id": "i", "quote": "500 ℃工艺需验证，100圈容量需验证", "reason": "证据不足", "suggestion": "注明适用边界"}
+    permit = authorize(text, [issue], fields)
+    patch = {"base_hash": digest(text), "edits": [{"issue_id": "i", "block_id": "b0", "text": "所引工艺和循环条件只适用于文献样品。"}]}
+    changed, updated = apply_patch(text, fields, permit, patch)
+    assert changed.startswith("所引工艺") and updated == fields
+    actual = "5 h工艺需验证，孔隙率0需验证。"
+    permit = authorize(actual, [dict(issue, quote=actual)], fields)
+    patch["base_hash"] = digest(actual)
+    with pytest.raises(ValueError, match="锁定"):
+        apply_patch(actual, fields, permit, patch)
+
+
 @pytest.mark.parametrize("attack", ["block", "version", "field", "full", "citation", "heading"])
 def test_rejects_unauthorized_mutations_atomically(attack):
     text, permit, patch = fixture()
