@@ -4,51 +4,13 @@ import re
 from collections import Counter
 
 
-CANDIDATE_ROLES = {"主推候选": "candidate", "备选候选": "candidate", "对照组": "control", "文献参照": "literature"}
+from .candidate_metadata import ROLES as CANDIDATE_ROLES
 
 
 def normalize_candidate_label(row):
-    """分离明确的展示角色；材料名和角色必须同时存在于同一条支持原句。"""
-    from .research_contract import normalized
-    result = copy.deepcopy(row)
-    name = result.get("name")
-    quotes = result.get("source_quotes") or [result.get("source_quote", "")]
-    if not isinstance(name, str) or not isinstance(quotes, list):
-        return result
-    def occurs(token, source):
-        needle = normalized(token)
-        return bool(needle) and bool(re.search(r"(?<![a-z0-9])" + re.escape(needle) + r"(?![a-z0-9])", normalized(source)))
-    def role_supported(identity, role):
-        # 一条摘录可含多行/多句；角色不能从另一候选的行或分句借来。
-        for quote in quotes:
-            if not isinstance(quote, str):
-                continue
-            for line in quote.splitlines():
-                pieces = [line] if line.lstrip().startswith("|") else re.split(r"[。；;，,]", line)
-                if any(occurs(identity, part) and role in part for part in pieces):
-                    return True
-        return False
-    for role, scope in CANDIDATE_ROLES.items():
-        match = re.fullmatch(r"(.+?)(?:\s+|[（(])" + re.escape(role) + r"[）)]?", name)
-        if not match or result.get("scope") != scope:
-            continue
-        identity = match[1].strip()
-        if role_supported(identity, role):
-            if result.get("display_name", name) != name or result.get("candidate_role", role) != role:
-                raise ValueError("候选展示名称或角色与原声明不一致")
-            result.update(name=identity, display_name=name, candidate_role=role)
-            return result
-    # 新格式已拆分的字段仍逐项验来源，不能把展示名当作隐含推荐资格。
-    if result.get("candidate_role") is not None or result.get("display_name") is not None:
-        role = result.get("candidate_role")
-        if isinstance(role, str) and result.get("display_name") is None:
-            result["display_name"] = name + " " + role
-        if (not isinstance(role, str) or CANDIDATE_ROLES.get(role) != result.get("scope")
-                or not role_supported(name, role)
-                or not isinstance(result.get("display_name"), str)
-                or not re.fullmatch(re.escape(name) + r"(?:\s+|[（(])" + re.escape(role) + r"[）)]?", result["display_name"])):
-            raise ValueError("候选展示角色缺少同一来源支持")
-    return result
+    """展示简称可兼容；材料、角色及排序仍使用同条来源核验。"""
+    from .candidate_metadata import normalize_label
+    return normalize_label(row)
 
 
 def is_generated_gap(row):
@@ -59,6 +21,17 @@ def is_generated_gap(row):
 
 
 def validate_record(row, collection, doc, parameters):
+    if isinstance(row, dict) and row.get("projection_origin") == "writer_content_v3":
+        from .stage4_document import compile_document
+        from .research_support import projection
+        compiled = compile_document(doc.get("writer_content"), parameters, doc.get("requirements"), doc.get("evidence", []))
+        key = "requirement_id" if collection == "answers" else "id"
+        matching = [r for r in compiled.research.get(collection, []) if r.get(key) == row.get(key)]
+        if len(matching) != 1 or projection(matching[0]) != projection(row):
+            raise ValueError("v3研究记录与权威正文关联不一致")
+        if any(d["severity"] == "error" for d in compiled.diagnostics):
+            raise ValueError("v3编译或研究关联未通过")
+        return
     from .research_contract import TOKEN, RESPONSES, VERIFICATIONS, normalized
     from .report_narrative import amount
     if not isinstance(row, dict):
@@ -118,7 +91,9 @@ def validate_record(row, collection, doc, parameters):
             raise ValueError("候选身份或范围非法")
         if not row.get("name") or normalized(row["name"]) not in normalized(quote):
             raise ValueError("候选名称须来自支持原句")
-        if row.get("rank") is not None and (not isinstance(row["rank"], int) or isinstance(row["rank"], bool) or row["rank"] < 1 or str(row["rank"]) not in quote):
+        from .candidate_metadata import rank_supported
+        if row.get("rank") is not None and (type(row["rank"]) is not int or row["rank"] < 1
+                or not rank_supported(row["rank"], row["name"], row.get("source_quotes") or [quote])):
             raise ValueError("候选顺序须来自已审核正文")
     else:
         ids = row.get("requirement_ids")
@@ -235,7 +210,15 @@ def collect_research(raw, doc, parameters, previous=None):
         else:
             error = errors.setdefault(("answers", item["id"]), {"collection": "answers", "id": item["id"], "reason": "尚未返回该要求的有效回答"})
             answers.append(gap_answer(item, "该项结构化回答待修复：" + error["reason"]))
-    selected = previous.get("selected_candidate_id") or raw.get("selected_candidate_id")
+    selected = (raw.get("selected_candidate_id") if "selected_candidate_id" in raw
+                else previous.get("selected_candidate_id"))
+    if selected is None and "selected_candidate_id" not in raw:
+        # 仅恢复因候选格式被隔离的原显式引用；不能按Rank、角色或当前材料猜首选。
+        selection_error = errors.get(("selected_candidate_id", "$"), {})
+        prior_selected = selection_error.get("record")
+        if (selection_error.get("reason") == "探索性首选必须引用当前主方案参数"
+                and isinstance(prior_selected, str) and prior_selected in accepted["candidates"]):
+            selected = prior_selected
     try:
         validate_selection(selected, list(accepted["candidates"].values()), parameters)
         if "selected_candidate_id" in raw or selected is not None:

@@ -10,9 +10,7 @@ output/auto_battery_research/ 旧产物, 新课题绝不把全局旧研报冒充
 from __future__ import annotations
 
 import json
-import os
 import re
-import uuid
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
@@ -145,22 +143,23 @@ def publish_report_audit(
     s6_stage = next((s for s in stage_list if getattr(s, "id", None) == 6), None)
     s6_passed = getattr(s6_stage, "status", None) == "PASSED"
 
-    if "### 阶段执行履历" in text and _JOURNAL_TABLE_HEADER in text:
-        h_idx = text.index(_JOURNAL_TABLE_HEADER)
+    from .report_bundle import SUPPLEMENT_FILENAME, load_supplement, replace_files
+    supplement = load_supplement(path, text)
+    journal_text = supplement if supplement is not None else text
+    if "### 阶段执行履历" in journal_text and _JOURNAL_TABLE_HEADER in journal_text:
+        h_idx = journal_text.index(_JOURNAL_TABLE_HEADER)
         start_idx = h_idx + len(_JOURNAL_TABLE_HEADER)
-        f_idx = text.find(_JOURNAL_TABLE_FOOTER, start_idx)
+        f_idx = journal_text.find(_JOURNAL_TABLE_FOOTER, start_idx)
         if f_idx != -1:
             table_rows = render_stage_journal_table(
                 stage_list, journals or [], force_stage6_passed=s6_passed, task_dir=path.parent
             )
-            text = text[:start_idx] + table_rows + text[f_idx:]
+            journal_text = journal_text[:start_idx] + table_rows + journal_text[f_idx:]
 
-    temporary = path.with_suffix(f".tmp.{uuid.uuid4().hex}")
-    try:
-        temporary.write_text(text, encoding="utf-8")
-        os.replace(temporary, path)
-    finally:
-        temporary.unlink(missing_ok=True)
+    files = {path.name: text if supplement is not None else journal_text}
+    if supplement is not None:
+        files[SUPPLEMENT_FILENAME] = journal_text
+    replace_files(path.parent, files)
 
 
 def resolve_final_report(

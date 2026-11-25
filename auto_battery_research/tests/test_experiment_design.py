@@ -29,8 +29,10 @@ def recipe_payload():
 
 
 def slot_response(payload, user, trace_tag):
-    """离线模型按程序签发的内容槽填写，科学审核独立返回完整覆盖。"""
+    """离线完整实验输出与独立一致性核对。"""
     request = json.loads(user)
+    if trace_tag == "experiment_alignment_review":
+        return json.dumps({"subject": request["subject"], "status": "consistent", "issues": []})
     if trace_tag != "experiment_design":
         return json.dumps(payload, ensure_ascii=False)
     value = copy.deepcopy(payload)

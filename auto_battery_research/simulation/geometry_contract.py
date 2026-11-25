@@ -6,7 +6,7 @@ import json
 import math
 import re
 from typing import Any
-from auto_battery_research.util.material_ids import canonical_id, canonical_scheme, source_matches
+from auto_battery_research.util.material_ids import canonical_id, canonical_scheme, source_matches, pinn_material_ids
 
 FIELDS = ("L_um", "porosity", "R_s_um", "D_s_m2s")
 COMPONENTS = ("cathode", "anode")
@@ -130,9 +130,10 @@ def build_geometry_contract(candidate: dict, scheme: dict, evidence: list) -> di
         if value is not None and not strict_number(value):
             raise ValueError(f"condition.{field} 必须为有限数值")
     raw["condition"] = cond
-    geo = complete_geometry_block(raw, scheme.get("cathode"), scheme.get("anode"))
+    model_ids = pinn_material_ids(scheme)
+    geo = complete_geometry_block(raw, model_ids["cathode"], model_ids["anode"])
     errors = collect_geometry_violations(
-        geo, resolve_input_ranges(scheme.get("cathode"), scheme.get("anode")),
+        geo, resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"), scheme=scheme),
         anode_id=scheme.get("anode"),
     )
     if errors:
@@ -148,7 +149,7 @@ def build_geometry_contract(candidate: dict, scheme: dict, evidence: list) -> di
                                      "basis": "model_reference" if geo[comp][field] is not None else "unresolved",
                                      "material_id": scheme.get(comp)}
     from pinn.spm_runner import match_pinn_system, load_system_params
-    system = match_pinn_system(str(scheme.get("cathode") or ""), str(scheme.get("anode") or ""))
+    system = match_pinn_system(model_ids["cathode"], model_ids["anode"])
     if system:
         params_hash = hashlib.sha256(json.dumps(load_system_params(system), sort_keys=True).encode()).hexdigest()
         for source in sources.values():
@@ -164,7 +165,11 @@ def build_geometry_contract(candidate: dict, scheme: dict, evidence: list) -> di
 def geometry_from_declared_parameters(parameters: dict, scheme: dict, evidence: list):
     """恢复只重建已声明主工况，不调用模型、不覆盖非法/缺失的显式输入。"""
     from auto_battery_research.util.physical_parameters import fixed_geometry, record_geometry_sources
-    from auto_battery_research.util.numeric_consistency import context
+    from auto_battery_research.util.numeric_consistency import context, canonical
+    from auto_battery_research.util.parameter_names import foil_material_errors
+    scheme = canonical_scheme(scheme)
+    if errors := foil_material_errors(parameters, scheme):
+        raise ValueError("；".join(errors))
     fixed = fixed_geometry(parameters)
     if not all(scheme.get(c) for c in ("cathode", "anode", "electrolyte")):
         raise ValueError("恢复几何前须有完整材料身份")
@@ -182,6 +187,8 @@ def geometry_from_declared_parameters(parameters: dict, scheme: dict, evidence: 
     model_values = {}
     for comp in COMPONENTS:
         for name in ("L_um", "porosity"):
+            if comp == "anode" and name == "porosity" and scheme.get("anode") == "li_metal":
+                continue  # 与build_geometry_contract共用致密锂箔规则；显式值和锁定空值仍在后续核验。
             if f"{comp}.{name}" not in fixed:
                 raise ValueError(f"恢复缺少已声明主工况 {comp}.{name}")
         for name in ("L_um", "porosity", "R_s_um"):
@@ -210,8 +217,9 @@ def geometry_from_declared_parameters(parameters: dict, scheme: dict, evidence: 
             candidate["n_p_ratio"] = row["value"]
     geo = build_geometry_contract(candidate, scheme, evidence)
     for path, row in parameters.items():
-        comp, _, name = path.partition(".")
-        if comp in COMPONENTS and name in FIELDS:
+        comp, _, name = canonical(path, row).partition(".")
+        if (comp in COMPONENTS and name in FIELDS and context(row) == ("main", "main", "[]")
+                and row.get("quantity_role", "value") == "value"):
             if row.get("locked") and row.get("value") is None and geo[comp].get(name) is not None:
                 raise ValueError(path + " 用户锁定为空，恢复不得回填模型基准")
     for path, value in model_values.items():
@@ -237,9 +245,10 @@ def synchronize_material_baselines(geo: dict, scheme: dict) -> dict:
     for comp in COMPONENTS:
         if any(not strict_number((geo.get(comp) or {}).get(field)) for field in ("L_um", "porosity")):
             raise ValueError(f"{comp} 厚度或孔隙率缺少原设计声明，不能在迁移中补造")
-    normalized = complete_geometry_block(geo, scheme.get("cathode"), scheme.get("anode"))
+    model_ids = pinn_material_ids(scheme)
+    normalized = complete_geometry_block(geo, model_ids["cathode"], model_ids["anode"])
     result = copy.deepcopy(geo)
-    system = match_pinn_system(str(scheme.get("cathode") or ""), str(scheme.get("anode") or ""))
+    system = match_pinn_system(model_ids["cathode"], model_ids["anode"])
     params_hash = hashlib.sha256(json.dumps(load_system_params(system), sort_keys=True).encode()).hexdigest() if system else None
     sources = result.setdefault("parameter_sources", {})
     for comp in COMPONENTS:
@@ -274,10 +283,11 @@ def input_diagnostic(scheme: dict, evidence: list) -> dict:
     from auto_battery_research.util.scheme_ledger import digest
     from auto_battery_research.util.hashing import stage5_scheme_projection
     scheme = canonical_scheme(scheme)
-    system = match_pinn_system(str(scheme.get("cathode") or ""), str(scheme.get("anode") or ""))
+    model_ids = pinn_material_ids(scheme)
+    system = match_pinn_system(model_ids["cathode"], model_ids["anode"])
     geometry = scheme.get("geometry") or {}
     errors = validate_geometry_contract(geometry, scheme, evidence) if geometry.get("contract_version") == "2.0" else ["缺少有效结构化几何契约"]
-    ranges = resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"))
+    ranges = resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"), scheme=scheme)
     violations = []
     for comp, side in (("cathode", "pe"), ("anode", "ne")):
         for field, range_key, factor, unit in (("L_um", "thickness", 1e6, "μm"), ("porosity", "porosity", 1, ""),
@@ -323,9 +333,13 @@ def validate_geometry_contract(geo: dict, scheme: dict, evidence: list, *, check
             errors.append(f"{comp} 材料标识未归一化")
     if "material_ids" in geo and geo["material_ids"] != {comp: canonical.get(comp) for comp in COMPONENTS}:
         errors.append("几何契约与当前材料标识不一致")
-    baseline = complete_geometry_block({}, scheme.get("cathode"), scheme.get("anode"))
+    try:
+        model_ids = pinn_material_ids(scheme)
+    except ValueError as exc:
+        return errors + [str(exc)]
+    baseline = complete_geometry_block({}, model_ids["cathode"], model_ids["anode"])
     from pinn.spm_runner import match_pinn_system, load_system_params
-    system = match_pinn_system(str(scheme.get("cathode") or ""), str(scheme.get("anode") or ""))
+    system = match_pinn_system(model_ids["cathode"], model_ids["anode"])
     params_hash = hashlib.sha256(json.dumps(load_system_params(system), sort_keys=True).encode()).hexdigest() if system else None
     sources = geo.get("parameter_sources")
     if not isinstance(sources, dict):
@@ -370,7 +384,7 @@ def validate_geometry_contract(geo: dict, scheme: dict, evidence: list, *, check
                 errors.append(f"{path} 不支持的来源类型")
     if check_ranges:
         errors.extend(collect_geometry_violations(
-            geo, resolve_input_ranges(scheme.get("cathode"), scheme.get("anode")),
+            geo, resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"), scheme=scheme),
             anode_id=scheme.get("anode"),
         ))
     return errors
@@ -382,6 +396,7 @@ GEOMETRY_SYSTEM_PROMPT = """你是电池结构化设计工程师。输出纯 JSO
 N/P 不是必填项，不要自行提出或补全 n_p_ratio；仅在输入明确提供该值时原样携带，否则省略或 null。
 缺少 N/P 时两电极厚度独立采用声明值，不执行容量比厚度校准。
 两电极字段仅允许 L_um(厚度μm)、porosity(0~1)、R_s_um(颗粒半径μm)、D_s_m2s(m²/s)。
+L_um为电极有效层厚度：多孔极片指单面干涂层，li_metal负极指锂箔本体厚度；两者均不含另设集流体或保护层。锂箔厚度必须填写在anode.L_um。
 厚度和孔隙率必须给出；R_s 可提出工程设计值，禁止将直径/D50直接当半径。
 当 materials.anode == "li_metal"（致密金属锂箔，真密度 0.534 g/cm³）时，负极为致密金属沉积/剥离电极而非多孔嵌脱颗粒涂布电极：除非明确研究多孔 3D 亲锂骨架，否则 anode.porosity 应为 0.0（不得套用常规涂布极片的孔隙率），且 anode.R_s_um 与 anode.D_s_m2s 必须为 null（不得编造等效颗粒半径或固相扩散系数）。
 D_s 没有精确材料、25°C条件下恒定/全SOC固相扩散证据时必须为 null，由程序标注模型基准。

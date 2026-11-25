@@ -133,6 +133,7 @@ def _pipeline(monkeypatch, tmp_path, *, omit_fields=False):
                                        "misread_ids": [], "unanswered_ids": []}}
     reviewer.run = run
     pipeline = SimpleNamespace(reviewer=reviewer, writer=SimpleNamespace(llm=None),
+        stage4_repair_options={"content_rounds": 3},
         _extract_energy_claim=lambda text: None, repair_checkpoint_path=tmp_path / "checkpoint.json")
     monkeypatch.setattr(sections, "design_output_issues", lambda *a: [])
     monkeypatch.setattr(retrieval, "select_context", lambda seed, **kw: seed["evidence"])

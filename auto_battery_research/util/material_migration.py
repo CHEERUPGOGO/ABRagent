@@ -203,7 +203,7 @@ def migrate_material_ids(mgr, dry_run=False):
         if not passed:
             raise ValueError("迁移副本未通过报告验收：" + str(report_diagnostic))
         names = ("scheme_ledger.json", "scheme_table.md", "design_scheme.json", "experiment_plan.json", "experiment_report.json",
-                 "final_research_report.md", "stage4_repair_checkpoint.json", "stage4_retrieval_checkpoint.json", "rag_result.json", "stage5_execution.json")
+                 "report_record.json", "final_research_report.md", "final_research_report_supplement.md", "stage4_repair_checkpoint.json", "stage4_retrieval_checkpoint.json", "rag_result.json", "stage5_execution.json")
         snapshot = task / "scheme_history" / f"revision_{data['revision']}.json"
         snapshot_content = json.dumps(data, ensure_ascii=False, indent=2)
         if snapshot.exists() and _read(snapshot) != data:
@@ -220,7 +220,7 @@ def migrate_material_ids(mgr, dry_run=False):
                 for name in names:
                     if (preview / name).exists():
                         content = (preview / name).read_text(encoding="utf-8")
-                        if name == "final_research_report.md":
+                        if name in ("final_research_report.md", "final_research_report_supplement.md"):
                             content = content.replace(str(preview), str(task))
                         atomic_write(task / name, content)
                         written.append(name)

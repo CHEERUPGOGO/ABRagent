@@ -15,8 +15,12 @@ for electrode in ("cathode", "anode"):
                         ("loading_mg_cm2", "mg/cm2"), ("compaction_g_cm3", "g/cm3")):
         UNITS[f"{electrode}.{field}"] = unit
     for alias, field in (("electrode_thickness", "L_um"), ("thickness_um", "L_um"),
-                         ("total_loading", "loading_mg_cm2"), ("compaction_density", "compaction_g_cm3")):
+                         ("total_loading", "loading_mg_cm2"), ("compaction_density", "compaction_g_cm3"),
+                         ("compaction_density_g_cm3", "compaction_g_cm3")):
         ALIASES[f"{electrode}.{alias}"] = f"{electrode}.{field}"
+
+from .parameter_names import ALIASES as NAME_ALIASES
+ALIASES.update({alias: key for alias, key in NAME_ALIASES.items() if key in UNITS})
 
 INSTRUCTIONS = "已定主组参数及来源见fixed_geometry。只为缺项提出候选。窄窗对照、化成和测氧等专属参数保留各自用途。"
 
@@ -56,9 +60,18 @@ def normalized_unit(unit):
 
 def physical_declarations(parameters):
     """返回主工况有效字段及全部冲突。保留来源，不用后写入的候选覆盖已有声明。"""
-    seen, errors = {}, []
+    from .parameter_names import foil_material_errors
+    seen, errors = {}, foil_material_errors(parameters)
     for path, row in parameters.items():
         if not isinstance(row, dict) or row.get("value") is None:
+            continue
+        if row.get("quantity_role", "value") != "value" or row.get("basis") in ("literature", "literature_measurement"):
+            continue
+        from .parameter_names import checked_name
+        try:
+            checked_name(path, row)
+        except (ValueError, TypeError) as exc:
+            errors.append(str(exc))
             continue
         group = identity(path, row)
         if not group:
@@ -76,16 +89,7 @@ def physical_declarations(parameters):
             seen[group] = {'value': value, 'unit': unit, 'source': source}
     fixed = {key: row for (key, sample, purpose, conditions), row in seen.items()
              if (sample, purpose, conditions) == ('main', 'main', '[]')}
-    for comp in ('cathode', 'anode'):
-        load = fixed.get(f'{comp}.loading_mg_cm2')
-        density = fixed.get(f'{comp}.compaction_g_cm3')
-        if load and density and min(load['value'], density['value']) > 0:
-            thickness = 10 * load['value'] / density['value']
-            key = f'{comp}.L_um'
-            if key not in fixed:
-                fixed[key] = {'value': thickness, 'unit': 'um', 'source': f"由 {load['source']} 和 {density['source']} 换算"}
-            elif not math.isclose(fixed[key]['value'], thickness, rel_tol=.02):
-                errors.append(f"{key} 厚度、压实密度与面载不一致：{fixed[key]['source']}，按 {load['source']} 和 {density['source']} 换算为 {thickness:g} μm")
+    # 几何只继承明确声明；载量/密度/厚度的换算由模型提出并经Reviewer复核。
     return fixed, errors
 
 

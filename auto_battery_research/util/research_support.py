@@ -17,6 +17,7 @@ citations只用被关联原句中已有的真实文献编号。来源编号和�
 每个非background要求仅一条answers；多子问题用同一response综合并关联多条原句，不重复requirement_id。
 材料候选名称与探索排序须来自原句，不能自己添加名次。用户指定材料不写成筛选得到的最优。
 候选name仅填材料或样品名称；主推候选/备选候选等身份单列candidate_role，展示名可用display_name。
+display_name可用同条来源中的简称和排行（如Rank 1 Zn–Na），不要求拼成完整材料名＋角色。display_name不能更换材料、名次或加入原文没有的科学结论。
 candidate_role可选主推候选/备选候选/对照组/文献参照，不能自造“最优”角色；无明确角色时不填。
 材料名和角色须出现在同一条source_quotes，不能跨不同候选拼接；角色不自动授予selected_candidate_id资格。
 '''
@@ -32,6 +33,12 @@ supported只表示该字段忠实综合所绑定原句和本包文献，不表�
 若字段依赖文献不在本次包中，标needs_review；不能借未读取的文献编号通过审核。
 原文只说改善结构，摘要却说已抑制氧释放，或低倍率结果被写成1C性能，必须unsupported。
 只返回逐字段审核，不改写摘要或方案；格式/指纹不匹配的返回将不予采信。
+采用实质一致性标准：原文可追溯、数值与工况一致、没有明显矛盾时判supported。
+措辞、语序、标点差异以及已明确标为待验证的工程建议/跨体系推断，不应仅因不够完美而否决。
+只有材料或数量/条件不一致、无依据新增事实、否定关系反转、把推断写成已证等实质问题才标unsupported；
+needs_review用于真实无法确定的关键事实，不能用于风格偏好或重复要求补充本文已披露的限制。
+研究文本中的{{字段路径}}是合法主方案参数引用，展示时按parameters渲染，不是未解析错误；按当前值、单位和工况核对，不能要求改成写死数字。
+status=partial/gap允许表示已给出推荐但科学最优性/效果仍待验证，不能单凭状态要求升级为answered。source_quotes/field_support权限仅修来源，参数引用、科研文本、验证状态和其他真实缺陷分别核验。
 '''
 
 
@@ -113,19 +120,30 @@ def locate_sources(row, doc):
     for index, quote in enumerate(quotes):
         start = narrative.find(quote)
         end = start + len(quote)
-        if start < 0:
+        if start < 0 or narrative.find(quote, start + 1) >= 0:
             if view is None:
                 view = _source_view(narrative)
             plain, offsets, wrappers = view
             target = _source_view(quote)[0]
             at = plain.find(target) if target.strip() else -1
             if at < 0 or plain.find(target, at + 1) >= 0:
-                raise ValueError(f"多段来源原句不能在当前正文唯一定位：source_quotes[{index}]")
+                from .research_sources import locate
+                previous = row.get("source_locations") or []
+                try:
+                    locations.append(locate(quote, narrative, previous[index] if index < len(previous) else None))
+                    continue
+                except ValueError as exc:
+                    raise ValueError(f"多段来源原句不能在当前正文唯一定位：source_quotes[{index}]；{exc}") from exc
             start, end = offsets[at], offsets[at + len(target) - 1] + 1
             for opening, closing, body_start, body_end in wrappers:
                 if start <= body_start and body_end <= end:
                     start, end = min(start, opening), max(end, closing)
-        locations.append({"start": start, "end": end, "quote_hash": digest(narrative[start:end])})
+        from .research_sources import paragraphs, plain as normalized_source
+        block = next((b for b in paragraphs(narrative) if b["start"] <= start and end <= b["end"]), None)
+        location = {"start": start, "end": end, "quote_hash": digest(narrative[start:end])}
+        if block:
+            location.update(section_id=block["section_id"], paragraph_id=block["paragraph_id"], paragraph_hash=digest(normalized_source(block["text"])[0]))
+        locations.append(location)
     return locations
 
 
@@ -141,12 +159,17 @@ def field_citations(row, field):
     return [c for c in row.get("citations", []) if "[" + c + "]" in quotes]
 
 
-def fingerprint(row, doc, parameters, *, _legacy_conditions=None):
+def fingerprint(row, doc, parameters, *, _legacy_conditions=None, _legacy_numbers=False):
+    if row.get("projection_origin") == "writer_content_v3":
+        from .stage4_research_projection import fingerprint as projection_fingerprint
+        return projection_fingerprint(row, doc, parameters)
     refs = row.get("parameter_refs", [])
     cited = set(row.get("citations", []))
     narrative = (doc.get("final_answer") or "").split("\n\n## 参考来源")[0].strip()
     def parameter_view(path):
         view = {k: (parameters.get(path) or {}).get(k) for k in ("value", "unit", "quantity_kind", "denominator", "conditions")}
+        if not _legacy_numbers and isinstance(view["value"], float) and view["value"].is_integer():
+            view["value"] = int(view["value"])  # 写表后的1.0与原声明1具有同一数值身份。
         # 写表时补的空容器不改变科学条件；非空条件仍逐字参与身份。
         if _legacy_conditions == "raw":
             return view
@@ -157,8 +180,13 @@ def fingerprint(row, doc, parameters, *, _legacy_conditions=None):
         if view["conditions"] in ((None, {}) if _legacy_conditions == "dict_default" else (None, {}, [])):
             view["conditions"] = None
         return view
-    return digest({"record": projection(row), "narrative_hash": digest(narrative),
-        "parameters": {p: parameter_view(p) for p in refs}, "requirements": doc.get("requirements"),
+    from .research_sources import context_identity
+    requirements = doc.get("requirements") or {}
+    related = set(row.get("requirement_ids", [])) | {row.get("requirement_id")}
+    requirement_view = {"source": requirements.get("source"), "items": [r for r in requirements.get("items", []) if r.get("id") in related]}
+    source_hash = digest(narrative) if _legacy_conditions is not None else digest([context_identity(q, narrative) for q in row.get("source_quotes", [])])
+    return digest({"record": projection(row), "narrative_hash": source_hash,
+        "parameters": {p: parameter_view(p) for p in refs}, "requirements": doc.get("requirements") if _legacy_conditions is not None else requirement_view,
         "evidence": sorted([e for e in doc.get("evidence", []) if e.get("passage_id") in cited],
                            key=lambda e: str(e.get("passage_id")))})
 
@@ -166,15 +194,23 @@ def fingerprint(row, doc, parameters, *, _legacy_conditions=None):
 def review_fingerprint_matches(row, doc, parameters):
     """旧审核仅兼容空条件表示变化；正文、参数值、证据等其余输入仍完整匹配。"""
     recorded = (row.get("support_review") or {}).get("fingerprint")
-    return bool(recorded) and any(recorded == fingerprint(row, doc, parameters, _legacy_conditions=mode)
-                                 for mode in (None, "raw", "dict_default", "writer_default"))
+    return bool(recorded) and any(recorded == fingerprint(row, doc, parameters, _legacy_conditions=mode, _legacy_numbers=numbers)
+                                 for mode in (None, "raw", "dict_default", "writer_default") for numbers in (False, True))
 
 
 def normalize(row, collection, doc, parameters):
+    if row.get("projection_origin") == "writer_content_v3":
+        # v3来源由编译器定位；重复句子仍按稳定叶ID定位，不扫描全文猜测。
+        result = copy.deepcopy(row)
+        for source, location in zip(result.get("source_quotes", []), result.get("source_locations", [])):
+            if doc.get("final_answer", "")[location["start"]:location["end"]] != source:
+                raise ValueError("v3研究来源坐标失效")
+        result["support_fingerprint"] = fingerprint(result, doc, parameters)
+        return result
     from .research_contract import TOKEN, normalized
     from .report_narrative import amount
     result = copy.deepcopy(projection(row))
-    locations = locate_sources(result, doc)
+    locations = locate_sources(row, doc)
     # 保存当前正文中的真实摘录；格式归一不授予摘要科学支持性。
     result["source_quotes"] = [doc["final_answer"][p["start"]:p["end"]] for p in locations]
     requested = set(re.findall(r"\[([\w:-]+)\]", "\n".join(result["source_quotes"]))) - {"FSI", "TFSI", "PF6", "BF4"}
@@ -201,7 +237,23 @@ def normalize(row, collection, doc, parameters):
                 raise ValueError("摘要引用未知主方案参数：" + ref)
             from .material_ids import source_matches
             if not source_matches(ref, parameter["value"], source) and normalized(amount(ref, parameter)) not in normalized(source):
-                raise ValueError("参数引用与该字段多段依据不一致：" + ref)
+                # 参数已经有程序签发的正文引用时，补上对应真实原句；不用同值数字猜绑定。
+                from .numeric_bindings import occurrences, binding_errors
+                from .research_sources import paragraphs
+                candidates = [b["text"] for b in paragraphs(doc.get("final_answer", ""))
+                              if any(kind == "param" and key == ref for _, _, kind, key, _ in occurrences(b["text"]))
+                              and not binding_errors(b["text"], parameters)]
+                if not candidates:
+                    raise ValueError("参数引用与该字段多段依据不一致：" + ref)
+                added = min(candidates, key=len)
+                if added not in result["source_quotes"]:
+                    if len(result["source_quotes"]) >= 12:
+                        raise ValueError("参数来源补充超过单项上限：" + ref)
+                    result["source_quotes"].append(added)
+                index = result["source_quotes"].index(added)
+                if index not in support[field]:
+                    support[field].append(index)
+                source = "\n".join(field_quotes(result, field))
         # 数值仅做必要事实检查；条件和材料含义还须Reviewer核对。
         def numeric_tokens(text):
             text = re.sub(r"\[[\w:-]+\]|\{\{[^}]+\}\}", "", text)
@@ -211,17 +263,36 @@ def normalize(row, collection, doc, parameters):
         requested = set(re.findall(r"\[([\w:-]+)\]", value)) - {"FSI", "TFSI", "PF6", "BF4"}
         if requested - set(field_citations(result, field)):
             raise ValueError("摘要字段引用不属于其绑定的原句：" + field)
-    result["source_locations"] = locations
+    result["source_locations"] = locate_sources(result, doc)
     result["support_fingerprint"] = fingerprint(result, doc, parameters)
     return result
 
 
 def supported(row, field, doc, parameters):
+    if row.get("projection_origin") == "writer_content_v3":
+        from .stage4_research_projection import field_fingerprint as content_field_fingerprint
+        verdict = (row.get("support_review") or {}).get("fields", {}).get(field, {})
+        return verdict.get("status") == "supported" and verdict.get("fingerprint") == content_field_fingerprint(row, field, doc, parameters)
     if not is_summary(row):
         return True
     review = row.get("support_review") or {}
+    entry = review.get("fields", {}).get(field, {})
+    if entry.get("field_fingerprint"):
+        return entry.get("status") == "supported" and any(entry["field_fingerprint"] == field_fingerprint(row, field, doc, parameters, _legacy_numbers=old)
+                                                           for old in (False, True))
     return (review_fingerprint_matches(row, doc, parameters)
             and review.get("fields", {}).get(field, {}).get("status") == "supported")
+
+
+def field_fingerprint(row, field, doc, parameters, *, _legacy_numbers=False):
+    """字段只绑定本字段来源及实际使用参数，其余字段变化不撤销当前结论。"""
+    from .research_contract import TOKEN
+    fragment = {k: copy.deepcopy(row[k]) for k in ("id", "requirement_id", "requirement_ids", "verification", "basis", "scope", "status") if k in row}
+    quotes = field_quotes(row, field)
+    fragment.update(source_quotes=quotes, field_support={field: list(range(len(quotes)))},
+                    parameter_refs=list(dict.fromkeys(TOKEN.findall(row.get(field, "")))), citations=field_citations(row, field))
+    fragment[field] = row.get(field, "")
+    return fingerprint(fragment, doc, parameters, _legacy_numbers=_legacy_numbers)
 
 
 def render_field(row, field, doc):
@@ -277,6 +348,11 @@ def apply_review(research, verdicts, doc, parameters, reviewed_evidence=None):
                 if status == "supported" and available is not None and set(field_citations(row, field)) - available:
                     status, reason = "needs_review", "该字段依赖的文献未进入本次审核证据包"
                 fields[field] = {"status": status, "reason": reason}
+                if row.get("projection_origin") == "writer_content_v3":
+                    from .stage4_research_projection import field_fingerprint as content_field_fingerprint
+                    fields[field]["fingerprint"] = content_field_fingerprint(row, field, doc, parameters)
+                else:
+                    fields[field]["field_fingerprint"] = field_fingerprint(row, field, doc, parameters)
             row["support_review"] = {"fingerprint": fp, "fields": fields}
     return research
 
@@ -339,6 +415,10 @@ def refresh_for_review(pipeline, seed, text, parameters, evidence, *, repair_rec
         return None
     doc = copy.deepcopy(prior)
     doc.update(final_answer=text, evidence=evidence, ledger_view={"parameters": parameters}, parameters=parameters)
+    if isinstance(doc.get("scheme_parameters"), dict):
+        doc["scheme_parameters"] = {k: copy.deepcopy(parameters[k]) for k in doc["scheme_parameters"] if k in parameters}
+    from .material_ids import assemble_components
+    doc["scheme"] = assemble_components(seed.get("scheme") or prior.get("scheme"), parameters, strict=False)
     # 正文、文献、参数任一变化均逐项重验；收尾前保留一次提取预算。
     doc["research"] = collect_research({}, doc, parameters, previous=prior.get("research"))
     used = seed.get("maintenance_calls", prior.get("maintenance_calls", 0))

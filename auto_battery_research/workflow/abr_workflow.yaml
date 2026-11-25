@@ -126,5 +126,6 @@ stages:
         strict: true
     expected_outputs:
       - "output/tasks/<goal>/final_research_report.md"   # 课题专属目录 (全局 output/auto_battery_research/ 仅历史课题可读)
+      - "output/tasks/<goal>/final_research_report_supplement.md"
       - "output/tasks/<goal>/stage_journals.json"
 

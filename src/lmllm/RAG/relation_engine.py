@@ -3,7 +3,7 @@
 承载三类关系数据（JSON 表形式）：
   - alias_map.json      实体归一化（谁对应谁）
   - candidates.json     候选材料属性（谁有哪些参数）
-  - constraints.json    层级约束规则（v2.1: C1–C3, C5–C8 共 7 条规则，C4 已移除；
+  - constraints.json    层级约束规则（v2.4: C1/C3 为建议，C2 保留质询，C4 已移除；
                         支持 challenge / recommend / audit_note / coin_cell_eval /
                         flag_frontier 与兼容动作，及 C0_UNVERIFIED_MATERIAL 校验）
 
@@ -29,7 +29,7 @@ DATA_DIR = Path(__file__).resolve().parent / "data"
 
 # 规则版本标识：修改 alias_map/candidates/constraints 数据或约束求值逻辑时务必同步递增，
 # 供 Stage 4 方案产物固化溯源 (design_scheme.json 的 provenance.rules_version)。
-RULES_VERSION = "C1-C8/v2.3-electrolyte-family"
+RULES_VERSION = "C1-C8/v2.4-c1-c3-advisory"
 
 # 数值-条件绑定检测：出现数值单位但全文无任何条件词 → condition_missing
 _NUM_UNIT_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:mAh/g|mAh g|Wh/kg|Wh kg|%)", re.I)
@@ -430,7 +430,8 @@ class RelationEngine:
                         })
 
             elif action == "challenge":
-                # 自洽性质询（C1, C2, C3）：声明白名单对策即放行，纯裸体系且无保护措施则硬拦截
+                # 自洽性质询（C2）：声明白名单对策即放行，纯裸体系且无保护措施则硬拦截。
+                # C1/C3 使用 recommend 分支，建议不进入违规或强制降级。
                 whitelist = rule.get("mitigation_whitelist", [])
                 has_mit, matched = self._has_mitigation(scheme, resolved, whitelist)
                 if has_mit:
@@ -609,6 +610,11 @@ class RelationEngine:
                 exclude_ids.update(t for _, t in self._parse_targets(rule.get("target", "")))
             elif action in ("include", "recommend"):
                 boost_ids.update(t for _, t in self._parse_targets(rule.get("target", "")))
+                # 建议仅提升相关措施的证据排序，不给原配方相关文献降权。
+                for item in rule.get("retrieval_boost", []):
+                    for cat, tid in self._parse_targets(item):
+                        if cat in ("electrolyte", "additive") and tid in self.alias_map:
+                            boost_ids.add(tid)
             elif action in ("challenge", "warn"):
                 whitelist = rule.get("mitigation_whitelist", [])
                 has_mit, _ = self._has_mitigation(scheme, resolved, whitelist)

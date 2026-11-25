@@ -143,7 +143,7 @@ def test_cached_plan_does_not_bypass_control_validation(tmp_path):
     before = (tmp_path / recipes.FILENAME).read_bytes()
     with pytest.raises(ValueError, match="对照"):
         recipes.generate(tmp_path, doc, client)
-    assert len(client.calls) == 1 and (tmp_path / recipes.FILENAME).read_bytes() == before
+    assert len(client.calls) == 2 and (tmp_path / recipes.FILENAME).read_bytes() == before
 
 
 
@@ -156,7 +156,7 @@ def test_new_generation_retries_only_bad_control_and_retains_good_group(tmp_path
                          {"id": "G3", "scope": "control", "parameter_refs": [], **control(3)}]
     client = Client(payload)
     record = recipes.generate(tmp_path, doc, client)
-    assert [tag for tag, _ in client.calls] == ["experiment_design", "experiment_repair"]
+    assert [tag for tag, _ in client.calls] == ["experiment_design", "experiment_repair", "experiment_alignment_review"]
     assert [g["id"] for g in record["groups"]] == ["G1", "G3"]
     assert record["pending_groups"][0]["record"]["id"] == "G2"
     assert record["sections"] == payload["sections"]

@@ -4,7 +4,7 @@ import re
 from collections import Counter
 
 
-def merge_requirement_patch(original, patch, accepted):
+def merge_requirement_patch(original, patch, accepted, goal=None):
     """按原id或原句合并局部修复，模型不能在重试时重写通过项。"""
     original = original if isinstance(original, dict) else {}
     patch = patch if isinstance(patch, dict) else {}
@@ -41,7 +41,80 @@ def merge_requirement_patch(original, patch, accepted):
         merged["groups"] = copy.deepcopy(patch["groups"])
     if "query_links" in patch:
         merged["query_links"] = patch["query_links"]
+    if isinstance(patch.get("task"), dict):
+        from .requirement_sources import task_record
+        previous = original.get("task") or {}
+        candidate = copy.deepcopy(patch["task"])
+        if isinstance(previous, dict):
+            # 已有总任务描述不因修复覆盖而重写；附加原文允许扩充且不能撤下旧来源。
+            candidate["description"] = previous.get("description") or candidate.get("description")
+            old_quotes, new_quotes = previous.get("source_quotes"), candidate.get("source_quotes")
+            if isinstance(old_quotes, list) and isinstance(new_quotes, list):
+                candidate["source_quotes"] = list(dict.fromkeys(old_quotes + new_quotes))
+        try:
+            if goal is not None:
+                task_record(candidate, goal)
+            merged["task"] = candidate
+        except (ValueError, TypeError):
+            pass  # 非原文来源不覆盖既有总任务，后续恢复仍披露未覆盖内容。
     return merged
+
+
+def recover_groups(raw, goal, items):
+    """分别验收分组树和条目关联；单项待定不能清空有效树或留下悬空引用。"""
+    from .requirement_structure import normalize_groups
+    diagnostics, groups = [], []
+    rows = raw.get("groups", [])
+    rows = rows if isinstance(rows, list) else []
+    counts = Counter(g.get("id") for g in rows if isinstance(g, dict) and isinstance(g.get("id"), str))
+    for index, group in enumerate(rows):
+        try:
+            if not isinstance(group, dict) or not isinstance(group.get("id"), str) or counts[group["id"]] != 1:
+                raise ValueError("要求分组id缺失或重复")
+            node = normalize_groups({"groups": [dict(group, parent_id=None)]}, goal, [])[0]
+            parent = group.get("parent_id")
+            if parent is not None and not isinstance(parent, str):
+                raise ValueError("要求分组父级须为字符串或null")
+            node["parent_id"] = parent
+            groups.append(node)
+        except (ValueError, TypeError, KeyError) as exc:
+            diagnostics.append(f"groups[{index}]：{exc}")
+    by_id = {g["id"]: g for g in groups}
+    invalid = set()
+    for group in groups:
+        parent, visited = group["parent_id"], {group["id"]}
+        while parent is not None:
+            if parent not in by_id or parent in visited:
+                invalid.add(group["id"])
+                diagnostics.append("要求分组父级未知或形成循环：" + group["id"])
+                break
+            visited.add(parent)
+            parent = by_id[parent]["parent_id"]
+    groups = [g for g in groups if g["id"] not in invalid]
+    ids = {g["id"] for g in groups}
+    pending = []
+    for item in items:
+        old = item.get("group_id")
+        if old is not None and old not in ids:
+            diagnostics.append("要求分组待恢复：" + item["id"] + "；原分组=" + str(old))
+            item.pop("group_id", None)
+        if raw.get("hierarchy_version") == 1 and item["kind"] != "background" and not item.get("group_id"):
+            pending.append(item)
+    if pending:
+        # 待解析原文归入显式恢复组，不猜测其科研类别，也不授予已解析状态。
+        from .requirement_sources import locate_quotes
+        key = "recovery_pending"
+        while key in ids:
+            key += "_"
+        quotes = list(dict.fromkeys(i["quote"] for i in pending))
+        if any(goal.count(q) != 1 for q in quotes):
+            quotes = [goal]
+        groups.append({"id": key, "title": "待解析要求（原文保留）", "parent_id": None,
+                       "source_quotes": quotes, "source_spans": locate_quotes(quotes, goal)})
+        for item in pending:
+            item["group_id"] = key
+            diagnostics.append("要求所属分组待确认：" + item["id"])
+    return groups, diagnostics
 
 
 def recover_requirements(raw, goal, queries=(), reason=""):
@@ -131,7 +204,8 @@ def recover_requirements(raw, goal, queries=(), reason=""):
                     segments.append([])
                 segments[-1].append(position)
         for segment in segments:
-            quote = goal[segment[0]:segment[-1]+1].strip(" ，,。；;\n\t")
+            # Unicode空白与标点一并去除，再定位实际保留的原句。
+            quote = re.sub(r"^[\s，,。；;]+|[\s，,。；;]+$", "", goal[segment[0]:segment[-1]+1])
             if not meaningful_gap(quote) or not re.search(r"[\w\u4e00-\u9fff]", quote):
                 continue
             start = goal.index(quote, segment[0])
@@ -158,12 +232,8 @@ def recover_requirements(raw, goal, queries=(), reason=""):
             links.append({"query_index": link["query_index"], "requirement_ids": [mapping[i] for i in link["requirement_ids"]]})
         else:
             diagnostics.append("检索关联尚待修复")
-    from .requirement_structure import normalize_groups
-    try:
-        groups = normalize_groups(raw, goal, items)
-    except ValueError as exc:
-        groups = []
-        diagnostics.append(str(exc))
+    groups, group_errors = recover_groups(raw, goal, items)
+    diagnostics.extend(group_errors)
     diagnostics.extend("固定条件待绑定：" + r["description"] + "；" + r.get("binding_reason", "原因待补") for r in items if r.get("binding_status") == "pending")
     return {"version": 1, "split_version": raw.get("split_version", 1), "hierarchy_version": raw.get("hierarchy_version", 0), "groups": groups, "task": task, "source": goal, "status": "parsed" if not diagnostics else "partial" if accepted else "unparsed",
             "items": sorted(items, key=lambda i: i["start"]), "task_type": task_type,

@@ -70,7 +70,7 @@ def test_all_unbound_fields_are_reported_together_without_mutation():
     assert len(issues) == 3 and all(i["code"] == "UNBOUND_PARAMETER" for i in issues)
 
 
-def test_exhausted_legacy_patch_only_refreshes_errors_without_new_calls():
+def test_legacy_noop_patch_only_refreshes_errors_without_new_calls():
     data = draft()
     state = {"generation_attempted": True, "raw_response": json.dumps(data), "repair_attempts": 1,
              "repair_raw_response": json.dumps({"base_hash": digest(data), "parameters": []})}
@@ -150,6 +150,74 @@ def test_successful_reference_patch_preserves_source_and_replays_offline(tmp_pat
     assert "{{param:" not in again["draft_answer"] and "1.5%" in again["draft_answer"]
 
 
+@pytest.mark.parametrize("reject", [False, True])
+def test_text_binding_uses_complete_site_context_and_independent_review(reject):
+    data = example()
+    data["parameters"] = {"cathode.doping.A_site": row("Na 占 Li 位（A 位）", quantity_kind="text"),
+                          "cathode.doping.B_site": row("Zn 或 Cu 占 Ni 位（B 位）", quantity_kind="text")}
+    body = "设计路线：A 位为 Li 位、B 位为 Ni 位；A 位引入 Na+，B 位引入 Zn2+ 或 Cu2+。"
+    data["sections"]["goals"]["body"] = body
+    proposed = {"base_hash": digest(data), "parameters": [], "references": [
+        dict(field=field, body_path=["sections", "goals", "body"], quote=body, value_quote=quote)
+        for field, quote in [("cathode.doping.A_site", "A 位引入 Na+"),
+                             ("cathode.doping.B_site", "B 位引入 Zn2+ 或 Cu2+")]]}
+    client, calls, seen = client_for(data, proposed, reject=reject)
+    state = {}
+    original = copy.deepcopy(data)
+    result = produce(client, "s", "u", {}, state, lambda: None)
+    assert calls == ["writer", "writer_protocol_repair", "writer_reference_verify"]
+    payload = seen[-1]
+    assert all(b["equivalence_mode"] == "semantic_text" and b["body"] == body for b in payload["bindings"])
+    assert payload["before"]["sections"]["goals"]["body"] == body
+    assert data == original
+    if reject:
+        assert result["fallback"] and state["reference_review"]["status"] == "REJECTED"
+        assert not state.get("accepted_patch")
+    else:
+        assert not result["fallback"] and state["reference_review"]["status"] == "ACCEPTED"
+        assert result["structured_sections"]["parameters"] == original["parameters"]
+        assert "Na 占 Li 位（A 位）" in result["draft_answer"]
+    before = list(calls)
+    repeated = produce(client, "s", "u", {}, state, lambda: None)
+    assert repeated["fallback"] == reject and calls == before
+
+
+def test_saved_unit_and_site_patch_reuses_legacy_hash_and_keeps_request_budget():
+    from auto_battery_research.util.writer_protocol import normalize
+    data = example()
+    data["parameters"] = {"cathode.L_um": row(20, "μm"),
+                          "cathode.doping.A_site": row("Na 占 Li 位（A 位）", quantity_kind="text")}
+    body = "A 位为 Li 位，A 位引入 Na+；厚度{{param:cathode.L_um}}。"
+    data["sections"]["goals"]["body"] = body
+    proposed = {"base_hash": digest(normalize(data, normalize_units=False)),
+        "parameters": [{"path": "cathode.L_um", "metadata": {"unit": "um"}}],
+        "references": [dict(field="cathode.doping.A_site", body_path=["sections", "goals", "body"],
+                            quote=body, value_quote="A 位引入 Na+")]}
+    state = {"raw_response": json.dumps(data, ensure_ascii=False), "generation_attempted": True,
+             "repair_attempts": 1, "repair_raw_response": json.dumps(proposed)}
+    client, calls, _ = client_for(data, proposed)
+    result = produce(client, "s", "u", {}, state, lambda: None)
+    assert not result["fallback"], result
+    assert calls == ["writer_reference_verify"] and state["repair_attempts"] == 1
+    assert state["accepted_patch"] == proposed and json.loads(state["raw_response"]) == data
+    assert result["numeric_parameters"]["cathode.L_um"]["unit"] == "um"
+    assert not produce(SimpleNamespace(available=False), "s", "u", {}, state, lambda: None)["fallback"]
+
+
+def test_incomplete_or_changed_text_relation_cannot_publish_without_review():
+    data = example()
+    data["parameters"] = {"cathode.doping.A_site": row("Na 占 Li 位（A 位）", quantity_kind="text")}
+    body = "Na 仅为对照，不确定是否占 Li 位。"
+    data["sections"]["goals"]["body"] = body
+    proposed = {"base_hash": digest(data), "parameters": [], "references": [
+        dict(field="cathode.doping.A_site", body_path=["sections", "goals", "body"], quote=body, value_quote="Na")]}
+    client, calls, _ = client_for(data, proposed, reject=True)
+    state = {}
+    result = produce(client, "s", "u", {}, state, lambda: None)
+    assert result["fallback"] and state["reference_review"]["status"] == "REJECTED"
+    assert "writer_reference_verify" in calls and not state.get("accepted_patch")
+
+
 @pytest.mark.parametrize("attack", ["value", "unit", "ambiguous", "title", "source", "code", "duplicate", "whole_body", "unknown", "locked", "overlap", "stale"])
 def test_illegal_patch_never_changes_values_or_scientific_prose(attack):
     data = draft()
@@ -208,17 +276,35 @@ def test_semantic_rejection_does_not_bind_literature_or_other_sample():
     assert calls == before and not state.get("accepted_patch")
 
 
-def test_partial_patch_keeps_remaining_errors_and_does_not_retry_again():
+def test_partial_patch_repairs_only_remaining_fields_and_replays_offline():
     data = draft()
-    proposed = patch(data)
-    proposed["references"] = proposed["references"][:1]
-    client, calls, _ = client_for(data, proposed)
+    client, calls, _ = client_for(data)
+    original = client.chat
+    requests = []
+    def chat(system, user, **kwargs):
+        if kwargs["trace_tag"] != "writer_protocol_repair":
+            return original(system, user, **kwargs)
+        calls.append(kwargs["trace_tag"])
+        request = json.loads(user)
+        requests.append(request)
+        proposed = patch(request["document"])
+        remaining = {e["path"][1] for e in request["errors"] if e["code"] == "UNBOUND_PARAMETER"}
+        proposed["references"] = [r for r in proposed["references"] if r["field"] in remaining]
+        if len(requests) == 1:
+            proposed["references"] = proposed["references"][:1]
+        return json.dumps(proposed, ensure_ascii=False)
+    client.chat = chat
     state = {}
     result = produce(client, "s", "u", {}, state, lambda: None)
-    assert result["fallback"] and state["accepted_patch"]
-    assert {i["path"][1] for i in state["diagnostics"]} == {"cathode.doping.na", "condition.cycle_number"}
+    assert not result["fallback"], result
+    assert state["repair_attempts"] == 2 and len(state["repair_history"]) == 2
+    assert {i["path"][1] for i in requests[1]["errors"]} == {"cathode.doping.na", "condition.cycle_number"}
+    assert "{{param:cathode.doping.basis}}" in requests[1]["document"]["sections"]["goals"]["body"]
+    assert calls.count("writer_reference_verify") == 2
     before = list(calls)
-    assert produce(client, "s", "u", {}, state, lambda: None)["fallback"]
+    restored = json.loads(json.dumps(state))
+    again = produce(SimpleNamespace(available=False), "s", "u", {}, restored, lambda: None)
+    assert again["draft_answer"] == result["draft_answer"]
     assert calls == before
 
 

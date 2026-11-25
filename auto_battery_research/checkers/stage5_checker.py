@@ -8,7 +8,7 @@ class Stage5Checker(PINNPhysicsChecker):
         if not self.stage_manager:
             return super().do_check(is_complete=is_complete, **kwargs)
         from auto_battery_research.util import experiment_design, scheme_ledger
-        from auto_battery_research.util.experiment_consistency import parameter_pending_fields
+        from auto_battery_research.util.experiment_delivery import blocking_pending_fields, assessment
         from auto_battery_research.util.stage5_execution import physics_exemption
         path = self.stage_manager.get_task_output_dir()
         try:
@@ -21,7 +21,7 @@ class Stage5Checker(PINNPhysicsChecker):
         except (OSError, ValueError, TypeError) as exc:
             return False, self.build_diagnostic(passed=False, error_code="STAGE5_EXPERIMENT_MISSING",
                 error_msg=str(exc), next_action="基于当前方案表重新核对 Stage 5B 实验方案")
-        pending = sorted(set(parameter_pending_fields(doc)) | set(recipe.get("pending_parameters") or {}))
+        pending = blocking_pending_fields(recipe, doc)
         experiment_status, experiment_reasons = experiment_design.delivery_status(recipe, pending, doc=doc)
         try:
             exemption = physics_exemption(doc)
@@ -41,4 +41,5 @@ class Stage5Checker(PINNPhysicsChecker):
             error_msg=None if passed else "物理检查或实验参数一致性检查未通过",
             observed={"is_fallback": fallback, "physics_passed": physical, "physical_diagnostic": diagnostic,
                       "experiment_ready": experiment_status == "PASSED", "experiment_status": experiment_status,
-                      "experiment_reasons": experiment_reasons, "pending_fields": pending})
+                      "experiment_reasons": experiment_reasons, "pending_fields": pending,
+                      "validation_notes": assessment(recipe, doc)["validation_notes"]})

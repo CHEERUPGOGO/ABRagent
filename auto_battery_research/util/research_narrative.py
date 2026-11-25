@@ -18,15 +18,20 @@ GENERATION_PROMPT = '''你将已有科研记录组织为研报第二部分的连
 根据研究问题组织“问题—依据—选择与取舍—预期与风险—验证边界”的自然论证，
 章节主题和数量由当前课题决定，通常3–5节，全文约1000–1800中文字；不套固定材料模板。
 避免重复现有answers/candidates/arguments；同一论点只讲一次，连接句也不得新增因果结论。
-第二部分说明为什么和如何判断，不重复第三部分全参数表与第五部分具体操作步骤。
+第二部分只说明材料选择依据、机理、候选取舍、掺量依据与证据边界；具体实验方案统一放到第五部分。
+不得在本章安排或诊断实验组编号、梯度点、投料、制备热程、装配、测试流程、仪器组合、重复数或放行阈值。
+允许解释为何需要验证及现有证据不足，但用科学问题表述，不写操作指令；必要时仅指向第五部分。
+当前候选组成、掺量口径、课题目标及解释证据适用性必需的文献原工况可保留；不重复第三部分全参数表。
 若原课题要求掺量范围，正文仍须概括已有候选的具体系数/范围及计量口径，不能只说高/低剂量。
 不得把组成成立的必要假设降为非关键；区分组成、工艺与协同的不同验证作用及失败后果。
-没有定量来源的“阈值”不得自行补数或声称可直接执行，应指出尚需预先定义判据。
+没有定量来源的“阈值”不得自行补数或声称可直接执行；具体判据及其待定状态由第五部分承载。
 所有非background要求至少关联一个段落；固定电池/电解液/窗口等条件可合并说明为评价边界。
 每段关联支持其内容的source_ids与requirement_ids，不能靠填ID假装已回应；每段至少一条来源。
 sources提供既有原句、已审摘要和审核限制。优先概括通过审核的内容；对未通过/待审观点，
 只能说明其问题、条件缺失或待验证性质，不能把有争议原文润色成肯定结论。
-limitations中的每项都必须在相关段落中明确保留其实际含义，并用limitation_ids关联。
+limitations中影响科学结论的内容须在相关段落保留实际含义，并用limitation_ids关联。
+仅涉及实验编号、执行流程或操作参数的限制属于第五部分，不要求在第二部分复述；不得把原设计稿的操作缺陷写成本章科学结论。
+同一限制兼有科学与操作内容时，只保留证据不足或结论适用边界；具体执行问题交第五部分，不据旧编号宣布当前实验方案无效。
 文献支持仅限原体系/位点/倍率/温度/圈数，当前配方、协同、最优与实验完成均不得擅自宣称。
 不得新增材料、配方、数值、实验结果、文献、研究排名；名义组成比不能称为实测晶格占位。
 主方案参数用{{字段路径}}引用并列入parameter_refs；文献数字保留原研究对象和条件。
@@ -47,14 +52,25 @@ REVIEW_PROMPT = '''你是科研研报Reviewer，只审核整合论证，不改�
 必须逐段及逐个limitation返回，不遗漏。supported仅表示该整合忠实且条件清楚，不表示性能已验证。
 核对原始prompt的每个要求是否实际得到论证，单纯挂requirement_id不算覆盖；检查标题是否夸大结论。
 核对段落source_ids、文献及当前参数；禁止新增事实/数值、跨体系归因、把假设写成实证或独立发现。
-对limitation_ids检查正文是否真正保留问题与条件，不能只在元数据挂ID；不能用笼统“待验证”抹掉具体争议。
+对limitation_ids检查正文是否保留影响科学结论的问题与条件，不能只在元数据挂ID；不能用笼统“待验证”抹掉科学争议。
 审阅论证是否连贯、去重而不丢关键依据；避免正文变成逐项问答或详细操作说明。
-本稿仅是六节报告中的第二部分。第三节已有主方案参数，第五节单独提供操作与测试步骤；
-不要因为第二部分未重列完整投料/热程而拒绝，研究要求覆盖按“论证及明确跨节分工”判断。
+本稿仅是六节报告中的第二部分，负责材料选择、机理、候选取舍、掺量依据及证据边界。第三节集中主方案参数，具体实验方案统一由第五节提供。
+检查本稿是否混入实验组编号、梯度点、制备热程、装配流程、测试安排、仪器组合或放行判据；这些执行内容应从第二部分移出。
+涉及合成与测试的课题要求，在第二部分按可行性依据、科学问题与结论边界回应即可，不要求复述具体实验内容。
+limitations仍须逐项审核：纯实验执行事项因属于第五部分可判supported，并在reason注明章节分工；需要提醒的写notes，不强制写入第二部分正文。
+科学和操作问题混合时只要求正文保留科学限制，不因省略组号或操作细节否决；不得依据原设计稿编号断言当前第五部分实验无效。
 但课题要求的核心组成、掺量范围、选择依据和科学边界仍须在第二部分实质说明，不能只挂ID。
 保留已有来源的科学审核边界；缺文献或条件仍不足时标needs_review。不能通过未进入本包的文献。
 对明显可改进的措辞给出具体原因和修改方向，issues可关联段落ID；不要重写材料方案。
 issues仅保存影响本稿正确性、覆盖或来源的阻断问题；已在正文充分说明的限制、后续章节提醒和可选风格建议放notes，不要求把当前无关章节重写才能通过本稿。
+审核以明显实质不一致为否决依据。来源可追溯且没有明确材料、数值、工况、否定或事实强度冲突时判supported；
+已注明条件和待验证边界的工程建议或跨体系推断可以通过表述审核，不要求实验先完成。
+不因语序、措辞、重复程度、来源ID分配不够精细等非实质问题拒绝；可改进事项写notes。
+若程序提示覆盖或限制关联不完整，按实际正文检查：已充分表达则通过，确实遗漏关键要求/边界才拒绝。
+“确定最优/验证效果”等研发目标可以用当前候选、现有依据、缺口和后续判定方法回应；
+不得仅因实验尚未执行、梯度有待扩展或最优性尚未证实而判覆盖失败，已如实披露则把后续完善建议写notes。
+来源中的审稿建议属于待办，不能当作当前已实施的措施；摘要不得借审核建议修改当前主方案或用户固定条件。
+来源未报告倍率、温度或其它条件时，只能说明无法确认；不能据此认定“非1 C”等相反条件。沿用原稿的这类推断也须纠正。
 '''
 
 
@@ -95,6 +111,21 @@ def source_context(doc):
         sources.append({"id": "requirement:" + item["id"], "requirement_ids": [item["id"]],
             "source_quotes": [item["quote"]], "text": item["description"], "status": "user_requirement",
             "citations": [], "parameter_refs": [], "verification": "not_applicable"})
+    # 完整原设计也是来源；局部研究提取失败不再截断整合可用的论证。
+    from .research_sources import paragraphs
+    from .numeric_bindings import occurrences
+    known = {e.get("passage_id") for e in doc.get("evidence", [])}
+    for block in paragraphs(_body(doc)):
+        text = block["text"]
+        if block["section_id"] == "legacy" or len(text) < 30:
+            continue
+        cites = set(re.findall(r"\[([\w:-]+)\]", text)) - {"FSI", "TFSI", "PF6", "BF4"}
+        if cites - known:
+            continue
+        sources.append({"id": "design:" + block["paragraph_id"], "requirement_ids": [], "source_quotes": [text],
+                        "text": text, "status": "archived", "reason": "原设计论证，需按本次一致性标准复核；工程假设不等于实测",
+                        "citations": sorted(cites), "parameter_refs": list(dict.fromkeys(key for _, _, kind, key, _ in occurrences(text) if kind == "param")),
+                        "verification": "unverified"})
     refs = {p for source in sources for p in source["parameter_refs"]}
     from .requirement_structure import item_bindings
     refs.update(b["path"] for i in (doc.get("requirements") or {}).get("items", []) for b in item_bindings(i))
@@ -110,6 +141,11 @@ def source_context(doc):
         if isinstance(quote, str) and quote and (quote in _body(doc) or quote in prompt):
             value["source_quote"] = quote
             value["source_kind"] = "user_requirement" if quote in prompt else "design_statement"
+        else:
+            matches = [s["source_quotes"][0] for s in sources if s["id"].startswith("design:") and path in s["parameter_refs"]]
+            if matches:
+                value["source_quote"] = min(matches, key=len)
+                value["source_kind"] = "design_statement"
     cites = {c for source in sources for c in source["citations"]}
     evidence = sorted([e for e in doc.get("evidence", []) if e.get("passage_id") in cites], key=lambda e: e["passage_id"])
     return {"prompt": prompt,
@@ -163,7 +199,10 @@ def _normalize_paragraph(row, context, sources, reqs, limits, seen):
     quote_text = "\n".join(q for s in related for q in s["source_quotes"])
     limits_text = "\n".join(s.get("reason", "") for s in related if s["id"] in row["limitation_ids"])
     parameter_text = "\n".join(context["parameters"][ref].get("source_quote", "") for ref in row["parameter_refs"])
-    missing = _numbers(text) - _numbers(quote_text + "\n" + limits_text + "\n" + parameter_text)
+    # 独立审核要求补回文献工况时，已关联的真实证据可直接支持该数字，无须再复制一份正文摘录。
+    evidence_text = "\n".join(e.get("text", "") for e in context.get("evidence", [])
+                              if e.get("passage_id") in row.get("citations", []))
+    missing = _numbers(text) - _numbers(quote_text + "\n" + limits_text + "\n" + parameter_text + "\n" + evidence_text)
     if missing:
         errors.append("新增关联来源中不存在的数值：" + ",".join(sorted(missing)))
     if isinstance(row["citations"], list) and all(isinstance(c, str) for c in row["citations"]):
@@ -223,14 +262,15 @@ def normalize(raw, doc):
         if _numbers(title) - _numbers(body):
             errors.append("整合标题新增段落中不存在的数值：" + sid)
         result.append({"id": sid, "title": title, "paragraphs": paragraphs})
+    coverage_notes = []
     if reqs - covered:
-        errors.append("整合遗漏原始课题要求：" + ",".join(sorted(reqs - covered)))
+        coverage_notes.append("要求关联待审核实际正文覆盖：" + ",".join(sorted(reqs - covered)))
     if limits - retained:
-        errors.append("整合遗漏未解决的来源限制：" + ",".join(sorted(limits - retained)))
+        coverage_notes.append("来源限制关联待审核实际表述：" + ",".join(sorted(limits - retained)))
     if errors:
         raise ValueError("\n".join(errors))
     fp = input_fingerprint(doc)
-    return {"version": VERSION, "input_fingerprint": fp, "sections": result,
+    return {"version": VERSION, "input_fingerprint": fp, "sections": result, "coverage_notes": coverage_notes,
             "narrative_fingerprint": digest({"input": fp, "sections": result}), "status": "pending"}
 
 
@@ -402,7 +442,7 @@ def render(doc):
             parts.append("> **整体覆盖待复核。** " + str(coverage.get("reason") or "尚缺有效的完整覆盖审核。"))
         for issue in narrative["unscoped_issues"]:
             parts.append("> **整体待复核事项。** " + issue.replace("\n", " "))
-        parts.append("待复核段落以引用块保留原稿及问题，不能作为已确认结论；完整审核意见见第6节附录。")
+        parts.append("待复核段落以引用块保留原稿及问题，不能作为已确认结论。")
     for number, section in enumerate(narrative["sections"], 1):
         parts.append(f"### 2.{number} {section['title']}")
         for paragraph in section["paragraphs"]:
@@ -415,7 +455,6 @@ def render(doc):
                              + "\n>\n> " + text)
             else:
                 parts.append(text)
-    parts.append("完整逐项回应、候选比较及审核记录见第6节附录；具体配方见第3节，实验操作见第5节。")
     return "\n\n".join(parts)
 
 
@@ -473,7 +512,7 @@ def integrate(doc, client, reviewer, state=None, save=None):
                 payload = {k: v for k, v in context.items() if k != "evidence"}
                 if feedback:
                     payload.update(repair_feedback=feedback, previous_draft=state.get("submitted_draft") or state.get("draft"))
-                raw = client.chat(GENERATION_PROMPT, json.dumps(payload, ensure_ascii=False), temperature=0.1, trace_tag="research_narrative")
+                raw = client.chat(GENERATION_PROMPT, json.dumps(payload, ensure_ascii=False), temperature=0.1, json_mode=True, trace_tag="research_narrative")
                 raw = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
                 state["submitted_draft"] = raw
                 draft = normalize(raw, doc)

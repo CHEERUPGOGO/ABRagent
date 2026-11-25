@@ -6,7 +6,7 @@ import unicodedata
 
 from .scheme_ledger import digest
 
-VERSION = 1
+VERSION = 5
 
 
 def _safe(value):
@@ -32,6 +32,7 @@ ALIASES = {
 }
 for _comp in ("cathode", "anode"):
     for _key, _unit in (("L_um", "um"), ("porosity", ""), ("electrode_area", "cm2"), ("pore_volume", "uL"),
+                        ("pore_volume_uL_cm2", "uL/cm2"),
                         ("loading_mg_cm2", "mg/cm2"), ("active_loading_mg_cm2", "mg/cm2"),
                         ("compaction_g_cm3", "g/cm3"), ("active_fraction", ""), ("conductive_fraction", ""), ("binder_fraction", "")):
         UNITS[f"{_comp}.{_key}"] = _unit
@@ -48,6 +49,7 @@ CONVERSIONS = {
     "um": {"um": 1, "mm": 1000, "cm": 10000, "m": 1e6},
     "cm2": {"cm2": 1, "mm2": .01, "m2": 10000},
     "uL": {"uL": 1, "mL": 1000, "L": 1e6},
+    "uL/cm2": {"uL/cm2": 1, "mL/cm2": 1000},
     "mg/cm2": {"mg/cm2": 1, "g/cm2": 1000},
     "g/cm3": {"g/cm3": 1, "kg/m3": .001},
     "mA/g": {"mA/g": 1, "A/g": 1000, "A/kg": 1},
@@ -62,8 +64,13 @@ CONVERSIONS = {
 def canonical(path, row=None):
     from .physical_parameters import ALIASES as physical
     from .parameter_presentation import ALIASES as presentation
+    from .parameter_names import ALIASES as names
     key = (row or {}).get("canonical_path") or path
-    return ALIASES.get(key, physical.get(key, presentation.get(key, key)))
+    if row is not None and not row.get("canonical_path") and key in physical:
+        from .physical_parameters import identity as physical_identity
+        if physical_identity(path, row) is None:
+            return key  # 已声明含箔/湿膜的“极片厚度”不能按干涂层厚度别名解释。
+    return ALIASES.get(key, physical.get(key, presentation.get(key, names.get(key, key))))
 
 
 def unit(value):
@@ -85,7 +92,7 @@ def context(row):
     if not purpose or purpose in ("主组", "主方案", "主循环", "主测试", "main_cycle", "primary"):
         purpose = "main"
     scope = row.get("group_id") or row.get("scope") or "main"
-    if row.get("basis") == "literature":
+    if row.get("basis") in ("literature", "literature_measurement"):
         scope = "literature:" + str(row.get("passage_id") or row.get("source") or "unknown")
     return str(scope), str(purpose), semantic_conditions(conditions)
 
@@ -132,8 +139,8 @@ def normalized_number(path, row):
     return float(value) * factor, target
 
 
-def audit(parameters, text=""):
-    """检查全部已登记声明；缺失/歧义依赖不计算，所有检查保留执行状态。"""
+def audit(parameters, text="", *, legacy_calculations=False):
+    """默认只核对声明；旧程序计算仅供显式历史诊断，不参与当前设计执行链。"""
     params = parameters or {}
     issues, checks, derived, entries = [], [], {}, {}
     def issue(code, message, paths, **extra):
@@ -147,8 +154,20 @@ def audit(parameters, text=""):
         result = dict(code=code, message=message, paths=list(dict.fromkeys(paths)), sources=sources, **extra)
         result["id"] = digest([code, result["paths"], extra.get("context")])[:16]
         issues.append(result)
+    from .parameter_names import foil_material_errors, is_foil_thickness
+    for error in foil_material_errors(params):
+        issue("PARAMETER_MATERIAL_CONFLICT", error,
+              [path for path, row in params.items() if isinstance(row, dict) and is_foil_thickness(path, row)])
     for path, row in params.items():
-        if not isinstance(row, dict) or row.get("value") is None:
+        if not isinstance(row, dict):
+            continue
+        from .parameter_names import checked_name
+        try:
+            checked_name(path, row)
+        except (ValueError, TypeError) as exc:
+            issue("PARAMETER_NAME_CONFLICT", str(exc), [path])
+            continue
+        if row.get("value") is None:
             continue
         if type(row.get("value")) not in (int, float, bool) and canonical(path, row) not in UNITS:
             continue
@@ -191,60 +210,61 @@ def audit(parameters, text=""):
             if key.endswith((".active_fraction", ".conductive_fraction", ".binder_fraction")) and signature[-2] != "干涂层总质量":
                 return None
             return {"value": rows[0]["value"], "unit": rows[0]["unit"], "paths": [r["path"] for r in rows]}
-        cache = {}
-        def calculate(name, dependencies, formula, description, units, declared=None, tolerance=.02):
-            inputs = [cache.get(k) or get(k) for k in dependencies]
-            actual = get(declared) if declared else None
-            applicable = any(i is not None for i in inputs) or any(k in selected for k in dependencies) or declared in selected
-            missing = [k for k, v in zip(dependencies, inputs) if v is None]
-            result = {"id": name, "context": list(scope), "formula": description, "dependencies": dependencies,
-                      "missing": missing, "status": "INCOMPLETE" if applicable else "NOT_APPLICABLE", "value": None, "unit": units}
-            if applicable and not missing:
-                try:
-                    value = formula(*(r["value"] for r in inputs))
-                    if not math.isfinite(value):
-                        raise ValueError("计算结果非有限值")
-                    result.update(value=value, status="CALCULATED")
-                    cache[name] = {"value": value, "unit": units, "paths": list(dict.fromkeys(p for r in inputs for p in r["paths"]))}
-                    result["inputs"] = {k: v for k, v in zip(dependencies, inputs)}
-                    result["paths"] = cache[name]["paths"]
-                    if declared and declared in selected and actual is None:
-                        result.update(status="INCOMPLETE", missing=[declared + "（声明歧义或分母待确认）"])
-                    elif actual:
-                        result["declared"] = actual
-                        result["status"] = "CONSISTENT" if math.isclose(actual["value"], value, rel_tol=tolerance, abs_tol=1e-12) else "CONFLICT"
-                        if result["status"] == "CONFLICT":
-                            issue("CALCULATION_CONFLICT", f"{declared} 声明{actual['value']:.6g}，按当前输入计算为{value:.6g} {units}",
-                                  cache[name]["paths"] + actual["paths"], context=list(scope), expected=value, formula=description)
-                except (ZeroDivisionError, ValueError, OverflowError):
-                    result.update(status="INCOMPLETE", missing=["依赖值不能用于该公式（如分母为零）"])
-            checks.append(result)
-            if scope == ("main", "main", "[]"):
-                derived[name] = copy.deepcopy(result)
-        for comp in ("cathode", "anode"):
-            calculate(f"{comp}.pore_volume_uL_cm2", [f"{comp}.L_um", f"{comp}.porosity"],
-                      lambda length, porosity: length * porosity * .1, "厚度(um) × 孔隙率 × 0.1", "uL/cm2")
-            calculate(f"{comp}.calculated_pore_volume_uL", [f"{comp}.pore_volume_uL_cm2", f"{comp}.electrode_area"],
-                      lambda per_area, area: per_area * area, "单位面积孔体积 × 极片面积", "uL", f"{comp}.pore_volume")
-            calculate(f"{comp}.calculated_loading_mg_cm2", [f"{comp}.L_um", f"{comp}.compaction_g_cm3"],
-                      lambda length, density: length * density * .1, "厚度(um) × 压实密度(g/cm3) × 0.1", "mg/cm2", f"{comp}.loading_mg_cm2")
-            calculate(f"{comp}.calculated_active_loading_mg_cm2", [f"{comp}.loading_mg_cm2", f"{comp}.active_fraction"],
-                      lambda loading, fraction: loading * fraction, "总面载量 × 活性物质量分数", "mg/cm2", f"{comp}.active_loading_mg_cm2")
-            calculate(f"{comp}.areal_capacity_mAh_cm2", [f"{comp}.loading_mg_cm2", f"{comp}.active_fraction", f"{comp}.capacity_mAh_g"],
-                      lambda loading, fraction, capacity: loading * fraction * capacity / 1000,
-                      "总面载量(mg/cm2) × 活性物质量分数 × 明确比容量(mAh/g) / 1000", "mAh/cm2", f"{comp}.areal_capacity_mAh_cm2")
-            fractions = [get(f"{comp}.{k}_fraction") for k in ("active", "conductive", "binder")]
-            if any(fractions):
-                missing = [k for k, r in zip(("active", "conductive", "binder"), fractions) if r is None]
-                total = sum(r["value"] for r in fractions) if not missing else None
-                state = "INCOMPLETE" if missing else "CONSISTENT" if math.isclose(total, 1, abs_tol=.001) else "CONFLICT"
-                checks.append({"id": comp + ".mass_fraction_sum", "context": list(scope), "status": state, "missing": missing, "value": total})
-                if state == "CONFLICT":
-                    issue("FRACTION_SUM", f"{comp} 活性物、导电剂与粘结剂质量分数和为{total:g}，不等于1", [p for r in fractions for p in r["paths"]], context=list(scope))
-        calculate("condition.calculated_electrolyte_to_cathode_pore_ratio", ["electrolyte.volume", "cathode.calculated_pore_volume_uL"],
-                  lambda volume, pores: volume / pores, "注液量 / 正极孔体积（不含负极与隔膜）", "", "condition.electrolyte_to_pore_volume_ratio")
-        calculate("condition.calculated_current_density", ["condition.c_rate", "condition.C_rate_reference_current"],
-                  lambda rate, ref: rate * ref, "倍率(C) × 1 C基准电流(mA/g)", "mA/g", "condition.current_density")
+        if legacy_calculations:
+            cache = {}
+            def calculate(name, dependencies, formula, description, units, declared=None, tolerance=.02):
+                inputs = [cache.get(k) or get(k) for k in dependencies]
+                actual = get(declared) if declared else None
+                applicable = any(i is not None for i in inputs) or any(k in selected for k in dependencies) or declared in selected
+                missing = [k for k, v in zip(dependencies, inputs) if v is None]
+                result = {"id": name, "context": list(scope), "formula": description, "dependencies": dependencies,
+                          "missing": missing, "status": "INCOMPLETE" if applicable else "NOT_APPLICABLE", "value": None, "unit": units}
+                if applicable and not missing:
+                    try:
+                        value = formula(*(r["value"] for r in inputs))
+                        if not math.isfinite(value):
+                            raise ValueError("计算结果非有限值")
+                        result.update(value=value, status="CALCULATED")
+                        cache[name] = {"value": value, "unit": units, "paths": list(dict.fromkeys(p for r in inputs for p in r["paths"]))}
+                        result["inputs"] = {k: v for k, v in zip(dependencies, inputs)}
+                        result["paths"] = cache[name]["paths"]
+                        if declared and declared in selected and actual is None:
+                            result.update(status="INCOMPLETE", missing=[declared + "（声明歧义或分母待确认）"])
+                        elif actual:
+                            result["declared"] = actual
+                            result["status"] = "CONSISTENT" if math.isclose(actual["value"], value, rel_tol=tolerance, abs_tol=1e-12) else "CONFLICT"
+                            if result["status"] == "CONFLICT":
+                                issue("CALCULATION_CONFLICT", f"{declared} 声明{actual['value']:.6g}，按当前输入计算为{value:.6g} {units}",
+                                      cache[name]["paths"] + actual["paths"], context=list(scope), expected=value, formula=description)
+                    except (ZeroDivisionError, ValueError, OverflowError):
+                        result.update(status="INCOMPLETE", missing=["依赖值不能用于该公式（如分母为零）"])
+                checks.append(result)
+                if scope == ("main", "main", "[]"):
+                    derived[name] = copy.deepcopy(result)
+            for comp in ("cathode", "anode"):
+                from .derived_quantities import electrode_calculations
+                for result in electrode_calculations(comp, get, selected):
+                    result["context"] = list(scope)
+                    if result["status"] == "CONFLICT":
+                        issue("CALCULATION_CONFLICT", f"{result['quantity']} 的声明或多条计算路径不一致",
+                              result["paths"], context=list(scope), expected=result["value"], formula=result["formula"])
+                    if result["status"] in ("CALCULATED", "CONSISTENT", "DECLARED"):
+                        cache[result["id"]] = {"value": result["value"], "unit": result["unit"], "paths": result["paths"]}
+                    checks.append(result)
+                    if scope == ("main", "main", "[]"):
+                        derived[result["id"]] = copy.deepcopy(result)
+                fractions = [get(f"{comp}.{k}_fraction") for k in ("active", "conductive", "binder")]
+                if any(fractions):
+                    missing = [k for k, r in zip(("active", "conductive", "binder"), fractions) if r is None]
+                    total = sum(r["value"] for r in fractions) if not missing else None
+                    state = "INCOMPLETE" if missing else "CONSISTENT" if math.isclose(total, 1, abs_tol=.001) else "CONFLICT"
+                    checks.append({"id": comp + ".mass_fraction_sum", "context": list(scope), "status": state, "missing": missing, "value": total})
+                    if state == "CONFLICT":
+                        issue("FRACTION_SUM", f"{comp} 活性物、导电剂与粘结剂质量分数和为{total:g}，不等于1", [p for r in fractions for p in r["paths"]], context=list(scope))
+            calculate("condition.calculated_electrolyte_to_cathode_pore_ratio", ["electrolyte.volume", "cathode.calculated_pore_volume_uL"],
+                      lambda volume, pores: volume / pores, "注液量 / 正极孔体积（不含负极与隔膜）", "", "condition.electrolyte_to_pore_volume_ratio")
+            calculate("condition.calculated_current_density", ["condition.c_rate", "condition.C_rate_reference_current"],
+                      lambda rate, ref: rate * ref, "倍率(C) × 1 C基准电流(mA/g)", "mA/g", "condition.current_density")
         lower, upper = get("condition.v_min"), get("condition.v_max")
         if lower and upper and lower["value"] >= upper["value"]:
             issue("INVALID_BOUNDS", "电压下限必须小于上限", lower["paths"] + upper["paths"], context=list(scope))
@@ -263,47 +283,49 @@ def audit(parameters, text=""):
                                "status": "CONFLICT" if conflict else "CONSISTENT", "missing": []})
                 if conflict:
                     issue("INVALID_BOUNDS", f"{key[0]} 的{smaller}超过{larger}", [a[0]["path"], b[0]["path"]], context=list(key[1:4]))
-    for path, row in params.items():
-        refs = row.get("ratio_inputs") if isinstance(row, dict) else None
-        if refs is None:
-            continue
-        result = {"id": "calculated." + path, "context": list(context(row)), "status": "INCOMPLETE",
-                  "value": None, "unit": "", "formula": "明确分子 / 明确分母；不推导容量损失",
-                  "dependencies": refs if isinstance(refs, list) else [], "missing": []}
-        if (not isinstance(refs, list) or len(refs) != 2 or any(not isinstance(k, str) or k not in params for k in refs)
-                or row.get("quantity_kind") not in ("site_fraction", "ratio") or not row.get("denominator")):
-            result["missing"] = ["比例需要两个明确字段引用、比例类型和分母说明"]
-        else:
-            try:
-                a, b = (params[k] for k in refs)
-                if path in refs or a.get("ratio_inputs") or b.get("ratio_inputs"):
-                    raise ValueError("比例依赖必须是独立原始声明，不能循环或引用另一未独立确认的比例")
-                av, au = normalized_number(refs[0], a)
-                bv, bu = normalized_number(refs[1], b)
-                if au != bu or a.get("quantity_kind") != b.get("quantity_kind") or context(a) != context(b) or context(a) != context(row):
-                    raise ValueError("分子分母的维度、对象或工况不一致")
-                if not bv:
-                    raise ValueError("分母为零")
-                if any(set(i["paths"]) & set(refs) for i in issues):
-                    raise ValueError("比例依赖存在未解决冲突")
-                value = av / bv
-                result.update(value=value, status="CALCULATED", paths=refs,
-                              inputs={refs[0]: {"value": av, "unit": au}, refs[1]: {"value": bv, "unit": bu}})
-                if row.get("value") is not None:
-                    declared, _ = normalized_number(path, row)
-                    result["status"] = "CONSISTENT" if math.isclose(declared, value, rel_tol=.001, abs_tol=1e-12) else "CONFLICT"
-                    if result["status"] == "CONFLICT":
-                        issue("RATIO_CONFLICT", f"{path} 按已声明分母计算为{value:g}，与声明{declared:g}不符", refs + [path], expected=value)
-            except (ValueError, TypeError, ZeroDivisionError) as exc:
-                result["missing"] = [str(exc)]
-        checks.append(result)
-        derived[result["id"]] = result
-    result = {"version": VERSION, "checks": checks, "derived": derived, "issues": issues,
+    if legacy_calculations:
+        for path, row in params.items():
+            refs = row.get("ratio_inputs") if isinstance(row, dict) else None
+            if refs is None:
+                continue
+            result = {"id": "calculated." + path, "context": list(context(row)), "status": "INCOMPLETE",
+                      "value": None, "unit": "", "formula": "明确分子 / 明确分母；不推导容量损失",
+                      "dependencies": refs if isinstance(refs, list) else [], "missing": []}
+            if (not isinstance(refs, list) or len(refs) != 2 or any(not isinstance(k, str) or k not in params for k in refs)
+                    or row.get("quantity_kind") not in ("site_fraction", "ratio") or not row.get("denominator")):
+                result["missing"] = ["比例需要两个明确字段引用、比例类型和分母说明"]
+            else:
+                try:
+                    a, b = (params[k] for k in refs)
+                    if path in refs or a.get("ratio_inputs") or b.get("ratio_inputs"):
+                        raise ValueError("比例依赖必须是独立原始声明，不能循环或引用另一未独立确认的比例")
+                    av, au = normalized_number(refs[0], a)
+                    bv, bu = normalized_number(refs[1], b)
+                    if au != bu or a.get("quantity_kind") != b.get("quantity_kind") or context(a) != context(b) or context(a) != context(row):
+                        raise ValueError("分子分母的维度、对象或工况不一致")
+                    if not bv:
+                        raise ValueError("分母为零")
+                    if any(set(i["paths"]) & set(refs) for i in issues):
+                        raise ValueError("比例依赖存在未解决冲突")
+                    value = av / bv
+                    result.update(value=value, status="CALCULATED", paths=refs,
+                                  inputs={refs[0]: {"value": av, "unit": au}, refs[1]: {"value": bv, "unit": bu}})
+                    if row.get("value") is not None:
+                        declared, _ = normalized_number(path, row)
+                        result["status"] = "CONSISTENT" if math.isclose(declared, value, rel_tol=.001, abs_tol=1e-12) else "CONFLICT"
+                        if result["status"] == "CONFLICT":
+                            issue("RATIO_CONFLICT", f"{path} 按已声明分母计算为{value:g}，与声明{declared:g}不符", refs + [path], expected=value)
+                except (ValueError, TypeError, ZeroDivisionError) as exc:
+                    result["missing"] = [str(exc)]
+            checks.append(result)
+            derived[result["id"]] = result
+    result = {"version": VERSION, "calculation_policy": "legacy_program" if legacy_calculations else "model",
+              "checks": checks, "derived": derived, "issues": issues,
               "status": "CONFLICT" if issues else "INCOMPLETE" if any(c["status"] == "INCOMPLETE" for c in checks) else "CONSISTENT"}
     result["unbound_mentions"] = unbound_mentions(text)
-    if result["unbound_mentions"] and result["status"] == "CONSISTENT":
+    if legacy_calculations and result["unbound_mentions"] and result["status"] == "CONSISTENT":
         result["status"] = "INCOMPLETE"
-    result["fingerprint"] = digest(_safe({"version": VERSION, "parameters": params, "text": text}))
+    result["fingerprint"] = digest(_safe({"version": VERSION, "parameters": params, "text": text, "calculation_policy": result["calculation_policy"]}))
     return _safe(result)
 
 
@@ -345,9 +367,11 @@ def repair_issues(result, text):
 def render_audit(result):
     """已计算、未完成和冲突分开展示，不把无错误误称为全部验证通过。"""
     active = [c for c in result["checks"] if c["status"] != "NOT_APPLICABLE"]
-    lines = ["### 数值一致性核对", "仅核对已登记数值及明确依赖；未登记正文数字、比较结论和科学依据仍需审核。"]
+    model = result.get("calculation_policy") == "model"
+    lines = ["### 数值一致性核对", ("程序仅检查参数声明、单位、同口径冲突及上下限；预算与换算由模型完成，方法、代入过程和结果由Reviewer复核，不表示程序已计算验证。"
+             if model else "历史程序计算诊断，仅供追溯；不作为当前设计的自动计算链或科学审核结论。")]
     if result.get("unbound_mentions"):
-        lines.append(f"正文另有{len(result['unbound_mentions'])}处量值未绑定到程序引用，可能属于文献、对照或主方案；需逐项确认归属，不能自动改值。完整位置见 numeric_consistency.json。")
+        lines.append(f"正文另有{len(result['unbound_mentions'])}处量值供Reviewer核对计算、对象、工况和用途；模型计算过程可直接写明数值，未绑定本身不构成错误。完整位置见 numeric_consistency.json。")
     lines += ["- " + i["message"] for i in result["issues"]]
     labels = {"condition.calculated_electrolyte_to_cathode_pore_ratio": "注液量与正极孔体积比（E/P）",
               "condition.calculated_current_density": "倍率对应电流", "condition.C_rate_reference_current": "1 C基准电流",
@@ -355,11 +379,14 @@ def render_audit(result):
     for comp, name in (("cathode", "正极"), ("anode", "负极")):
         for key, label in (("pore_volume_uL_cm2", "单位面积孔体积"), ("calculated_pore_volume_uL", "总孔体积"),
                            ("calculated_loading_mg_cm2", "总面载量"), ("calculated_active_loading_mg_cm2", "活性物面载量"),
+                           ("calculated_compaction_g_cm3", "压实密度"), ("calculated_thickness_um", "干涂层厚度"),
+                           ("calculated_active_fraction", "活性物质量分数"),
                            ("mass_fraction_sum", "干涂层质量分数和"), ("electrode_area", "极片面积"),
                            ("L_um", "干涂层厚度"), ("porosity", "孔隙率"), ("compaction_g_cm3", "压实密度"),
                            ("active_fraction", "活性物质量分数")):
             labels[comp + "." + key] = name + label
-    states = {"CALCULATED": "已计算，尚无同口径声明可比较", "CONSISTENT": "数值核对一致", "CONFLICT": "与声明不一致"}
+    states = {"CALCULATED": "已计算，尚无同口径声明可比较", "CONSISTENT": "数值核对一致",
+              "DECLARED": "沿用明确声明，尚无独立计算路径可核对", "CONFLICT": "计算路径或声明不一致"}
     for c in active:
         name = labels.get(c["id"], c["id"])
         scope = c.get("context") or []
@@ -372,5 +399,5 @@ def render_audit(result):
         else:
             lines.append("- " + name + "：" + states.get(c["status"], c["status"]) + "。")
     if not active and not result["issues"]:
-        lines.append("没有满足适用条件的数值检查，不能据此认定全文一致。")
+        lines.append("当前未发现声明冲突；模型计算和科学结论仍须独立审核。" if model else "没有满足适用条件的数值检查，不能据此认定全文一致。")
     return "\n\n".join(lines)

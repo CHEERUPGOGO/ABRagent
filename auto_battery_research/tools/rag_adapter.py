@@ -86,6 +86,13 @@ class AbrRagAdapter:
             return {"success": False, "error": err_msg}
 
         task_dir.mkdir(parents=True, exist_ok=True)
+        publication_path = task_dir / "stage4_publication.json"
+        if publication_path.exists() and not (task_dir / "stage4_rebuild_requested.json").exists():
+            from auto_battery_research.util.stage4_publication import recover_publication
+            try:
+                recover_publication(task_dir)
+            except (ValueError, OSError) as exc:
+                return {"success": False, "error_code": "PUBLICATION_RECOVERY_BLOCKED", "error": str(exc)}
         from auto_battery_research.util.scheme_ledger import ensure
         ledger = ensure(task_dir, task_goal or target_query)
         from auto_battery_research.util.scheme_ledger import digest
@@ -109,9 +116,41 @@ class AbrRagAdapter:
         self.pipeline.repair_resume = None
         self.pipeline.retrieval_resume = None
         self.pipeline.retrieval_options = (self.config.get("runtime_options") or {}).get("stage4_retrieval", {})
+        from auto_battery_research.util.runtime_budgets import repair_options, budget_options
+        self.pipeline.stage4_repair_options = repair_options((self.config.get("runtime_options") or {}).get("stage4_repair"))
+        self.pipeline.retrieval_options = budget_options("stage4_retrieval", self.pipeline.retrieval_options)
         self.pipeline.report_first = (self.config.get("runtime_options") or {}).get("report_first", True)
         rebuilding = (task_dir / "stage4_rebuild_requested.json").exists()
         ready_file = task_dir / "design_scheme.json"
+        configured = ((self.config.get("runtime_options") or {}).get("stage4_writer") or {}).get("contract_version", 2)
+        if type(configured) is not int or configured not in (2, 3):
+            return {"success": False, "error_code": "WRITER_CONTRACT_INVALID", "error": "stage4_writer.contract_version只允许2或3"}
+        self.pipeline.writer_contract_version = configured
+        # 已有会话版本固定，配置切换不能自动迁移历史设计或检查点。
+        if not rebuilding:
+            for session_file in (self.pipeline.repair_checkpoint_path, ready_file, task_dir / "stage4_retrieval_checkpoint.json", task_dir / "stage4_planning_checkpoint.json"):
+                if session_file.exists():
+                    try:
+                        saved_version = json.loads(session_file.read_text(encoding="utf-8"))
+                        self.pipeline.writer_contract_version = saved_version.get("writer_contract_version", 2)
+                    except (OSError, ValueError):
+                        return {"success": False, "error_code": "REPAIR_CHECKPOINT_INVALID", "error": "设计会话损坏，禁止自动切换契约重新生成"}
+                    break
+            if self.pipeline.writer_contract_version == 3:
+                from auto_battery_research.util.stage4_publication import recover_publication, publication_errors
+                try:
+                    recover_publication(task_dir)
+                except (ValueError, OSError) as exc:
+                    return {"success": False, "error_code": "PUBLICATION_RECOVERY_BLOCKED", "error": str(exc)}
+                if ready_file.exists():
+                    ready = json.loads(ready_file.read_text(encoding="utf-8"))
+                    from auto_battery_research.util.stage4_session import document_errors
+                    from auto_battery_research.util.scheme_ledger import projection_errors
+                    stale = publication_errors(task_dir) + document_errors(ready) + projection_errors(task_dir, ready)
+                    if stale:
+                        return {"success": False, "error_code": "V3_PUBLICATION_INVALID", "error": "；".join(stale)}
+                    return {"success": True, "review_status": ready["review_status"], "retryable": False,
+                            "message": "当前v3设计已发布，保留原审核状态并继续下游阶段"}
         if ready_file.exists() and not rebuilding:
             try:
                 ready = json.loads(ready_file.read_text(encoding="utf-8"))
@@ -120,8 +159,9 @@ class AbrRagAdapter:
                     from auto_battery_research.util.adaptive_retrieval import has_pending, cache_resume_matches
                     saved = json.loads(self.pipeline.repair_checkpoint_path.read_text(encoding="utf-8")) if self.pipeline.repair_checkpoint_path.exists() else {}
                     from auto_battery_research.util.design_repair import structure_recovery_available
-                    structure_pending = structure_recovery_available(task_dir, ready, saved)
-                    if structure_pending or has_pending(saved):
+                    structure_pending = structure_recovery_available(task_dir, ready, saved, budget=self.pipeline.stage4_repair_options)
+                    if structure_pending or has_pending(saved, retrieval_options=self.pipeline.retrieval_options,
+                                                        repair_options=self.pipeline.stage4_repair_options):
                         if not cache_resume_matches(saved, ready, repair_provenance):
                             if structure_pending:
                                 return {"success": False, "error_code": "REPAIR_CHECKPOINT_STALE",
@@ -211,6 +251,9 @@ class AbrRagAdapter:
             except (ValueError, TypeError, KeyError):
                 pass
         rag_raw = self.pipeline.run(target_query)
+
+        if rag_raw.get("writer_contract_version") == 3:
+            return self._publish_v3(task_dir, ledger, rag_raw, task_goal or target_query, target_query, rebuilding)
 
         final_answer = rag_raw.get("final_answer", "")
         plan = rag_raw.get("plan", {})
@@ -303,11 +346,11 @@ class AbrRagAdapter:
                         "fixed_geometry": fixed,
                         "design_request": target_query,
                         "materials": {k: scheme.get(k) for k in ("cathode", "anode", "electrolyte")},
-                        "ranges_SI": resolve_input_ranges(scheme.get("cathode"), scheme.get("anode")),
+                        "ranges_SI": resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"), scheme=scheme),
                         "evidence": evidence[:25],
                     }
                     raw = llm.chat(GEOMETRY_SYSTEM_PROMPT + "\n" + INSTRUCTIONS, json.dumps(request, ensure_ascii=False),
-                                   temperature=0.1, trace_tag="geometry_design")
+                                   temperature=0.1, json_mode=True, trace_tag="geometry_design")
                     from auto_battery_research.simulation.geometry_contract import constrain_generated_np
                     candidate = fill_missing_candidate(constrain_generated_np(safe_json_loads(raw), self.pipeline.original_design_request), fixed)
                 normalized = json.loads(json.dumps(inherited["geometry"])) if can_inherit else build_geometry_contract(candidate, scheme, evidence)
@@ -361,6 +404,7 @@ class AbrRagAdapter:
             "evidence": evidence,
             "reviewer_output": reviewer_output,
             "repair_audit": rag_raw.get("repair_audit", []),
+            "repair_diagnoses": rag_raw.get("repair_diagnoses", []),
             "retrieval_state": rag_raw.get("retrieval_state"),
             "rule_checks": rule_checks,
             "confidence": confidence,
@@ -547,6 +591,48 @@ class AbrRagAdapter:
                 "rule_checks": rule_checks,
             },
         }
+
+    def _publish_v3(self, task_dir, ledger, result, goal, query, rebuilding=False):
+        """新契约直接发布审核内容与研究投影，撤下二次提取及整合改写。"""
+        import copy
+        from auto_battery_research.util.scheme_ledger import digest
+        from auto_battery_research.util.stage4_publication import publish_document
+        doc = copy.deepcopy(result)
+        doc.update(schema_version="1.1", target=goal, design_request=query,
+                   stage5_contract=2, ledger_view=copy.deepcopy(ledger), ledger_revision=ledger["revision"], ledger_hash=digest(ledger),
+                   provenance=self._build_provenance(), artifacts={"markdown": "design_scheme.md", "json": "design_scheme.json", "raw_rag": "rag_result.json", "research_context": "research_context.json"},
+                   generated_at=datetime.now().isoformat())
+        if not doc.get("writer_content") or not doc.get("final_answer"):
+            # 不可编译稿仅归档原稿/诊断，不替代当前已接受方案。
+            from auto_battery_research.util.scheme_ledger import atomic_write
+            atomic_write(task_dir / "stage4_v3_diagnostic.json", json.dumps(doc, ensure_ascii=False, indent=2))
+            return {"success": False, "error_code": "V3_CONTENT_INVALID", "error": "正文无法编译；原始响应和诊断已归档", "deliverables": [str(task_dir / "stage4_v3_diagnostic.json")]}
+        warnings = [str(i) for i in (doc.get("reviewer_output") or {}).get("issues", [])]
+        warnings += [d["reason"] for d in doc.get("precheck", []) if d.get("severity") == "error"]
+        if doc.get("geometry_error"):
+            warnings.append("物理输入待确认：" + doc["geometry_error"])
+        consistency = doc.get("consistency_review") or {}
+        if consistency.get("status") != "passed":
+            warnings.append("当前一致性终审未通过或未完成")
+            warnings += [i["reason"] for i in consistency.get("issues", [])]
+        if not doc.get("review_passed"):
+            warnings.append("当前候选尚有科学支持或规则缺口，不能认定审核通过")
+        doc["review_status"] = "APPROVED" if not warnings and doc.get("review_passed") else "REVIEWED_WITH_ISSUES"
+        doc["delivery_contract"] = 1
+        doc["report_readiness"] = {"category": "COMPLETE" if doc["review_status"] == "APPROVED" else "CONDITIONAL",
+            "issues": list(dict.fromkeys(warnings)), "review_status": "REVIEWED" if doc.get("review_completed") else "UNREVIEWED",
+            "physics_status": "NOT_EVALUATED", "retryable": False}
+        try:
+            # 基准必须重读核验；隔离准备和真实发布由公共服务完成。
+            publish_document(task_dir, doc, commit=True, base_revision=ledger["revision"], raw=result)
+        except (ValueError, OSError) as exc:
+            from auto_battery_research.util.scheme_ledger import atomic_write
+            atomic_write(task_dir / "stage4_v3_diagnostic.json", json.dumps(dict(doc, publication_error=str(exc)), ensure_ascii=False, indent=2))
+            return {"success": False, "error_code": "V3_PUBLICATION_FAILED", "error": str(exc)}
+        return {"success": True, "review_status": doc["review_status"], "review_completed": doc.get("review_completed"),
+            "review_passed": doc.get("review_passed"), "scheme_file": str(task_dir / "design_scheme.md"), "scheme_json": str(task_dir / "design_scheme.json"),
+            "message": "v3科研内容已一致发布；审核及限制保留原状态", "deliverables": [str(task_dir / name) for name in ("design_scheme.json", "design_scheme.md", "rag_result.json", "research_context.json")],
+            "key_findings": {"consistency_review": doc.get("consistency_review"), "review_passed": doc.get("review_passed"), "scheme": doc.get("scheme")}}
 
     # ────────────────────────── 知识资产溯源 ──────────────────────────
 

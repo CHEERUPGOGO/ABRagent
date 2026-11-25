@@ -70,6 +70,9 @@ def grouped_plan(tmp_path):
     doc, record = setup_design(tmp_path)
     record.pop("consistency", None)
     record.pop("pending_operations", None)  # 模拟升级前的旧分组记录。
+    record.pop("execution_contract", None)
+    record.pop("alignment_review", None)
+    record["schema_version"] = 4
     doc["requirements"] = {"items": [], "scheme_required": True}
     doc["research"] = {}
     record["parameters"]["cathode.active_fraction"]["canonical_path"] = "cathode.active_fraction"
@@ -138,6 +141,8 @@ def test_reviewed_recipe_conflict_is_visible_before_relevant_method(tmp_path):
     record["parameters"]["electrolyte.material"] = {"ref": "electrolyte.material"}
     record["sections"]["assembly"] = ["电解液配制：沿用{{electrolyte.material}}，具体添加剂需核对。"]
     from auto_battery_research.util.experiment_consistency import stamp
+    from auto_battery_research.util.experiment_alignment import attach
+    attach(record, doc)
     stamp(record, doc)
     record["plan_hash"] = recipes.plan_hash(record)
     body = recipes.render(record, doc)

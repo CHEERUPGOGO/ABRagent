@@ -45,11 +45,11 @@ def checkpoint(tmp_path):
     return json.loads((tmp_path / "experiment_generation_checkpoint.json").read_text(encoding="utf-8"))
 
 
-def test_whole_json_generation_uses_one_model_call_and_restores_client_config(tmp_path):
+def test_whole_json_generation_and_alignment_review_restore_client_config(tmp_path):
     doc = design(tmp_path)
     client = Client()
     result = recipes.generate(tmp_path, doc, client)
-    assert [tag for tag, _ in client.calls] == ["experiment_design"]
+    assert [tag for tag, _ in client.calls] == ["experiment_design", "experiment_alignment_review"]
     assert result["sections"] == recipe_payload()["sections"]
     assert not result.get("generation_contract") and not result.get("scientific_review")
     assert client.max_tokens == 9999 and client.output_max_tokens == 20000
@@ -68,7 +68,7 @@ def test_explicit_restart_archives_program_checkpoint_and_replaces_plan(tmp_path
     path = tmp_path / "experiment_generation_checkpoint.json"
     path.write_text(json.dumps(old_checkpoint), encoding="utf-8")
     result = recipes.generate(tmp_path, doc, client, restart=True)
-    assert len(client.calls) == 2 and not path.exists()
+    assert len(client.calls) == 3 and not path.exists()
     assert not result.get("generation_contract")
     archives = list((tmp_path / "experiment_generation_history").glob("before_whole_json_*.json"))
     values = [json.loads(p.read_text(encoding="utf-8")) for p in archives]
@@ -91,7 +91,7 @@ def test_program_assembled_cache_keeps_scientific_verdict_without_model_calls(tm
     path.write_text(json.dumps(record), encoding="utf-8")
     before = path.read_bytes()
     loaded = recipes.generate(tmp_path, doc, client)
-    assert loaded == record and len(client.calls) == 1 and path.read_bytes() == before
+    assert loaded == record and len(client.calls) == 2 and path.read_bytes() == before
     assert review.status(loaded, doc)[0] == "NEEDS_REVISION"
     assert "历史科学问题仍未解决" in recipes.render(loaded, doc)
 

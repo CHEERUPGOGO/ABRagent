@@ -3,7 +3,7 @@ import math
 import re
 import unicodedata
 
-VERSION = 1
+VERSION = 2
 SALTS = {s.upper(): s for s in ("LiPF6", "LiFSI", "LiTFSI", "LiBF4", "LiClO4", "LiBOB", "LiDFOB", "LiNO3", "LiSac")}
 SOLVENTS = {s.upper(): s for s in ("EC", "DMC", "EMC", "DEC", "PC", "FEC", "FEMC", "DME", "DOL", "TEGDME", "TEP", "DMSO", "ACN")}
 ADDITIVES = {s.upper(): s for s in ("FEC", "VC", "LiDFOB", "LiBOB", "LiPO2F2", "LiNO3", "DTD", "DTO", "PS", "MPS", "MPL", "PFPN", "TPP")}
@@ -63,6 +63,18 @@ def recipe_literal_key(value):
 
 def _ratio(text):
     """读取明确比例及口径；无体积/质量说明时口径保持空白。"""
+    source_text = text
+    named = re.match(r"\s*([A-Za-z][A-Za-z0-9]*(?:\s*[:/+,、]\s*[A-Za-z][A-Za-z0-9]*)+)\s*=\s*", text)
+    components = None
+    # v/v、w/w 是既有计量口径，不能当成溶剂名称列表。
+    if named and re.sub(r"\s+", "", named[1]).lower() not in ("v/v", "w/w"):
+        names = [name.strip().upper() for name in re.split(r"[:/+,、]", named[1])]
+        if any(name not in SOLVENTS for name in names):
+            raise ValueError("比例中的溶剂名称未识别")
+        if len(set(names)) != len(names):
+            raise ValueError("比例中的溶剂名称重复")
+        components = [SOLVENTS[name] for name in names]
+        text = text[named.end():]
     match = re.fullmatch(rf"\s*(?:(v/v|w/w|vol|wt|体积比|质量比)\s*=?\s*)?"
                          rf"({NUMBER}(?:\s*[:/]\s*{NUMBER})+)\s*(v/v|w/w|vol|wt|体积比|质量比)?\s*", text)
     if not match:
@@ -72,7 +84,10 @@ def _ratio(text):
     values = [float(v.strip()) for v in re.split(r"[:/]", match[2])]
     if len(bases) > 1 or any(not math.isfinite(v) or v <= 0 for v in values):
         raise ValueError("溶剂比例或计量口径冲突")
-    return {"values": values, "basis": next(iter(bases), None), "source_text": text}
+    result = {"values": values, "basis": next(iter(bases), None), "source_text": source_text}
+    if components is not None:
+        result["components"] = components
+    return result
 
 
 def parse_electrolyte(value):
@@ -140,6 +155,8 @@ def parse_electrolyte(value):
             before = [x.strip().upper() for x in re.split(r"[/,+、]", ratio_solvents)]
             if before != [n.upper() for n in solvent_names] or len(ratio["values"]) != len(solvent_names):
                 raise ValueError("比例未唯一对应全部主体溶剂")
+            if "components" in ratio and ratio["components"] != solvent_names:
+                raise ValueError("比例声明的溶剂名称或顺序与主体溶剂不一致")
             ratio["components"] = solvent_names
         for group in ("additives", "diluents"):
             if len({r["name"] for r in result[group]}) != len(result[group]):

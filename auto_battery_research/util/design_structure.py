@@ -3,6 +3,7 @@ import json
 import re
 
 from .design_sections import REQUIRED_SECTIONS
+from .writer_titles import INSTRUCTIONS as TITLE_INSTRUCTIONS, TitleFormatError, issues as title_issues
 
 VERSION = 1
 SECTION_IDS = ("goals", "recommendations", "metrics", "feasibility", "risks")
@@ -77,6 +78,7 @@ def writer_instructions():
             "body可以含表格、列表、段落和文献引用，但不能含Markdown/HTML标题。"
             "可选subsections为数组，每项含id、title、body及可选subsections（最多三层子节）。"
             "子节id使用全篇唯一的英文小写字母开头、字母数字下划线或连字符；title只写名称，不加编号或Markdown。"
+            + TITLE_INSTRUCTIONS +
             "主标题、子节编号、层级由程序生成。跨节引用使用{{section:目标id}}，例如见{{section:risks}}；"
             "不能自行写见5.2或第2节。正文与表格内容仍须满足全部科研写作要求。\n返回形状："
             + json.dumps(example, ensure_ascii=False))
@@ -103,6 +105,9 @@ def render_design(data, current_parameters=None):
             or type(data.get("version")) is not int or data["version"] not in (VERSION, 2)
             or not isinstance(data.get("sections"), dict) or set(data["sections"]) != set(SECTION_IDS)):
         raise ValueError("设计稿须声明version=2、parameters及完整且唯一的五个sections字段（旧v1仅用于读取）")
+    title_errors = title_issues(data)
+    if title_errors:
+        raise TitleFormatError(title_errors)
     nodes, seen = [], set()
 
     def visit(node, key, number, title, depth):
@@ -110,9 +115,8 @@ def render_design(data, current_parameters=None):
             raise ValueError("章节包含未授权字段")
         if depth > 3 or not isinstance(key, str) or not re.fullmatch(r"[a-z][a-z0-9_-]{0,63}", key) or key in seen:
             raise ValueError("章节ID重复、非法或层级过深")
-        if depth and (key in SECTION_IDS or not isinstance(title, str) or not title.strip() or len(title) > 100
-                      or re.search(r"[\n\r#<>\[\]{}*_`]|^\s*(?:\d+[.、\s]|[一二三四五六七八九十]+[、.])", title)):
-            raise ValueError("子节标题必须是无编号的纯文本，ID不能占用主章节")
+        if depth and key in SECTION_IDS:
+            raise ValueError("子节ID不能占用主章节：" + key)
         seen.add(key)
         body = _body(node.get("body", ""))
         # 模型输出时只接受稳定ID引用，编号只能由渲染器决定。

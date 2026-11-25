@@ -26,7 +26,7 @@ def test_patch_changes_only_authorized_block():
     assert blocks(result)[1]["b4"] == blocks(text)[1]["b4"]
 
 
-def test_locked_numeric_tokens_do_not_match_unrelated_larger_numbers():
+def test_numeric_mentions_do_not_change_locked_parameter_values():
     text = "500 ℃工艺需验证，100圈容量需验证。\n\n后续说明。"
     fields = {"process.time": {"value": 5, "locked": True}, "anode.porosity": {"value": 0, "locked": True}}
     issue = {"id": "i", "quote": "500 ℃工艺需验证，100圈容量需验证", "reason": "证据不足", "suggestion": "注明适用边界"}
@@ -37,8 +37,24 @@ def test_locked_numeric_tokens_do_not_match_unrelated_larger_numbers():
     actual = "5 h工艺需验证，孔隙率0需验证。"
     permit = authorize(actual, [dict(issue, quote=actual)], fields)
     patch["base_hash"] = digest(actual)
-    with pytest.raises(ValueError, match="锁定"):
+    changed, updated = apply_patch(actual, fields, permit, patch)
+    assert changed.startswith("所引工艺") and updated == fields
+    patch["parameters"] = [{"issue_id": "i", "path": "process.time", "field": {"value": 6}}]
+    with pytest.raises(ValueError, match="锁定|越权"):
         apply_patch(actual, fields, permit, patch)
+
+
+@pytest.mark.parametrize("locked,authorize_field", [(True, False), (False, False), (False, True)])
+def test_numeric_repetition_in_calculation_keeps_parameters(locked, authorize_field):
+    fields = {"cathode.active_loading_mg_cm2": {"value": 4.5, "unit": "mg/cm2", "locked": locked}}
+    text = "活性面载量 `cathode.active_loading_mg_cm2` 为4.5 mg/cm²，计算说明待补。"
+    issue = {"id": "i", "quote": text, "reason": "补计算", "suggestion": "给出活性占比对应的总面载量",
+             "parameter_paths": ["cathode.active_loading_mg_cm2"] if authorize_field else []}
+    permit = authorize(text, [issue], fields)
+    new = text.replace("计算说明待补", "总面载量=4.5/0.80=5.625 mg/cm²")
+    patch = {"base_hash": digest(text), "edits": [{"issue_id": "i", "block_id": "b0", "text": new}]}
+    changed, updated = apply_patch(text, fields, permit, patch)
+    assert changed == new and updated == fields
 
 
 @pytest.mark.parametrize("attack", ["block", "version", "field", "full", "citation", "heading"])

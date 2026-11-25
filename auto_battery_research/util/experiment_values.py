@@ -96,13 +96,14 @@ def validate_control_changes(changes, current=None):
                 or not {"value", "unit", "reason"} <= row.keys()
                 or set(row) - {"value", "unit", "reason", "original_value"}):
             raise ValueError("对照变化仅允许值、单位和原因，不接受权限字段或其他声明")
-        if not isinstance(row["unit"], str) or not isinstance(row["reason"], str) or not row["reason"].strip():
+        if (row["unit"] is not None and not isinstance(row["unit"], str)
+                or not isinstance(row["reason"], str) or not row["reason"].strip()):
             raise ValueError("对照单位与变化原因须为明确文本")
         if current is not None:
             if key not in current:
                 raise ValueError("对照引用未知的主方案字段：" + key)
             declared = current[key]
-            if row["unit"] != declared.get("unit", ""):
+            if (row["unit"] or "") != (declared.get("unit") or ""):
                 raise ValueError("对照单位须与主方案规范单位一致：" + key)
             if declared.get("locked") and declared.get("value") is None:
                 raise ValueError("对照不能补造用户锁定的未知值：" + key)

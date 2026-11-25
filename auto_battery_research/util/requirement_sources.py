@@ -49,7 +49,7 @@ def coverage_gaps(items, task, goal):
 
 def meaningful_gap(text):
     """仅忽略孤立连接词；否定、条件及研究内容仍交给语义审核。"""
-    return bool(text.strip()) and text.strip() not in {"并", "及", "与", "和", "以及", "并且", "且", "及其", "and"}
+    return bool(text.strip()) and text.strip() not in {"并", "及", "与", "和", "以及", "并且", "且", "及其", "以", "为目标", "and"}
 
 
 def _unit(text):

@@ -22,12 +22,14 @@ def test_bad_parameter_repaired_without_rewriting_valid_sections(tmp_path):
         if kw["trace_tag"] == "experiment_design":
             return json.dumps(original)
         request = json.loads(user)
+        if kw["trace_tag"] == "experiment_alignment_review":
+            return json.dumps({"subject": request["subject"], "status": "consistent", "issues": []})
         fixed = copy.deepcopy(original["parameters"]["process.formation_c_rate"])
         fixed["basis"] = "engineering_proposal"
         return json.dumps({"base_hash": request["base_hash"], "changes": [{"path": ["parameters", "process.formation_c_rate"], "value": fixed}]})
     doc["physics_context"] = {"status": "PASSED"}
     result = recipes.generate(tmp_path, doc, SimpleNamespace(available=True, chat=chat))
-    assert calls == ["experiment_design", "experiment_repair"]
+    assert calls == ["experiment_design", "experiment_repair", "experiment_alignment_review"]
     assert result["sections"] == original["sections"]
     assert result["parameters"]["process.drying_temperature_K"] == original["parameters"]["process.drying_temperature_K"]
     assert result["parameters"]["process.formation_c_rate"]["basis"] == "engineering_proposal"

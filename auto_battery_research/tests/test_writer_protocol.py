@@ -14,6 +14,36 @@ def example():
     return dict(document(), version=2, parameters={})
 
 
+def test_explicit_main_formula_mapping_survives_writer_and_ledger_commit(tmp_path):
+    from auto_battery_research.util.material_ids import assemble_components
+    from auto_battery_research.util.scheme_ledger import commit_design, load
+    path = "cathode.doping.rank1_formula"
+    data = example()
+    data["parameters"][path] = {"value": "Li1.17Na0.03Mn0.57Zn0.03Ni0.2O2", "unit": "",
+        "basis": "engineering_proposal", "source": "原稿明确采用的首选配方", "quantity_kind": "text",
+        "canonical_path": "cathode.nominal_formula", "meaning": "当前主推候选名义式，待实验验证"}
+    data["sections"]["recommendations"]["body"] = "本轮采用主推配方{{param:" + path + "}}，性能待实验验证。"
+    result = produce(SimpleNamespace(available=False), "s", "u", {},
+                     {"raw_response": json.dumps(data, ensure_ascii=False)}, lambda: None)
+    assert not result["fallback"], result
+    params = result["numeric_parameters"]
+    scheme = assemble_components({}, params)
+    doc = {"target": "主推名义式显式关联回归", "scheme": scheme, "scheme_parameters": params}
+    commit_design(tmp_path, doc)
+    assert doc["scheme"]["cathode"] == data["parameters"][path]["value"]
+    assert doc["scheme"]["component_identities"]["cathode"]["parameter_refs"] == [path]
+    assert load(tmp_path)["parameters"][path]["canonical_path"] == "cathode.nominal_formula"
+    assert "cathode.material" not in load(tmp_path)["parameters"]
+
+
+@pytest.mark.parametrize("scope", ["candidate", "alternative", "control"])
+def test_ranked_candidate_mapping_does_not_adopt_unselected_formula(scope):
+    from auto_battery_research.util.material_ids import assemble_components
+    params = {"cathode.doping.rank1_formula": {"value": "Li1.17Na0.03Mn0.57Zn0.03Ni0.2O2",
+              "canonical_path": "cathode.nominal_formula", "scope": scope}}
+    assert "cathode" not in assemble_components({}, params)
+
+
 def test_single_internal_closing_bracket_repair_preserves_raw_and_content():
     from auto_battery_research.util.writer_protocol import single_closure_repair
     data = example()
@@ -55,6 +85,38 @@ def test_uppercase_id_and_unit_normalized_without_model_repair():
     assert calls == ["writer"] and not result["fallback"]
     assert result["raw_response"] == raw and "design-feas_na_a" in result["draft_answer"]
     assert result["numeric_parameters"]["cathode.porosity"]["value"] == .3
+
+
+@pytest.mark.parametrize("path,value,unit,canonical", [
+    ("cathode.L_um", 20, "μm", "um"), ("anode.L_um", 500, "µm", "um"),
+    ("cathode.R_s_um", 2.5, " μm ", "um"), ("cathode.D_s_m2s", 1e-14, "m²/s", "m2/s"),
+    ("cathode.active_loading_mg_cm2", 4.5, "mg/cm²", "mg/cm2"),
+    ("cathode.electrode_area", 1, "cm²", "cm2"), ("electrolyte.volume", 80, "μL", "uL"),
+])
+def test_equivalent_unit_spellings_render_without_protocol_request(path, value, unit, canonical):
+    data = example()
+    data["parameters"] = {path: {"value": value, "unit": unit, "basis": "engineering_proposal", "source": "原始工程声明"}}
+    data["sections"]["goals"]["body"] += "工程参数{{param:" + path + "}}，待验证。"
+    original = copy.deepcopy(data)
+    state = {"raw_response": json.dumps(data, ensure_ascii=False), "generation_attempted": True}
+    result = produce(SimpleNamespace(available=False, chat=lambda *a, **k: pytest.fail("等价单位无需模型修复")),
+                     "s", "u", {}, state, lambda: None)
+    assert not result["fallback"], result
+    row = result["numeric_parameters"][path]
+    assert row["value"] == value and row["unit"] == canonical and row["source"] == "原始工程声明"
+    assert data == original and json.loads(state["raw_response"]) == original
+    assert not state.get("repair_attempts")
+    assert normalize(result["structured_sections"]) == result["structured_sections"]
+
+
+@pytest.mark.parametrize("unit", ["mm", "nm", "", "kg", "μm/cm"])
+def test_unit_normalization_does_not_guess_scale_or_missing_unit(unit):
+    data = example()
+    data["parameters"] = {"cathode.L_um": {"value": 20, "unit": unit, "basis": "engineering_proposal", "source": "原声明"}}
+    data["sections"]["goals"]["body"] += "厚度{{param:cathode.L_um}}。"
+    assert normalize(data)["parameters"]["cathode.L_um"]["unit"] == unit
+    result = produce(SimpleNamespace(available=False), "s", "u", {}, {"raw_response": json.dumps(data)}, lambda: None)
+    assert result["fallback"] and "必须采用单位" in result["error"]
 
 
 def test_case_collision_is_not_silently_merged():

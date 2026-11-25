@@ -443,6 +443,8 @@ def build_cell_spec(
     candidates: Optional[Dict[str, Any]],
     c_rate: float = 0.5,
     ambient_temp_k: float = 298.15,
+    *,
+    parameters: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Stage 4 方案 + candidates.json → cell_spec dict（无缺省表回填）。
 
@@ -458,6 +460,8 @@ def build_cell_spec(
     """
     scheme = scheme or {}
     candidates = candidates or {}
+    from auto_battery_research.util.material_ids import pinn_material_ids
+    model_materials = pinn_material_ids(scheme, parameters)
 
     def _entry(category: str, item_id: str) -> Optional[dict]:
         for entry in candidates.get(category, []) or []:
@@ -499,6 +503,7 @@ def build_cell_spec(
     target = scheme.get("target_energy_wh_kg") or scheme.get("target_energy")
     cell_spec = {
         "scheme_id": "",
+        "pinn_material_ids": model_materials,
         "cathode": cathode,
         "anode": anode,
         "electrolyte": electrolyte,

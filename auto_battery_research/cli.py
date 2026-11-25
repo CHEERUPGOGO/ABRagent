@@ -143,6 +143,7 @@ def main():
     parser.add_argument("--rebuild-stage4", action="store_true", help="显式归档修复检查点并允许重新设计 Stage 4；之后用 --run 执行")
     parser.add_argument("--regenerate-experiment-plan", action="store_true", help="基于已有 Stage 4 设计和文献生成首轮实验推荐")
     parser.add_argument("--repair-experiment-values", action="store_true", help="在副本隔离实验参数中的缺项文字，保留原文与模型预算并更新报告")
+    parser.add_argument("--sync-experiment-plan", action="store_true", help="按当前主方案局部同步Stage 5实验条件与旧诊断，独立核对后更新研报")
     parser.add_argument("--repair-research-records", action="store_true", help="从现有设计正文恢复并审核多段研究记录，在副本中验收后更新研报，不更改配方")
     parser.add_argument("--integrate-research-narrative", action="store_true", help="将既有研究记录整合为连贯论证，经Reviewer审核及副本验收后更新研报，不重跑检索或实验设计")
     parser.add_argument("--repair-stage4-inputs", action="store_true", help="仅修复已声明的倍率定义绑定和金属锂对电极字段，副本验收后提交，不重跑模型或推进阶段")
@@ -213,6 +214,14 @@ def main():
     if skip_pinn_val is not None:
         mgr.set_stage_skip(5, skip=skip_pinn_val, reason="CLI 显式设置")
     set_stage_manager(mgr)
+    if args.sync_experiment_plan:
+        import json
+        from auto_battery_research.util.experiment_alignment_recovery import repair_experiment_alignment
+        result = repair_experiment_alignment(mgr)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if not result.get("success"):
+            parser.error(result.get("error", "实验主方案同步失败"))
+        return
     if args.repair_experiment_values:
         import json
         from auto_battery_research.util.experiment_value_recovery import repair_experiment_values
@@ -293,6 +302,11 @@ def main():
         if checkpoint.exists():
             content = checkpoint.read_text(encoding="utf-8")
             atomic_write(task_dir / "stage4_repair_history" / (digest(content)[:16] + ".json"), content)
+        for name in ("design_scheme.json", "design_scheme.md", "rag_result.json", "research_context.json", "stage4_publication.json", "stage4_planning_checkpoint.json"):
+            source = task_dir / name
+            if source.exists():
+                content = source.read_text(encoding="utf-8")
+                atomic_write(task_dir / "stage4_repair_history" / digest(content)[:16] / name, content)
         atomic_write(task_dir / "stage4_rebuild_requested.json", json.dumps({"requested": True}))
         mgr.reset_workflow(start_stage_id=4)
         print("Stage 4 已准备显式重新设计，历史修复记录已保留；请使用 --run 执行。")

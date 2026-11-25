@@ -35,5 +35,5 @@
 
 ---
 
-## 6. 参考来源附录
-{{ REFERENCES_AND_STAGE_JOURNALS }}
+## 6. 参考文献
+{{ REFERENCES }}

@@ -78,7 +78,7 @@ class ABRAgent:
         stream_output: bool = False,
         on_token: Optional[Callable[[str], None]] = None,
         on_stage_update: Optional[Callable[[int, str, float], None]] = None,
-        max_stage_retries: int = 3,
+        max_stage_retries: Optional[int] = None,
         verbose: bool = True,
         enable_file_log: bool = True,
         log_file: Optional[str] = None,
@@ -86,7 +86,6 @@ class ABRAgent:
         enable_trace: Optional[bool] = None,
     ):
         self.goal = goal
-        self.max_retries = max_stage_retries
         self.verbose = verbose
         self.on_stage_update = on_stage_update
         self.stream_output = stream_output
@@ -113,6 +112,11 @@ class ABRAgent:
 
         # 1. 加载配置
         self.config = self._load_config(config_file, config)
+        from auto_battery_research.util.runtime_budgets import count, runtime_defaults
+        self.max_retries = count(
+            max_stage_retries if max_stage_retries is not None else
+            (self.config.get("runtime_options") or {}).get("max_retries_per_stage", runtime_defaults()["max_retries_per_stage"]),
+            "runtime_options.max_retries_per_stage")
 
         # 2. 初始化工作流状态机与全局单例注入
         if manager is not None:
@@ -711,7 +715,10 @@ class ABRAgent:
                                 from auto_battery_research.util.adaptive_retrieval import has_pending
                                 from auto_battery_research.util.design_repair import structure_recovery_available
                                 saved = json.loads(checkpoint.read_text(encoding="utf-8"))
-                                if has_pending(saved) or structure_recovery_available(task_dir, sd, saved):
+                                runtime = self.config.get("runtime_options") or {}
+                                if (has_pending(saved, retrieval_options=runtime.get("stage4_retrieval", {}),
+                                                repair_options=runtime.get("stage4_repair", {}))
+                                        or structure_recovery_available(task_dir, sd, saved, budget=runtime.get("stage4_repair", {}))):
                                     scheme_valid = False
                 except Exception:
                     pass

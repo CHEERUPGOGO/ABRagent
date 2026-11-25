@@ -43,6 +43,11 @@ def strip_think_blocks(text: Optional[str]) -> str:
 class LLMOutputError(RuntimeError):
     """输出空白或被截断；不得当作成功答案，也不得降级为虚构配方。"""
 
+    def __init__(self, message, raw_response="", response_meta=None):
+        super().__init__(message)
+        self.raw_response = raw_response
+        self.response_meta = dict(response_meta or {})
+
 
 class LLMClient:
     """统一的 LLM 客户端, 自动选择后端.
@@ -153,14 +158,22 @@ class LLMClient:
         user_prompt: str,
         temperature: Optional[float] = None,
         trace_tag: Optional[str] = None,
+        *,
+        json_mode: bool = False,
     ) -> str:
         """统一的 chat 接口, 自动选择可用后端.
 
         trace_tag: LLM 轨迹记录的调用方标签 (planner/writer/writer_revise/reviewer/...)；
         仅当轨迹记录开启 (runtime_options.llm_trace / LLM_TRACE) 时产生记录, 否则零开销。
+        json_mode: 结构化调用启用接口级 JSON 对象约束；普通正文保持原格式。
         """
         temp = temperature if temperature is not None else self.temperature
         self.last_response = {}
+        active_system = system_prompt + (
+            "\n仅返回一个合法 JSON 对象；对象外不要添加代码围栏、解释文字、XML 包装标签或其他内容。"
+            "对象内的字段和原文引用仍按任务契约保留。"
+            if json_mode else "")
+        response_format = {"type": "json_object"} if json_mode else None
         active_prompt = user_prompt
         budget = self.max_tokens
         attempt = 1
@@ -184,9 +197,11 @@ class LLMClient:
                     model=self._model_name,
                     duration_ms=(time.monotonic() - _t0) * 1000.0,
                     input={"messages": [
-                        {"role": "system", "content": system_prompt},
+                        {"role": "system", "content": active_system},
                         {"role": "user", "content": active_prompt},
-                    ], "max_tokens": budget, "attempt": attempt},
+                    ], "max_tokens": budget, "attempt": attempt,
+                        **(({"format": "json"} if backend == "ollama" else
+                            {"response_format": response_format}) if json_mode else {})},
                     output={"status": "ok" if error is None else "error", "text": text,
                             **self.last_response},
                     usage=_trace_mod.extract_usage(resp) if resp is not None else None,
@@ -198,12 +213,37 @@ class LLMClient:
         def invoke_complete(llm, backend):
             """有限重试：扩大正文预算并要求精简；每次响应分别留痕。"""
             nonlocal active_prompt, budget, attempt, _t0
-            from langchain_core.messages import SystemMessage, HumanMessage
+            from langchain_core.messages import AIMessage, SystemMessage, HumanMessage
             for attempt in ((1,) if getattr(self, "single_attempt", False) else (1, 2)):
                 if _t0 is not None:
                     _t0 = time.monotonic()
-                bound = llm.bind(max_tokens=budget, temperature=temp) if hasattr(llm, "bind") else llm
-                resp = bound.invoke([SystemMessage(content=system_prompt), HumanMessage(content=active_prompt)])
+                if getattr(self, "single_attempt", False) and hasattr(llm, "model_copy"):
+                    # SDK网络重试同样关闭，持久机会才对应实际请求次数。
+                    root_client = getattr(llm, "root_client", None)
+                    if root_client is not None and hasattr(root_client, "with_options"):
+                        root_client = root_client.with_options(max_retries=0)
+                        llm = llm.model_copy(update={"max_retries": 0, "root_client": root_client,
+                                                     "client": root_client.chat.completions})
+                    else:
+                        llm = llm.model_copy(update={"max_retries": 0})
+                options = {"max_tokens": budget, "temperature": temp}
+                if json_mode:
+                    options["response_format"] = response_format
+                    if not hasattr(llm, "bind"):
+                        raise TypeError("当前 LLM 后端不能绑定接口级 JSON 约束")
+                bound = llm.bind(**options) if hasattr(llm, "bind") else llm
+                try:
+                    resp = bound.invoke([SystemMessage(content=active_system), HumanMessage(content=active_prompt)])
+                except Exception as exc:
+                    # 部分SDK在JSON模式的解析入口抛出长度异常；取回原响应，沿用有界截断重试和留痕。
+                    completion = getattr(exc, "completion", None)
+                    choices = getattr(completion, "choices", None)
+                    if not json_mode or not choices or choices[0].finish_reason != "length":
+                        raise
+                    usage = getattr(completion, "usage", None)
+                    resp = AIMessage(content=choices[0].message.content or "",
+                        response_metadata={"finish_reason": "length",
+                            "token_usage": usage.model_dump() if usage is not None else {}})
                 content = resp.content
                 if isinstance(content, list):
                     content = "".join(b.get("text", "") for b in content
@@ -222,8 +262,10 @@ class LLMClient:
                     reason is None and isinstance(output_tokens, int) and output_tokens >= budget)
                 self.last_response = {"finish_reason": reason, "reasoning_tokens": reasoning, "attempt": attempt,
                                       "max_tokens": budget,
+                                      "input_tokens": usage.get("input_tokens", tokens.get("prompt_tokens")),
+                                      "output_tokens": output_tokens,
                                       "truncated": truncated, "empty": not bool(text.strip())}
-                error = LLMOutputError("LLM 输出截断或为空，未获得完整正文") if truncated or not text.strip() else None
+                error = LLMOutputError("LLM 输出截断或为空，未获得完整正文", text, self.last_response) if truncated or not text.strip() else None
                 _record(backend, text, resp=resp, error=error)
                 if error is None:
                     return text
@@ -242,6 +284,8 @@ class LLMClient:
                 _record("openai", None, error=e)
                 if self.backend == "openai":
                     raise RuntimeError(f"OpenAI/MiniMax API 调用失败: {e}")
+                if getattr(self, "single_attempt", False):
+                    raise RuntimeError(f"单次请求失败，不自动切换后端: {e}") from e
 
         # 2. 尝试 DeepSeek
         if self.backend in ("auto", "deepseek") and self._deepseek_llm is not None:
@@ -253,13 +297,16 @@ class LLMClient:
                 _record("deepseek", None, error=e)
                 if self.backend == "deepseek":
                     raise RuntimeError(f"DeepSeek API 调用失败: {e}")
+                if getattr(self, "single_attempt", False):
+                    raise RuntimeError(f"单次请求失败，不自动切换后端: {e}") from e
 
         # 3. 尝试 Ollama
         if self.backend in ("auto", "ollama") and self.ollama_ready:
             try:
-                result = strip_think_blocks(self._ollama_chat(system_prompt, user_prompt, temp))
+                result = strip_think_blocks(self._ollama_chat(active_system, user_prompt, temp,
+                    **({"json_mode": True} if json_mode else {})))
                 if not result.strip() or self.last_response.get("truncated"):
-                    raise LLMOutputError("Ollama 输出截断或为空")
+                    raise LLMOutputError("Ollama 输出截断或为空", result, self.last_response)
                 _record("ollama", result)
                 return result
             except Exception as e:
@@ -273,7 +320,8 @@ class LLMClient:
         _record(None, None, error=no_backend)
         raise no_backend
 
-    def _ollama_chat(self, system_prompt: str, user_prompt: str, temperature: float) -> str:
+    def _ollama_chat(self, system_prompt: str, user_prompt: str, temperature: float,
+                     *, json_mode: bool = False) -> str:
         payload = {
             "model": self.ollama_model,
             "stream": False,
@@ -283,6 +331,8 @@ class LLMClient:
                 {"role": "user", "content": user_prompt},
             ],
         }
+        if json_mode:
+            payload["format"] = "json"
         body = json.dumps(payload).encode("utf-8")
         req = urllib.request.Request(
             f"{self.ollama_base_url}/api/chat",

@@ -41,7 +41,7 @@ AutoBatteryResearch Agent (ABRAgent) 是专为高比能化学电池（锂金属�
 
 1. **智能体主控架构**：顶层 `ABRAgent` 掌控 ReAct 主循环（Thought → Action → Observation），六个阶段全部由大模型自主决策；工作流（`StageManager`）与确定性校验器（`Checkers`）作为外部护栏——**大模型在大脑主控位，工作流在规则裁判位**。Stage 1–3、5、6 提供确定性执行器离线兜底，而 Stage 4 RAG 在无可用 LLM 时严格执行 fail-closed 拦截（绝不编造虚假配方）。
 2. **确定性门禁与自愈反思**：`Check` 自检不通过时输出 `failure_summary`（error_code / error / next_action），回注重试轮提示词驱动针对性修复；同一阶段多次重试共享 LangGraph 线程记忆。
-3. **真实数据与分级约束铁律**：「有则提取、无则留空、禁止编造」。设计方案需通过 `RelationEngine` **7 条分级规则**（**C1–C3, C5–C8**，**C4 已永久移除**，`RULES_VERSION="C1-C8/v2.1-coincell"`）：包含未验证材料 `C0_UNVERIFIED_MATERIAL` 前置 fail-closed 拒绝、`C1–C3` 带 `mitigation_whitelist` 缓解白名单审查、`C5` 推荐、 `C6` 审计批注、`C7` $\ge 400$ Wh/kg 石墨负极排除、`C8` $\ge 500$ Wh/kg 前沿目标放行并标记；证据链必须携带真实 DOI 或 Materials Project (`MP:`) 溯源标识。
+3. **真实数据与分级约束铁律**：「有则提取、无则留空、禁止编造」。设计方案需通过 `RelationEngine` **7 条分级规则**（**C1–C3, C5–C8**，**C4 已永久移除**，`RULES_VERSION="C1-C8/v2.4-c1-c3-advisory"`）：包含未验证材料 `C0_UNVERIFIED_MATERIAL` 前置 fail-closed 拒绝、`C1/C3` 非阻断建议及 `C2` 带 `mitigation_whitelist` 缓解白名单审查、`C5` 推荐、 `C6` 审计批注、`C7` $\ge 400$ Wh/kg 石墨负极排除、`C8` $\ge 500$ Wh/kg 前沿目标放行并标记；证据链必须携带真实 DOI 或 Materials Project (`MP:`) 溯源标识。
 4. **课题级产物隔离**：每个研究课题的产物（设计方案、电芯组装、综合研报、状态文件）独立存放在 `output/tasks/<课题>/`，多课题并行互不污染。
 5. **四维交互入口**：CLI 命令行、Textual/Rich TUI 终端面板、FastAPI Web 监控大屏（Gradio 后备）、领域专家 MCP Server（支持 Streamable HTTP / stdio）。
 
@@ -299,7 +299,7 @@ src/lmllm/RAG/                # Layer 2: 多智能体 RAG 引擎
 ├── agents.py                 #   Planner → Retrieval → Writer → Reviewer
 ├── rag_pipeline.py           #   流水线编排 (单链路设计 + target_energy_wh_kg 提取)
 ├── multi_retrieval.py        #   双库混合检索 (Chroma + BM25 + RRF，降级本地 BM25)
-├── relation_engine.py        #   热力学分级约束 C1–C3, C5–C8 (C4 已移除；v2.1-coincell)
+├── relation_engine.py        #   热力学分级约束 C1–C3, C5–C8 (C4 已移除；v2.4-c1-c3-advisory)
 └── prompts.py                #   中央提示词注册表
 
 preprocessing/                # Layer 3: legacy 阶段脚本 (preprocessing/miner 由子进程调度)

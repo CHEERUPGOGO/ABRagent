@@ -46,13 +46,16 @@ Stage 4 用户固定条件在Planner语义提取后由程序重新核验原句�
 
 字段按 requirements、cathode、anode、electrolyte、separator、current_collector、packaging、process、condition 分组。每项包含 value、unit、basis、source，可补 meaning、conditions、source_quote、passage_id。未知使用 null，不使用零或模型默认值代替。数值使用声明的规范单位，不自动猜测换算。
 
+Writer生成前收到常用规范字段表；返回后核对明确别名和`canonical_path`，规范字段不能改绑成其他物理量。原路径与来源继续留档，`total_loading_mg_cm2`等明确别名与规范字段共享身份。报告、正文引用和缺项判断使用同一只读取值：未锁定空占位有同口径唯一有效声明时采用该值；不同值、非法单位、锁定缺项及不同样品/工况不自动合并。中文方案表会注明空占位所采用的同义来源，原JSON保持不变。详见`docs/numeric_consistency.md`。
+
 - 长度 `L_um/R_s_um` 使用 um；扩散系数 `D_s_m2s` 使用 m2/s；面载 `loading_mg_cm2` 使用 mg/cm2。
+- `anode.L_um`在金属锂负极中表示锂箔本体厚度，支持明确别名`anode.li_foil_thickness_um`；报告显示锂箔厚度，集流体与保护层单列。几何恢复对未声明孔隙率的致密锂箔沿用既有0孔隙规则，禁止覆盖显式值或用户锁定null。
 - `active_fraction/conductive_fraction/binder_fraction`、`porosity`、`li_filling_fraction` 均为 0–1 小数。
-- 多孔锂宿主计算必须明确 `anode.porosity_basis=before_loading`，并提供锂密度、比容量；这些物性不设默认值。
+- 多孔锂宿主库存由模型计算时，须说明载锂前后孔隙口径、填充率及所用锂密度/比容量的来源；这些物性不设默认值。
 - 电解液添加剂、掺量等在 meaning 中明确分母；孔隙率注明载锂前后；厚度注明是否包含集流体。
 - 文献值保留来源及工况；工程声明不等于实测。改变材料会清除未同步更新的该材料专属参数；被锁定的关联字段须先解锁。
 
-派生计算记录依赖和缺口：孔隙体积、载锂后剩余孔隙、面容量、N/P、组件质量及能量预算。完整预算需要负极 composite_mass_mg_cm2、两侧集流体 cathode_mass_mg_cm2/anode_mass_mg_cm2、隔膜和电解液 mass_mg_cm2、封装 mass_mg_cm2、condition.average_discharge_voltage_V。缺依赖时不输出预算值。预算不代替实测电芯比能量。
+孔隙体积、载锂后剩余孔隙、面容量、N/P、组件质量及能量预算由模型在正文写明方法、输入来源、代入、结果与单位，Reviewer复核算术和口径；方案表不自动生成派生量，也不要求凑齐固定字段链。需供下游采用的结果可作为普通工程参数登记，source保留方法与输入。完整电芯比能量必须交代正负极、集流体、隔膜、电解液和封装的质量边界及平均放电电压；未知就说明缺口，不虚构数据。旧derived快照只保留追溯，不自动重算或把其missing字段变为新必填项。预算不代替实测电芯比能量。
 
 ## 阶段与报告
 
@@ -76,11 +79,13 @@ Stage 5 收尾在仿真收敛后仍检查目标下限，未达标时主动调用
 
 ## Stage 4 局部修复权限
 
-同段多问题通过内部接口契约v1提交，不建立逐问题HTTP接口或逐项模型调用。`interface_contract` 记录文档/参数哈希、接口ID、原文起止位置、original、issue_ids、可修改字段及事务分组；模型仅返回 `{base_hash, submissions:[{interface_id,replacement,parameter_changes:[]}]}`，参数项为 `{path,field}`。不能提交自定义位置或扩大权限。
+来源同步与精确权限已升级到接口v3：工程参数来源随获准正文位置同步；失效来源单独签发source_quote权限，不扩展数值写权限。研究记录的source_quotes/field_support使用记录级专用接口，正文与科研文本保持原有授权边界。独立复核使用实际候选记录，详见`docs/source_metadata.md`。
 
-不重叠问题按原始位置从后向前合成段落；重叠问题合成联合接口，一次替换须同时解决全部问题。同段、共享参数及明确依赖的段落是一个事务，缺项、冲突值或任一问题复核失败时整组保留原文。独立事务可继续提交。旧整段补丁仅在接口唯一且范围外文字不变时转换，多个整段版本不猜测合并。
+同段多问题通过内部接口契约v3提交，不建立逐问题HTTP接口或逐项模型调用。`interface_contract` 记录文档/参数哈希、接口ID、原文起止位置、original、issue_ids、可修改字段及初始事务分组；模型仅返回 `{base_hash, submissions:[{interface_id,replacement,parameter_changes:[]}]}`，参数项为 `{path,field}`。不能提交自定义位置或扩大权限。旧补丁格式和历史审计仍可读取，不重置已用预算。
 
-程序校验后，以一次 `repair_verify` 批量调用复核所有候选事务，返回逐问题 verdicts 与按事务定位的 new_issues；无有效复核、遗漏问题或出现新矛盾均不提交。通过的事务统一合并后再校验文档、参数及几何，最后一次原子写入检查点；失败组记录原因并重新定位，已提交组不再生成。接口、提交、校验、复核和提交状态归档在 repair_audit 中；三轮修复预算和报告优先机制保持不变。
+重叠问题合成联合接口，一次替换须同时解决全部问题；同一问题的多处原句始终原子提交。模型返回后，程序按实际改动范围、参数写写/读写依赖（含规范别名、正文输入引用和ratio_inputs）、显式上下限及source_quote依赖重分组，记录modification_footprints。计算本身由模型完成，比例和/预算算术交给合并预览的Reviewer复核。仅同段或共享只读参数不构成事务绑定，未授权问题只保护其范围和参数依赖。缺项、冲突值或任一问题复核失败时保留所属事务，其余独立事务仍可提交。获准的同段片段按原始位置从后向前合成一次段落更新，避免重复block_id或后提交版本覆盖前一修改。旧整段补丁仅在接口唯一且范围外文字不变时转换，多个整段版本不猜测合并。
+
+程序校验后，以一次 `repair_verify` 批量调用复核所有候选事务及combined_preview，返回逐问题verdicts与按事务定位的new_issues；原有且不受修改影响的同段问题不得牵连独立修改，跨事务新矛盾须标记所有相关事务。无有效复核、遗漏问题或出现新矛盾均不提交所属事务。通过的事务统一合并后再校验文档、参数及几何，最后一次原子写入检查点；失败组记录原因并重新定位，已提交组不再生成。接口、提交、校验、复核和提交状态归档在repair_audit中；YAML修复预算和报告优先机制保持不变。
 
 正文按稳定位置 ID 分块（表格按行），审核返回 `repair_issues`：精确原句、原因、建议及必要参数路径。旧 `issues` 字符串摘要保留；没有唯一定位的问题不授予写权限。程序签发包含正文哈希、参数哈希、问题编号及允许块/字段的权限清单，模型只返回 JSON 补丁，不拥有文件写入工具。
 

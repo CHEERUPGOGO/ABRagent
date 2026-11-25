@@ -298,7 +298,7 @@ class RunRAGDesignTool(BaseTool):
     name: str = "RunRAGDesign"
     description: str = (
         "【Stage 4 服务工具】执行多智能体 RAG 电池方案设计单链路流水线 "
-        "(Planner -> Retrieval -> Writer -> Reviewer + RelationEngine 7 项分级规则 C1–C3/C5–C8 核算，含 C0 未知材料拦截、C1–C3 缓解白名单挑战、C5 建议、C6 审计提示、C7 扣电选材与 C8 前沿标记)，"
+        "(Planner -> Retrieval -> Writer -> Reviewer + RelationEngine 7 项分级规则 C1–C3/C5–C8 核算，含 C0 未知材料拦截、C1/C3 非阻断建议、C2 缓解白名单挑战、C5 建议、C6 审计提示、C7 扣电选材与 C8 前沿标记)，"
         "生成 design_scheme.md/.json 与 rag_result.json 并写入课题任务目录。"
         "证据检索、方案撰写与规则审查在管线内部完成，无需单独调用其他 Stage 4 工具。"
     )

@@ -121,6 +121,8 @@ def render_methods(record, key, section_number, bindings, doc=None):
     methods = []
     for index, paragraph in enumerate(record["sections"].get(key) or [], 1):
         title = paragraph_title(record, key, index, paragraph)
+        from .experiment_alignment import expand_profiles
+        paragraph = expand_profiles(paragraph, record)
         if re.fullmatch(r"(?:步骤|待确认事项)\d+", title):
             title = "实验操作" if key not in ("criteria", "gaps") else "判定说明" if key == "criteria" else "待确认事项"
         if methods and methods[-1][0] == title:
@@ -157,6 +159,8 @@ def render_group_notes(record, bindings):
     declared = re.compile(r"^\s*(?:\*\*)?" + group_pattern + r"(?![A-Za-z0-9_])")
     notes, pending = [], []
     for paragraph in record["sections"].get("groups") or []:
+        from .experiment_alignment import expand_profiles
+        paragraph = expand_profiles(paragraph, record)
         identifiers = set(mentions.findall(paragraph))
         if identifiers:
             unknown = sorted(identifiers - registered)

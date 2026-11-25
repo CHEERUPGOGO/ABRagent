@@ -17,7 +17,7 @@ def write(path, value):
 
 def repair_experiment_values(mgr):
     from . import experiment_design as recipes
-    from .experiment_consistency import stamp, parameter_pending_fields
+    from .experiment_consistency import stamp
     from .experiment_review import status as science_status
     CHECKPOINT = "experiment_generation_checkpoint.json"
     from .material_migration import _preview_manager
@@ -88,19 +88,21 @@ def repair_experiment_values(mgr):
                 draft["record"] = copy.deepcopy(record)
                 write(preview / "experiment_draft.json", draft)
         doc["experiment_plan_hash"] = record["plan_hash"]
-        fields = sorted(set(parameter_pending_fields(doc)) | set(record.get("pending_parameters") or {}))
+        from .experiment_delivery import blocking_pending_fields, assessment
+        fields = blocking_pending_fields(record, doc)
         outcome, reasons = recipes.delivery_status(record, fields, doc=doc)
         readiness = doc.get("report_readiness")
         if readiness:
             readiness["experiment_status"] = outcome
             readiness["issues"] = [i for i in readiness.get("issues", []) if not str(i).startswith("实验交付限制：")]
-            readiness["issues"].append("实验交付限制：" + "；".join(reasons))
-            if readiness.get("category") == "COMPLETE":
+            if reasons:
+                readiness["issues"].append("实验交付限制：" + "；".join(reasons))
+            if reasons and readiness.get("category") == "COMPLETE":
                 readiness["category"] = "CONDITIONAL"
         write(preview / "design_scheme.json", doc)
         execution = json.loads(initial.get("stage5_execution.json", b"{}"))
         execution.setdefault("experiment", {}).update(status=outcome, reasons=reasons, plan_hash=record["plan_hash"],
-            pending_fields=fields, origin=record.get("origin"))
+            pending_fields=fields, origin=record.get("origin"), validation_notes=assessment(record, doc)["validation_notes"])
         write(preview / "stage5_execution.json", execution)
         write(preview / "experiment_plan_failure.json", {"resolved": False, "repair_status": "PARTIAL", "warnings": reasons})
         manager = _preview_manager(mgr, preview)
@@ -116,7 +118,7 @@ def repair_experiment_values(mgr):
             if not passed:
                 raise ValueError(f"缺项迁移副本Stage {stage}验收失败：{diagnostic}")
         names = ("design_scheme.json", "experiment_plan.json", "experiment_draft.json", CHECKPOINT,
-                 "stage5_execution.json", "experiment_plan_failure.json", "experiment_report.json", "final_research_report.md")
+                 "stage5_execution.json", "experiment_plan_failure.json", "experiment_report.json", "report_record.json", "final_research_report.md", "final_research_report_supplement.md")
         with task_lock(task):
             if any(not (task / name).exists() or (task / name).read_bytes() != data for name, data in initial.items()):
                 raise ValueError("缺项迁移期间任务已变化，拒绝覆盖")
@@ -125,7 +127,7 @@ def repair_experiment_values(mgr):
                 for name in names:
                     if (preview / name).exists():
                         content = (preview / name).read_text(encoding="utf-8")
-                        if name == "final_research_report.md":
+                        if name in ("final_research_report.md", "final_research_report_supplement.md"):
                             content = content.replace(str(preview), str(task))
                         atomic_write(task / name, content)
                         written.append(name)

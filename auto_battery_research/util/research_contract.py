@@ -203,9 +203,9 @@ def attach_requirements(plan, goal, client=None):
                             "requirements": raw, "error": error, "accepted_items": accepted,
                             "repair_errors": recovered["diagnostics"],
                             "instruction": "已通过items不得修改；只返回失败或遗漏条目的修复，保留其id。"}, ensure_ascii=False),
-                temperature=0.1, trace_tag="requirements_repair")
+                temperature=0.1, json_mode=True, trace_tag="requirements_repair")
             fixed = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", response.strip()))
-            merged = merge_exact_duplicates(merge_requirement_patch(raw, fixed.get("requirements", fixed), accepted))
+            merged = merge_exact_duplicates(merge_requirement_patch(raw, fixed.get("requirements", fixed), accepted, goal))
             plan["requirements"], _ = recover_requirements(merged, goal, plan.get("retrieval_queries", []))
             return plan
         except Exception as exc:

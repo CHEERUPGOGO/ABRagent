@@ -66,6 +66,13 @@ def selected_summary(doc):
 
 def render_summary(doc):
     """摘要只保留结论、证据边界与下一步，完整要求覆盖另存附录。"""
+    if doc.get("_report_record"):
+        from .report_current_view import summary
+        return summary(doc)
+    if doc.get("writer_contract_version") == 3:
+        return ("**当前方案。** " + selected_summary(doc) + "\n\n"
+                "**研究依据与边界。** 第2节直接呈现当前科研正文，保留原顺序、引用与适用条件；待审字段及一致性意见随相关段落保留。"
+                "\n\n**下一步。** 按第5节开展实验验证；程序定位与一致性通过不代表本课题性能已经验证。")
     from .research_narrative import display_narrative
     requirements = doc["requirements"]
     narrative = display_narrative(doc)
@@ -90,15 +97,18 @@ def render_summary(doc):
         pending = sum(bool(r) for r in narrative["paragraph_reviews"].values())
         boundary += f"整合论证有{pending}段待复核，具体问题已在第2节标注。" if pending else "整合论证的整体审核仍待复核，具体说明见第2节。"
     elif doc.get("research_narrative") and narrative is None:
-        boundary += "整合稿尚无与当前输入匹配的有效审核，原稿及审核记录保留于第6节附录。"
+        boundary += "整合稿尚无与当前输入匹配的有效审核。"
     if requirements.get("status") != "parsed":
         boundary += "需求解析仍待复核。"
     return ("**（1）主要结论。** " + conclusion + "\n\n**（2）证据边界。** " + boundary
-            + "\n\n**（3）下一步。** 优先核对待复核事项，按第5节开展相应验证；完整课题要求覆盖表、逐项回应与审核记录见第6节附录。")
+            + "\n\n**（3）下一步。** 优先核对待复核事项，按第5节开展相应验证。")
 
 
 def render_coverage(doc):
     """完整覆盖表属于附录，保留原回答、来源边界及章节位置。"""
+    if doc.get("_report_record"):
+        from .report_current_view import coverage
+        return coverage(doc)
     requirements, research = doc["requirements"], doc.get("research") or {}
     answers = {a["requirement_id"]: a for a in research.get("answers", [])}
     lines = ["### 课题要求覆盖表", "回应状态表示课题内容是否得到回答；验证状态表示证据层级，两者分别判断。"]
@@ -116,7 +126,11 @@ def render_coverage(doc):
     locations = requirement_locations(doc)
     for index, item in enumerate(ordered_items(requirements), 1):
         answer = answers.get(item["id"], {})
-        response = render_field(answer, "response", doc) if answer else "尚未回答"
+        if doc.get("writer_contract_version") == 3:
+            from .stage4_reporting import reference
+            response = reference(answer, "response") if answer else "尚未回答"
+        else:
+            response = render_field(answer, "response", doc) if answer else "尚未回答"
         if answer.get("status") in ("gap", "partial"):
             response += "；" + render_field(answer, "reason", doc)
         state = STATUS.get(answer.get("status"), "遗漏") + " / " + VERIFIED.get(answer.get("verification"), "待验证")
@@ -204,11 +218,14 @@ def _render_current_choice(doc):
         parts.append(numbered_detail(1, "选材考虑", "尚未归档可明确对应当前组成的选择理由，需补充选材依据和适用条件；已有文献分析见第2.3节。"))
     parts.append("当前组成是用于后续验证的研究方案，尚不能据此认定性能最优。" +
                  ("候选比较见第2.2节，优劣仍需同条件对照验证。" if len((doc.get("research") or {}).get("candidates", [])) > 1
-                  else "尚无其他候选的同条件比较，不能宣称最优。") + "本课题目标的测试方法与判据见第5节，文献适用性和其他待复核意见见第6节附录。")
+                  else "尚无其他候选的同条件比较，不能宣称最优。") + "本课题目标的测试方法与判据见第5节。")
     return "\n\n".join(parts)
 
 
 def render_requirement_details(doc, heading="### 2.1 课题逐项回应"):
+    if doc.get("writer_contract_version") == 3:
+        from .stage4_reporting import details
+        return details(doc, heading)
     research = doc.get("research") or {}
     answers = {a["requirement_id"]: a for a in research.get("answers", [])}
     parts = [heading, "文献结论仅适用于所引研究对象；工程选择与探索性排序仍需验证。"]
@@ -240,6 +257,8 @@ def render_requirement_details(doc, heading="### 2.1 课题逐项回应"):
 
 
 def render_candidate_comparison(doc, heading="### 2.2 候选比较与取舍"):
+    if doc.get("writer_contract_version") == 3:
+        return heading + "\n\n候选身份、比较、取舍及风险按原顺序保留于第2节；逐字段来源和支持状态见本附录的研究关联档案。角色不自动授予首选或最优排序。"
     research = doc.get("research") or {}
     candidates = research.get("candidates", [])
     parts = [heading]
@@ -259,26 +278,44 @@ def render_candidate_comparison(doc, heading="### 2.2 候选比较与取舍"):
 
 
 def render_research(doc):
+    if doc.get("writer_contract_version") == 3:
+        from .stage4_reporting import render
+        return render(doc)
     from .research_narrative import render as render_narrative
     integrated = render_narrative(doc)
     if integrated:
         return integrated
     research = doc.get("research") or {}
     parts = ["### 2.1 研究依据与当前边界",
-             "当前尚无与输入和来源匹配的完整整合审核。以下保留归档论证及当前方案说明；完整课题要求覆盖、逐项回应与候选比较见第6节附录。"]
+             "当前尚无与输入和来源匹配的完整整合审核。以下保留归档论证及当前方案说明。"]
     parts += ["### 2.2 候选比较与取舍",
-              "候选的具体依据、取舍与风险见第6节附录；探索优先级不能视为实测性能排名。"
+              "探索优先级不能视为实测性能排名。"
               if research.get("candidates") else "当前没有通过提取校验的结构化候选比较，原始备选思路仍保留在设计档案中。"]
     if research.get("arguments"):
         from .material_reasoning import render_structured_chain
         parts += ["### 2.3 从文献到材料选择的分析链",
                   "以下沿研究问题、材料机制、候选取舍和验证边界组织已归档论证；文献支持仅适用于原研究对象。",
                   render_structured_chain(research["arguments"], doc)]
+        # 部分提取成功不能阻止展示其余原设计论证；补充仍明确标作待核验摘录。
+        from .research_sources import paragraphs
+        bound = "\n".join(q for r in research["arguments"] for q in r.get("source_quotes", []))
+        rationale_sections = {h["id"] for h in (doc.get("design_structure") or {}).get("headings", [])
+                              if str(h.get("number", "")).split(".")[0] == "4"}
+        extra = []
+        for block in paragraphs(doc.get("final_answer", "")):
+            if block["section_id"] in ("legacy", "goals", "metrics", "recommendations", "risks"):
+                continue
+            text = block["text"]
+            if ((block["section_id"] in rationale_sections or block["section_id"].startswith(("why-", "feasibility", "synthesis-consistency", "electrolyte-compat")))
+                    and len(text) >= 45 and text not in bound and not text.lstrip().startswith("|")):
+                extra.append("> " + text.replace("\n", "\n> "))
+        if extra:
+            parts += ["#### 原设计补充论证（待核验）", "以下保留未被上述结构化记录覆盖的原设计论证。", "\n\n".join(extra)]
     else:
         parts.append(render_archived_arguments(doc))
     parts.append("### 2.4 主方案选择与理由")
     parts.append(_render_current_choice(doc))
-    parts += ["### 2.5 关键限制", "完整审核记录见第6节附录；尚未解决的问题不能被表述为已验证结论。"]
+    parts += ["### 2.5 关键限制", "尚未解决的问题不能被表述为已验证结论。"]
     # 表格行必须连续，段落之间保持空行。
     return re.sub(r"(\|[^\n]*\|)\n\n(?=\|)", r"\1\n", "\n\n".join(parts))
 
@@ -289,7 +326,7 @@ def render_archived_arguments(doc):
     arguments = build_arguments(doc, rationale_only=True)
     from .material_reasoning import render_claim_chain, archived_decision_chain
     parts = ["### 2.3 从文献到材料选择的分析链（归档摘录）",
-             "以下按研究对象与动机、材料依据、候选取舍和验证路径重组设计原文，说明文献如何影响选材。结构化论证尚未形成有效记录，引用可定位不等于结论已验证；原文中的主选、排序和推荐均为归档观点，不能替代第3节当前方案。未解决的审核意见仍见第6节附录。"]
+             "以下按研究对象与动机、材料依据、候选取舍和验证路径重组设计原文，说明文献如何影响选材。结构化论证尚未形成有效记录，引用可定位不等于结论已验证；原文中的主选、排序和推荐均为归档观点，不能替代第3节当前方案。"]
     decision = archived_decision_chain(doc)
     if decision:
         parts.append(decision)
@@ -307,6 +344,9 @@ def render_archived_arguments(doc):
 
 
 def render_review_appendix(doc):
+    if doc.get("_report_record"):
+        from .report_current_view import appendix
+        return appendix(doc)
     from .report_readiness import unresolved_issues
     issues = unresolved_issues(doc)
     diagnostics = (doc.get("requirements") or {}).get("diagnostics", []) + (doc.get("research") or {}).get("diagnostics", [])
@@ -315,6 +355,9 @@ def render_review_appendix(doc):
     body += "\n\n" + render_requirement_details(doc, "### 课题逐项回应档案")
     body += "\n\n" + render_candidate_comparison(doc, "### 候选比较档案")
     body += "\n\n### 完整审核与解析记录\n\n" + ("\n\n".join(numbered_detail(n, "待复核事项", s) for n, s in enumerate(items, 1)) if items else "没有尚未解决的审核意见；这不等于性能已通过实验验证。")
+    if doc.get("writer_contract_version") == 3:
+        from .stage4_reporting import audit
+        body += "\n\n" + audit(doc)
     from .research_narrative import display_narrative
     integrated = display_narrative(doc)
     if integrated and integrated["status"] == "approved":

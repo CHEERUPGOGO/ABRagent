@@ -34,11 +34,13 @@ REVISABLE_COMPONENTS = ("cathode", "anode")
 _SIDE_OF = {"cathode": "pe", "anode": "ne"}
 
 
-def resolve_input_ranges(cathode_id: Any, anode_id: Any) -> Dict[str, Any]:
-    """解析方案 (cathode, anode) 匹配 PINN 体系的 input_ranges；未匹配返回空 dict."""
+def resolve_input_ranges(cathode_id: Any, anode_id: Any, *, scheme=None) -> Dict[str, Any]:
+    """按显式正极母体与实际负极读取模型输入范围；未匹配返回空 dict。"""
     try:
-        from pinn.spm_runner import match_pinn_system
-        system = match_pinn_system(str(cathode_id or ""), str(anode_id or ""))
+        from auto_battery_research.simulation import match_pinn_system
+        from auto_battery_research.util.material_ids import pinn_material_ids
+        materials = pinn_material_ids(scheme if scheme is not None else {"cathode": cathode_id, "anode": anode_id})
+        system = match_pinn_system(materials["cathode"], materials["anode"])
     except Exception:
         system = None
     return (system or {}).get("input_ranges") or {}
@@ -241,8 +243,10 @@ def apply_geometry_revision(
         new_geo.setdefault(comp, {})[field] = num
         new_geo["provenance"][f"{comp}.{field}"] = GEOMETRY_REVISION_PROVENANCE
     try:
-        from pinn.input_spec import complete_geometry_block
-        normalized = complete_geometry_block(new_geo, scheme.get("cathode"), scheme.get("anode"))
+        from auto_battery_research.simulation import complete_geometry_block
+        from auto_battery_research.util.material_ids import pinn_material_ids
+        model_ids = pinn_material_ids(scheme)
+        normalized = complete_geometry_block(new_geo, model_ids["cathode"], model_ids["anode"])
     except Exception as e:
         return {"ok": False, "error_code": "REVISION_NORMALIZE_FAILED",
                 "error": f"修订归一化失败 (fail-closed): {type(e).__name__}: {e}"}
@@ -251,7 +255,7 @@ def apply_geometry_revision(
                 "error": "修订归一化返回空块 (fail-closed)"}
 
     # 3. 范围校验 (registry input_ranges 对齐) —— 越界拒绝并点名字段与合法范围
-    ranges = resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"))
+    ranges = resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"), scheme=scheme)
     illegal = collect_geometry_violations(normalized, ranges, anode_id=scheme.get("anode"))
     if illegal:
         range_hint = format_range_hint(ranges)

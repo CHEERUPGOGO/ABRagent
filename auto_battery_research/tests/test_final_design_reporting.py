@@ -106,14 +106,14 @@ def test_recipe_missing_values_stay_unknown():
     assert "不能判定达标" in render_energy(context, 350, 5)
 
 
-def test_six_section_report_requires_appendix(tmp_path):
+def test_six_section_report_requires_references(tmp_path):
     mgr, _, _, _ = report_fixture(tmp_path)
     assert run_synthesis_report(target_query=mgr.target_goal, stage_manager=mgr)["success"]
     path = tmp_path / "final_research_report.md"
     text = path.read_text(encoding="utf-8")
     assert "## 2. 材料选择与文献依据" in text
-    assert "## 6. 参考来源附录" in text
-    path.write_text(text.replace("## 6. 参考来源附录", "附录"), encoding="utf-8")
+    assert "## 6. 参考文献" in text
+    path.write_text(text.replace("## 6. 参考文献", "参考条目"), encoding="utf-8")
     checker = FinalReportChecker()
     checker.on_init(mgr, {"id": 6}, mgr.config)
     assert checker.do_check()[0] is False
@@ -499,7 +499,7 @@ def test_publish_report_audit_and_journal_sync_updates_stage6_table(tmp_path):
     stub_dir.mkdir()
     mgr_stub, _, _, _ = report_fixture(stub_dir)
     assert run_synthesis_report(target_query=mgr_stub.target_goal, stage_manager=mgr_stub)["success"]
-    stub_report = (stub_dir / "final_research_report.md").read_text(encoding="utf-8")
+    stub_report = (stub_dir / "final_research_report_supplement.md").read_text(encoding="utf-8")
     assert "| Stage 5 |" in stub_report
     assert "| Stage 1 |" not in stub_report
 
@@ -538,7 +538,8 @@ def test_publish_report_audit_and_journal_sync_updates_stage6_table(tmp_path):
     out = run_synthesis_report(target_query=goal, stage_manager=mgr)
     assert out["success"], out
     report_path = task_dir / "final_research_report.md"
-    pre_audit_text = report_path.read_text(encoding="utf-8")
+    supplement_path = task_dir / "final_research_report_supplement.md"
+    pre_audit_text = supplement_path.read_text(encoding="utf-8")
     table_section_pre = pre_audit_text.split("### 阶段执行履历")[1]
     assert "Stage 6" in table_section_pre
     assert "IN_PROGRESS (待终审)" in table_section_pre
@@ -556,20 +557,21 @@ def test_publish_report_audit_and_journal_sync_updates_stage6_table(tmp_path):
     assert "| Stage 2 |" in journals_md and "复用通过" in journals_md
     assert "| Stage 6 |" in journals_md and "14.5s" in journals_md
 
-    post_audit_text = report_path.read_text(encoding="utf-8")
+    post_audit_text = supplement_path.read_text(encoding="utf-8")
     table_section_post = post_audit_text.split("### 阶段执行履历")[1]
     assert "IN_PROGRESS (待终审)" not in table_section_post
-    assert "| Stage 6 | 综合研发报告生成 | 状态 PASSED；耗时 14.5s；详细记录见 stage_journals.json | `final_research_report.md, stage_journals.json` |" in table_section_post
+    assert "| Stage 6 | 综合研发报告生成 | 状态 PASSED；耗时 14.5s；详细记录见 stage_journals.json | `final_research_report.md, final_research_report_supplement.md, stage_journals.json` |" in table_section_post
 
     # 4. complete_stage(6) 后再次 set_stage_journal(6, ...) 同样立即刷新底部履历表；非契约报告与缺失 json 安全兜底
     mgr.set_stage_journal(6, notes="补充终审耗时", key_findings={"duration_seconds": 19.2})
-    refreshed_text = report_path.read_text(encoding="utf-8")
+    refreshed_text = supplement_path.read_text(encoding="utf-8")
     assert "耗时 19.2s" in refreshed_text.split("### 阶段执行履历")[1]
 
     # 缺失 stage_journals.json 时 publish_report_audit 不抛异常
     (task_dir / "stage_journals.json").unlink()
     publish_report_audit(report_path, mgr.stages)
-    assert "尚无阶段日志" in report_path.read_text(encoding="utf-8")
+    assert "尚无阶段日志" in supplement_path.read_text(encoding="utf-8")
+    assert "### 阶段执行履历" not in report_path.read_text(encoding="utf-8")
 
     # 非契约 markdown 文件时 set_stage_journal 安全忽略而不报错
     report_path.write_text("# 非契约普通报告\n正文", encoding="utf-8")

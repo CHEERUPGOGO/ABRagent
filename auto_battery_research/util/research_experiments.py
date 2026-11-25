@@ -19,8 +19,12 @@ requirement_tests=[{"requirement_id":"需要验证的要求ID","status":"planned
 所有verification_needed=true或null且非background要求都必须有一条关联；未知验证责任给gap，先明确验证方法，不能默认为无需验证。
 planned仅表示已有方法安排，不表示条件齐全或验证完成。缺项影响及暂定结论边界由模型在reason、conditions与next_step说明，Reviewer结合全文核对；程序不按缺项引用自动改变目标状态。
 gap仍保留已有方法和判据；not_applicable须说明不适用原因，不将未知参数本身视为整项目标不适用。
+已经给出明确主推荐、仅最终效果或最优性尚待实验验证时，gap另声明gap_kind="validation"及recommendation_refs=["本版推荐参数键"]；
+这些参数须在method/conditions/criterion通过{{参数引用}}实际使用，保留完整方法、条件、基线、判据、原因与后续验证安排。
+未给推荐值、缺必要操作条件、验证责任未知或交付遗漏仍为gap_kind="delivery"（省略时同此），不能用validation免除交付。
 requirements.groups只是上层目标分组，不是样品groups，也不新增测试行；共享方法可以关联多个独立指标，但不得把容量保持与电压衰减合成一个判据。复合固定条件须遵守全部bindings。
 用户阈值不能改写为工程阈值；工程建议须明确标记。组名和正文不得暗含另一套主方案。
+参数引用用户目标数值时附requirement_id；比较符号与“显著”等限定必须保留在criterion及判定段落，不得把“显著高于74%”简写成“要求为74%”。
 首轮采用一条可执行路线，给分组表和目标测试矩阵所需字段；扩展表征或采购细节放extensions段落数组。
 sections中的数值与材料引用parameters；分类名称不能作为unit。'''
 
@@ -98,6 +102,9 @@ def diagnose_links(record, doc):
         error(["requirement_tests"], "实验安排遗漏、重复或新增了研究目标")
     else:
         for index, t in enumerate(tests):
+            from .experiment_delivery import validation_gap_errors
+            for reason in validation_gap_errors(t, record, doc):
+                error(["requirement_tests", index], reason)
             if t.get("status") not in ("planned", "gap", "not_applicable"):
                 error(["requirement_tests", index], "实验目标状态非法")
             requirement = next(r for r in required_tests(doc) if r["id"] == t["requirement_id"])
@@ -222,9 +229,14 @@ def render_tests(record, doc, bindings):
              "| 课题目标 | 方法与条件 | 比较基线 / 判据 | 说明与待解决事项 | 下一步 |", "|---|---|---|---|---|"]
     for t in record.get("requirement_tests", []):
         def show(key):
-            return cell(substitute_parameters(substitute_pending(t.get(key, ""), record), bindings))
+            from .experiment_alignment import expand_profiles
+            return cell(substitute_parameters(substitute_pending(expand_profiles(t.get(key, ""), record), record), bindings))
         method = "；".join(show(key) for key in ("method", "conditions") if t.get(key)) or "—"
         prefix = {"gap": "待补充说明：", "not_applicable": "不适用说明："}.get(t.get("status"), "")
+        if t.get("status") == "gap" and t.get("gap_kind") == "validation":
+            from .experiment_delivery import validation_gap_errors
+            if not validation_gap_errors(t, record, doc):
+                prefix = "推荐已给出，待实验验证："
         note = prefix + show("reason")
         lines.append(f"| {cell(labels.get(t.get('requirement_id'), '待关联课题要求'))} | {method} | {show('baseline')} / {show('criterion')} | {note} | {show('next_step')} |")
     return "\n".join(lines)

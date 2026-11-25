@@ -55,7 +55,7 @@ def test_titles_generated_in_existing_call_and_included_in_hash(tmp_path):
         calls.append((system, kwargs))
         return slot_response(payload, user, kwargs["trace_tag"])
     record = recipes.generate(tmp_path, doc, SimpleNamespace(available=True, chat=chat), "新实验分析")
-    assert [kw["trace_tag"] for _, kw in calls] == ["experiment_design"]
+    assert [kw["trace_tag"] for _, kw in calls] == ["experiment_design", "experiment_alignment_review"]
     assert "step_titles" in calls[0][0]
     assert record["step_titles"]["testing"] == [{"title": "结构与成分", "paragraph_hash": digest(payload["sections"]["testing"][0])}]
     assert "#### 5.4.1 结构与成分" in recipes.render(record, doc)

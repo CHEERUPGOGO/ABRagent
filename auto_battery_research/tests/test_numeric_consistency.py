@@ -1,6 +1,7 @@
-"""数值身份、依赖、冻结引用和事务联动的离线回归。"""
+"""声明与引用保护，以及显式历史计算诊断的离线回归。"""
 import copy
 import json
+from functools import partial
 from types import SimpleNamespace
 
 import pytest
@@ -9,6 +10,9 @@ from auto_battery_research.util.numeric_consistency import audit, canonical, nor
 from auto_battery_research.util.numeric_bindings import render, refresh, binding_errors, declarations, occurrences
 from auto_battery_research.util.design_repair import apply_patch, authorize, blocks, review_design
 from auto_battery_research.util.scheme_ledger import digest
+
+# 旧公式工具只在本文件显式调用；默认模型计算契约见test_model_calculations。
+audit = partial(audit, legacy_calculations=True)
 
 
 def row(value, unit="", **extra):
@@ -84,7 +88,7 @@ def test_explicit_site_ratios_are_separate_from_capacity_claims():
 def test_literature_field_is_not_used_as_main_geometry_by_legacy_calculator():
     from auto_battery_research.util.scheme_ledger import calculate
     data = {"cathode.L_um": row(25, "um"), "cathode.porosity": row(.3, basis="literature", passage_id="p1")}
-    derived, _ = calculate({"parameters": data})
+    derived, _ = calculate({"parameters": data}, legacy_calculations=True)
     assert derived["cathode.pore_volume_uL_cm2"]["value"] is None
 
 
@@ -125,25 +129,43 @@ def binding_draft():
     template = ("主方案孔隙率{{param:cathode.porosity}}。\n\n| 主组 | {{param:cathode.porosity}} |\n\n"
                 "注液量{{param:electrolyte.volume_uL}}，E/P={{derived:condition.calculated_electrolyte_to_cathode_pore_ratio}}。\n\n"
                 "文献中孔隙率46%，另一对照组为30%，保留原工况。[p1]")
-    text = render(template, data)
+    text = render(template, data, legacy_calculations=True)
     quote = blocks(text)[1]["b0"]
     data["cathode.porosity"]["source_quote"] = quote
     return text, data
 
 
-def test_parameter_patch_updates_all_bound_occurrences_and_derived_results_only():
+def test_parameter_patch_updates_inputs_and_preserves_historical_derived_snapshot():
     text, data = binding_draft()
     issue = {"id": "i", "quote": blocks(text)[1]["b0"], "reason": "已有依据需要调整", "suggestion": "改为0.3", "parameter_paths": ["cathode.porosity"]}
     permission = authorize(text, [issue], data)
-    assert len(permission["grants"]["i"]["blocks"]) == 3
+    assert len(permission["grants"]["i"]["blocks"]) == 2
     field = dict(data["cathode.porosity"], value=.3)
     patch = {"base_hash": digest(text), "parameters": [{"issue_id": "i", "path": "cathode.porosity", "field": field}]}
     updated, changed = apply_patch(text, data, permission, patch)
     assert [v for _, _, kind, key, v in occurrences(updated) if key == "cathode.porosity"] == ["30%", "30%"]
-    assert "39.801" in updated and not binding_errors(updated, changed)
+    assert "25.957" in updated and "39.801" not in updated and not binding_errors(updated, changed)
     assert "文献中孔隙率46%，另一对照组为30%" in updated
     assert changed["cathode.porosity"]["source_quote"] in updated
     assert refresh(updated, changed) == updated and data["cathode.porosity"]["value"] == .46
+
+
+def test_authorized_parameter_patch_accepts_already_refreshed_display():
+    text, data = binding_draft()
+    original = blocks(text)[1]["b0"]
+    issue = {"id": "i", "quote": original, "reason": "修订工程孔隙率", "suggestion": "调整为30%",
+             "parameter_paths": ["cathode.porosity"]}
+    permit = authorize(text, [issue], data)
+    replacement = original.replace("46%", "30%")
+    field = dict(data["cathode.porosity"], value=.3, source_quote=replacement)
+    patched, parameters = apply_patch(text, data, permit, {"base_hash": digest(text),
+        "edits": [{"issue_id": "i", "block_id": "b0", "text": replacement}],
+        "parameters": [{"issue_id": "i", "path": "cathode.porosity", "field": field}]})
+    assert "30%" in patched and not binding_errors(patched, parameters)
+    assert parameters["cathode.porosity"]["value"] == .3
+    with pytest.raises(ValueError):
+        apply_patch(text, data, permit, {"base_hash": digest(text),
+            "edits": [{"issue_id": "i", "block_id": "b0", "text": replacement}]})
 
 
 def test_numeric_lock_and_alias_protection_and_marker_tampering():
@@ -179,7 +201,7 @@ def test_conflicts_survive_reviewer_approval_without_authorized_sources(tmp_path
     from auto_battery_research.util.design_structure import render_design
     text, contract = render_design(document())
     data = params()
-    data["electrolyte.E_over_P"] = row(40, denominator="正极孔体积")
+    data["cathode.conflicting_porosity"] = row(.3, canonical_path="cathode.porosity")
     seen = []
     def review(**kwargs):
         seen.append(kwargs)
@@ -208,7 +230,7 @@ def test_transaction_verifier_sees_updated_dependencies_and_commits_together():
                     {"path": "cathode.porosity", "field": dict(data["cathode.porosity"], value=.3)}] if n == 0 else []}
                 for n, (iid, entry) in enumerate(interfaces.items())]})
         rendered = "\n".join(p for txn in payload["transactions"].values() for p in txn["paragraphs"].values())
-        assert "30%" in rendered and "39.801" in rendered and "46%" not in rendered
+        assert "30%" in rendered and "46%" not in rendered
         return json.dumps({"verdicts": [{"group_id": g, "issue_id": i, "resolved": True, "reason": "全部依赖已同步"}
                                         for g, txn in payload["transactions"].items() for i in txn["issue_ids"]], "new_issues": []})
     llm = SimpleNamespace(chat=chat)

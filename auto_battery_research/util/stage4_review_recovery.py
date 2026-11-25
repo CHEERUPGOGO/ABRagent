@@ -10,7 +10,7 @@ from types import SimpleNamespace
 from .scheme_ledger import atomic_write, digest, require_current, task_lock
 
 PUBLISH_FILES = ("design_scheme.json", "design_scheme.md", "stage4_repair_checkpoint.json", "rag_result.json",
-                 "experiment_plan.json", "experiment_report.json", "stage5_execution.json", "final_research_report.md", "numeric_consistency.json")
+                 "experiment_plan.json", "experiment_report.json", "stage5_execution.json", "report_record.json", "final_research_report.md", "final_research_report_supplement.md", "numeric_consistency.json")
 
 
 def _read(path):
@@ -35,6 +35,8 @@ def resume_stage4_review(mgr, writer_client=None, reviewer=None, *, restore_titl
     if not checkpoint.exists():
         return {"success": False, "error": "缺少原审核检查点，无法恢复既有预算"}
     prior = _read(checkpoint)
+    from .runtime_budgets import repair_options
+    configured_budget = repair_options((mgr.config.get("runtime_options") or {}).get("stage4_repair"))
     if not cache_resume_matches(prior, original, original.get("provenance") or {}):
         return {"success": False, "error": "检查点与当前正文、参数或证据不一致，不能恢复旧审核"}
     title_result = None
@@ -60,7 +62,7 @@ def resume_stage4_review(mgr, writer_client=None, reviewer=None, *, restore_titl
             history = folder.parent
             break
     if history is None:
-        if not restore_titles and not pending_structure_repair(prior):
+        if not restore_titles and not pending_structure_repair(prior, budget=configured_budget):
             return {"success": False, "error": "当前检查点没有可定位的格式修复，或审核/独立格式预算已耗尽"}
         history = root / datetime.now().strftime("%Y%m%d_%H%M%S_%f")
         history.mkdir(parents=True)
@@ -107,6 +109,7 @@ def resume_stage4_review(mgr, writer_client=None, reviewer=None, *, restore_titl
     retrieval = seed.get("retrieval_state") or {}
     pipeline = SimpleNamespace(writer=SimpleNamespace(llm=writer_client), reviewer=reviewer,
         scheme_context=original["ledger_view"], report_first=True,
+        stage4_repair_options=configured_budget,
         repair_checkpoint_path=stage / "stage4_repair_checkpoint.json",
         _extract_energy_claim=RAGPipeline._extract_energy_claim,
         retrieval_options={"supplement_rounds": retrieval.get("supplement_rounds", 0),
@@ -129,7 +132,8 @@ def resume_stage4_review(mgr, writer_client=None, reviewer=None, *, restore_titl
         raise ValueError("原报告正文与检查点不是精确前缀，拒绝替换")
     doc.update(final_answer=text + suffix, reviewer_output=verdict,
                review_completed=completed, review_passed=passed, confidence=verdict.get("confidence", "low"),
-               repair_audit=audit, retrieval_state=copy.deepcopy(seed["retrieval_state"]))
+               repair_audit=audit, repair_diagnoses=copy.deepcopy(seed.get("repair_diagnoses", [])),
+               retrieval_state=copy.deepcopy(seed["retrieval_state"]))
     if restore_titles:
         doc["design_structure"] = copy.deepcopy(seed["design_structure"])
     if doc.get("requirements"):
@@ -180,13 +184,15 @@ def _review_restored_titles(pipeline, seed, question, stage):
     """标题恢复不生成正文或检索；最多使用原预算中的一次完整审核，调用前持久化。"""
     from .adaptive_retrieval import init_state, select_context, options
     from .research_support import refresh_for_review, finish_review
+    from .runtime_budgets import bind_repair_options
+    limits = bind_repair_options(pipeline, seed)
     init_state(seed)
     text, params, evidence = seed["draft"], seed["parameters"], seed["evidence"]
     pipeline.reviewer.requirements = (seed.get("plan") or {}).get("requirements")
     refresh_for_review(pipeline, seed, text, params, evidence, repair_records=False)
     verdict = seed["reviewer_output"]
-    if (not seed.get("title_review_attempted") and seed.get("review_rounds", 0) < 6
-            and seed.get("review_service_failures", 0) < 2):
+    if (not seed.get("title_review_attempted") and seed.get("review_rounds", 0) < limits["review_rounds"]
+            and seed.get("review_service_failures", 0) < limits["review_service_failures"]):
         seed["title_review_attempted"] = True
         seed["review_rounds"] = seed.get("review_rounds", 0) + 1
         package = select_context(seed, purpose="final_review", text=text,
@@ -260,6 +266,16 @@ def _publish(mgr, task, stage, history, input_hash, original, prior, doc):
         if not passed:
             return {"success": False, "error": "恢复副本未通过阶段验收", "diagnostic": diagnostic, "history": str(history)}
         preview.get_stage_by_id(number).status = "FALLBACK" if diagnostic.get("observed", {}).get("is_fallback") else "PASSED"
+    # 先在副本生成本轮履历，再捕获报告记录，避免发布后改变Stage 4输入。
+    from threading import RLock
+    from auto_battery_research.workflow.stage_manager import StageManager
+    preview._lock = RLock()
+    preview.journal_file_path = stage / "stage_journals.json"
+    preview.get_all_stage_journal = lambda: _read(stage / "stage_journals.json") if (stage / "stage_journals.json").exists() else []
+    metadata = _read(history / "recovery.json")
+    StageManager.set_stage_journal(preview, 4,
+        notes=metadata.get("journal_note", "恢复原检查点，修复结构标记后完成学术审核；具体保留意见见报告。"),
+        key_findings={"status": preview.get_stage_by_id(4).status, "review_completed": doc["review_completed"]})
     result = run_synthesis_report(doc["target"], stage_manager=preview)
     checker = FinalReportChecker()
     checker.on_init(preview, {"id": 6}, mgr.config)
@@ -268,7 +284,7 @@ def _publish(mgr, task, stage, history, input_hash, original, prior, doc):
         "review_completed": doc["review_completed"], "repair_audit": doc["repair_audit"]})
     if not passed:
         return {"success": False, "error": "恢复副本未通过研报终审", "history": str(history), "diagnostic": diagnostic}
-    names = PUBLISH_FILES
+    names = tuple(PUBLISH_FILES) + ("stage_journals.json", "stage_journals.md")
     originals = {name: (task / name).read_bytes() for name in names if (task / name).exists()}
     stage_statuses = {s.id: s.status for s in mgr.stages}
     extra = [mgr.state_file_path, task / "stage_journals.json", task / "stage_journals.md"]
@@ -294,8 +310,6 @@ def _publish(mgr, task, stage, history, input_hash, original, prior, doc):
             for number in (4, 5):
                 mgr.get_stage_by_id(number).status = preview.get_stage_by_id(number).status
             mgr._save_state()
-            mgr.set_stage_journal(4, notes=metadata.get("journal_note", "恢复原检查点，修复结构标记后完成学术审核；具体保留意见见报告。"),
-                key_findings={"status": mgr.get_stage_by_id(4).status, "review_completed": doc["review_completed"]})
             publish_report_audit(task / "final_research_report.md", mgr.stages)
             checker.on_init(mgr, {"id": 6}, mgr.config)
             passed, diagnostic = checker.do_check(is_complete=True)

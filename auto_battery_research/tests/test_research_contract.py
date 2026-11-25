@@ -185,12 +185,17 @@ def test_analysis_report_pipeline_and_tamper_gate(tmp_path, monkeypatch):
     assert run_synthesis_report(mgr.target_goal, stage_manager=mgr)["success"]
     path = tmp_path / "final_research_report.md"
     body = path.read_text(encoding="utf-8")
-    assert reporting.render_summary(doc) in body
-    assert "400 Wh/kg" not in body and "缺少直接实证" in body
+    from auto_battery_research.util.report_record import attach
+    current_doc = attach(json.loads((tmp_path / "report_record.json").read_text(encoding="utf-8")))
+    assert reporting.render_summary(current_doc) in body
+    supplement_path = tmp_path / "final_research_report_supplement.md"
+    supplement = supplement_path.read_text(encoding="utf-8")
+    assert "400 Wh/kg" not in body and "缺少直接实证" in supplement
+    assert "当前回应与位置" not in body
     checker = FinalReportChecker()
     checker.on_init(mgr, {"id": 6}, mgr.config)
     assert checker.do_check(is_complete=True)[0]
-    path.write_text(body.replace("当前回答", "遗漏回答"), encoding="utf-8")
+    supplement_path.write_text(supplement.replace("当前回应与位置", "遗漏回应与位置"), encoding="utf-8")
     assert not checker.do_check(is_complete=True)[0]
 
 

@@ -108,7 +108,7 @@ def optimize(mgr, client=None):
                         "scheme": scheme, "diagnostic": diagnostic, "ranges_SI": diagnostic.get("ranges_SI", {}),
                         "simulation": {k: v for k, v in result.items() if k != "discharge_curve"},
                         "ledger": doc.get("ledger_view"), "previous_attempts": state["rounds"]}, ensure_ascii=False),
-                    temperature=.1, trace_tag="geometry_input_repair" if mode == "input_repair" else "geometry_optimize")
+                    temperature=.1, json_mode=True, trace_tag="geometry_input_repair" if mode == "input_repair" else "geometry_optimize")
                 proposal = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
                 changes = normalize_changes(proposal.get("revisions"))
                 reason = proposal.get("reason") or ("修复 PINN 输入范围/包络" if mode == "input_repair" else "有限几何能量优化")

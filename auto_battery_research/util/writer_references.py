@@ -43,12 +43,15 @@ def visible(body):
 def collect_errors(data, current, first=None):
     """独立扫描字段、所有正文引用与未绑定声明，不因首个错误停止。"""
     issues = []
-    def add(code, path, reason):
-        item = {"code": code, "path": path, "reason": str(reason)}
+    def add(code, path, reason, **details):
+        item = dict(code=code, path=path, reason=str(reason), **details)
         if item not in issues:
             issues.append(item)
     if not isinstance(data, dict):
         return [{"code": "PROTOCOL", "path": [], "reason": str(first or "Writer输出必须为JSON对象")}]
+    from .writer_titles import issues as title_issues
+    for item in title_issues(data):
+        add(**item)
     params = copy.deepcopy(current or {})
     proposed = data.get("parameters")
     if not isinstance(proposed, dict):
@@ -83,7 +86,8 @@ def collect_errors(data, current, first=None):
         details = getattr(first, "issues", None)
         if details:
             for item in details:
-                add(item.get("code", "PROTOCOL"), item["path"], item["reason"])
+                add(item.get("code", "PROTOCOL"), item["path"], item["reason"],
+                    **{k: v for k, v in item.items() if k not in ("code", "path", "reason")})
         elif str(first) not in [item["reason"] for item in issues]:
             add("PROTOCOL", [], first)
     return issues
@@ -143,7 +147,10 @@ def apply_references(data, changes, current):
     parameters = declarations(data, current)
     eligible = {issue["path"][1] for issue in collect_errors(data, current) if issue["code"] == "UNBOUND_PARAMETER"}
     bodies = {tuple(path): body for path, body in body_entries(data)}
-    document = "\n".join(visible(body) for body in bodies.values())
+    # 前一轮已绑定的分母仍是正文声明；展开后供等价核对，不改本轮替换坐标。
+    document = "\n".join(visible(TOKEN.sub(
+        lambda m: display(m[1], m[2], parameters) if m[1] == "param" and m[2] in parameters else m[0], body))
+        for body in bodies.values())
     edits, records = {}, []
     for index, change in enumerate(changes):
         if not isinstance(change, dict) or set(change) != {"field", "body_path", "quote", "value_quote"}:
@@ -171,15 +178,22 @@ def apply_references(data, changes, current):
         elif (value_quote[0].isascii() and value_quote[0].isalnum() and start and body[start - 1].isascii() and body[start - 1].isalnum()
               or value_quote[-1].isascii() and value_quote[-1].isalnum() and end < len(body) and body[end].isascii() and body[end].isalnum()):
             raise ValueError("文字声明不能截取其他材料/路线名称的子串：" + field)
-        if not equivalent(field, parameters[field], value_quote, document):
+        literal_equal = equivalent(field, parameters[field], value_quote, document)
+        semantic_text = (isinstance(parameters[field].get("value"), str)
+                         and parameters[field].get("quantity_kind") == "text")
+        if not literal_equal and not semantic_text:
             raise ValueError("原文与参数值、单位或计量分母不能确认等价：" + field)
         spans = edits.setdefault(tuple(path), [])
         if any(start < e and end > s for s, e, _ in spans):
             raise ValueError("引用替换范围重叠，不能复用同一量值")
         replacement = "{{param:" + field + "}}"
         spans.append((start, end, replacement))
-        records.append(dict(index=index, field=field, parameter=parameters[field], body_path=path,
-                            body=body, start=start, end=end, quote=quote, value_quote=value_quote, replacement=replacement))
+        record = dict(index=index, field=field, parameter=parameters[field], body_path=path,
+                      body=body, start=start, end=end, quote=quote, value_quote=value_quote, replacement=replacement)
+        if not literal_equal:
+            # 只是待审候选；完整文字含义必须由独立复核确认，不能据局部近义自动放行。
+            record["equivalence_mode"] = "semantic_text"
+        records.append(record)
     result = copy.deepcopy(data)
     for path, spans in edits.items():
         node = result
@@ -215,10 +229,15 @@ def verify_references(client, data, repaired, records, current, state, save):
                 '你独立审核正文引用绑定，只核对绑定语义，不修科学内容，不假定补丁正确。逐项检查同一材料/样品、'
                 '工况、主值/目标/上限/实验封顶、比例分母及步骤；文献原值不能绑定主方案，候选/对照不能冒充主组。'
                 '同值但语义不明、缺失条件、否定/假设或范围关系被破坏必须supported=false。'
+                'equivalence_mode=semantic_text表示文字未通过逐字等价检查，须特别核对完整body及quote是否'
+                '明确支持parameter.value的全部含义，包括元素、价态、占位、路线、肯定/否定和候选范围。'
+                '例如“A位为Li位；A位引入Na+”可与“Na占Li位（A位）”等价；只出现Na而未声明Li位不能等价。'
+                '将value_quote替换为parameter.value不能新增原文没有的结论、删除限制或改变句子含义；'
+                '不能用参数的meaning/source说明替代正文证据，不能用科学常识补缺失关系；任一含义无明确依据则supported=false。'
                 '返回JSON {"input_hash":"给定哈希","bindings":[{"index":0,"supported":true或false,"reason":"具体原文依据或歧义"}]}，'
                 '每个index必须出现一次，不能遗漏。',
                 json.dumps(dict(request, input_hash=signature), ensure_ascii=False), temperature=0,
-                trace_tag="writer_reference_verify")
+                json_mode=True, trace_tag="writer_reference_verify")
             save()
         finally:
             if had_single:

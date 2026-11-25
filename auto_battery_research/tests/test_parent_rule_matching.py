@@ -48,7 +48,8 @@ def test_parent_matching_keeps_c1_c3_and_does_not_exempt_unknown_electrolyte():
     params["electrolyte.material"] = row("carbonate_ec")
     rules = RelationEngine().check_scheme(assemble_components({}, params))
     assert not rules["rule_checks"]["rejects"]
-    assert {r["rule_id"] for r in rules["rule_checks"]["violations"]} >= {"C1", "C3"}
+    assert not rules["rule_checks"]["violations"]
+    assert {r["rule_id"] for r in rules["recommendations"]} >= {"C1", "C3"}
     params.pop("electrolyte.material")
     params["electrolyte.formulation"] = row("1 mol/L LiPF6/EC+未知溶剂")
     rules = RelationEngine().check_scheme(assemble_components({}, params))

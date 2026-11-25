@@ -8,21 +8,24 @@ import re
 import unicodedata
 
 from .scheme_ledger import digest
+from .runtime_budgets import budget_options, checkpoint_repair_options
 
 VERSION = 1
-DEFAULTS = {"supplement_rounds": 2, "rebuild_rounds": 1, "queries_per_round": 3,
-            "context_passages": 25, "context_chars": 60000, "service_retries": 1}
+DEFAULTS = budget_options("stage4_retrieval")
 DEFECTS = {"wrong_subject", "wrong_source", "systematic_filter"}
 NON_RETRIEVAL = {"format", "protocol", "calculation", "binding", "user_decision", "measurement", "misreading"}
-CAUSES = NON_RETRIEVAL | {"evidence_gap", "missing_conditions", "source_gap", "conflicting_evidence", "context_omission"}
+SUPPLEMENT_CAUSES = {"evidence_gap", "missing_conditions", "source_gap", "conflicting_evidence"}
+CAUSES = NON_RETRIEVAL | SUPPLEMENT_CAUSES | {"context_omission"}
 DIAGNOSTIC_PROMPT = '''
 额外返回retrieval_diagnostics=[{"requirement_id":"原需求ID", "action":"reuse|supplement|rebuild|stop",
 "cause":"evidence_gap|missing_conditions|source_gap|conflicting_evidence|context_omission|misreading|format|protocol|calculation|binding|user_decision|measurement",
-"gap":"缺少的具体信息或证据", "reason":"动作理由", "evidence_ids":["已有可用段落ID"],
+"gap":"缺少的具体信息或证据", "reason":"动作理由", "evidence_ids":["已有相关段落ID，不表示足以回答缺口"],
 "queries":["研究对象+缺失指标/条件，不能只是审核套话"],
 "db_type":"literature|textbook|both", "focus_component":null或"cathode|anode|electrolyte",
 "focus_labels":[], "use_label_filter":false}]。
-逐问题诊断，混合写作错误不应掩盖独立证据缺口。已归档有答案时reuse，即使此前没送入上下文；
+逐问题诊断，混合写作错误不应掩盖独立证据缺口。已归档证据足以回答当前具体问题时reuse，即使此前没送入上下文；
+已有单掺、异体系或部分条件等相关资料，但仍缺比较依据、直接证据或关键条件时supplement。
+evidence_ids仅关联已有资料和同源查询锚点，填写它不会阻止supplement；不能把相关性当作充分性。
 格式/单位换算/参数绑定/误读先修复，不查询。用户决策或本批材料实测缺口stop。
 缺倍率/圈数/比例/工艺或独立来源时supplement；引用已知论文可查询同源条件/邻近段落；证据矛盾时查反证与条件。
 retrieval_initial_defect=null或{"type":"wrong_subject|wrong_source|systematic_filter",
@@ -30,8 +33,10 @@ retrieval_initial_defect=null或{"type":"wrong_subject|wrong_source|systematic_f
 "archive_cannot_resolve":true,"evidence_ids":[],"queries":[],"db_type":"literature|textbook|both",
 "focus_component":null,"focus_labels":[],"use_label_filter":false}。
 rebuild只用于首次策略的严重整体错误，至少一半核心研究要求受影响且不少于两项。低置信度、单个候选无文献、
-一次补检索/修复失败不是rebuild理由。窗口仅初始检索评估和首次有效审核开放，关闭后不能建议自动重建。
+一次补检索/修复失败不是rebuild理由。rebuild窗口仅初始检索评估和首次有效审核开放，关闭后不能建议自动重建。
+rebuild窗口关闭后，有剩余补检索预算时仍可针对新缺口supplement。低置信度源于证据不足时给出具体缺口与查询。
 检索改善不允许修改原课题、用户锁定或替换材料方案。只使用已有库，不能新增网络文献采集。
+仅输出一个完整JSON对象，不在对象外添加说明或另一个候选响应。
 '''
 GAIN_PROMPT = '''只评估本轮证据增益，不改正文和方案。输出JSON {"gains":[{"requirement_id":"目标ID",
 "kind":"conditions|independent_source|conflict_explanation|direct_evidence|counter_evidence",
@@ -41,14 +46,7 @@ GAIN_PROMPT = '''只评估本轮证据增益，不改正文和方案。输出JSO
 
 
 def options(pipeline):
-    raw = getattr(pipeline, "retrieval_options", {}) or {}
-    result = dict(DEFAULTS)
-    # 默认及上限均按批准预算；配置可降低，不能意外开启深检索。
-    for key, maximum in DEFAULTS.items():
-        value = raw.get(key, maximum)
-        if isinstance(value, int) and not isinstance(value, bool) and value >= 0:
-            result[key] = min(value, maximum)
-    return result
+    return budget_options("stage4_retrieval", getattr(pipeline, "retrieval_options", None))
 
 
 def channel_status(diagnostics, results):
@@ -105,7 +103,33 @@ def strategy(seed):
 
 
 def _decode(raw):
-    value = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
+    """读取唯一完整JSON，兼容说明文字和代码围栏，重复键及破损外层仍报错。"""
+    from .writer_protocol import decode
+    text = raw.strip()
+    blocks = []
+    if not text.startswith(("{", "[")):
+        blocks = list(re.finditer(r"```(?:json)?\s*\n?(.*?)```", text, re.S | re.I))
+    if blocks:
+        if len(blocks) != 1:
+            raise ValueError("检索诊断包含多份JSON，无法确定唯一响应")
+        block = blocks[0]
+        candidate = block[1].strip()
+        surrounding = text[:block.start()] + text[block.end():]
+    else:
+        start = 0 if text.startswith(("{", "[")) else text.find("{")
+        if start < 0:
+            raise ValueError("检索诊断未包含完整JSON对象")
+        candidate, surrounding = text[start:], text[:start]
+    decoder = json.JSONDecoder()
+    _, end = decoder.raw_decode(candidate)
+    value = decode(candidate[:end])
+    surrounding += "\n" + candidate[end:]
+    for match in re.finditer(r"[\{\[]", surrounding):
+        try:
+            decoder.raw_decode(surrounding, match.start())
+        except json.JSONDecodeError:
+            continue
+        raise ValueError("检索诊断包含多份JSON，无法确定唯一响应")
     if not isinstance(value, dict):
         raise ValueError("检索诊断须为对象")
     return value
@@ -124,8 +148,11 @@ def _tokens(value):
 
 
 def evidence_package(evidence, *, text="", issues=(), requirement_items=(), preferred_ids=(), working_ids=None,
-                     limit=25, char_limit=60000):
+                     limit=None, char_limit=None):
     """引用/新增证据优先，按要求轮转选取；不足容量记录未纳入项，不改归档原文。"""
+    defaults = budget_options("stage4_retrieval")
+    limit = defaults["context_passages"] if limit is None else limit
+    char_limit = defaults["context_chars"] if char_limit is None else char_limit
     archive = {e.get("passage_id"): e for e in evidence if isinstance(e, dict) and e.get("passage_id")}
     cited = re.findall(r"\[([^\]\n]+)\]", text)
     issue_text = " ".join(str(i.get(k, "")) for i in issues if isinstance(i, dict) for k in ("quote", "reason", "suggestion", "gap"))
@@ -188,7 +215,9 @@ def _validated_diagnostics(review, seed):
             continue
         if not isinstance(d.get("gap"), str) or not d["gap"].strip() or not isinstance(d.get("reason"), str) or not d["reason"].strip():
             continue
-        result.append(copy.deepcopy(d))
+        item = copy.deepcopy(d)
+        item["evidence_ids"] = ids
+        result.append(item)
     return result
 
 
@@ -298,13 +327,11 @@ def next_action(review, seed, *, phase, config):
         if d["action"] == "stop" or d.get("cause") in NON_RETRIEVAL:
             state["stopped_gaps"][gap] = d["reason"]
             continue
-        if d["action"] != "supplement" or gap in state["stopped_gaps"]:
+        if d["action"] != "supplement" or d["cause"] not in SUPPLEMENT_CAUSES or gap in state["stopped_gaps"]:
             continue
         if d["evidence_ids"]:
-            # 模型已指出现存可用证据，先把它交给修复而不是重新召回。
+            # 相关资料可继续供修复/比较使用；显式证据缺口仍按建议补检索。
             state["preferred_ids"] = list(dict.fromkeys(d["evidence_ids"] + state["preferred_ids"]))
-            if d.get("cause") not in ("missing_conditions", "source_gap", "conflicting_evidence"):
-                continue
         if state["supplement_rounds"] >= config["supplement_rounds"]:
             state["stopped_gaps"][gap] = "针对性补检索预算耗尽"
             continue
@@ -318,7 +345,7 @@ def next_action(review, seed, *, phase, config):
             chosen = [d]
             # 同路由的独立缺口可共享一批最多3个查询，避免两轮预算只能覆盖两个要求。
             for other in ds:
-                if other is d or other["action"] != "supplement" or other.get("cause") in NON_RETRIEVAL or _gap_key(other) in state["stopped_gaps"]:
+                if other is d or other["action"] != "supplement" or other["cause"] not in SUPPLEMENT_CAUSES or _gap_key(other) in state["stopped_gaps"]:
                     continue
                 try:
                     other_spec = _search_spec(other, seed)
@@ -327,8 +354,6 @@ def next_action(review, seed, *, phase, config):
                 if other_spec != spec:
                     continue
                 if not isinstance(other.get("queries", []), list):
-                    continue
-                if other["evidence_ids"] and other.get("cause") not in ("missing_conditions", "source_gap", "conflicting_evidence"):
                     continue
                 new_queries = query_list(qs + other.get("queries", []), state, spec, config["queries_per_round"])
                 if new_queries != qs:
@@ -429,7 +454,7 @@ def execute_action(pipeline, seed, action, save, config):
             retriever.disable_component_inference = action["spec"]["focus_component"] is None
             retriever.skip_extra_query = True
         response = pipeline.retrieve_context(question=" ".join(action["queries"]), queries=action["queries"],
-            previous_evidence=None, top_k=25, **action["spec"])
+            previous_evidence=None, top_k=config["results_per_round"], **action["spec"])
         if response.get("status") == "ERROR":
             raise RuntimeError(str(response.get("channel_diagnostics") or response.get("error") or "检索通道失败"))
     except Exception as exc:
@@ -439,7 +464,7 @@ def execute_action(pipeline, seed, action, save, config):
             event["service_retry"] = True
             save()
             try:
-                response = pipeline.retrieve_context(question=" ".join(action["queries"]), queries=action["queries"], previous_evidence=None, top_k=25, **action["spec"])
+                response = pipeline.retrieve_context(question=" ".join(action["queries"]), queries=action["queries"], previous_evidence=None, top_k=config["results_per_round"], **action["spec"])
                 if response.get("status") == "ERROR":
                     raise RuntimeError("重试后检索通道仍失败")
             except Exception as retry_error:
@@ -474,12 +499,14 @@ def execute_action(pipeline, seed, action, save, config):
     client = getattr(getattr(pipeline, "reviewer", None), "llm", None)
     if candidates and client is not None and getattr(client, "available", False):
         try:
-            old_pack, _ = evidence_package([e for e in seed["evidence"] if e["passage_id"] in before_ids], issues=action["diagnostics"], limit=12)
+            old_pack, _ = evidence_package([e for e in seed["evidence"] if e["passage_id"] in before_ids],
+                issues=action["diagnostics"], limit=config["gain_previous_passages"], char_limit=config["context_chars"])
             gain_pack, gain_context = evidence_package(candidates, preferred_ids=added,
-                requirement_items=[requirements(seed)[r] for r in action["requirement_ids"]], limit=25)
+                requirement_items=[requirements(seed)[r] for r in action["requirement_ids"]],
+                limit=config["context_passages"], char_limit=config["context_chars"])
             event["gain_context"] = gain_context
             raw = client.chat(GAIN_PROMPT, json.dumps({"goal": seed.get("question"), "requirements": {r: requirements(seed)[r] for r in action["requirement_ids"]},
-                "gaps": action["diagnostics"], "previous_evidence": old_pack, "candidates": gain_pack}, ensure_ascii=False), temperature=0.1, trace_tag="retrieval_gain")
+                "gaps": action["diagnostics"], "previous_evidence": old_pack, "candidates": gain_pack}, ensure_ascii=False), temperature=0.1, json_mode=True, trace_tag="retrieval_gain")
             gains = validate_gains(_decode(raw), action, seed, gain_pack)
         except Exception as exc:
             event["gain_error"] = str(exc)
@@ -504,7 +531,7 @@ def execute_action(pipeline, seed, action, save, config):
 
 def initial_assessment(pipeline, seed, save):
     state = init_state(seed, fresh=True)
-    state.setdefault("budget", options(pipeline))
+    state["budget"] = options(pipeline)
     if state["inflight"] is not None:
         state["rounds"][state["inflight"]]["status"] = "INTERRUPTED"
         state["inflight"] = None
@@ -517,7 +544,7 @@ def initial_assessment(pipeline, seed, save):
     save()
     initial = seed.get("retrieval") or {}
     if initial.get("status") == "ERROR":
-        # 原策略服务重试不占补检索预算，不视为新策略；全任务最多一次。
+        # 原策略服务重试不占补检索预算，不视为新策略；共享配置中的服务重试配额。
         if state["service_retries"] < options(pipeline)["service_retries"]:
             state["service_retries"] += 1
             save()
@@ -525,7 +552,7 @@ def initial_assessment(pipeline, seed, save):
                 st = state["initial_strategy"]
                 retry = pipeline.retrieve_context(question=seed.get("question", ""), queries=st["queries"],
                     db_type=st["db_type"], focus_component=st["focus_component"], focus_labels=st["focus_labels"],
-                    use_label_filter=st["use_label_filter"], previous_evidence=None, top_k=50)
+                    use_label_filter=st["use_label_filter"], previous_evidence=None, top_k=options(pipeline)["initial_retry_results"])
                 seed["retrieval"] = retry
                 if retry.get("status") != "ERROR":
                     _, added = merge_archive(seed, retry.get("results", []))
@@ -549,7 +576,7 @@ def initial_assessment(pipeline, seed, save):
             json.dumps({"goal": seed.get("question"), "requirements": list(requirements(seed).values()), "strategy": state["initial_strategy"],
                         "channels": (seed.get("retrieval") or {}).get("channel_diagnostics", []), "evidence": pack,
                         "archive_manifest": [{"passage_id": e["passage_id"], "source": e.get("source"), "preview": e.get("text", "")[:300]} for e in seed["evidence"]]}, ensure_ascii=False),
-            temperature=0.1, trace_tag="retrieval_assess")
+            temperature=0.1, json_mode=True, trace_tag="retrieval_assess")
         review = _decode(raw)
         state["initial_assessment"] = review
         action = next_action(review, seed, phase="initial", config=options(pipeline))
@@ -561,7 +588,7 @@ def initial_assessment(pipeline, seed, save):
 
 def after_review(pipeline, seed, review, save):
     state = init_state(seed)
-    state.setdefault("budget", options(pipeline))
+    state["budget"] = options(pipeline)
     if state["inflight"] is not None:
         state["rounds"][state["inflight"]]["status"] = "INTERRUPTED"
         state["diagnostics"].append("前次检索中断，已消耗预算保留，不自动重发")
@@ -606,22 +633,25 @@ def source_neighbours(pipeline, seed, action):
                 if isinstance(index, int) and isinstance(previous, int) and abs(index - previous) <= 2:
                     score += 4
             rows.append((score, e))
-    return [e for _, e in sorted(rows, key=lambda r: -r[0])[:8]]
+    return [e for _, e in sorted(rows, key=lambda r: -r[0])[:options(pipeline)["source_neighbours"]]]
 
 
-def has_pending(seed):
+def has_pending(seed, *, retrieval_options=None, repair_options=None):
     # 正文生成失败时，补证据不能恢复正文；保留预算与诊断，避免空跑耗尽阶段重试。
     if not (seed.get("draft") or "").strip() and (seed.get("writer_output") or {}).get("error"):
         return False
     state = seed.get("retrieval_state")
     if not isinstance(state, dict) or state.get("version") != VERSION or state.get("inflight") is not None:
         return False
-    if seed.get("repair_rounds", 0) >= 3 or seed.get("review_rounds", 0) >= 6 or seed.get("protocol_exhausted"):
+    limits = checkpoint_repair_options(seed, repair_options)
+    if (seed.get("repair_rounds", 0) >= limits["content_rounds"]
+            or seed.get("review_rounds", 0) >= limits["review_rounds"] or seed.get("protocol_exhausted")):
         return False
     shadow = copy.deepcopy(seed)
     review = {"retrieval_diagnostics": state.get("pending_diagnostics", [])}
     try:
-        return next_action(review, shadow, phase="later_review", config=state.get("budget", DEFAULTS))["action"] == "supplement"
+        config = budget_options("stage4_retrieval", retrieval_options if retrieval_options is not None else state.get("budget"))
+        return next_action(review, shadow, phase="later_review", config=config)["action"] == "supplement"
     except (ValueError, TypeError, KeyError):
         return False
 

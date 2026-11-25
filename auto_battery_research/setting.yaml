@@ -51,6 +51,9 @@ embedding:
   ollama_base_url: "$(OLLAMA_BASE_URL: http://localhost:11434)"
 
 runtime_options:
+  # v3仅在隔离课题显式启用；真实模型对照验收完成前保留v2默认。
+  stage4_writer:
+    contract_version: 2
   # 默认优先交付附条件报告；科研审核和物理验证状态独立保留。
   report_first: true
   # Stage 5 (PINN) 默认启用: SPM PINN 模型已接入 (pinn/models/)，方案体系匹配
@@ -59,12 +62,40 @@ runtime_options:
   enable_llm_checker: true
   strict_mode: true
   max_retries_per_stage: 3
+  # Stage 4 修复/审核预算：只在 YAML 设定，不再受代码默认值截断；0 表示关闭对应动作。
+  stage4_repair:
+    protocol_rounds: 5              # v2参数协议轮次；扩展权限每轮含建议、补丁及只读复核
+    format_rounds: 5                # v2 局部格式修复
+    content_rounds: 5               # v2 科学正文局部修复
+    review_rounds: 6                # v2 科学审核总次数（含最终复核）
+    review_service_failures: 2      # 报告优先模式可累计的审核服务失败次数
+    strict_review_service_failures: 3  # 非报告优先模式对应预算
+    patch_attempts: 2               # 兼容旧补丁接口时，每轮生成/格式重试总次数
+    v3_regular_rounds: 2            # v3 常规科学修复/证据改善轮数
+    v3_final_rounds: 1              # v3 终审修复轮数；常规阶段预留对应修复与科学复核机会
+    v3_requests:                    # v3 持久请求配额；同一请求签名仍不自动重发
+      planner: 1
+      writer: 1
+      writer_retry: 1
+      protocol_patch: 1
+      repair: 3
+      scientific_review: 6
+      repair_verify: 3
+      reference_verify: 1
+      consistency: 2
+      consistency_retry: 2
+      stage5_consistency: 1
   # 只有首次整体检索偏差才能重建策略；局部证据缺口有限补检索，预算跨重启保持。
   stage4_retrieval:
     supplement_rounds: 2
     rebuild_rounds: 1
     queries_per_round: 3
+    results_per_round: 25          # 补检索和重建策略时的检索 top_k
+    initial_retry_results: 50      # 首次检索服务重试的 top_k
+    source_neighbours: 8           # 同源邻近段落补充条数
+    gain_previous_passages: 12     # 证据增益审核中的旧证据对照条数
     context_passages: 25
+    context_passages_analysis: 15   # 非推理类 Writer 上下文条数
     context_chars: 60000
     service_retries: 1
   # LLM 全量轨迹记录 (opt-in, 默认关): 开启后完整保留每次 LLM 调用的输入/输出/token/耗时

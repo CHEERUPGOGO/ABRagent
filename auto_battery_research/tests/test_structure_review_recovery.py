@@ -23,6 +23,7 @@ def draft():
 def pipeline(tmp_path, review, llm=None):
     return SimpleNamespace(
         reviewer=SimpleNamespace(run=review, llm=llm), writer=SimpleNamespace(llm=llm),
+        stage4_repair_options={"content_rounds": 3, "format_rounds": 3},
         _extract_energy_claim=lambda text: None, repair_checkpoint_path=tmp_path / "checkpoint.json",
     )
 
@@ -224,7 +225,7 @@ def test_missing_section_gets_content_patch_before_scientific_review(tmp_path):
 def test_structure_recovery_respects_existing_budget(counter, limit):
     seed = {"draft": draft() + "\n\n| 字段 | 对照**\n\n完整后续段落。",
             "reviewer_output": {"review_status": "STRUCTURE_INVALID"}, counter: limit}
-    assert not pending_structure_repair(seed)
+    assert not pending_structure_repair(seed, budget={"content_rounds": 3, "format_rounds": 3})
 
 
 def test_restored_structure_review_can_issue_and_commit_scientific_patch(tmp_path):

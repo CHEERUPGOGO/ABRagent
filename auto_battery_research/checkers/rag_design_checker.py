@@ -47,12 +47,14 @@ class RAGDesignChecker(BaseChecker):
             payload, error = self.load_json_safe(str(scheme_json_file))
             if not error and isinstance(payload, dict) and payload.get("delivery_contract") == 1:
                 from auto_battery_research.util.adaptive_retrieval import has_pending
+                runtime = self.config.get("runtime_options") or {}
                 checkpoint = scheme_json_file.parent / "stage4_repair_checkpoint.json"
                 if checkpoint.exists():
                     saved, load_error = self.load_json_safe(str(checkpoint))
                     from auto_battery_research.util.design_repair import structure_recovery_available
                     structure_pending = (not load_error and isinstance(saved, dict)
-                                         and structure_recovery_available(scheme_json_file.parent, payload, saved))
+                                         and structure_recovery_available(scheme_json_file.parent, payload, saved,
+                                                                          budget=runtime.get("stage4_repair", {})))
                     if structure_pending:
                         from auto_battery_research.util.adaptive_retrieval import cache_resume_matches
                         if not cache_resume_matches(saved, payload, payload.get("provenance") or {}):
@@ -61,12 +63,17 @@ class RAGDesignChecker(BaseChecker):
                         return False, self.build_diagnostic(passed=False, error_code="STAGE4_STRUCTURE_REPAIR_PENDING",
                             error_msg="正文存在可定位的格式错误，独立格式预算和审核预算尚未耗尽",
                             next_action="调用RunRAGDesign恢复检查点，格式修补不占科学内容修复预算并继续学术审核")
-                    if not load_error and isinstance(saved, dict) and has_pending(saved):
+                    if not load_error and isinstance(saved, dict) and has_pending(saved,
+                            retrieval_options=runtime.get("stage4_retrieval", {}), repair_options=runtime.get("stage4_repair", {})):
                         return False, self.build_diagnostic(passed=False, error_code="STAGE4_RETRIEVAL_PENDING",
                             error_msg="存在有预算且尚未执行的针对性补检索，不能提前推进",
                             next_action="调用RunRAGDesign恢复当前检查点，仅补证据及局部修复")
                 from auto_battery_research.util.report_readiness import check
                 failures = check(scheme_json_file.parent, payload)
+                if payload.get("writer_contract_version") == 3:
+                    from auto_battery_research.util.stage4_publication import design_markdown
+                    if scheme_md_file.read_text(encoding="utf-8") != design_markdown(payload):
+                        failures.append("v3 Markdown与当前内容树不一致")
                 if payload.get("design_structure"):
                     from auto_battery_research.util.design_structure import structure_issues
                     failures.extend(structure_issues(scheme_md_file.read_text(encoding="utf-8"), payload["design_structure"]))
@@ -146,6 +153,15 @@ class RAGDesignChecker(BaseChecker):
             )
 
         if json_data.get("design_structure"):
+            if json_data.get("writer_contract_version") == 3:
+                from auto_battery_research.util.stage4_session import document_errors
+                from auto_battery_research.util.stage4_publication import publication_errors, design_markdown
+                v3_errors = document_errors(json_data) + publication_errors(scheme_json_file.parent)
+                if md_content != design_markdown(json_data):
+                    v3_errors.append("v3 Markdown与当前内容树和参数视图不一致")
+                if v3_errors:
+                    return False, self.build_diagnostic(passed=False, error_code="V3_PUBLICATION_INVALID",
+                        error_msg="；".join(v3_errors), next_action="恢复当前会话发布事务或显式重建，不能自动重生成")
             from auto_battery_research.util.design_structure import structure_issues
             structure_errors = structure_issues(md_content, json_data["design_structure"])
             if structure_errors:
@@ -253,7 +269,7 @@ class RAGDesignChecker(BaseChecker):
                 error_code="RELATION_ENGINE_VIOLATION",
                 error_msg=f"RelationEngine 规则校验失败: violations={violations}, rejects={rejects}, unverified={unverified}, energy_check={energy_check}",
                 observed={"rule_checks": rule_checks, "unverified": unverified},
-                expected="材料组合通过 RelationEngine 规则检验（C1–C3 无未缓解违规、C7 扣电选材匹配、无 C0 未知材料违规且能量密度核算相符，置信度非 low）",
+                expected="材料组合通过 RelationEngine 规则检验（C1/C3仅为建议；C2无未缓解违规、C7扣电选材匹配、无C0未知材料违规且能量密度核算相符，置信度非low）",
                 next_action="调整正极/负极/电解液搭配，补充有效缓解措施或排除不相容/未经验证的组分",
             )
 
@@ -294,7 +310,7 @@ class RAGDesignChecker(BaseChecker):
                 "重新执行 RunRAGDesign 生成 v1.1 几何声明块")
 
         from auto_battery_research.tools.geometry_revision import collect_geometry_violations, resolve_input_ranges
-        ranges = resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"))
+        ranges = resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"), scheme=scheme)
         range_violations = collect_geometry_violations(geo, ranges, anode_id=scheme.get("anode"))
 
         geo_prov = geo.get("provenance") if isinstance(geo.get("provenance"), dict) else {}

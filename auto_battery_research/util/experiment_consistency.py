@@ -76,6 +76,10 @@ def paragraph_pending(paragraph, section, doc, snapshot):
     """按明确字段引用及组件操作判断影响范围，不擅自解释争议配方。"""
     if section not in ("fabrication", "assembly", "testing"):
         return []
+    from .experiment_alignment import PROFILE, execution_conditions
+    if PROFILE.search(paragraph):
+        profiles = execution_conditions(doc)["profiles"]
+        paragraph = PROFILE.sub(lambda m: " ".join("{{" + p + "}}" for p in profiles.get(m[1], {}).get("refs", [])), paragraph)
     refs = TOKEN.findall(paragraph)
     names = {"cathode": "正极", "anode": "负极", "electrolyte": "电解液", "separator": "隔膜",
              "current_collector": "集流体", "condition": "测试条件", "process": "工艺"}

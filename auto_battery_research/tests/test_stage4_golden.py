@@ -11,8 +11,7 @@
 校准说明 (fixture 数值依据, 勿随意改动):
 - RelationEngine 候选表 NCM811 (3.8 V x 200 mAh/g) + li_metal 折算 0.50
   → estimate_scheme_energy = 380 Wh/kg; ENERGY_TOLERANCE=0.35 → 声称 400/410 均通过。
-- 已验证的硬违规组合是 li_metal + carbonate_ec (常规碳酸酯) —— 原计划中的
-  "石墨 + 420 Wh/kg" 在 lhce 体系下并非硬违规, 故负面对照采用 li_metal+碳酸酯。
+- C1/C3 为非阻断建议；负面对照采用 LNMO + 裸碳酸酯，验证 C2 仍能否决。
 """
 
 import json
@@ -132,8 +131,8 @@ GOLDEN_WRITER_DRAFT = """## 目标与设计路线
 - 超薄锂金属负极的大面容量均匀沉积数据缺口
 """
 
-# 负面对照 1: 锂金属 + 常规碳酸酯电解液 (已验证的 C 规则硬违规组合)
-BAD_ELECTROLYTE_DRAFT = """## 目标与设计路线
+# 建议对照：锂金属 + 常规碳酸酯电解液，仅触发 C3 建议。
+CARBONATE_DRAFT = """## 目标与设计路线
 面向 400 Wh/kg 级高比能液态锂金属电池，采用高镍三元正极匹配锂金属负极与常规碳酸酯电解液。[golden-P1]
 
 ---
@@ -159,6 +158,9 @@ BAD_ELECTROLYTE_DRAFT = """## 目标与设计路线
 ## 风险与数据缺口
 - 常规碳酸酯体系与锂金属负极的界面副反应风险
 """
+
+# 硬违规对照：只切换为LNMO，排除高镍别名干扰，保留C2质询。
+BAD_ELECTROLYTE_DRAFT = CARBONATE_DRAFT.replace("NCM811", "LNMO").replace("高镍三元", "尖晶石")
 
 # 负面对照 2: 全文不出现任何电解液实体 → scheme 缺 electrolyte
 NO_ELECTROLYTE_DRAFT = """## 目标与设计路线
@@ -208,7 +210,9 @@ def _install_scripted_llm(monkeypatch, writer_draft: str):
     structured_writer = _writer_sections(writer_draft)
     writer_draft, _ = render_design(structured_writer)
 
-    def fake_chat(self, system_prompt, user_prompt, temperature=None, trace_tag=None):
+    def fake_chat(self, system_prompt, user_prompt, temperature=None, trace_tag=None, *, json_mode=False):
+        if trace_tag == "experiment_alignment_review":
+            return json.dumps({"subject": json.loads(user_prompt)["subject"], "status": "consistent", "issues": []})
         if trace_tag == "research_narrative":
             request = json.loads(user_prompt)
             source = next(s for s in request["sources"] if s["id"].startswith("answers:") and s["text"])
@@ -428,11 +432,28 @@ def test_offline_golden_deterministic_replay(tmp_path, monkeypatch):
     assert runs[0] == runs[1], "golden 输入必须产出逐字节等价的方案与证据集合 (时间戳除外)"
 
 
+def test_offline_golden_advisory_does_not_block_gate(tmp_path, monkeypatch):
+    """C3建议随真实审核与适配器落盘，不能强制压低置信度或阻断门禁。"""
+    _install_scripted_llm(monkeypatch, CARBONATE_DRAFT)
+    pipeline = _build_seeded_pipeline(tmp_path)
+    task_dir = tmp_path / "task_advisory"
+    res = _run_adapter(pipeline, task_dir, GOLDEN_GOAL)
+    assert res["success"] is True, res
+    assert res["review_status"] == "APPROVED"
+    contract = json.loads((task_dir / "design_scheme.json").read_text(encoding="utf-8"))
+    assert contract["scheme"]["electrolyte"] == "carbonate_ec"
+    assert contract["confidence"] == "high"
+    assert not contract["rule_checks"]["rule_checks"]["violations"]
+    assert any(r["rule_id"] == "C3" for r in contract["rule_checks"]["recommendations"])
+    passed, diag = _gate_check(task_dir, GOLDEN_GOAL, tmp_path)
+    assert passed, diag
+
+
 # ────────────────────────── 负向对照 (门禁真拦截, 非橡皮章) ──────────────────────────
 
 
 def test_offline_golden_rejects_rule_violation(tmp_path, monkeypatch):
-    """负向 1: Writer 力推 锂金属+常规碳酸酯 → RelationEngine 硬违规,
+    """负向 1: Writer 力推 LNMO+裸碳酸酯 → C2 硬违规,
     即使脚本化 Reviewer 自信满满 (high) 也被规则引擎强制否决 → REJECTED + 门禁拦截."""
     _install_scripted_llm(monkeypatch, BAD_ELECTROLYTE_DRAFT)
     pipeline = _build_seeded_pipeline(tmp_path)
@@ -448,12 +469,13 @@ def test_offline_golden_rejects_rule_violation(tmp_path, monkeypatch):
     assert contract["scheme"]["electrolyte"] == "carbonate_ec"
     violations = contract["rule_checks"]["rule_checks"]["violations"]
     rejects = contract["rule_checks"]["rule_checks"]["rejects"]
-    assert (violations or rejects), "锂金属+常规碳酸酯必须触发 C 规则硬违规"
+    assert {v["rule_id"] for v in violations} == {"C2"}
+    assert not rejects
     # 规则引擎对过度自信 LLM 的否决权: 最终置信度被强制压到 low
     assert contract["confidence"] == "low"
 
     # 门禁: 真实 RAGDesignChecker 拦截 (置信度检查 3.2 先于规则审计 3.4 短路,
-    # 两者都是合法拦截: 规则强制压低的 low 置信度 / C3 硬违规本身)
+    # 两者都是合法拦截: 规则强制压低的 low 置信度 / C2 硬违规本身)
     passed, diag = _gate_check(task_dir, GOLDEN_GOAL, tmp_path)
     assert passed is False
     assert diag["error_code"] in ("RELATION_ENGINE_VIOLATION", "REVIEWER_CONFIDENCE_TOO_LOW")
@@ -486,12 +508,12 @@ def test_reviewer_failure_retries_review_not_writer(tmp_path, monkeypatch, alway
     _install_scripted_llm(monkeypatch, GOLDEN_WRITER_DRAFT)
     original = LLMClient.chat
     counts = {"writer": 0, "reviewer": 0, "writer_revise": 0}
-    def scripted(self, system_prompt, user_prompt, temperature=None, trace_tag=None):
+    def scripted(self, system_prompt, user_prompt, temperature=None, trace_tag=None, *, json_mode=False):
         if trace_tag in counts:
             counts[trace_tag] += 1
         if trace_tag == "reviewer" and (always_invalid or counts["reviewer"] < 3):
             return '{"issues": ['
-        return original(self, system_prompt, user_prompt, temperature=temperature, trace_tag=trace_tag)
+        return original(self, system_prompt, user_prompt, temperature=temperature, trace_tag=trace_tag, json_mode=json_mode)
     monkeypatch.setattr(LLMClient, "chat", scripted)
     out = _run_adapter(_build_seeded_pipeline(tmp_path), tmp_path / "review_retry", GOLDEN_GOAL)
     assert out["success"] is (not always_invalid)
@@ -503,10 +525,10 @@ def test_reviewer_failure_retries_review_not_writer(tmp_path, monkeypatch, alway
 def test_remaining_review_issues_are_not_called_approved(tmp_path, monkeypatch):
     _install_scripted_llm(monkeypatch, GOLDEN_WRITER_DRAFT)
     original = LLMClient.chat
-    def scripted(self, system_prompt, user_prompt, temperature=None, trace_tag=None):
+    def scripted(self, system_prompt, user_prompt, temperature=None, trace_tag=None, *, json_mode=False):
         if trace_tag == "reviewer":
             return json.dumps({"confidence": "low", "issues": ["单来源结论需要验证"], "error_type": "writing"})
-        return original(self, system_prompt, user_prompt, temperature=temperature, trace_tag=trace_tag)
+        return original(self, system_prompt, user_prompt, temperature=temperature, trace_tag=trace_tag, json_mode=json_mode)
     monkeypatch.setattr(LLMClient, "chat", scripted)
     directory = tmp_path / "issues"
     out = _run_adapter(_build_seeded_pipeline(tmp_path), directory, GOLDEN_GOAL)

@@ -551,8 +551,18 @@ def test_check_and_complete_select_same_round_once(tmp_path):
         stage.status = "PASSED"
     mgr.stages[4].status = "FAILED"
     ok, diagnostic = mgr.check_stage(5)
+    assert not ok and diagnostic['failure_summary']['observed']['experiment_status'] == 'CONDITIONAL'
+    # 选定几何变化后旧文字审核失效；只复核当前实验，不重复仿真或重生成实验全文。
+    from auto_battery_research.util.experiment_alignment_review import review
+    design = json.loads(path.read_text(encoding='utf-8'))
+    recipe = review(recipes.load(task_dir), design, scripted_client(), task_dir)
+    recipe['plan_hash'] = recipes.plan_hash(recipe)
+    recipe['bindings'] = recipes.validate(recipe, design, delivery=True)
+    design['experiment_plan_hash'] = recipe['plan_hash']
+    (task_dir / recipes.FILENAME).write_text(json.dumps(recipe), encoding='utf-8')
+    path.write_text(json.dumps(design), encoding='utf-8')
+    ok, diagnostic = mgr.check_stage(5)
     assert ok, diagnostic
-    # 完整JSON方案跟随正式几何同步，不需要程序化模式的额外审核调用。
     assert not recipes.load(task_dir).get("generation_contract")
     task_dir = mgr.get_task_output_dir()
     before = (task_dir / "pinn_simulation_result.json").read_bytes()

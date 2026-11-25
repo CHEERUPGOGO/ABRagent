@@ -114,7 +114,7 @@ def test_explicit_missing_submission_gets_pending_state_without_repeated_retry(t
     assert "process.drying_time_h" not in record["parameters"]
     assert record["pending_parameters"]["process.drying_time_h"]["value"] is None
     assert "pending_dependencies" not in record and not record["pending_operations"]
-    assert [tag for tag, _ in client.calls] == ["experiment_design"]
+    assert [tag for tag, _ in client.calls] == ["experiment_design", "experiment_alignment_review"]
     assert record["repair_status"] == "PARTIAL"
 
 
@@ -146,7 +146,7 @@ def test_existing_artifact_cache_does_not_skip_value_validation(tmp_path):
     (tmp_path / recipes.FILENAME).write_text(json.dumps(old), encoding="utf-8")
     with pytest.raises(ValueError, match="未确定"):
         recipes.generate(tmp_path, doc, client)
-    assert len(client.calls) == 1
+    assert len(client.calls) == 2
 
 
 def migration_fixture(tmp_path, monkeypatch):

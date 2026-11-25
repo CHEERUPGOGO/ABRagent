@@ -22,28 +22,42 @@ def report_identity(doc: dict, result: dict | None, spec: dict | None) -> str:
                "materials_input": {"analysis": doc.get("final_answer"), "evidence": doc.get("evidence")},
                "requirements": doc.get("requirements"), "research": doc.get("research"),
                "research_narrative": doc.get("research_narrative"),
+               "writer_contract_version": doc.get("writer_contract_version"),
+               "writer_content": doc.get("writer_content"), "content_hash": doc.get("content_hash"),
+               "render_fingerprint": doc.get("render_fingerprint"), "consistency_review": doc.get("consistency_review"),
+               "scientific_input_fingerprint": doc.get("scientific_input_fingerprint"),
                "retrieval_state": doc.get("retrieval_state"),
                "numeric_contract": doc.get("numeric_contract"),
                "rule_material_matches": (doc.get("rule_checks") or {}).get("material_matches"),
+               "rule_checks": doc.get("rule_checks"),
                "experiment_extensions": doc.get("experiment_extensions"),
                "physics_input_diagnostic": doc.get("physics_input_diagnostic"),
                "pinn_attempt_summary": doc.get("pinn_attempt_summary"),
-               "report_readiness": doc.get("report_readiness")}
+               "report_readiness": doc.get("report_readiness"), "issue_resolutions": doc.get("issue_resolutions")}
+    if doc.get("_report_record"):
+        payload["report_record_id"] = doc["_report_record"]["record_id"]
     digest = hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False, allow_nan=False).encode("utf-8")).hexdigest()
     return f"<!-- abr-report-identity:{digest} -->"
 
 
-def validate_report_blocks(text: str, context: dict, target: float | None, tolerance: float) -> list[str]:
+def validate_report_blocks(text: str, context: dict, target: float | None, tolerance: float, *, supplement: str | None = None) -> list[str]:
     """关键数值正文由相同视图重算验收，禁止旧值混入权威块。
 
     final-design / energy 必须始终存在; final-recipe 仅在回退渲染路径出现,
     存在时按同一视图重算, 缺失时交给实验方案生成记录单独校验。
     """
-    errors = []
+    from .report_bundle import MARKER, validate_parts
+    errors = validate_parts(text, supplement)
+    audit_text = supplement if supplement is not None else text
     numeric_doc = context.get("research_doc") or {}
+    if MARKER in text:
+        from .report_analysis import render_sources
+        sources = render_sources(numeric_doc).strip()
+        if not text.rstrip().endswith("## 6. 参考文献\n\n" + sources):
+            errors.append("主研报须以参考文献结束，补充记录应保存在独立文件")
     if numeric_doc.get("numeric_contract"):
         from .numeric_consistency import document_audit, render_audit as render_numeric
-        if render_numeric(document_audit(numeric_doc)) not in text:
+        if render_numeric(document_audit(numeric_doc)) not in audit_text:
             errors.append("数值一致性核对附录与当前参数/正文不一致")
     if context.get("requirements"):
         from .research_reporting import render_summary, render_review_appendix
@@ -57,8 +71,8 @@ def validate_report_blocks(text: str, context: dict, target: float | None, toler
         conflicts = presentation_conflicts(doc.get("ledger_view") or {})
         if doc.get("report_readiness", {}).get("category") != "DIAGNOSTIC":
             errors.extend(conflicts)
-        for expected in (render_summary(doc), render_review_appendix(doc)):
-            if expected not in text:
+        for expected, destination in ((render_summary(doc), text), (render_review_appendix(doc), audit_text)):
+            if expected not in destination:
                 errors.append("课题回应摘要或完整审核附录与归档不一致")
     required = {"final-design": render_selected_design(context), "energy": render_energy(context, target, tolerance)}
     from auto_battery_research.simulation.geometry_contract import render_input_diagnostic
@@ -374,12 +388,9 @@ def render_selected_design(context: dict) -> str:
         if (context.get("requirements") or {}).get("scheme_required") is False:
             return "本课题以研究分析为主，未要求完整电芯设计。当前已知材料与条件仅用于限定研究对象；研究回答及验证路径见第2、5节，不补造主配方。"
         body = render_design(context["ledger_view"])
-        if context.get("requirements"):
-            body = body.replace("第 2.6 节", "第6节附录")
         issues = (context.get("reviewer_output") or {}).get("issues") or []
         if issues:
-            section = "6节附录" if context.get("requirements") else "2.6 节"
-            body += f"\n\n**适用边界。** 本方案仍有未解决的审核意见，完整内容见第 {section}；相关判断不能作为已验证结论。"
+            body += "\n\n**适用边界。** 本方案仍有未解决的审核意见，相关判断不能作为已验证结论。"
         return body
     s, g = context["scheme"], context["geometry"]
     if not s:

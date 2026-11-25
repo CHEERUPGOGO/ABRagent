@@ -32,7 +32,8 @@ def test_missing_structured_research_preserves_archived_rationale_without_promot
     assert "Na 的层间支柱作用" in body and "[na]" in body
     assert "钠电体系" in body and "[cu]" in body
     assert "Zn–Na 为探索候选" in body and "待验证判断" in body
-    assert "引用可定位不等于结论已验证" in body and "第6节附录" in body
+    assert "引用可定位不等于结论已验证" in body
+    assert "第6节附录" not in body
     assert "当前方案" in body and "尚未归档可明确对应当前组成的选择理由" in body
     assert "999" not in body and "unknown" not in body
     assert doc == before

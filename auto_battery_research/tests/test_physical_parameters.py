@@ -31,20 +31,20 @@ def test_narrow_window_is_independent(tmp_path):
     assert len([r for r in parameter_view(data) if r['canonical_key'] == 'condition.v_max']) == 2
 
 
-def test_fill_geometry_and_recalculate_pore_budget():
+def test_geometry_inherits_only_declarations_and_does_not_calculate_budget():
     params = {"cathode.total_loading": field(5.625, "mg/cm2"), "cathode.compaction_density": field(3, "g/cm3"),
               "condition.voltage.upper": field(4.8, "V"), "cathode.porosity": field(.3, ""),
               "cathode.electrode_area": field(1.13, "cm2"), "electrolyte.volume": field(60, "uL")}
     focus = fixed_geometry(params)
     proposed = {"cathode": {"L_um": 70, "R_s_um": 3}, "condition": {"v_max": 4.6}}
     selected = fill_missing_candidate(proposed, focus)
-    assert selected["cathode"] == {"L_um": 18.75, "R_s_um": 3, "porosity": .3}
+    assert 'cathode.L_um' not in focus
+    assert selected["cathode"] == {"L_um": 70, "R_s_um": 3, "porosity": .3}
     assert selected["condition"]["v_max"] == 4.8 and proposed["cathode"]["L_um"] == 70
-    params["cathode.L_um"] = focus["cathode.L_um"]
+    params["cathode.L_um"] = dict(field(70, "um"), source="模型明确提出的厚度，计算一致性待Reviewer核对")
+    assert fixed_geometry(params)['cathode.L_um']['value'] == 70
     derived, errors = ledger.calculate({"parameters": params})
-    assert not errors
-    assert derived["cathode.calculated_pore_volume_uL"]["value"] == pytest.approx(.635625)
-    assert derived["condition.calculated_electrolyte_to_cathode_pore_ratio"]["value"] == pytest.approx(60/.635625)
+    assert not errors and derived == {}
 
 
 def test_active_mass_or_collector_thickness_does_not_set_coating_geometry():

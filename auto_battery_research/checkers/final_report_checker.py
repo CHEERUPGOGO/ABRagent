@@ -109,7 +109,7 @@ class FinalReportChecker(BaseChecker):
 
         headings = re.findall(r"^#{1,4}\s+(.+)$", content, re.MULTILINE)
         if "<!-- abr-report-layout:6 -->" in content:
-            required = ["研发摘要", "材料选择与文献依据", "(?:电芯总体方案与关键匹配|最终设计方案)", "仿真与优化分析", "实验路线与验证计划", "参考来源附录"]
+            required = ["研发摘要", "材料选择与文献依据", "(?:电芯总体方案与关键匹配|最终设计方案)", "仿真与优化分析", "实验路线与验证计划", "(?:参考文献|参考来源附录)"]
             for i, title in enumerate(required, 1):
                 if not re.search(rf"^## {i}\. {title}", content, re.M):
                     return False, self.build_diagnostic(passed=False, error_code="SYNTHESIS_REPORT_SECTIONS_INCOMPLETE",
@@ -146,6 +146,9 @@ class FinalReportChecker(BaseChecker):
             try:
                 if "<!-- abr-report-contract:2 -->" not in content:
                     raise ValueError("报告契约标记缺失")
+                from auto_battery_research.util.report_bundle import load_supplement
+                supplement = load_supplement(report_file, content)
+                audit_content = supplement if supplement is not None else content
                 loaded_doc, error = self.load_json_safe(str(report_file.parent / "design_scheme.json"))
                 doc = loaded_doc or {}
                 if doc.get("experiment_contract") and "<!-- abr-experiment-plan-fallback -->" in content:
@@ -167,13 +170,15 @@ class FinalReportChecker(BaseChecker):
                             if error:
                                 raise ValueError(error)
                             destination.update(data)
+                from auto_battery_research.util.report_record import for_check as current_report_record
+                doc = current_report_record(report_file.parent, doc, result, spec, content, supplement)
                 if report_identity(doc, result, spec) not in content:
                     raise ValueError("报告输入指纹与当前设计/仿真不一致")
                 if doc.get("delivery_contract") == 1:
                     from auto_battery_research.util.report_readiness import notice, unresolved_issues
                     if notice(doc) not in content:
                         raise ValueError("交付类别、审核或物理限制说明缺失")
-                    if any(issue not in content for issue in unresolved_issues(doc)):
+                    if any(issue not in audit_content for issue in unresolved_issues(doc)):
                         raise ValueError("报告缺少尚未解决的完整审核意见")
                 if "<!-- abr-report-layout:6 -->" in content:
                     if doc.get("ledger_view"):
@@ -199,7 +204,7 @@ class FinalReportChecker(BaseChecker):
                             raise ValueError("; ".join(plan_errors))
                 goal = self.stage_manager.target_goal if self.stage_manager else doc.get("target", "")
                 errors = validate_report_blocks(content, report_context(doc, result, spec),
-                                                extract_energy_target_wh_kg(goal), get_target_energy_tolerance_pct(self.stage_manager))
+                                                extract_energy_target_wh_kg(goal), get_target_energy_tolerance_pct(self.stage_manager), supplement=supplement)
                 if errors:
                     raise ValueError("; ".join(errors))
             except (ValueError, TypeError, AttributeError) as exc:

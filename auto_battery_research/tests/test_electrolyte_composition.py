@@ -35,7 +35,9 @@ def test_equivalent_molarity_is_recognized_without_losing_raw_text(recipe):
     assert [r["name"] for r in parsed["solvents"]] == ["EC", "DMC"]
     assert parsed["additives"] == []
     assert not rules["rule_checks"]["rejects"]
-    assert {r["rule_id"] for r in rules["rule_checks"]["violations"]} >= {"C1", "C3"}
+    assert not rules["rule_checks"]["violations"]
+    assert {r["rule_id"] for r in rules["recommendations"]} >= {"C1", "C3"}
+    assert rules["confidence"] == "high"
 
 
 @pytest.mark.parametrize("unit", ["m", "mol/kg", "mol kg⁻¹", "mol·kg^-1"])
@@ -58,6 +60,79 @@ def test_ratio_is_retained_in_declared_order_without_assuming_basis(spec, expect
     assert parsed["solvent_ratio"]["components"] == ["EC", "DMC"]
 
 
+@pytest.mark.parametrize("spec,values,basis", [
+    ("（EC:DMC=1:1 体积比）", [1, 1], "volume"),
+    ("(EC:DMC=3:7 v/v)", [3, 7], "volume"),
+    ("(EC/DMC=v/v=3/7)", [3, 7], "volume"),
+    ("(ec + dmc = 2:3 w/w)", [2, 3], "mass"),
+    ("（ＥＣ：ＤＭＣ＝１：１ 体积比）", [1, 1], "volume"),
+    ("(EC:DMC=1:4)", [1, 4], None),
+])
+def test_named_ratio_matches_body_solvents_and_keeps_declared_basis(spec, values, basis):
+    recipe = RECIPE + spec
+    original = scheme(recipe)
+    before = copy.deepcopy(original)
+    rules = RelationEngine().check_scheme(original)
+    assert original == before
+    match = rules["material_matches"]["electrolyte"]
+    parsed = match["composition"]
+    assert parsed["complete"], parsed
+    assert parsed["raw"] == recipe and parsed["parser_version"] == 2
+    assert match["matched"] and match["rule_material_id"] == "carbonate_ec"
+    assert [s["name"] for s in parsed["solvents"]] == ["EC", "DMC"]
+    assert parsed["solvent_ratio"]["components"] == ["EC", "DMC"]
+    assert parsed["solvent_ratio"]["values"] == values
+    assert parsed["solvent_ratio"]["basis"] == basis
+    assert "=" in parsed["solvent_ratio"]["source_text"]
+    assert not rules["rule_checks"]["rejects"]
+    assert {r["rule_id"] for r in rules["recommendations"]} >= {"C1", "C3"}
+
+
+def test_named_ratio_supports_three_solvents_and_separate_additive():
+    recipe = "1M LiPF6 in EC/DMC/EMC (EC:DMC:EMC=2:3:5 v/v) + 2 wt% FEC"
+    parsed = parse_electrolyte(recipe)
+    assert parsed["complete"], parsed
+    assert parsed["solvent_ratio"]["components"] == ["EC", "DMC", "EMC"]
+    assert parsed["solvent_ratio"]["values"] == [2, 3, 5]
+    assert parsed["solvent_ratio"]["basis"] == "volume"
+    assert parsed["additives"][0]["name"] == "FEC"
+    assert parsed["additives"][0]["amount"]["value"] == 2
+
+
+def test_named_ratio_follows_body_order_without_sorting_or_inferring_volume():
+    parsed = parse_electrolyte("1M LiPF6/DMC+EC (DMC:EC=7:3)")
+    assert parsed["complete"], parsed
+    assert parsed["solvent_ratio"]["components"] == ["DMC", "EC"]
+    assert parsed["solvent_ratio"]["values"] == [7, 3]
+    assert parsed["solvent_ratio"]["basis"] is None
+
+
+@pytest.mark.parametrize("spec", [
+    "(DMC:EC=1:1 v/v)",  # 即使等比例也不自动交换名称。
+    "(EC:DEC=1:1 v/v)", "(EC:XQ27=1:1 v/v)",
+    "(EC:EC=1:1 v/v)", "(EC:DMC:EMC=1:1:1 v/v)",
+    "(EC:DMC=1:1:1 v/v)", "(EC:DMC=1 v/v)",
+    "(EC:DMC=0:1 v/v)", "(EC:DMC=-1:1 v/v)",
+    "(EC:DMC=1e309:1 v/v)", "(EC:DMC=v/v=1:1 w/w)",
+    "(EC:DMC=1:1 体积比，无添加剂)", "(EC:DMC=1:1 v/v garbage)",
+])
+def test_named_ratio_conflicts_and_unparsed_tail_remain_fail_closed(spec):
+    recipe = RECIPE + spec
+    parsed = parse_electrolyte(recipe)
+    assert not parsed["complete"] and parsed["diagnostics"] and parsed["raw"] == recipe
+    rules = RelationEngine().check_scheme(scheme(recipe))
+    assert not rules["material_matches"]["electrolyte"]["matched"]
+    assert any(r["rule_id"] == "C0_UNVERIFIED_MATERIAL" for r in rules["rule_checks"]["rejects"])
+
+
+def test_named_ratio_must_cover_all_body_solvents_at_its_location():
+    for recipe in ["1M LiPF6/EC (EC:DMC=1:1 v/v)+DMC",
+                   "1M LiPF6/EC+DMC+EMC (EC:DMC=1:1 v/v)",
+                   "1M LiPF6/EC+DMC (EC:DMC=1:1 v/v)+2% FEC (1:1)"]:
+        parsed = parse_electrolyte(recipe)
+        assert not parsed["complete"] and parsed["diagnostics"]
+
+
 def test_additives_and_diluents_keep_amounts_and_do_not_create_lhce():
     parsed = parse_electrolyte(RECIPE + " (1:1 v/v) + 2 wt% FEC + 1% VC + 30 vol% TTE")
     assert parsed["complete"], parsed
@@ -72,10 +147,11 @@ def test_additives_and_diluents_keep_amounts_and_do_not_create_lhce():
 
 
 def test_explicit_positive_additive_is_seen_by_existing_mitigation_rules():
-    rules = RelationEngine().check_scheme(scheme(RECIPE + " + 2 wt% FEC"))
+    rules = RelationEngine().check_scheme(dict(scheme(RECIPE + " + 2 wt% FEC"), cathode="LNMO"))
     assert rules["material_matches"]["electrolyte"]["matched"]
     assert not rules["rule_checks"]["violations"]
-    assert {r["rule_id"] for r in rules["challenges"]} >= {"C1", "C3"}
+    assert {r["rule_id"] for r in rules["challenges"]} == {"C2"}
+    assert {r["rule_id"] for r in rules["recommendations"]} >= {"C1", "C3"}
 
 
 @pytest.mark.parametrize("recipe", [
@@ -202,5 +278,6 @@ def test_stage4_adapter_saves_composition_and_retains_scientific_caveats(tmp_pat
     assert saved["rule_checks"]["material_matches"]["cathode"]["rule_material_id"] == "LRMO"
     assert saved["rule_checks"]["material_matches"]["electrolyte"]["basis"] == "composition"
     assert not saved["rule_checks"]["rule_checks"]["rejects"]
-    assert {r["rule_id"] for r in saved["rule_checks"]["rule_checks"]["violations"]} >= {"C1", "C3"}
+    assert not saved["rule_checks"]["rule_checks"]["violations"]
+    assert {r["rule_id"] for r in saved["rule_checks"]["recommendations"]} >= {"C1", "C3"}
     assert saved["review_passed"] is False and "界面和掺杂仍需验证" in saved["reviewer_output"]["issues"]

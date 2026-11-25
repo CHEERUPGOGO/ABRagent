@@ -107,6 +107,15 @@ def test_wheel_contains_core_runtime_resources(wheel_names):
     for required in (
         "auto_battery_research/setting.yaml",
         "auto_battery_research/workflow/abr_workflow.yaml",
+        "auto_battery_research/doc/Guide_Doc/stage4_battery_design_rag.md",
+        "auto_battery_research/util/stage4_document.py",
+        "auto_battery_research/util/stage4_research_projection.py",
+        "auto_battery_research/util/stage4_consistency.py",
+        "auto_battery_research/util/stage4_publication.py",
+        "auto_battery_research/util/stage4_session.py",
+        "auto_battery_research/util/stage4_reporting.py",
+        "auto_battery_research/util/runtime_budgets.py",
+        "auto_battery_research/util/writer_protocol_advice.py",
     ):
         assert required in wheel_names, f"运行时资源漏打包: {required}"
     assert any(

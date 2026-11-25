@@ -1368,8 +1368,10 @@ def generate_experiment_plan(mgr, task_dir, doc, context, result, spec, scheme_m
     if doc.get("experiment_contract"):
         from .experiment_design import load, render, REPORT_FILENAME, require_current
         from .scheme_ledger import atomic_write
-        recipe = load(task_dir)
-        require_current(task_dir, doc)
+        snapshot = doc.get("_report_record")
+        recipe = snapshot["experiment"] if snapshot else load(task_dir)
+        if not snapshot:
+            require_current(task_dir, doc)
         if not recipe or recipe.get("plan_hash") != doc.get("experiment_plan_hash"):
             raise ValueError("设计与 Stage 5B 实验方案不匹配")
         body = render(recipe, doc, result)
@@ -1419,8 +1421,10 @@ def validate_plan_record(task_dir, doc, context, result, spec, scheme_md, target
     if doc.get("experiment_contract"):
         from .experiment_design import load, render, REPORT_FILENAME, require_current
         try:
-            require_current(task_dir, doc)
-            recipe = load(task_dir)
+            snapshot = doc.get("_report_record")
+            if not snapshot:
+                require_current(task_dir, doc)
+            recipe = snapshot["experiment"] if snapshot else load(task_dir)
             if not recipe or recipe.get("plan_hash") != doc.get("experiment_plan_hash"):
                 return ["实验推荐与设计不一致"]
             body = render(recipe, doc, result)
@@ -1494,7 +1498,7 @@ def _generate_ledger_plan(mgr, task_dir, doc, context, result, spec, scheme_md):
                     "没有可靠数值时 value 为 null，给出具体获取方法；不要为了完整性编造默认值。meaning 用清楚的中文参数名称。"
                     "只补 value 为 null 或不存在的字段，不改变已有值。basis 必须 engineering_proposal，source 为 LLM候选。"
                     "不得声称实测、仿真或目标已达成；没有依据可以返回空对象。最多十二项。",
-                    json.dumps(doc["ledger_view"], ensure_ascii=False), temperature=0.1, trace_tag="report_recipe")
+                    json.dumps(doc["ledger_view"], ensure_ascii=False), temperature=0.1, json_mode=True, trace_tag="report_recipe")
                 raw = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip())
                 candidate = json.loads(raw)
                 if not isinstance(candidate, dict) or len(candidate) > 12:

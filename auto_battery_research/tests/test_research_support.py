@@ -75,6 +75,27 @@ def test_analysis_summary_accepts_multiple_exact_quotes_but_waits_for_review():
     assert render_field(row, "response", doc) == "采用配方A探索结构稳定性改善，协同效果仍需验证。"
 
 
+def test_integer_float_projection_preserves_review_but_changed_value_does_not():
+    from auto_battery_research.util.research_support import field_fingerprint, review_fingerprint_matches
+    doc, row = sample()
+    params = doc["ledger_view"]["parameters"]
+    params["condition.c_rate"] = {"value": 1, "unit": "C", "basis": "engineering_proposal"}
+    doc["final_answer"] += "\n\n测试倍率1 C，结果仍需验证。"
+    row["source_quotes"].append("测试倍率1 C，结果仍需验证。")
+    row["field_support"]["response"].append(3)
+    row["response"] += "测试倍率{{condition.c_rate}}。"
+    row["parameter_refs"].append("condition.c_rate")
+    row = normalize(row, "answers", doc, params)
+    apply_review({"answers": [row]}, [verdict("answers", row, doc)], doc, params, doc["evidence"])
+    params["condition.c_rate"]["value"] = 1.0
+    assert supported(row, "response", doc, params) and review_fingerprint_matches(row, doc, params)
+    row["support_review"]["fingerprint"] = fingerprint(row, doc, params, _legacy_numbers=True)
+    row["support_review"]["fields"]["response"]["field_fingerprint"] = field_fingerprint(row, "response", doc, params, _legacy_numbers=True)
+    assert supported(row, "response", doc, params) and review_fingerprint_matches(row, doc, params)
+    params["condition.c_rate"]["value"] = 1.5
+    assert not supported(row, "response", doc, params) and not review_fingerprint_matches(row, doc, params)
+
+
 @pytest.mark.parametrize("change", [
     lambda r: r["source_quotes"].append("不存在的原文"),
     lambda r: r.update(response="保持率达到99%"),

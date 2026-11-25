@@ -90,7 +90,7 @@ def archived_decision_chain(doc):
         issues = unresolved_issues(doc)
         involved = set(re.findall(r"\[([\w:-]+)\]", " ".join(steps)))
         if any(involved & set(re.findall(r"\[([\w:-]+)\]", issue)) for issue in issues):
-            parts.append("**该链条仍有证据条件或体系适用性的审核争议。** 引用可定位不等于论证成立，具体误读与待核对事项见第6节附录；本段保留的是归档思路。")
+            parts.append("**该链条仍有证据条件或体系适用性的审核争议。** 引用可定位不等于论证成立，本段保留的是归档思路。")
         return "\n\n".join(parts)
     return ""
 

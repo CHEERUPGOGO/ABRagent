@@ -624,7 +624,12 @@ class RAGPipeline:
         """
         from auto_battery_research.util.design_repair import resume_pipeline
         if getattr(self, "repair_resume", None):
+            if self.repair_resume.get("writer_contract_version") == 3:
+                from auto_battery_research.util.stage4_session import run_session
+                return run_session(self, question, history_context=history_context, resume=self.repair_resume)
             return resume_pipeline(self, self.repair_resume, question, history_context, top_k)
+        # 检索问题可去首尾空白，需求解析始终使用独立保存的原始课题。
+        requirement_source = getattr(self, "requirement_source", None) or question
         question = question.strip()
         if not question:
             return {
@@ -639,7 +644,31 @@ class RAGPipeline:
         # ── Stage 1: Planner ──
         print("  [1/4] Planner 规划中...")
         saved_retrieval = getattr(self, "retrieval_resume", None)
-        plan = saved_retrieval["plan"] if saved_retrieval else self.planner.run(getattr(self, "requirement_source", None) or question, history_context)
+        planning_state, planning_path = None, None
+        if getattr(self, "writer_contract_version", 2) == 3 and not saved_retrieval:
+            import json
+            from auto_battery_research.util.scheme_ledger import atomic_write, digest
+            from auto_battery_research.util.stage4_consistency import request, single_attempt
+            planning_path = Path(self.repair_checkpoint_path).with_name("stage4_planning_checkpoint.json")
+            rebuilding = planning_path.with_name("stage4_rebuild_requested.json").exists()
+            planning_state = json.loads(planning_path.read_text(encoding="utf-8")) if planning_path.exists() and not rebuilding else {
+                "writer_contract_version": 3, "question": question, "requests": [],
+                "checkpoint_identity": getattr(self, "repair_checkpoint_identity", None)}
+            if planning_state.get("writer_contract_version") != 3 or planning_state.get("question") != question:
+                raise ValueError("v3规划检查点失配，禁止重新规划")
+            from auto_battery_research.util.runtime_budgets import bind_repair_options
+            bind_repair_options(self, planning_state)
+            if planning_state.get("retrieval_result"):
+                saved_retrieval = planning_state["retrieval_result"]
+            else:
+                def save_planning():
+                    atomic_write(planning_path, json.dumps(planning_state, ensure_ascii=False, indent=2))
+                def invoke_planner():
+                    with single_attempt(self.planner_llm):
+                        return self.planner.run(requirement_source, history_context)
+                planning_state["plan"] = request(planning_state, "planner", digest({"question": question, "history": history_context}), save_planning, invoke_planner)
+                save_planning()
+        plan = saved_retrieval["plan"] if saved_retrieval else (planning_state["plan"] if planning_state else self.planner.run(requirement_source, history_context))
         from auto_battery_research.util.research_contract import bindings, field_equal
         self.reviewer.requirements = plan.get("requirements")
         persist_requirements = getattr(self, "persist_requirements", None)
@@ -663,6 +692,12 @@ class RAGPipeline:
             evidence = saved_retrieval["evidence"]
             _db_type = saved_retrieval["db_type"]
         else:
+            if planning_state:
+                if planning_state.get("retrieval_started"):
+                    raise ValueError("v3首次检索已发出但未完成，保留检查点，不自动重发或重新规划")
+                planning_state["retrieval_started"] = True
+                planning_state["checkpoint_identity"] = getattr(self, "repair_checkpoint_identity", None)
+                save_planning()
             _needs_reasoning = plan.get("needs_reasoning", False)
             # 获取 db_type, 强制校验合法性；LLM 失败/格式错误时兜底为 both
             _db_type = plan.get("db_type", "both")
@@ -704,11 +739,15 @@ class RAGPipeline:
                     alpha=RERANKER_ALPHA,
                 )
                 print(f"  -> 重排后保留 {len(evidence)} 条")
+            if planning_state:
+                planning_state["retrieval_result"] = {"plan": plan, "retrieval": retrieval, "evidence": evidence, "db_type": _db_type, "writer_contract_version": 3}
+                save_planning()
 
 
         from auto_battery_research.util.adaptive_retrieval import initial_assessment, select_context, options as retrieval_options
-        retrieval_seed = {"question": getattr(self, "requirement_source", None) or question, "plan": plan,
-                          "db_type": _db_type, "retrieval": retrieval, "evidence": list(evidence)}
+        retrieval_seed = {"question": requirement_source, "plan": plan,
+                          "db_type": _db_type, "retrieval": retrieval, "evidence": list(evidence),
+                          "writer_contract_version": getattr(self, "writer_contract_version", 2)}
         def save_retrieval():
             path = getattr(self, "repair_checkpoint_path", None)
             if path:
@@ -728,6 +767,15 @@ class RAGPipeline:
         self.writer.context_options = retrieval_options(self)
         writer_evidence = select_context(retrieval_seed, purpose="writer", config=retrieval_options(self))
         save_retrieval()
+
+        from auto_battery_research.util.stage4_session import design_mode, run_session
+        # 新内容契约仅用于新设计会话；分析和已有旧检查点沿用历史入口。
+        configured_contract = getattr(self, "writer_contract_version", 2)
+        if saved_retrieval:
+            configured_contract = saved_retrieval.get("writer_contract_version", 2)
+        if configured_contract == 3 and design_mode(question, plan):
+            return run_session(self, question, plan, retrieval_seed, history_context)
+        self.writer.contract_version = 2
 
         # ── Stage 3: Writer ──
         print("  [3/4] Writer 生成中...")
@@ -778,10 +826,10 @@ class RAGPipeline:
                     fixed = fixed_geometry((scheme_context or {}).get("parameters", {}))
                     raw = self.writer_llm.chat(GEOMETRY_SYSTEM_PROMPT + "\n" + INSTRUCTIONS, json.dumps({
                         "fixed_geometry": fixed,
-                        "design_request": question, "materials": materials, "evidence": evidence[:25],
+                        "design_request": question, "materials": materials, "evidence": writer_evidence,
                         "current_scheme_table": scheme_context,
                         "ranges_SI": resolve_input_ranges(materials.get("cathode"), materials.get("anode")),
-                    }, ensure_ascii=False), temperature=0.1, trace_tag="geometry_design")
+                    }, ensure_ascii=False), temperature=0.1, json_mode=True, trace_tag="geometry_design")
                     geometry_candidate = constrain_generated_np(safe_json_loads(raw), getattr(self, "original_design_request", question))
                     geometry_candidate = fill_missing_candidate(geometry_candidate, fixed)
                     geometry = build_geometry_contract(geometry_candidate, materials, evidence)
@@ -803,6 +851,8 @@ class RAGPipeline:
             "writer_request": {"question": writer_question, "plan": plan, "evidence": writer_evidence,
                                "history_context": history_context, "scheme": _writer_scheme}}
         self.writer.protocol_state = protocol_seed["writer_protocol"]
+        from auto_battery_research.util.runtime_budgets import bind_repair_options
+        bind_repair_options(self, protocol_seed)
         def save_protocol():
             path = getattr(self, "repair_checkpoint_path", None)
             if path:
@@ -910,6 +960,7 @@ class RAGPipeline:
             "geometry_candidate": geometry_candidate,
             "repair_parameters": repair_parameters,
             "repair_audit": repair_audit,
+            "repair_diagnoses": seed.get("repair_diagnoses", []),
             "retrieval_state": seed.get("retrieval_state"),
             "research_draft": seed.get("research_draft"),
             "geometry_error": geometry_error,

@@ -1,7 +1,7 @@
 """AutoBatteryResearch RAG 统一门面模块 (Unified RAG Facade).
 
 对外暴露多智能体方案设计引擎、电化学规则引擎 (RelationEngine 7 项分级规则 C1–C3, C5–C8；
-RULES_VERSION=C1-C8/v2.3-electrolyte-family)、能量密度估算模型及统一大模型客户端。
+RULES_VERSION=C1-C8/v2.4-c1-c3-advisory；C1/C3仅为建议)、能量密度估算模型及统一大模型客户端。
 """
 
 from __future__ import annotations

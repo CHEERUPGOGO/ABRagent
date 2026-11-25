@@ -96,8 +96,11 @@ def test_pending_scientific_limits_require_explicit_mapping_and_reviewer_accepta
     doc, raw = fixture()
     row = doc["research"]["answers"][0]
     row["support_review"]["fields"]["response"] = {"status": "needs_review", "reason": "跨体系推断不能作为本批实证"}
-    with pytest.raises(ValueError, match="限制"):
-        narrative.normalize(raw, doc)
+    preliminary = narrative.normalize(raw, doc)
+    assert any("限制" in note for note in preliminary["coverage_notes"])
+    # 关联漏填交给实际表述审核；缺少有效审核仍不获通过。
+    narrative.apply_review(preliminary, {}, doc, doc["evidence"])
+    assert preliminary["status"] == "rejected"
     p = raw["sections"][0]["paragraphs"][0]
     p["limitation_ids"] = list(p["source_ids"])
     draft = narrative.normalize(raw, doc)
@@ -370,7 +373,9 @@ def test_existing_task_integration_publishes_only_after_final_check(tmp_path, mo
             assert narrative.current_narrative(saved)
         assert saved["research"] == doc["research"] and saved["scheme"] == doc["scheme"]
         body = (tmp_path / "final_research_report.md").read_text(encoding="utf-8")
-        assert "### 2.1 研究依据与验证边界" in body and "课题逐项回应档案" in body
+        supplement = (tmp_path / "final_research_report_supplement.md").read_text(encoding="utf-8")
+        assert "### 2.1 研究依据与验证边界" in body
+        assert "当前课题要求覆盖" not in body and "当前课题要求覆盖" in supplement
         if partial_review:
             from auto_battery_research.checkers.final_report_checker import FinalReportChecker
             assert "本段待复核，以下为原稿" in body

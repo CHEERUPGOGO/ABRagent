@@ -18,7 +18,8 @@ def normalize_citations(record):
 
 def diagnose(record, doc):
     from .experiment_design import effective_data, overlap_key, TOKEN, SECTIONS, validate, plan_hash
-    errors = []
+    from .experiment_alignment import issues as alignment_issues
+    errors = alignment_issues(record, doc)
     params = record.get("parameters")
     sections = record.get("sections")
     if not isinstance(params, dict) or not isinstance(sections, dict):
@@ -53,7 +54,8 @@ def diagnose(record, doc):
         else:
             declared = current.get(overlap_key(key)) or {}
             if declared.get("value") is not None and row.get("scope") != "control":
-                if row.get("value") != declared["value"] or row.get("unit", "") != declared.get("unit", ""):
+                from .experiment_alignment import equivalent
+                if not equivalent(overlap_key(key), row, declared):
                     reason = "与当前方案冲突，应使用ref引用当前值"
             elif row.get("basis") not in ("engineering_proposal", "budget_assumption") or row.get("value") is None:
                 reason = "操作建议须有值并标为engineering_proposal或budget_assumption；文献来源另行保留"
@@ -84,9 +86,14 @@ def diagnose(record, doc):
             if isinstance(text, str) and set(TOKEN.findall(text)) & bad:
                 continue  # 等待对应参数修复，不扩大正文修改权限。
             probe = copy.deepcopy(record)
+            # 一致性组合错误已按真实位置汇总；逐段探测不让其它错误污染当前路径。
+            probe.pop("execution_contract", None)
+            if probe.get("schema_version") == 5:
+                probe["schema_version"] = 4
             probe.update(parameters=good_params, citations=[c for c in cites if isinstance(c, str) and c in allowed] if isinstance(cites, list) else [],
                          sections={s: ["保留当前方案并在小批验证中记录测量口径及实验条件。" * 6] for s in SECTIONS})
-            probe["sections"][section] = [text]
+            from .experiment_alignment import expand_profiles
+            probe["sections"][section] = [expand_profiles(text, record)]
             from .research_experiments import recover_links
             recover_links(probe, doc)
             if "consistency" in record:
@@ -160,7 +167,7 @@ def repair_record(record, doc, client, task_dir, fingerprint):
             raw = client.chat('仅返回局部JSON补丁 {"base_hash":"输入哈希","changes":[{"path":["parameters","字段路径"],"value":修复后的参数对象}]}。只能替换errors中列出的路径，保留其他所有参数和段落。修复引用、来源属性及缺失值；source用于来源描述，操作建议basis用engineering_proposal，文献出处仍保留。段落路径为["sections","节名",索引]。',
                 json.dumps({"base_hash": digest(record), "record": record, "errors": errors,
                     "scheme": doc.get("scheme"), "ledger": doc.get("ledger_view"), "evidence": doc.get("evidence")}, ensure_ascii=False),
-                temperature=0.1, trace_tag="experiment_repair")
+                temperature=0.1, json_mode=True, trace_tag="experiment_repair")
             audit["repair_raw_response"] = raw
             save()
             patch = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
@@ -171,7 +178,10 @@ def repair_record(record, doc, client, task_dir, fingerprint):
                 recover_links(valid_links, doc)
                 for collection, key in (("groups", "id"), ("requirement_tests", "requirement_id")):
                     for row in valid_links[collection]:
-                        if row in (record.get(collection) or []) and not any(v == row for v in updated.get(collection, [])):
+                        original_rows = record.get(collection) or []
+                        index = next((i for i, original in enumerate(original_rows) if original == row), None)
+                        authorized = index is not None and any(e["path"][:2] == [collection, index] for e in errors)
+                        if row in original_rows and not authorized and not any(v == row for v in updated.get(collection, [])):
                             raise ValueError("局部修复不得修改已通过的" + collection + "记录：" + row[key])
             record = updated
             if "consistency" in record:
@@ -232,8 +242,14 @@ def repair_record(record, doc, client, task_dir, fingerprint):
                 else:
                     record["sections"][path[1]] = [text]
             elif path[0] in ("groups", "requirement_tests"):
-                from .research_experiments import recover_links
-                recover_links(record, doc, error["reason"])
+                if path[0] == "requirement_tests" and len(path) == 3:
+                    row = record["requirement_tests"][path[1]]
+                    record.setdefault("pending_tests", []).append(copy.deepcopy(row))
+                    row[path[2]] = "本项安排与主方案尚有冲突，待局部核对后确定。"
+                    row.update(status="gap", reason=error["reason"])
+                else:
+                    from .research_experiments import recover_links
+                    recover_links(record, doc, error["reason"])
             elif path[0] == "extensions":
                 record["extensions"] = []
         if "consistency" in record:

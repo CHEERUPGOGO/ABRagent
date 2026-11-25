@@ -77,6 +77,15 @@ def summary(mgr, doc=None):
 
 def publish_summary(mgr):
     """报告消费当前课题账本摘要，保留每次候选与拒绝原因。"""
+    path = mgr.get_task_output_dir() / "design_scheme.json"
+    initial = json.loads(path.read_text(encoding="utf-8"))
+    if initial.get("writer_contract_version") == 3:
+        current = summary(mgr, initial)
+        if initial.get("pinn_attempt_summary") != current:
+            initial["pinn_attempt_summary"] = current
+            from .stage4_publication import publish_document
+            publish_document(mgr.get_task_output_dir(), initial, reason="Stage 5尝试摘要同步")
+        return initial
     with task_lock(mgr.get_task_output_dir()):
         path = mgr.get_task_output_dir() / "design_scheme.json"
         doc = json.loads(path.read_text(encoding="utf-8"))

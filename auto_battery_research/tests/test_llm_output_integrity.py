@@ -45,6 +45,17 @@ def test_length_and_empty_responses_retry_with_frozen_input():
     assert client.last_response["truncated"] is False
 
 
+def test_single_attempt_preserves_truncated_raw_response_without_hidden_retry():
+    raw = '{"version":3,"sections":'
+    client = client_with_responses([AIMessage(content=raw, response_metadata={"finish_reason": "length"})])
+    client.single_attempt = True
+    with pytest.raises(LLMOutputError) as error:
+        client.chat("SYS", "USER")
+    assert error.value.raw_response == raw
+    assert error.value.response_meta["truncated"] is True
+    assert client._openai_llm.budgets == [100]
+
+
 def test_exhausted_output_is_not_success_or_fabricated_writer_fallback():
     responses = [AIMessage(content="", response_metadata={"finish_reason": "length"}) for _ in range(4)]
     client = client_with_responses(responses)

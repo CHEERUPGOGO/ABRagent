@@ -9,7 +9,7 @@ AUTO_FIELDS = {f"{c}.{f}" for c in ("cathode", "anode") for f in ("L_um", "poros
 def diagnose(doc, c_rate=.5):
     scheme = doc.get("scheme") or {}
     geo = scheme.get("geometry") or {}
-    ranges = resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"))
+    ranges = resolve_input_ranges(scheme.get("cathode"), scheme.get("anode"), scheme=scheme)
     errors = []
     if geo.get("schema_version") != "1.1" or not isinstance(geo.get("provenance"), dict):
         errors.append("缺少有效结构化几何声明")

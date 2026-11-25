@@ -46,8 +46,8 @@ class PlannerAgent:
 
     def run(self, question: str, history_context: str = "") -> Dict[str, Any]:
         """拆解用户问题为子检索问题."""
-        question = question.strip()
-        if not question:
+        # 只用去空白判断空输入；需求来源与引用位置必须保留课题原文。
+        if not question.strip():
             return {
                 "task_understanding": "",
                 "retrieval_queries": [],
@@ -72,7 +72,7 @@ class PlannerAgent:
         user_prompt += "\n请按要求输出 JSON." + PLANNER_INSTRUCTIONS
 
         try:
-            raw = self.llm.chat(PLANNER_SYSTEM_PROMPT, user_prompt, temperature=0.1, trace_tag="planner")
+            raw = self.llm.chat(PLANNER_SYSTEM_PROMPT, user_prompt, temperature=0.1, json_mode=True, trace_tag="planner")
             data = safe_json_loads(raw)
         except Exception:
             data = None
@@ -705,15 +705,20 @@ class WriterAgent:
                 "fallback": True,
             }
 
-        _max_evidence = 25 if plan.get("needs_reasoning", False) else 15
         from auto_battery_research.util.adaptive_retrieval import evidence_package
+        from auto_battery_research.util.runtime_budgets import budget_options
+        context_options = budget_options("stage4_retrieval", getattr(self, "context_options", None))
+        _max_evidence = context_options["context_passages" if plan.get("needs_reasoning", False) else "context_passages_analysis"]
         evidence, evidence_context = evidence_package(evidence, requirement_items=plan.get("requirements", {}).get("items", []),
             preferred_ids=getattr(self, "preferred_evidence_ids", []), working_ids=getattr(self, "working_evidence_ids", None),
-            limit=_max_evidence, char_limit=(getattr(self, "context_options", {}) or {}).get("context_chars", 60000))
+            limit=_max_evidence, char_limit=context_options["context_chars"])
         evidence_text = "\n\n".join(
             [f"[{e['passage_id']}] 来源:{e['source']}\n内容:{e['text']}"
              for e in evidence[:_max_evidence]]
         )
+        from auto_battery_research.util.stage4_session import design_mode as select_design_mode
+        structured_design = select_design_mode(question, plan, scheme)
+        v3 = structured_design and getattr(self, "contract_version", 2) == 3
         outline = plan.get("answer_outline", ["材料概述", "核心性能指标", "筛选建议", "数据缺口"])
 
         # LLM 不可用时禁止回退为写死的虚构材料配方，显式失败并交由上游门禁拦截
@@ -725,8 +730,8 @@ class WriterAgent:
             }
 
         user_prompt = (
-            f"用户问题:{question}\n\n"
-            f"计划输出结构:{str(outline)}\n\n"
+            f"用户问题:{question}\n\n" +
+            ("" if structured_design else f"计划输出结构:{str(outline)}\n\n") +
             f"可用证据如下:\n{evidence_text}\n\n"
             f"请依据证据生成一个适合材料筛选场景的结构化中文回答.\n"
             f"必须在关键结论后保留 [passage_id] 引用.\n"
@@ -742,37 +747,48 @@ class WriterAgent:
         if scheme and self.relation_engine is not None:
             try:
                 ev = self.relation_engine.evaluate(scheme)
-                if ev["violations"] or ev["rejects"] or ev["inclusions"]:
+                if ev["violations"] or ev["rejects"] or ev["inclusions"] or ev.get("recommendations"):
                     scheme_note = (
-                        "\n\n【约束引擎评估(纯规则,供写作参考,不可违反)】\n"
+                        "\n\n【分级规则评估(纯规则,硬约束与建议分别处理)】\n"
                         f"方案: {scheme}\n"
                         f"violations(违规): {ev['violations']}\n"
                         f"rejects(拒绝): {ev['rejects']}\n"
                         f"inclusions(需补充): {ev['inclusions']}\n"
+                        f"recommendations(非阻断建议): {ev.get('recommendations', [])}\n"
                         "若 violations/rejects 非空,该组合不可行,回答中必须指出并给出替代方向."
+                        "C1/C3仅为风险与可选措施建议，未采纳不等于方案被否决；保留用户固定配方，"
+                        "不把建议写成已实施或已验证的措施。"
                     )
                     user_prompt += scheme_note
             except Exception as e:
                 print(f"[WriterAgent] 约束评估失败(降级): {type(e).__name__}: {e}")
         user_prompt += _build_scheme_consistency_note(scheme, design_mode=design_mode, for_reviewer=False)
-        structured_design = bool(design_mode or scheme or plan.get("requirements", {}).get("scheme_required") is True)
-        structured_design = structured_design and plan.get("requirements", {}).get("scheme_required") is not False
         if design_mode or scheme or structured_design:
             if plan.get("requirements", {}).get("scheme_required") is False:
                 user_prompt += "\n【分析类任务】按课题大纲回答；不要求完整电芯，不新增配方、几何和比能量目标。"
             else:
-                from auto_battery_research.util.design_structure import writer_instructions
+                if v3:
+                    from auto_battery_research.util.stage4_document import writer_instructions
+                else:
+                    from auto_battery_research.util.design_structure import writer_instructions
                 user_prompt += writer_instructions()
                 from auto_battery_research.util.numeric_bindings import INSTRUCTIONS as NUMERIC_INSTRUCTIONS
-                user_prompt += NUMERIC_INSTRUCTIONS + "\ncurrent_parameters：\n" + json.dumps(getattr(self, "current_parameters", {}), ensure_ascii=False)
+                user_prompt += (NUMERIC_INSTRUCTIONS.replace("version=2", "version=3") if v3 else NUMERIC_INSTRUCTIONS) + "\ncurrent_parameters：\n" + json.dumps(getattr(self, "current_parameters", {}), ensure_ascii=False)
 
         raw = ""
         try:
             if structured_design:
-                from auto_battery_research.util.writer_protocol import produce
-                result = produce(self.llm, WRITER_SYSTEM_PROMPT, user_prompt,
-                    getattr(self, "current_parameters", {}), getattr(self, "protocol_state", {}),
-                    getattr(self, "save_protocol", lambda: None))
+                if v3:
+                    from auto_battery_research.util.stage4_session import produce_v3
+                    result = produce_v3(self.llm, WRITER_SYSTEM_PROMPT, user_prompt,
+                        getattr(self, "current_parameters", {}), getattr(self, "protocol_state", {}),
+                        getattr(self, "save_protocol", lambda: None), plan.get("requirements"), evidence)
+                else:
+                    from auto_battery_research.util.writer_protocol import produce
+                    result = produce(self.llm, WRITER_SYSTEM_PROMPT, user_prompt,
+                        getattr(self, "current_parameters", {}), getattr(self, "protocol_state", {}),
+                        getattr(self, "save_protocol", lambda: None), budget=getattr(self, "repair_options", None),
+                        evidence=evidence)
                 result["evidence_context"] = evidence_context
                 return result
             raw = self.llm.chat(WRITER_SYSTEM_PROMPT, user_prompt, temperature=0.2, trace_tag="writer")
@@ -825,7 +841,7 @@ class ReviewerAgent:
         context["input_fingerprint"] = narrative["input_fingerprint"]
         context["narrative_fingerprint"] = narrative["narrative_fingerprint"]
         raw = self.llm.chat(REVIEW_PROMPT, json.dumps(context, ensure_ascii=False),
-                            temperature=0.1, trace_tag="research_narrative_review")
+                            temperature=0.1, json_mode=True, trace_tag="research_narrative_review")
         return decode_review_response(raw, narrative, doc)
 
     def _build_conservative_answer(
@@ -927,9 +943,8 @@ class ReviewerAgent:
                 "rule_result": rule_result,
             }
 
-        # 覆盖 Writer 的全部证据，另补草稿引用的其余段落，避免只看前六条误判引用。
-        cited = set(re.findall(r"\[([^\]]+)\]", draft_answer))
-        review_evidence = [e for i, e in enumerate(evidence) if i < 25 or e.get("passage_id") in cited]
+        # 上游已按运行配置选择证据包，此处不再用固定条数二次截断。
+        review_evidence = evidence
         evidence_text = "\n\n".join([
             f"[{e['passage_id']}] 来源:{e['source']}\n内容:{e['text']}"
             for e in review_evidence
@@ -952,10 +967,15 @@ class ReviewerAgent:
             f"同一问题涉及多行或多段时必须另外提供quotes数组，逐处列出全部需要联动修改的精确原句（如排行#3和#4各自的完整问题句）；quote保留首句。"
             f"不能只定位一行却要求修改另一行；缺失或不唯一的范围不授权，由程序将全部quotes组成同一事务。"
             f"issues 仍为字符串摘要。无精确定位的问题不会获得写权限。"
+            f"若仅需修复研究记录的正文来源，repair_issues添加research_sources:[{{\"collection\":\"answers|candidates|arguments\",\"id\":\"现有记录ID\"}}]，parameter_paths留空，说明字段与来源问题；程序签发来源专用接口，不要求伪造正文quote或改写已实质回答的段落。"
+            f"参数来源问题可用source_changes更新source_quote，参数值的授权仍由parameter_paths控制；审核当前候选记录，历史来源不作为当前值。"
+            f"旧参数source_quote已不在正文时，返回parameter_source_paths:[\"已有字段路径\"]，程序按字段身份签发来源专用接口，无需伪造当前正文quote。研究文本中的{{{{字段路径}}}}是合法参数引用，按输入parameters当前值核对，不因保留模板绑定否决。"
         )
+        from auto_battery_research.util.model_calculations import REVIEW_INSTRUCTIONS
+        user_prompt += "\n" + REVIEW_INSTRUCTIONS
         if getattr(self, "numeric_consistency", None):
             user_prompt += "\n【程序数值一致性核对】\n" + json.dumps(self.numeric_consistency, ensure_ascii=False)
-            user_prompt += "\n逐项核对冲突的对象、工况、分母及来源。INCOMPLETE不是通过，不得凭计算结果判断科学结论成立。数值修复需定位所有相关原句；abr-param/abr-derived显示值由程序维护，只提授权字段修改，不直接改标记或显示值。"
+            user_prompt += "\n逐项核对冲突的对象、工况、分母及来源，不得凭估算判断科学结论成立。计算修复需定位所有相关原句；原始参数改值仅提出已登记字段的授权修改。"
         from auto_battery_research.util.design_sections import classify_design_output
         local_format = classify_design_output(draft_answer, getattr(self, "requirements", None))["format_issues"]
         if local_format:
@@ -990,9 +1010,10 @@ class ReviewerAgent:
                 user_prompt += REVIEW_INSTRUCTIONS
         if rule_result is not None:
             rule_note = (
-                "\n\n【硬规则检查结果（来自约束表+能量模型，不可推翻，仅可引用）】\n"
+                "\n\n【分级规则检查结果（来自约束表+能量模型）】\n"
                 f"violations: {rule_result['rule_checks'].get('violations', [])}\n"
                 f"rejects: {rule_result['rule_checks'].get('rejects', [])}\n"
+                f"recommendations: {rule_result.get('recommendations', [])}\n"
                 f"energy_check: {rule_result.get('energy_check')}\n"
                 f"condition_missing: {rule_result.get('condition_missing')}\n"
                 f"material_matches: {json.dumps(rule_result.get('material_matches', {}), ensure_ascii=False)}\n"
@@ -1001,6 +1022,9 @@ class ReviewerAgent:
                 "basis=composition表示电解液按完整解析的组成分类；保留真实浓度、各溶剂、比例和添加成分，"
                 "不得仅因完整配方未独立登记否决，也不得把分类成功说成性能/相容性已验证。"
                 "composition中的未声明比例保持空白，不把mol/kg当mol/L，不凭高浓度推断LHCE。\n"
+                "recommendations为非阻断建议；C1/C3仅提示高压正极和锂金属界面的风险与可选措施。"
+                "不得仅因命中C1/C3或未采纳建议而写入阻断issues、要求修改锁定配方或降低confidence；"
+                "不把建议当作已经实施或验证的措施。若发现独立科学问题，须指出具体正文主张及证据或条件缺口。\n"
                 "若 violations/rejects 非空或 energy_check=energy_mismatch，"
                 "issues 必须逐项说明规则未通过的原因，confidence 必须为 low；C0登记缺口仅说明规则适用性待确认，"
                 "不能据此断言材料在科学上不可行；只返回判定，不生成正文。"
@@ -1008,7 +1032,7 @@ class ReviewerAgent:
             user_prompt += rule_note
 
         try:
-            raw = self.llm.chat(REVIEWER_SYSTEM_PROMPT, user_prompt, temperature=0.1, trace_tag="reviewer")
+            raw = self.llm.chat(REVIEWER_SYSTEM_PROMPT, user_prompt, temperature=0.1, json_mode=True, trace_tag="reviewer")
         except Exception as e:
             issues = [f"Reviewer 调用失败: {e}"]
             return {
@@ -1017,10 +1041,19 @@ class ReviewerAgent:
                 "confidence": "low",
                 "error_type": "reviewer",
                 "fallback": True,
+                "raw_response": getattr(e, "raw_response", ""),
+                "response_meta": getattr(e, "response_meta", getattr(self.llm, "last_response", {})),
             }
 
 
-        data = safe_json_loads(raw)
+        if (getattr(self, "research_draft", None) or {}).get("writer_contract_version") == 3:
+            from auto_battery_research.util.stage4_document import decode_document
+            try:
+                data = decode_document(raw)
+            except ValueError:
+                data = None
+        else:
+            data = safe_json_loads(raw)
         if not isinstance(data, dict) or data.get("confidence") not in ("low", "medium", "high") or not isinstance(data.get("issues"), list):
             raw_preview = raw[:500] if raw else "(空)"
             logger.error(f"Reviewer JSON 解析失败. raw 前500字符: {raw_preview}")
@@ -1072,6 +1105,9 @@ class ReviewerAgent:
                 data["confidence"] = "medium"
 
         data["fallback"] = False
+        if (getattr(self, "research_draft", None) or {}).get("writer_contract_version") == 3:
+            data["raw_response"] = raw
+            data["response_meta"] = dict(getattr(self.llm, "last_response", {}))
         if requirements:
             review = data.get("requirement_review") or {}
             known_ids = {r["id"] for r in requirements["items"]}

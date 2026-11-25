@@ -1,4 +1,4 @@
-"""统一方案表的离线回归：锁定、派生计算、版本及报告。"""
+"""统一方案表的离线回归：锁定、模型计算结果、版本及报告。"""
 import copy
 import json
 
@@ -26,7 +26,7 @@ def test_lock_revision_and_unlock(tmp_path):
     assert (tmp_path / "scheme_history" / f"revision_{data['revision']}.json").exists()
 
 
-def test_pores_capacity_and_np_recompute(tmp_path):
+def test_declarations_do_not_generate_pores_capacity_or_np(tmp_path):
     ledger.ensure(tmp_path)
     changes = {"cathode.L_um": field(60, "um"), "cathode.porosity": field(.28),
                "cathode.loading_mg_cm2": field(20.5, "mg/cm2"), "cathode.active_fraction": field(.98),
@@ -35,16 +35,16 @@ def test_pores_capacity_and_np_recompute(tmp_path):
                "anode.li_filling_fraction": field(.6), "anode.li_density_g_cm3": field(.534, "g/cm3"),
                "anode.li_capacity_mAh_g": field(3860, "mAh/g")}
     data = ledger.update(tmp_path, changes, 0)
-    assert data["derived"]["cathode.pore_volume_uL_cm2"]["value"] == pytest.approx(1.68)
-    assert data["derived"]["anode.pore_volume_uL_cm2"]["value"] == pytest.approx(2.025)
-    assert data["derived"]["anode.n_p_ratio"]["value"] == pytest.approx(.6233, abs=.001)
+    assert data['derived'] == {} and not data['issues']
+    assert all(data['parameters'][key]['value'] == row['value'] for key, row in changes.items())
     data = ledger.update(tmp_path, {"cathode.active_fraction": field(.96)}, data["revision"])
-    assert data["derived"]["cathode.areal_capacity_mAh_cm2"]["value"] == pytest.approx(3.936)
+    assert data['derived'] == {} and not data['issues']
+    assert data['parameters']['cathode.active_fraction']['value'] == .96
 
 
 def test_missing_dependencies_and_bad_units(tmp_path):
     data = ledger.ensure(tmp_path)
-    assert data["derived"]["cathode.areal_capacity_mAh_cm2"]["value"] is None
+    assert data['derived'] == {} and not data['issues']
     for value in (field(60, "mm"), field("60", "um"), field(float("nan"), "um")):
         with pytest.raises(ValueError):
             ledger.update(tmp_path, {"cathode.L_um": value}, 0)
@@ -86,17 +86,19 @@ def test_report_uses_ledger_and_no_fake_simulation(tmp_path):
     assert "999" not in text
 
 
-def test_mass_budget_follows_active_fraction(tmp_path):
+def test_model_mass_budget_is_not_silently_recomputed_after_input_change(tmp_path):
     ledger.ensure(tmp_path)
     changes = {"cathode.loading_mg_cm2": field(20.5, "mg/cm2"), "cathode.active_fraction": field(.98),
         "cathode.capacity_mAh_g": field(200, "mAh/g"), "anode.composite_mass_mg_cm2": field(5.7, "mg/cm2"),
         "current_collector.cathode_mass_mg_cm2": field(3.24, "mg/cm2"), "current_collector.anode_mass_mg_cm2": field(4.03, "mg/cm2"),
         "separator.mass_mg_cm2": field(1, "mg/cm2"), "electrolyte.mass_mg_cm2": field(5, "mg/cm2"),
-        "packaging.mass_mg_cm2": field(5, "mg/cm2"), "condition.average_discharge_voltage_V": field(3.7, "V")}
+        "packaging.mass_mg_cm2": field(5, "mg/cm2"), "condition.average_discharge_voltage_V": field(3.7, "V"),
+        "packaging.cell_energy_wh_kg": dict(field(334.3, "Wh/kg"), source="模型预算：20.5×0.98×200/1000×3.7/(20.5+5.7+3.24+4.03+1+5+5)×1000；估算值待复核")}
     data = ledger.update(tmp_path, changes, 0)
-    initial = data["derived"]["packaging.cell_energy_wh_kg"]["value"]
+    initial = copy.deepcopy(data['parameters']['packaging.cell_energy_wh_kg'])
     data = ledger.update(tmp_path, {"cathode.active_fraction": field(.92)}, data["revision"])
-    assert data["derived"]["packaging.cell_energy_wh_kg"]["value"] < initial
+    assert data['derived'] == {}
+    assert data['parameters']['packaging.cell_energy_wh_kg'] == initial
 
 
 def test_structured_report_extension_and_tampering(tmp_path, monkeypatch):

@@ -53,6 +53,7 @@ def test_legacy_numeric_audit_publishes_without_changing_science_or_budget(tmp_p
         assert after[key] == doc[key]
     saved = json.loads((tmp_path / "stage4_repair_checkpoint.json").read_text(encoding="utf-8"))
     assert (saved["repair_rounds"], saved["review_rounds"], saved["maintenance_calls"]) == (3, 6, 2)
-    assert "数值一致性核对" in (tmp_path / "final_research_report.md").read_text(encoding="utf-8")
+    assert "数值一致性核对" in (tmp_path / "final_research_report_supplement.md").read_text(encoding="utf-8")
+    assert "数值一致性核对" not in (tmp_path / "final_research_report.md").read_text(encoding="utf-8")
     again = audit_existing_design(mgr)
     assert again["success"] and again["changed"] is False

@@ -14,6 +14,8 @@ IDENTITY_KINDS = {"material": "material", "nominal_formula": "nominal_formula",
                   "formula": "nominal_formula", "formulation": "formulation",
                   "recipe": "formulation", "composition": "formulation"}
 PARENT_FIELDS = {"base_formula", "parent_formula", "mother_formula"}
+IDENTITY_ALIASES = {"cathode.doping.nominal_formula": "cathode.nominal_formula",
+                    "separator.type": "separator.material"}
 
 
 @lru_cache(maxsize=1)
@@ -73,6 +75,7 @@ def identity_path(path, row=None):
     target = (row or {}).get("canonical_path") or path
     if not isinstance(target, str):
         return None
+    target = IDENTITY_ALIASES.get(target, target)
     comp, _, leaf = target.partition(".")
     return (comp, IDENTITY_KINDS[leaf]) if comp in COMPONENTS and leaf in IDENTITY_KINDS else None
 
@@ -220,6 +223,34 @@ def component_signature(scheme):
     return {comp: (scheme.get(comp), identities.get(comp, {}).get("kind") in ("nominal_formula", "formulation"),
                    parents.get(comp), scheme.get("component_identity_errors"))
             for comp in ("cathode", "anode", "electrolyte")}
+
+
+def pinn_material_ids(scheme, parameters=None):
+    """PINN 按显式正极母体及实际负极匹配，完整掺杂配方仍保留在原方案中。"""
+    current = canonical_scheme(scheme)
+    if parameters is not None:
+        current = assemble_components(current, parameters)
+        declarations = {path: row for path, row in parameters.items()
+                        if isinstance(row, dict) and parent_path(path, row) == "cathode"
+                        and _current_identity(row) and isinstance(row.get("value"), str)
+                        and row["value"].strip()}
+    else:
+        parent = (current.get("rule_parents") or {}).get("cathode") or {}
+        declarations = {}
+        if parent:
+            sources = parent.get("source_values") or {}
+            refs = parent.get("parameter_refs") or []
+            if (parent.get("material_value") != current.get("cathode") or not refs
+                    or set(refs) != set(sources)
+                    or any(exact_material_id(value) != exact_material_id(parent.get("value"))
+                           for value in sources.values())):
+                raise ValueError("PINN 正极母体声明来源失效")
+            declarations = {path: {"value": value} for path, value in sources.items()}
+    parents = {exact_material_id(row["value"]) for row in declarations.values()}
+    if len(parents) > 1:
+        raise ValueError("PINN 正极母体声明冲突")
+    return {"cathode": next(iter(parents)) if parents else current.get("cathode"),
+            "anode": current.get("anode")}
 
 
 def canonical_scheme(scheme):

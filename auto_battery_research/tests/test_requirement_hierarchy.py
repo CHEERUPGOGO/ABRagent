@@ -112,6 +112,64 @@ def test_connection_word_does_not_create_duplicate_but_negation_is_retained():
     assert len(result["items"]) == 1
 
 
+def test_recovery_keeps_valid_groups_when_uncovered_requirement_is_pending():
+    from auto_battery_research.util.requirement_recovery import recover_requirements
+    from auto_battery_research.util.requirement_structure import normalize_groups
+    goal = "研究材料；评价循环；禁止含氟。"
+    row = dict(requirement("评价循环"), id="cycle", group_id="science")
+    result, _ = recover_requirements(raw_contract(goal, [row]), goal)
+    assert {g["id"] for g in result["groups"]} >= {"science", "fixed"}
+    assert result["status"] == "partial"
+    assert next(r for r in result["items"] if r["quote"] == "评价循环")["group_id"] == "science"
+    missing = next(r for r in result["items"] if r["quote"] == "禁止含氟")
+    assert missing["group_id"].startswith("recovery_pending") and missing["status"] == "ambiguous"
+    assert normalize_groups(result, goal, result["items"]) == result["groups"]
+
+
+@pytest.mark.parametrize("fault", ["missing", "cycle", "source", "duplicate"])
+def test_invalid_group_recovery_has_no_dangling_references(fault):
+    from auto_battery_research.util.requirement_recovery import recover_requirements
+    from auto_battery_research.util.requirement_structure import normalize_groups
+    goal = "研究材料；评价循环。"
+    raw = raw_contract(goal, [dict(requirement("评价循环"), id="cycle", group_id="science")])
+    if fault == "missing": raw["groups"][0]["parent_id"] = "absent"
+    elif fault == "cycle": raw["groups"][0]["parent_id"] = "science"
+    elif fault == "source": raw["groups"][0]["source_quotes"] = ["编造来源"]
+    else: raw["groups"].append(copy.deepcopy(raw["groups"][0]))
+    result, _ = recover_requirements(raw, goal)
+    assert "fixed" in {g["id"] for g in result["groups"]}
+    assert result["status"] == "partial" and result["diagnostics"]
+    assert all(r.get("group_id") in {g["id"] for g in result["groups"]} for r in result["items"])
+    assert normalize_groups(result, goal, result["items"]) == result["groups"]
+
+
+def test_task_source_patch_expands_coverage_without_rewriting_accepted_items():
+    from auto_battery_research.util.requirement_recovery import recover_requirements, merge_requirement_patch
+    goal = "研究材料；以提高循环为目标。"
+    row = dict(requirement("提高循环"), id="cycle", group_id="science")
+    raw = raw_contract(goal, [row])
+    _, accepted = recover_requirements(raw, goal)
+    patch = {"task": {"description": "不允许重写已给定总任务", "source_quotes": ["以提高循环为目标"]},
+             "items": [dict(row, description="不允许重写通过项")]}
+    merged = merge_requirement_patch(raw, patch, accepted, goal)
+    assert merged["items"] == [row] and merged["task"]["description"] == raw["task"]["description"]
+    assert merged["task"]["source_quotes"] == ["研究材料", "以提高循环为目标"]
+    result, _ = recover_requirements(merged, goal)
+    assert result["status"] == "parsed" and len(result["items"]) == 1
+    assert {g["id"] for g in result["groups"]} == {"science", "fixed"}
+    patch["task"]["source_quotes"] = ["不存在的原文"]
+    assert merge_requirement_patch(raw, patch, accepted, goal)["task"] == raw["task"]
+
+
+def test_isolated_goal_connectors_are_not_requirements_but_negation_is_preserved():
+    from auto_battery_research.util.requirement_recovery import recover_requirements
+    goal = "研究材料；以提高循环为目标；不含氟。"
+    row = dict(requirement("提高循环"), id="cycle", group_id="science")
+    result, _ = recover_requirements(raw_contract(goal, [row]), goal)
+    assert not any(r["quote"] in {"以", "为目标"} for r in result["items"])
+    assert any(r["quote"] == "不含氟" for r in result["items"])
+
+
 def test_exact_duplicate_preserves_sources_and_query_links():
     goal = "研究材料；设计对照实验；并设计对照实验。"
     a = dict(requirement("设计对照实验", "deliverable"), id="a", start=5, description="设计对照实验", group_id="science")

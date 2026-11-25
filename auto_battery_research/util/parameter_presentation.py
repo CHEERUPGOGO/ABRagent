@@ -23,6 +23,8 @@ FLAGS = {"vacuum": ("真空", "非真空"), "co_free": ("无钴", "未声明无�
          "upper_bound": ("上限", "非上限")}
 # 仅列明确同义字段；不同步骤的工艺条件不能因数值相同被合并。
 ALIASES = {
+    "cathode.doping.nominal_formula": "cathode.nominal_formula", "separator.type": "separator.material",
+    "cathode.compaction_density_g_cm3": "cathode.compaction_g_cm3",
     "cathode.parent_formula": "cathode.base_formula", "cathode.mother_formula": "cathode.base_formula",
     "current_collector.cathode_material": "current_collector.cathode", "current_collector.anode_material": "current_collector.anode",
     "packaging.type": "packaging.cell_format", "packaging.cell_type": "packaging.cell_format",
@@ -41,7 +43,7 @@ conditions优先使用 [{"name":"中文条件名","value":明确值,"unit":"真�
 unit只放单位，禁止fraction of Li sites、formula_unit、cell type等说明性伪单位；公式和材料unit为空。
 化学式变量x/y是每化学式单位系数时用formula_coefficient，不得写成位点分数。位点分数必须明确分母，
 质量/体积分数与化学式系数分开记录；原文口径含混时放candidates并说明需确认，不自行换算百分比。
-压实后单面干涂层厚度使用cathode.L_um或anode.L_um；电压窗口使用condition.v_min/v_max。主循环、窄窗对照、化成和首圈测氧须分别注明用途。专属工况使用独立路径、canonical_path及conditions中明确的用途。
+L_um表示电极有效层厚度：多孔极片的单面干涂层用cathode.L_um或anode.L_um；致密金属锂负极的锂箔厚度同样用anode.L_um，不能套用涂层组成或包含另设集流体/保护层。电压窗口使用condition.v_min/v_max。主循环、窄窗对照、化成和首圈测氧须分别注明用途。专属工况使用独立路径、canonical_path及conditions中明确的用途。
 字段名尽量复用current_parameters及常见规范字段；上下限用同一字段族，不重复母体/封装/工况声明。
 '''
 
@@ -136,6 +138,9 @@ def condition_entries(conditions):
 
 def render_conditions(conditions, *, complete=False, parameters=None):
     if isinstance(conditions, list) and parameters:
+        if any(isinstance(item, dict) and item.get("ref") for item in conditions):
+            from .parameter_names import effective_parameters
+            parameters = effective_parameters(parameters)
         conditions = copy.deepcopy(conditions)
         for item in conditions:
             if isinstance(item, dict) and item.get("ref") in parameters:
@@ -153,7 +158,7 @@ def render_conditions(conditions, *, complete=False, parameters=None):
             displayed = value_text("condition." + name, {"value": value, "unit": raw_unit})
             parts.append(displayed if name == "适用条件" else f"{name}：{displayed}")
     if pending and not complete:
-        parts.append(f"另有{pending}项条件含义待确认，见参数附录")
+        parts.append(f"另有{pending}项条件含义待确认")
     return "；".join(dict.fromkeys(parts))
 
 
@@ -167,17 +172,25 @@ def semantic_conditions(conditions):
 
 
 def canonical_key(key, row=None):
-    explicit = (row or {}).get("canonical_path")
-    return explicit or ALIASES.get(key, key)
+    from .numeric_consistency import canonical
+    return canonical(key, row)
 
 
 def parameter_view(data):
-    """每条声明仅在值、单位、计量语义、条件均相同时归并，保存全部源键。"""
+    """展示与缺项采用同一只读值；同身份等值声明归并，保存全部原字段和来源。"""
     from .physical_parameters import identity
+    from .numeric_consistency import identity as numeric_identity, normalized_number
+    from .parameter_names import effective_parameters
+    effective = effective_parameters(data.get("parameters", {}))
+    from .material_ids import assemble_components
+    lithium_anode = assemble_components({}, data.get("parameters", {}), strict=False).get("anode") == "li_metal"
     groups = {}
     for key, original in data.get("parameters", {}).items():
-        row = copy.deepcopy(original)
+        row = copy.deepcopy(effective[key])
         canonical = canonical_key(key, row)
+        if lithium_anode and canonical == "anode.L_um" and numeric_identity(key, row)[1:4] == ("main", "main", "[]"):
+            row["display_label"] = "锂箔厚度"
+        semantic_id = numeric_identity(key, row)
         physical = identity(key, row)
         if physical:
             canonical = physical[0]
@@ -187,8 +200,14 @@ def parameter_view(data):
                 items = condition_entries(row.get("conditions") or {})
                 row["conditions"] = [{"name": name, "value": value, "unit": u} for name, value, u, *_ in items]
                 row["conditions"] += [{"name": k, "value": v} for k, v in (("样品", physical[1]), ("用途", physical[2])) if v != "main"]
-        signature = (canonical, normalized(row.get("value")), unit(row.get("unit")),
-                     row.get("quantity_kind"), row.get("denominator"), semantic_conditions(row.get("conditions") or {}))
+        value, units = normalized(row.get("value")), unit(row.get("unit"))
+        if type(row.get("value")) in (int, float):
+            try:
+                number, units = normalized_number(key, row)
+                value = normalized(number)
+            except ValueError:
+                pass
+        signature = (semantic_id, value, units)
         if signature not in groups:
             row["source_fields"] = []
             row["sources"] = []
@@ -196,7 +215,7 @@ def parameter_view(data):
             groups[signature] = row
         merged = groups[signature]
         merged["source_fields"].append(key)
-        source = {k: original.get(k) for k in ("source", "source_quote", "passage_id", "basis", "locked")}
+        source = {k: original.get(k) for k in ("source", "source_quote", "passage_id", "basis", "locked", "value", "unit")}
         if source not in merged["sources"]:
             merged["sources"].append(source)
     return list(groups.values())
@@ -215,7 +234,7 @@ def parameter_name(key, row):
     meaning = row.get("meaning")
     if isinstance(meaning, str) and re.search(r"[\u4e00-\u9fff]", meaning) and key not in meaning:
         return meaning.strip().rstrip("。")
-    return "未命名参数（见参数附录）"
+    return "未命名参数"
 
 
 def row_description(row, *, complete=False, parameters=None):
@@ -343,7 +362,8 @@ def normalize_metadata(key, field, available=None):
         raise ValueError("化学式系数的unit应为空，不能写成位点分数")
     if str(row.get("unit", "")) in PSEUDO_UNITS:
         row["unit"] = ""
-    return row
+    from .parameter_names import checked_name
+    return checked_name(key, row)
 
 
 def render_parameter_appendix(data):
@@ -359,7 +379,7 @@ def render_parameter_appendix(data):
         entries = [r for r in rows if r["canonical_key"].startswith(group + ".")]
         if not entries:
             continue
-        body += [f"#### {group_name}参数", "| 序号 | 参数与原值 | 适用条件 / 计量说明 | 来源与状态 |",
+        body += [f"#### {group_name}参数", "| 序号 | 参数与当前取值 | 适用条件 / 计量说明 | 来源与状态 |",
                  "|---|---|---|---|"]
         for n, row in enumerate(entries, 1):
             key = row["canonical_key"]
@@ -370,6 +390,8 @@ def render_parameter_appendix(data):
                 notes.append("计量基准：" + str(row["denominator"]))
             if ambiguous_ratio(row):
                 notes.append("位点分数与每化学式单位口径须复核，原单位见档案")
+            if row.get("resolved_from"):
+                notes.append("空占位采用同口径有效声明，原记录保留于档案")
             origins = []
             for source in row["sources"]:
                 basis = {"engineering_proposal": "工程声明", "literature": "文献参考", "user_requirement": "用户要求",
@@ -391,7 +413,8 @@ def presentation_conflicts(data):
     for row in parameter_view(data):
         if row.get("value") is None:
             continue
-        signature = (row["canonical_key"], row.get("quantity_kind"), row.get("denominator"), semantic_conditions(row.get("conditions") or {}))
+        from .numeric_consistency import identity
+        signature = identity(row["canonical_key"], row)
         actual = (normalized(row["value"]), unit(row.get("unit")))
         previous = grouped.get(signature)
         if previous and previous != actual:

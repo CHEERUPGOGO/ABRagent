@@ -38,7 +38,7 @@ def test_generation_receives_preflight_and_only_affected_methods_are_pending(tmp
         calls.append(json.loads(user))
         return slot_response(payload, user, kwargs["trace_tag"])
     record = recipes.generate(tmp_path, doc, SimpleNamespace(available=True, chat=chat), "新实验")
-    assert len(calls) == 1 and calls[0]["consistency"]["pending_fields"] == ["electrolyte.additives"]
+    assert len(calls) == 2 and calls[0]["consistency"]["pending_fields"] == ["electrolyte.additives"]
     assert record["pending_operations"] == {"assembly:0": ["electrolyte.additives"]}
     assert record["sections"]["fabrication"] == payload["sections"]["fabrication"]
     body = recipes.render(record, doc)
@@ -52,6 +52,8 @@ def test_removed_pending_marker_or_new_conflict_cannot_pass_gate(tmp_path):
     with pytest.raises(ValueError, match="一致性核对"):
         recipes.validate(record, doc)
     stamp(record, doc)
+    from auto_battery_research.util.experiment_alignment import attach
+    attach(record, doc)
     record["plan_hash"] = recipes.plan_hash(record)
     assert recipes.validate(record, doc)
     record["pending_operations"] = {}

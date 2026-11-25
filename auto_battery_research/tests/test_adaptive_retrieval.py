@@ -39,6 +39,140 @@ def client_gains(rid="r0", pid="new", kind="conditions"):
         "passage_id": pid, "kind": kind, "quote": "25 °C", "reason": "补齐目标的实验温度"}]}))
 
 
+@pytest.mark.parametrize("wrap", [
+    lambda text: text,
+    lambda text: "```json\n" + text + "\n```",
+    lambda text: "首次检索评估如下。\n```json\n" + text + "\n```\n仍需核对研究条件。",
+    lambda text: "本轮建议如下：\n" + text + "\n请保留证据边界。",
+])
+def test_diagnostic_json_accepts_complete_response_with_surrounding_text(wrap):
+    review = {"retrieval_initial_defect": None, "retrieval_diagnostics": [diagnostic(ids=["p0"])]}
+    assert ar._decode(wrap(json.dumps(review, ensure_ascii=False))) == review
+
+
+@pytest.mark.parametrize("raw", [
+    '{"retrieval_diagnostics": [], "retrieval_diagnostics": [{}]}',
+    '{"retrieval_diagnostics": []}\n{"retrieval_diagnostics": [{}]}',
+    '```json\n{"retrieval_diagnostics": []}\n```\n```json\n{"gains": []}\n```',
+    '说明：{"retrieval_diagnostics": [{"action":"supplement"}',
+    '```json\n{"broken": , "nested": {"retrieval_diagnostics": []}}\n```',
+    '[{"retrieval_diagnostics": []}]',
+])
+def test_diagnostic_json_does_not_choose_ambiguous_or_broken_payload(raw):
+    with pytest.raises(ValueError):
+        ar._decode(raw)
+
+
+def test_diagnostic_json_keeps_code_fences_inside_parameter_text():
+    review = {"retrieval_diagnostics": [], "reason": '说明包含```json {"examples": []}```和[p0]引用'}
+    assert ar._decode(json.dumps(review, ensure_ascii=False)) == review
+
+
+@pytest.mark.parametrize("cause", ["evidence_gap", "missing_conditions", "source_gap", "conflicting_evidence"])
+def test_related_evidence_does_not_suppress_explicit_supplement(cause):
+    s = seed()
+    review = {"retrieval_diagnostics": [diagnostic(cause=cause, ids=["p0"])]}
+    action = ar.next_action(review, s, phase="later_review", config=ar.DEFAULTS)
+    assert action["action"] == "supplement"
+    assert action["queries"] == review["retrieval_diagnostics"][0]["queries"]
+    assert "p0" in s["retrieval_state"]["preferred_ids"]
+    assert s["retrieval_state"]["window_open"] is False
+
+
+def test_related_evidence_gaps_can_share_one_query_batch():
+    s = seed()
+    ds = [diagnostic(f"r{i}", ids=["p0"], queries=[f"XQ材料 候选{i} 独立比较数据"]) for i in range(3)]
+    action = ar.next_action({"retrieval_diagnostics": ds}, s, phase="first_review", config=ar.DEFAULTS)
+    assert action["action"] == "supplement"
+    assert action["requirement_ids"] == ["r0", "r1", "r2"]
+    assert action["queries"] == [d["queries"][0] for d in ds]
+
+
+def test_supplement_without_related_evidence_field_can_execute():
+    s = seed()
+    row = diagnostic()
+    row.pop("evidence_ids")
+    searches = []
+    pipeline = SimpleNamespace(reviewer=SimpleNamespace(llm=client_gains()),
+        retrieve_context=lambda **kwargs: searches.append(kwargs) or {
+            "status": "OK", "results": [evidence("new", "XQ在25 °C测试")]})
+    assert ar.after_review(pipeline, s, {"retrieval_diagnostics": [row]}, lambda: None)
+    assert len(searches) == 1
+    assert s["retrieval_state"]["rounds"][0]["status"] == "IMPROVED"
+
+
+def test_related_evidence_supplement_respects_persisted_budget():
+    s = seed()
+    s["retrieval_state"]["supplement_rounds"] = ar.DEFAULTS["supplement_rounds"]
+    pipeline = SimpleNamespace(retrieve_context=lambda **kwargs: pytest.fail("预算耗尽时不得继续检索"))
+    assert not ar.after_review(pipeline, s, {"retrieval_diagnostics": [diagnostic(ids=["p0"])]}, lambda: None)
+    assert s["retrieval_state"]["supplement_rounds"] == ar.DEFAULTS["supplement_rounds"]
+    assert "针对性补检索预算耗尽" in s["retrieval_state"]["stopped_gaps"].values()
+
+
+@pytest.mark.parametrize("action,cause", [("reuse", "evidence_gap"), ("supplement", "context_omission")])
+def test_sufficient_or_omitted_existing_evidence_still_reuses_archive(action, cause):
+    s = seed()
+    result = ar.next_action({"retrieval_diagnostics": [diagnostic(action=action, cause=cause, ids=["p0"])]},
+                            s, phase="later_review", config=ar.DEFAULTS)
+    assert result["action"] == "reuse"
+    assert "p0" in s["retrieval_state"]["preferred_ids"]
+    assert s["retrieval_state"]["supplement_rounds"] == 0
+
+
+def test_initial_wrapped_diagnostics_reach_search_gain_review_and_repair_context():
+    s = seed()
+    review = {"retrieval_initial_defect": None, "retrieval_diagnostics": [diagnostic(ids=["p0"])]}
+    calls, searches, saves = [], [], []
+    def chat(system, user, **kwargs):
+        calls.append(kwargs["trace_tag"])
+        if kwargs["trace_tag"] == "retrieval_assess":
+            return "首次检索无整体策略错误，补充比较条件。\n```json\n" + json.dumps(review) + "\n```"
+        return '证据增益如下。\n```json\n' + client_gains().chat() + '\n```'
+    def search(**kwargs):
+        assert saves[-1]["inflight"] == 0 and saves[-1]["supplement_rounds"] == 1
+        searches.append(kwargs)
+        return {"status": "OK", "results": [evidence("new", "XQ在25 °C测试")]}
+    pipeline = SimpleNamespace(reviewer=SimpleNamespace(llm=SimpleNamespace(available=True, chat=chat)),
+                               retriever=SimpleNamespace(), retrieve_context=search)
+    ar.initial_assessment(pipeline, s, lambda: saves.append(copy.deepcopy(s["retrieval_state"])))
+    state = s["retrieval_state"]
+    assert calls == ["retrieval_assess", "retrieval_gain"]
+    assert len(searches) == 1 and searches[0]["queries"] == review["retrieval_diagnostics"][0]["queries"]
+    assert state["initial_assessment"] == review and state["rounds"][0]["status"] == "IMPROVED"
+    assert not state["diagnostics"]
+    assert ar.select_context(s, purpose="repair")[0]["passage_id"] == "new"
+    restored = json.loads(json.dumps(s))
+    ar.initial_assessment(pipeline, restored, lambda: None)
+    ar.after_review(pipeline, restored, review, lambda: None)
+    assert len(searches) == 1
+    assert restored["retrieval_state"]["supplement_rounds"] == 1
+
+
+def test_related_evidence_suggestion_runs_real_local_bm25_retrieval():
+    from auto_battery_research.rag import RAGPipeline
+    from lmllm.RAG.agents import RetrievalAgent
+    from lmllm.RAG.bm25_kb import BM25KnowledgeBase
+    kb = BM25KnowledgeBase()
+    kb.add_passage("new", "XQ材料在25 °C进行1 C循环测试，报告保持率及测试条件。", "paper_new")
+    for i in range(4):
+        kb.add_passage(f"other{i}", "无关背景材料", f"paper_other{i}")
+    kb.build_index()
+    # 只初始化内存BM25，仍调用生产检索入口，避免测试建立持久Chroma目录。
+    pipeline = RAGPipeline.__new__(RAGPipeline)
+    pipeline.retriever = RetrievalAgent(kb)
+    pipeline.reviewer = SimpleNamespace(llm=client_gains())
+    s = seed()
+    review = {"confidence": "low", "retrieval_diagnostics": [diagnostic(ids=["p0"])]}
+    assert ar.after_review(pipeline, s, review, lambda: None)
+    event = s["retrieval_state"]["rounds"][0]
+    assert event["status"] == "IMPROVED"
+    assert "new" in event["added_ids"]
+    assert event["query_logs"][0]["query"] == review["retrieval_diagnostics"][0]["queries"][0]
+    assert any(item.get("status") == "OK" for item in event["channel_diagnostics"])
+    assert ar.select_context(s, purpose="repair")[0]["passage_id"] == "new"
+
+
 def test_severe_initial_defect_only_and_first_window_closes():
     s = seed()
     allowed = ar.next_action({"retrieval_initial_defect": defect()}, s, phase="initial", config=ar.DEFAULTS)

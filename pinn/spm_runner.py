@@ -404,14 +404,25 @@ def _prepare_pinn_inputs(cell_spec, system, models_dir, c_rate):
             "c_rate_eff": c_rate_eff, "c_rate_source": c_rate_source}
 
 
+def _match_input_system(cell_spec, scheme, models_dir):
+    """预检、充电和放电共用正极母体匹配，兼容旧输入中的材料名称。"""
+    from auto_battery_research.util.material_ids import pinn_material_ids
+    declared = dict(scheme or {})
+    for comp in ("cathode", "anode"):
+        if not declared.get(comp):
+            declared[comp] = _spec_get(cell_spec, f"{comp}.material.name") or ""
+    materials = pinn_material_ids(declared)
+    if not (declared.get("rule_parents") or {}).get("cathode"):
+        materials["cathode"] = _spec_get(cell_spec, "pinn_material_ids.cathode") or materials["cathode"]
+    return match_pinn_system(materials["cathode"], materials["anode"], models_dir)
+
+
 def preflight_pinn_inputs(cell_spec, scheme=None, c_rate=None, system=None, models_dir=None):
     """只校验有效输入和组合训练包络，绝不执行网络前向或生成曲线。"""
     models_dir = Path(models_dir or MODELS_DIR)
     scheme = scheme or {}
     try:
-        system = system or match_pinn_system(
-            scheme.get("cathode") or _spec_get(cell_spec, "cathode.material.name") or "",
-            scheme.get("anode") or _spec_get(cell_spec, "anode.material.name") or "", models_dir)
+        system = system or _match_input_system(cell_spec, scheme, models_dir)
         if system is None:
             return {"status": "NO_MATCH", "error": "材料体系未匹配注册表 PINN"}
         prepared = _prepare_pinn_inputs(cell_spec, system, models_dir, c_rate)
@@ -452,9 +463,7 @@ def run_pinn_discharge(
     scheme = scheme or {}
     try:
         if system is None:
-            cathode_id = scheme.get("cathode") or _spec_get(cell_spec, "cathode.material.name") or ""
-            anode_id = scheme.get("anode") or _spec_get(cell_spec, "anode.material.name") or ""
-            system = match_pinn_system(cathode_id, anode_id, models_dir)
+            system = _match_input_system(cell_spec, scheme, models_dir)
             if system is None:
                 return {"status": "NO_MATCH", "error": "cell_spec 材料体系未匹配任何注册表 PINN"}
         prepared = _prepare_pinn_inputs(cell_spec, system, models_dir, c_rate)
@@ -629,9 +638,7 @@ def run_pinn_charge(
     models_dir = Path(models_dir or MODELS_DIR)
     if system is None:
         scheme = scheme or {}
-        cathode_id = scheme.get("cathode") or _spec_get(cell_spec, "cathode.material.name") or ""
-        anode_id = scheme.get("anode") or _spec_get(cell_spec, "anode.material.name") or ""
-        system = match_pinn_system(cathode_id, anode_id, models_dir)
+        system = _match_input_system(cell_spec, scheme, models_dir)
     if system is None:
         return {"status": "NO_MATCH", "error": "cell_spec 材料体系未匹配任何注册表 PINN"}
     if not system.get("directions", {}).get("charge"):

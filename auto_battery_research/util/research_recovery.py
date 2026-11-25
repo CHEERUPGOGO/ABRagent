@@ -77,7 +77,7 @@ def integrate_research_narrative(mgr, client=None, reviewer=None, proposal=None,
     for source in task.iterdir():
         if source.is_file():
             shutil.copy2(source, stage / source.name)
-    for name in ("design_scheme.json", "experiment_plan.json", "experiment_report.json", "final_research_report.md"):
+    for name in ("design_scheme.json", "experiment_plan.json", "experiment_report.json", "report_record.json", "final_research_report.md", "final_research_report_supplement.md"):
         if (task / name).exists():
             shutil.copy2(task / name, history / name)
     doc, state = copy.deepcopy(original), {}
@@ -137,7 +137,7 @@ def repair_research_records(mgr, client=None, reviewer=None):
         # 仍使用同一Reviewer接口；不运行Planner、检索、Writer或实验生成器。
         reviewer = ReviewerAgent(client if supplied_client else _research_client(mgr, "reviewer"))
     initial = {name: (task / name).read_bytes() for name in (
-        "design_scheme.json", "experiment_plan.json", "experiment_report.json", "final_research_report.md") if (task / name).exists()}
+        "design_scheme.json", "experiment_plan.json", "experiment_report.json", "report_record.json", "final_research_report.md", "final_research_report_supplement.md") if (task / name).exists()}
     history = task / "research_repair_history" / datetime.now().strftime("%Y%m%d_%H%M%S_%f")
     history.mkdir(parents=True)
     for name, data in initial.items():
@@ -221,7 +221,7 @@ def _publish_recovery(mgr, history, original, doc, verdict, original_issues=None
     task = mgr.get_task_output_dir()
     history = Path(history)
     stage = history / "preview"
-    names = ["design_scheme.json", "experiment_plan.json", "experiment_report.json", "final_research_report.md"]
+    names = ["design_scheme.json", "experiment_plan.json", "experiment_report.json", "report_record.json", "final_research_report.md", "final_research_report_supplement.md"]
     initial = {name: (history / name).read_bytes() for name in names if (history / name).exists()}
     for key in ("scheme", "ledger_view", "final_answer", "scheme_parameters", "evidence"):
         if doc.get(key) != original.get(key):
@@ -253,7 +253,7 @@ def _publish_recovery(mgr, history, original, doc, verdict, original_issues=None
         for name in names:
             if (stage / name).exists():
                 content = (stage / name).read_text(encoding="utf-8")
-                if name == "final_research_report.md":
+                if name in ("final_research_report.md", "final_research_report_supplement.md"):
                     content = content.replace(str(stage), str(task))
                 atomic_write(task / name, content)
         checker.on_init(mgr, {"id": 6}, mgr.config)

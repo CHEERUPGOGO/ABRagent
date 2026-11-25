@@ -57,7 +57,7 @@ def test_model_states_and_limitations_survive_generation_and_display(tmp_path, s
     assert FIELD not in record["parameters"] and FIELD not in record["bindings"]
     assert "pending_dependencies" not in record and not record["pending_operations"]
     assert not record.get("generation_pending")
-    assert [tag for tag, _ in client.calls] == ["experiment_design"]
+    assert [tag for tag, _ in client.calls] == ["experiment_design", "experiment_alignment_review"]
     assert review.status(record, doc)[0] == "LEGACY"
     assert recipes.delivery_status(record, doc=doc)[0] == "CONDITIONAL"
     body = recipes.render(record, doc)
@@ -114,7 +114,7 @@ def test_cached_legacy_gaps_and_review_are_not_rewritten_or_upgraded(tmp_path):
     raw = path.read_bytes()
     loaded = recipes.generate(tmp_path, doc, client)
     assert loaded == record and path.read_bytes() == raw
-    assert len(client.calls) == 1
+    assert len(client.calls) == 2
     assert review.status(loaded, doc)[0] == "UNREVIEWED"
     assert recipes.delivery_status(loaded, doc=doc)[0] == "CONDITIONAL"
     assert loaded["requirement_tests"][0]["status"] == "gap"

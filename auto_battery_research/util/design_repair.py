@@ -8,7 +8,7 @@ from .scheme_ledger import digest, validate_field
 from . import design_sections as sections
 from .design_sections import design_sections
 
-MAX_FORMAT_REPAIR_ROUNDS = 3
+from .runtime_budgets import bind_repair_options, checkpoint_repair_options, repair_options
 
 
 def review_verdict(text, review, requirements=None):
@@ -47,11 +47,23 @@ def issue_quotes(issue):
     return list(dict.fromkeys(quotes))
 
 
-def authorize(text, issues, parameters):
+def authorize(text, issues, parameters, research_doc=None):
     from .numeric_bindings import occurrences, dependencies, binding_errors
     _, units = blocks(text)
     grants = {}
     for issue in issues:
+        if issue.get("source_only"):
+            if issue.get("parameter_source_paths"):
+                from .source_metadata import source_permissions
+                sources = source_permissions(issue, text, parameters)
+                if sources:
+                    grants[issue["id"]] = {"blocks": [], "fields": [], "source_fields": sources, "parameter_source_only": True}
+                continue
+            from .research_source_metadata import permissions
+            sources = permissions(issue, research_doc)
+            if sources:
+                grants[issue["id"]] = {"blocks": [], "fields": [], "source_fields": {}, "research_sources": sources}
+            continue
         quotes = issue_quotes(issue)
         located_quotes = [[bid for bid, value in units.items() if value.count(quote) == 1] for quote in quotes]
         if (not quotes or any(len(matches) != 1 or text.count(quote) != 1 for quote, matches in zip(quotes, located_quotes))
@@ -75,26 +87,17 @@ def authorize(text, issues, parameters):
             if not binding_errors(value, parameters) and any(
                     set(fields) & dependencies(kind, key, parameters) for _, _, kind, key, _ in occurrences(value)) and bid not in targets:
                 targets.append(bid)
-        grants[issue["id"]] = {"blocks": targets, "fields": fields}
+        from .source_metadata import parameter_permissions
+        grants[issue["id"]] = {"blocks": targets, "fields": fields,
+                               "source_fields": parameter_permissions(text, parameters, targets)}
     return {"base_hash": digest(text), "parameters_hash": digest(parameters), "grants": grants}
 
 
-def _value_occurrences(text, value):
-    """数值按完整字面量核对，5不能命中500，0不能命中100或0.03。"""
-    token = str(value)
-    if isinstance(value, (int, float)) and not isinstance(value, bool):
-        return len(re.findall(r"(?<![\d.])" + re.escape(token) + r"(?![\d.])", text))
-    return text.count(token)
-
-
 def _protected_value_changed(before, after, value):
-    old_count, new_count = _value_occurrences(before, value), _value_occurrences(after, value)
-    if not old_count or old_count == new_count:
+    """保护已有文字声明；数值重复不用于推断改值，由参数和引用校验负责。"""
+    if not isinstance(value, str) or not value:
         return False
-    if not isinstance(value, str) or not value or new_count < old_count:
-        return True
-    # 文字多提一次不等于改值；仅放行旧出现位置全部原样保留的增补。
-    # 参数本身、程序数值标记及独立事务语义复核仍由原路径验证。
+    # 文字多提一次不等于改值；旧出现位置须全部原样保留。
     unchanged = difflib.SequenceMatcher(None, before, after, autojunk=False).get_matching_blocks()
     return any(not any(block.a <= m.start() and m.end() <= block.a + block.size for block in unchanged)
                for m in re.finditer(re.escape(value), before))
@@ -111,7 +114,7 @@ def apply_patch(text, parameters, permit, patch):
         raise ValueError("补丁基准版本已过期")
     if "parameters_hash" in patch and patch["parameters_hash"] != permit["parameters_hash"]:
         raise ValueError("参数基准版本已过期")
-    if set(patch) - {"base_hash", "parameters_hash", "edits", "parameters", "append_sections"}:
+    if set(patch) - {"base_hash", "parameters_hash", "edits", "parameters", "sources", "append_sections"}:
         raise ValueError("补丁含未授权顶层字段，禁止全文替换")
     parts, units = blocks(text)
     updated, touched = copy.deepcopy(parameters), set()
@@ -130,9 +133,6 @@ def apply_patch(text, parameters, permit, patch):
             if (field.get("locked") or bound and key not in grant.get("fields", [])) and field.get("value") is not None:
                 if _protected_value_changed(units[bid], value, field["value"]):
                     raise ValueError(f"正文不得改变锁定或未授权参数值: {key}")
-            if bound and key in grant.get("fields", []) and str(field.get("value")) in units[bid]:
-                if _value_occurrences(units[bid], field.get("value")) != _value_occurrences(value, field.get("value")) and not any(c.get("path") == key for c in patch.get("parameters", [])):
-                    raise ValueError(f"正文参数变更必须同时提交授权字段补丁: {key}")
         from .design_structure import protected_structure
         if protected_structure(value) != protected_structure(units[bid]):
             raise ValueError("内容修复不能修改章节标题")
@@ -177,8 +177,10 @@ def apply_patch(text, parameters, permit, patch):
     from .numeric_bindings import occurrences, synchronize
     if occurrences(text):
         merged = synchronize(text, merged, parameters, updated)
+    from .source_metadata import apply_parameter_sources, changed_parameter_fields
+    apply_parameter_sources(merged, parameters, updated, permit["grants"], patch.get("sources", []))
     from .numeric_consistency import audit as numeric_audit
-    modified = {k for k in updated if updated[k] != parameters.get(k)}
+    modified = changed_parameter_fields(parameters, updated)
     old_errors = {(i["id"], i["message"]) for i in numeric_audit(parameters, text)["issues"]}
     new_errors = [i for i in numeric_audit(updated, merged)["issues"]
                   if set(i["paths"]) & modified or (i["id"], i["message"]) not in old_errors]
@@ -209,16 +211,21 @@ def scheme_with_fields(scheme, fields):
     return scheme
 
 
-def repair(writer, text, review, evidence, parameters, read_only_context="", verifier=None, geometry_validator=None, evidence_selection=None):
+def repair(writer, text, review, evidence, parameters, read_only_context="", verifier=None, geometry_validator=None, evidence_selection=None, research_doc=None):
     issues = review_issues(review, text)
-    permit = authorize(text, issues, parameters)
+    original_issue_count = len(issues)
+    from .research_source_metadata import route_issues
+    issues = route_issues(issues, research_doc, text, parameters, excluded=review.get("deferred_research_sources", []))
+    from .source_metadata import route_source_issues
+    issues = route_source_issues(issues, text, parameters, excluded=review.get("deferred_parameter_sources", []))
+    permit = authorize(text, issues, parameters, research_doc)
     permit["missing_sections"] = design_sections(text)[2]
     permit["evidence_ids"] = [e.get("passage_id") for e in evidence]
     if issues:
         from .repair_interfaces import execute
         changed, fields, entry = execute(writer, verifier or writer.llm, text, parameters, permit, issues, evidence,
-                                        read_only_context, geometry_validator, review.get("repair_feedback"), evidence_selection)
-        entry["unmapped_summaries"] = list(review.get("issues", []))[len(issues):]
+                                        read_only_context, geometry_validator, review.get("repair_feedback"), evidence_selection, research_doc)
+        entry["unmapped_summaries"] = list(review.get("issues", []))[original_issue_count:]
         return changed, fields, entry
     if not permit["grants"] and not permit["missing_sections"]:
         return text, parameters, {"status": "SCOPE_UNRESOLVED", "issues": issues}
@@ -228,42 +235,48 @@ def repair(writer, text, review, evidence, parameters, read_only_context="", ver
               "parameters": parameters, "evidence": package, "evidence_context": selection,
               "return_object_example_do_not_wrap": {"base_hash": permit["base_hash"], "edits": [{"issue_id": "issue-0", "block_id": "b0", "text": "替换段落"}],
                          "parameters": [], "append_sections": []}}
-    for attempt in range(2):
+    attempts = repair_options(getattr(writer, "repair_options", None))["patch_attempts"]
+    if not attempts:
+        return text, parameters, {"status": "REJECTED", "reason": "补丁生成预算为0", "permission": permit}
+    for attempt in range(attempts):
         try:
-            raw = writer.llm.chat("直接返回JSON补丁对象本身，不要format包装。禁止全文重写。参数修改格式为 {issue_id,path,field}；缺失章节格式为 {name,text}。", json.dumps(prompt, ensure_ascii=False), temperature=0.1, trace_tag="writer_patch")
+            raw = writer.llm.chat("直接返回JSON补丁对象本身，不要format包装。禁止全文重写。参数修改格式为 {issue_id,path,field}；缺失章节格式为 {name,text}。", json.dumps(prompt, ensure_ascii=False), temperature=0.1, json_mode=True, trace_tag="writer_patch")
             patch = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
             merged, fields = apply_patch(text, parameters, permit, patch)
             return merged, fields, {"status": "APPLIED" if merged != text or fields != parameters else "NO_CHANGE", "permission": permit, "patch": patch, "before": digest(text), "after": digest(merged)}
         except Exception as exc:
             protocol_error = isinstance(exc, json.JSONDecodeError) or "PATCH_FORMAT_INVALID" in str(exc)
-            if attempt == 0 and protocol_error:
+            if attempt + 1 < attempts and protocol_error:
                 prompt["format_error"] = str(exc)
                 continue
             return text, parameters, {"status": "REJECTED", "reason": str(exc), "error_type": "protocol" if protocol_error else "validation", "permission": permit}
 
 
-def pending_structure_repair(seed):
+def pending_structure_repair(seed, *, budget=None):
     """旧结构检查点可恢复格式修补；不要求尚有科学正文修复预算。"""
     from .writer_protocol import completion_recovery_available, syntax_recovery_available
-    if completion_recovery_available(seed) or syntax_recovery_available(seed):
+    from .writer_titles import recovery_available as title_recovery_available
+    limits = checkpoint_repair_options(seed, budget)
+    if (completion_recovery_available(seed) or syntax_recovery_available(seed)
+            or title_recovery_available(seed, budget=limits)):
         return True
     review = seed.get("reviewer_output") or {}
     if (review.get("review_status") != "STRUCTURE_INVALID" or seed.get("protocol_exhausted")
-            or seed.get("review_rounds", 0) >= 6
-            or seed.get("review_service_failures", 0) >= 2):
+            or seed.get("review_rounds", 0) >= limits["review_rounds"]
+            or seed.get("review_service_failures", 0) >= limits["review_service_failures"]):
         return False
     classified = sections.classify_design_output(seed.get("draft") or "", (seed.get("plan") or {}).get("requirements"))
     signature = digest({"text": seed.get("draft") or "", "parameters": seed.get("parameters") or {}})
-    return (bool(classified["format_issues"]) and seed.get("format_repair_rounds", 0) < MAX_FORMAT_REPAIR_ROUNDS
+    return (bool(classified["format_issues"]) and seed.get("format_repair_rounds", 0) < limits["format_rounds"]
             and signature not in seed.get("format_attempted_hashes", []))
 
 
-def structure_recovery_available(task_dir, doc, seed):
+def structure_recovery_available(task_dir, doc, seed, *, budget=None):
     """生成器与门禁共用恢复条件，已发布的下游产物通过显式恢复入口同步。"""
     return (not doc.get("experiment_contract")
             and not (task_dir / "experiment_plan.json").exists()
             and not (task_dir / "final_research_report.md").exists()
-            and pending_structure_repair(seed))
+            and pending_structure_repair(seed, budget=budget))
 
 
 def _repair_bold_marker(text, parameters, issue):
@@ -293,7 +306,10 @@ def _repair_bold_marker(text, parameters, issue):
 
 
 def review_design(pipeline, seed, question, history_context="", top_k=50):
-    """正文与局部格式各三轮、审核六轮，检查点独立持久化预算。"""
+    """正文、格式和审核按YAML预算独立计数，恢复不重置已用次数。"""
+    limits = bind_repair_options(pipeline, seed)
+    service_limit = limits["review_service_failures" if getattr(pipeline, "report_first", False)
+                           else "strict_review_service_failures"]
     from .scheme_ledger import atomic_write, flatten_scheme, canonical_unit
     question = seed.setdefault("review_context", question)
     requirements = (seed.get("plan") or {}).get("requirements")
@@ -341,8 +357,10 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
                 pass
         seed["protocol_replayed"] = True
     def save():
-        from .material_ids import canonical_parameters
-        parameters.update(canonical_parameters(parameters))
+        nonlocal text
+        from .numeric_bindings import normalize_material_references
+        text, normalized = normalize_material_references(text, parameters)
+        parameters.update(normalized)
         seed.update(draft=text, evidence=evidence, parameters=parameters, repair_audit=audit, reviewer_output=review,
                     scheme=scheme_with_fields(seed.get("scheme"), parameters))
         if seed.get("numeric_contract"):
@@ -379,7 +397,7 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
         classified = classify_current()
         signature = digest({"text": text, "parameters": parameters})
         attempted = seed.setdefault("format_attempted_hashes", [])
-        if (classified["format_issues"] and seed["format_repair_rounds"] < MAX_FORMAT_REPAIR_ROUNDS
+        if (classified["format_issues"] and seed["format_repair_rounds"] < limits["format_rounds"]
                 and signature not in attempted):
             seed["format_repair_rounds"] += 1
             attempted.append(signature)
@@ -432,9 +450,10 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
     repair_local_format()
     # 持久化预算，工具重复调用和进程重启均不能重置。
     # 审核、检索和正文修复分别计数；没有修补正文的检索不消耗正文预算。
-    while (seed.get("repair_rounds", 0) < 3 and seed.get("review_rounds", 0) < 6
+    while ((seed.get("repair_rounds", 0) < limits["content_rounds"] or seed.get("review_rounds", 0) == 0)
+           and seed.get("review_rounds", 0) < limits["review_rounds"]
            and not seed.get("protocol_exhausted")
-           and seed.get("review_service_failures", 0) < (2 if getattr(pipeline, "report_first", False) else 3)):
+           and seed.get("review_service_failures", 0) < service_limit):
         seed["review_rounds"] = seed.get("review_rounds", 0) + 1
         save()
         errors = repair_local_format()["blocking_issues"]
@@ -460,34 +479,90 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
         if review.get("error_type") == "reviewer":
             seed["review_service_failures"] = seed.get("review_service_failures", 0) + 1
             save()
-            if getattr(pipeline, "report_first", False) and seed["review_service_failures"] >= 2:
+            if seed["review_service_failures"] >= service_limit:
                 break
             continue
         retrieval_improved = not errors and after_review(pipeline, seed, review, save)
         evidence = seed["evidence"]
+        from .research_source_metadata import route_issues
+        routed = route_issues(review_issues(review, text), seed.get("research_draft"), text, parameters)
+        from .source_metadata import route_source_issues
+        routed = route_source_issues(routed, text, parameters)
+        if any(i.get("source_only") for i in routed):
+            review = dict(review, repair_issues=routed,
+                issues=list(dict.fromkeys(review.get("issues", []) + [i["reason"] for i in routed if i.get("source_only")])))
         if not review.get("issues"):
             if retrieval_improved:
                 continue  # 新证据须先重新审核，不把取回证据冒充正文已修复。
+            break
+        if seed.get("repair_rounds", 0) >= limits["content_rounds"]:
             break
         if errors and (sections.BOLD_ERROR in errors or sections.FENCE_ERROR in errors
                        or not (sections.design_sections(text)[2] and (requirements or {}).get("scheme_required", True))):
             audit.append({"status": "SCOPE_UNRESOLVED", "issues": errors, "reason": "结构问题缺少可安全修改的唯一原文范围"})
             save()
             break
+        from .repair_diagnosis import diagnose, issue_key
+        deferred_notes = []
+        cases = diagnose(getattr(pipeline.reviewer, "llm", None), text, parameters,
+                         review_issues(review, text), audit, seed, save,
+                         select_context(seed, purpose="repair_case_review", text=text,
+                                        issues=review.get("repair_issues", []), config=retrieval_options(pipeline)), question)
+        if cases:
+            review = dict(review, repair_feedback=list(review.get("repair_feedback", [])) + [{"case_review": cases}])
+            rechecks = [c for c in cases if c["action"] == "recheck"]
+            signature = digest(rechecks) if rechecks else None
+            if signature and signature not in seed.setdefault("case_rechecks", []) and seed.get("review_rounds", 0) < limits["review_rounds"]:
+                seed["case_rechecks"].append(signature)
+                seed["review_rounds"] += 1
+                seed.pop("pending_review", None)
+                save()
+                from .research_support import finish_review
+                package = select_context(seed, purpose="case_recheck", text=text,
+                                         issues=review.get("repair_issues", []), config=retrieval_options(pipeline))
+                review = pipeline.reviewer.run(question=question, evidence=package,
+                    draft_answer=text, history_context=history_context + "\n连续失败独立审查（仅供重新核验，不能视为已结案）：\n"
+                    + json.dumps(rechecks, ensure_ascii=False), scheme=seed.get("scheme"), claimed_energy=pipeline._extract_energy_claim(text))
+                finish_review(pipeline, seed, review, parameters, evidence, package)
+                review = retain_numeric_diagnostics(retain_format_diagnostics(review))
+                seed["reviewed_hash"] = digest(text)
+                save()
+                if review.get("error_type") in ("reviewer", "structure"):
+                    break
+                if not review.get("issues"):
+                    break
+            deferred = {c["issue_key"] for c in cases if c["action"] == "defer"}
+            if deferred:
+                deferred_notes = ["连续失败审查保留：" + c["reason"] + "；" + c["suggestion"]
+                                  for c in cases if c["action"] == "defer"]
+                deferred_sources = [(r["collection"], r["id"]) for i in review.get("repair_issues", [])
+                                    if issue_key(i) in deferred for r in i.get("research_sources", [])]
+                review["deferred_research_sources"] = list(dict.fromkeys(
+                    [tuple(r) for r in review.get("deferred_research_sources", [])] + deferred_sources))
+                review["deferred_parameter_sources"] = list(dict.fromkeys(review.get("deferred_parameter_sources", [])
+                    + [p for i in review.get("repair_issues", []) if issue_key(i) in deferred for p in i.get("parameter_source_paths", [])]))
+                review = dict(review, repair_issues=[i for i in review.get("repair_issues", []) if issue_key(i) not in deferred])
+                if not review["repair_issues"]:
+                    save()
+                    break  # 问题仍在issues中披露，不用不适用的补丁接口反复尝试。
         seed["repair_rounds"] = seed.get("repair_rounds", 0) + 1
         save()
         package = select_context(seed, purpose="repair", text=text, issues=review.get("repair_issues", []), config=retrieval_options(pipeline))
         changed, fields, entry = repair(pipeline.writer, text, review, package, parameters, question,
             verifier=getattr(pipeline.reviewer, "llm", None),
             geometry_validator=lambda fields: validate_repair_geometry(fields, parameters, seed, evidence),
-            evidence_selection=retrieval_state["context_history"][-1])
-        if entry["status"] == "APPLIED" and fields != parameters:
+            evidence_selection=retrieval_state["context_history"][-1], research_doc=seed.get("research_draft"))
+        if deferred_notes:
+            entry["unmapped_summaries"] = list(dict.fromkeys(entry.get("unmapped_summaries", []) + deferred_notes))
+        from .source_metadata import changed_parameter_fields
+        changed_inputs = changed_parameter_fields(parameters, fields)
+        if entry["status"] == "APPLIED" and changed_inputs:
             try:
                 from auto_battery_research.simulation.geometry_contract import build_geometry_contract, validate_geometry_contract
                 candidate = copy.deepcopy(seed.get("geometry_candidate"))
                 next_scheme = scheme_with_fields(seed.get("scheme"), fields)
                 for key, field in fields.items():
-                    if field == parameters.get(key):
+                    if key not in changed_inputs:
                         continue
                     comp, _, name = key.partition(".")
                     if name == "material":
@@ -513,9 +588,16 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
                 for transaction in entry.get("transactions", {}).values():
                     if transaction.get("status") == "COMMITTED":
                         transaction.update(status="ROLLED_BACK", reason=str(exc))
+        source_research = entry.pop("_research_draft", None)
+        if entry["status"] == "APPLIED" and source_research is not None:
+            seed["research_draft"] = source_research
+            pipeline.reviewer.research_draft = source_research
+            if entry.get("research_source_updates"):
+                seed.pop("research_reviewed_signature", None)
+                seed.pop("pending_review", None)
         audit.append(entry)
         if entry.get("error_type") == "protocol":
-            # 两次协议输出均失败，不消耗实质修复轮数；记录终止，避免空转。
+            # 本轮协议输出机会耗尽，不消耗实质修复轮数；记录终止，避免空转。
             seed["repair_rounds"] -= 1
             seed["protocol_exhausted"] = True
             save()
@@ -529,7 +611,7 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
                 continue
             break
         if entry["status"] == "APPLIED":
-            numeric_changed = fields != parameters
+            numeric_changed = fields != parameters or bool(entry.get("research_source_updates"))
             text, parameters = changed, fields
             if seed.get("numeric_contract") and numeric_changed:
                 # 数值或引用变化后不能沿用上一正文的定位队列；用当前版本重新审。
@@ -565,8 +647,8 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
     research_doc = refresh_for_review(pipeline, seed, text, parameters, evidence)
     research_stale = research_doc is not None and seed.get("research_reviewed_signature") != review_signature(research_doc, parameters)
     legacy_stale = not research_doc and audit and audit[-1].get("status") == "APPLIED" and seed.get("reviewed_hash") != digest(text)
-    can_review = lambda: (seed.get("review_rounds", 0) < 6 and seed.get("review_service_failures", 0)
-                         < (2 if getattr(pipeline, "report_first", False) else 3))
+    can_review = lambda: (seed.get("review_rounds", 0) < limits["review_rounds"]
+                         and seed.get("review_service_failures", 0) < service_limit)
     structure_stale = review.get("error_type") == "structure" and audit and audit[-1].get("status") == "APPLIED"
     format_stale = (sections.classify_design_output(text, requirements)["format_issues"]
                     and seed.get("reviewed_hash") != digest(text))
@@ -585,7 +667,7 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
             # 最终复核仅记录决策和关闭窗口，不再开启无法用于正文修复的检索。
             retrieval_state["window_open"] = False
             retrieval_state["pending_diagnostics"] = review.get("retrieval_diagnostics", [])
-    # 漏返字段仅补一次并计入既有六轮总预算；科学否决不能被补漏覆盖。
+    # 漏返字段的补漏计入配置中的审核总预算；科学否决不能被补漏覆盖。
     if (research_doc and seed.get("research_reviewed_signature") == review_signature(research_doc, parameters)
             and not seed.get("research_support_completion_attempted") and can_review()
             and missing_support_fields(research_doc["research"], research_doc, parameters)):
@@ -617,12 +699,14 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
 def validate_repair_geometry(fields, original, seed, evidence):
     """事务提交前复用真实物性与几何规则，不写入检查点。"""
     from auto_battery_research.simulation.geometry_contract import build_geometry_contract, validate_geometry_contract
-    if fields == original:
+    from .source_metadata import changed_parameter_fields
+    changed_inputs = changed_parameter_fields(original, fields)
+    if not changed_inputs:
         return
     candidate = copy.deepcopy(seed.get("geometry_candidate"))
     scheme = scheme_with_fields(seed.get("scheme"), fields)
     for key, field in fields.items():
-        if field == original.get(key):
+        if key not in changed_inputs:
             continue
         comp, _, name = key.partition(".")
         if name == "material":
@@ -641,6 +725,7 @@ def validate_repair_geometry(fields, original, seed, evidence):
 
 
 def resume_pipeline(pipeline, seed, question, history_context="", top_k=50):
+    bind_repair_options(pipeline, seed)
     if not seed.get("draft") and seed.get("writer_request") and "writer_protocol" in seed:
         from .scheme_ledger import atomic_write
         pipeline.writer.protocol_state = seed["writer_protocol"]

@@ -60,7 +60,9 @@ def physics_exemption(doc):
     from auto_battery_research.tools.workflow_actions import _match_pinn_system_for_scheme
     if not requires_scheme(doc):
         return "分析类课题未要求电芯放电仿真"
-    match = _match_pinn_system_for_scheme(doc.get("scheme") or {})
+    from .material_ids import pinn_material_ids
+    materials = pinn_material_ids(doc.get("scheme") or {}, (doc.get("ledger_view") or {}).get("parameters"))
+    match = _match_pinn_system_for_scheme(materials)
     if match.get("status") == "NO_MATCH":
         return "当前材料组合没有匹配的 PINN，未执行放电仿真"
     if not match.get("matched"):
@@ -93,6 +95,12 @@ def finalize_stage5(mgr, design_only=False, client=None, *, restart_experiment=F
         prior = {}
     def save():
         atomic_write(task_dir / "stage5_execution.json", json.dumps(state, ensure_ascii=False, indent=2))
+    def save_doc():
+        if doc.get("writer_contract_version") == 3:
+            from .stage4_publication import publish_document
+            publish_document(task_dir, doc, reason="Stage 5下游状态同步")
+        else:
+            atomic_write(doc_path, json.dumps(doc, ensure_ascii=False, indent=2))
     try:
         doc = json.loads(doc_path.read_text(encoding="utf-8"))
         require_current(task_dir, doc)
@@ -101,7 +109,7 @@ def finalize_stage5(mgr, design_only=False, client=None, *, restart_experiment=F
             # 通用回退模板不是几何优化的固定约束；保留文件，标记待本轮重新生成。
             doc["experiment_plan_pending"] = doc.pop("experiment_plan_hash", None)
             doc.pop("experiment_contract", None)
-            atomic_write(doc_path, json.dumps(doc, ensure_ascii=False, indent=2))
+            save_doc()
         checker = PINNPhysicsChecker()
         checker.on_init(mgr, {"id": 5}, mgr.config)
         started = time.monotonic()
@@ -144,6 +152,10 @@ def finalize_stage5(mgr, design_only=False, client=None, *, restart_experiment=F
                 "diagnostic": {"error": str(exc)}, "duration_seconds": time.monotonic()-started}
         save()
         doc = json.loads(doc_path.read_text(encoding="utf-8"))
+        if doc.get("writer_contract_version") == 3:
+            from .stage4_session import stage5_final_review
+            stage5_final_review(task_dir, doc, client if client is not None else _llm_client(mgr),
+                                repair_budget=(mgr.config.get("runtime_options") or {}).get("stage4_repair", {}))
         if (doc.get("scheme", {}).get("geometry") or {}).get("contract_version") == "2.0":
             from auto_battery_research.simulation.geometry_contract import input_diagnostic
             doc["physics_input_diagnostic"] = input_diagnostic(doc["scheme"], doc.get("evidence") or [])
@@ -160,6 +172,8 @@ def finalize_stage5(mgr, design_only=False, client=None, *, restart_experiment=F
                 readiness["category"] = "CONDITIONAL" if readiness["category"] != "DIAGNOSTIC" else "DIAGNOSTIC"
                 readiness["issues"].append("物理验证未完成：" + str(state["physics"].get("diagnostic")))
         started = time.monotonic()
+        from .issue_resolution import resolve_numeric_issues
+        resolve_numeric_issues(doc)
         recipe_doc = copy.deepcopy(doc)
         recipe_doc["evidence"] = retrieve_process_evidence(mgr, doc, task_dir)
         result_path = task_dir / "pinn_simulation_result.json"
@@ -176,14 +190,15 @@ def finalize_stage5(mgr, design_only=False, client=None, *, restart_experiment=F
         if doc.get("requirements"):
             doc["experiment_extensions"] = recipe.get("extensions", [])
         doc.update(stage5_contract=2, experiment_contract=2, experiment_plan_hash=recipe["plan_hash"])
-        atomic_write(doc_path, json.dumps(doc, ensure_ascii=False, indent=2))
-        from .experiment_consistency import parameter_pending_fields
-        pending_fields = sorted(set(parameter_pending_fields(doc)) | set(recipe.get("pending_parameters") or {}))
+        save_doc()
+        from .experiment_delivery import blocking_pending_fields, assessment
+        pending_fields = blocking_pending_fields(recipe, doc)
         recipes.require_current(task_dir, doc)
         experiment_status, reasons = recipes.delivery_status(recipe, pending_fields, doc=doc)
         conditional = experiment_status != "PASSED"
         state["experiment"] = {"status": experiment_status, "plan_hash": recipe["plan_hash"],
             "pending_fields": pending_fields, "reasons": reasons, "origin": recipe.get("origin"),
+            "validation_notes": assessment(recipe, doc)["validation_notes"],
             "duration_seconds": time.monotonic()-started}
         if doc.get("report_readiness"):
             readiness = doc["report_readiness"]
@@ -196,7 +211,7 @@ def finalize_stage5(mgr, design_only=False, client=None, *, restart_experiment=F
                 if readiness["category"] == "COMPLETE":
                     readiness["category"] = "CONDITIONAL"
                 readiness["issues"].append(message)
-            atomic_write(doc_path, json.dumps(doc, ensure_ascii=False, indent=2))
+            save_doc()
         save()
         return {"success": bool(valid or design_only or doc.get("delivery_contract") == 1), "key_findings": state,
                 "message": ("Stage 5B 仅交付工程回退模板，具体实验方案尚未生成" if experiment_status == "FALLBACK" else

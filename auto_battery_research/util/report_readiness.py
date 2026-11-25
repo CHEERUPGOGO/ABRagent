@@ -62,6 +62,9 @@ def notice(doc):
     state = doc.get("report_readiness") or {}
     if not state:
         return ""
+    if doc.get("_report_record"):
+        state = copy.deepcopy(state)
+        state["physics_status"] = doc["_report_record"]["view"]["physics_status"]
     names = {"COMPLETE": "研究候选报告", "CONDITIONAL": "有条件候选报告", "DIAGNOSTIC": "问题诊断报告"}
     review = {"REVIEWED": "已完成审核", "UNREVIEWED": "尚未完成审核"}
     physics = {"PASSED": "阶段门禁通过，具体仿真与达标结论见第 4 节", "NOT_EVALUATED": "尚未评估",
@@ -77,31 +80,46 @@ def notice(doc):
                 and match.get("parent_declaration") == parent and match.get("declared_value") == scheme.get(comp)):
             name = "正极" if comp == "cathode" else "负极"
             lines.append(f"**规则匹配口径：** {name}按声明母体 {match['rule_material_id']} 匹配材料类别与相容性规则，"
-                         "完整掺杂配方保留，掺杂位点、性能和协同效应仍需独立验证；母体匹配不赋予PINN模型适用性。")
+                         "完整掺杂配方保留，掺杂位点、性能和协同效应仍需独立验证；PINN按声明正极母体与实际负极另行匹配。")
         composition = match.get("composition") or {}
         if (comp == "electrolyte" and match.get("basis") == "composition" and match.get("matched")
                 and composition.get("complete") and composition.get("raw") == scheme.get(comp)
                 and match.get("declared_value") == scheme.get(comp)):
+            params = (doc.get("ledger_view") or {}).get("parameters", {})
+            ratio = next((params[k] for k in ("electrolyte.ec_dmc_ratio", "electrolyte.solvent_ratio") if params.get(k, {}).get("value") is not None), None)
+            ratio_note = ""
+            if ratio:
+                from .report_narrative import amount
+                ratio_note = "当前溶剂比例声明为" + amount("electrolyte.solvent_ratio", ratio) + ("（用户固定条件）。" if ratio.get("locked") else "（工程设定，仍待核验）。")
+            elif composition.get("solvent_ratio") is None:
+                ratio_note = "溶剂比例未声明，保持待确认。"
             lines.append("**电解液规则口径：** 按完整组成识别为碳酸酯体系，浓度、溶剂比例与添加成分保留原声明；"
                          "分类成功不代表该配方的相容性、性能或PINN适用性已验证。"
-                         + ("溶剂比例未声明，保持待确认。" if composition.get("solvent_ratio") is None else ""))
+                         + ratio_note)
     if unresolved_issues(doc):
-        location = "6节附录" if doc.get("requirements") else "2.6 节"
-        lines.append(f"**关键限制：** 尚有 {len(unresolved_issues(doc))} 项待复核事项，完整意见集中列于第 {location}。")
+        lines.append(f"**关键限制：** 尚有 {len(unresolved_issues(doc))} 项待复核事项。")
         lines.append("存在未解决相容性或硬约束的配置不能作为已认可的实验推荐；应先验证相应对策。")
     return "\n\n".join(lines)
 
 
 def unresolved_issues(doc):
     """审核和交付意见仅在一处完整呈现，原始问题不截断、不改写。"""
+    if doc.get("_report_record"):
+        return list(doc["_report_record"]["view"]["active_issues"])
     groups = [(doc.get("report_readiness") or {}).get("issues", []),
               (doc.get("reviewer_output") or {}).get("issues", []),
               (doc.get("ledger_view") or {}).get("issues", [])]
-    return list(dict.fromkeys(str(issue) for group in groups for issue in group))
+    from .issue_resolution import resolved
+    closed = resolved(doc)
+    return list(dict.fromkeys(str(issue) for group in groups for issue in group if str(issue) not in closed))
 
 
 def check(task_dir, doc):
     errors = projection_errors(task_dir, doc)
+    if doc.get("writer_contract_version") == 3:
+        from .stage4_session import document_errors
+        from .stage4_publication import publication_errors
+        errors += document_errors(doc) + publication_errors(task_dir)
     if doc.get("numeric_contract"):
         from .numeric_consistency import document_audit, messages
         from .numeric_bindings import binding_errors

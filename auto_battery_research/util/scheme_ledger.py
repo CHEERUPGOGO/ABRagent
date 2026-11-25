@@ -1,4 +1,4 @@
-"""课题方案唯一数据源：版本提交、用户锁定、单位与确定性派生计算。"""
+"""课题方案唯一数据源：版本提交、用户锁定、单位与声明一致性。"""
 from __future__ import annotations
 
 import copy
@@ -231,22 +231,34 @@ def ensure(task_dir, goal=""):
         return data
 
 
-def calculate(data):
-    """只计算依赖完整的量；不回填密度、容量、电压等默认表。"""
+def calculate(data, *, legacy_calculations=False):
+    """当前方案只检查声明；显式历史诊断保留旧计算工具，不自动生成预算。"""
     params = data["parameters"]
+    from .numeric_consistency import audit as numeric_audit, messages
+    numerical = numeric_audit(params, legacy_calculations=legacy_calculations)
+    if not legacy_calculations:
+        from .physical_parameters import physical_declarations
+        from .parameter_presentation import presentation_conflicts
+        _, physical_issues = physical_declarations(params)
+        return {}, list(dict.fromkeys(messages(numerical) + physical_issues + presentation_conflicts(data)))
+    derived = copy.deepcopy(numerical["derived"])
+    quantities = {r.get("quantity"): r for r in derived.values() if r.get("quantity")}
     def value(key):
         v = (params.get(key) or {}).get("value")
         return v if isinstance(v, (float, int)) and not isinstance(v, bool) else None
-    derived, issues = {}, []
+    issues = []
     def number(key):
+        computed = derived.get(key) or quantities.get(key)
+        if computed:
+            return computed.get("value") if computed.get("status") in (None, "CALCULATED", "CONSISTENT", "DECLARED") else None
         direct = value(key)
-        return direct if direct is not None else (derived.get(key) or {}).get("value")
+        return direct
     def put(key, inputs, formula, unit):
         values = [number(p) for p in inputs]
         derived[key] = {"value": formula(*values) if all(v is not None for v in values) else None,
                         "unit": unit, "dependencies": inputs,
                         "missing": [p for p, v in zip(inputs, values) if v is None]}
-    for comp in ("cathode", "anode", "separator"):
+    for comp in ("separator",):
         put(f"{comp}.pore_volume_uL_cm2", [f"{comp}.L_um", f"{comp}.porosity"],
             lambda length, porosity: length * porosity * 0.1, "uL/cm2")
     if (params.get("anode.porosity_basis") or {}).get("value") == "before_loading":
@@ -254,13 +266,6 @@ def calculate(data):
             lambda volume, fraction: volume * (1-fraction), "uL/cm2")
         put("electrolyte.available_pore_volume_uL_cm2", ["cathode.pore_volume_uL_cm2",
             "anode.remaining_pore_volume_uL_cm2", "separator.pore_volume_uL_cm2"], lambda a,b,c: a+b+c, "uL/cm2")
-    if "cathode.electrode_area" in params and params["cathode.electrode_area"].get("unit") in ("cm2", "cm²"):
-        put("cathode.calculated_pore_volume_uL", ["cathode.pore_volume_uL_cm2", "cathode.electrode_area"],
-            lambda volume, area: volume * area, "uL")
-        pore = number("cathode.calculated_pore_volume_uL")
-        if pore and (params.get("electrolyte.volume") or {}).get("unit") in ("uL", "μL", "µL"):
-            put("condition.calculated_electrolyte_to_cathode_pore_ratio", ["electrolyte.volume", "cathode.calculated_pore_volume_uL"],
-                lambda volume, pores: volume / pores, "")
     # 对照原始声明允许展示取整，超差保留依赖项供人工复核。
     for calculated, declared, unit in (("cathode.calculated_pore_volume_uL", "cathode.pore_volume", "uL"),
                                        ("condition.calculated_electrolyte_to_cathode_pore_ratio", "condition.electrolyte_to_pore_volume_ratio", "")):
@@ -270,9 +275,6 @@ def calculate(data):
         expected = number(calculated)
         if expected is not None and value(declared) is not None and row.get("unit") == unit and not math.isclose(value(declared), expected, rel_tol=.02):
             issues.append(f"{declared} 与当前几何预算不一致：声明 {value(declared):g}，计算 {expected:g} {unit}")
-    put("cathode.areal_capacity_mAh_cm2",
-        ["cathode.loading_mg_cm2", "cathode.active_fraction", "cathode.capacity_mAh_g"],
-        lambda loading, fraction, capacity: loading * fraction * capacity / 1000, "mAh/cm2")
     # 多孔锂宿主：只有明确载锂前口径才允许按填充率计算锂库存。
     if (params.get("anode.porosity_basis") or {}).get("value") == "before_loading":
         put("anode.li_capacity_mAh_cm2", ["anode.L_um", "anode.porosity", "anode.li_filling_fraction",
@@ -306,13 +308,6 @@ def calculate(data):
         put(f"packaging.{label}_energy_wh_kg", ["cathode.areal_capacity_mAh_cm2",
             "condition.average_discharge_voltage_V", f"packaging.{label}_mass_mg_cm2"],
             lambda capacity, voltage, mass: capacity*voltage/mass*1000 if mass else None, "Wh/kg")
-    from .numeric_consistency import audit as numeric_audit, messages
-    numerical = numeric_audit(params)
-    for key, computed in numerical["derived"].items():
-        if key in derived or computed["status"] != "NOT_APPLICABLE":
-            derived[key] = {"value": computed["value"] if computed["status"] != "INCOMPLETE" else None,
-                            "unit": computed["unit"], "dependencies": computed.get("paths", computed["dependencies"]),
-                            "missing": computed["missing"], "formula": computed["formula"], "status": computed["status"]}
     issues.extend(messages(numerical))
     return derived, list(dict.fromkeys(issues))
 
@@ -322,6 +317,8 @@ def validate_field(key, field):
         raise ValueError("字段更新须为路径到参数对象的映射")
     if key.split(".")[0] not in DOMAINS or len(key.split(".")) < 2:
         raise ValueError(f"未知方案字段: {key}")
+    from .parameter_names import checked_name
+    checked_name(key, field)
     v = field.get("value")
     leaf = key.split(".")[-1]
     expected = canonical_unit(key)
@@ -376,15 +373,19 @@ def update(task_dir, changes, base_revision, actor="agent", reason="", unlock=()
             field.setdefault("conditions", {})
             validate_field(key, field)
             from .research_contract import field_equal
-            from .parameter_presentation import ALIASES
+            from .numeric_consistency import canonical as canonical_name, context, UNITS as NUMERIC_UNITS
+            from .parameter_names import KNOWN_FIELDS
             from .material_ids import parent_path
             parent = parent_path(key, field)
-            canonical = parent + ".base_formula" if parent else ALIASES.get(key, key)
+            canonical = parent + ".base_formula" if parent else canonical_name(key, field)
             if actor == "agent":
                 for alias, bound in data["parameters"].items():
                     bound_parent = parent_path(alias, bound)
-                    bound_key = bound_parent + ".base_formula" if bound_parent else ALIASES.get(alias, alias)
-                    if bound.get("locked") and bound_key == canonical and (
+                    bound_key = bound_parent + ".base_formula" if bound_parent else canonical_name(alias, bound)
+                    same_scope = (canonical not in NUMERIC_UNITS and canonical not in KNOWN_FIELDS or
+                                  context(field) == context(bound) and
+                                  field.get("quantity_role", "value") == bound.get("quantity_role", "value"))
+                    if bound.get("locked") and bound_key == canonical and same_scope and (
                             not field_equal(key, bound.get("value"), field.get("value"))
                             or bound.get("unit", "") != field.get("unit", "")):
                         raise ValueError("用户锁定字段禁止通过别名覆盖: " + key)
@@ -426,14 +427,20 @@ def update(task_dir, changes, base_revision, actor="agent", reason="", unlock=()
 
 
 def render(data):
+    from .parameter_names import effective_parameters
     def cell(v):
         return str(v if v is not None else "未提供").replace("|", "\\|").replace("\n", " ")
     lines = [f"方案表版本：{data['revision']}", "", "| 字段 | 当前声明值 | 单位 | 依据 | 来源 | 用户锁定 |",
              "|---|---|---|---|---|---|"]
-    for key, row in sorted(data["parameters"].items()):
+    for key, row in sorted(effective_parameters(data["parameters"]).items()):
+        source = str(row.get("source") or "")
+        if row.get("resolved_from"):
+            source += "（同义声明取值：" + row["resolved_from"] + "；原空占位保留于JSON档案）"
         lines.append("| " + " | ".join(cell(x) for x in (key, row.get("value"), row.get("unit", ""),
-            row.get("basis", ""), row.get("source", ""), "是" if row.get("locked") else "否")) + " |")
-    lines += ["", "派生计算（依赖缺失时不计算）："]
+            row.get("basis", ""), source, "是" if row.get("locked") else "否")) + " |")
+    lines += ["", "预算与换算由模型给出方法、输入及结果，并由Reviewer复核；方案表不自动生成派生计算。"]
+    if data.get("derived"):
+        lines += ["", "历史程序派生快照（仅供追溯，不自动重算）："]
     for key, row in sorted(data["derived"].items()):
         lines.append(f"- {key}：{cell(row['value'])} {row['unit']}；依赖：{', '.join(row['dependencies'])}")
     lines += ["", "一致性问题："] + ([f"- {x}" for x in data["issues"]] or ["- 当前无已识别的数值冲突；不代表实验验证通过。"])
@@ -461,6 +468,12 @@ def projection_errors(task_dir, doc):
 
 
 def require_current(task_dir, doc):
+    if doc.get("writer_contract_version") == 3:
+        from .stage4_publication import publication_errors
+        from .stage4_session import document_errors
+        errors = publication_errors(task_dir) + document_errors(doc)
+        if errors:
+            raise ValueError("；".join(errors))
     errors = projection_errors(task_dir, doc)
     if doc.get("delivery_contract") == 1 and doc.get("report_readiness", {}).get("category") == "DIAGNOSTIC":
         # 诊断报告允许描述表中已有冲突，但不允许版本或值失配。
@@ -490,6 +503,11 @@ def align_geometry_parameters(doc, paths, reason):
         from .report_narrative import label
         extras[key] = {"value": canonical[key], "unit": UNITS.get(key.split(".")[-1], ""),
             "basis": "engineering_proposal", "source": reason, "meaning": label(key, {}), "conditions": {}}
+        if doc.get("writer_contract_version") == 3 and key.endswith(".D_s_m2s"):
+            source = (doc.get("scheme", {}).get("geometry", {}).get("parameter_sources") or {}).get(key, {})
+            if source.get("basis") == "evidence_verified" and source.get("evidence"):
+                extras[key]["evidence"] = copy.deepcopy(source["evidence"])
+                extras[key]["basis"] = "literature"
         updates[key] = {"before": old, "after": copy.deepcopy(extras[key])}
     if updates:
         doc.setdefault("geometry_parameter_history", []).append({"reason": reason, "updates": updates})
@@ -680,7 +698,7 @@ source_quote 必须是输入正文中逐字存在的支持句；literature 还�
 材料模型物性不可标为实测。输出最多六十个参数。"""
     prompt += PARAMETER_INSTRUCTIONS
     if doc.get("numeric_contract"):
-        prompt += "\n带abr-param/abr-derived标记的数值由程序登记；只引用current_parameters，不重新提取或覆盖这些数值。文献和候选数字不得晋升为主方案。原句摘录保留标记内的显示值。"
+        prompt += "\n带abr-param标记的数值由程序登记；只引用current_parameters，不重新提取或覆盖。旧abr-derived仅为历史显示，不作为计算已验证的依据。文献和候选数字不得晋升为主方案。原句摘录保留标记内的显示值。"
     payload = {"scheme": doc.get("scheme"), "text": doc.get("final_answer"),
                "issues": (doc.get("reviewer_output") or {}).get("issues"),
                "evidence_ids": [e.get("passage_id") for e in doc.get("evidence") or []]}
@@ -717,7 +735,7 @@ source_quotes,field_support,citations,parameter_refs。selected_candidate_id只�
         try:
             doc["maintenance_calls"] += 1
             raw = client.chat(prompt, json.dumps(payload, ensure_ascii=False), temperature=0.1,
-                              trace_tag="scheme_maintenance")
+                              json_mode=True, trace_tag="scheme_maintenance")
             raw = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip())
             proposed = json.loads(raw)
             if not isinstance(proposed, dict):

@@ -280,14 +280,14 @@ def reparse_requirements(mgr, dry_run=False, client=None, reviewer=None, resume_
         try:
             proposal = decode(client.chat(PLANNER_INSTRUCTIONS + '\n额外返回mapping，每个旧要求一项：{"old_id":"旧ID","new_id":"新items的ID或null","relation":"equivalent|merged|revised|task|group|background","group_id":"移入上层时的groups ID，其余省略","reason":"语义依据"}。不得改方案。equivalent要求完整验收责任相同，verification_needed沿用原值；改变验证责任须标revised。merged只用于多个同义旧项归为一个新项。task只容纳总任务动作/对象或失败保留的裸对象片段。group可保存已有上层综合目标，必须有原文和独立子项；不能移走有独立指标/工况/数量的要求。所有固定字段value/unit及条件保持不变；原已知固定条件补齐规范bindings，母体式与改性式分开。保留不同科学指标；循环稳定性等上层目标放groups，子指标独立验收。',
                 json.dumps({"goal": old["source"], "old_requirements": old, "queries": queries,
-                            "declared_fields": {k: {"value": v.get("value"), "unit": v.get("unit", "")} for k, v in original.get("ledger_view", {}).get("parameters", {}).items()}}, ensure_ascii=False), temperature=.1, trace_tag="requirements_reparse"))
+                            "declared_fields": {k: {"value": v.get("value"), "unit": v.get("unit", "")} for k, v in original.get("ledger_view", {}).get("parameters", {}).items()}}, ensure_ascii=False), temperature=.1, json_mode=True, trace_tag="requirements_reparse"))
             proposal["requirements"] = preserve_mapped_conditions(old, proposal["requirements"], proposal.get("mapping"))
             new = attach_requirements({"requirements": proposal["requirements"], "retrieval_queries": queries}, old["source"], client)["requirements"]
             if new.get("status") != "parsed" or new.get("split_version") != SPLIT_VERSION or new.get("hierarchy_version") != HIERARCHY_VERSION:
                 raise ValueError("新拆分仍未通过原文校验，拒绝迁移")
             mapping = validate_mapping(old, new, proposal.get("mapping"), proposal["requirements"]["items"])
             verdict = decode(reviewer.chat('独立检查要求重拆与原文：总任务不是独立回应，所有独立目标/约束/否定/偏好/明确交付必须保留；仅同一对象、指标、条件和强度的同义要求可合并。检查groups保留上层目标、不同子指标仍分别验收；固定条件须完整bindings，数值/单位与原文一致，母体式不能锁死改性式。检查task是否隐藏遗漏、映射equivalent是否语义和验收责任完全等价。只返回JSON {"approved":true或false,"issues":[]}，不修改配方或回答。',
-                json.dumps({"goal": old["source"], "old": old, "new": new, "mapping": mapping}, ensure_ascii=False), temperature=.1, trace_tag="requirements_split_review"))
+                json.dumps({"goal": old["source"], "old": old, "new": new, "mapping": mapping}, ensure_ascii=False), temperature=.1, json_mode=True, trace_tag="requirements_split_review"))
             if verdict.get("approved") is not True or verdict.get("issues") != []:
                 raise ValueError("独立拆分审核未通过：" + str(verdict.get("issues")))
         except (ValueError, KeyError, TypeError, RuntimeError) as exc:
@@ -390,7 +390,7 @@ def reparse_requirements(mgr, dry_run=False, client=None, reviewer=None, resume_
         atomic_write(history / "audit.json", json.dumps(dict(summary, passed=passed, diagnostic=diagnostic), ensure_ascii=False, indent=2))
         if not passed:
             raise ValueError("要求迁移副本未通过报告终审：" + str(diagnostic))
-        names = set(writes) | {"final_research_report.md", "experiment_report.json", "scheme_table.md"}
+        names = set(writes) | {"report_record.json", "final_research_report.md", "final_research_report_supplement.md", "experiment_report.json", "scheme_table.md"}
         with task_lock(task):
             if any((task / name).read_bytes() != data for name, data in initial.items()):
                 raise ValueError("迁移期间任务已变化，拒绝覆盖")

@@ -337,7 +337,7 @@ def test_prompts_and_agents_stage4_consistency_guidance():
     class CaptureLLM:
         available = True
 
-        def chat(self, system_prompt, user_prompt, temperature=0.2, trace_tag=""):
+        def chat(self, system_prompt, user_prompt, temperature=0.2, trace_tag="", *, json_mode=False):
             captured.append((trace_tag, system_prompt, user_prompt))
             if trace_tag == "reviewer":
                 return json.dumps(

@@ -3,15 +3,20 @@ from __future__ import annotations
 
 import re
 
-RENDER_VERSION = 33
+RENDER_VERSION = 45
 GROUPS = {"cathode": "正极", "anode": "负极", "electrolyte": "电解液",
           "separator": "隔膜", "current_collector": "集流体", "packaging": "封装",
           "process": "制备与装配", "condition": "测试条件", "requirements": "研发目标"}
 NAMES = {
     "calculated_pore_volume_uL": "单片正极孔体积", "calculated_electrolyte_to_cathode_pore_ratio": "注液量与单片正极孔体积之比",
     "material": "材料", "L_um": "涂层厚度", "porosity": "孔隙率", "R_s_um": "颗粒半径",
-    "D_s_m2s": "固相扩散系数", "loading_mg_cm2": "涂层面载量", "compaction_g_cm3": "压实密度",
+    "D_s_m2s": "固相扩散系数", "loading_mg_cm2": "总干涂层面载量", "compaction_g_cm3": "压实密度",
     "capacity_mAh_g": "比容量", "active_fraction": "活性物质量占比", "conductive_fraction": "导电剂质量占比",
+    "active_loading_mg_cm2": "活性物质面载量", "calculated_loading_mg_cm2": "总涂层面载量",
+    "calculated_active_loading_mg_cm2": "活性物质面载量", "calculated_current_density": "倍率对应比电流",
+    "C_rate_reference_current": "1 C换算基准", "cell_configuration": "电池构型", "voltage_window": "常规循环电压窗口",
+    "high_voltage_window": "高压应力组电压窗口", "cycles": "常规循环圈数",
+    "high_voltage_cycles": "高压应力组循环圈数",
     "binder_fraction": "粘结剂质量占比", "n_p_ratio": "负正极容量比（N/P）",
     "additives": "添加剂", "salt": "锂盐", "solvent": "溶剂", "concentration_M": "锂盐浓度",
     "conc_M": "锂盐浓度", "solvent_ratio": "溶剂配比", "composition": "组成",
@@ -49,7 +54,7 @@ def label(key, row=None):
     if isinstance(meaning, str) and re.search(r"[\u4e00-\u9fff]", meaning) and key not in meaning:
         return meaning.strip().rstrip("。")
     # 未注册的新字段不能在报告中暴露程序路径；保留其值及明确的待完善语义。
-    return "未命名参数（见参数附录）"
+    return "未命名参数"
 
 
 def text(value):
@@ -156,7 +161,8 @@ def component_identity_text(data, group, emphasize=False):
 
 
 def component_paragraph(data, group, material_only=False):
-    params = data.get("parameters", {})
+    from .parameter_names import effective_parameters
+    params = effective_parameters(data.get("parameters", {}))
     selected = [(k, v) for k, v in params.items() if k.startswith(group + ".") and not k.endswith(".original_request")]
     if material_only:
         return component_identity_text(data, group) or f"{GROUPS[group]}的具体规格尚未确定。"
@@ -178,9 +184,10 @@ def render_design(data):
 
 
 def render_model_parameters(data):
+    from .parameter_names import effective_parameters
     parts = ["### 模型参数声明", "以下为方案表中的模型参数，声明值不等于本批材料的实测物性，也不表示本次已完成仿真。"]
     for index, group in enumerate(("cathode", "anode"), 1):
-        rows = [(k, v) for k, v in data.get("parameters", {}).items()
+        rows = [(k, v) for k, v in effective_parameters(data.get("parameters", {})).items()
                 if k.startswith(group + ".") and k.split(".")[-1] in ("R_s_um", "D_s_m2s")]
         if rows:
             parts.append(numbered_detail(index, f"{GROUPS[group]}模型参数。", "；".join(describe(k, v) for k, v in rows) + "。"))
@@ -223,13 +230,12 @@ def acquisition(key):
 
 def missing_suggestions(data):
     from .scheme_ledger import canonical_unit
-    params = data.get("parameters", {})
+    from .parameter_names import effective_parameters
+    params = effective_parameters(data.get("parameters", {}))
     missing = {k for k, v in params.items() if v.get("value") is None}
-    for row in data.get("derived", {}).values():
-        missing.update(row.get("missing", []))
     return {k: {"value": None, "unit": canonical_unit(k) or "", "basis": "engineering_proposal", "source": "确定性获取建议",
                 "kind": "acquisition", "method": acquisition(k), "meaning": label(k, params.get(k))}
-            for k in sorted(missing) if (params.get(k) or {}).get("value") is None and k not in data.get("derived", {})}
+            for k in sorted(missing)}
 
 
 def render_suggestions(suggestions):

@@ -250,7 +250,8 @@ def test_adapter_restores_changed_text_cache_after_two_maintenance_calls(tmp_pat
     assert saved["maintenance_calls"] == 2
     assert saved["research"]["answers"][0]["status"] == "answered"
     assert saved["research"]["answers"][0]["response"] == cached_answer
-    assert "归档原文" in render_review_appendix(saved)
+    # 独立增补段落没有改动该回答依赖的来源，逐字段审核继续有效。
+    assert supported(saved["research"]["answers"][0], "response", saved, saved["ledger_view"]["parameters"])
     assert "归档原文" not in render_summary(saved)
     assert "结构化研究回答尚未生成" not in render_review_appendix(saved)
 

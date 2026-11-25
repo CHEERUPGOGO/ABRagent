@@ -22,7 +22,7 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
     class ScriptedLLM:
         available = True
 
-        def chat(self, system_prompt, user_prompt, temperature=None, trace_tag=None):
+        def chat(self, system_prompt, user_prompt, temperature=None, trace_tag=None, *, json_mode=False):
             calls.append((trace_tag, user_prompt))
             if trace_tag == "geometry_design":
                 return json.dumps(candidate)
