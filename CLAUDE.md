@@ -10,6 +10,14 @@ Core design principle: **"LLM in the brain seat, workflow in the referee seat"**
 
 Comments, log messages, and docs are in Chinese; match that style.
 
+五段稿原文直出（渲染v50）由`util/research_original.py`默认呈现带`design_structure`的完整v1/v2五段稿，位于最终报告第二部分，保留表格、正文与来源，标题和内部链接改为2.x层级。`abr-param`显式引用读取当前方案表，旧`scheme_parameters`只提供身份，不能覆盖新值。同口径别名可承接改名，文献、对照、不同工况和分母分别匹配。参数变动标注计算及推论待复核，手写中间量保留原文，历史derived标记提示复核。Stage 4跳过该类稿件的二次整合生成和审核，Stage 6只读编译。完整五段稿报告使用五节布局，第二节承载推荐组合及参数，第三节为仿真、第四节为实验、第五节为参考文献；`report_layout.py`同步映射程序生成的章节引用与表号。原稿末尾的完整审核保留意见移入补充材料，小节复核说明随正文展示，原科学审核状态沿用。已有课题的`--integrate-research-narrative`直接备份、编译及终审，零模型调用。无结构化五段稿的历史任务仍兼容六节整合路径，v3继续使用自身编译器。
+
+研报设计计算说明（渲染v48）通过可选的`research_narrative.calculation_notes[]`恢复原稿核算及假设，与第二部分共用生成和逐项审核预算，在第3.4节渲染。来源、参数与表格使用同一校验，Reviewer复核算术、单位、对象/工况/分母和估算边界。计算单元纳入双指纹、当前报告记录与需求位置映射，展示前核对方案表与审核参数的一致性，拦截旧扩展声明遮蔽参数更新；输入变化后旧结果停止展示并提示复核。缺省字段保留旧整合指纹，已有课题通过`--integrate-research-narrative`补充并重新编译。
+
+研报第二部分支持详细论证与比较表（渲染v46）：`research_narrative.text`沿用现有来源/参数/审核字段，允许多段、列表和Markdown表格，整表独立审核；提示词按课题保留剂量依据、定量比较及证据边界，不再限定短摘要篇幅。程序验证表格结构、转义参数单元格，列表序号不计入科学数值，补充引用独立成段，待审内容整块标注。显式`--integrate-research-narrative`备份旧稿后重新整合审核，正常恢复仍复用有效稿；不迁移Writer契约或改变原科学审核。详见`docs/research_report_contract.md`。
+
+论证审核与操作提示（渲染v47）：统一报告记录的“当前论证”意见保留在第二部分及补充材料，`experiment_protocol`不按其中“冲突”等词将其提升为配料/装配操作阻断；实际主方案与实验快照冲突仍提示。论证Reviewer同时核对数值范围、单位和计量/守恒关系，原设计存在的错误不因来源可定位而获批。
+
 最终研报分文件契约（渲染v45）：`final_research_report.md`止于第6节参考文献，执行履历、完整覆盖/审核/参数档案保存为`final_research_report_supplement.md`，正文不生成指向补充材料的提示句。两份文件绑定同一identity及report_record，缺失/过期/篡改补充材料拒绝终审；报告、补充材料及记录同批发布、失败回滚，恢复流程同步复制。Stage 6终审刷新补充材料内履历，保留旧单文件读取兼容；不改科研数据或提升审核。详见`docs/final_report_current_record.md`。
 
 锂箔厚度契约（数值审计v5、报告渲染v44、v3编译器v4）：`L_um`表示电极有效层厚度，多孔极片为单面干涂层，`li_metal`负极为锂箔本体，提示词显式声明`anode.L_um`。有限别名`anode.li_foil_thickness_um`保留原路径/数值/来源并关联规范身份；不同材料、同组冲突、非法单位、锁定null及不同工况仍保护。几何恢复与构建共用已有致密锂箔孔隙率0规则，不覆盖显式孔隙率；报告按锂金属身份显示“锂箔厚度”，不套涂层称谓。旧档案可只读重验，不自动提升科学审核或重跑模型。
@@ -83,6 +91,8 @@ Writer缺失内部闭括号仅在解析器报错点、字符串外且堆栈唯�
 Stage 4流程完整性：研究审核指纹规范空conditions并有限兼容旧写表默认值，真实值/单位/工况变化仍失效；锁定文字可增加提及但原出现位置须保留，完整声明由事务复核保护。整合审核严格验证外层JSON及逐项结构，唯一内部闭括号可离线恢复；纯协议失败只用剩余审核次数重审原稿，不重生成。检查点/适配器可按已有主工况参数确定性构建几何，无需新模型调用；缺项、非法值、D_s证据及锁定null仍拒绝。候选name与candidate_role/display_name分离，材料名和角色必须同原句有据，不自动恢复首选。详见`docs/stage4_flow_integrity.md`。
 
 候选展示元数据兼容：`candidate_metadata.py`允许同一表格行/分句中有依据的简称和排行标签（如Rank 1 Zn–Na），display_name无需等于材料名＋角色。角色缺省可保留为空，只有同条来源明确且与scope一致的唯一角色才补齐；不按排行猜主推身份。显式角色、材料身份与排行仍核对来源，数字系数/循环次数不能作排序依据，错材料/错排行/新增科学结论拒绝。旧候选格式错误可在collect_research重新验收；仅原已登记首选被隔离且重新满足全部当前身份引用时恢复该引用，显式清空和新选项不推断。元数据修复不授予科学审核，不改正文、材料或证据。详见`docs/research_report_contract.md`。
+
+Stage 5B完整初稿的JSON语法失败由`util/experiment_json.py`最多请求一次格式补丁；仅允许字符串外的标点修改，逐词元保护字段、数值、正文与引用，修后仍走原内容及主方案一致性校验。原稿、错误位置、补丁和结果存`experiment_draft.json`及`experiment_json_history/`，调用前持久占用，同输入同原稿中断不重发；无法恢复仍保留旧计划或如实FALLBACK。详见`docs/protocol_and_experiment_recovery.md`。
 
 Stage 5B已回退完整JSON生成：`experiment_design.generate`恢复程序组装之前的SYSTEM_PROMPT，由模型一次返回完整参数、六节正文、分组、目标安排及引用，`experiment_repair`最多一次局部补丁。默认不再运行分批槽位生成器或额外全文科学审核；`experiment_review`只用于既有程序化产物的科学审核兼容读取，当前主方案一致性核对见下段。原输入身份v9兼容v7/v8旧缓存；显式`--regenerate-experiment-plan`备份旧计划和程序化检查点后生成新稿，成功时撤下旧检查点。新生成不伪造generation_contract或科学审核通过状态。详见`docs/stage5_program_assembly.md`。
 

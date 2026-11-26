@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import re
 
-RENDER_VERSION = 45
+RENDER_VERSION = 50
 GROUPS = {"cathode": "正极", "anode": "负极", "electrolyte": "电解液",
           "separator": "隔膜", "current_collector": "集流体", "packaging": "封装",
           "process": "制备与装配", "condition": "测试条件", "requirements": "研发目标"}
@@ -178,9 +178,9 @@ def component_paragraph(data, group, material_only=False):
     return GROUPS[group] + "方面，" + "；".join(describe(k, row) for k, row in selected) + "。"
 
 
-def render_design(data):
+def render_design(data, calculation_notes=None):
     from .design_presentation import render_design as render
-    return render(data)
+    return render(data, calculation_notes=calculation_notes)
 
 
 def render_model_parameters(data):

@@ -8,8 +8,12 @@ def summary(doc):
     view = record["view"]
     boundary = "材料论证、方案参数与实验安排来自同一当前记录；设计建议及文献推断不代表性能已经验证。"
     narrative = view.get("narrative")
+    original = view.get("original")
+    if original and (original["status"] != "reviewed" or original["diagnostics"]):
+        boundary += "第2节沿用原设计审核状态，参数更新后的复核项随原文呈现。"
     if narrative and narrative.get("status") != "approved":
-        boundary += "当前材料论证仍有待复核内容，见第2节对应段落。"
+        boundary += ("当前论证与计算整合仍有待复核内容，见第2节及第3.4节对应说明。"
+                     if narrative.get("calculation_notes") else "当前材料论证仍有待复核内容，见第2节对应段落。")
     if (doc.get("requirements") or {}).get("status") != "parsed":
         boundary += "课题要求仍有明确待核对项。"
     return "**（1）主要结论。** " + selected_summary(doc) + "\n\n**（2）证据边界。** " + boundary + "\n\n**（3）下一步。** 按第5节当前实验计划推进；具体条件、判据与尚待确定项以本版记录为准。"
@@ -17,6 +21,7 @@ def summary(doc):
 
 def coverage(doc):
     from .research_reporting import cell, group_title
+    from .report_layout import remap_sections
     rows = doc["_report_record"]["view"]["coverage"]
     lines = ["### 当前课题要求覆盖", "以下逐项对应本版第2节论证、第3节方案和第5节实验；历史提案不作为当前安排。",
              "| 课题要求 | 当前回应与位置 | 当前实验状态 |", "|---|---|---|"]
@@ -37,11 +42,12 @@ def coverage(doc):
             state = "固定条件一致" if fixed else "未登记本轮测试安排"
         category = group_title(doc["requirements"], item)
         lines.append("| " + cell((category + "／" if category else "") + item["description"]) + " | " + cell(answer) + " | " + cell(state) + " |")
-    return "\n\n".join(lines[:2]) + "\n\n" + "\n".join(lines[2:])
+    return remap_sections("\n\n".join(lines[:2]) + "\n\n" + "\n".join(lines[2:]), doc)
 
 
 def appendix(doc):
     from .research_reporting import cell
+    from .report_layout import remap_sections
     from .parameter_presentation import render_parameter_appendix
     from .numeric_consistency import document_audit, render_audit
     from .adaptive_retrieval import render_audit as retrieval_audit
@@ -49,12 +55,16 @@ def appendix(doc):
     record = doc["_report_record"]
     view, recipe = record["view"], record["experiment"]
     parts = [coverage(doc)]
+    if view.get("original"):
+        parts += ["### 原设计正文索引", "\n".join("- " + section["location"]
+                  for section in view["original"]["sections"] if section["level"] == 3)]
     if view.get("narrative"):
         # 当前排序和取舍只复用本版论证，避免旧候选摘要重新引入不同强度的科学陈述。
         parts += ["### 当前候选与论证索引", "候选排序、选择理由与适用边界见本版第2节；以下位置直接对应当前论证：",
                   "\n".join(f"- 第2.{i}节：{section['title']}" for i, section in enumerate(view["narrative"]["sections"], 1))]
     if recipe.get("groups"):
-        parts += ["### 当前实验分组索引", "与第五部分使用同一分组记录，未在此登记的措施不视为本轮已安排。", render_groups(recipe, doc)]
+        parts += ["### 当前实验分组索引", remap_sections("与第五部分使用同一分组记录，未在此登记的措施不视为本轮已安排。", doc),
+                  remap_sections(render_groups(recipe, doc), doc)]
     parts.append("### 当前限制与待核对项")
     parts.append("\n".join(f"{i}. {s}" for i, s in enumerate(view["active_issues"], 1)) or "当前记录未检出待核对项；这不表示实验性能已经验证。")
     from .experiment_delivery import assessment
@@ -72,6 +82,13 @@ def appendix(doc):
         from .stage4_reporting import audit, details
         parts += [details(doc, "### 当前研究关联"), audit(doc)]
     narrative = view.get("narrative")
+    if view.get("original"):
+        parts += ["### 原文与参数版本", "第2节直接呈现归档五段稿，显式参数引用读取当前方案表。原稿科学审核及保留意见继续沿用。"]
+        changes = view["original"]["parameter_changes"]
+        if changes:
+            rows = ["| 参数 | 原文显示 | 当前显示 |", "|---|---|---|"]
+            rows.extend("| " + " | ".join(cell(row[key]) for key in ("path", "before", "after")) + " |" for row in changes)
+            parts.append("\n".join(rows))
     if narrative:
         parts += ["### 当前论证审核", "表述审核状态：" + ("通过" if narrative["status"] == "approved" else "仍有待复核项") + "。该状态只说明论证与所用依据的关系，不替代科学和实验验证。"]
         notes = narrative.get("review", {}).get("notes") or []

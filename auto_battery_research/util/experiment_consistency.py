@@ -54,7 +54,7 @@ def preflight(doc):
             canonical[key] = (path, value)
     from .report_readiness import unresolved_issues
     for issue in unresolved_issues(doc):
-        if issue.startswith("实验交付限制："):
+        if issue.startswith(("实验交付限制：", "当前论证：")):
             continue  # 本轮输出的科研意见只披露，不作为下一轮输入冲突重新建快照。
         if not any(w in issue for w in ("冲突", "错绑", "不一致")):
             continue

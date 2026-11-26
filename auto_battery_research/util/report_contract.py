@@ -43,18 +43,29 @@ def report_identity(doc: dict, result: dict | None, spec: dict | None) -> str:
 def validate_report_blocks(text: str, context: dict, target: float | None, tolerance: float, *, supplement: str | None = None) -> list[str]:
     """关键数值正文由相同视图重算验收，禁止旧值混入权威块。
 
-    final-design / energy 必须始终存在; final-recipe 仅在回退渲染路径出现,
-    存在时按同一视图重算, 缺失时交给实验方案生成记录单独校验。
+    完整五段稿由第二部分承载参数，其余布局保留 final-design。
+    energy 始终验收，final-recipe 存在时按同一视图重算。
     """
     from .report_bundle import MARKER, validate_parts
     errors = validate_parts(text, supplement)
     audit_text = supplement if supplement is not None else text
     numeric_doc = context.get("research_doc") or {}
+    from .report_layout import remap_sections, section_count
+    from .research_original import available as original_available, render_review_appendix as render_original_review
+    direct = original_available(numeric_doc)
     if MARKER in text:
         from .report_analysis import render_sources
         sources = render_sources(numeric_doc).strip()
-        if not text.rstrip().endswith("## 6. 参考文献\n\n" + sources):
+        if not text.rstrip().endswith(f"## {section_count(numeric_doc)}. 参考文献\n\n" + sources):
             errors.append("主研报须以参考文献结束，补充记录应保存在独立文件")
+        if f"<!-- abr-report-layout:{section_count(numeric_doc)} -->" not in text:
+            errors.append("报告布局与当前设计正文模式不一致")
+    if direct:
+        if "<!-- abr-final-design:" in text or "原稿审核保留意见" in text:
+            errors.append("完整五段稿报告不得重复展示方案章节或原稿审核意见汇总")
+        original_review = render_original_review(numeric_doc)
+        if original_review and (supplement is None or original_review not in supplement):
+            errors.append("补充材料缺少完整原稿审核保留意见")
     if numeric_doc.get("numeric_contract"):
         from .numeric_consistency import document_audit, render_audit as render_numeric
         if render_numeric(document_audit(numeric_doc)) not in audit_text:
@@ -71,19 +82,22 @@ def validate_report_blocks(text: str, context: dict, target: float | None, toler
         conflicts = presentation_conflicts(doc.get("ledger_view") or {})
         if doc.get("report_readiness", {}).get("category") != "DIAGNOSTIC":
             errors.extend(conflicts)
-        for expected, destination in ((render_summary(doc), text), (render_review_appendix(doc), audit_text)):
+        for expected, destination in ((remap_sections(render_summary(doc), doc), text), (render_review_appendix(doc), audit_text)):
             if expected not in destination:
                 errors.append("课题回应摘要或完整审核附录与归档不一致")
-    required = {"final-design": render_selected_design(context), "energy": render_energy(context, target, tolerance)}
+    required = {"energy": remap_sections(render_energy(context, target, tolerance), numeric_doc)}
+    if not direct:
+        required["final-design"] = render_selected_design(context)
     from auto_battery_research.simulation.geometry_contract import render_input_diagnostic
     diagnostic = render_input_diagnostic(context.get("research_doc") or {})
-    if diagnostic and not context.get("result") and diagnostic not in text:
+    if diagnostic and not context.get("result") and remap_sections(diagnostic, numeric_doc) not in text:
         errors.append("报告缺少当前材料匹配与物理输入阻断说明")
     for key, value in required.items():
         if f"<!-- abr-{key}:start -->\n{value}\n<!-- abr-{key}:end -->" not in text:
             errors.append(f"{key} 与最终设计/仿真不一致")
     if "<!-- abr-final-recipe:start -->" in text:
-        if f"<!-- abr-final-recipe:start -->\n{render_recipe(context)}\n<!-- abr-final-recipe:end -->" not in text:
+        recipe = remap_sections(render_recipe(context), numeric_doc)
+        if f"<!-- abr-final-recipe:start -->\n{recipe}\n<!-- abr-final-recipe:end -->" not in text:
             errors.append("final-recipe 与最终设计/仿真不一致")
     return errors
 
@@ -385,9 +399,17 @@ def render_selected_design(context: dict) -> str:
     """正文只渲染最终版本；初始提案链接留档，不能混入当前配方。"""
     if context.get("ledger_view"):
         from .report_narrative import render_design
+        from .research_narrative import render_calculation_notes
+        from .research_original import available as original_available
+        doc = context.get("research_doc") or {}
+        calculation_notes = ("设计核算方法、代入过程及适用假设见第2节原设计正文，当前参数见本节各项声明。"
+                             if original_available(doc) else render_calculation_notes(doc))
         if (context.get("requirements") or {}).get("scheme_required") is False:
-            return "本课题以研究分析为主，未要求完整电芯设计。当前已知材料与条件仅用于限定研究对象；研究回答及验证路径见第2、5节，不补造主配方。"
-        body = render_design(context["ledger_view"])
+            body = "本课题以研究分析为主，未要求完整电芯设计。当前已知材料与条件仅用于限定研究对象；研究回答及验证路径见第2、5节，不补造主配方。"
+            if calculation_notes:
+                body += "\n\n### 3.4 设计预算与关键待决事项\n\n" + calculation_notes
+            return body
+        body = render_design(context["ledger_view"], calculation_notes=calculation_notes)
         issues = (context.get("reviewer_output") or {}).get("issues") or []
         if issues:
             body += "\n\n**适用边界。** 本方案仍有未解决的审核意见，相关判断不能作为已验证结论。"

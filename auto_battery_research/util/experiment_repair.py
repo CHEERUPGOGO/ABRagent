@@ -138,10 +138,11 @@ def apply_local(record, patch, errors):
     return updated
 
 
-def repair_record(record, doc, client, task_dir, fingerprint):
+def repair_record(record, doc, client, task_dir, fingerprint, *, generation_audit=None):
     from .experiment_design import plan_hash, validate, overlap_key, effective_data
     initial = copy.deepcopy(record)
-    audit = {"input_fingerprint": fingerprint, "base_hash": digest(record), "errors": []}
+    audit = copy.deepcopy(generation_audit or {})
+    audit.update(input_fingerprint=fingerprint, base_hash=digest(record), errors=[])
     def save():
         atomic_write(task_dir / "experiment_draft.json", json.dumps({"audit": audit, "original": initial, "record": record}, ensure_ascii=False, indent=2))
     save()

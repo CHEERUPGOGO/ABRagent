@@ -4,6 +4,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import re
 from pathlib import Path
 
 from .scheme_ledger import atomic_write, digest, task_lock
@@ -79,17 +80,27 @@ def project(record):
     from .report_readiness import unresolved_issues
     from .experiment_design import delivery_status
     from .research_reporting import fixed_condition_response
+    from .research_original import view as original_view
     doc, recipe = record["design"], record["experiment"]
-    narrative = display_narrative(doc)
+    original = original_view(doc)
+    narrative = None if original else display_narrative(doc)
     paragraph_map = {}
+    if original:
+        for section in original["sections"]:
+            row = {"id": section["id"], "location": section["location"], "text": section["text"],
+                   "citations": re.findall(r"\[([\w:-]+)\]", section["text"]), "issues": section["issues"]}
+            for rid in section["requirement_ids"]:
+                paragraph_map.setdefault(rid, []).append(copy.deepcopy(row))
     if narrative:
-        for n, section in enumerate(narrative["sections"], 1):
-            for paragraph in section["paragraphs"]:
-                row = {"id": paragraph["id"], "location": f"第2.{n}节·{section['title']}",
-                       "text": paragraph["text"], "citations": paragraph["citations"],
-                       "issues": narrative["paragraph_reviews"][paragraph["id"]]}
-                for rid in paragraph["requirement_ids"]:
-                    paragraph_map.setdefault(rid, []).append(copy.deepcopy(row))
+        from .research_narrative import content_units
+        locations = {section["id"]: f"第2.{n}节·{section['title']}"
+                     for n, section in enumerate(narrative["sections"], 1)}
+        for section_id, paragraph in content_units(narrative):
+            row = {"id": paragraph["id"], "location": locations.get(section_id, "第3.4节·设计计算说明"),
+                   "text": paragraph["text"], "citations": paragraph["citations"],
+                   "issues": narrative["paragraph_reviews"][paragraph["id"]]}
+            for rid in paragraph["requirement_ids"]:
+                paragraph_map.setdefault(rid, []).append(copy.deepcopy(row))
     tests = {row["requirement_id"]: copy.deepcopy(row) for row in recipe.get("requirement_tests", [])}
     coverage = []
     for item in (doc.get("requirements") or {}).get("items", []):
@@ -111,7 +122,9 @@ def project(record):
         active += messages(document_audit(doc))
     active += [str(s) for s in (doc.get("requirements") or {}).get("diagnostics", [])]
     active += [str(s) for s in (doc.get("research") or {}).get("diagnostics", [])]
-    if narrative and narrative["status"] != "approved":
+    if original:
+        active += ["当前论证：" + issue for issue in original["diagnostics"]]
+    elif narrative and narrative["status"] != "approved":
         active += ["当前论证：" + s for s in narrative.get("diagnostics", [])]
     elif doc.get("research_narrative") and not narrative:
         active.append("当前论证审核已过期，原稿仅作历史资料，需基于当前输入复核。")
@@ -133,9 +146,12 @@ def project(record):
     if not doc.get("requirements") or not narrative:
         # 没有新的有效论证承接时，原科学问题仍是当前保留项，不能因改版而隐去。
         active = list(dict.fromkeys(active + unresolved_issues(doc)))
-    return {"coverage": coverage, "active_issues": list(dict.fromkeys(active)),
-            "historical_issues": historical, "narrative": narrative, "experiment_status": status,
-            "physics_status": physics.get("status") or (doc.get("report_readiness") or {}).get("physics_status")}
+    result = {"coverage": coverage, "active_issues": list(dict.fromkeys(active)),
+              "historical_issues": historical, "narrative": narrative, "experiment_status": status,
+              "physics_status": physics.get("status") or (doc.get("report_readiness") or {}).get("physics_status")}
+    if original:
+        result["original"] = original
+    return result
 
 
 def attach(record):

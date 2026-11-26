@@ -188,7 +188,8 @@ def render_group_notes(record, bindings):
 
 def _conflicts(doc):
     from .report_readiness import unresolved_issues
-    return [issue for issue in unresolved_issues(doc) if not issue.startswith("实验交付限制：")
+    # 论证的表述审核保留在第二部分及附录；操作冲突由主方案及实验快照提供。
+    return [issue for issue in unresolved_issues(doc) if not issue.startswith(("实验交付限制：", "当前论证："))
             and any(w in issue for w in ("冲突", "错绑", "固定条件不一致"))]
 
 

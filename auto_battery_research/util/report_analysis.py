@@ -356,6 +356,10 @@ def _render_missing_material_contract(name: str, scheme: dict, doc: dict) -> str
 
 
 def render_materials(doc):
+    from .research_original import render as render_original
+    original = render_original(doc)
+    if original is not None:
+        return original
     if doc.get("requirements"):
         from .research_reporting import render_research
         return render_research(doc)

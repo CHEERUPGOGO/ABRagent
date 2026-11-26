@@ -59,18 +59,21 @@ def _research_client(mgr, role):
 
 
 def integrate_research_narrative(mgr, client=None, reviewer=None, proposal=None, proposal_feedback=None):
-    """旧课题仅补整合及独立审核，副本验收后提交，不重新提取研究记录或运行Stage 5。"""
+    """完整五段稿直接编译，其他旧稿补整合审核，统一在副本验收后提交。"""
     from .research_narrative import integrate, display_narrative
+    from .research_original import available as original_available, view as original_view
     from auto_battery_research.rag import ReviewerAgent
     task = mgr.get_task_output_dir()
     original = json.loads((task / "design_scheme.json").read_text(encoding="utf-8"))
     require_current(task, original)
-    if not original.get("requirements") or not original.get("research"):
+    direct = original_available(original)
+    if not direct and (not original.get("requirements") or not original.get("research")):
         return {"success": False, "error": "论证整合需要已有课题要求与研究记录"}
-    client = client if client is not None else _research_client(mgr, "writer")
-    reviewer = reviewer if reviewer is not None else ReviewerAgent(_research_client(mgr, "reviewer"))
-    if client is None or not getattr(client, "available", False):
-        return {"success": False, "error": "论证整合需要可用模型，原报告未更改"}
+    if not direct:
+        client = client if client is not None else _research_client(mgr, "writer")
+        reviewer = reviewer if reviewer is not None else ReviewerAgent(_research_client(mgr, "reviewer"))
+        if client is None or not getattr(client, "available", False):
+            return {"success": False, "error": "论证整合需要可用模型，原报告未更改"}
     history = task / "narrative_integration_history" / datetime.now().strftime("%Y%m%d_%H%M%S_%f")
     stage = history / "preview"
     stage.mkdir(parents=True)
@@ -80,7 +83,15 @@ def integrate_research_narrative(mgr, client=None, reviewer=None, proposal=None,
     for name in ("design_scheme.json", "experiment_plan.json", "experiment_report.json", "report_record.json", "final_research_report.md", "final_research_report_supplement.md"):
         if (task / name).exists():
             shutil.copy2(task / name, history / name)
+    if direct:
+        displayed = original_view(original)
+        result = _publish_recovery(mgr, history, original, original, original.get("reviewer_output", {}), review_calls=0)
+        result.update(report_mode="original", generation_calls=0, review_calls=0,
+                      original_sections=len(displayed["sections"]), parameter_changes=len(displayed["parameter_changes"]))
+        return result
     doc, state = copy.deepcopy(original), {}
+    # 此入口是显式重整合；旧稿留在备份中，新展示必须经过本次独立审核。
+    doc.pop("research_narrative", None)
     if proposal is not None:
         # 显式维护可复用前次未通过的稿件作为修订输入；仍须完整校验及独立审核。
         from .research_narrative import normalize
@@ -112,6 +123,9 @@ def integrate_research_narrative(mgr, client=None, reviewer=None, proposal=None,
     result["generation_calls"] = state.get("generation_calls", 0)
     result["narrative_status"] = displayed["status"]
     result["paragraphs_pending"] = sum(bool(r) for r in displayed["paragraph_reviews"].values())
+    result["calculation_notes"] = len(displayed.get("calculation_notes", []))
+    result["calculations_pending"] = sum(bool(displayed["paragraph_reviews"][p["id"]])
+                                         for p in displayed.get("calculation_notes", []))
     return result
 
 
@@ -238,7 +252,8 @@ def _publish_recovery(mgr, history, original, doc, verdict, original_issues=None
     checker = FinalReportChecker()
     checker.on_init(preview, {"id": 6}, mgr.config)
     passed, diagnostic = checker.do_check() if result.get("success") else (False, result)
-    pending = review_pending(doc["research"], doc, doc["ledger_view"]["parameters"])
+    research = doc.get("research") or {}
+    pending = review_pending(research, doc, doc["ledger_view"]["parameters"]) if research else []
     audit = {"verdict": verdict, "diagnostic": diagnostic, "passed": passed,
              "maintenance_calls": doc.get("maintenance_calls", 0), "review_calls": review_calls,
              "pending_fields": len(pending), "original_issues": original_issues,
@@ -268,5 +283,5 @@ def _publish_recovery(mgr, history, original, doc, verdict, original_issues=None
                 (task / name).unlink()
         raise
     return {"success": True, "report_file": str(task / "final_research_report.md"), "history": str(history),
-            "answers": len(doc["research"].get("answers", [])), "candidates": len(doc["research"].get("candidates", [])),
-            "arguments": len(doc["research"].get("arguments", [])), "summary_fields_pending": len(pending)}
+            "answers": len(research.get("answers", [])), "candidates": len(research.get("candidates", [])),
+            "arguments": len(research.get("arguments", [])), "summary_fields_pending": len(pending)}

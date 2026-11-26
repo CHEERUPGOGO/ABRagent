@@ -2,7 +2,7 @@
 from .parameter_presentation import parameter_view, combined_rows, displayed_row
 
 
-def render_design(data):
+def render_design(data, calculation_notes=None):
     from .report_narrative import GROUPS, amount, component_paragraph, describe, label
     from .parameter_names import effective_parameters
     params = effective_parameters(data.get("parameters", {}))
@@ -118,13 +118,15 @@ def render_design(data):
             parts.append("上述循环圈数、倍率换算基准与电压窗口属于工程设定，用户原文未指定这些数值；首轮验证及文献比较须保留其适用条件。")
 
     parts.append("### 3.4 设计预算与关键待决事项")
+    if calculation_notes:
+        parts.append(calculation_notes)
     computed = [(k, v) for k, v in data.get("derived", {}).items() if v.get("value") is not None and k.split(".")[-1] != "n_p_ratio"]
     if computed:
         for key, row in computed:
             value = amount(key, row)
             content = describe(key, row).replace(value, f"**{value}**", 1)
             parts.append("- **" + GROUPS.get(key.split(".")[0], "电芯") + "预算：** " + content + "。")
-    else:
+    elif not calculation_notes:
         parts.append("**预算状态。** 当前没有可直接引用的完整设计预算，不据材料组合推定容量匹配或比能量达标。")
     if any("pore_volume" in key for key, _ in computed):
         parts.append("孔隙体积仅为注液与浸润核算线索，不能单独证明容量匹配或高比能目标可达。")

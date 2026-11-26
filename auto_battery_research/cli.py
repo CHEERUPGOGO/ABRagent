@@ -145,7 +145,7 @@ def main():
     parser.add_argument("--repair-experiment-values", action="store_true", help="在副本隔离实验参数中的缺项文字，保留原文与模型预算并更新报告")
     parser.add_argument("--sync-experiment-plan", action="store_true", help="按当前主方案局部同步Stage 5实验条件与旧诊断，独立核对后更新研报")
     parser.add_argument("--repair-research-records", action="store_true", help="从现有设计正文恢复并审核多段研究记录，在副本中验收后更新研报，不更改配方")
-    parser.add_argument("--integrate-research-narrative", action="store_true", help="将既有研究记录整合为连贯论证，经Reviewer审核及副本验收后更新研报，不重跑检索或实验设计")
+    parser.add_argument("--integrate-research-narrative", action="store_true", help="完整五段稿直接编译入研报并刷新参数引用；其他历史稿沿用整合审核，副本终审后发布")
     parser.add_argument("--repair-stage4-inputs", action="store_true", help="仅修复已声明的倍率定义绑定和金属锂对电极字段，副本验收后提交，不重跑模型或推进阶段")
     parser.add_argument("--repair-stage4-submission", action="store_true", help="恢复几何单位投影误报导致的提交失败，副本验收，不重跑模型或推进阶段")
     parser.add_argument("--resume-stage4-review", action="store_true", help="恢复既有 Stage 4 结构修复检查点并继续学术审核，在副本验收后更新报告")

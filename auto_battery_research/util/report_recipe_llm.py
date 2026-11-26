@@ -1416,6 +1416,7 @@ def plan_fingerprint_marker(fingerprint):
 
 def validate_plan_record(task_dir, doc, context, result, spec, scheme_md, target, tolerance, content):
     """Stage 6 验收：报告第五部分与保存记录、当前输入三者一致。"""
+    from .report_layout import remap_sections
     if PLAN_START not in content:
         return ["报告缺少实验方案生成标记"]
     if doc.get("experiment_contract"):
@@ -1431,7 +1432,7 @@ def validate_plan_record(task_dir, doc, context, result, spec, scheme_md, target
             record = json.loads(Path(task_dir, REPORT_FILENAME).read_text(encoding="utf-8"))
             fp = input_fingerprint(doc, context, result, spec, scheme_md)
             expected = f"{PLAN_START}\n{plan_fingerprint_marker(fp)}\n{body}\n{PLAN_END}"
-            return [] if record.get("fingerprint") == fp and record.get("text") == body and expected in content else ["报告实验章节与 Stage 5B 方案不一致"]
+            return [] if record.get("fingerprint") == fp and record.get("text") == body and remap_sections(expected, doc) in content else ["报告实验章节与 Stage 5B 方案不一致"]
         except (ValueError, OSError, TypeError) as exc:
             return [str(exc)]
     record = load_plan_record(task_dir)
@@ -1449,7 +1450,7 @@ def validate_plan_record(task_dir, doc, context, result, spec, scheme_md, target
         if record.get("text") != render_experiment(doc["ledger_view"], result or {}) + _render_suggestions(record.get("suggestions", {})):
             errors.append("实验章节包含不属于当前方案或归档候选的内容")
     expected_block = f"{PLAN_START}\n{plan_fingerprint_marker(current)}\n{record.get('text','')}\n{PLAN_END}"
-    if expected_block not in content:
+    if remap_sections(expected_block, doc) not in content:
         errors.append("报告中的实验方案与保存记录不一致")
     return errors
 

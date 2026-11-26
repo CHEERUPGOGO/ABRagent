@@ -73,10 +73,12 @@ def render_summary(doc):
         return ("**当前方案。** " + selected_summary(doc) + "\n\n"
                 "**研究依据与边界。** 第2节直接呈现当前科研正文，保留原顺序、引用与适用条件；待审字段及一致性意见随相关段落保留。"
                 "\n\n**下一步。** 按第5节开展实验验证；程序定位与一致性通过不代表本课题性能已经验证。")
-    from .research_narrative import display_narrative
+    from .research_narrative import display_narrative, content_units
+    from .research_original import view as original_view
     requirements = doc["requirements"]
-    narrative = display_narrative(doc)
-    blocked = {rid for section in narrative["sections"] for p in section["paragraphs"]
+    original = original_view(doc)
+    narrative = None if original else display_narrative(doc)
+    blocked = {rid for _, p in content_units(narrative)
                if narrative["paragraph_reviews"][p["id"]] for rid in p["requirement_ids"]} if narrative else set()
     answers = {a["requirement_id"]: a for a in (doc.get("research") or {}).get("answers", [])}
     conclusion = selected_summary(doc)
@@ -93,9 +95,13 @@ def render_summary(doc):
             conclusion += " " + text
             break
     boundary = "文献结论仅适用于原研究对象和已注明条件；候选方案、跨体系推断与待验证假设不能作为本课题已完成的性能验证。"
-    if narrative and narrative["status"] != "approved":
+    if original:
+        boundary += "第2节沿用原设计审核状态，参数更新后的复核项随原文呈现。"
+    elif narrative and narrative["status"] != "approved":
         pending = sum(bool(r) for r in narrative["paragraph_reviews"].values())
-        boundary += f"整合论证有{pending}段待复核，具体问题已在第2节标注。" if pending else "整合论证的整体审核仍待复核，具体说明见第2节。"
+        location = "第2节及第3.4节" if narrative.get("calculation_notes") else "第2节"
+        boundary += (f"整合论证有{pending}段待复核，具体问题已在{location}标注。" if pending
+                     else f"整合论证的整体审核仍待复核，具体说明见{location}。")
     elif doc.get("research_narrative") and narrative is None:
         boundary += "整合稿尚无与当前输入匹配的有效审核。"
     if requirements.get("status") != "parsed":
@@ -278,6 +284,10 @@ def render_candidate_comparison(doc, heading="### 2.2 候选比较与取舍"):
 
 
 def render_research(doc):
+    from .research_original import render as render_original
+    original = render_original(doc)
+    if original is not None:
+        return original
     if doc.get("writer_contract_version") == 3:
         from .stage4_reporting import render
         return render(doc)
@@ -359,12 +369,16 @@ def render_review_appendix(doc):
         from .stage4_reporting import audit
         body += "\n\n" + audit(doc)
     from .research_narrative import display_narrative
-    integrated = display_narrative(doc)
-    if integrated and integrated["status"] == "approved":
+    from .research_original import available as original_available
+    direct = original_available(doc)
+    integrated = None if direct else display_narrative(doc)
+    if direct:
+        body += "\n\n### 原文与参数版本\n\n第2节直接呈现归档五段稿，显式参数引用读取当前方案表。原稿科学审核及保留意见继续沿用。"
+    elif integrated and integrated["status"] == "approved":
         body += "\n\n### 连贯论证审核\n\n整合稿已按原始课题、来源、参数及未解决限制通过Reviewer审核；这表示表述与依据相符，不表示本课题性能已验证。"
     elif doc.get("research_narrative"):
         row = doc["research_narrative"]
-        body += "\n\n### 连贯论证审核\n\n" + ("整合稿尚未整体通过；第二部分按逐段审核展示，通过部分正常呈现，待复核部分保留原稿并标明具体原因。"
+        body += "\n\n### 连贯论证审核\n\n" + ("整合稿尚未整体通过；论证与计算说明按逐项审核展示，待复核部分保留原稿并标明具体原因。"
             if integrated else "整合稿尚无与当前输入匹配的有效审核或输入已变化；旧稿不作为当前结论，逐项回应保留于本附录。")
         body += "\n\n" + "\n\n".join(str(s) for s in row.get("diagnostics", []))
         if not integrated and row.get("sections"):
@@ -372,7 +386,11 @@ def render_review_appendix(doc):
             body += "\n\n".join("> " + str(p.get("text", "")).replace("\n", "\n> ")
                                   for s in row["sections"] if isinstance(s, dict)
                                   for p in s.get("paragraphs", []) if isinstance(p, dict))
-    review = (doc.get("research_narrative") or {}).get("review") or {}
+            notes = row.get("calculation_notes") or []
+            if isinstance(notes, list):
+                body += "\n\n" + "\n\n".join("> " + str(p.get("text", "")).replace("\n", "\n> ")
+                                              for p in notes if isinstance(p, dict))
+    review = {} if direct else (doc.get("research_narrative") or {}).get("review") or {}
     if isinstance(review, dict):
         coverage = review.get("coverage") or {}
         if isinstance(coverage, dict) and coverage.get("reason"):

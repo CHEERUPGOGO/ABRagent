@@ -152,6 +152,21 @@ def test_reviewed_recipe_conflict_is_visible_before_relevant_method(tmp_path):
     assert doc["ledger_view"]["parameters"]["electrolyte.additives"]["value"] == ["FEC"]
 
 
+def test_narrative_conflict_stays_disclosed_without_becoming_an_operation_block(tmp_path):
+    from auto_battery_research.util.experiment_protocol import consistency_notice, affected_by_conflict
+    from auto_battery_research.util.report_readiness import unresolved_issues
+    doc, record = setup_design(tmp_path)
+    issue = "当前论证：paragraphs[p1]：electrolyte.material的科学归因与文献条件冲突，表述待复核。"
+    doc["_report_record"] = {"view": {"active_issues": [issue]}}
+    before = copy.deepcopy(doc)
+    body = recipes.render(record, doc)
+    assert "实施前核对" not in body
+    assert not affected_by_conflict(["沿用{{electrolyte.material}}装配。"], doc)
+    assert issue in unresolved_issues(doc) and doc == before
+    snapshot = {"issues": [{"path": "electrolyte.material", "reason": "用户固定配方与方案表冲突", "source": "user_requirement"}]}
+    assert "用户固定配方与方案表冲突" in consistency_notice(doc, snapshot)
+
+
 def test_analysis_only_does_not_add_sample_groups_or_template_experiments(tmp_path):
     from auto_battery_research.tests.test_research_contract import research_doc
     doc = research_doc()

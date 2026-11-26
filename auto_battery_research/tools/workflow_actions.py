@@ -2423,10 +2423,17 @@ def run_synthesis_report(target_query: str = "", stage_manager: Optional[Any] = 
         issues = unresolved_issues(scheme_data)
         if issues:
             supplement_content += "\n\n### 完整审核记录\n\n" + "\n\n".join(issues) + "\n"
+    from auto_battery_research.util.report_layout import compile_main, section_count
+    from auto_battery_research.util.research_original import render_review_appendix as render_original_review
+    report_content = compile_main(report_content, scheme_data)
+    original_review = render_original_review(scheme_data)
+    if original_review:
+        supplement_content += "\n\n" + original_review + "\n"
     # 4. 主研报止于参考文献，执行履历与完整审核记录独立发布并绑定同一输入版本。
     if report_record:
         from auto_battery_research.util.report_record import marker as report_record_marker, publish as publish_report_record
-        report_content = report_content.replace("<!-- abr-report-layout:6 -->", "<!-- abr-report-layout:6 -->\n" + report_record_marker(report_record), 1)
+        layout_marker = f"<!-- abr-report-layout:{section_count(scheme_data)} -->"
+        report_content = report_content.replace(layout_marker, layout_marker + "\n" + report_record_marker(report_record), 1)
         supplement_content = supplement_content.replace(bundle_marker, bundle_marker + "\n" + report_record_marker(report_record), 1)
         try:
             publish_report_record(task_dir, report_record, report_content, supplement_content)

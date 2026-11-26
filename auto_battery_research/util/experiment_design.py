@@ -270,6 +270,7 @@ def generate(task_dir, doc, client, scheme_md="", *, restart=False):
     from .experiment_consistency import preflight, stamp
     from .experiment_titles import normalize_step_titles
     from .experiment_repair import repair_record
+    from .experiment_json import parse_with_repair
     from .research_experiments import INSTRUCTIONS, required_tests
     from .scheme_ledger import task_lock
     from .experiment_alignment import execution_conditions
@@ -361,9 +362,14 @@ def generate(task_dir, doc, client, scheme_md="", *, restart=False):
                         "evidence": doc.get("evidence"), "physics_context": doc.get("physics_context"), "last_error": error,
                         "execution_conditions": execution_conditions(doc)}, ensure_ascii=False),
             temperature=0.2, json_mode=True, trace_tag="experiment_design")
-        atomic_write(task_dir / "experiment_draft.json", json.dumps({"audit": {"input_fingerprint": fingerprint,
-            "raw_response": raw, "generation_method": "whole_json"}}, ensure_ascii=False, indent=2))
-        record = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
+        generation_audit = {"input_fingerprint": fingerprint, "raw_response": raw, "generation_method": "whole_json"}
+        def save_generation_audit():
+            atomic_write(task_dir / "experiment_draft.json", json.dumps({"audit": generation_audit}, ensure_ascii=False, indent=2))
+        def check_source():
+            if source_identity() != sources:
+                raise ValueError("JSON格式修复期间主方案输入已变化，拒绝继续生成")
+        save_generation_audit()
+        record = parse_with_repair(raw, client, task_dir, fingerprint, generation_audit, save_generation_audit, check_source)
         allowed = {"parameters", "sections", "citations", "groups", "requirement_tests", "extensions", "step_titles"}
         if not isinstance(record, dict) or set(record) - allowed:
             raise ValueError("完整实验方案只能声明参数、正文、分组、目标安排、引用及可选步骤标题")
@@ -377,12 +383,12 @@ def generate(task_dir, doc, client, scheme_md="", *, restart=False):
         attach(record, doc)
         stamp(record, doc)
         record["plan_hash"] = plan_hash(record)
-        record = repair_record(record, doc, client, task_dir, fingerprint)
+        record = repair_record(record, doc, client, task_dir, fingerprint, generation_audit=generation_audit)
         from .experiment_alignment_review import review as review_alignment
         record = review_alignment(record, doc, client, task_dir)
         draft_path = task_dir / "experiment_draft.json"
         draft = json.loads(draft_path.read_text(encoding="utf-8"))
-        draft["audit"].update(raw_response=raw, generation_method="whole_json")
+        draft["audit"].update(generation_audit)
         atomic_write(draft_path, json.dumps(draft, ensure_ascii=False, indent=2))
         record["plan_hash"] = plan_hash(record)
         record["bindings"] = validate(record, doc, delivery=True)

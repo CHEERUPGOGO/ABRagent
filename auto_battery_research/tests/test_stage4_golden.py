@@ -385,8 +385,10 @@ def test_offline_golden_approved_contract(tmp_path, monkeypatch):
     assert contract["rule_checks"]["rule_checks"]["rejects"] == []
     assert contract["provenance"]["rules_version"] == RULES_VERSION
     assert len(contract["provenance"]["corpus"]["manifest_hash"]) == 32
-    from auto_battery_research.util.research_narrative import current_narrative
-    assert current_narrative(contract), "Stage 4整合审核应在适配入库后仍绑定当前输入"
+    from auto_battery_research.util.research_original import view
+    assert view(contract), "Stage 4原文应在适配入库后可直接呈现"
+    assert not contract.get("research_narrative"), "完整五段稿无需再次整合生成"
+    assert not set(agents_called) & {"research_narrative", "research_narrative_review"}
 
     # 4. rag_result.json: 规划/检索日志/Writer/Reviewer 全链路在案
     rag_raw = json.loads((task_dir / "rag_result.json").read_text(encoding="utf-8"))

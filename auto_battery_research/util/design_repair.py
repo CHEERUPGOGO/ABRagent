@@ -686,12 +686,14 @@ def review_design(pipeline, seed, question, history_context="", top_k=50):
     save()
     if seed.get("research_draft"):
         from .research_narrative import integrate
+        from .research_original import available as original_available
         from .research_contract import finalize_research
         doc = seed["research_draft"]
         doc["reviewer_output"] = copy.deepcopy(review)
         finalize_research(doc)
-        integrate(doc, getattr(getattr(pipeline, "writer", None), "llm", None), pipeline.reviewer,
-                  state=seed.setdefault("research_narrative_state", {}), save=save)
+        if not original_available(doc):
+            integrate(doc, getattr(getattr(pipeline, "writer", None), "llm", None), pipeline.reviewer,
+                      state=seed.setdefault("research_narrative_state", {}), save=save)
         save()
     return text, review, evidence, parameters, audit
 
