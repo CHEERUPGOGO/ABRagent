@@ -1,18 +1,17 @@
 {
-  "version": "2.1-coincell-academic",
-  "updated": "2026-10-29",
-  "note": "高校科研实验室纽扣电池专用规则：彻底剔除原 C4；C7 转向扣电材料级克容量与放电平台核算，剔除工业制造辅材指标；C1/C2/C3/C5/C6/C8 软化为自洽性质询与前沿标记。",
+  "version": "2.4-c1-c3-advisory",
+  "updated": "2026-11-21",
+  "note": "高校科研实验室纽扣电池专用规则：C1/C3为非阻断建议，不因未声明保护措施否决或降低置信度；C2保留缓解措施质询，C4已移除；C5为建议，C6为审计说明，C7为材料级核算，C8为前沿标记。",
   "rules": [
     {
       "id": "C1",
-      "name": "高压正极碳酸酯自洽性质询",
+      "name": "高压正极碳酸酯界面建议",
       "trigger": {"field": "cathode.voltage_limit", "op": "gt", "value": 4.3},
       "condition": {"field": "electrolyte", "op": "contains", "value": "carbonate"},
-      "mitigation_whitelist": [
-        "additive:FEC", "additive:LiPO2F2", "additive:VC", "additive:DTD",
-        "coating:LPO", "coating:Al2O3", "morphology:single_crystal"
+      "retrieval_boost": [
+        "additive:FEC", "additive:LiPO2F2", "additive:VC", "additive:DTD"
       ],
-      "action": "challenge",
+      "action": "recommend",
       "reason": "扣式电池充电截止电压高于 4.3V，若采用常规碳酸酯电解液，建议结合表面快离子包覆、单晶高镍或氟代添加剂，以抑制界面高压氧化与阻抗上升。",
       "source": "前沿文献共识（High-voltage cathode interface & additives）"
     },
@@ -34,15 +33,13 @@
     },
     {
       "id": "C3",
-      "name": "锂金属负极扣电界面修饰自洽核查",
+      "name": "锂金属负极扣电界面修饰建议",
       "trigger": {"field": "anode", "op": "eq", "value": "li_metal"},
       "condition": {"field": "electrolyte", "op": "contains", "value": "carbonate"},
-      "mitigation_whitelist": [
-        "anode_mod:artificial_sei", "anode_mod:alloy_li_ag", "anode_mod:lithiophilic_framework",
-        "anode:las", "anode:li-ag",
+      "retrieval_boost": [
         "additive:FEC", "additive:LiNO3", "electrolyte:lhce"
       ],
-      "action": "challenge",
+      "action": "recommend",
       "reason": "扣式半电池/全电池采用金属锂负极匹配碳酸酯电解液时，建议采用人工 SEI 膜或亲锂合金层修饰；扣电循环需重点考察库仑效率（CE）与过电位表现。",
       "source": "扣电文献共识（Li metal coin cell & CE tests）"
     },

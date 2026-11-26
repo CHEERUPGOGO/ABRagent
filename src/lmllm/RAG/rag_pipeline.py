@@ -448,19 +448,25 @@ class RAGPipeline:
             {"db_type": str, "results": List[Dict], "search_logs": List[Dict]}
         """
         import hashlib
+        from auto_battery_research.util.adaptive_retrieval import channel_status
 
         if db_type == "textbook":
             # 电子书 Chroma + BM25 + RRF
             if not getattr(self, "ebook_vector_store", None):
                 print("[retrieve_context] 电子书库未加载,降级为 both")
-                return self.retrieve_context(
+                fallback = self.retrieve_context(
                     "both", question, queries, focus_component, focus_labels,
                     use_label_filter, previous_evidence, top_k,
                     lit_weight=lit_weight, ebook_weight=ebook_weight,
                 )
+                fallback.setdefault("channel_diagnostics", []).append({"channel": "textbook", "status": "UNAVAILABLE", "reason": "教科书库未加载，已回退"})
+                fallback["status"] = channel_status(fallback["channel_diagnostics"], fallback.get("results", []))
+                return fallback
             all_results: Dict[str, Dict[str, Any]] = {}
+            channel_diagnostics = []
             for q in queries:
                 try:
+                    self.multi_retriever.last_diagnostics = []
                     batch = self.multi_retriever.search_ebook(q, top_k=max(top_k, 20))
                     if not isinstance(batch, (list, tuple)):
                         continue
@@ -480,13 +486,15 @@ class RAGPipeline:
                                 if not r_item.get("title") and all_results[pid].get("title"):
                                     r_item["title"] = all_results[pid]["title"]
                                 all_results[pid] = r_item
+                    channel_diagnostics.extend(self.multi_retriever.last_diagnostics)
                 except Exception as e:
+                    channel_diagnostics.append({"query": q, "channel": "textbook", "status": "ERROR", "error": str(e)})
                     print(f"[retrieve_context] 电子书检索失败({q}): {e}")
             results = sorted(all_results.values(), key=lambda x: x.get("score", 0), reverse=True)
             return {
                 "db_type": "textbook",
                 "results": results[:top_k],
-                "search_logs": [],
+                "search_logs": [], "channel_diagnostics": channel_diagnostics, "status": channel_status(channel_diagnostics, results),
             }
 
         elif db_type == "both":
@@ -504,6 +512,7 @@ class RAGPipeline:
                 previous_evidence=previous_evidence,
                 top_k_per_query=top_k,
             )
+            channel_diagnostics = list(retrieval.get("channel_diagnostics") or [])
 
             all_results: Dict[str, Dict[str, Any]] = {}
             if _lw > 0:
@@ -530,7 +539,9 @@ class RAGPipeline:
                 factor = _ew / max(_lw, 0.01)
                 for q in queries:
                     try:
+                        mr.last_diagnostics = []
                         batch = mr.search_ebook(q, top_k=10)
+                        channel_diagnostics.extend(mr.last_diagnostics)
                         if not isinstance(batch, (list, tuple)):
                             continue
                         for r in batch:
@@ -552,6 +563,7 @@ class RAGPipeline:
                                         r_item["title"] = all_results[pid]["title"]
                                     all_results[pid] = r_item
                     except Exception as e:
+                        channel_diagnostics.append({"query": q, "channel": "textbook", "status": "ERROR", "error": str(e)})
                         print(f"[retrieve_context] 双库电子书通道检索失败({q}): {e}")
 
             results = sorted(all_results.values(), key=lambda x: x.get("score", 0), reverse=True)
@@ -559,6 +571,8 @@ class RAGPipeline:
                 "db_type": "both",
                 "results": results[:top_k],
                 "search_logs": retrieval.get("search_logs", []),
+                "channel_diagnostics": channel_diagnostics,
+                "status": channel_status(channel_diagnostics, results),
             }
             if retrieval.get("constraint_log"):
                 result["constraint_log"] = retrieval["constraint_log"]
@@ -580,6 +594,8 @@ class RAGPipeline:
             "db_type": "literature",
             "results": retrieval.get("results", []),
             "search_logs": retrieval.get("search_logs", []),
+            "channel_diagnostics": retrieval.get("channel_diagnostics", []),
+            "status": channel_status(retrieval.get("channel_diagnostics", []), retrieval.get("results", [])),
         }
         if retrieval.get("constraint_log"):
             result["constraint_log"] = retrieval["constraint_log"]
@@ -606,6 +622,14 @@ class RAGPipeline:
                 "timestamp": str,
             }
         """
+        from auto_battery_research.util.design_repair import resume_pipeline
+        if getattr(self, "repair_resume", None):
+            if self.repair_resume.get("writer_contract_version") == 3:
+                from auto_battery_research.util.stage4_session import run_session
+                return run_session(self, question, history_context=history_context, resume=self.repair_resume)
+            return resume_pipeline(self, self.repair_resume, question, history_context, top_k)
+        # 检索问题可去首尾空白，需求解析始终使用独立保存的原始课题。
+        requirement_source = getattr(self, "requirement_source", None) or question
         question = question.strip()
         if not question:
             return {
@@ -619,196 +643,260 @@ class RAGPipeline:
 
         # ── Stage 1: Planner ──
         print("  [1/4] Planner 规划中...")
-        plan = self.planner.run(question, history_context)
+        saved_retrieval = getattr(self, "retrieval_resume", None)
+        planning_state, planning_path = None, None
+        if getattr(self, "writer_contract_version", 2) == 3 and not saved_retrieval:
+            import json
+            from auto_battery_research.util.scheme_ledger import atomic_write, digest
+            from auto_battery_research.util.stage4_consistency import request, single_attempt
+            planning_path = Path(self.repair_checkpoint_path).with_name("stage4_planning_checkpoint.json")
+            rebuilding = planning_path.with_name("stage4_rebuild_requested.json").exists()
+            planning_state = json.loads(planning_path.read_text(encoding="utf-8")) if planning_path.exists() and not rebuilding else {
+                "writer_contract_version": 3, "question": question, "requests": [],
+                "checkpoint_identity": getattr(self, "repair_checkpoint_identity", None)}
+            if planning_state.get("writer_contract_version") != 3 or planning_state.get("question") != question:
+                raise ValueError("v3规划检查点失配，禁止重新规划")
+            from auto_battery_research.util.runtime_budgets import bind_repair_options
+            bind_repair_options(self, planning_state)
+            if planning_state.get("retrieval_result"):
+                saved_retrieval = planning_state["retrieval_result"]
+            else:
+                def save_planning():
+                    atomic_write(planning_path, json.dumps(planning_state, ensure_ascii=False, indent=2))
+                def invoke_planner():
+                    with single_attempt(self.planner_llm):
+                        return self.planner.run(requirement_source, history_context)
+                planning_state["plan"] = request(planning_state, "planner", digest({"question": question, "history": history_context}), save_planning, invoke_planner)
+                save_planning()
+        plan = saved_retrieval["plan"] if saved_retrieval else (planning_state["plan"] if planning_state else self.planner.run(requirement_source, history_context))
+        from auto_battery_research.util.research_contract import bindings, field_equal
+        self.reviewer.requirements = plan.get("requirements")
+        persist_requirements = getattr(self, "persist_requirements", None)
+        if callable(persist_requirements) and plan.get("requirements"):
+            self.scheme_context = persist_requirements(plan["requirements"])
+        if getattr(self, "scheme_context", None) is not None and plan.get("requirements"):
+            import copy
+            self.scheme_context = copy.deepcopy(self.scheme_context)
+            for key, field in bindings(plan["requirements"]).items():
+                previous = self.scheme_context["parameters"].get(key, {})
+                if previous.get("locked") and not field_equal(key, previous.get("value"), field["value"]):
+                    raise ValueError("课题固定值与已有用户锁定冲突: " + key)
+                self.scheme_context["parameters"][key] = field
         print(f"  -> 拆解为 {len(plan.get('retrieval_queries', []))} 个子问题")
         print(f"  -> Planner 模式: {'LLM 生成' if not plan.get('fallback') else '规则回退'}")
 
         # ── Stage 2: Retrieval (db_type 路由) ──
         # 推荐/推理类问题关闭标签硬过滤,让 reranker 做纯语义筛选
-        _needs_reasoning = plan.get("needs_reasoning", False)
-        # 获取 db_type, 强制校验合法性；LLM 失败/格式错误时兜底为 both
-        _db_type = plan.get("db_type", "both")
-        if plan.get("fallback", False):
-            _db_type = "both"
-        if _db_type not in ("literature", "textbook", "both"):
-            print(f"  -> 无效 db_type={_db_type}, 兜底为 both")
-            _db_type = "both"
-        print(f"  [2/4] 检索中 (db_type={_db_type})...")
-        # 双库模式时动态计算权重
-        _lit_w, _ebk_w = None, None
-        if _db_type == "both":
-            _lit_w, _ebk_w = self._compute_dynamic_weights(question, plan)
-            print(f"  -> 动态权重: lit={_lit_w}, ebook={_ebk_w}")
-        retrieval = self.retrieve_context(
-            db_type=_db_type,
-            question=question,
-            queries=plan.get("retrieval_queries", [question]),
-            focus_component=plan.get("focus_component"),
-            focus_labels=plan.get("focus_labels"),
-            use_label_filter=not _needs_reasoning,
-            previous_evidence=previous_evidence,
-            top_k=top_k,
-            lit_weight=_lit_w,
-            ebook_weight=_ebk_w,
-        )
-        from auto_battery_research.tools.materials_project import augment_mp_evidence
-        retrieval = augment_mp_evidence(retrieval, plan, top_k)
-        evidence = retrieval.get("results", [])[:top_k]
-        print(f"  -> 召回 {len(evidence)} 条证据 (数据源: {retrieval.get('db_type', _db_type)})")
-
-        # ── Stage 2.5: Reranker 重排序 ──
-        if self._reranker_enabled and self.reranker and evidence:
-            print("  [2.5/4] Reranker 语义重排序中...")
-            evidence = self.reranker.rerank(
-                query=question,
-                passages=evidence,
-                top_k=RERANKER_TOP_K,
-                alpha=RERANKER_ALPHA,
+        if saved_retrieval:
+            retrieval = saved_retrieval["retrieval"]
+            evidence = saved_retrieval["evidence"]
+            _db_type = saved_retrieval["db_type"]
+        else:
+            if planning_state:
+                if planning_state.get("retrieval_started"):
+                    raise ValueError("v3首次检索已发出但未完成，保留检查点，不自动重发或重新规划")
+                planning_state["retrieval_started"] = True
+                planning_state["checkpoint_identity"] = getattr(self, "repair_checkpoint_identity", None)
+                save_planning()
+            _needs_reasoning = plan.get("needs_reasoning", False)
+            # 获取 db_type, 强制校验合法性；LLM 失败/格式错误时兜底为 both
+            _db_type = plan.get("db_type", "both")
+            if plan.get("fallback", False):
+                _db_type = "both"
+            if _db_type not in ("literature", "textbook", "both"):
+                print(f"  -> 无效 db_type={_db_type}, 兜底为 both")
+                _db_type = "both"
+            print(f"  [2/4] 检索中 (db_type={_db_type})...")
+            # 双库模式时动态计算权重
+            _lit_w, _ebk_w = None, None
+            if _db_type == "both":
+                _lit_w, _ebk_w = self._compute_dynamic_weights(question, plan)
+                print(f"  -> 动态权重: lit={_lit_w}, ebook={_ebk_w}")
+            retrieval = self.retrieve_context(
+                db_type=_db_type,
+                question=question,
+                queries=plan.get("retrieval_queries", [question]),
+                focus_component=plan.get("focus_component"),
+                focus_labels=plan.get("focus_labels"),
+                use_label_filter=not _needs_reasoning,
+                previous_evidence=previous_evidence,
+                top_k=top_k,
+                lit_weight=_lit_w,
+                ebook_weight=_ebk_w,
             )
-            print(f"  -> 重排后保留 {len(evidence)} 条")
+            from auto_battery_research.tools.materials_project import augment_mp_evidence
+            retrieval = augment_mp_evidence(retrieval, plan, top_k)
+            evidence = retrieval.get("results", [])[:top_k]
+            print(f"  -> 召回 {len(evidence)} 条证据 (数据源: {retrieval.get('db_type', _db_type)})")
+
+            # ── Stage 2.5: Reranker 重排序 ──
+            if self._reranker_enabled and self.reranker and evidence:
+                print("  [2.5/4] Reranker 语义重排序中...")
+                evidence = self.reranker.rerank(
+                    query=question,
+                    passages=evidence,
+                    top_k=RERANKER_TOP_K,
+                    alpha=RERANKER_ALPHA,
+                )
+                print(f"  -> 重排后保留 {len(evidence)} 条")
+            if planning_state:
+                planning_state["retrieval_result"] = {"plan": plan, "retrieval": retrieval, "evidence": evidence, "db_type": _db_type, "writer_contract_version": 3}
+                save_planning()
+
+
+        from auto_battery_research.util.adaptive_retrieval import initial_assessment, select_context, options as retrieval_options
+        retrieval_seed = {"question": requirement_source, "plan": plan,
+                          "db_type": _db_type, "retrieval": retrieval, "evidence": list(evidence),
+                          "writer_contract_version": getattr(self, "writer_contract_version", 2)}
+        def save_retrieval():
+            path = getattr(self, "repair_checkpoint_path", None)
+            if path:
+                from auto_battery_research.util.scheme_ledger import atomic_write
+                import json
+                atomic_write(path.with_name("stage4_retrieval_checkpoint.json"), json.dumps({
+                    **retrieval_seed, "checkpoint_identity": getattr(self, "repair_checkpoint_identity", None)}, ensure_ascii=False, indent=2))
+        # 写作之前评估首次召回；可复用检查点，不重复检索/重开窗口。
+        saved_retrieval = getattr(self, "retrieval_resume", None)
+        if saved_retrieval:
+            retrieval_seed = saved_retrieval
+        initial_assessment(self, retrieval_seed, save_retrieval)
+        evidence = retrieval_seed["evidence"]
+        self.writer.requirement_items = list((plan.get("requirements") or {}).get("items", []))
+        self.writer.preferred_evidence_ids = retrieval_seed["retrieval_state"]["preferred_ids"]
+        self.writer.working_evidence_ids = retrieval_seed["retrieval_state"]["working_ids"]
+        self.writer.context_options = retrieval_options(self)
+        writer_evidence = select_context(retrieval_seed, purpose="writer", config=retrieval_options(self))
+        save_retrieval()
+
+        from auto_battery_research.util.stage4_session import design_mode, run_session
+        # 新内容契约仅用于新设计会话；分析和已有旧检查点沿用历史入口。
+        configured_contract = getattr(self, "writer_contract_version", 2)
+        if saved_retrieval:
+            configured_contract = saved_retrieval.get("writer_contract_version", 2)
+        if configured_contract == 3 and design_mode(question, plan):
+            return run_session(self, question, plan, retrieval_seed, history_context)
+        self.writer.contract_version = 2
 
         # ── Stage 3: Writer ──
         print("  [3/4] Writer 生成中...")
         _writer_scheme = self._extract_scheme(question, plan)
+        if plan.get("requirements"):
+            # 语义指定值和已定方案优先；问题中的对照、否定或背景提及不自动成为选型。
+            from auto_battery_research.util.research_contract import bindings as requirement_bindings
+            declared = dict((getattr(self, "scheme_context", None) or {}).get("parameters", {}))
+            declared.update(requirement_bindings(plan["requirements"]))
+            from auto_battery_research.util.material_ids import assemble_components
+            _writer_scheme = assemble_components({}, declared, strict=False)
+        inherited_design = getattr(self, "inherited_design", None)
+        if inherited_design:
+            _writer_scheme = _writer_scheme or {}
+            for component in ("cathode", "anode", "electrolyte"):
+                if not _writer_scheme.get(component):
+                    _writer_scheme[component] = inherited_design.get(component)
+                    identity = (inherited_design.get("component_identities") or {}).get(component)
+                    if identity:
+                        _writer_scheme.setdefault("component_identities", {})[component] = dict(identity)
+        from auto_battery_research.util.material_ids import canonical_scheme
+        _writer_scheme = canonical_scheme(_writer_scheme)
         geometry_candidate = None
         geometry_error = None
         writer_question = question
+        scheme_context = getattr(self, "scheme_context", None)
+        if scheme_context:
+            from auto_battery_research.util.scheme_ledger import render
+            writer_question += "\n当前方案表（用户锁定值不可修改；有冲突只提出候选）：\n" + render(scheme_context)
         # 工作流设计模式：先冻结结构化参数，再供 Writer/Reviewer 引用。
-        if getattr(self, "structured_geometry_enabled", False):
+        if (getattr(self, "structured_geometry_enabled", False) and plan.get("requirements", {}).get("scheme_required", True)
+                and (not plan.get("requirements")
+                     or all((_writer_scheme or {}).get(c) for c in ("cathode", "anode", "electrolyte")))):
             try:
                 import json
                 from auto_battery_research.simulation.geometry_contract import GEOMETRY_SYSTEM_PROMPT, build_geometry_contract, constrain_generated_np
                 from auto_battery_research.tools.geometry_revision import resolve_input_ranges
                 from .llm_client import safe_json_loads
                 materials = {k: (_writer_scheme or {}).get(k) for k in ("cathode", "anode", "electrolyte")}
-                raw = self.writer_llm.chat(GEOMETRY_SYSTEM_PROMPT, json.dumps({
-                    "design_request": question, "materials": materials, "evidence": evidence[:25],
-                    "ranges_SI": resolve_input_ranges(materials.get("cathode"), materials.get("anode")),
-                }, ensure_ascii=False), temperature=0.1, trace_tag="geometry_design")
-                geometry_candidate = constrain_generated_np(safe_json_loads(raw), getattr(self, "original_design_request", question))
-                geometry = build_geometry_contract(geometry_candidate, materials, evidence)
+                inherited = getattr(self, "inherited_design", None)
+                if inherited and all(inherited.get(k) == materials.get(k) for k in ("cathode", "anode", "electrolyte")):
+                    geometry = inherited["geometry"]
+                    geometry_candidate = {c: {f: geometry[c].get(f) for f in ("L_um", "porosity", "R_s_um", "D_s_m2s")} for c in ("cathode", "anode")}
+                else:
+                    from auto_battery_research.util.physical_parameters import (
+                        INSTRUCTIONS, fixed_geometry, fill_missing_candidate, record_geometry_sources,
+                    )
+                    fixed = fixed_geometry((scheme_context or {}).get("parameters", {}))
+                    raw = self.writer_llm.chat(GEOMETRY_SYSTEM_PROMPT + "\n" + INSTRUCTIONS, json.dumps({
+                        "fixed_geometry": fixed,
+                        "design_request": question, "materials": materials, "evidence": writer_evidence,
+                        "current_scheme_table": scheme_context,
+                        "ranges_SI": resolve_input_ranges(materials.get("cathode"), materials.get("anode")),
+                    }, ensure_ascii=False), temperature=0.1, json_mode=True, trace_tag="geometry_design")
+                    geometry_candidate = constrain_generated_np(safe_json_loads(raw), getattr(self, "original_design_request", question))
+                    geometry_candidate = fill_missing_candidate(geometry_candidate, fixed)
+                    geometry = build_geometry_contract(geometry_candidate, materials, evidence)
+                    record_geometry_sources(geometry, fixed)
                 writer_question += "\n【已校验结构化几何，正文不得变更；工程候选不是用户实测值】\n" + json.dumps(geometry, ensure_ascii=False)
             except Exception as exc:
                 geometry_error = str(exc)
+        from auto_battery_research.util.scheme_ledger import project_scheme_parameters
+        self.writer.current_parameters = project_scheme_parameters(
+            dict(_writer_scheme or {}, **({"geometry": geometry} if locals().get("geometry") else {})),
+            (scheme_context or {}).get("parameters", {}), "Writer前已声明参数")
+        import json
+        from auto_battery_research.util.scheme_ledger import atomic_write
+        protocol_seed = {"question": question, "draft": "", "evidence": evidence, "plan": plan,
+            "retrieval": retrieval, "db_type": _db_type, "scheme": dict(_writer_scheme or {}, **({"geometry": geometry} if locals().get("geometry") else {})),
+            "geometry_candidate": geometry_candidate, "geometry_error": geometry_error,
+            "checkpoint_identity": getattr(self, "repair_checkpoint_identity", None), "retrieval_state": retrieval_seed["retrieval_state"],
+            "writer_protocol": {}, "writer_parameters": self.writer.current_parameters,
+            "writer_request": {"question": writer_question, "plan": plan, "evidence": writer_evidence,
+                               "history_context": history_context, "scheme": _writer_scheme}}
+        self.writer.protocol_state = protocol_seed["writer_protocol"]
+        from auto_battery_research.util.runtime_budgets import bind_repair_options
+        bind_repair_options(self, protocol_seed)
+        def save_protocol():
+            path = getattr(self, "repair_checkpoint_path", None)
+            if path:
+                atomic_write(path, json.dumps(protocol_seed, ensure_ascii=False, indent=2))
+                path.with_name("stage4_rebuild_requested.json").unlink(missing_ok=True)
+        self.writer.save_protocol = save_protocol
+        save_protocol()
         writer_output = self.writer.run(
             question=writer_question,
             plan=plan,
-            evidence=evidence,
+            evidence=writer_evidence,
             history_context=history_context,
             scheme=_writer_scheme,
         )
         print(f"  -> {'规则回退' if writer_output.get('fallback') else 'LLM 生成'}")
 
-        # ── Stage 4: Reviewer (带检索重试与 fail-closed 降级) ──
-        max_review_rounds = 3
-        _draft = writer_output.get("draft_answer", "")
-        _current_plan = dict(plan)
-        _current_queries = list(_current_plan.get("retrieval_queries", [question]))
-        _current_evidence = list(evidence)
-        _final = None
-        review_passed = False
-        structure_errors: List[str] = []
-        _error_type = "writing"
-
-        if not _draft.strip():
-            # Writer 未生成正文（例如 LLM 不可用或耗尽重试）：禁止无依据继续审核放行
-            _fail_reason = writer_output.get("error") or "Writer 未能生成有效方案草稿"
-            structure_errors = [_fail_reason]
-            reviewer_output = {
-                "confidence": "low",
-                "error_type": "writing",
-                "issues": [_fail_reason],
-                "fallback": True,
-            }
-            _final = ""
-        else:
-            for _round in range(max_review_rounds):
-                print(f"  [4/4] Reviewer 审核中 (第{_round+1}轮)...")
-                _scheme = self._extract_scheme(question, _current_plan, draft_text=_draft)
-                _claimed_energy = self._extract_energy_claim(_draft)
-                structure_errors = []
-                if getattr(self, "structured_geometry_enabled", False):
-                    from auto_battery_research.util.design_sections import design_output_issues
-                    structure_errors = design_output_issues(_draft)
-                if structure_errors:
-                    reviewer_output = {"confidence": "low", "error_type": "writing", "issues": structure_errors}
-                else:
-                    reviewer_output = self.reviewer.run(
-                        question=writer_question, evidence=_current_evidence, draft_answer=_draft,
-                        history_context=history_context, scheme=_scheme, claimed_energy=_claimed_energy,
-                    )
-
-                _confidence = reviewer_output.get("confidence", "low")
-                _issues = reviewer_output.get("issues", [])
-                _error_type = reviewer_output.get("error_type", "writing")
-                print(f"  -> 置信度: {_confidence}, 错误类型: {_error_type}, 问题数: {len(_issues)}")
-
-                # 审核"响应失败"(空输出/JSON 截断/调用异常) 与"审核已执行并给出意见"
-                # 必须分开: 前者不算通过, 后者是正常审核结果 —— 否则方案永远无法推进。
-                if _error_type == "reviewer":
-                    if _round == max_review_rounds - 1:
-                        break  # 审核始终失败: review_passed 保持 False, 由门禁拒绝
-                    continue  # 重试审核, 不要求 Writer 为 JSON 故障重写全文
-
-                # 审核已成功执行: 若还有预算, 依据意见尝试改进; 最后一轮直接验收当前草稿。
-                if _round == max_review_rounds - 1 or not _issues:
-                    _final = _draft
-                    review_passed = not structure_errors and _confidence in ("high", "medium") and not _issues
-                    break
-
-                if _error_type == "retrieval" and _issues:
-                    # ── 缺证据 → 回退到检索（追加，保留已有证据与权重配置）──
-                    print(f"  -> 证据不足,回退检索 (第{_round+2}轮)...")
-                    new_queries = self._issues_to_queries(_issues)
-                    _current_queries = list(set(_current_queries + new_queries))
-                    _current_plan["retrieval_queries"] = _current_queries
-                    _retry_retrieval = self.retrieve_context(
-                        db_type=_db_type,
-                        question=question,
-                        queries=_current_queries,
-                        focus_component=_current_plan.get("focus_component"),
-                        focus_labels=_current_plan.get("focus_labels"),
-                        use_label_filter=not _current_plan.get("needs_reasoning", False),
-                        previous_evidence=previous_evidence,
-                        top_k=top_k,
-                        lit_weight=_lit_w,
-                        ebook_weight=_ebk_w,
-                    )
-                    _retry_retrieval = augment_mp_evidence(_retry_retrieval, _current_plan, top_k)
-                    # 合并新旧证据，去重
-                    _merged: Dict[str, Any] = {e["passage_id"]: e for e in _current_evidence}
-                    for e in _retry_retrieval.get("results", []):
-                        if e["passage_id"] not in _merged:
-                            _merged[e["passage_id"]] = e
-                    _current_evidence = sorted(_merged.values(), key=lambda x: x.get("score", 0), reverse=True)[:top_k]
-                    print(f"  -> 合并后共 {len(_current_evidence)} 条")
-                    # 重新 reranker
-                    if self._reranker_enabled and self.reranker and _current_evidence:
-                        _current_evidence = self.reranker.rerank(
-                            query=question, passages=_current_evidence,
-                            top_k=RERANKER_TOP_K, alpha=RERANKER_ALPHA,
-                        )
-                    # 补检索只更新证据；所有写作轮次复用首次冻结的结构化参数上下文。
-                    _retry_writer = self.writer.run(
-                        question=writer_question, plan=_current_plan,
-                        evidence=_current_evidence, history_context=history_context,
-                        scheme=_writer_scheme,
-                    )
-                    _draft = _retry_writer.get("draft_answer", _draft)
-                elif _error_type == "writing" and _issues:
-                    # ── 文字/学术错误 → 回退到 Writer 修正 ──
-                    print(f"  -> 文字修正,回退 Writer (第{_round+2}轮)...")
-                    _draft = self.writer.revise(
-                        question=writer_question, plan=_current_plan,
-                        evidence=_current_evidence, draft_answer=_draft,
-                        feedback=_issues, history_context=history_context,
-                        scheme=_scheme,
-                    )
-                else:
-                    break
-
-        final_answer = _final if _final is not None else _draft
-        evidence = _current_evidence
+        # ── Stage 4: Reviewer (带分层回退) ──
+        from auto_battery_research.util.design_repair import review_design, review_verdict
+        baseline_scheme = self._extract_scheme(question, plan, writer_output.get("draft_answer", "")) or _writer_scheme
+        # 新课题主方案由已审核声明维护；正文候选不决定电解液或添加剂。
+        if plan.get("requirements"):
+            baseline_scheme = dict(_writer_scheme or {})
+            baseline_scheme.pop("additives", None)
+        for component in ("cathode", "anode", "electrolyte"):
+            if (_writer_scheme or {}).get(component):
+                baseline_scheme[component] = _writer_scheme[component]
+        if baseline_scheme and locals().get("geometry"):
+            baseline_scheme["geometry"] = geometry
+        seed = {"question": question, "draft": writer_output.get("draft_answer", ""), "evidence": evidence,
+                "plan": plan, "retrieval": retrieval, "db_type": _db_type,
+                "writer_output": writer_output, "scheme": baseline_scheme,
+                "design_structure": writer_output.get("design_structure"),
+                "numeric_contract": writer_output.get("numeric_contract"),
+                "parameters": writer_output.get("numeric_parameters", {}),
+                "geometry_candidate": geometry_candidate, "geometry_error": geometry_error,
+                "checkpoint_identity": getattr(self, "repair_checkpoint_identity", None)}
+        seed.update({k: protocol_seed[k] for k in ("writer_protocol", "writer_parameters", "writer_request")})
+        seed["retrieval_state"] = retrieval_seed["retrieval_state"]
+        from auto_battery_research.util.research_contract import prepare_review
+        prepare_review(self, seed)
+        _draft, reviewer_output, evidence, repair_parameters, repair_audit = review_design(
+            self, seed, writer_question, history_context, top_k)
+        final_answer = _draft
+        review_completed, review_passed = review_verdict(_draft, reviewer_output, plan.get("requirements"))
 
         # 追加参考来源（仅当存在有效正文时追加）
         if final_answer.strip():
@@ -816,7 +904,7 @@ class RAGPipeline:
             final_answer = final_answer + ref_section
 
         # 提取结构化材料组合方案 (供 Stage 5 物理仿真与门禁检查消费)
-        extracted_scheme = self._extract_scheme(question, plan, final_answer)
+        extracted_scheme = seed.get("scheme") or _writer_scheme or self._extract_scheme(question, plan, writer_output.get("draft_answer", ""))
         rule_checks = {}
         if self.relation_engine:
             if extracted_scheme:
@@ -843,7 +931,6 @@ class RAGPipeline:
         # 综合评定最终置信度 (以最终生成的结构化方案及 RelationEngine 校验为准)
         rule_conf = rule_checks.get("confidence") if isinstance(rule_checks, dict) else None
         rev_conf = reviewer_output.get("confidence", "medium")
-        review_completed = not structure_errors and _error_type != "reviewer" and bool(_draft.strip())
         if not review_passed or rule_conf == "low":
             confidence = "low"
         elif rule_conf in ("high", "medium"):
@@ -860,6 +947,9 @@ class RAGPipeline:
             "db_type": retrieval.get("db_type", _db_type),
             "retrieval": retrieval,
             "writer_output": writer_output,
+            "design_structure": seed.get("design_structure"),
+            "numeric_contract": seed.get("numeric_contract"),
+            "numeric_consistency": seed.get("numeric_consistency"),
             "reviewer_output": reviewer_output,
             "review_passed": review_passed,
             "review_completed": review_completed,
@@ -868,6 +958,11 @@ class RAGPipeline:
             "confidence": confidence,
             "scheme": extracted_scheme or {},
             "geometry_candidate": geometry_candidate,
+            "repair_parameters": repair_parameters,
+            "repair_audit": repair_audit,
+            "repair_diagnoses": seed.get("repair_diagnoses", []),
+            "retrieval_state": seed.get("retrieval_state"),
+            "research_draft": seed.get("research_draft"),
             "geometry_error": geometry_error,
             "rule_checks": rule_checks,
             "timestamp": datetime.now().isoformat(),
@@ -1982,24 +2077,10 @@ class RAGPipeline:
         return float(m.group(1)) if m else None
 
     @staticmethod
-    def _issues_to_queries(issues: List[str]) -> List[str]:
-        """从 Reviewer issues 中提取缺失的关键词,转为补充检索查询"""
-        queries = []
-        for issue in issues:
-            # 提取"XX 缺乏证据"中的关键名词
-            text = issue.lower()
-            # 常见模式: 缺少XXX证据/未找到XXX文献/XXX不足
-            for kw in ["缺乏", "缺少", "不足", "未找到", "未发现", "没有"]:
-                if kw in text:
-                    # 取 kw 之后的 20 个字作为查询词
-                    idx = text.index(kw) + len(kw)
-                    snippet = text[idx:idx+30].strip().rstrip(".,;:！？。，；：")
-                    # 只取有意义的词
-                    snippet = re.sub(r'[的证据文献数据研究]', '', snippet).strip()
-                    if len(snippet) > 2 and snippet not in queries:
-                        queries.append(snippet)
-                    break
-        return queries[:3]  # 最多追加 3 个新查询
+    def _issues_to_queries(issues) -> List[str]:
+        """兼容入口只接受结构化查询，不再截取审核套话组成检索问题。"""
+        queries = [q for issue in issues if isinstance(issue, dict) for q in issue.get("queries", []) if isinstance(q, str) and q.strip()]
+        return list(dict.fromkeys(queries))[:3]
 
     def run_with_export(
         self, question: str,

@@ -8,6 +8,7 @@
 """
 
 import pytest
+from types import SimpleNamespace
 
 from auto_battery_research.tools import stage_tools
 from auto_battery_research.tools.stage_tools import (
@@ -19,6 +20,7 @@ from auto_battery_research.workflow.stage_manager import StageManager
 
 
 ACTIVE_GOAL = "设计400Wh/kg高比能液态锂金属电池方案"
+CHEMICAL_GOAL = "位点共掺杂改进无钴富锂 Li1.2Mn0.6Ni0.2O2正极。匹配金属锂负极和 1 mol/L LiPF₆/EC+DMC，给出推荐组合排行"
 
 
 @pytest.fixture(autouse=True)
@@ -93,6 +95,44 @@ def test_short_strings_skip_fuzzy_rules():
     (防止 "固态电池" 之类短词被任意吸并)."""
     g = "固态电池研究"
     assert resolve_effective_goal(g, "固态电池") == g
+
+
+def test_unicode_chemical_identity_aligns():
+    rewritten = CHEMICAL_GOAL.replace("O2正极", "O2 正极").replace("LiPF₆", "LiPF6") + "。"
+    assert resolve_effective_goal(rewritten, CHEMICAL_GOAL) == CHEMICAL_GOAL
+    assert resolve_effective_goal(CHEMICAL_GOAL.replace("LiPF₆", "LiPF5"), CHEMICAL_GOAL) != CHEMICAL_GOAL
+
+
+def test_cache_reuses_unicode_alias_without_global(monkeypatch):
+    stage_tools._GLOBAL_MANAGER = None
+    sentinel = SimpleNamespace(target_goal=CHEMICAL_GOAL)
+    stage_tools._GOAL_MANAGER_CACHE[CHEMICAL_GOAL] = sentinel
+    def fail(**kwargs):
+        pytest.fail("同义课题不应构造管理器")
+    monkeypatch.setattr(stage_tools, "StageManager", fail)
+    assert get_stage_manager_for_goal(CHEMICAL_GOAL.replace("₆", "6") + "。") is sentinel
+
+
+def test_rag_tool_and_service_stay_in_active_directory(tmp_path, monkeypatch):
+    from auto_battery_research.tools import domain_tools, workflow_actions, rag_adapter
+    directory = tmp_path / "current_task"
+    directory.mkdir()
+    mgr = SimpleNamespace(target_goal=CHEMICAL_GOAL, config={}, get_task_output_dir=lambda: directory)
+    set_stage_manager(mgr)
+    captured = {}
+    class Adapter:
+        def run_rag_design(self, target_query, task_dir, task_goal=None):
+            captured.update(request=target_query, directory=task_dir, task_goal=task_goal)
+            return {"success": True}
+    monkeypatch.setattr(rag_adapter, "AbrRagAdapter", lambda config: Adapter())
+    rewrite = CHEMICAL_GOAL.replace("₆", "6") + "。"
+    assert domain_tools.RunRAGDesignTool()._run(target_goal=rewrite, design_query="只修改设计内容")
+    assert captured == {"request": "只修改设计内容", "directory": directory, "task_goal": CHEMICAL_GOAL}
+    assert workflow_actions._get_target_task_dir(rewrite) == directory
+    # 即使模型传入完全不同的名称，运行中的工具也不能隐式切换课题。
+    domain_tools.RunRAGDesignTool()._run(target_goal="模型自行改写的新课题", design_query="新的设计建议")
+    assert captured["task_goal"] == CHEMICAL_GOAL
+    assert list(tmp_path.iterdir()) == [directory]
 
 
 # ────────────────────────── get_stage_manager_for_goal 收敛 ──────────────────────────

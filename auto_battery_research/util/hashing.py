@@ -32,7 +32,7 @@ def stage5_scheme_projection(scheme: Dict[str, Any]) -> Dict[str, Any]:
     保证两侧对同一 scheme 算出同一投影。
     """
     scheme = scheme if isinstance(scheme, dict) else {}
-    return {
+    projection = {
         "cathode": scheme.get("cathode"),
         "anode": scheme.get("anode"),
         "electrolyte": scheme.get("electrolyte"),
@@ -41,3 +41,7 @@ def stage5_scheme_projection(scheme: Dict[str, Any]) -> Dict[str, Any]:
         "loading_mg_cm2": scheme.get("loading_mg_cm2"),
         "geometry": scheme.get("geometry"),
     }
+    if scheme.get("rule_parents"):
+        projection["rule_parents"] = scheme["rule_parents"]
+        projection["component_identities"] = scheme.get("component_identities") or {}
+    return projection

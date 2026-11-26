@@ -1,7 +1,7 @@
 """AutoBatteryResearch RAG 统一门面模块 (Unified RAG Facade).
 
 对外暴露多智能体方案设计引擎、电化学规则引擎 (RelationEngine 7 项分级规则 C1–C3, C5–C8；
-RULES_VERSION=C1-C8/v2.1-coincell)、能量密度估算模型及统一大模型客户端。
+RULES_VERSION=C1-C8/v2.4-c1-c3-advisory；C1/C3仅为建议)、能量密度估算模型及统一大模型客户端。
 """
 
 from __future__ import annotations
@@ -19,12 +19,16 @@ for _extra in (str(ROOT_DIR), str(ROOT_DIR / "src")):
 # 从旧实现位置再导出 (lmllm 单一命名空间：仓库态解析到 src/lmllm，安装态解析到
 # wheel 内 lmllm 包；chromadb 等重依赖在源模块内延迟加载)
 from lmllm.RAG import RAGPipeline
+from lmllm.RAG.agents import PlannerAgent, ReviewerAgent, WriterAgent
 from lmllm.RAG.relation_engine import RelationEngine, RULES_VERSION
 from lmllm.RAG.llm_client import LLMClient, strip_think_blocks
 from lmllm.RAG.energy_model import estimate_scheme_energy, check_energy_claim
 
 __all__ = [
     "RAGPipeline",
+    "PlannerAgent",
+    "ReviewerAgent",
+    "WriterAgent",
     "RelationEngine",
     "RULES_VERSION",
     "LLMClient",

@@ -256,7 +256,7 @@ def complete_geometry_block(
     block["provenance"]["condition.v_max"] = v_max_source
     block["provenance"]["condition.c_rate"] = c_rate_source
     # 新契约附加信息幂等携带；数值布局维持 v1.1，兼容历史仿真与归档。
-    for key in ("contract_version", "parameter_sources"):
+    for key in ("contract_version", "parameter_sources", "material_ids"):
         if key in raw:
             import copy
             block[key] = copy.deepcopy(raw[key])
@@ -443,6 +443,8 @@ def build_cell_spec(
     candidates: Optional[Dict[str, Any]],
     c_rate: float = 0.5,
     ambient_temp_k: float = 298.15,
+    *,
+    parameters: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Stage 4 方案 + candidates.json → cell_spec dict（无缺省表回填）。
 
@@ -458,6 +460,8 @@ def build_cell_spec(
     """
     scheme = scheme or {}
     candidates = candidates or {}
+    from auto_battery_research.util.material_ids import pinn_material_ids
+    model_materials = pinn_material_ids(scheme, parameters)
 
     def _entry(category: str, item_id: str) -> Optional[dict]:
         for entry in candidates.get(category, []) or []:
@@ -499,6 +503,7 @@ def build_cell_spec(
     target = scheme.get("target_energy_wh_kg") or scheme.get("target_energy")
     cell_spec = {
         "scheme_id": "",
+        "pinn_material_ids": model_materials,
         "cathode": cathode,
         "anode": anode,
         "electrolyte": electrolyte,

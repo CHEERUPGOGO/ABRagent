@@ -51,6 +51,19 @@ class PINNPhysicsChecker(BaseChecker):
         task_dir = self.stage_manager.get_task_output_dir() if self.stage_manager else None
 
         # 2. SPM PINN 放电仿真结果 (体系匹配后的仿真链路，优先验收)
+        if task_dir is not None and (task_dir / "design_scheme.json").exists():
+            from auto_battery_research.util.scheme_ledger import projection_errors
+            import json
+            doc = json.loads((task_dir / "design_scheme.json").read_text(encoding="utf-8"))
+            errors = projection_errors(task_dir, doc)
+            spec_path = task_dir / "pinn_input_spec.json"
+            if doc.get("ledger_hash") and spec_path.exists():
+                spec_data = json.loads(spec_path.read_text(encoding="utf-8"))
+                if spec_data.get("ledger_hash") != doc["ledger_hash"]:
+                    errors.append("仿真输入对应旧方案表版本，需重新提取及仿真")
+            if errors:
+                return False, self.build_diagnostic(passed=False, error_code="SCHEME_LEDGER_STALE",
+                    error_msg="; ".join(errors), next_action="按当前方案表重新生成设计及仿真输入")
         pinn_candidates = []
         if task_dir is not None:
             pinn_candidates.append(task_dir / "pinn_simulation_result.json")

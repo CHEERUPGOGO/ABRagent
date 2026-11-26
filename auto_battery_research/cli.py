@@ -121,7 +121,7 @@ def main():
     parser.add_argument("--skip-stage", type=int, help="动态跳过指定 Stage ID (如 Stage 5)")
     parser.add_argument("--enable-stage", type=int, help="动态激活已跳过的 Stage ID")
     parser.add_argument("--with-pinn", action="store_true", help="激活 Stage 5 (PINN 物理仿真)")
-    parser.add_argument("--skip-pinn", action="store_true", help="跳过 Stage 5 (PINN 物理仿真)")
+    parser.add_argument("--skip-pinn", action="store_true", help="仅关闭 Stage 5A 物理仿真，Stage 5B 实验设计仍执行")
     parser.add_argument("--run", action="store_true", help="启动 ABRAgent 进行全自动端到端自主执行")
     parser.add_argument("--goal", type=str, default=DEFAULT_GOAL, help="指定电池设计研发目标")
     parser.add_argument("--journal", action="store_true", help="查看所有阶段的历史研发日志")
@@ -139,8 +139,46 @@ def main():
     parser.add_argument("--host", type=str, default="127.0.0.1", help="Web 监控大屏监听地址 (默认 127.0.0.1 安全本地回环)")
     parser.add_argument("--port", type=int, default=7865, help="Web 监控大屏端口 (默认 7865)")
     parser.add_argument("--share", action="store_true", help="创建公共分享链接 (仅旧版 Gradio 后备入口支持)")
+    parser.add_argument("--scheme-show", action="store_true", help="显示当前统一方案表")
+    parser.add_argument("--rebuild-stage4", action="store_true", help="显式归档修复检查点并允许重新设计 Stage 4；之后用 --run 执行")
+    parser.add_argument("--regenerate-experiment-plan", action="store_true", help="基于已有 Stage 4 设计和文献生成首轮实验推荐")
+    parser.add_argument("--repair-experiment-values", action="store_true", help="在副本隔离实验参数中的缺项文字，保留原文与模型预算并更新报告")
+    parser.add_argument("--sync-experiment-plan", action="store_true", help="按当前主方案局部同步Stage 5实验条件与旧诊断，独立核对后更新研报")
+    parser.add_argument("--repair-research-records", action="store_true", help="从现有设计正文恢复并审核多段研究记录，在副本中验收后更新研报，不更改配方")
+    parser.add_argument("--integrate-research-narrative", action="store_true", help="完整五段稿直接编译入研报并刷新参数引用；其他历史稿沿用整合审核，副本终审后发布")
+    parser.add_argument("--repair-stage4-inputs", action="store_true", help="仅修复已声明的倍率定义绑定和金属锂对电极字段，副本验收后提交，不重跑模型或推进阶段")
+    parser.add_argument("--repair-stage4-submission", action="store_true", help="恢复几何单位投影误报导致的提交失败，副本验收，不重跑模型或推进阶段")
+    parser.add_argument("--resume-stage4-review", action="store_true", help="恢复既有 Stage 4 结构修复检查点并继续学术审核，在副本验收后更新报告")
+    parser.add_argument("--restore-stage4-titles", action="store_true", help="按Writer归档和成功补丁链恢复旧章节标题，沿用审核预算，在副本验收后更新报告")
+    parser.add_argument("--audit-stage4-numbers", action="store_true", help="只读核对已有数值和计算依赖，在副本验收后更新报告，不改正文、配方或模型预算")
+    parser.add_argument("--migrate-material-ids", action="store_true", help="统一已有任务材料标识并同步模型基准，在副本验收后更新报告")
+    parser.add_argument("--reparse-requirements", action="store_true", help="按独立验收内容重拆总任务与要求，在副本同步关联并终审后更新报告")
+    parser.add_argument("--dry-run", action="store_true", help="预览材料迁移或要求重拆，不修改任务文件")
+    parser.add_argument("--scheme-update", type=Path, help="按 JSON 文件批量更新方案表，用户值默认锁定")
+    parser.add_argument("--scheme-unlock", help="解除指定方案字段的用户锁定")
+    parser.add_argument("--scheme-history", action="store_true", help="显示方案修订历史")
 
     args = parser.parse_args()
+    if args.dry_run and not (args.migrate_material_ids or args.reparse_requirements):
+        parser.error("--dry-run 用于 --migrate-material-ids 或 --reparse-requirements")
+    if args.reparse_requirements and args.migrate_material_ids:
+        parser.error("要求重拆和材料迁移须分别执行")
+    if args.reparse_requirements and args.dry_run:
+        import json
+        from auto_battery_research.util.requirement_migration import preview_requirements
+        result = preview_requirements(ROOT_DIR, args.goal)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if not result.get("success"):
+            parser.error(result.get("error", "要求重拆预览失败"))
+        return
+    if args.migrate_material_ids and args.dry_run:
+        import json
+        from auto_battery_research.util.material_migration import preview_material_migration
+        result = preview_material_migration(ROOT_DIR, args.goal)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if not result.get("success"):
+            parser.error(result.get("error", "材料标识迁移预览失败"))
+        return
 
     # 0. 环境自检 (无需 StageManager，直接输出体检报告后退出)
     if args.doctor:
@@ -159,6 +197,11 @@ def main():
         launch_fastapi_web_server(host=args.host, port=args.port)
         return
 
+    # 审核恢复入口在配置插值前加载工作区环境，环境变量仍优先。
+    if args.resume_stage4_review or args.restore_stage4_titles:
+        from dotenv import load_dotenv
+        load_dotenv(ROOT_DIR / ".env", override=False)
+
     # 3. 初始化 StageManager
     skip_pinn_val = None
     if args.with_pinn:
@@ -166,8 +209,137 @@ def main():
     elif args.skip_pinn:
         skip_pinn_val = True
 
-    mgr = StageManager(skip_pinn=skip_pinn_val, target_goal=args.goal)
+    from auto_battery_research.tools.stage_tools import get_stage_manager_for_goal
+    mgr = get_stage_manager_for_goal(args.goal)
+    if skip_pinn_val is not None:
+        mgr.set_stage_skip(5, skip=skip_pinn_val, reason="CLI 显式设置")
     set_stage_manager(mgr)
+    if args.sync_experiment_plan:
+        import json
+        from auto_battery_research.util.experiment_alignment_recovery import repair_experiment_alignment
+        result = repair_experiment_alignment(mgr)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if not result.get("success"):
+            parser.error(result.get("error", "实验主方案同步失败"))
+        return
+    if args.repair_experiment_values:
+        import json
+        from auto_battery_research.util.experiment_value_recovery import repair_experiment_values
+        result = repair_experiment_values(mgr)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if not result.get("success"):
+            parser.error(result.get("error", "实验参数缺项迁移失败"))
+        return
+    if args.audit_stage4_numbers:
+        import json
+        from auto_battery_research.util.numeric_recovery import audit_existing_design
+        result = audit_existing_design(mgr)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if not result.get("success"):
+            parser.error(result.get("error", "数值一致性审计失败"))
+        return
+    if args.resume_stage4_review or args.restore_stage4_titles:
+        import json
+        from auto_battery_research.util.stage4_review_recovery import resume_stage4_review
+        result = resume_stage4_review(mgr, restore_titles=args.restore_stage4_titles)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if not result.get("success"):
+            parser.error(result.get("error", "Stage 4 审核恢复失败"))
+        return
+    if args.reparse_requirements:
+        import json
+        from auto_battery_research.util.requirement_migration import reparse_requirements
+        result = reparse_requirements(mgr, dry_run=args.dry_run)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if not result.get("success"):
+            parser.error(result.get("error", "要求重拆失败"))
+        return
+    if args.migrate_material_ids:
+        import json
+        from auto_battery_research.util.material_migration import migrate_material_ids
+        result = migrate_material_ids(mgr, dry_run=args.dry_run)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if not result.get("success"):
+            parser.error(result.get("error", "材料标识迁移失败"))
+        return
+    if args.integrate_research_narrative:
+        import json
+        from auto_battery_research.util.research_recovery import integrate_research_narrative
+        result = integrate_research_narrative(mgr)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if not result.get("success"):
+            parser.error(result.get("error", "论证整合失败"))
+        return
+    if args.repair_research_records:
+        import json
+        from auto_battery_research.util.research_recovery import repair_research_records
+        result = repair_research_records(mgr)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if not result.get("success"):
+            parser.error(result.get("error", "研究记录恢复失败"))
+        return
+    if args.repair_stage4_submission:
+        import json
+        from auto_battery_research.util.stage4_submission_repair import repair_stage4_submission
+        result = repair_stage4_submission(mgr)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if not result.get("success"):
+            parser.error(result.get("error", "Stage 4 提交恢复失败"))
+        return
+    if args.repair_stage4_inputs:
+        import json
+        from auto_battery_research.util.stage4_input_repair import repair_declared_stage4_inputs
+        result = repair_declared_stage4_inputs(mgr)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if not result.get("success"):
+            parser.error(result.get("error", "Stage 4 输入修复失败"))
+        return
+    if args.rebuild_stage4:
+        import json
+        from auto_battery_research.util.scheme_ledger import atomic_write, digest
+        task_dir = mgr.get_task_output_dir()
+        checkpoint = task_dir / "stage4_repair_checkpoint.json"
+        if checkpoint.exists():
+            content = checkpoint.read_text(encoding="utf-8")
+            atomic_write(task_dir / "stage4_repair_history" / (digest(content)[:16] + ".json"), content)
+        for name in ("design_scheme.json", "design_scheme.md", "rag_result.json", "research_context.json", "stage4_publication.json", "stage4_planning_checkpoint.json"):
+            source = task_dir / name
+            if source.exists():
+                content = source.read_text(encoding="utf-8")
+                atomic_write(task_dir / "stage4_repair_history" / digest(content)[:16] / name, content)
+        atomic_write(task_dir / "stage4_rebuild_requested.json", json.dumps({"requested": True}))
+        mgr.reset_workflow(start_stage_id=4)
+        print("Stage 4 已准备显式重新设计，历史修复记录已保留；请使用 --run 执行。")
+        return
+    if args.regenerate_experiment_plan:
+        import json
+        from auto_battery_research.util.stage5_execution import finalize_stage5
+        result = finalize_stage5(mgr, design_only=True, restart_experiment=True)
+        if not result.get("success"):
+            parser.error(result.get("error", "实验设计失败"))
+        if all(mgr.get_stage_by_id(i).status in ("PASSED", "FALLBACK") for i in range(1, 5)):
+            mgr.reset_workflow(start_stage_id=5)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return
+    if args.scheme_show or args.scheme_update or args.scheme_unlock or args.scheme_history:
+        import json
+        from auto_battery_research.util.scheme_ledger import ensure, update, render
+        task_dir = mgr.get_task_output_dir()
+        data = ensure(task_dir, args.goal)
+        try:
+            if args.scheme_update:
+                patch = json.loads(args.scheme_update.read_text(encoding="utf-8-sig"))
+                data = update(task_dir, patch["changes"], patch["base_revision"], actor="user",
+                              reason=patch.get("reason", "用户命令行更新"))
+                mgr.reset_workflow(start_stage_id=4)
+            if args.scheme_unlock:
+                data = update(task_dir, {}, data["revision"], actor="user", reason="用户解除锁定",
+                              unlock=[args.scheme_unlock])
+                mgr.reset_workflow(start_stage_id=4)
+        except (ValueError, KeyError, OSError) as exc:
+            parser.error(str(exc))
+        print(json.dumps(data["history"], ensure_ascii=False, indent=2) if args.scheme_history else render(data))
+        return
 
     # 4. Gradio 旧版仪表盘 (后备入口, 需要 Manager 驱动交互操作)
     if args.web_gradio:

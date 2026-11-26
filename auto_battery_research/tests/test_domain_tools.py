@@ -34,7 +34,7 @@ def init_stage_manager():
 
 def test_domain_tools_instantiation():
     tools = get_all_domain_tools()
-    assert len(tools) == 11
+    assert len(tools) == 12
     names = [t.name for t in tools]
     assert "InspectLiteratureAssets" in names
     assert "InspectVectorDB" in names
@@ -107,7 +107,7 @@ def test_stage4_single_service_tool(monkeypatch, init_stage_manager):
     # 1. 显式课题 + 设计需求透传
     res = json.loads(tool._run(target_goal="设计400Wh/kg锂金属电池", design_query="高镍三元正极体系"))
     assert res["review_status"] == "APPROVED"
-    assert calls["target_query"] == "设计400Wh/kg锂金属电池"
+    assert calls["target_query"] == init_stage_manager.target_goal
     assert calls["design_query"] == "高镍三元正极体系"
 
     # 2. 课题留空时回退到当前工作流活跃课题；design_query 留空传 None

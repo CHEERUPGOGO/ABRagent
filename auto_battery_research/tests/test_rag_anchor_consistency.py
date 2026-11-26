@@ -337,7 +337,7 @@ def test_prompts_and_agents_stage4_consistency_guidance():
     class CaptureLLM:
         available = True
 
-        def chat(self, system_prompt, user_prompt, temperature=0.2, trace_tag=""):
+        def chat(self, system_prompt, user_prompt, temperature=0.2, trace_tag="", *, json_mode=False):
             captured.append((trace_tag, system_prompt, user_prompt))
             if trace_tag == "reviewer":
                 return json.dumps(
@@ -347,7 +347,8 @@ def test_prompts_and_agents_stage4_consistency_guidance():
                         "error_type": "none",
                     }
                 )
-            return "1. **目标**\n---\n2. **推荐** [p1]\n---\n3. **指标**\n---\n4. **机理**\n---\n5. **风险**"
+            from auto_battery_research.util.design_structure import SECTION_IDS
+            return json.dumps({"version": 2, "parameters": {}, "sections": {key: {"body": "对应证据仍需核对适用体系与条件。[p1]"} for key in SECTION_IDS}})
 
     scheme = {
         "cathode": "lrmo",
@@ -374,20 +375,18 @@ def test_prompts_and_agents_stage4_consistency_guidance():
         feedback=["请统一 Rank #1 化学式"],
         scheme=scheme,
     )
-    assert res_r
+    assert res_r == res_w["draft_answer"]  # 纯字符串审核摘要不能获得正文写权限。
     reviewer = ReviewerAgent(CaptureLLM())
     rev = reviewer.run("设计 Li1.2Mn0.6Ni0.2O2 方案", evidence, res_w["draft_answer"], scheme=scheme)
     assert rev["confidence"] == "high"
 
-    assert len(captured) == 3
+    assert len(captured) == 2
     tag0, sys0, user0 = captured[0]
     tag1, sys1, user1 = captured[1]
-    tag2, sys2, user2 = captured[2]
-    assert (tag0, tag1, tag2) == ("writer", "writer_revise", "reviewer")
+    assert (tag0, tag1) == ("writer", "reviewer")
     assert sys0 is WRITER_SYSTEM_PROMPT
-    assert sys1 is WRITER_SYSTEM_PROMPT
-    assert sys2 is REVIEWER_SYSTEM_PROMPT
-    for prompt_body in (user0, user1, user2):
+    assert sys1 is REVIEWER_SYSTEM_PROMPT
+    for prompt_body in (user0, user1):
         assert "已列入方案候选添加剂，具体比例与化成制度待实验定量筛选" in prompt_body
         assert "严禁误标为「未锁定」或「未选用」" in prompt_body
         assert "跨体系推断/无直接二元实验" in prompt_body

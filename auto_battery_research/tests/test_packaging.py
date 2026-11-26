@@ -72,7 +72,7 @@ def wheel_names(tmp_path_factory) -> list:
 
 def test_wheel_contains_rag_runtime_data(wheel_names):
     """RelationEngine 三张核心数据表及 data 子目录必须入包，缺失即门禁空转."""
-    for required in ("alias_map.json", "candidates.json", "constraints.json"):
+    for required in ("alias_map.json", "candidates.json", "constraints.json", "electrolyte_families.json"):
         assert f"lmllm/RAG/data/{required}" in wheel_names, f"核心数据表漏打包: {required}"
     nested = [
         n for n in wheel_names
@@ -107,6 +107,15 @@ def test_wheel_contains_core_runtime_resources(wheel_names):
     for required in (
         "auto_battery_research/setting.yaml",
         "auto_battery_research/workflow/abr_workflow.yaml",
+        "auto_battery_research/doc/Guide_Doc/stage4_battery_design_rag.md",
+        "auto_battery_research/util/stage4_document.py",
+        "auto_battery_research/util/stage4_research_projection.py",
+        "auto_battery_research/util/stage4_consistency.py",
+        "auto_battery_research/util/stage4_publication.py",
+        "auto_battery_research/util/stage4_session.py",
+        "auto_battery_research/util/stage4_reporting.py",
+        "auto_battery_research/util/runtime_budgets.py",
+        "auto_battery_research/util/writer_protocol_advice.py",
     ):
         assert required in wheel_names, f"运行时资源漏打包: {required}"
     assert any(

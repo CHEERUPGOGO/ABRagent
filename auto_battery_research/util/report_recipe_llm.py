@@ -1,4 +1,4 @@
-"""第五部分实验方案：大模型综合完整方案/证据/仿真，程序侧做引用与一致性验收。
+"""第五部分渲染已验收的 Stage 5B 实验推荐，兼容无方案表的旧任务。
 
 输入优先级: 最终结构化设计 + 实际仿真参数 > 完整 design_scheme.md 分析背景 >
 检索证据原文 > 模型提出的实验建议。模型正文属于待验证建议, 不能改写最终参数,
@@ -11,6 +11,7 @@ from datetime import datetime
 from pathlib import Path
 
 from .hashing import canonical_hash
+from .report_narrative import RENDER_VERSION
 from .report_contract import (
     PRECURSOR_LABELS,
     ROUTE_SPECS,
@@ -73,15 +74,22 @@ PLAN_SYSTEM_PROMPT = """你是电池实验方案设计专家。基于给定的�
 15. 若存在审稿保留意见 (issues), 第 5.5 节必须同时包含两张核对表: ①《审稿保留意见逐条闭环状态表》(1..N 全覆盖审稿意见, 列为: 序号 | 审稿意见要点 | 闭环状态(文档已修正 / 待实验闭环) | 对应节次/实验组别及量化判据); ②《关键工程口径与状态闭环核对表》。
 16. 输出正文控制在 6500 中文字以内, 必须完整, 不得截断。
 
-章节: 5.1 实验目标与分组 / 5.2 材料制备与极片加工 / 5.3 电芯组装与化成 /
-5.4 性能测试与模型对照 / 5.5 结果判定与下一轮迭代 / 5.6 数据缺口与确定方法。"""
+章节: 5.1 实验设计与样品分组 / 5.2 材料制备与极片加工 / 5.3 电池制作与装配 /
+5.4 电化学测试与材料表征 / 5.5 数据处理与结果判定 / 5.6 待确认条件与获取方法。
+各节按实际方法设四级标题（如#### 5.2.1 粉体合成），下用1.、2.、3.依次写对象、操作、条件和记录项目，
+每条一个主要操作，依据与限制随步骤说明。仅写当前课题确需的方法，不套用其他研究的软包工艺、仪器或实测结论。
+分组表统一编号；主组与对照分别标明组成变化，化成与循环的电压/倍率/圈数分开，不重复声明冲突数值。"""
 
 
 def input_fingerprint(doc, context, result, spec, scheme_md):
     """第五部分输入指纹：方案文本、证据、最终设计、仿真与测试条件。"""
     return canonical_hash({
+        "render_version": RENDER_VERSION,
+        "requirements": doc.get("requirements"), "research": doc.get("research"),
         "scheme_md": scheme_md,
         "scheme": doc.get("scheme") or {},
+        "ledger_hash": doc.get("ledger_hash"),
+        "experiment_plan_hash": doc.get("experiment_plan_hash"),
         "reviewer_output": doc.get("reviewer_output") or {},
         "evidence": sorted(str(e.get("passage_id")) for e in doc.get("evidence") or []),
         "result": result or {},
@@ -613,7 +621,11 @@ def _validate_design_anchors(norm_text, anchors, scheme=None, context=None, doc=
 
 
 def validate_plan_text(text, doc, context, target, tolerance):
-    """程序侧验收：引用真实、内容完整、不改写最终参数、不虚构达标、无跨节矛盾。"""
+    """验收历史实验章节；结构化 Stage 5B 推荐走独立的绑定验收。"""
+    if doc.get("ledger_view"):
+        from .scheme_ledger import render_experiment
+        expected = render_experiment(doc["ledger_view"], context.get("result") or {})
+        return [] if isinstance(text, str) and text.startswith(expected) else ["实验章节与方案表不一致"]
     errors = []
     scheme = doc.get("scheme") or {}
     if not isinstance(text, str) or len(text.strip()) < 200:
@@ -1353,6 +1365,22 @@ def _llm_client(mgr):
 
 def generate_experiment_plan(mgr, task_dir, doc, context, result, spec, scheme_md, target, tolerance):
     """生成并验收第五部分；成功返回 {text, marker, source}，失败返回 None (调用方回退)。"""
+    if doc.get("experiment_contract"):
+        from .experiment_design import load, render, REPORT_FILENAME, require_current
+        from .scheme_ledger import atomic_write
+        snapshot = doc.get("_report_record")
+        recipe = snapshot["experiment"] if snapshot else load(task_dir)
+        if not snapshot:
+            require_current(task_dir, doc)
+        if not recipe or recipe.get("plan_hash") != doc.get("experiment_plan_hash"):
+            raise ValueError("设计与 Stage 5B 实验方案不匹配")
+        body = render(recipe, doc, result)
+        record = {"fingerprint": input_fingerprint(doc, context, result, spec, scheme_md),
+                  "plan_hash": recipe["plan_hash"], "text": body, "source": "stage4_projection"}
+        atomic_write(Path(task_dir) / REPORT_FILENAME, json.dumps(record, ensure_ascii=False, indent=2))
+        return {"text": body, "marker": (PLAN_START, PLAN_END), "source": "stage4_projection"}
+    if doc.get("ledger_view"):
+        return _generate_ledger_plan(mgr, task_dir, doc, context, result, spec, scheme_md)
     fingerprint = input_fingerprint(doc, context, result, spec, scheme_md)
     cached = load_plan_record(task_dir)
     if cached and cached.get("fingerprint") == fingerprint and not validate_plan_text(
@@ -1388,8 +1416,25 @@ def plan_fingerprint_marker(fingerprint):
 
 def validate_plan_record(task_dir, doc, context, result, spec, scheme_md, target, tolerance, content):
     """Stage 6 验收：报告第五部分与保存记录、当前输入三者一致。"""
+    from .report_layout import remap_sections
     if PLAN_START not in content:
         return ["报告缺少实验方案生成标记"]
+    if doc.get("experiment_contract"):
+        from .experiment_design import load, render, REPORT_FILENAME, require_current
+        try:
+            snapshot = doc.get("_report_record")
+            if not snapshot:
+                require_current(task_dir, doc)
+            recipe = snapshot["experiment"] if snapshot else load(task_dir)
+            if not recipe or recipe.get("plan_hash") != doc.get("experiment_plan_hash"):
+                return ["实验推荐与设计不一致"]
+            body = render(recipe, doc, result)
+            record = json.loads(Path(task_dir, REPORT_FILENAME).read_text(encoding="utf-8"))
+            fp = input_fingerprint(doc, context, result, spec, scheme_md)
+            expected = f"{PLAN_START}\n{plan_fingerprint_marker(fp)}\n{body}\n{PLAN_END}"
+            return [] if record.get("fingerprint") == fp and record.get("text") == body and remap_sections(expected, doc) in content else ["报告实验章节与 Stage 5B 方案不一致"]
+        except (ValueError, OSError, TypeError) as exc:
+            return [str(exc)]
     record = load_plan_record(task_dir)
     if not record:
         return ["未找到实验方案生成记录 experiment_plan.json"]
@@ -1397,7 +1442,83 @@ def validate_plan_record(task_dir, doc, context, result, spec, scheme_md, target
     if record.get("fingerprint") != current or plan_fingerprint_marker(current) not in content:
         return ["实验方案输入指纹与当前设计/证据/仿真不一致，需重新生成"]
     errors = validate_plan_text(record.get("text", ""), doc, context, target, tolerance)
+    if doc.get("ledger_view"):
+        from .scheme_ledger import render_experiment
+        suggestion_errors = _validate_suggestions(record.get("suggestions", {}), doc["ledger_view"])
+        if suggestion_errors:
+            return suggestion_errors
+        if record.get("text") != render_experiment(doc["ledger_view"], result or {}) + _render_suggestions(record.get("suggestions", {})):
+            errors.append("实验章节包含不属于当前方案或归档候选的内容")
     expected_block = f"{PLAN_START}\n{plan_fingerprint_marker(current)}\n{record.get('text','')}\n{PLAN_END}"
-    if expected_block not in content:
+    if remap_sections(expected_block, doc) not in content:
         errors.append("报告中的实验方案与保存记录不一致")
     return errors
+
+
+def _render_suggestions(suggestions):
+    from .report_narrative import render_suggestions
+    return "\n\n" + render_suggestions(suggestions)
+
+
+def _validate_suggestions(suggestions, data):
+    from .scheme_ledger import validate_field
+    if not isinstance(suggestions, dict):
+        return ["候选建议必须是字段映射"]
+    try:
+        for key, row in suggestions.items():
+            validate_field(key, row)
+            if (data["parameters"].get(key) or {}).get("value") is not None:
+                raise ValueError("候选建议不能替换当前参数")
+            if row.get("basis") != "engineering_proposal":
+                raise ValueError("候选不能冒充文献或实测")
+            for name in ("method", "rationale", "acceptance"):
+                if row.get(name) is not None and not isinstance(row[name], str):
+                    raise ValueError("候选获取方式及理由必须是文字")
+    except (ValueError, TypeError, AttributeError) as exc:
+        return [str(exc)]
+    return []
+
+
+def _generate_ledger_plan(mgr, task_dir, doc, context, result, spec, scheme_md):
+    """模型只提出缺失字段的结构化候选；当前参数与计算由程序渲染。"""
+    from .scheme_ledger import render_experiment, validate_field, atomic_write
+    fingerprint = input_fingerprint(doc, context, result, spec, scheme_md)
+    record = load_plan_record(task_dir)
+    if record and record.get("fingerprint") == fingerprint and record.get("source") == "scheme_ledger" and not _validate_suggestions(record.get("suggestions", {}), doc["ledger_view"]):
+        expected = render_experiment(doc["ledger_view"], result or {}) + _render_suggestions(record.get("suggestions", {}))
+        if record.get("text") == expected:
+            return {"text": expected, "marker": (PLAN_START, PLAN_END), "source": "scheme_ledger"}
+    from .report_narrative import missing_suggestions
+    suggestions = missing_suggestions(doc["ledger_view"])
+    client = _llm_client(mgr)
+    if client is not None:
+        for _ in range(2):
+            try:
+                raw = client.chat("你提出实验候选，仅输出 JSON 对象，键为方案字段路径，值包含 value/unit/basis/source/meaning/conditions。"
+                    "还须包含 kind（value 或 acquisition）、rationale（影响与建议理由）、method（获取或筛选步骤）、acceptance（采用判据）。"
+                    "没有可靠数值时 value 为 null，给出具体获取方法；不要为了完整性编造默认值。meaning 用清楚的中文参数名称。"
+                    "只补 value 为 null 或不存在的字段，不改变已有值。basis 必须 engineering_proposal，source 为 LLM候选。"
+                    "不得声称实测、仿真或目标已达成；没有依据可以返回空对象。最多十二项。",
+                    json.dumps(doc["ledger_view"], ensure_ascii=False), temperature=0.1, json_mode=True, trace_tag="report_recipe")
+                raw = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip())
+                candidate = json.loads(raw)
+                if not isinstance(candidate, dict) or len(candidate) > 12:
+                    raise ValueError("候选结构错误")
+                for key, row in candidate.items():
+                    validate_field(key, row)
+                    if (doc["ledger_view"]["parameters"].get(key) or {}).get("value") is not None:
+                        raise ValueError("候选扩展不能替换已有值")
+                    if row.get("basis") != "engineering_proposal" or row.get("source") != "LLM候选":
+                        raise ValueError("候选不能冒充文献或实测")
+                    for name in ("rationale", "method", "acceptance"):
+                        if row.get(name) is not None and not isinstance(row[name], str):
+                            raise ValueError("候选说明必须为文字")
+                suggestions.update(candidate)
+                break
+            except Exception:
+                continue
+    text = render_experiment(doc["ledger_view"], result or {}) + _render_suggestions(suggestions)
+    record = {"fingerprint": fingerprint, "text": text, "suggestions": suggestions,
+              "source": "scheme_ledger", "render_version": RENDER_VERSION, "generated_at": datetime.now().isoformat()}
+    atomic_write(Path(task_dir) / PLAN_FILENAME, json.dumps(record, ensure_ascii=False, indent=2))
+    return {"text": text, "marker": (PLAN_START, PLAN_END), "source": "scheme_ledger"}

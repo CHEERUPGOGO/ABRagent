@@ -26,7 +26,7 @@ class FinalReportChecker(BaseChecker):
                     invalid.append({"stage_id": stage_id, "status": "MISSING"})
                     continue
                 valid = (
-                    stage.status == "PASSED"
+                    stage.status == "PASSED" or (stage_id == 4 and stage.status == "FALLBACK")
                     or (stage.status == "SKIPPED" and stage.allow_skip and stage.skip)
                     or (stage.id == 5 and stage.status == "FALLBACK")
                 )
@@ -108,15 +108,22 @@ class FinalReportChecker(BaseChecker):
             )
 
         headings = re.findall(r"^#{1,4}\s+(.+)$", content, re.MULTILINE)
-        if "<!-- abr-report-layout:6 -->" in content:
-            required = ["研发摘要", "材料选择与文献依据", "最终设计方案", "仿真与优化分析", "实验路线与验证计划", "参考来源附录"]
+        compact_layout = "<!-- abr-report-layout:5 -->" in content
+        if compact_layout or "<!-- abr-report-layout:6 -->" in content:
+            required = ["研发摘要", "材料选择与文献依据", "(?:电芯总体方案与关键匹配|最终设计方案)", "仿真与优化分析", "实验路线与验证计划", "(?:参考文献|参考来源附录)"]
+            if compact_layout:
+                required.pop(2)
             for i, title in enumerate(required, 1):
                 if not re.search(rf"^## {i}\. {title}", content, re.M):
                     return False, self.build_diagnostic(passed=False, error_code="SYNTHESIS_REPORT_SECTIONS_INCOMPLETE",
-                        error_msg=f"缺少第{i}节：{title}", next_action="重新编译六节报告")
+                        error_msg=f"缺少第{i}节：{title}", next_action="重新编译报告章节")
         found_sections = []
         missing_sections = []
         for sec_name, keywords in REPORT_REQUIRED_SECTIONS:
+            if compact_layout and sec_name == "电池体系设计方案":
+                # 第二部分完整五段稿由结构与内容重算验证，不再要求独立方案章。
+                found_sections.append(sec_name)
+                continue
             # 优先校验标题行层级
             matched = any(any(kw.lower() in h.lower() for kw in keywords) for h in headings)
             if not matched:
@@ -146,11 +153,23 @@ class FinalReportChecker(BaseChecker):
             try:
                 if "<!-- abr-report-contract:2 -->" not in content:
                     raise ValueError("报告契约标记缺失")
+                from auto_battery_research.util.report_bundle import load_supplement
+                supplement = load_supplement(report_file, content)
+                audit_content = supplement if supplement is not None else content
                 loaded_doc, error = self.load_json_safe(str(report_file.parent / "design_scheme.json"))
                 doc = loaded_doc or {}
+                if doc.get("experiment_contract") and "<!-- abr-experiment-plan-fallback -->" in content:
+                    raise ValueError("Stage 5B 实验推荐必须完整渲染，不能用缺口清单替代")
+                from auto_battery_research.util.scheme_ledger import require_current
+                require_current(report_file.parent, doc)
+                if self.stage_manager and (report_file.parent / "pinn_optimization_state.json").exists():
+                    from auto_battery_research.util.stage5_attempts import summary
+                    if doc.get("pinn_attempt_summary") != summary(self.stage_manager, doc):
+                        raise ValueError("报告内 PINN 修订预算与当前尝试记录不一致，请重新生成报告")
                 result, spec = {}, {}
                 stage5 = self.stage_manager.get_stage_by_id(5) if self.stage_manager else None
-                if stage5 is None or (stage5.status == "PASSED" and not stage5.skip):
+                from auto_battery_research.util.stage5_execution import report_without_simulation
+                if not report_without_simulation(doc, report_file.parent) and (stage5 is None or (stage5.status == "PASSED" and (not stage5.skip or doc.get("stage5_contract")))):
                     for filename, destination in (("pinn_simulation_result.json", result), ("pinn_input_spec.json", spec)):
                         path = report_file.parent / filename
                         if path.exists():
@@ -158,11 +177,28 @@ class FinalReportChecker(BaseChecker):
                             if error:
                                 raise ValueError(error)
                             destination.update(data)
+                from auto_battery_research.util.report_record import for_check as current_report_record
+                doc = current_report_record(report_file.parent, doc, result, spec, content, supplement)
                 if report_identity(doc, result, spec) not in content:
                     raise ValueError("报告输入指纹与当前设计/仿真不一致")
-                if "<!-- abr-report-layout:6 -->" in content:
+                if doc.get("delivery_contract") == 1:
+                    from auto_battery_research.util.report_readiness import notice, unresolved_issues
+                    from auto_battery_research.util.report_layout import remap_sections
+                    if remap_sections(notice(doc), doc) not in content:
+                        raise ValueError("交付类别、审核或物理限制说明缺失")
+                    if any(issue not in audit_content for issue in unresolved_issues(doc)):
+                        raise ValueError("报告缺少尚未解决的完整审核意见")
+                if compact_layout or "<!-- abr-report-layout:6 -->" in content:
+                    from auto_battery_research.util.report_layout import remap_sections
+                    if doc.get("ledger_view"):
+                        from auto_battery_research.util.report_narrative import render_model_parameters
+                        if remap_sections(render_model_parameters(doc["ledger_view"]), doc) not in content:
+                            raise ValueError("仿真章节模型参数声明缺失或与方案表不一致")
                     from auto_battery_research.util.report_analysis import render_materials, render_sources, render_history
-                    for expected in (render_materials(doc), render_sources(doc), render_history(report_file.parent)):
+                    expected_blocks = [render_materials(doc), render_sources(doc)]
+                    if not doc.get("requirements") or result.get("status") == "CONVERGED":
+                        expected_blocks.append(remap_sections(render_history(report_file.parent), doc))
+                    for expected in expected_blocks:
                         if expected not in content:
                             raise ValueError("材料分析、引用或历史与归档数据不一致")
                     from auto_battery_research.util import report_recipe_llm as plan_mod
@@ -177,7 +213,7 @@ class FinalReportChecker(BaseChecker):
                             raise ValueError("; ".join(plan_errors))
                 goal = self.stage_manager.target_goal if self.stage_manager else doc.get("target", "")
                 errors = validate_report_blocks(content, report_context(doc, result, spec),
-                                                extract_energy_target_wh_kg(goal), get_target_energy_tolerance_pct(self.stage_manager))
+                                                extract_energy_target_wh_kg(goal), get_target_energy_tolerance_pct(self.stage_manager), supplement=supplement)
                 if errors:
                     raise ValueError("; ".join(errors))
             except (ValueError, TypeError, AttributeError) as exc:

@@ -10,9 +10,7 @@ output/auto_battery_research/ 旧产物, 新课题绝不把全局旧研报冒充
 from __future__ import annotations
 
 import json
-import os
 import re
-import uuid
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
@@ -37,6 +35,8 @@ def render_stage_journal_table(
     stages: Iterable[Any],
     journals: Optional[List[Dict[str, Any]]],
     force_stage6_passed: bool = False,
+    *,
+    task_dir: Optional[Path] = None,
 ) -> str:
     """渲染阶段执行履历 Markdown 表格行 (兼容 BaseStage 与 SimpleNamespace 测试桩)."""
     journal_by_id: Dict[int, Dict[str, Any]] = {}
@@ -85,12 +85,17 @@ def render_stage_journal_table(
         except (TypeError, ValueError):
             dur = 0.0
 
-        deliv_list = (
-            j.get("deliverables")
-            or getattr(s, "expected_outputs", None)
-            or (["final_research_report.md", "stage_journals.json"] if s_id == 6 else [])
-        )
-        s_deliv = ", ".join([Path(str(d)).name for d in deliv_list if d]) or "无"
+        deliv_list = j.get("deliverables")
+        if deliv_list is None:
+            deliv_list = getattr(s, "expected_outputs", None) or (
+                ["final_research_report.md", "stage_journals.json"] if s_id == 6 else []
+            )
+        if s_id == 5 and task_dir is not None:
+            # 配置中的仿真交付物是条件产物，只有实际存在时才能展示。
+            optional = {"pinn_input_spec.json", "pinn_simulation_result.json", "pinn_simulation_curve.png"}
+            deliv_list = [d for d in deliv_list if Path(str(d)).name not in optional
+                          or (task_dir / Path(str(d)).name).is_file()]
+        s_deliv = ", ".join(dict.fromkeys(Path(str(d)).name for d in deliv_list if d)) or "无"
 
         if s_id in journal_by_id:
             s_notes = f"状态 {status_str}；耗时 {dur:.1f}s；详细记录见 stage_journals.json"
@@ -115,7 +120,7 @@ def publish_report_audit(
     if skipped:
         summary = f"必检阶段门禁全部通过；Stage {skipped} 按配置跳过"
     if fallback:
-        summary = f"流程完成；Stage {fallback} FALLBACK (代理估算)"
+        summary = f"流程完成；Stage {fallback} FALLBACK (附条件交付，验证未通过或未完成)"
     text, count = re.subn(r"^- 阶段审计:.*$", lambda _: f"- 阶段审计: {summary}", text, count=1, flags=re.MULTILINE)
     if count != 1:
         raise ValueError("报告缺少阶段审计字段，无法发布终审结论")
@@ -138,22 +143,23 @@ def publish_report_audit(
     s6_stage = next((s for s in stage_list if getattr(s, "id", None) == 6), None)
     s6_passed = getattr(s6_stage, "status", None) == "PASSED"
 
-    if "### 阶段执行履历" in text and _JOURNAL_TABLE_HEADER in text:
-        h_idx = text.index(_JOURNAL_TABLE_HEADER)
+    from .report_bundle import SUPPLEMENT_FILENAME, load_supplement, replace_files
+    supplement = load_supplement(path, text)
+    journal_text = supplement if supplement is not None else text
+    if "### 阶段执行履历" in journal_text and _JOURNAL_TABLE_HEADER in journal_text:
+        h_idx = journal_text.index(_JOURNAL_TABLE_HEADER)
         start_idx = h_idx + len(_JOURNAL_TABLE_HEADER)
-        f_idx = text.find(_JOURNAL_TABLE_FOOTER, start_idx)
+        f_idx = journal_text.find(_JOURNAL_TABLE_FOOTER, start_idx)
         if f_idx != -1:
             table_rows = render_stage_journal_table(
-                stage_list, journals or [], force_stage6_passed=s6_passed
+                stage_list, journals or [], force_stage6_passed=s6_passed, task_dir=path.parent
             )
-            text = text[:start_idx] + table_rows + text[f_idx:]
+            journal_text = journal_text[:start_idx] + table_rows + journal_text[f_idx:]
 
-    temporary = path.with_suffix(f".tmp.{uuid.uuid4().hex}")
-    try:
-        temporary.write_text(text, encoding="utf-8")
-        os.replace(temporary, path)
-    finally:
-        temporary.unlink(missing_ok=True)
+    files = {path.name: text if supplement is not None else journal_text}
+    if supplement is not None:
+        files[SUPPLEMENT_FILENAME] = journal_text
+    replace_files(path.parent, files)
 
 
 def resolve_final_report(

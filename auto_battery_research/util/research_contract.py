@@ -1,0 +1,484 @@
+"""通用课题契约：语义由模型提出，原文定位、引用和主方案绑定由程序校验。"""
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+import re
+import unicodedata
+
+VERSION = 1
+from .requirement_sources import SPLIT_VERSION, task_record, locate_quotes, coverage_gaps, quantity_record
+KINDS = {"objective", "constraint", "preference", "deliverable", "background"}
+STATES = {"clear", "ambiguous", "conflicting"}
+RESPONSES = {"answered", "partial", "gap", "omitted"}
+VERIFICATIONS = {"unverified", "literature", "calculation", "experiment", "not_applicable"}
+
+PLANNER_INSTRUCTIONS = '''
+同时输出 requirements 对象：{"task_type":"design|comparison|process|mechanism|experiment|query|other", "scheme_required":true或false,
+"split_version":2,"hierarchy_version":1,"task":{"description":"总任务及研究对象","source_quotes":["研究动作和对象的原文"]},
+"groups":[{"id":"g1","title":"上层目标或交付类别","parent_id":null,"source_quotes":["对应用户原文"]}],
+"items":[{"id":"r1","quote":"用户原文逐字摘录", "start":可选原文起点,
+"kind":"objective|constraint|preference|deliverable|background", "group_id":"所属分组ID", "subject":"研究对象", "description":"单项要求",
+"source_quotes":["该要求的其他原文表述，可省略"],"conditions":["条件原文"], "quantity":null或{"value":数值,"unit":"真实单位","operator":">=等原文运算符或null"},
+"related_ids":[], "status":"clear|ambiguous|conflicting", "verification_needed":true或false或null, "evidence_needed":true或false,
+"binding":null,"bindings":[{"path":"electrolyte.salt等规范字段","value":"用户明确给定的值","unit":"规范单位","source_quote":"该字段原句"}]}],
+"query_links":[{"query_index":0,"requirement_ids":["r1"]}]}。
+按语义识别所有要求，不以材料/指标词典限制范围；陌生材料、设备、工艺、成本、排除项和交付形式也须保留。
+并列要求分别列出，共享条件通过conditions/related_ids绑定；背景文献结果不是用户目标。
+按能否独立检查/验收拆分，不按词数、材料词典或固定条数。总任务的泛泛动作和研究对象放task，不单列“设计/给出方案”回应。
+总目标与子指标不并列重复验收：groups保存上层目标，items保存独立检查点，group.parent_id可表示子分组。组标题不新增验收责任，分组原句不能代替items覆盖。
+保留机制与性能等不同维度；有明确子指标时，上层综合目标放groups。材料建议已由组成/掺量/选择依据覆盖时不再另列泛泛材料建议；制备路线与同义合成建议合并。不同条件或明确不同交付仍分别保留。
+性能目标、固定约束、排除项、偏好、明确交付分别保留。指标、数值、单位与倍率/温度等条件放同一项；纯数字和修饰词不独立列项。
+对象、指标、条件与要求强度相同的重复/同义表述合为一项，用source_quotes保留全部原句。不同对象、工况、指标、否定和明确交付不得合并。
+若数值目标已有同义定性描述，只保留完整目标项；不同维度的偏好仍分别保留。明确要求的排行、合成路线、测试方案和论证各自可验收，不并入泛泛总任务。
+用户仅给目标数值而未给比较关系时operator=null，不补>=或容差，也不因没有符号将目标降级；显式符号或“至少/不超过/约”按原文保留。
+单位可规范书写（如比值分隔符_/、空格），original_unit由程序保留；禁止单位换算或将不同数值与单位跨句拼接。
+区分必须、偏好、备选、对照和否定；只有用户明确指定的正向固定值可有binding，禁止给偏好或排除项绑定材料。
+明确固定条件必须给出bindings或binding；一个要求可绑定多个字段，电压窗口仍为一个验收项并分别绑定condition.v_min/condition.v_max。无法判断路径用binding_status="pending"及binding_reason明确原因，不静默丢失锁定。
+方案字段顶层只允许requirements/cathode/anode/electrolyte/separator/current_collector/packaging/process/condition。电池类型用packaging.cell_type，倍率定义电流用condition.C_rate_reference_current（mA/g），电解液用electrolyte.formulation；不创建material/test/electrochemistry顶层。
+母体式用cathode.base_formula，不能绑定成改性后的cathode.nominal_formula或把母体锁定当作禁止掺杂。这里只给字段规范，不用关键词决定用户是否有该要求。
+未提及某组分不等于禁止使用，也不授权将其加入主方案；“EC+DMC”本身不能改写为“禁止FEC/VC”。排除项须有明确否定原句。
+verification_needed=null表示尚不能判断，不等于无需验证；只有明确无需验证时才写false。
+不把“显著改善”“低成本”等转成数值，不推定未给定的圈数、比例、阈值。条件须逐字来自原文。
+quote必须可定位；同一quote可拆多项，id唯一。未确定语义标ambiguous，不忽略。研究对象、指标名称、描述均为开放文本。
+查询可覆盖多个要求；2–4个查询只是常用建议，不限制要求条数。不强加比能量、材料排行或配方设计任务。
+scheme_required只在用户要求设计或确定电芯/材料配方时为true；纯机理、数值查询、工艺比较不要求完整电芯。
+evidence_needed说明该要求是否需要文献/理论证据；排版格式、文件交付和用户固定值为false，不计入检索覆盖分母。
+'''
+
+COLLECTION_INSTRUCTIONS = '''
+本次有通用课题契约，另外输出 research={"answers":[],"candidates":[],"arguments":[],"selected_candidate_id":null}。
+answers每项：requirement_id, status(answered/partial/gap/omitted), response, source_quotes[], field_support{},
+verification(unverified/literature/calculation/experiment/not_applicable), citations[], reason, next_step, parameter_refs[]。
+逐项回应非background要求。answered须有实质回答及正文原句；partial/gap须明确原因和后续验证/获取方法。
+尚未执行的实验/本任务计算不能标experiment/calculation；文献仅证明所引研究对象，当前设计保持unverified。
+candidates每项：id,name,rank(探索顺序或null),scope(candidate/control/literature),source_quotes[],field_support{},
+summary, rationale, risks, citations[], parameter_refs[]。仅选一个探索性主方案；它的完整材料、名义式、
+改性元素/位点/掺量及口径、电解液组成须在parameters中声明，selected_candidate_id指向它。
+主方案parameters包括cathode.nominal_formula、cathode.doping.*等开放字段；比例注明分母，添加剂候选不能进入主方案。
+完整名义式可直接建立材料身份，无需补造.material；完整电解液配方用electrolyte.formulation，零散盐/溶剂/浓度不等于完整配方。
+完整组成字段仅用于明确采用的主方案；备选/条件性基线放candidates，不把待定配方拼成定案。
+选中项不复制独立配方，只通过parameter_refs引用parameters或已有方案表；其他候选保留各自原文，禁止充当当前值。
+arguments每项：id,requirement_ids[],title,text,source_quotes[],field_support{},citations[],basis(literature/inference),parameter_refs[]。
+各集合按记录独立验收；局部重试保留已通过记录，只返回record_errors指明的失败记录，沿用其id或requirement_id。
+保留有来源和适用条件的数值论证，按措施→机制→证据→验证组织。不恢复原文主观分数。
+新提取的研究记录只用source_quotes/field_support，不返回单数source_quote；单数格式仅兼容历史档案。
+source_quotes中的每条原句必须逐字定位于正文；response/reason/next_step分别绑定各自的原句下标，不要求三个字段出自同一句。
+允许忠实归纳多个正文段落，不创作新事实；没有依据的可选字段留空，partial/gap的原因和后续方法也须有各自正文依据。
+主方案数值用{{字段路径}}引用。普通parameters对象仍用单数source_quote，与research记录格式不同。
+非设计问题允许无候选、无选中项；没有证据时保留缺口，不填示例材料。'''
+
+
+def normalized(value):
+    return re.sub(r"\s+", "", unicodedata.normalize("NFKC", str(value))).casefold()
+
+
+def field_equal(path, left, right):
+    if normalized(left) == normalized(right):
+        return True
+    if path.endswith(".material") and left is not None and right is not None:
+        from .material_ids import canonical_id
+        return canonical_id(left) == canonical_id(right)
+    return False
+
+
+def _id(quote, description, start):
+    raw = f"{start}:{quote}:{description}"
+    return "req_" + hashlib.sha256(raw.encode("utf-8")).hexdigest()[:12]
+
+
+def fallback_requirements(goal, reason="语义解析未完成"):
+    items = []
+    # 分句只保留文本，不声称已判断约束强度或理解复杂条件。
+    for match in re.finditer(r"[^。；;\n]+[。；;]?", goal):
+        quote = match[0].strip()
+        if quote:
+            start = goal.index(quote, match.start())
+            items.append({"id": _id(quote, quote, start), "quote": quote, "start": start,
+                "end": start + len(quote), "kind": "deliverable", "subject": "",
+                "description": quote, "conditions": [], "quantity": None, "related_ids": [],
+                "status": "ambiguous", "verification_needed": None, "binding": None})
+    return {"version": VERSION, "source": goal, "status": "unparsed", "items": items,
+            "task_type": "other", "scheme_required": True, "query_links": [], "diagnostics": [reason]}
+
+
+def normalize_requirements(raw, goal, queries=()):
+    if not isinstance(raw, dict) or not isinstance(raw.get("items"), list) or (not raw["items"] and raw.get("split_version") != SPLIT_VERSION):
+        raise ValueError("缺少通用课题要求items")
+    if raw.get("task_type", "other") not in ("design", "comparison", "process", "mechanism", "experiment", "query", "other"):
+        raise ValueError("未知任务类型应使用other并保留原文")
+    if not isinstance(raw.get("scheme_required", True), bool):
+        raise ValueError("scheme_required必须为布尔值")
+    task = task_record(raw.get("task"), goal)
+    split_version = raw.get("split_version", 1)
+    if split_version not in (1, SPLIT_VERSION) or split_version == SPLIT_VERSION and task is None:
+        raise ValueError("新版要求拆分必须保留总任务及原文")
+    items, mapping = [], {}
+    for row in raw["items"]:
+        if not isinstance(row, dict):
+            raise ValueError("要求必须为对象")
+        from .requirement_structure import normalize_rate_definition
+        row = normalize_rate_definition(row)
+        quote, description = row.get("quote"), row.get("description")
+        if not isinstance(quote, str) or not quote or quote not in goal or not isinstance(description, str) or not description.strip():
+            raise ValueError("要求缺少可定位的原文或单项描述")
+        start = row.get("start")
+        if not isinstance(start, int) or goal[start:start + len(quote)] != quote:
+            if goal.count(quote) != 1:
+                raise ValueError("重复原文必须提供正确start")
+            start = goal.index(quote)
+        if row.get("kind") not in KINDS or row.get("status", "clear") not in STATES:
+            raise ValueError("要求类型或解析状态非法")
+        conditions = row.get("conditions", [])
+        if not isinstance(conditions, list) or any(not isinstance(c, str) or not c or c not in goal for c in conditions):
+            raise ValueError("要求条件必须来自用户原文")
+        row["conditions"] = conditions
+        if "source_quotes" in row and not isinstance(row["source_quotes"], list):
+            raise ValueError("要求附加来源须为数组")
+        if row.get("source_quotes"):
+            row["source_spans"] = locate_quotes(row["source_quotes"], goal)
+        quantity = quantity_record(row.get("quantity"), row)
+        old_id = row.get("id")
+        if not isinstance(old_id, str) or old_id in mapping:
+            raise ValueError("要求id缺失或重复")
+        stable = _id(quote, description, start)
+        if stable in mapping.values():
+            raise ValueError("重复要求")
+        mapping[old_id] = stable
+        from .requirement_structure import item_bindings, normalize_binding
+        fixed = [normalize_binding(b, row, goal) for b in item_bindings(row)]
+        binding = fixed[0] if row.get("binding") is not None else None
+        if "bindings" in row:
+            row["bindings"] = fixed
+        if raw.get("hierarchy_version") == 1 and row["kind"] == "constraint" and row.get("status", "clear") == "clear" and not fixed:
+            if row.get("binding_status") != "pending" or not isinstance(row.get("binding_reason"), str) or not row["binding_reason"].strip():
+                raise ValueError("固定条件必须绑定规范字段或明确披露待绑定原因")
+        verification = row.get("verification_needed")
+        if verification is not None and not isinstance(verification, bool):
+            raise ValueError("verification_needed须为布尔值或null，未知不能写成无需验证")
+        row.update(id=stable, start=start, end=start + len(quote), status=row.get("status", "clear"),
+                   conditions=conditions, quantity=quantity, binding=binding,
+                   verification_needed=verification)
+        if "evidence_needed" in row and not isinstance(row["evidence_needed"], bool):
+            raise ValueError("evidence_needed须为布尔值")
+        items.append(row)
+    for item in items:
+        relations = item.get("related_ids", [])
+        if not isinstance(relations, list) or any(r not in mapping for r in relations):
+            raise ValueError("条件关联引用未知要求")
+        item["related_ids"] = [mapping[r] for r in relations]
+    links = []
+    for link in raw.get("query_links", []):
+        n, ids = link.get("query_index"), link.get("requirement_ids")
+        if not isinstance(n, int) or not 0 <= n < len(queries) or not isinstance(ids, list) or any(i not in mapping for i in ids):
+            raise ValueError("检索关联非法")
+        links.append({"query_index": n, "requirement_ids": [mapping[i] for i in ids]})
+    from .requirement_structure import normalize_groups
+    groups = normalize_groups(raw, goal, items)
+    if split_version == SPLIT_VERSION and coverage_gaps(items, task, goal):
+        raise ValueError("未覆盖用户原文：" + "；".join(coverage_gaps(items, task, goal)))
+    pending = ["固定条件待绑定：" + r["description"] + "；" + r["binding_reason"] for r in items if r.get("binding_status") == "pending"]
+    return {"version": VERSION, "split_version": split_version, "hierarchy_version": raw.get("hierarchy_version", 0), "groups": groups, "task": task, "source": goal, "status": "partial" if pending else "parsed", "items": items,
+            "task_type": raw.get("task_type", "other"), "scheme_required": raw.get("scheme_required", True) is not False,
+            "query_links": links, "diagnostics": pending}
+
+
+def attach_requirements(plan, goal, client=None):
+    """复用Planner输出，结构错误最多局部修复一次，失败明确降级。"""
+    from .requirement_structure import merge_exact_duplicates
+    plan["requirements"] = merge_exact_duplicates(plan.get("requirements"))
+    try:
+        plan["requirements"] = normalize_requirements(plan.get("requirements"), goal, plan.get("retrieval_queries", []))
+        return plan
+    except (ValueError, TypeError, KeyError) as exc:
+        error = str(exc)
+    from .requirement_recovery import recover_requirements, merge_requirement_patch
+    raw = plan.get("requirements")
+    recovered, accepted = recover_requirements(raw, goal, plan.get("retrieval_queries", []), error)
+    if client is not None and getattr(client, "available", False):
+        try:
+            response = client.chat("仅修复requirements JSON，其他规划没有修改权限。" + PLANNER_INSTRUCTIONS,
+                json.dumps({"goal": goal, "queries": plan.get("retrieval_queries", []),
+                            "requirements": raw, "error": error, "accepted_items": accepted,
+                            "repair_errors": recovered["diagnostics"],
+                            "instruction": "已通过items不得修改；只返回失败或遗漏条目的修复，保留其id。"}, ensure_ascii=False),
+                temperature=0.1, json_mode=True, trace_tag="requirements_repair")
+            fixed = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", response.strip()))
+            merged = merge_exact_duplicates(merge_requirement_patch(raw, fixed.get("requirements", fixed), accepted, goal))
+            plan["requirements"], _ = recover_requirements(merged, goal, plan.get("retrieval_queries", []))
+            return plan
+        except Exception as exc:
+            error += "; " + str(exc)
+    recovered["diagnostics"] = list(dict.fromkeys(recovered["diagnostics"] + [error]))
+    plan["requirements"] = recovered
+    return plan
+
+
+def bindings(contract):
+    result = {}
+    for item in (contract or {}).get("items", []):
+        from .requirement_structure import item_bindings
+        for b in item_bindings(item):
+            field = {"value": b["value"], "unit": b.get("unit", ""), "basis": "user_requirement",
+                     "source": "课题明确声明", "source_quote": b.get("source_quote", item["quote"]), "requirement_id": item["id"],
+                     "locked": True, "meaning": item["description"], "conditions": item["conditions"]}
+            from .material_ids import canonical_field
+            if "original_value" in b:
+                field["original_value"] = b["original_value"]
+            field = canonical_field(b["path"], field)
+            if b["path"] in result and (not field_equal(b["path"], result[b["path"]]["value"], field["value"]) or result[b["path"]].get("unit") != field.get("unit")):
+                raise ValueError("用户要求中的固定值冲突: " + b["path"])
+            result[b["path"]] = field
+    return result
+
+
+def gap_answer(item, reason="尚未形成可采信的回答"):
+    return {"requirement_id": item["id"], "status": "gap", "response": "待补充",
+            "verification": "unverified", "source_quote": "", "citations": [], "parameter_refs": [],
+            "reason": reason, "next_step": "围绕原始要求「" + item["quote"] + "」补充证据与审核；确认适用条件后再制定验证方法。"}
+
+
+def fallback_research(contract, reason):
+    return {"version": VERSION, "status": "partial", "answers": [gap_answer(i, reason)
+        for i in contract["items"] if i["kind"] != "background"], "candidates": [], "arguments": [],
+        "selected_candidate_id": None, "diagnostics": [reason]}
+
+
+TOKEN = re.compile(r"\{\{([A-Za-z0-9_.-]+)\}\}")
+
+
+def validate_research(raw, doc, parameters):
+    """只接受可定位于已审核正文的摘录，选中项数值通过方案表引用。"""
+    from .research_records import validate_record, validate_selection, identity_bindings
+    if not isinstance(raw, dict):
+        raise ValueError("缺少research结构化课题回答")
+    contract = doc["requirements"]
+    required = {i["id"] for i in contract["items"] if i["kind"] != "background"}
+    answers = raw.get("answers")
+    if not isinstance(answers, list) or any(not isinstance(a, dict) for a in answers) or len(answers) != len(required) or {a.get("requirement_id") for a in answers} != required:
+        raise ValueError("研究回答遗漏或重复课题要求")
+    for row in answers:
+        validate_record(row, "answers", doc, parameters)
+    candidates, arguments = raw.get("candidates", []), raw.get("arguments", [])
+    if not isinstance(candidates, list) or not isinstance(arguments, list):
+        raise ValueError("候选与论证必须为数组")
+    ids = set()
+    for row in candidates:
+        validate_record(row, "candidates", doc, parameters)
+        if row["id"] in ids:
+            raise ValueError("候选身份或范围非法")
+        ids.add(row["id"])
+    selected = raw.get("selected_candidate_id")
+    validate_selection(selected, candidates, parameters)
+    for row in arguments:
+        validate_record(row, "arguments", doc, parameters)
+    result = copy.deepcopy(raw)
+    result["bound_fields"] = identity_bindings(parameters)
+    result.update(version=VERSION, status="complete" if all(a["status"] == "answered" for a in answers) else "partial", diagnostics=[])
+    return result
+
+
+def prepare_review(pipeline, seed):
+    """结构化主方案先进入Reviewer上下文；适配器复用同一维护结果。"""
+    requirements = (seed.get("plan") or {}).get("requirements")
+    if not requirements:
+        return
+    from .design_sections import classify_design_output
+    from .design_structure import structure_issues
+    if (not seed["draft"].strip() or seed.get("design_structure") and (
+            classify_design_output(seed["draft"], requirements)["blocking_issues"]
+            or structure_issues(seed["draft"], seed["design_structure"]))):
+        return  # 缺章/截断/协议失败不能先消耗研究提取预算。
+    from .scheme_ledger import collect_parameters, project_scheme_parameters
+    draft_doc = {"target": requirements["source"], "requirements": requirements,
+                 "final_answer": seed["draft"], "scheme": seed.get("scheme", {}),
+                 "evidence": seed["evidence"], "ledger_view": copy.deepcopy(getattr(pipeline, "scheme_context", {}) or {}),
+                 "reviewer_output": {}}
+    if seed.get("numeric_contract"):
+        draft_doc["numeric_contract"] = seed["numeric_contract"]
+        draft_doc["scheme_parameters"] = copy.deepcopy(seed.get("parameters", {}))
+    if seed.get("retrieval_state"):
+        from .adaptive_retrieval import select_context, options
+        selected = select_context(seed, purpose="scheme_maintenance", text=seed["draft"], config=options(pipeline))
+        draft_doc["evidence"] = selected
+    # 首次提取一次，另一维护机会留给最终修订正文，避免引用修订前原句。
+    collect_parameters(draft_doc, getattr(pipeline.writer, "llm", None), max_attempts=1)
+    seed["research_draft"] = draft_doc
+    seed["maintenance_calls"] = draft_doc.get("maintenance_calls", 0)
+    params = copy.deepcopy(draft_doc.get("ledger_view", {}).get("parameters", {}))
+    params = project_scheme_parameters(seed.get("scheme", {}), params, "初始设计")
+    params.update(draft_doc.get("scheme_parameters", {}))
+    if seed.get("numeric_contract"):
+        params.update(seed.get("parameters", {}))
+    params.update(bindings(requirements))
+    seed["parameters"] = params
+    from .material_ids import assemble_components
+    # 参数视图优先；派生身份不反向冒充正文显式 .material 声明。
+    seed["scheme"] = assemble_components(seed.get("scheme"), params, strict=False)
+    if "electrolyte.additives" in params:
+        seed.setdefault("scheme", {})["additives"] = params["electrolyte.additives"]["value"]
+    from .material_ids import canonical_parameters, canonical_scheme
+    seed["parameters"] = canonical_parameters(params)
+    seed["scheme"] = canonical_scheme(seed.get("scheme"))
+    draft_doc["scheme"] = copy.deepcopy(seed["scheme"])
+    pipeline.reviewer.research_draft = {"requirements": requirements, "research": draft_doc.get("research"), "parameters": seed["parameters"]}
+
+
+def document_errors(doc):
+    """不信任磁盘JSON形状，损坏契约返回诊断而不是绕过校验或崩溃。"""
+    try:
+        return _document_errors(doc)
+    except (TypeError, KeyError, AttributeError, ValueError) as exc:
+        return ["研究契约损坏：" + str(exc)]
+
+
+def _document_errors(doc):
+    if not doc.get("requirements"):
+        return []
+    errors = []
+    contract = doc["requirements"]
+    if not isinstance(contract, dict) or contract.get("version") != VERSION or not isinstance(contract.get("source"), str):
+        return ["课题契约版本或结构无效"]
+    if contract.get("source") != doc.get("target"):
+        errors.append("课题契约原文与当前课题不一致")
+    items = contract.get("items", [])
+    if not isinstance(items, list) or (not items and contract.get("split_version") != SPLIT_VERSION):
+        return ["课题要求清单为空或结构非法"]
+    for item in items:
+        if not isinstance(item, dict) or not isinstance(item.get("start"), int) or not isinstance(item.get("end"), int) or not isinstance(item.get("quote"), str):
+            return ["课题原文定位结构无效"]
+        if contract["source"][item["start"]:item["end"]] != item["quote"]:
+            errors.append("课题原文定位失效")
+    if contract.get("split_version") == SPLIT_VERSION:
+        try:
+            task = task_record(contract.get("task"), contract["source"])
+            if task != contract.get("task") or coverage_gaps(items, task, contract["source"]):
+                errors.append("总任务或要求原文覆盖失效")
+        except ValueError as exc:
+            errors.append(str(exc))
+        for item in items:
+            try:
+                if item.get("source_quotes") and locate_quotes(item["source_quotes"], contract["source"]) != item.get("source_spans"):
+                    errors.append("要求附加原文定位失效")
+                if quantity_record(item.get("quantity"), item) != item.get("quantity"):
+                    errors.append("要求数值来源失效")
+            except ValueError as exc:
+                errors.append(str(exc))
+    if contract.get("hierarchy_version") == 1:
+        from .requirement_structure import normalize_groups, item_bindings, normalize_binding
+        try:
+            if normalize_groups(contract, contract["source"], items) != contract.get("groups"):
+                errors.append("要求层级或来源失效")
+            for item in items:
+                for binding in item_bindings(item):
+                    normalize_binding(binding, item, contract["source"])
+                if item["kind"] == "constraint" and not item_bindings(item) and item.get("binding_status") != "pending":
+                    errors.append("固定条件缺少字段绑定或待绑定说明")
+        except ValueError as exc:
+            errors.append(str(exc))
+    expected = {i["id"] for i in items if i["kind"] != "background"}
+    research = doc.get("research") or {}
+    answers = research.get("answers", [])
+    if not isinstance(answers, list) or any(not isinstance(a, dict) for a in answers):
+        return errors + ["课题回应记录结构无效"]
+    if len(answers) != len(expected) or {a.get("requirement_id") for a in answers} != expected:
+        errors.append("课题回应记录缺失或重复")
+    for a in answers:
+        if a.get("status") not in RESPONSES or a.get("verification") not in VERIFICATIONS:
+            errors.append("课题回应或验证状态非法")
+        if a.get("status") == "omitted" or a.get("status") in ("gap", "partial") and not (a.get("reason") and a.get("next_step")):
+            errors.append("课题要求未得到回答或完整缺口说明")
+    params = (doc.get("ledger_view") or {}).get("parameters", {})
+    for path, row in bindings(contract).items():
+        actual = params.get(path, {})
+        if not field_equal(path, actual.get("value"), row["value"]) or actual.get("unit", "") != row.get("unit", ""):
+            errors.append("用户固定要求与主方案不一致: " + path)
+        if contract.get("hierarchy_version") == 1 and (not actual.get("locked") or actual.get("basis") != "user_requirement"):
+            errors.append("用户固定要求未作为用户条件锁定: " + path)
+    for row in research.get("candidates", []) + research.get("arguments", []) + answers:
+        if any(p not in params for p in row.get("parameter_refs", [])):
+            errors.append("研究记录引用的方案字段不存在")
+    from .research_records import validate_record
+    for collection in ("answers", "candidates", "arguments"):
+        for row in research.get(collection, []):
+            generated_gap = (collection == "answers" and row.get("status") == "gap" and row.get("response") == "待补充"
+                and not row.get("source_quote") and row.get("verification") == "unverified"
+                and not row.get("citations") and not row.get("parameter_refs"))
+            if generated_gap:
+                continue
+            try:
+                validate_record(row, collection, doc, params)
+            except (ValueError, TypeError, KeyError) as exc:
+                errors.append("研究记录验收失败：" + str(exc))
+    if research.get("status") == "complete" and contract.get("status") != "parsed":
+        errors.append("未解析的课题不能宣称覆盖完成")
+    for path, bound in research.get("bound_fields", {}).items():
+        actual = params.get(path, {})
+        if not field_equal(path, bound.get("value"), actual.get("value")) or bound.get("unit", "") != actual.get("unit", ""):
+            errors.append("研究论证基于旧主方案，须重新审核: " + path)
+    selected = research.get("selected_candidate_id")
+    if selected is not None and not any(c.get("id") == selected and c.get("scope") == "candidate" for c in research.get("candidates", [])):
+        errors.append("主方案选中标识无效")
+    return errors
+
+
+def finalize_research(doc):
+    """预算耗尽后保留真实缺口；独立审核发现的漏项仍进入最终覆盖表。"""
+    contract = doc["requirements"]
+    research = doc.setdefault("research", fallback_research(contract, "未形成结构化回答"))
+    from .requirement_review import normalize_review
+    review = normalize_review(doc.setdefault("reviewer_output", {}), doc)
+    for quote in review.get("missing_quotes", []):
+        if isinstance(quote, str) and quote and quote in contract["source"]:
+            new = fallback_requirements(quote)["items"][0]
+            new.update(quote=quote, description=quote, start=contract["source"].index(quote))
+            new["end"] = new["start"] + len(quote)
+            new["id"] = _id(quote, quote, new["start"])
+            if not any(i["quote"] == quote for i in contract["items"]):
+                contract["items"].append(new)
+                research["answers"].append(gap_answer(new, "独立审核发现原需求清单遗漏，尚未完成针对性回答"))
+    invalid = set(review.get("misread_ids", [])) | set(review.get("unanswered_ids", []))
+    for n, answer in enumerate(research["answers"]):
+        if answer["requirement_id"] in invalid or answer.get("status") == "omitted":
+            item = next(i for i in contract["items"] if i["id"] == answer["requirement_id"])
+            research["answers"][n] = gap_answer(item, "审核指出要求误读或回答不完整，修复预算已耗尽")
+    issues = document_errors(doc)
+    if issues:
+        from .research_records import collect_research
+        recovered = collect_research({}, doc, (doc.get("ledger_view") or {}).get("parameters", {}), previous=research)
+        recovered["diagnostics"] = list(dict.fromkeys(recovered["diagnostics"] + issues))
+        research.clear()
+        research.update(recovered)
+    from .research_support import review_pending, prune_resolved_review_diagnostics
+    prune_resolved_review_diagnostics(doc)
+    # 当前字段状态重算技术诊断，避免已补审后仍显示历史待审状态。
+    research["diagnostics"] = [s for s in research.get("diagnostics", [])
+                               if not s.startswith("研究摘要支持性待核验：")]
+    pending = review_pending(research, doc, (doc.get("ledger_view") or {}).get("parameters", {}))
+    if pending:
+        for collection, row, field in pending:
+            key = row.get("requirement_id") if collection == "answers" else row.get("id")
+            message = f"研究摘要支持性待核验：{collection}[{key}].{field}；报告保留原文，不将摘要作为结论。"
+            if message not in research.setdefault("diagnostics", []):
+                research["diagnostics"].append(message)
+    reviewed = (review.get("source_checked") is True and not review.get("missing_quotes")
+                and not review.get("misread_ids") and not review.get("unanswered_ids") and not review.get("misread_diagnostics"))
+    research["coverage_reviewed"] = reviewed
+    if not reviewed:
+        research.setdefault("diagnostics", []).append("原始课题与逐项回应尚未完成无遗漏审核，不能宣称覆盖已获确认。")
+    if contract.get("status") != "parsed" or research.get("diagnostics") or any(a["status"] != "answered" for a in research["answers"]):
+        state = doc.get("report_readiness")
+        if state:
+            if state["category"] == "COMPLETE":
+                state["category"] = "CONDITIONAL"
+            message = "部分课题要求尚待证据补充或语义复核，逐项回应与获取路径见第1、2节。"
+            if message not in state["issues"]:
+                state["issues"].append(message)
+        doc["review_status"] = "REVIEWED_WITH_ISSUES"
+    research["status"] = "complete" if reviewed and contract.get("status") == "parsed" and not research.get("diagnostics") and all(a["status"] == "answered" for a in research["answers"]) else "partial"
+
+
+def requires_scheme(doc):
+    contract = doc.get("requirements") or (doc.get("plan") or {}).get("requirements") or {}
+    return contract.get("scheme_required", True)

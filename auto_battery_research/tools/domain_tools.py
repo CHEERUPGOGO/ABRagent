@@ -264,9 +264,9 @@ class ExtractAndAssembleCellsTool(BaseTool):
     args_schema: Type[BaseModel] = ExtractAndAssembleCellsArgs
 
     def _run(self, sample_limit: Optional[int] = 10, target_query: Optional[str] = "") -> str:
-        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        from auto_battery_research.tools.stage_tools import get_stage_manager, bind_active_goal
         active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
-        goal = resolve_effective_goal(target_query, active_goal)
+        goal = bind_active_goal(target_query, active_goal)
         log_tool_call(self.name, f"sample_limit={sample_limit}, target_query='{goal}'")
         res = run_data_mining(max_files=sample_limit or 10, target_query=goal)
         return json.dumps(res, ensure_ascii=False, indent=2)
@@ -279,7 +279,7 @@ class ExtractAndAssembleCellsTool(BaseTool):
 class RunRAGDesignArgs(BaseModel):
     target_goal: Optional[str] = Field(
         default="",
-        description="课题目标 (留空则取当前工作流活跃课题)"
+        description="兼容字段：运行中固定绑定当前课题，不能通过此参数切换任务；修改设计内容请用 design_query"
     )
     design_query: Optional[str] = Field(
         default="",
@@ -298,16 +298,16 @@ class RunRAGDesignTool(BaseTool):
     name: str = "RunRAGDesign"
     description: str = (
         "【Stage 4 服务工具】执行多智能体 RAG 电池方案设计单链路流水线 "
-        "(Planner -> Retrieval -> Writer -> Reviewer + RelationEngine 7 项分级规则 C1–C3/C5–C8 核算，含 C0 未知材料拦截、C1–C3 缓解白名单挑战、C5 建议、C6 审计提示、C7 扣电选材与 C8 前沿标记)，"
+        "(Planner -> Retrieval -> Writer -> Reviewer + RelationEngine 7 项分级规则 C1–C3/C5–C8 核算，含 C0 未知材料拦截、C1/C3 非阻断建议、C2 缓解白名单挑战、C5 建议、C6 审计提示、C7 扣电选材与 C8 前沿标记)，"
         "生成 design_scheme.md/.json 与 rag_result.json 并写入课题任务目录。"
         "证据检索、方案撰写与规则审查在管线内部完成，无需单独调用其他 Stage 4 工具。"
     )
     args_schema: Type[BaseModel] = RunRAGDesignArgs
 
     def _run(self, target_goal: Optional[str] = "", design_query: Optional[str] = "") -> str:
-        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        from auto_battery_research.tools.stage_tools import get_stage_manager, bind_active_goal
         active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
-        goal = resolve_effective_goal(target_goal, active_goal)
+        goal = bind_active_goal(target_goal, active_goal)
         dq = (design_query or "").strip() or None
         log_tool_call(self.name, f"target_goal='{goal}', design_query='{dq}'")
         res = run_rag_design(target_query=goal, design_query=dq)
@@ -343,15 +343,15 @@ class RunPhysicsSimulationTool(BaseTool):
         "【Stage 5 PINN 工具】执行 PINN 触发判定 + Stage 4 方案材料物理参数提取，落盘 pinn_input_spec.json "
         "(提取不到的字段为 null)；若 Stage 5 激活且方案体系匹配已训练的 PINN 模型 "
         "(pinn/models/registry.json)，则执行 SPM PINN 放电仿真并落盘 pinn_simulation_result.json。"
-        "返回含带容差的达标判定 (key_findings.target) 与修订预算——未达标时可调用 ReviseGeometry "
-        "修订几何后重跑本工具。"
+        "返回达标判定、输入诊断与共用修订预算；输入范围/训练包络越界可由 FinalizeStage5 "
+        "调用 LLM 修复六项未锁定几何，修复与能量优化合计最多三次。"
     )
     args_schema: Type[BaseModel] = RunPhysicsSimulationArgs
 
     def _run(self, target_goal: Optional[str] = "", current_rate: Optional[str] = "0.5C") -> str:
-        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        from auto_battery_research.tools.stage_tools import get_stage_manager, bind_active_goal
         active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
-        goal = resolve_effective_goal(target_goal, active_goal)
+        goal = bind_active_goal(target_goal, active_goal)
         c_rate = _parse_c_rate(current_rate)
         log_tool_call(self.name, f"target_goal='{goal}', current_rate='{current_rate}' -> c_rate={c_rate}")
         res = run_pinn_simulation(target_query=goal, c_rate=c_rate)
@@ -375,7 +375,7 @@ class ReviseGeometryArgs(BaseModel):
     )
     reason: str = Field(
         default="",
-        description="修订理由 (须引用仿真结果数据, 如能量缺口/截止模式/限流电极)"
+        description="修订理由：输入修复引用实际范围/包络诊断；能量优化引用有效仿真结果"
     )
 
 
@@ -384,7 +384,7 @@ class ReviseGeometryTool(BaseTool):
     description: str = (
         "【Stage 5 反馈工具】依据 RunPhysicsSimulation 的仿真结果修订 Stage 4 方案的电极几何声明 "
         "(scheme.geometry v1.1: 两电极厚度/孔隙率/颗粒粒径/扩散系数共 8 字段, provenance=stage5_revision)。"
-        "修订值经 registry 合法范围校验 (越界拒绝并返回合法范围), 有修订轮数预算 (默认 3 轮); "
+        "修订值先在副本通过范围、来源和训练包络校验；与输入修复、能量优化共用预算 (默认 3 次)，拒绝也计次; "
         "R_s是颗粒半径，可提出工程设计；D_s必须提供可定位任务证据，不得为提高性能任意增大。"
         "新契约必须透传仿真 geometry_context 的 base_revision/base_geometry_hash。"
         "成功后 design_scheme.json/md 同步更新并留痕, 必须重跑 RunPhysicsSimulation 对齐仿真结果。"
@@ -394,9 +394,9 @@ class ReviseGeometryTool(BaseTool):
     def _run(self, target_goal: Optional[str] = "", revisions: Optional[Dict[str, Any]] = None, reason: str = "",
              base_revision: Optional[int] = None, base_geometry_hash: Optional[str] = None,
              evidence_claims: Optional[Dict[str, Any]] = None) -> str:
-        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        from auto_battery_research.tools.stage_tools import get_stage_manager, bind_active_goal
         active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
-        goal = resolve_effective_goal(target_goal, active_goal)
+        goal = bind_active_goal(target_goal, active_goal)
         log_tool_call(self.name, f"target_goal='{goal}', reason='{str(reason)[:60]}'")
         res = revise_geometry(revisions=dict(revisions or {}), reason=str(reason or ""), target_query=goal,
                               base_revision=base_revision, base_geometry_hash=base_geometry_hash,
@@ -422,9 +422,9 @@ class SynthesizeResearchReportTool(BaseTool):
     args_schema: Type[BaseModel] = SynthesizeResearchReportArgs
 
     def _run(self, target_goal: Optional[str] = "") -> str:
-        from auto_battery_research.tools.stage_tools import get_stage_manager, resolve_effective_goal
+        from auto_battery_research.tools.stage_tools import get_stage_manager, bind_active_goal
         active_goal = (getattr(get_stage_manager(), "target_goal", "") or "").strip()
-        goal = resolve_effective_goal(target_goal, active_goal)
+        goal = bind_active_goal(target_goal, active_goal)
         log_tool_call(self.name, f"target_goal='{goal}'")
         res = generate_synthesis_report(target_query=goal)
         return json.dumps(res, ensure_ascii=False, indent=2)
@@ -433,6 +433,18 @@ class SynthesizeResearchReportTool(BaseTool):
 # =============================================================================
 # 导出全量领域工具实例列表 (Export Domain Tools)
 # =============================================================================
+
+class FinalizeStage5Tool(BaseTool):
+    name: str = "FinalizeStage5"
+    description: str = "Stage 5 收尾：复用物理检查点并择优，始终执行轻量工艺检索和实验设计。失败只重试实验子步骤，不重跑材料 RAG。"
+    args_schema: Type[BaseModel] = SynthesizeResearchReportArgs
+
+    def _run(self, target_goal: Optional[str] = "") -> str:
+        from .stage_tools import get_stage_manager_for_goal, get_stage_manager
+        from auto_battery_research.util.stage5_execution import finalize_stage5
+        mgr = get_stage_manager()
+        return json.dumps(finalize_stage5(mgr), ensure_ascii=False)
+
 
 def get_all_domain_tools() -> List[BaseTool]:
     """获取所有电池科研领域工具实例."""
@@ -453,6 +465,7 @@ def get_all_domain_tools() -> List[BaseTool]:
         QueryMaterialsProjectTool(),
         # Stage 5
         RunPhysicsSimulationTool(),
+        FinalizeStage5Tool(),
         ReviseGeometryTool(),
         # Stage 6
         SynthesizeResearchReportTool(),

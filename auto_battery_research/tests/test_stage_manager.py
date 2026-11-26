@@ -23,7 +23,7 @@ def test_stage_skip_override(tmp_path):
     # 测试动态跳过与激活
     mgr.set_stage_skip(5, skip=True, reason="测试跳过")
     assert mgr.stages[4].skip is True
-    assert mgr.stages[4].status == "SKIPPED"
+    assert mgr.stages[4].status == "PENDING"
 
     mgr.set_stage_skip(5, skip=False)
     assert mgr.stages[4].skip is False
@@ -106,9 +106,10 @@ def test_checker_strict_semantics():
     assert res["diagnostics"][1].get("warning_only") is True
 
 
-def test_dynamic_synthesis_report_generation(tmp_path):
+def test_dynamic_synthesis_report_generation(tmp_path, monkeypatch):
     """测试综合研报生成时，准确动态反映 Stage 5 跳过与各阶段真实状态."""
     from auto_battery_research.tools.workflow_actions import run_generate_synthesis_report
+    monkeypatch.setattr("auto_battery_research.util.report_recipe_llm._llm_client", lambda *args: None)
     
     mgr = StageManager(skip_pinn=True, target_goal="测试动态研报生成")
     res = run_generate_synthesis_report(target_query="测试动态研报生成", stage_manager=mgr)

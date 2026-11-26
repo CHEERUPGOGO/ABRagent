@@ -11,8 +11,7 @@
 校准说明 (fixture 数值依据, 勿随意改动):
 - RelationEngine 候选表 NCM811 (3.8 V x 200 mAh/g) + li_metal 折算 0.50
   → estimate_scheme_energy = 380 Wh/kg; ENERGY_TOLERANCE=0.35 → 声称 400/410 均通过。
-- 已验证的硬违规组合是 li_metal + carbonate_ec (常规碳酸酯) —— 原计划中的
-  "石墨 + 420 Wh/kg" 在 lhce 体系下并非硬违规, 故负面对照采用 li_metal+碳酸酯。
+- C1/C3 为非阻断建议；负面对照采用 LNMO + 裸碳酸酯，验证 C2 仍能否决。
 """
 
 import json
@@ -132,8 +131,8 @@ GOLDEN_WRITER_DRAFT = """## 目标与设计路线
 - 超薄锂金属负极的大面容量均匀沉积数据缺口
 """
 
-# 负面对照 1: 锂金属 + 常规碳酸酯电解液 (已验证的 C 规则硬违规组合)
-BAD_ELECTROLYTE_DRAFT = """## 目标与设计路线
+# 建议对照：锂金属 + 常规碳酸酯电解液，仅触发 C3 建议。
+CARBONATE_DRAFT = """## 目标与设计路线
 面向 400 Wh/kg 级高比能液态锂金属电池，采用高镍三元正极匹配锂金属负极与常规碳酸酯电解液。[golden-P1]
 
 ---
@@ -159,6 +158,9 @@ BAD_ELECTROLYTE_DRAFT = """## 目标与设计路线
 ## 风险与数据缺口
 - 常规碳酸酯体系与锂金属负极的界面副反应风险
 """
+
+# 硬违规对照：只切换为LNMO，排除高镍别名干扰，保留C2质询。
+BAD_ELECTROLYTE_DRAFT = CARBONATE_DRAFT.replace("NCM811", "LNMO").replace("高镍三元", "尖晶石")
 
 # 负面对照 2: 全文不出现任何电解液实体 → scheme 缺 electrolyte
 NO_ELECTROLYTE_DRAFT = """## 目标与设计路线
@@ -188,6 +190,15 @@ NO_ELECTROLYTE_DRAFT = """## 目标与设计路线
 """
 
 
+def _writer_sections(draft):
+    """将测试中固定的五段语料装入真实Writer协议，不使用生产关键词推断。"""
+    from auto_battery_research.util.design_structure import SECTION_IDS
+    sections = draft.strip().split("\n\n---\n\n")
+    assert len(sections) == 5
+    return {"version": 2, "parameters": {}, "sections": {key: {"body": block.split("\n", 1)[1].strip()}
+                                       for key, block in zip(SECTION_IDS, sections)}}
+
+
 def _install_scripted_llm(monkeypatch, writer_draft: str):
     """类级 monkeypatch LLMClient: 走真实 Agent 代码路径的确定性脚本回放.
 
@@ -195,8 +206,40 @@ def _install_scripted_llm(monkeypatch, writer_draft: str):
     每次 LLM 调用记录到调用日志，供溯源断言。
     """
     call_log = []
+    from auto_battery_research.util.design_structure import render_design
+    structured_writer = _writer_sections(writer_draft)
+    writer_draft, _ = render_design(structured_writer)
 
-    def fake_chat(self, system_prompt, user_prompt, temperature=None, trace_tag=None):
+    def fake_chat(self, system_prompt, user_prompt, temperature=None, trace_tag=None, *, json_mode=False):
+        if trace_tag == "experiment_alignment_review":
+            return json.dumps({"subject": json.loads(user_prompt)["subject"], "status": "consistent", "issues": []})
+        if trace_tag == "research_narrative":
+            request = json.loads(user_prompt)
+            source = next(s for s in request["sources"] if s["id"].startswith("answers:") and s["text"])
+            return json.dumps({"sections": [{"id": "s1", "title": "设计依据与研究边界", "paragraphs": [{
+                "id": "p1", "text": source["text"], "source_ids": [source["id"]],
+                "requirement_ids": [i["id"] for i in request["requirements"]["items"] if i["kind"] != "background"],
+                "parameter_refs": [], "citations": source["citations"], "limitation_ids": []}]}]}, ensure_ascii=False)
+        if trace_tag == "research_narrative_review":
+            request = json.loads(user_prompt)
+            return json.dumps({"input_fingerprint": request["input_fingerprint"],
+                "narrative_fingerprint": request["narrative_fingerprint"],
+                "coverage": {"status": "supported", "reason": "脚本化原始课题覆盖核验"},
+                "paragraphs": [{"id": p["id"], "status": "supported", "reason": "原句与条件一致"}
+                    for s in request["narrative"]["sections"] for p in s["paragraphs"]],
+                "limitations": [], "issues": []}, ensure_ascii=False)
+        if trace_tag == "experiment_design":
+            from auto_battery_research.tests.test_experiment_design import recipe_payload, slot_response
+            payload = recipe_payload()
+            request = json.loads(user_prompt)
+            evidence = request.get("evidence") or []
+            if request.get("requirements"):
+                from auto_battery_research.util.research_experiments import fallback_links
+                payload["parameters"]["cathode.active_fraction"]["canonical_path"] = "cathode.active_fraction"
+                fallback_links(payload, {"requirements": request["requirements"], "research": request.get("research"), "ledger_view": request["ledger"]})
+            if evidence:
+                payload["sections"]["testing"][0] += "参考[" + evidence[0]["passage_id"] + "]。"
+            return slot_response(payload, user_prompt, trace_tag)
         if trace_tag == "geometry_design":
             return json.dumps({
                 "cathode": {"L_um": 70., "porosity": .31, "R_s_um": 5.34, "D_s_m2s": None},
@@ -204,14 +247,53 @@ def _install_scripted_llm(monkeypatch, writer_draft: str):
             })
         if system_prompt is PLANNER_SYSTEM_PROMPT:
             call_log.append({"agent": "planner", "temperature": temperature, "prompt_head": user_prompt[:120]})
-            return json.dumps(GOLDEN_PLAN, ensure_ascii=False)
+            plan = dict(GOLDEN_PLAN)
+            plan["requirements"] = {"items": [{"id": "r1", "quote": GOLDEN_GOAL,
+                "kind": "objective", "description": "设计高比能液态锂金属电池", "status": "clear",
+                "verification_needed": True, "conditions": []}]}
+            return json.dumps(plan, ensure_ascii=False)
+        if trace_tag == "scheme_maintenance":
+            request = json.loads(user_prompt)
+            from auto_battery_research.rag import RelationEngine
+            entities = RelationEngine().extract_entities(writer_draft)
+            parameters = {}
+            for comp in ("cathode", "anode", "electrolyte"):
+                values = entities.get(comp) or []
+                if values:
+                    parameters[comp + ".material"] = {"value": values[0], "unit": "", "basis": "engineering_proposal",
+                        "source": "脚本化设计声明", "source_quote": writer_draft.strip(), "meaning": {"cathode": "正极材料", "anode": "负极材料", "electrolyte": "电解液"}[comp]}
+            if "FEC" in writer_draft:
+                parameters["electrolyte.additives"] = {"value": ["FEC"], "unit": "", "basis": "engineering_proposal",
+                    "source": "脚本化设计声明", "source_quote": writer_draft.strip(), "meaning": "添加剂"}
+            requirement_id = request["requirements"]["items"][0]["id"]
+            quote = structured_writer["sections"]["goals"]["body"].splitlines()[0]
+            research = {"answers": [{"requirement_id": requirement_id, "status": "answered", "response": quote,
+                "source_quotes": [quote], "field_support": {"response": [0]}, "verification": "unverified",
+                "citations": [e["passage_id"] for e in GOLDEN_PASSAGES if "[" + e["passage_id"] + "]" in quote], "parameter_refs": [],
+                "reason": "", "next_step": ""}], "candidates": [], "arguments": [], "selected_candidate_id": None}
+            return json.dumps({"parameters": parameters, "candidates": [], "research": research}, ensure_ascii=False)
         if system_prompt is WRITER_SYSTEM_PROMPT:
             call_log.append({"agent": "writer", "temperature": temperature, "prompt_head": user_prompt[:120]})
-            return writer_draft
+            return json.dumps(structured_writer, ensure_ascii=False)
         if system_prompt is REVIEWER_SYSTEM_PROMPT:
             call_log.append({"agent": "reviewer", "temperature": temperature, "prompt_head": user_prompt[:120]})
+            support_review = []
+            marker = "【待审结构化主方案与研究回答】\n"
+            if marker in user_prompt:
+                structured, _ = json.JSONDecoder().raw_decode(user_prompt.split(marker, 1)[1])
+                from auto_battery_research.util.research_support import FIELDS
+                for collection, fields in FIELDS.items():
+                    for record in structured["research"][collection]:
+                        if "support_fingerprint" in record:
+                            support_review.append({"collection": collection,
+                                "id": record.get("requirement_id") or record.get("id"),
+                                "fingerprint": record["support_fingerprint"],
+                                "fields": {field: {"status": "supported", "reason": "脚本化离线原句核对通过"}
+                                           for field in fields if record.get(field)}})
             return json.dumps(
-                {"issues": [], "revised_answer": writer_draft, "confidence": "high"},
+                {"issues": [], "revised_answer": writer_draft, "confidence": "high",
+                 "research_support_review": support_review,
+                 "requirement_review": {"source_checked": True, "missing_quotes": [], "misread_ids": [], "unanswered_ids": []}},
                 ensure_ascii=False,
             )
         raise AssertionError(f"脚本化 LLM 收到未识别的 system_prompt: {str(system_prompt)[:80]}")
@@ -267,7 +349,7 @@ def _gate_check(task_dir, goal, root_dir):
 
 
 def _run_adapter(pipeline, task_dir, goal=GOLDEN_GOAL):
-    adapter = AbrRagAdapter(config={"paths": {}}, pipeline=pipeline)
+    adapter = AbrRagAdapter(config={"paths": {}, "runtime_options": {"report_first": False}}, pipeline=pipeline)
     return adapter.run_rag_design(target_query=goal, task_dir=task_dir)
 
 
@@ -303,12 +385,17 @@ def test_offline_golden_approved_contract(tmp_path, monkeypatch):
     assert contract["rule_checks"]["rule_checks"]["rejects"] == []
     assert contract["provenance"]["rules_version"] == RULES_VERSION
     assert len(contract["provenance"]["corpus"]["manifest_hash"]) == 32
+    from auto_battery_research.util.research_original import view
+    assert view(contract), "Stage 4原文应在适配入库后可直接呈现"
+    assert not contract.get("research_narrative"), "完整五段稿无需再次整合生成"
+    assert not set(agents_called) & {"research_narrative", "research_narrative_review"}
 
     # 4. rag_result.json: 规划/检索日志/Writer/Reviewer 全链路在案
     rag_raw = json.loads((task_dir / "rag_result.json").read_text(encoding="utf-8"))
     logged_queries = {log["query"] for log in rag_raw["retrieval"].get("search_logs", [])}
     assert set(GOLDEN_PLAN["retrieval_queries"]) <= logged_queries
-    assert rag_raw["writer_output"]["draft_answer"] == GOLDEN_WRITER_DRAFT
+    from auto_battery_research.util.design_structure import render_design
+    assert rag_raw["writer_output"]["draft_answer"] == render_design(_writer_sections(GOLDEN_WRITER_DRAFT))[0]
     assert rag_raw["reviewer_output"]["confidence"] == "high"
     assert rag_raw["confidence"] in ("high", "medium")
 
@@ -347,11 +434,28 @@ def test_offline_golden_deterministic_replay(tmp_path, monkeypatch):
     assert runs[0] == runs[1], "golden 输入必须产出逐字节等价的方案与证据集合 (时间戳除外)"
 
 
+def test_offline_golden_advisory_does_not_block_gate(tmp_path, monkeypatch):
+    """C3建议随真实审核与适配器落盘，不能强制压低置信度或阻断门禁。"""
+    _install_scripted_llm(monkeypatch, CARBONATE_DRAFT)
+    pipeline = _build_seeded_pipeline(tmp_path)
+    task_dir = tmp_path / "task_advisory"
+    res = _run_adapter(pipeline, task_dir, GOLDEN_GOAL)
+    assert res["success"] is True, res
+    assert res["review_status"] == "APPROVED"
+    contract = json.loads((task_dir / "design_scheme.json").read_text(encoding="utf-8"))
+    assert contract["scheme"]["electrolyte"] == "carbonate_ec"
+    assert contract["confidence"] == "high"
+    assert not contract["rule_checks"]["rule_checks"]["violations"]
+    assert any(r["rule_id"] == "C3" for r in contract["rule_checks"]["recommendations"])
+    passed, diag = _gate_check(task_dir, GOLDEN_GOAL, tmp_path)
+    assert passed, diag
+
+
 # ────────────────────────── 负向对照 (门禁真拦截, 非橡皮章) ──────────────────────────
 
 
 def test_offline_golden_rejects_rule_violation(tmp_path, monkeypatch):
-    """负向 1: Writer 力推 锂金属+常规碳酸酯 → RelationEngine 硬违规,
+    """负向 1: Writer 力推 LNMO+裸碳酸酯 → C2 硬违规,
     即使脚本化 Reviewer 自信满满 (high) 也被规则引擎强制否决 → REJECTED + 门禁拦截."""
     _install_scripted_llm(monkeypatch, BAD_ELECTROLYTE_DRAFT)
     pipeline = _build_seeded_pipeline(tmp_path)
@@ -367,12 +471,13 @@ def test_offline_golden_rejects_rule_violation(tmp_path, monkeypatch):
     assert contract["scheme"]["electrolyte"] == "carbonate_ec"
     violations = contract["rule_checks"]["rule_checks"]["violations"]
     rejects = contract["rule_checks"]["rule_checks"]["rejects"]
-    assert (violations or rejects), "锂金属+常规碳酸酯必须触发 C 规则硬违规"
+    assert {v["rule_id"] for v in violations} == {"C2"}
+    assert not rejects
     # 规则引擎对过度自信 LLM 的否决权: 最终置信度被强制压到 low
     assert contract["confidence"] == "low"
 
     # 门禁: 真实 RAGDesignChecker 拦截 (置信度检查 3.2 先于规则审计 3.4 短路,
-    # 两者都是合法拦截: 规则强制压低的 low 置信度 / C3 硬违规本身)
+    # 两者都是合法拦截: 规则强制压低的 low 置信度 / C2 硬违规本身)
     passed, diag = _gate_check(task_dir, GOLDEN_GOAL, tmp_path)
     assert passed is False
     assert diag["error_code"] in ("RELATION_ENGINE_VIOLATION", "REVIEWER_CONFIDENCE_TOO_LOW")
@@ -405,12 +510,12 @@ def test_reviewer_failure_retries_review_not_writer(tmp_path, monkeypatch, alway
     _install_scripted_llm(monkeypatch, GOLDEN_WRITER_DRAFT)
     original = LLMClient.chat
     counts = {"writer": 0, "reviewer": 0, "writer_revise": 0}
-    def scripted(self, system_prompt, user_prompt, temperature=None, trace_tag=None):
+    def scripted(self, system_prompt, user_prompt, temperature=None, trace_tag=None, *, json_mode=False):
         if trace_tag in counts:
             counts[trace_tag] += 1
         if trace_tag == "reviewer" and (always_invalid or counts["reviewer"] < 3):
             return '{"issues": ['
-        return original(self, system_prompt, user_prompt, temperature=temperature, trace_tag=trace_tag)
+        return original(self, system_prompt, user_prompt, temperature=temperature, trace_tag=trace_tag, json_mode=json_mode)
     monkeypatch.setattr(LLMClient, "chat", scripted)
     out = _run_adapter(_build_seeded_pipeline(tmp_path), tmp_path / "review_retry", GOLDEN_GOAL)
     assert out["success"] is (not always_invalid)
@@ -422,10 +527,10 @@ def test_reviewer_failure_retries_review_not_writer(tmp_path, monkeypatch, alway
 def test_remaining_review_issues_are_not_called_approved(tmp_path, monkeypatch):
     _install_scripted_llm(monkeypatch, GOLDEN_WRITER_DRAFT)
     original = LLMClient.chat
-    def scripted(self, system_prompt, user_prompt, temperature=None, trace_tag=None):
+    def scripted(self, system_prompt, user_prompt, temperature=None, trace_tag=None, *, json_mode=False):
         if trace_tag == "reviewer":
             return json.dumps({"confidence": "low", "issues": ["单来源结论需要验证"], "error_type": "writing"})
-        return original(self, system_prompt, user_prompt, temperature=temperature, trace_tag=trace_tag)
+        return original(self, system_prompt, user_prompt, temperature=temperature, trace_tag=trace_tag, json_mode=json_mode)
     monkeypatch.setattr(LLMClient, "chat", scripted)
     directory = tmp_path / "issues"
     out = _run_adapter(_build_seeded_pipeline(tmp_path), directory, GOLDEN_GOAL)

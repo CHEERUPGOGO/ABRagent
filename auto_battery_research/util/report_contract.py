@@ -5,6 +5,7 @@ import json
 import math
 import re
 from typing import Any
+from .report_narrative import RENDER_VERSION
 
 
 ENERGY_SCOPE = (
@@ -16,25 +17,87 @@ ENERGY_SCOPE = (
 
 def report_identity(doc: dict, result: dict | None, spec: dict | None) -> str:
     """报告输入指纹包含完整结构化方案与实际结果，变更后必须重新编译。"""
-    payload = {"scheme": doc.get("scheme") or {}, "reviewer_output": doc.get("reviewer_output") or {},
-               "result": result or {}, "spec": spec or {}}
+    payload = {"render_version": RENDER_VERSION, "experiment_plan_hash": doc.get("experiment_plan_hash"), "scheme": doc.get("scheme") or {}, "ledger_hash": doc.get("ledger_hash"), "reviewer_output": doc.get("reviewer_output") or {},
+               "result": result or {}, "spec": spec or {},
+               "materials_input": {"analysis": doc.get("final_answer"), "evidence": doc.get("evidence")},
+               "requirements": doc.get("requirements"), "research": doc.get("research"),
+               "research_narrative": doc.get("research_narrative"),
+               "writer_contract_version": doc.get("writer_contract_version"),
+               "writer_content": doc.get("writer_content"), "content_hash": doc.get("content_hash"),
+               "render_fingerprint": doc.get("render_fingerprint"), "consistency_review": doc.get("consistency_review"),
+               "scientific_input_fingerprint": doc.get("scientific_input_fingerprint"),
+               "retrieval_state": doc.get("retrieval_state"),
+               "numeric_contract": doc.get("numeric_contract"),
+               "rule_material_matches": (doc.get("rule_checks") or {}).get("material_matches"),
+               "rule_checks": doc.get("rule_checks"),
+               "experiment_extensions": doc.get("experiment_extensions"),
+               "physics_input_diagnostic": doc.get("physics_input_diagnostic"),
+               "pinn_attempt_summary": doc.get("pinn_attempt_summary"),
+               "report_readiness": doc.get("report_readiness"), "issue_resolutions": doc.get("issue_resolutions")}
+    if doc.get("_report_record"):
+        payload["report_record_id"] = doc["_report_record"]["record_id"]
     digest = hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False, allow_nan=False).encode("utf-8")).hexdigest()
     return f"<!-- abr-report-identity:{digest} -->"
 
 
-def validate_report_blocks(text: str, context: dict, target: float | None, tolerance: float) -> list[str]:
+def validate_report_blocks(text: str, context: dict, target: float | None, tolerance: float, *, supplement: str | None = None) -> list[str]:
     """关键数值正文由相同视图重算验收，禁止旧值混入权威块。
 
-    final-design / energy 必须始终存在; final-recipe 仅在回退渲染路径出现,
-    存在时按同一视图重算, 缺失时交给实验方案生成记录单独校验。
+    完整五段稿由第二部分承载参数，其余布局保留 final-design。
+    energy 始终验收，final-recipe 存在时按同一视图重算。
     """
-    errors = []
-    required = {"final-design": render_selected_design(context), "energy": render_energy(context, target, tolerance)}
+    from .report_bundle import MARKER, validate_parts
+    errors = validate_parts(text, supplement)
+    audit_text = supplement if supplement is not None else text
+    numeric_doc = context.get("research_doc") or {}
+    from .report_layout import remap_sections, section_count
+    from .research_original import available as original_available, render_review_appendix as render_original_review
+    direct = original_available(numeric_doc)
+    if MARKER in text:
+        from .report_analysis import render_sources
+        sources = render_sources(numeric_doc).strip()
+        if not text.rstrip().endswith(f"## {section_count(numeric_doc)}. 参考文献\n\n" + sources):
+            errors.append("主研报须以参考文献结束，补充记录应保存在独立文件")
+        if f"<!-- abr-report-layout:{section_count(numeric_doc)} -->" not in text:
+            errors.append("报告布局与当前设计正文模式不一致")
+    if direct:
+        if "<!-- abr-final-design:" in text or "原稿审核保留意见" in text:
+            errors.append("完整五段稿报告不得重复展示方案章节或原稿审核意见汇总")
+        original_review = render_original_review(numeric_doc)
+        if original_review and (supplement is None or original_review not in supplement):
+            errors.append("补充材料缺少完整原稿审核保留意见")
+    if numeric_doc.get("numeric_contract"):
+        from .numeric_consistency import document_audit, render_audit as render_numeric
+        if render_numeric(document_audit(numeric_doc)) not in audit_text:
+            errors.append("数值一致性核对附录与当前参数/正文不一致")
+    if context.get("requirements"):
+        from .research_reporting import render_summary, render_review_appendix
+        from .research_contract import document_errors
+        doc = context["research_doc"]
+        research_errors = document_errors(doc)
+        if doc.get("report_readiness", {}).get("category") == "DIAGNOSTIC":
+            research_errors = [e for e in research_errors if "用户固定要求与主方案不一致" not in e]
+        errors.extend(research_errors)
+        from .parameter_presentation import presentation_conflicts
+        conflicts = presentation_conflicts(doc.get("ledger_view") or {})
+        if doc.get("report_readiness", {}).get("category") != "DIAGNOSTIC":
+            errors.extend(conflicts)
+        for expected, destination in ((remap_sections(render_summary(doc), doc), text), (render_review_appendix(doc), audit_text)):
+            if expected not in destination:
+                errors.append("课题回应摘要或完整审核附录与归档不一致")
+    required = {"energy": remap_sections(render_energy(context, target, tolerance), numeric_doc)}
+    if not direct:
+        required["final-design"] = render_selected_design(context)
+    from auto_battery_research.simulation.geometry_contract import render_input_diagnostic
+    diagnostic = render_input_diagnostic(context.get("research_doc") or {})
+    if diagnostic and not context.get("result") and remap_sections(diagnostic, numeric_doc) not in text:
+        errors.append("报告缺少当前材料匹配与物理输入阻断说明")
     for key, value in required.items():
         if f"<!-- abr-{key}:start -->\n{value}\n<!-- abr-{key}:end -->" not in text:
             errors.append(f"{key} 与最终设计/仿真不一致")
     if "<!-- abr-final-recipe:start -->" in text:
-        if f"<!-- abr-final-recipe:start -->\n{render_recipe(context)}\n<!-- abr-final-recipe:end -->" not in text:
+        recipe = remap_sections(render_recipe(context), numeric_doc)
+        if f"<!-- abr-final-recipe:start -->\n{recipe}\n<!-- abr-final-recipe:end -->" not in text:
             errors.append("final-recipe 与最终设计/仿真不一致")
     return errors
 
@@ -145,6 +208,8 @@ def report_context(doc: dict, result: dict | None, spec: dict | None = None) -> 
         accounting = {"method": "fixed_material_to_cell_ratio", "material_energy_wh_kg": material,
                       "cell_energy_wh_kg": energy, "cell_energy_ratio": energy / material}
     return {"scheme": scheme, "geometry": scheme.get("geometry") or {},
+            "requirements": doc.get("requirements"), "research_doc": doc,
+            "ledger_view": doc.get("ledger_view"),
             "effective": (result.get("pinn") or {}).get("design") or {},
             "condition": ((spec or {}).get("cell_spec") or {}).get("condition") or {},
             "result": result, "energy_accounting": accounting,
@@ -332,6 +397,23 @@ def _render_design_anchors_lines(anchors: dict, scheme: dict | None = None, has_
 
 def render_selected_design(context: dict) -> str:
     """正文只渲染最终版本；初始提案链接留档，不能混入当前配方。"""
+    if context.get("ledger_view"):
+        from .report_narrative import render_design
+        from .research_narrative import render_calculation_notes
+        from .research_original import available as original_available
+        doc = context.get("research_doc") or {}
+        calculation_notes = ("设计核算方法、代入过程及适用假设见第2节原设计正文，当前参数见本节各项声明。"
+                             if original_available(doc) else render_calculation_notes(doc))
+        if (context.get("requirements") or {}).get("scheme_required") is False:
+            body = "本课题以研究分析为主，未要求完整电芯设计。当前已知材料与条件仅用于限定研究对象；研究回答及验证路径见第2、5节，不补造主配方。"
+            if calculation_notes:
+                body += "\n\n### 3.4 设计预算与关键待决事项\n\n" + calculation_notes
+            return body
+        body = render_design(context["ledger_view"], calculation_notes=calculation_notes)
+        issues = (context.get("reviewer_output") or {}).get("issues") or []
+        if issues:
+            body += "\n\n**适用边界。** 本方案仍有未解决的审核意见，相关判断不能作为已验证结论。"
+        return body
     s, g = context["scheme"], context["geometry"]
     if not s:
         return "*本课题尚未生成独立的 Stage 4 电池体系设计方案 (design_scheme.json)。缺失参数保持空白。*"
@@ -412,13 +494,36 @@ def render_selected_design(context: dict) -> str:
 
 
 def render_energy(context: dict, target: float | None, tolerance: float) -> str:
+    body = _render_energy(context, target, tolerance)
+    summary = (context.get("research_doc") or {}).get("pinn_attempt_summary") or {}
+    if summary:
+        rounds = summary.get("rounds") or []
+        repair = sum(r.get("mode") == "input_repair" for r in rounds)
+        optimization = sum(r.get("mode") == "energy_optimization" for r in rounds)
+        failed = sum(r.get("status") in ("REJECTED", "INTERRUPTED", "SIMULATION_FAILED") for r in rounds)
+        body += (f"\n\n**PINN 修订机会。** 已用 {summary['used']}/{summary['max']} 次，剩余 {summary['remaining']} 次；"
+                 f"其中输入修复 {repair} 次、能量优化 {optimization} 次、失败或中断 {failed} 次。首次仿真及修订后的验证仿真不另计次。")
+        labels = {"INPUT_BLOCKED": "输入仍受契约或权限阻断", "LLM_UNAVAILABLE": "输入修复服务不可用，保留剩余机会",
+                  "BUDGET_EXHAUSTED": "修订预算已耗尽", "SIMULATION_FAILED": "验证仿真失败", "NO_VALID_SIMULATION": "没有有效验证仿真"}
+        if summary.get("status") in labels:
+            body += "\n\n" + labels[summary["status"]] + "。"
+            diagnostic = summary.get("diagnostic") or {}
+            reason = diagnostic.get("error") or "; ".join(diagnostic.get("errors") or [])
+            if reason:
+                body += "当前阻断原因：" + display(reason) + "。"
+    return body
+
+
+def _render_energy(context: dict, target: float | None, tolerance: float) -> str:
     r, a = context["result"], context["energy_accounting"]
     energy = r.get("energy_wh_kg")
+    if context.get("requirements") and target is None and not isinstance(energy, (int, float)):
+        return "本课题没有已声明的电芯比能量目标或有效能量计算结果；课题目标的回应与验证安排见第1、2、5节。"
     if not isinstance(energy, (int, float)):
-        return "**目标判定：未完成有效仿真，不能判定达标。**\n\n" + ENERGY_SCOPE
+        return "**目标判定：未完成有效仿真，不能判定达标。** \n\n" + ENERGY_SCOPE
     threshold = target * (1 - tolerance / 100) if target is not None else None
     verdict = "无数值目标" if threshold is None else ("达到容差阈值" if energy >= threshold else "未达标")
-    lines = [f"**目标判定：{verdict}。当前选定候选折算比能量 {energy:.1f} Wh/kg。**"]
+    lines = [f"**目标判定：{verdict}。当前选定候选折算比能量 {energy:.1f} Wh/kg。** "]
     if threshold is not None:
         lines.append(f"目标 {target:g} Wh/kg；容差 {tolerance:g}%；下限 {threshold:.1f} Wh/kg；距下限缺口 {max(0, threshold-energy):.1f} Wh/kg。")
     lines += ["", "**能量计算口径**", "",
@@ -429,6 +534,9 @@ def render_energy(context: dict, target: float | None, tolerance: float) -> str:
 
 def render_recipe(context: dict) -> str:
     """确定性实验参数基线（第五部分回退路径使用）; 未知制备条件留空, 不引入固定数值配方。"""
+    if context.get("ledger_view"):
+        from .scheme_ledger import render_experiment
+        return render_experiment(context["ledger_view"], context["result"])
     g, eff, s = context["geometry"], context["effective"], context["scheme"]
     cond = context["condition"]
     raw_cond = g.get("condition") or {}

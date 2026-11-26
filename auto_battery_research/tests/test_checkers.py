@@ -495,7 +495,7 @@ def test_unknown_materials_and_c7_c8_fail_closed():
     # 4. C4 规则已永久移除
     assert not any(r.get("id") == "C4" for r in engine.constraints.get("rules", []))
 
-    # 5. C1 与 C3 自洽性软质询：声明 FEC/单晶等对策即放行，纯裸体系无对策则拦截
+    # 5. C3 记录建议，添加剂声明不改变其非阻断性质。
     mitigated_scheme = {
         "cathode": "NCM811",
         "anode": "li_metal",
@@ -504,16 +504,17 @@ def test_unknown_materials_and_c7_c8_fail_closed():
     }
     ev_mit = engine.evaluate(mitigated_scheme)
     assert ev_mit["feasible"] is True
-    assert any(c["rule_id"] == "C3" and c["status"] == "passed" for c in ev_mit["challenges"])
+    assert any(c["rule_id"] == "C3" for c in ev_mit["recommendations"])
 
-    # 6. C1/C2 裸碳酸酯无改性拦截，声明对策后放行
+    # 6. C1 无改性也只给建议，C2 仍拦截无缓解的超高压组合。
     ev_c1_bare = engine.evaluate({"cathode": "LRMO", "anode": "graphite", "electrolyte": "carbonate_ec"})
-    assert ev_c1_bare["feasible"] is False
-    assert any(v["rule_id"] == "C1" for v in ev_c1_bare["violations"])
+    assert ev_c1_bare["feasible"] is True
+    assert not ev_c1_bare["violations"]
+    assert any(v["rule_id"] == "C1" for v in ev_c1_bare["recommendations"])
 
     ev_c1_mit = engine.evaluate({"cathode": "LRMO", "anode": "graphite", "electrolyte": "carbonate_ec", "additives": ["FEC"]})
     assert ev_c1_mit["feasible"] is True
-    assert any(c["rule_id"] == "C1" and c["status"] == "passed" for c in ev_c1_mit["challenges"])
+    assert any(c["rule_id"] == "C1" for c in ev_c1_mit["recommendations"])
 
     ev_c2_bare = engine.evaluate({"cathode": "LNMO", "anode": "graphite", "electrolyte": "carbonate_ec"})
     assert ev_c2_bare["feasible"] is False
@@ -528,9 +529,9 @@ def test_unknown_materials_and_c7_c8_fail_closed():
     assert ev_wh_c8["feasible"] is True
     assert any(f["rule_id"] == "C8" for f in ev_wh_c8["frontier_flags"])
 
-    # 8. query_modifiers 在 v2.1 规则下正常产出 exclude/boost 词且过滤单字符别名（如 "C"）
+    # 8. 建议保留措施加权，不降权碳酸酯；硬规则及单字符别名过滤继续有效。
     mods = engine.query_modifiers({"cathode": "LRMO", "anode": "li_metal", "target_energy_wh_kg": 420.0})
-    assert "carbonate_ec" in mods["exclude_terms"]
+    assert "carbonate_ec" not in mods["exclude_terms"]
     assert "C" not in mods["exclude_terms"]
     assert any(t in mods["boost_terms"] for t in ("FEC", "lhce", "LiNO3"))
 
@@ -715,7 +716,7 @@ def test_rag_geometry_gate_warn_mode(tmp_path):
 
 
 def test_user_locked_electrolyte_and_modification_mitigation():
-    """课题显式锁定碳酸酯电解液且带正极改性时，锁定位次不被覆盖，RelationEngine 放行并附审计注记；裸组合仍拦截。"""
+    """锁定配方保持原值；C1/C3始终记录建议，C2保留原有质询。"""
     from lmllm.RAG.rag_pipeline import RAGPipeline
     from lmllm.RAG.agents import WriterAgent
 
@@ -733,7 +734,7 @@ def test_user_locked_electrolyte_and_modification_mitigation():
     assert "electrolyte" in scheme.get("user_locked_components", [])
     assert scheme.get("modifications")
 
-    # 锁定基线 + 改性（无外部添加剂）放行并记录审计注记
+    # 锁定基线 + 改性（无外部添加剂）放行并记录建议。
     ev_locked = pipe.relation_engine.evaluate({
         "cathode": "LRMO",
         "anode": "li_metal",
@@ -743,16 +744,18 @@ def test_user_locked_electrolyte_and_modification_mitigation():
     })
     assert ev_locked["feasible"] is True
     assert not ev_locked["violations"]
-    assert any("常规碳酸酯" in n["reason"] for n in ev_locked["audit_notes"])
+    assert {r["rule_id"] for r in ev_locked["recommendations"]} >= {"C1", "C3"}
 
-    # 未锁定且无缓解的裸碳酸酯方案仍被 C1/C2/C3 拦截
+    # 未锁定且无缓解的裸碳酸酯方案不被 C1/C3 拦截。
     ev_bare_lrmo = pipe.relation_engine.evaluate({"cathode": "LRMO", "anode": "li_metal", "electrolyte": "carbonate_ec"})
-    assert ev_bare_lrmo["feasible"] is False
-    assert {v["rule_id"] for v in ev_bare_lrmo["violations"]} >= {"C1", "C3"}
+    assert ev_bare_lrmo["feasible"] is True
+    assert not ev_bare_lrmo["violations"]
+    assert {v["rule_id"] for v in ev_bare_lrmo["recommendations"]} >= {"C1", "C3"}
 
     ev_bare_lnmo = pipe.relation_engine.evaluate({"cathode": "LNMO", "anode": "li_metal", "electrolyte": "carbonate_ec"})
     assert ev_bare_lnmo["feasible"] is False
-    assert {v["rule_id"] for v in ev_bare_lnmo["violations"]} >= {"C1", "C2", "C3"}
+    assert {v["rule_id"] for v in ev_bare_lnmo["violations"]} == {"C2"}
+    assert "carbonate_ec" in pipe.relation_engine.query_modifiers({"cathode": "LNMO", "electrolyte": "carbonate_ec"})["exclude_terms"]
 
     # WriterAgent.run 注入用户锁定电解液约束提示
     captured = {}

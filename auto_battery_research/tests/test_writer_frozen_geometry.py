@@ -22,13 +22,30 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
     class ScriptedLLM:
         available = True
 
-        def chat(self, system_prompt, user_prompt, temperature=None, trace_tag=None):
+        def chat(self, system_prompt, user_prompt, temperature=None, trace_tag=None, *, json_mode=False):
             calls.append((trace_tag, user_prompt))
             if trace_tag == "geometry_design":
                 return json.dumps(candidate)
+            if trace_tag == "retrieval_assess":
+                return json.dumps({"retrieval_diagnostics": []})
+            if trace_tag == "retrieval_gain":
+                return json.dumps({"gains": [{"requirement_id": "r1", "kind": "conditions", "passage_id": "p2",
+                    "quote": "证据2", "reason": "补充验证条件"}]})
+            if trace_tag == "scheme_maintenance":
+                return json.dumps({"parameters": {}, "candidates": []})
+            if trace_tag == "writer_patch":
+                payload = json.loads(user_prompt)
+                iid, interface = next(iter(payload["interface_contract"]["interfaces"].items()))
+                return json.dumps({"base_hash": payload["permission"]["base_hash"], "submissions": [
+                    {"interface_id": iid, "replacement": interface["original"] + "，待验证"}]})
+            if trace_tag == "repair_verify":
+                payload = json.loads(user_prompt)
+                return json.dumps({"verdicts": [{"group_id": g, "issue_id": i, "resolved": True, "reason": "已注明待验证"}
+                    for g, c in payload["transactions"].items() for i in c["issue_ids"]], "new_issues": []})
             # 草稿刻意不复述参数，防止测试仅因旧草稿保留参数而误通过。
-            return "\n".join(f"## {title}\n" + "需要进一步证据支持。" * 5
-                             for title in ("目标与设计路线", "推荐组合", "预期关键指标", "可行性依据", "风险与数据缺口"))
+            from auto_battery_research.util.design_structure import SECTION_TITLES
+            return json.dumps({"version": 2, "parameters": {}, "sections": {
+                key: {"body": title + "需要进一步证据支持。" * 5} for key, title in SECTION_TITLES.items()}})
 
     def retrieve(**kwargs):
         retrieval_questions.append(kwargs["question"])
@@ -40,17 +57,28 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
     def review(**kwargs):
         review_questions.append(kwargs["question"])
         return {"confidence": "low", "issues": ["需要补充或修正文献依据"],
-                "error_type": "retrieval" if len(review_questions) == 1 else "writing"}
+                "repair_issues": [{"quote": "可行性依据需要进一步证据支持", "reason": "需补证据", "suggestion": "注明待验证"}],
+                "error_type": "retrieval" if len(review_questions) == 1 else "writing",
+                "retrieval_diagnostics": [{"requirement_id": "r1", "action": "supplement", "cause": "missing_conditions",
+                    "gap": "NCM811循环条件缺失", "reason": "须验证循环条件", "evidence_ids": [],
+                    "queries": ["NCM811循环测试条件"], "db_type": "literature"}] if len(review_questions) == 1 else []}
 
     pipeline = RAGPipeline.__new__(RAGPipeline)
     pipeline.structured_geometry_enabled = structured
     pipeline._reranker_enabled = False
     pipeline.relation_engine = None
+    pipeline.scheme_context = {"revision": 1, "goal": question, "derived": {}, "issues": [], "parameters": {
+        "cathode.material": {"value": "NCM811", "unit": ""},
+        "anode.material": {"value": "si_base", "unit": ""},
+        "electrolyte.material": {"value": "lhce", "unit": ""},
+    }}
     pipeline.planner = SimpleNamespace(run=lambda *args: {
-        "db_type": "literature", "retrieval_queries": [question], "answer_outline": ["方案"]})
+        "db_type": "literature", "retrieval_queries": [question], "answer_outline": ["方案"],
+        "requirements": {"status": "unparsed", "source": question, "items": [{"id": "r1", "kind": "objective", "status": "clear", "quote": question,
+            "description": "核对NCM811循环条件", "conditions": []}]}})
     pipeline.writer_llm = ScriptedLLM()
     pipeline.writer = WriterAgent(pipeline.writer_llm)
-    pipeline.reviewer = SimpleNamespace(run=review)
+    pipeline.reviewer = SimpleNamespace(run=review, llm=pipeline.writer_llm)
     pipeline.retrieve_context = retrieve
     pipeline._extract_scheme = lambda *args, **kwargs: {
         "cathode": "NCM811", "anode": "si_base", "electrolyte": "lhce"}
@@ -61,14 +89,13 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
                         lambda retrieval, plan, top_k: retrieval)
 
     result = pipeline.run(question)
-    writing_calls = [(tag, prompt) for tag, prompt in calls if tag != "geometry_design"]
-    assert [tag for tag, _ in writing_calls] == ["writer", "writer", "writer_revise"]
+    writing_calls = [(tag, prompt) for tag, prompt in calls if tag in ("writer", "writer_patch", "repair_verify")]
+    assert [tag for tag, _ in writing_calls] == ["writer", "writer_patch", "repair_verify"]
     # 完成审核不等于审核通过：末轮意见保留，不能伪装成已解决。
     assert result["review_completed"] is True
     assert result["review_passed"] is False
     assert result["confidence"] == "low"
-    assert result["reviewer_output"]["error_type"] == "writing"
-    assert retrieval_questions == [question, question]
+    assert retrieval_questions == [question, "NCM811循环测试条件"]
     assert result["question"] == question
     assert result["geometry_error"] is None
     marker = "【已校验结构化几何，正文不得变更；工程候选不是用户实测值】\n"
@@ -81,11 +108,12 @@ def test_all_writer_retries_preserve_frozen_context(monkeypatch, structured):
         assert parsed["anode"]["R_s_um"] == 6.0
         assert parsed["condition"]["c_rate"] == 0.5
         assert parsed["parameter_sources"]["cathode.D_s_m2s"]["origin"] == "model_baseline"
-        for _, prompt in writing_calls:
-            assert marker + frozen in prompt
-            assert prompt.count(marker) == 1
+        assert marker + frozen in writing_calls[0][1]
+        assert json.loads(writing_calls[1][1])["read_only_context"] == review_questions[0]
+        assert json.loads(writing_calls[2][1])["context"] == review_questions[0]
     else:
-        assert review_questions == [question] * 3
+        assert len(set(review_questions)) == 1 and all(q.startswith(question) for q in review_questions)
+        assert all("当前方案表" in q for q in review_questions)
         assert all(marker not in prompt for _, prompt in writing_calls)
-    assert "证据2" in writing_calls[1][1]
-    assert "审核反馈" in writing_calls[2][1]
+    assert any(e["text"] == "证据2" for e in json.loads(writing_calls[1][1])["evidence"])
+    assert json.loads(writing_calls[2][1])["issues"][0]["suggestion"] == "注明待验证"

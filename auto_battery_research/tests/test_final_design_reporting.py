@@ -106,14 +106,14 @@ def test_recipe_missing_values_stay_unknown():
     assert "不能判定达标" in render_energy(context, 350, 5)
 
 
-def test_six_section_report_requires_appendix(tmp_path):
+def test_six_section_report_requires_references(tmp_path):
     mgr, _, _, _ = report_fixture(tmp_path)
     assert run_synthesis_report(target_query=mgr.target_goal, stage_manager=mgr)["success"]
     path = tmp_path / "final_research_report.md"
     text = path.read_text(encoding="utf-8")
     assert "## 2. 材料选择与文献依据" in text
-    assert "## 6. 参考来源附录" in text
-    path.write_text(text.replace("## 6. 参考来源附录", "附录"), encoding="utf-8")
+    assert "## 6. 参考文献" in text
+    path.write_text(text.replace("## 6. 参考文献", "参考条目"), encoding="utf-8")
     checker = FinalReportChecker()
     checker.on_init(mgr, {"id": 6}, mgr.config)
     assert checker.do_check()[0] is False
@@ -490,6 +490,8 @@ def test_render_materials_dedup_risk_exclusion_and_anchors():
 def test_publish_report_audit_and_journal_sync_updates_stage6_table(tmp_path):
     """验证单条 report_fixture 兼容、多阶段自动复用展示、Stage 6 编研时不标 FAILED 及完成后双表同步更新."""
     from auto_battery_research.util.reports import publish_report_audit
+    from auto_battery_research.util import experiment_design, scheme_ledger
+    from auto_battery_research.tests.test_experiment_design import scripted_client
     from auto_battery_research.workflow.stage_manager import StageManager
 
     # 1. 保留单条 report_fixture 存根行为 (SimpleNamespace 无 name/expected_outputs)
@@ -497,7 +499,7 @@ def test_publish_report_audit_and_journal_sync_updates_stage6_table(tmp_path):
     stub_dir.mkdir()
     mgr_stub, _, _, _ = report_fixture(stub_dir)
     assert run_synthesis_report(target_query=mgr_stub.target_goal, stage_manager=mgr_stub)["success"]
-    stub_report = (stub_dir / "final_research_report.md").read_text(encoding="utf-8")
+    stub_report = (stub_dir / "final_research_report_supplement.md").read_text(encoding="utf-8")
     assert "| Stage 5 |" in stub_report
     assert "| Stage 1 |" not in stub_report
 
@@ -514,6 +516,10 @@ def test_publish_report_audit_and_journal_sync_updates_stage6_table(tmp_path):
     result = run_pinn_discharge(spec["cell_spec"], scheme=s)
     result["pinn"].update(spec_hash=spec["cell_spec_hash"], scheme_hash=canonical_hash(spec["scheme"]), run_id="test_run")
     doc = {"target": goal, "scheme": s, "evidence": []}
+    scheme_ledger.commit_design(task_dir, doc)
+    recipe = experiment_design.generate(task_dir, doc, scripted_client())
+    doc.update(experiment_contract=1, experiment_plan_hash=recipe["plan_hash"], stage5_contract=2)
+    spec.update(ledger_hash=doc["ledger_hash"], ledger_revision=doc["ledger_revision"])
     for filename, obj in (("design_scheme.json", doc), ("pinn_input_spec.json", spec), ("pinn_simulation_result.json", result)):
         (task_dir / filename).write_text(json.dumps(obj, ensure_ascii=False), encoding="utf-8")
     (task_dir / "design_scheme.md").write_text("测试方案背景", encoding="utf-8")
@@ -530,9 +536,10 @@ def test_publish_report_audit_and_journal_sync_updates_stage6_table(tmp_path):
     mgr.set_stage_journal(6, notes="首轮生成待终审", key_findings={"duration_seconds": 2.0})
 
     out = run_synthesis_report(target_query=goal, stage_manager=mgr)
-    assert out["success"]
+    assert out["success"], out
     report_path = task_dir / "final_research_report.md"
-    pre_audit_text = report_path.read_text(encoding="utf-8")
+    supplement_path = task_dir / "final_research_report_supplement.md"
+    pre_audit_text = supplement_path.read_text(encoding="utf-8")
     table_section_pre = pre_audit_text.split("### 阶段执行履历")[1]
     assert "Stage 6" in table_section_pre
     assert "IN_PROGRESS (待终审)" in table_section_pre
@@ -550,25 +557,45 @@ def test_publish_report_audit_and_journal_sync_updates_stage6_table(tmp_path):
     assert "| Stage 2 |" in journals_md and "复用通过" in journals_md
     assert "| Stage 6 |" in journals_md and "14.5s" in journals_md
 
-    post_audit_text = report_path.read_text(encoding="utf-8")
+    post_audit_text = supplement_path.read_text(encoding="utf-8")
     table_section_post = post_audit_text.split("### 阶段执行履历")[1]
     assert "IN_PROGRESS (待终审)" not in table_section_post
-    assert "| Stage 6 | 综合研发报告生成 | 状态 PASSED；耗时 14.5s；详细记录见 stage_journals.json | `final_research_report.md, stage_journals.json` |" in table_section_post
+    assert "| Stage 6 | 综合研发报告生成 | 状态 PASSED；耗时 14.5s；详细记录见 stage_journals.json | `final_research_report.md, final_research_report_supplement.md, stage_journals.json` |" in table_section_post
 
     # 4. complete_stage(6) 后再次 set_stage_journal(6, ...) 同样立即刷新底部履历表；非契约报告与缺失 json 安全兜底
     mgr.set_stage_journal(6, notes="补充终审耗时", key_findings={"duration_seconds": 19.2})
-    refreshed_text = report_path.read_text(encoding="utf-8")
+    refreshed_text = supplement_path.read_text(encoding="utf-8")
     assert "耗时 19.2s" in refreshed_text.split("### 阶段执行履历")[1]
 
     # 缺失 stage_journals.json 时 publish_report_audit 不抛异常
     (task_dir / "stage_journals.json").unlink()
     publish_report_audit(report_path, mgr.stages)
-    assert "尚无阶段日志" in report_path.read_text(encoding="utf-8")
+    assert "尚无阶段日志" in supplement_path.read_text(encoding="utf-8")
+    assert "### 阶段执行履历" not in report_path.read_text(encoding="utf-8")
 
     # 非契约 markdown 文件时 set_stage_journal 安全忽略而不报错
     report_path.write_text("# 非契约普通报告\n正文", encoding="utf-8")
     res_non_contract = mgr.set_stage_journal(6, notes="非契约兼容测试", key_findings={"duration_seconds": 20.0})
     assert res_non_contract["status"] == "success"
+
+
+def test_report_journal_does_not_list_unproduced_pinn_outputs(tmp_path):
+    from types import SimpleNamespace
+    from auto_battery_research.util.reports import render_stage_journal_table
+
+    expected = ["pinn_input_spec.json", "pinn_simulation_result.json", "pinn_simulation_curve.png", "experiment_plan.json"]
+    stage = SimpleNamespace(id=5, skip=True, status="PASSED", expected_outputs=expected)
+    cases = (None, [], expected)
+    for deliverables in cases:
+        journal = {"stage_id": 5, "deliverables": deliverables}
+        row = render_stage_journal_table([stage], [journal], task_dir=tmp_path)
+        assert "pinn_simulation_result.json" not in row
+        assert "pinn_simulation_curve.png" not in row
+        assert ("experiment_plan.json" in row) == (deliverables != [])
+    (tmp_path / "pinn_simulation_result.json").write_text("{}", encoding="utf-8")
+    assert "pinn_simulation_result.json" in render_stage_journal_table(
+        [stage], [{"stage_id": 5}], task_dir=tmp_path,
+    )
 
 
 def test_extract_design_anchors_range_and_at_pct_generalization():

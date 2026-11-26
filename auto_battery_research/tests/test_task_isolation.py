@@ -317,9 +317,9 @@ def test_auto_detect_honors_loaded_prefix(tmp_path):
     assert status_by_id[2] == "PASSED"
     assert status_by_id[3] == "PASSED"
     assert status_by_id[4] == "PASSED"   # 前缀连续 + 课题产物齐备 → 正常认领
-    assert status_by_id[5] == "SKIPPED"
-    assert status_by_id[6] == "FAILED"   # 无研报产物: 尝试验收后失败 (指针停留处)
-    assert mgr.get_current_stage().id == 6
+    assert status_by_id[5] == "FAILED"
+    assert status_by_id[6] == "PENDING"   # 无研报产物: 尝试验收后失败 (指针停留处)
+    assert mgr.get_current_stage().id == 5
 
 
 def test_report_synthesis_task_isolation_never_leaks_global_scheme(tmp_path):

@@ -538,12 +538,32 @@ def test_clear_pinn_history_removes_sidecars(tmp_path):
 def test_check_and_complete_select_same_round_once(tmp_path):
     """Check 已完成回滚后 Complete 不再次回滚、不重复追加选择日志。"""
     mgr = _selection_fixture(tmp_path, "一致收尾400Wh/kg", energies=(370., 350.))
+    from auto_battery_research.util import experiment_design as recipes
+    from auto_battery_research.tests.test_experiment_design import scripted_client
+    task_dir = mgr.get_task_output_dir()
+    path = task_dir / "design_scheme.json"
+    design = json.loads(path.read_text(encoding="utf-8"))
+    recipe = recipes.generate(task_dir, design, scripted_client())
+    design.update(experiment_contract=2, experiment_plan_hash=recipe["plan_hash"])
+    path.write_text(json.dumps(design), encoding="utf-8")
     mgr.current_stage_idx = 4
     for stage in mgr.stages[:4]:
         stage.status = "PASSED"
     mgr.stages[4].status = "FAILED"
     ok, diagnostic = mgr.check_stage(5)
+    assert not ok and diagnostic['failure_summary']['observed']['experiment_status'] == 'CONDITIONAL'
+    # 选定几何变化后旧文字审核失效；只复核当前实验，不重复仿真或重生成实验全文。
+    from auto_battery_research.util.experiment_alignment_review import review
+    design = json.loads(path.read_text(encoding='utf-8'))
+    recipe = review(recipes.load(task_dir), design, scripted_client(), task_dir)
+    recipe['plan_hash'] = recipes.plan_hash(recipe)
+    recipe['bindings'] = recipes.validate(recipe, design, delivery=True)
+    design['experiment_plan_hash'] = recipe['plan_hash']
+    (task_dir / recipes.FILENAME).write_text(json.dumps(recipe), encoding='utf-8')
+    path.write_text(json.dumps(design), encoding='utf-8')
+    ok, diagnostic = mgr.check_stage(5)
     assert ok, diagnostic
+    assert not recipes.load(task_dir).get("generation_contract")
     task_dir = mgr.get_task_output_dir()
     before = (task_dir / "pinn_simulation_result.json").read_bytes()
     ok, result = mgr.complete_stage(5)

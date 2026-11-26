@@ -30,13 +30,14 @@
 
 数据资产（src/lmllm/RAG/data/）:
   candidates.json (v0.4) / constraints.json (v2.1) / alias_map.json (v0.3)   领域知识三表
+  electrolyte_families.json (v1)                                          完整电解液组成分类范围
   calibrated/energy_ranges.json + mp_crosscheck.json                          公开库校准
   seed/relations_seed.json（36 关系对象）+ candidate_sentences.json + review_report.md
   tasks/design_tasks.json（26 题快照）+ eval_report.json（管线基线 3/3）
 ```
 
 可靠性三层架构：
-1. **规则层** ✅ — 层级约束表（v2.1: `C1–C3, C5–C8`，`C4` 已移除）+ 能量估算（`energy_model.py`）+ 检索修饰 + 审核否决 + 离线 fail-closed 保护
+1. **规则层** ✅ — 层级约束表（v2.4: `C1–C3, C5–C8`，`C4` 已移除）+ 能量估算（`energy_model.py`）+ 检索修饰 + 审核否决 + 离线 fail-closed 保护
 2. **记录层** ⏳ — NERRE 关系抽取结果入库反查（`extractor.py` 与 `schemas/battery_relations.py` 已就绪，`candidates.json` v0.4 / `alias_map.json` v0.3 已并入首批 LLM 登记材料，全量关系库仍待扩展）
 3. **物理层** ✅ — 已通过根目录 `pinn/`（SPM PINN，`pinn/spm_runner.py`、`pinn/input_spec.py`、`pinn/models/registry.json`）与 `auto_battery_research`（`PINNPhysicsChecker` / `AbrRagAdapter`）承接 Stage 5 物理仿真；原 `src/lmllm/RAG/pinn_tools/` 遗留代码已清理移除
 
@@ -48,7 +49,7 @@
 | 交付物 | 状态 |
 |--------|------|
 | `data/candidates.json` | `v0.4-llm-registered`（`2026-08-28`）：9 正极（NCM811/LRMO/LNMO/LCO/LFP/NCA/LMO/NCM442/NCM955）+ 6 负极（graphite/si_base/li_metal/hard_carbon/soft_carbon/LTO）+ 49 电解液（7 手工 + 42 LLM 登记）+ 23 添加剂（6 手工 + 17 LLM 登记）；6 核心活性材料经 MP 结构稳定性验证 |
-| `data/constraints.json` | `2.1-coincell-academic`（`2026-10-29`，`RULES_VERSION="C1-C8/v2.1-coincell"`）：保留 **7 条规则**（`C1–C3, C5–C8`，已于 commit `48c4534` 移除 `C4`），采用分级动作语义（`challenge` / `recommend` / `audit_note` / `coin_cell_eval` / `flag_frontier`，并内置 `C0_UNVERIFIED_MATERIAL` 未登记材料拦截）；`C7` 经 BetterBat 实测佐证 |
+| `data/constraints.json` | `2.4-c1-c3-advisory`（`2026-11-21`，`RULES_VERSION="C1-C8/v2.4-c1-c3-advisory"`）：保留 **7 条规则**（`C1–C3, C5–C8`，已于 commit `48c4534` 移除 `C4`），采用分级动作语义（`challenge` / `recommend` / `audit_note` / `coin_cell_eval` / `flag_frontier`，并内置 `C0_UNVERIFIED_MATERIAL` 未登记材料拦截）；`C7` 经 BetterBat 实测佐证 |
 | `data/alias_map.json` | `v0.3-llm-registered`（`2026-08-28`）：86 个规范实体键的别名映射（含中英文、化学式、水系/高浓/含氟溶剂与添加剂实体） |
 | `energy_model.py` | 材料级/电芯级能量估算（`DEFAULT_ACTIVE_RATIOS`: `graphite=0.50`, `si_base=0.45`, `li_metal=0.50`, `default=0.48`；`ENERGY_TOLERANCE=0.35`）；BetterBat 校准产出体系能量区间（Nickel rich 50.0–350.0 Wh/kg） |
 | `data/calibrated/` | `energy_ranges.json`（BetterBat v6，141 电芯 4 体系）+ `mp_crosscheck.json`（6 核心活性材料 + 4 电解液/3 添加剂备注） |
@@ -91,7 +92,7 @@
 2. **关系抽取 = NERRE schema 方法**（Dagdelen et al. Nat. Commun. 2024）：schema 先行、少样本提示、parsability 优先。
 3. **公开库分角色**：Materials Project（结构稳定性与物性增强，离线快照 + `augment_mp_evidence` MCP 集成）、BetterBat（能量区间校准，141 电芯）；材料级兼容与掺杂关系靠文献抽取与人工审核沉淀。
 4. **任务生成器与可验证性**：所有任务携带 ground truth 或规则依赖，支持 `evaluate_rule` 秒级重算验证与 `evaluate_pipeline` 端到端评估。
-5. **约束分级与软质询化（v2.1）**：移除已废弃的 `C4`，保留 `C1–C3, C5–C8` 共 7 条规则，同时保留 `RULES_VERSION="C1-C8/v2.1-coincell"` 以兼容既有契约测试；将 `C1–C3` 统一为 `action="challenge"`（裸碳酸酯判违规，配对 `mitigation_whitelist` 缓解措施时放行并记录 `challenges`）；`C5` 推荐 `FEC`；`C6` 降为 `audit_note`（锰溶出审计提示）；`C7` 在 `target_energy >= 400 Wh/kg` 时排除 `graphite` 并对其余体系做扣电材料级比能量校核；`C8` 在 `target_energy >= 500 Wh/kg` 时允许探索并追加 `frontier_flags`。
+5. **约束分类（v2.4）**：保留 `C1–C3, C5–C8` 共 7 条规则（`C4` 已移除），引擎版本为 `RULES_VERSION="C1-C8/v2.4-c1-c3-advisory"`。电极按明确母体匹配，电解液按`electrolyte_families.json`覆盖的完整组成分类，原配方/浓度/比例保留，未知部分不猜测放行。位点、性能证据与PINN资格独立核验。`C1/C3`记录非阻断建议，`C2`继续核对界面缓解措施，`C5`推荐FEC，`C6`保留锰溶出提示，`C7`不以母体容量替掺杂方案证明能量可行，`C8`标记前沿探索。
 6. **离线 Fail-Closed 与物理层解耦**：当 LLM 不可用或发生异常时，禁止生成伪造推荐配方（原 `SC-NCM90` 占位输出）或高置信度放行；Stage 5 物理层由根目录 `pinn/`（SPM PINN）与 `auto_battery_research/`（`AbrRagAdapter` / `PINNPhysicsChecker`）独立承接。
 
 ---

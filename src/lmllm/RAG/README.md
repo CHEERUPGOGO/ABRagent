@@ -52,16 +52,18 @@
 - `RAGPipeline.chat()` 使用 `tiktoken`（`cl100k_base`）统计并裁剪历史上下文：默认 `MAX_HISTORY_TOKENS = 4000`、`OVERLAP_TOKENS = 500`。
 - `multi_turn/` 子模块提供基于 `SQLite` 的 `HistoryStore` 持久化与批量对比运行器（`baseline_runner.py`）。
 
-### 2.3 领域约束引擎（`RelationEngine`，规则集 v2.1）
+### 2.3 领域约束引擎（`RelationEngine`，规则集 v2.4）
 - 数据源：
-  - `data/constraints.json`（`2.1-coincell-academic`，`2026-10-29`，对外保留 `RULES_VERSION = "C1-C8/v2.1-coincell"`）：共 **7 条生效规则**（`C1–C3, C5–C8`，原 `C4` 已永久移除），外加内置 `C0_UNVERIFIED_MATERIAL` 未登记材料 fail-closed 拦截。
+  - `data/constraints.json`（`2.4-c1-c3-advisory`，`2026-11-21`，引擎 `RULES_VERSION = "C1-C8/v2.4-c1-c3-advisory"`）：共 **7 条生效规则**（`C1–C3, C5–C8`，原 `C4` 已永久移除）。C0材料识别允许电极按明确母体、完整电解液按显式组成分类范围匹配；完整配方、性能证据与PINN资格独立保留。未知或含混组成不以子串识别放行。
   - `data/candidates.json`（`0.4-llm-registered`，`2026-08-28`）：9 正极、6 负极、49 电解液（7 手工 + 42 LLM 登记）、23 添加剂（6 手工 + 17 LLM 登记）。
   - `data/alias_map.json`（`0.3-llm-registered`，`2026-08-28`）：86 个规范实体键。
+  - `data/electrolyte_families.json`（v1）：电解液组成分类范围。完整配方保留，浓度、盐、溶剂、比例及添加成分分别解析；当前覆盖1 mol/L LiPF6常规碳酸酯，不外推多盐、高浓或LHCE。`basis=composition`仅表示规则分类成功，相容性及性能仍独立核验。
 - 分级规则动作（`evaluate()` / `check_scheme()`）：
 
 | 规则编号 | 动作类型 (`action`) | 核心语义 |
 |---|---|---|
-| `C1` / `C2` / `C3` | `challenge` | 裸碳酸酯体系与高压正极/锂金属配对未含 `mitigation_whitelist` 缓解措施时判违规（`feasible=False`）；存在白名单缓解措施时通过质询（`challenges` 记为 `passed`，`feasible=True`） |
+| `C1` / `C3` | `recommend` | 高压正极及锂金属界面风险作为非阻断建议保存在 `recommendations`；未采纳不产生违规或降低置信度，检索不因此给碳酸酯文献降权，科学主张仍独立审核 |
+| `C2` | `challenge` | 超高压组合未含 `mitigation_whitelist` 缓解措施时判违规（`feasible=False`）；存在白名单缓解措施时通过质询 |
 | `C5` | `recommend` | 硅基负极（`si_base`）推荐使用 `FEC` 添加剂；缺失时记入 `inclusions` 建议 |
 | `C6` | `audit_note` | `LNMO` / `LRMO` 体系记录锰溶出风险审计备注（`audit_notes`，不阻断 `feasible`） |
 | `C7` | `coin_cell_eval` | 目标能量 `>= 400 Wh/kg` 时排除 `graphite` 负极（记入 `violations` 并置 `feasible=False`）；非石墨体系记录材料级扣电比能量评估（`coin_cell_evals`） |
@@ -79,6 +81,7 @@
 ### 3.1 LLM 与检索配置（`config.py`）
 `config.py` 会读取环境变量及项目配置 YAML（`setting.yaml` / `miner/config.yaml`）：
 - **LLM 后端优先级**：`OpenAI / MiniMax API`（`OPENAI_API_KEY` / `OPENAI_BASE_URL` / `MINIMAX_API_KEY`）→ `DeepSeek API`（`DEEPSEEK_API_KEY`）→ `Ollama` 本地服务 → `rule` 模式。
+- **接口级 JSON 约束**：Planner、设计类 Writer（v2/v3）、Reviewer、参数提取与局部修补调用显式使用 `LLMClient.chat(..., json_mode=True)`。OpenAI 兼容接口发送 `response_format={"type":"json_object"}`，Ollama 发送 `format="json"`；重试和备用后端保持约束，接口拒绝时保留错误，不自动取消 JSON 模式。有效请求格式写入启用后的 LLM 轨迹。普通分析正文和 Markdown 实验章节保持文本输出。JSON 模式约束对象格式，字段、数值、引用和科学内容仍由原有契约检查；已有检查点及历史产物不会自动重生成。
 - **主要检索默认参数**：`RETRIEVAL_MODE = "hybrid"`、`DEFAULT_TOP_K = 50`、`SEARCH_K = 20`、`RETRIEVAL_TOP_K_PER_QUERY = 40`、`PRIMARY_LABELS`（6 类一级段落标签）。
 
 ### 3.2 Python 调用与 CLI / Web 入口
@@ -147,7 +150,7 @@ src/lmllm/RAG/
 ├── data/
 │   ├── alias_map.json          # 86 个实体规范键与别名表 (v0.3)
 │   ├── candidates.json         # 候选材料与电化学参数库 (v0.4)
-│   ├── constraints.json        # 7 条层级约束规则 C1–C3, C5–C8 (v2.1)
+│   ├── constraints.json        # 7 条层级约束规则 C1–C3, C5–C8 (v2.4)
 │   ├── calibrated/             # energy_ranges.json (BetterBat v6), mp_crosscheck.json
 │   ├── seed/                   # relations_seed.json (36 条), candidate_sentences.json, review_report.md
 │   └── tasks/                  # design_tasks.json (26 题快照), eval_report.json

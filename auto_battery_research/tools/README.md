@@ -46,7 +46,7 @@ ABRAgent (ReAct 主循环)
 | `IndexSemanticVectors` | Stage 2 | 段落 6 类语义打标 + Qwen3-Embedding 向量化持久化入库 | `max_papers` (默认 5), `incremental` (默认 True) |
 | `InspectCellEntities` | Stage 3 | 探测已挖掘材料数据与已组装电芯实体：电芯数、正负极/电解液三元组分布 | `cell_dir` (留空回退默认目录；Stage 3 运行时由 `agent.py` 传入课题 `cell_assembly/`) |
 | `ExtractAndAssembleCells` | Stage 3 | 材料微观表征挖掘 + 三层归一化 + 电芯实体组装流水线 | `sample_limit` (默认 10), `target_query` (留空动态绑定当前活跃课题) |
-| `RunRAGDesign` | Stage 4 | **Stage 4 唯一落盘入口**：单链路 Planner → Retrieval → Writer → Reviewer + RelationEngine 7 项分级规则核算（C1–C3 缓解白名单挑战、C5 建议、C6 审计提示、C7 扣电选材、C8 前沿标记及 C0 未知材料拦截；`RULES_VERSION=C1-C8/v2.1-coincell`），产出 `design_scheme.md/.json`、`rag_result.json` | `target_goal` (留空动态绑定当前活跃课题), `design_query` |
+| `RunRAGDesign` | Stage 4 | **Stage 4 唯一落盘入口**：单链路 Planner → Retrieval → Writer → Reviewer + RelationEngine 7 项分级规则核算（C1/C3 非阻断建议、C2 缓解白名单挑战、C5 建议、C6 审计提示、C7 扣电选材、C8 前沿标记及 C0 未知材料拦截；`RULES_VERSION=C1-C8/v2.4-c1-c3-advisory`），产出 `design_scheme.md/.json`、`rag_result.json` | `target_goal` (留空动态绑定当前活跃课题), `design_query` |
 | `QueryMaterialsProject` | Stage 4 | 查询官方 MP 计算材料属性并返回来源；主 RAG 链路也根据 Planner 的 `mp_queries` 自动补充证据 | `query`, `mode` (`search` / `fetch`) |
 | `RunPhysicsSimulation` | Stage 5 | 参数提取 + SPM PINN 放电仿真 (纯 numpy)：先落盘 `pinn_input_spec.json`；若激活且体系匹配 `pinn/models/registry.json` 则执行仿真并返回带容差达标判定 `target`、`revision_budget` 与 `geometry_context`，未匹配平滑回退参数提取 | `target_goal` (留空动态绑定当前活跃课题), `current_rate` (默认 "0.5C") |
 | `ReviseGeometry` | Stage 5 | 依据仿真结果在预算轮数内修订 `scheme.geometry`（两电极厚度/孔隙率/颗粒半径/扩散系数，其中 `D_s` 须附可核查任务证据），校验版本与范围并同步更新 `design_scheme.json/.md` | `revisions`, `reason`, `base_revision`, `base_geometry_hash`, `evidence_claims`, `target_goal` |
